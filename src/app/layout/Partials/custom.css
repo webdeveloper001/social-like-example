@@ -1,0 +1,115 @@
+    .carousel-inner > .item > img,
+    .carousel-inner > .item > a > img {
+      width: 100%;
+      height: 100px;
+      margin: 0%;
+    }
+    img.displayed {
+      display: block;
+      margin-left: 0px;
+      margin-right: 0px;
+    }
+    img.displayed-uc {
+      display: block;
+      margin-left: 0px;
+      margin-right: 0px;
+      pointer-events: none;
+    } 
+    .well-sm {
+      color: #ffffff;
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+      background-color: #006dcc;
+      *background-color: #0044cc;
+      padding-top: 0px;
+      padding-bottom: 0px;
+      padding-right: 0px;
+    }
+     .well-light {
+      background-color: #d8d8d8;
+      *background-color: #e0e0e0;
+    }
+     .well-dark {
+      background-color: #b0b0b0;
+      *background-color: #b8b8b8;
+      padding-top: 0px;
+      padding-bottom: 0px;
+    }
+      .well-light-edit {
+      background-color: #d8d8d8;
+      *background-color: #e0e0e0;
+      padding-top: 0px;
+      padding-bottom: 0px;
+    }
+    
+th.capitalize {
+    text-transform: capitalize;
+}
+strong.capitalize {
+    text-transform: capitalize;
+}
+label.capitalize {
+    text-transform: capitalize;
+}
+
+.frame {
+    height: 300px;      /* equals max image height */
+    width: 100%;
+    white-space: nowrap;
+    
+    text-align: center; margin: 1em 0;
+}
+
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+p.hiw {
+    cursor:pointer;
+}
+table.cursor {
+    cursor:pointer;
+}
+img.cursor {
+    cursor:pointer;
+}
+
+#veil {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height:100%;
+	width:100%;
+	cursor: not-allowed;
+    filter: alpha(opacity=60);
+	opacity: 0.6;
+	background: #000000 no-repeat center;
+}
+#feedLoading {
+	position: absolute;
+	top:200px;
+	width:100%;
+	text-align: center;
+	font-size: 4em;
+	color:white;
+	text-shadow: 2px 2px 2px #021124;
+}
+.container-blue {
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #006dcc;
+   *background-color: #0044cc;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    vertical-align: middle;
+}
+.span-nomargin {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.container-fluid {
+    min-height:100%;
+}

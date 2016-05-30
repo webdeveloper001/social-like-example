@@ -1,0 +1,807 @@
+[
+ {
+   "id":1,
+   "type":"Place",
+   "tags":"Basketball",
+   "title":"Where are the best places to play 5 on 5 pick-up basketball in SD?",
+   "keywords":"basketball"
+ },
+ {
+   "id":2,
+   "type":"Person",
+   "tags":"Basketball SDSU alumni",
+   "title":"Who are the best basketball players SDSU alumni?",
+   "keywords":"action"
+ },
+ {
+   "id":3,
+   "type":"Event",
+   "tags":"Basketball kids league fitness",
+   "title":"What are the best basketball leagues for kids in SD?",
+   "keywords":"activity"
+ },
+ {
+   "id":4,
+   "type":"Event",
+   "tags":"Basketball league",
+   "title":"What are the best basketball leagues for adults in SD?",
+   "keywords":"activity"
+ },
+ {
+   "id":5,
+   "type":"Organization",
+   "tags":"Basketball hs high school ",
+   "title":"Which SD high school has the best men basketball team?",
+   "keywords":"logo"
+ },
+ {
+   "id":6,
+   "type":"Organization",
+   "tags":"Basketball hs high school ",
+   "title":"Which SD high school has the best women basketball team?",
+   "keywords":"logo"
+ },
+ {
+   "id":7,
+   "type":"Person",
+   "tags":"football",
+   "title":"Who are the best football players to come out of SD?",
+   "keywords":"action"
+ },
+ {
+   "id":8,
+   "type":"Person",
+   "tags":"football",
+   "title":"Who are the best football players SDSU alumni?",
+   "keywords":"action"
+ },
+ {
+   "id":9,
+   "type":"Event",
+   "tags":"football kids  league",
+   "title":"What are the best flag-football leagues for kids in SD?",
+   "keywords":"activity"
+ },
+ {
+   "id":10,
+   "type":"Event",
+   "tags":"football  league",
+   "title":"What are the best flag-football leagues for adults in SD?",
+   "keywords":"activity"
+ },
+ {
+   "id":11,
+   "type":"Organization",
+   "tags":"football hs high school ",
+   "title":"Which SD high school has the best men football team?",
+   "keywords":"logo"
+ },
+ {
+   "id":12,
+   "type":"Organization",
+   "tags":"football hs high school ",
+   "title":"Which SD high school has the best women football team?",
+   "keywords":"logo"
+ },
+ {
+   "id":13,
+   "type":"Person",
+   "tags":"baseball",
+   "title":"Who are the best baseball players to come out of SD?",
+   "keywords":"action"
+ },
+ {
+   "id":14,
+   "type":"Person",
+   "tags":"baseball",
+   "title":"Who are the best baseball players SDSU alumni?",
+   "keywords":"action"
+ },
+ {
+   "id":15,
+   "type":"Event",
+   "tags":"baseball kids league",
+   "title":"What are the best baseball leagues for kids in SD?",
+   "keywords":"activity"
+ },
+ {
+   "id":16,
+   "type":"Event",
+   "tags":"baseball league",
+   "title":"What are the best baseball leagues for adults in SD?",
+   "keywords":"activity"
+ },
+ {
+   "id":17,
+   "type":"Event",
+   "tags":"baseball kids league",
+   "title":"What are the best softball leagues for kids in SD?",
+   "keywords":"activity"
+ },
+ {
+   "id":18,
+   "type":"Event",
+   "tags":"baseball league",
+   "title":"What are the best softball leagues for adults in SD?",
+   "keywords":"activity"
+ },
+ {
+   "id":19,
+   "type":"Organization",
+   "tags":"baseball hs high school ",
+   "title":"Which SD high school has the best men baseball team?",
+   "keywords":"logo"
+ },
+ {
+   "id":20,
+   "type":"Organization",
+   "tags":"baseball hs high school ",
+   "title":"Which SD high school has the best women baseball team?",
+   "keywords":"logo"
+ },
+ {
+   "id":21,
+   "type":"Event",
+   "tags":"soccer kids league",
+   "title":"What are the soccer leagues for kids in SD?",
+   "keywords":"activity"
+ },
+ {
+   "id":22,
+   "type":"Event",
+   "tags":"soccer league",
+   "title":"What are the best soccer leagues for adults in SD?",
+   "keywords":"activity"
+ },
+ {
+   "id":23,
+   "type":"Organization",
+   "tags":"soccer hs high school ",
+   "title":"Which SD high school has the best men soccer team?",
+   "keywords":"logo"
+ },
+ {
+   "id":24,
+   "type":"Organization",
+   "tags":"soccer hs high school ",
+   "title":"Which SD high school has the best women soccer team?",
+   "keywords":"logo"
+ },
+ {
+   "id":25,
+   "type":"Place",
+   "tags":"soccer",
+   "title":"What is a good place where people play soccer?",
+   "keywords":"soccer"
+ },
+ {
+   "id":26,
+   "type":"Event",
+   "tags":"basketball kids league summer camps ",
+   "title":"What are the best basketball summer camps in SD?",
+   "keywords":"activity"
+ },
+ {
+   "id":27,
+   "type":"Event",
+   "tags":"football kids summer camps",
+   "title":"What are the best football summer camps in SD?",
+   "keywords":"activity"
+ },
+ {
+   "id":28,
+   "type":"Event",
+   "tags":"soccer kids summer camps",
+   "title":"What are the best soccer summer camps in SD?",
+   "keywords":"activity"
+ },
+ {
+   "id":29,
+   "type":"Event",
+   "tags":"baseball kids summer camps",
+   "title":"What are the best baseball/softball summer camps in SD?",
+   "keywords":"activity"
+ },
+ {
+   "id":30,
+   "type":"Place",
+   "tags":"triathlon open water swim swimming adventure fitness",
+   "title":"What is the best place in SD to go open water swimming?",
+   "keywords":"swimming"
+ },
+ {
+   "id":31,
+   "type":"Short-Phrase",
+   "tags":"triathlon cycling bicycle ride routes paths adventure fitness",
+   "title":"What are the best routes to go cycling in SD?",
+   "keywords":"cycling"
+ },
+ {
+   "id":32,
+   "type":"Establishment",
+   "tags":"skateboarding extreme sports",
+   "title":"What are the best extreme sports parks in SD?",
+   "keywords":"skateboarding"
+ },
+ {
+   "id":33,
+   "type":"Place",
+   "tags":"extreme adventure kayak adventure fitness",
+   "title":"What are the best place in SD to go kayaking?",
+   "keywords":"kayaking"
+ },
+ {
+   "id":34,
+   "type":"Establishment",
+   "tags":"pizza italian",
+   "title":"Who makes the best pizza in SD?",
+   "keywords":""
+ },
+ {
+   "id":35,
+   "type":"Establishment",
+   "tags":"pizza italian pasta",
+   "title":"Which is the best Italian restaurant in SD?",
+   "keywords":""
+ },
+ {
+   "id":36,
+   "type":"Establishment",
+   "tags":"food mexican latin tacos",
+   "title":"Which is the best Mexican food restaurant in SD?",
+   "keywords":""
+ },
+ {
+   "id":37,
+   "type":"Establishment",
+   "tags":"mexican food latin food taco Tuesday",
+   "title":"Who makes the best tacos in SD?",
+   "keywords":""
+ },
+ {
+   "id":38,
+   "type":"Establishment",
+   "tags":"mexican food tacos fish taco Tuesday",
+   "title":"What is the best place for Taco Tuesday in SD?",
+   "keywords":""
+ },
+ {
+   "id":39,
+   "type":"Establishment",
+   "tags":"hindu restaurant indian food",
+   "title":"Which is the best indian food restaurant?",
+   "keywords":""
+ },
+ {
+   "id":40,
+   "type":"Establishment",
+   "tags":"gelato ice cream ice-cream ",
+   "title":"Where can you get the best ice-cream in SD?",
+   "keywords":""
+ },
+ {
+   "id":41,
+   "type":"Establishment",
+   "tags":"tea coffee shops",
+   "title":"Which coffee shop has the best coffee?",
+   "keywords":""
+ },
+ {
+   "id":42,
+   "type":"Establishment",
+   "tags":"tea coffee shops place study",
+   "title":"Which coffee shop is the best for studying?",
+   "keywords":""
+ },
+ {
+   "id":43,
+   "type":"Establishment",
+   "tags":"restaurant kosher food",
+   "title":"Which is the best Kosher food restaurant in SD?",
+   "keywords":""
+ },
+ {
+   "id":44,
+   "type":"Establishment",
+   "tags":"restaurant mediterranean greek food",
+   "title":"Which is the best Mediterranean food restaurant in SD?",
+   "keywords":""
+ },
+ {
+   "id":45,
+   "type":"Establishment",
+   "tags":"oriental food thai vietnamese noodles",
+   "title":"Which is the best Thai food restaurant in SD?",
+   "keywords":""
+ },
+ {
+   "id":46,
+   "type":"Establishment",
+   "tags":"restaurant food buffet all you can eat all-you-can-eat",
+   "title":"Which are the best food buffets in SD?",
+   "keywords":""
+ },
+ {
+   "id":47,
+   "type":"Establishment",
+   "tags":"restaurant seafood sea food",
+   "title":"Which is the best seafood restaurant in SD?",
+   "keywords":""
+ },
+ {
+   "id":48,
+   "type":"Establishment",
+   "tags":"restaurants best favorite ",
+   "title":"What are the favorite restaurants in SD?",
+   "keywords":""
+ },
+ {
+   "id":49,
+   "type":"Establishment",
+   "tags":"food restaurants chicken wings bar food",
+   "title":"Who makes the best chicken wings in SD?",
+   "keywords":""
+ },
+ {
+   "id":50,
+   "type":"Establishment",
+   "tags":"massage business beauty health",
+   "title":"Which are the best spas in SD?",
+   "keywords":""
+ },
+ {
+   "id":51,
+   "type":"Establishment",
+   "tags":"bachelor party women girls babes titties breasts pussy ",
+   "title":"Which are the best strip clubs in SD?",
+   "keywords":""
+ },
+ {
+   "id":52,
+   "type":"Establishment",
+   "tags":"hair cut stylist beauty women",
+   "title":"Who are the best hair stylists in SD?",
+   "keywords":""
+ },
+ {
+   "id":53,
+   "type":"Person",
+   "tags":"real estate apartments buy house",
+   "title":"Who are the best realtors in SD?",
+   "keywords":"suit"
+ },
+ {
+   "id":54,
+   "type":"Place",
+   "tags":"nice beach best",
+   "title":"Which are the nicest beaches in SD?",
+   "keywords":""
+ },
+ {
+   "id":55,
+   "type":"Place",
+   "tags":"surfing beach adventure begginner",
+   "title":"What are the best beaches to learn surfing in SD?",
+   "keywords":"surfing"
+ },
+ {
+   "id":56,
+   "type":"Place",
+   "tags":"surfing beach adventure surf spots",
+   "title":"What are the best beaches for intermediate surfers in SD?",
+   "keywords":"surfing"
+ },
+ {
+   "id":57,
+   "type":"Place",
+   "tags":"surfing beach adventure surf spots",
+   "title":"What are the best beaches for advance surfers in SD?",
+   "keywords":"surfing"
+ },
+ {
+   "id":58,
+   "type":"Establishment",
+   "tags":"nightlife bars sports ",
+   "title":"Which are the best sport bars in SD?",
+   "keywords":""
+ },
+ {
+   "id":59,
+   "type":"Establishment",
+   "tags":"nightlife",
+   "title":"Which are the best nightclub in SD?",
+   "keywords":""
+ },
+ {
+   "id":60,
+   "type":"Place",
+   "tags":"women girls babes dating",
+   "title":"Where can you find the most beautiful women in SD?",
+   "keywords":""
+ },
+ {
+   "id":61,
+   "type":"Place",
+   "tags":"men dating",
+   "title":"Where can you find the most handsome men in SD?",
+   "keywords":""
+ },
+ {
+   "id":62,
+   "type":"Place",
+   "tags":"",
+   "title":"where you find the best weed in San Diego?",
+   "keywords":""
+ },
+ {
+   "id":63,
+   "type":"Establishment",
+   "tags":"beer bars",
+   "title":"What are the best brewries in San Diego?",
+   "keywords":""
+ },
+ {
+   "id":64,
+   "type":"Person",
+   "tags":"chargers football",
+   "title":"Who is your favorite Charger?",
+   "keywords":""
+ },
+ {
+   "id":65,
+   "type":"Short-Phrase",
+   "tags":"chargers football",
+   "title":"How far will the Chargers make it next season?",
+   "keywords":""
+ },
+ {
+   "id":66,
+   "type":"Person",
+   "tags":"chargers football",
+   "title":"Who has been the best ever San Diego Charger?",
+   "keywords":""
+ },
+ {
+   "id":67,
+   "type":"Person",
+   "tags":"baseball",
+   "title":"Who is your favorite San Diego Padres?",
+   "keywords":""
+ },
+ {
+   "id":68,
+   "type":"Short-Phrase",
+   "tags":"baseball",
+   "title":"How far will the Padres make it next year?",
+   "keywords":""
+ },
+ {
+   "id":69,
+   "type":"Short-Phrase",
+   "tags":"football",
+   "title":"What improvemens the Chargers need to make next year?",
+   "keywords":""
+ },
+ {
+   "id":70,
+   "type":"Short-Phrase",
+   "tags":"baseball",
+   "title":"What improvemnents the Padres need to make next year?",
+   "keywords":""
+ },
+ {
+   "id":71,
+   "type":"Establishment",
+   "tags":"nightlife",
+   "title":"What are the best bars in downtown San Diego?",
+   "keywords":""
+ },
+ {
+   "id":72,
+   "type":"Establishment",
+   "tags":"nightlife",
+   "title":"What is the best night club in downtown?",
+   "keywords":""
+ },
+ {
+   "id":73,
+   "type":"Establishment",
+   "tags":"nightlife dating",
+   "title":"What are the best roof top bars in San Diego?",
+   "keywords":""
+ },
+ {
+   "id":74,
+   "type":"Establishment",
+   "tags":"nightlife dating",
+   "title":"What is the best place to have a romantic dinner in San Diego?",
+   "keywords":""
+ },
+ {
+   "id":75,
+   "type":"Establishment",
+   "tags":"fitness martial arts",
+   "title":"What is the best MMA gym in San Diego?",
+   "keywords":""
+ },
+ {
+   "id":76,
+   "type":"Establishment",
+   "tags":"fitness martial arts",
+   "title":"What is the best Brazilian Jiujitsu school in San Diego?",
+   "keywords":""
+ },
+ {
+   "id":77,
+   "type":"Establishment",
+   "tags":"fitness dating",
+   "title":"What are the best places for latin dancing in San Diego?",
+   "keywords":""
+ },
+ {
+   "id":78,
+   "type":"Establishment",
+   "tags":"nightlife dating",
+   "title":"What are the best country bars in San Diego?",
+   "keywords":""
+ },
+ {
+   "id":79,
+   "type":"Establishment",
+   "tags":"health",
+   "title":"Who are the best dentists in San Diego?",
+   "keywords":""
+ },
+ {
+   "id":80,
+   "type":"Product",
+   "tags":"dating",
+   "title":"Which is the best dating app for people in San Diego?",
+   "keywords":""
+ },
+ {
+   "id":81,
+   "type":"Establishment",
+   "tags":"health",
+   "title":"Who makes the best smoothies in San Diego?",
+   "keywords":""
+ },
+ {
+   "id":82,
+   "type":"Establishment",
+   "tags":"hair cut",
+   "title":"Who is the best barber shop in San Diego?",
+   "keywords":""
+ },
+ {
+   "id":83,
+   "type":"Establishment",
+   "tags":"fitness",
+   "title":"Which is the best gym in Downtown?",
+   "keywords":""
+ },
+ {
+   "id":84,
+   "type":"Establishment",
+   "tags":"fitness",
+   "title":"Which is the best gym in La Jolla?",
+   "keywords":""
+ },
+ {
+   "id":85,
+   "type":"Establishment",
+   "tags":"fitness",
+   "title":"Which is the best gym in Pacific Beach?",
+   "keywords":""
+ },
+ {
+   "id":86,
+   "type":"Establishment",
+   "tags":"fitness",
+   "title":"Which is the best gym in Hillcrest?",
+   "keywords":""
+ },
+ {
+   "id":87,
+   "type":"Establishment",
+   "tags":"fitness",
+   "title":"Which is the best gym in University Heights?",
+   "keywords":""
+ },
+ {
+   "id":88,
+   "type":"Establishment",
+   "tags":"fitness",
+   "title":"Which is the best gym in Old Town?",
+   "keywords":""
+ },
+ {
+   "id":89,
+   "type":"Establishment",
+   "tags":"fitness",
+   "title":"Which is the best gym in Del Mar?",
+   "keywords":""
+ },
+ {
+   "id":90,
+   "type":"Establishment",
+   "tags":"fitness",
+   "title":"Which is the best gym in Ocean Beach?",
+   "keywords":""
+ },
+ {
+   "id":91,
+   "type":"Establishment",
+   "tags":"fitness",
+   "title":"Which is the best gym in North Park?",
+   "keywords":""
+ },
+ {
+   "id":92,
+   "type":"Establishment",
+   "tags":"fitness",
+   "title":"Which is the best gym in Mission Hills?",
+   "keywords":""
+ },
+ {
+   "id":93,
+   "type":"Establishment",
+   "tags":"fitness",
+   "title":"Which is the best gym with a swimming pool in San Diego?",
+   "keywords":""
+ },
+ {
+   "id":94,
+   "type":"Establishment",
+   "tags":"place to live",
+   "title":"Which are the best apartments in Downtown?",
+   "keywords":""
+ },
+ {
+   "id":95,
+   "type":"Establishment",
+   "tags":"place to live",
+   "title":"Which are the best apartments in La Jolla?",
+   "keywords":""
+ },
+ {
+   "id":96,
+   "type":"Establishment",
+   "tags":"place to live",
+   "title":"Which are the best apartments in Pacific Beach?",
+   "keywords":""
+ },
+ {
+   "id":97,
+   "type":"Establishment",
+   "tags":"place to live",
+   "title":"Which are the best apartments in Hillcrest?",
+   "keywords":""
+ },
+ {
+   "id":98,
+   "type":"Establishment",
+   "tags":"place to live",
+   "title":"Which are the best apartments in University Heights?",
+   "keywords":""
+ },
+ {
+   "id":99,
+   "type":"Establishment",
+   "tags":"place to live",
+   "title":"Which are the best apartments in Old Town?",
+   "keywords":""
+ },
+ {
+   "id":100,
+   "type":"Establishment",
+   "tags":"place to live",
+   "title":"Which are the best apartments in Del Mar?",
+   "keywords":""
+ },
+ {
+   "id":101,
+   "type":"Establishment",
+   "tags":"place to live",
+   "title":"Which are the best apartments in Ocean Beach?",
+   "keywords":""
+ },
+ {
+   "id":102,
+   "type":"Establishment",
+   "tags":"place to live",
+   "title":"Which are the best apartments in North Park?",
+   "keywords":""
+ },
+ {
+   "id":103,
+   "type":"Establishment",
+   "tags":"place to live",
+   "title":"Which are the best apartments in Mission Hills?",
+   "keywords":""
+ },
+ {
+   "id":104,
+   "type":"Establishment",
+   "tags":"health",
+   "title":"Where are the best farmers markets in San Diego?",
+   "keywords":""
+ },
+ {
+   "id":105,
+   "type":"Establishment",
+   "tags":"fitness beauty",
+   "title":"Which are the best yoga studios in Downtown?",
+   "keywords":""
+ },
+ {
+   "id":106,
+   "type":"Establishment",
+   "tags":"fitness beauty",
+   "title":"Which are the best yoga studios in La Jolla?",
+   "keywords":""
+ },
+ {
+   "id":107,
+   "type":"Establishment",
+   "tags":"fitness beauty",
+   "title":"Which are the best yoga studios in Pacific Beach?",
+   "keywords":""
+ },
+ {
+   "id":108,
+   "type":"Establishment",
+   "tags":"fitness beauty",
+   "title":"Which are the best yoga studios in Hillcrest?",
+   "keywords":""
+ },
+ {
+   "id":109,
+   "type":"Establishment",
+   "tags":"fitness beauty",
+   "title":"Which are the best yoga studios in University Heights?",
+   "keywords":""
+ },
+ {
+   "id":110,
+   "type":"Establishment",
+   "tags":"fitness beauty",
+   "title":"Which are the best yoga studios in Old Town?",
+   "keywords":""
+ },
+ {
+   "id":111,
+   "type":"Establishment",
+   "tags":"fitness beauty",
+   "title":"Which are the best yoga studios in Del Mar?",
+   "keywords":""
+ },
+ {
+   "id":112,
+   "type":"Establishment",
+   "tags":"fitness beauty",
+   "title":"Which are the best yoga studios in Ocean Beach?",
+   "keywords":""
+ },
+ {
+   "id":113,
+   "type":"Establishment",
+   "tags":"fitness beauty",
+   "title":"Which are the best yoga studios in North Park?",
+   "keywords":""
+ },
+ {
+   "id":114,
+   "type":"Establishment",
+   "tags":"fitness beauty",
+   "title":"Which are the best yoga studios in Mission Hills?",
+   "keywords":""
+ },
+ {
+   "id":115,
+   "type":"Establishment",
+   "tags":"fitness beauty",
+   "title":"Which are the best yoga studios with a swimming pool in San Diego?",
+   "keywords":""
+ }
+]

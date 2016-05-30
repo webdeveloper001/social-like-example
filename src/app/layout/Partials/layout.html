@@ -1,0 +1,54 @@
+﻿<!-- Navigation Bar -->
+<div ui-view="navbar"></div>
+
+<div class="container">
+
+    <div id="veil" ng-show="vm.isLoading"></div>
+    <div id="feedLoading" ng-show="vm.isLoading">Loading...</div>
+
+    <div class="container-fluid" ng-hide="vm.isLoading">
+        <br>
+        <br>
+        <div class="row">
+            <!--
+            <div class="col-sm-9 col-md-3 sidebar">
+                <ul class="nav nav-sidebar">
+                    <li><a href="#/content/1">Olympics</a></li>
+                    <li><a href="#/content/2">US Elections</a></li>
+                    <li><a href="#/content/3">Sports</a></li>
+                    <li><a href="#/content/4">Entertainment</a></li>
+                    <li><a href="#/content/5">Politics</a></li>
+                    <li><a href="#/content/6">Places</a></li>
+                    <li><a href="#/content/7">Dating and Relationships</a></li>
+                    <li><a href="#/content/8">Philosophy</a></li>
+                </ul>
+            </div>
+            -->
+            <div class="col-sm-0 col-md-2 col-lg-3">
+                </div>
+                <!-- Category Menu  -->
+                  <div class="col-sm-12 col-md-8 col-lg-6">
+        <img src="../../../assets/images/rankxlogo.png" alt="Cinque Terre" style="width:100%;max-height:250px">
+        </div>
+    <div class="col-sm-0 col-md-2 col-lg-3">
+        </div>
+                
+              </div>  
+                <!--
+                 <input class="form-control" ng-model="vm.val" bs-options="{{vm.opts}}" bs-typeahead type="text" 
+                    placeholder="Search Ranking">-->
+                <!-- Main View-->
+                <br>
+                <br>
+                <br>
+                <div ui-view></div>
+    </div>
+
+</div>
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">
+            Rank-X is property of Rank-X LLC. San Diego, CA - 2016
+        </p>
+    </div>
+</footer>

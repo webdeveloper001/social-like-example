@@ -1,0 +1,72 @@
+﻿<!--                      
+<div class="well-sm">
+    <h2 class="sub-header">{{vm.header | translate}}</h2>
+    <p>{{vm.body | translate}}</p>
+</div>
+
+<div class="row">
+    <br id="space1">
+    <img src="../../../assets/images/{{vm.tableimage}}" class="img-rounded" style="width:100%;max-height:200px">
+    <br id="space2">
+</div>
+-->
+<div class="container">
+    <div class="well-sm">
+        <h3 class="sub-header">{{vm.ranking}}
+                <span class="nomargin">
+                    <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
+                    ng-click="vm.closeRank()">
+                    <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
+                    </button>
+                </span>
+        </h3>
+    </div>
+</div>
+
+<h4>Contributors: <b style="color:blue; "><i>{{vm.numContributors}}</i></b></h4>
+<div class="row ">
+    <div class="btn-group col-sm-6 col-md-6 ">
+        <button class="btn btn-primary {{vm.selOverall}} " ng-click="vm.rankOverall() ">Overall</button>
+        <button class="btn btn-primary {{vm.selPersonal}} " ng-click="vm.rankPersonal() ">Personal</button>
+        <!--  <button type="button " class="btn btn-primary ">{{"rankSummary.Filtered " | translate}}</button> -->
+    </div>
+    <div class="text-right col-sm-6 col-md-6 ">
+        <!-- <h4>Contributors: <b style="color:blue; "><i>4563</i></b></h4> -->
+        <!-- Twitter -->
+        <a href="http://twitter.com/home?status=" title="Share in Twitter"
+     target="_blank " class="btn btn-twitter "><i class="fa fa-twitter "></i> Twitter</a>
+        <!-- Facebook -->
+        <a href="https://www.facebook.com/sharer/sharer.php " title="Share in Facebook" 
+     target="_blank " class="btn btn-facebook "><i class="fa fa-facebook "></i> Facebook</a>
+        <!-- Google+ -->
+        <a href="https://plus.google.com/share?url=" title="Share in Google+"
+     target="_blank " class="btn btn-googleplus "><i class="fa fa-google-plus "></i> Google+</a>
+    </div>
+</div>
+<div class="text-center ">
+    <button ng-click="vm.goRank() " class="btn btn-success ">Go Rank</button>
+</div>
+<br>
+</div>
+<table class="table table-hover cursor ">
+    <tbody>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th class="capitalize " ng-repeat="h in vm.fields | filter:(h.isrequired=true)">{{h.label}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="x in vm.answers | orderBy: '-Rank' " ng-click="vm.answerDetail(x.id) ">
+                <td>{{$index+1}}</td>
+                <!--<td>{{x.Rank}}</td>-->
+                <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
+                <td ng-repeat="h in vm.fields | filter:(h.isrequired=true)">{{ x[h.name]}}</td>
+            </tr>
+        </tbody>
+</table>
+<button ng-click="vm.addAnswer() " class="btn btn-primary ">+</button>
+
+<!-- <a ui-sref="match " class="btn btn-success ">{{"rankSummary.GoRank " | translate}}</a> -->
+<br>
+<br>

@@ -1,0 +1,41 @@
+{
+	"resource": [
+		{
+			"name": "votetable1",
+			"label": "VoteTable1",
+			"plural": "VoteRecords",
+			"alias": null,
+			"field": [
+				{
+					"name": "id",
+					"label": "id",
+					"type": "id"
+				},
+				{
+					"name": "user",
+					"label": "User",
+					"type": "user_id",
+					"allow_null": false
+				},
+				{
+					"name": "answer",
+					"label": "Answer",
+					"type": "integer",
+					"allow_null": false
+				},
+				{
+					"name": "vote",
+					"label": "Vote",
+					"type": "integer",
+					"allow_null": false
+				},
+				{
+					"name": "timestmp",
+					"label": "Time Stamp",
+					"type": "timestamp",
+					"allow_null": false
+				}
+			]
+		}
+	]
+}

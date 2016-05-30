@@ -1,0 +1,76 @@
+<div class="container">
+    <div class="well-sm">
+        <h3 class="sub-header">{{vm.ranking}}
+                <span class="nomargin">
+                    <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
+                    ng-click="vm.closeRank()">
+                    <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
+                    </button>
+                </span>
+        </h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <h3>Edit Answer Profile</h3>
+    </div>
+    <div class="col-sm-6 text-right">
+        <p class="hiw" ng-click="vm.showHowItWorksDialog()"><u>How it Works</u></p>
+    </div>
+</div>
+<br>
+
+<div class="row">
+    <div class="col-sm-12 col-md-6">
+        <div class="">
+            <img class="displayed-uc" src="{{vm.imageURL}}" alt="{{image.errorLoading}}"
+            style="width:100%; max-height:300px">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary" ng-click="vm.editImage()" >{{vm.imageCommand}}</button>
+        <button type="submit" class="btn btn-primary" ng-click="vm.viewPrev()" style="display:{{vm.imagefunctions}}">&laquo</button>
+        <button type="submit" class="btn btn-primary" ng-click="vm.viewNext()" style="display:{{vm.imagefunctions}}">&raquo</button>
+        <a style="display:{{vm.imagefunctions}}">{{vm.linkIdx+1}} of {{vm.numLinks}}</a> 
+        <button type="submit" class="btn btn-success" ng-click="vm.selectImage()" style="display:{{vm.imagefunctions}}">Select</button>
+    </div>
+
+    <form class="form-horizontal col-sm-12 col-md-6" role="form" name="answerForm">
+        <br>
+        <div class="form-group" ng-repeat="x in vm.fields">
+            <label class="col-sm-4 col-md-4 control-label capitalize">{{x.label}}:</label>
+            <div class="col-sm-8 col-md-8">
+                <div class="input-group">
+                    <!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
+                    <input class="form-control" ng-model="x.val" bs-options="{{x.opts}}" bs-typeahead type="text" 
+                    placeholder="{{x.cval}}">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" ng-click="vm.editField(x)">Edit</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+    </form>
+
+</div>
+<br>
+<div class="well well-light-edit" ng-repeat="x in vm.edits">
+
+    <p><strong>{{x.username}}</strong> has edited the <strong class="capitalize"><em>{{x.field}}</em>
+        </strong> of <strong><em>{{x.name}}</em>
+        </strong> to <strong><em>{{x.nval}}</em></strong>.</p>
+    <img src="{{x.imageURL}}"" class="displayed" style="height:150px;display:{{x.display}}">
+    <div class="row form-group">
+        <div class="text-center">
+            <label>{{x.upV}}</label>
+            <label> </label>
+            <button class="btn btn-primary {{x.agree}}" ng-click="vm.editAgree(x, $index)">Agree</button>
+            <button type="submit" class="btn btn-primary {{x.disagree}}" ng-click="vm.editDisagree(x, $index)">Disagree</button>
+            <label> </label>
+            <label>{{x.downV}}</label>
+        </div>
+    </div>
+</div>
+<div class="text-right">
+<a ng-click="vm.answerDetail()" class="btn btn-success">Back</a>
+</div>

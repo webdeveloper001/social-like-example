@@ -1,0 +1,21 @@
+<div class="input-group" style="width:100%">
+	<!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
+
+	<input class="form-control" ng-model="vm.val" type="text" placeholder="Search San Diego" ng-change="vm.switchArray()">
+
+</div>
+
+<div class="container">
+	<div ng-repeat="x in vm.results">
+		<h4 ng-click="vm.rankSel(x, $index)" ng-show="x.showT">
+			{{x.title}}		 
+		</h4>
+		<!--
+		<div ui-view="rankSummary" ng-show="{{vm.show}}"></div>
+		-->
+		<div ng-show="x.showR">
+			<div ui-view></div>
+		</div>
+
+	</div>
+</div>

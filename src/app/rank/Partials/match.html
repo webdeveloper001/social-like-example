@@ -1,0 +1,52 @@
+﻿<div class="container">
+    <div class="well-sm">
+        <h3 class="sub-header">{{vm.ranking}}
+                <span class="nomargin">
+                    <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
+                    ng-click="vm.closeRank()">
+                    <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
+                    </button>
+                </span>
+        </h3>
+    </div>
+</div>
+
+<h3>Who ranks higher?</h3>
+<div class="form-group text-center">
+    <div class="well well-dark">Match <strong>{{vm.GP + 1}}</strong> of <strong>{{vm.Tot}}</strong></div>
+</div>
+<div class="row">
+    <div class="col-xs-6 col-md-6 col-lg-6">
+        <div class="well well-light" ng-click="vm.selectAnswer(1)">
+         <span ng-repeat="f in vm.fields | filter:(f.isrequired=true)" >
+    {{(f.name == "name" && vm.answer1.name) ? vm.answer1.name : ""}}
+    {{(f.name == "cityarea" && vm.answer1.cityarea) ? " - "+ vm.answer1.cityarea : ""}}
+    
+</span>
+        </div>
+        <img class="displayed" src="{{vm.answer1.imageurl}}" ng-click="vm.selectAnswer(1)" style="width:100%;max-height:300px">
+    </div>
+    <div class="col-xs-6 col-md-6 col-lg-6">
+        <div class="well well-light" ng-click="vm.selectAnswer(2)">
+            <span ng-repeat="f in vm.fields | filter:(f.isrequired=true)">
+    {{(f.name == "name" && vm.answer2.name) ? vm.answer2.name : ""}}
+    {{(f.name == "cityarea" && vm.answer2.cityarea) ? " - "+ vm.answer2.cityarea : ""}}
+</span>
+        </div>
+        <img class="displayed" src="{{vm.answer2.imageurl}}" ng-click="vm.selectAnswer(2)" style="width:100%;max-height:300px">
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="form-group text-left col-xs-6 col-md-6 col-lg-6">
+        <button ng-click="vm.answerDetail(1)" type="button" class="btn btn-success">Details</button>
+    </div>
+    <div class="form-group text-right col-xs-6 col-md-6 col-lg-6">
+        <button ng-click="vm.answerDetail(2)" type="button" class="btn btn-success">Details</button>
+    </div>
+</div>
+
+<div class="form-group text-center">
+    <button ng-click="vm.skipMatch()" type="button" class="btn btn-default">Skip</button>
+    <button ng-click="vm.rankSummary()" type="button" class="btn btn-danger">Stop</button>
+</div>

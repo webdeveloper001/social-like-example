@@ -1,0 +1,83 @@
+﻿<div class="container">
+    <div class="well-sm">
+        <h3 class="sub-header">{{vm.ranking}}
+                <span class="nomargin">
+                    <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
+                    ng-click="vm.closeRank()">
+                    <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
+                    </button>
+                </span>
+        </h3>
+    </div>
+</div>
+<!--<h3>{{vm.answerheader}}</h3>-->
+<div> 
+<h3><span ng-repeat="f in vm.public">
+    {{(f == "name" && vm.answer.name) ? vm.answer.name : ""}}
+    {{(f == "country" && vm.answer.country) ? " - "+(vm.answer.country | translate) : ""}}
+    {{(f == "nickname" && vm.answer.nickname) ? " - "+(vm.answer.nickname) : ""}}
+    {{(f == "club" && vm.answer.club) ? " - "+(vm.answer.club) : ""}}
+</span></h3>
+</div>
+<div class="row">
+    <div class="col-md-6 col-lg-6">
+        <p>{{vm.answer.description}}</p>
+        <br>
+        <img class="displayed" src="{{vm.answer.imageurl}}" alt="Moustiers Sainte Marie" style="width:100%;height:300px" ng-click="vm.showUrl()">
+        <br>
+        <br>
+        <p>Vote up if you support this answer in this ranking. Vote down if this answer is weak and does not belong in this
+            ranking.
+        </p>
+        <div class="row" id="likerow">
+            <label style="width:10%" class="col-md-1 col-lg-1"><font size="  "></font></label>
+            <img style="width:20%" class="img-circle col-md-1 col-lg-1 cursor" src="../../../assets/images/{{vm.answer.thumbUp}}" ng-click="vm.UpVote()">
+            <label style="width:20%" class="col-md-1 col-lg-1"><font size="5">{{vm.answer.upV}}</font></label>
+            <img style="width:20%" class="img-circle col-md-1 col-lg-1 cursor" src="../../../assets/images/{{vm.answer.thumbDn}}" ng-click="vm.DownVote()">
+            <label style="width:20%" class="col-md-1 col-lg-1"><font size="5">{{vm.answer.downV}}</font></label>
+            <label style="width:10%" class="col-md-1 col-lg-1"><font size="  "></font></label>
+        </div>
+        <br>
+        
+        <button type="button" class="btn btn-primary btn-block" ng-click="vm.editAnswer()">Edit
+            {{vm.numEdits > 0? "("+vm.numEdits+")" : ""}}
+        </button>
+<br>
+        <a ng-click="vm.goBack()" class="btn btn-success">Back</a>
+        <div class="btn-group">
+            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                Flag<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a id="action-x" ng-click="vm.flagAnswer(1)">Flag Offensive</a></li>
+                <li><a id="action-y" ng-click="vm.flagAnswer(2)">Flag Duplicated</a></li>
+            </ul>
+        </div>
+        <a ng-click="vm.deleteAnswer()" class="btn btn-danger" style="display:{{vm.deleteButton}}">Delete</a> 
+        <br>
+        <br>
+
+    </div>
+
+    <div class="col-md-6 col-lg-6">
+        <table class="table table-hover cursor" id="mytable">
+            <tbody>
+                <thead>
+                    <tr>
+                        <th>Pct (%)</th>
+                        <th>vs. Opponent</th>
+                        <th>Pct (%)</th>
+                        <th>GP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in vm.relativetable | orderBy:'-Rank'" ng-click="vm.refresh(x.id)">
+                        <td align="middle">{{x.PctF}}</td>
+                        <td align="middle">{{x.vsName}}</td>
+                        <td align="middle">{{x.PctC}}</td>
+                        <td align="middle">{{x.GP}}</td>
+                    </tr>
+                </tbody>
+        </table>
+    </div>
+</div>
