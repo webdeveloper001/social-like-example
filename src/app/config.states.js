@@ -64,27 +64,9 @@
                             return result;
                         });
                     }],
-
-                    categories: ['table', function (table) {
-
-                        return table.getTables().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-
-
                     mrecs: ['matchrec', function (matchrec) {
 
                         return matchrec.GetMatchTable().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-
-                    tablefields: ['tablefield', function (tablefield) {
-
-                        return tablefield.getAllTableFields().then(function (result) {
 
                             return result;
                         });

@@ -12,7 +12,7 @@
         //Members
         var _answers = [];
         var _selectedAnswer;
-        var baseURI = '/api/v2/mysql/_table/answerssd';
+        var baseURI = '/api/v2/mysql/_table/answers';
 
         var service = {
             getAnswers: getAnswers,

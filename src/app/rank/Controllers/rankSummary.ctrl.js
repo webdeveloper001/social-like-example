@@ -6,11 +6,11 @@
         .controller('rankSummary', rankSummary);
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'answers'
-        , 'answer', 'categories', 'tablefields', 'mrecs', 'rank'
+        , 'answer', 'mrecs', 'rank'
         , '$rootScope', '$modal', 'edits', 'editvote', 'votes', 'useractivities'];
 
     function rankSummary(dialog, $stateParams, $state, answers
-        , answer, categories, tablefields, mrecs, rank
+        , answer, mrecs, rank
         , $rootScope, $modal, edits, editvote, votes, useractivities) {
         /* jshint validthis:true */
         var vm = this;

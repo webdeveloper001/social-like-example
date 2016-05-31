@@ -3,8 +3,8 @@
 
     angular
         .module('app')
-        .constant('INSTANCE_URL', 'http://bitnami-dreamfactory-df66.cloudapp.net')
-        .constant('APP_API_KEY', '4f3064c499f7808bacce0f34c00818344c4afc0c4881be80cc4cac0daf7ed4e6')
+        .constant('INSTANCE_URL', 'http://bitnami-dreamfactory-df88.westus.cloudapp.azure.com')
+        .constant('APP_API_KEY', '7e9a54a80a6ae850bc38ff768d75e143e75c273d1f7e2f265648020bf8c42a3b')
         .constant('DEBUG_MODE', true)
         
 })();
