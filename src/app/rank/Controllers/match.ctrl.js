@@ -5,9 +5,9 @@
         .module('app')
         .controller('match', match);
 
-    match.$inject = ['$state', 'dialog', '$location', 'answer', 'table', 'user', '$rootScope', 'matchrec', '$modal','useractivity'];
+    match.$inject = ['$state', 'dialog', '$location', 'answer', 'table', '$rootScope', 'matchrec', '$modal','useractivity'];
 
-    function match($state, dialog, $location, answer, table, user, $rootScope, matchrec, $modal, useractivity) {
+    function match($state, dialog, $location, answer, table, $rootScope, matchrec, $modal, useractivity) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'match';

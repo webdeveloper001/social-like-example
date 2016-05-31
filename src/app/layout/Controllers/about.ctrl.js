@@ -24,8 +24,9 @@
         }
 
         function goBack() {
-            if ($rootScope.cCategory.id == undefined) $state.go('rankSummary', { index: $rootScope.cCategory.id });
-            else $state.go('rankSummary', { index: 1 });
+            //if ($rootScope.cCategory.id == undefined) $state.go('rankSummary', { index: $rootScope.cCategory.id });
+            //else $state.go('rankSummary', { index: 1 });
+            $state.go('content');
         }
 
     }
