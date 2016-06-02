@@ -72,6 +72,8 @@
             else vm.neighborhoods = $rootScope.neighborhoods;
             
             vm.fields = $rootScope.fields;
+            vm.type = $rootScope.cCategory.type;
+            console.log("vm.type", $rootScope.cCategory.type);
                        
             //Add extra info
             vm.fields.opts = [];
@@ -95,6 +97,8 @@
         function addAnswer() {
 
             myAnswer.imageurl = imageLinks[vm.linkIdx];
+            if ($rootScope.cCategory.type == 'Short-Phrase') myAnswer.imageurl='none';
+            
             myAnswer.upV = 0;
             myAnswer.downV = 0;
             //myAnswer.userid = $rootScope.user.id;
@@ -120,7 +124,6 @@
         }
 
         function validateData() {
-            countryIsValid=true; //remove later, only temp
             loadImageDataOk = true;
             //addAnswerDataOk = true;
             for (var i = 0; i < vm.fields.length; i++) {
@@ -130,8 +133,10 @@
                 }
             }
             
-            loadImageDataOk = loadImageDataOk && countryIsValid;
-            addAnswerDataOk = (loadImageDataOk && vm.numLinks > 0);
+            //loadImageDataOk = loadImageDataOk && countryIsValid;
+            if ($rootScope.cCategory.type == 'Short-Phrase') addAnswerDataOk = loadImageDataOk;
+            else addAnswerDataOk = (loadImageDataOk && vm.numLinks > 0);
+            
         }
 
         function rankSummary() {
@@ -210,6 +215,7 @@
             vm.linkIdx = 0;
 
             vm.imageURL = imageLinks[vm.linkIdx];
+                 
             testImageUrl(imageLinks[vm.linkIdx], showImageNotOk);
 
             if (vm.numLinks > 0) vm.imagefunctions = 'inline';

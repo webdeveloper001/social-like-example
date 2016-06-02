@@ -17,6 +17,7 @@
         vm.title = 'rankSummary';
         vm.addAnswerDisabled = '';
         vm.ranking = $rootScope.title;
+        
        
         // Methods
         vm.answerDetail = answerDetail;
@@ -204,18 +205,37 @@
             fields = $rootScope.typeSchema[fidx].fields;  
             $rootScope.fields = fields;
             vm.fields = $rootScope.fields;
+            vm.type = $rootScope.cCategory.type;
             
-            console.log("vm.fields ", vm.fields);
+            console.log("vm.fields ", vm.fields.type);
             
             //Load current answers
             $rootScope.canswers = [];
             for (var i = 0; i < answers.length; i++) {
                 if (answers[i].category == $rootScope.cCategory.id) {
                     $rootScope.canswers.push(answers[i]);
+                                        
                 }
             }            
             vm.answers = $rootScope.canswers;
             
+            
+            //*****TEMP********
+            //vm.answers.specials = [];
+            for (var i = 0; i < vm.answers.length; i++) {
+                if (i==1) {
+                    vm.answers[i].specials = 'Its Happy Hour!';
+                    vm.answers[i].style = 'happy';
+                }
+                else {
+                    vm.answers[i].specials = '---';
+                    vm.answers[i].style = '';
+                }
+                
+            }
+            //**************************************88
+            
+           
             //Load current mrecs
             $rootScope.cmrecs = [];
             for (var i = 0; i < mrecs.length; i++) {

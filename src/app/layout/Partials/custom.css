@@ -113,3 +113,19 @@ img.cursor {
 .container-fluid {
     min-height:100%;
 }
+td.happy {
+    background-color: green;
+   *background-color: green;
+   color:white;
+}
+.span22{
+    -moz-box-shadow: 0 0 2px black;
+    -webkit-box-shadow: 0 0 2px black;
+    box-shadow: 0 2px 0px #006dcc;
+}
+.container-answer {
+    min-height:200px;
+    /*background-image: url("/assets/images/photo1001.png");*/
+    background-color: darkgray;
+    color:black;
+}

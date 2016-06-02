@@ -43,8 +43,8 @@
         vm.deleteButton = 'none';
         vm.showUrl = showUrl;
         vm.closeRank = closeRank;
-
-       
+        
+        vm.fields = $rootScope.fields;
 
         if ($stateParams.index) vm.answer = answers[A.indexOf(+$stateParams.index)];
         upVi = vm.answer.upV;

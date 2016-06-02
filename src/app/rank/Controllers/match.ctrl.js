@@ -27,6 +27,7 @@
         
         // Members
         vm.table = $rootScope.cCategory;
+        vm.type = $rootScope.cCategory.type;
         vm.answer1;
         vm.answer2;
 

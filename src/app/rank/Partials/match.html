@@ -24,7 +24,14 @@
     
 </span>
         </div>
-        <img class="displayed" src="{{vm.answer1.imageurl}}" ng-click="vm.selectAnswer(1)" style="width:100%;max-height:300px">
+        <img class="displayed" src="{{vm.answer1.imageurl}}" ng-click="vm.selectAnswer(1)" style="width:100%;max-height:300px"
+             ng-show="{{vm.type != 'Short-Phrase'}}">
+        <div class="container-answer" style="width:100%; max-height:300px;" ng-click="vm.selectAnswer(1)"
+             ng-show="{{vm.type == 'Short-Phrase'}}"> 
+             <br>
+            <h2 style="text-align:center"><strong>{{vm.answer1.name}}</strong></h2> <br>
+            <h4 style="text-align:center">{{vm.answer1.addinfo}}</h4>
+        </div>     
     </div>
     <div class="col-xs-6 col-md-6 col-lg-6">
         <div class="well well-light" ng-click="vm.selectAnswer(2)">
@@ -33,7 +40,14 @@
     {{(f.name == "cityarea" && vm.answer2.cityarea) ? " - "+ vm.answer2.cityarea : ""}}
 </span>
         </div>
-        <img class="displayed" src="{{vm.answer2.imageurl}}" ng-click="vm.selectAnswer(2)" style="width:100%;max-height:300px">
+        <img class="displayed" src="{{vm.answer2.imageurl}}" ng-click="vm.selectAnswer(2)" style="width:100%;max-height:300px"
+             ng-show="{{vm.type != 'Short-Phrase'}}">
+        <div class="container-answer" style="width:100%; max-height:300px;" ng-click="vm.selectAnswer(2)"
+             ng-show="{{vm.type == 'Short-Phrase'}}">
+             <br> 
+            <h2 style="text-align:center"><strong>{{vm.answer2.name}}</strong></h2> <br>
+            <h4 style="text-align:center">{{vm.answer2.addinfo}}</h4>
+        </div>   
     </div>
 </div>
 <br>
@@ -50,3 +64,4 @@
     <button ng-click="vm.skipMatch()" type="button" class="btn btn-default">Skip</button>
     <button ng-click="vm.rankSummary()" type="button" class="btn btn-danger">Stop</button>
 </div>
+<br>
