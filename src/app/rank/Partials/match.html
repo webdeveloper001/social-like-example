@@ -11,13 +11,13 @@
     </div>
 </div>
 
-<h3>Who ranks higher?</h3>
+<h3>{{vm.question}}</h3>
 <div class="form-group text-center">
     <div class="well well-dark">Match <strong>{{vm.GP + 1}}</strong> of <strong>{{vm.Tot}}</strong></div>
 </div>
 <div class="row">
     <div class="col-xs-6 col-md-6 col-lg-6">
-        <div class="well well-light" ng-click="vm.selectAnswer(1)">
+        <div class="well well-light" ng-click="vm.selectAnswer(1)" ng-show="{{vm.type != 'Short-Phrase'}}">
          <span ng-repeat="f in vm.fields | filter:(f.isrequired=true)" >
     {{(f.name == "name" && vm.answer1.name) ? vm.answer1.name : ""}}
     {{(f.name == "cityarea" && vm.answer1.cityarea) ? " - "+ vm.answer1.cityarea : ""}}
@@ -34,7 +34,7 @@
         </div>     
     </div>
     <div class="col-xs-6 col-md-6 col-lg-6">
-        <div class="well well-light" ng-click="vm.selectAnswer(2)">
+        <div class="well well-light" ng-click="vm.selectAnswer(2)" ng-show="{{vm.type != 'Short-Phrase'}}">
             <span ng-repeat="f in vm.fields | filter:(f.isrequired=true)">
     {{(f.name == "name" && vm.answer2.name) ? vm.answer2.name : ""}}
     {{(f.name == "cityarea" && vm.answer2.cityarea) ? " - "+ vm.answer2.cityarea : ""}}
@@ -61,7 +61,7 @@
 </div>
 
 <div class="form-group text-center">
-    <button ng-click="vm.skipMatch()" type="button" class="btn btn-default">Skip</button>
+    <button ng-click="vm.skipMatch()" type="button" class="btn btn-default">I don't know, Skip</button>
     <button ng-click="vm.rankSummary()" type="button" class="btn btn-danger">Stop</button>
 </div>
 <br>

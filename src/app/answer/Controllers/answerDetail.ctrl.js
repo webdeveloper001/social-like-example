@@ -45,6 +45,7 @@
         vm.closeRank = closeRank;
         
         vm.fields = $rootScope.fields;
+        vm.type = $rootScope.cCategory.type; 
 
         if ($stateParams.index) vm.answer = answers[A.indexOf(+$stateParams.index)];
         upVi = vm.answer.upV;

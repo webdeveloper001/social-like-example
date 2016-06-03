@@ -14,9 +14,9 @@
 <div class="row">
 
     <div>
-        <h3><span ng-repeat="f in vm.fields">
+        <h3><span ng-repeat="f in vm.fields" ng-show="{{vm.type != 'Short-Phrase'}}">
     {{(f.name == "name" && vm.answer.name) ? vm.answer.name : ""}}    
-</span></h3>
+        </span></h3>
 
         <strong>{{(vm.answer.location) ? 'Address:' : ""}}</strong> {{(vm.answer.location) ? vm.answer.location : ""}}
         <br style="display:{{(vm.answer.location) ? 'inline' : 'none'}}">
@@ -28,7 +28,14 @@
     <div class="col-md-6 col-lg-6">
         <p>{{vm.answer.description}}</p>
         <br>
-        <img class="displayed" src="{{vm.answer.imageurl}}" alt="Moustiers Sainte Marie" style="width:100%;height:300px" ng-click="vm.showUrl()">
+        <img class="displayed" src="{{vm.answer.imageurl}}" alt="Moustiers Sainte Marie" style="width:100%;height:300px" ng-click="vm.showUrl()"
+        ng-show="{{vm.type != 'Short-Phrase'}}">
+        <div class="container-answer" style="width:100%; max-height:300px;" ng-show="{{vm.type == 'Short-Phrase'}}">
+            <br>
+            <h2 style="text-align:center"><strong>{{vm.answer.name}}</strong></h2>
+            <br>
+            <h4 style="text-align:center">{{vm.answer.addinfo}}</h4>
+        </div>
         <br>
         <br>
         <p>Vote up if you support this answer in this ranking. Vote down if this answer is weak and does not belong in this
@@ -71,7 +78,7 @@
         <img class="displayed" src="/assets/images/photo3001.png" alt="Moustiers Sainte Marie" style="width:100%;height:150px" ng-click="vm.showUrl()">
         <br>
         -->
-            
+
         <table class="table table-hover cursor" id="mytable">
             <tbody>
                 <thead>
@@ -93,3 +100,4 @@
         </table>
     </div>
 </div>
+<br>
