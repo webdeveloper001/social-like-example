@@ -6,11 +6,11 @@
         .controller('rankSummary', rankSummary);
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'answers'
-        , 'answer', 'mrecs', 'rank'
+        , 'answer', 'mrecs', 'rank','catansrecs'
         , '$rootScope', '$modal', 'edits', 'editvote', 'votes', 'useractivities'];
 
     function rankSummary(dialog, $stateParams, $state, answers
-        , answer, mrecs, rank
+        , answer, mrecs, rank, catansrecs
         , $rootScope, $modal, edits, editvote, votes, useractivities) {
         /* jshint validthis:true */
         var vm = this;
@@ -35,6 +35,7 @@
         $rootScope.cvotes = [];
         $rootScope.ceditvotes = [];
         $rootScope.cmrecs_user = [];
+        $rootScope.catansrecs = catansrecs;
 
         var answersFull = false;
 
@@ -47,7 +48,6 @@
         });
 
         //This code, keeps the controller from executing for all search results
-        console.log("viewCtn, ViewNum ", $rootScope.viewCtn,$rootScope.viewNum)
         if ($rootScope.viewCtn == $rootScope.viewNum) {
             activate();
             $rootScope.viewCtn++;
@@ -60,7 +60,6 @@
 
             loadData(); //load data and write to RAM
             getUserData(); //if user is logged in, get user data (vote record, etc)
-            //translateDialogs();
             createAnswerStatus(); //enables/disables 'Create Answer' button
             
             vm.tableimage = $rootScope.cCategory.imagefile;
@@ -180,13 +179,10 @@
                 }
             }
             
-            console.log("category_id", $rootScope.cCategory.id);
-            console.log("$rootScope.content.type ", $rootScope.cCategory.type);
-
+            
             //vm.url = 'http://rankdev.azurewebsites.net/#/rankSummary/' + $rootScope.cCategory.id;
             //vm.header = "table" + $rootScope.cCategory.id + ".header";
             //vm.body = 'table' + $rootScope.cCategory.id + '.body';
-
             //Grab list of fields for the current table
             
             var fields = [];  
@@ -207,17 +203,21 @@
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
             
-            console.log("vm.fields ", vm.fields.type);
-            
             //Load current answers
             $rootScope.canswers = [];
-            for (var i = 0; i < answers.length; i++) {
-                if (answers[i].category == $rootScope.cCategory.id) {
-                    $rootScope.canswers.push(answers[i]);
-                                        
+            
+            for (var i = 0; i < catansrecs.length; i++) {
+                if (catansrecs[i].category == $rootScope.cCategory.id) {
+                    for (var k = 0; k < answers.length; k++){
+                        if (catansrecs[i].answer == answers[k].id){
+                            $rootScope.canswers.push(answers[k]);
+                            break;        
+                        }
+                    }                    
                 }
-            }            
+            }    
             vm.answers = $rootScope.canswers;
+            console.log("vm.answers", vm.answers);
             
             
             //*****TEMP********

@@ -5,9 +5,11 @@
         .module('app')
         .controller('answerDetail', answerDetail);
 
-    answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope', 'votes', 'matchrec', 'edit', 'editvote']; //AM:added user service
+    answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope',
+     'votes', 'matchrec', 'edit', 'editvote','catans']; //AM:added user service
 
-    function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, votes, matchrec, edit, editvote) { //AM:added user service
+    function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, 
+    votes, matchrec, edit, editvote, catans) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
@@ -43,6 +45,7 @@
         vm.deleteButton = 'none';
         vm.showUrl = showUrl;
         vm.closeRank = closeRank;
+        vm.rankSel = rankSel;
         
         vm.fields = $rootScope.fields;
         vm.type = $rootScope.cCategory.type; 
@@ -78,6 +81,7 @@
             deleteButtonAccess();
             getAnswerVote($stateParams.index);
             makeRelativeTable($stateParams.index);
+            getOtherRanks();
             console.log("Answer details loaded");
 
         }
@@ -169,9 +173,9 @@
             upVi = vm.answer.upV;
             downVi = vm.answer.downV;
             getHeader();
-            getAnswerVote(x);
-
+            getAnswerVote(x);            
             makeRelativeTable(x);
+            getOtherRanks();
         }
         
         //Update Records
@@ -307,6 +311,14 @@
                 $state.go('rankSummary', { index: $rootScope.cCategory.id });
             }
         }
+        
+        function rankSel(x){
+            //console.log(x);
+            $rootScope.viewCtn = 0;
+            $rootScope.title = x.title;
+            $state.go('rankSummary', { index: x.id });
+        }
+        
 
         function editAnswer() {
             $rootScope.viewCtn = 0;
@@ -324,7 +336,9 @@
             //delete edits for this answer
             edit.deleteEditbyAnswer(vm.answer.id);
             //delete edit votes for this answer
-            editvote.deleteEditVotesbyAnswer(vm.answer.id)
+            editvote.deleteEditVotesbyAnswer(vm.answer.id);
+            //delete catans for this answer
+            catans.deleteRec(vm.answer.id);
 
             $rootScope.viewCtn = 0;
             $state.go("rankSummary", { index: $rootScope.cCategory.id });
@@ -338,6 +352,24 @@
                 return;
             }
             else dialog.getDialog('notLoggedIn');
+        }
+        
+        function getOtherRanks(){
+            console.log("$rootScope.catansrecs", $rootScope.catansrecs);
+            
+            vm.otherRanks = [];
+            for (var i=0; i < $rootScope.catansrecs.length; i++){
+                if($rootScope.catansrecs[i].answer == vm.answer.id && $rootScope.catansrecs[i].category != $rootScope.cCategory.id){
+                    for (var j=0; j<$rootScope.content.length; j++){
+                        if ($rootScope.content[j].id == $rootScope.catansrecs[i].category){
+                            vm.otherRanks.push($rootScope.content[j]);      
+                        }
+                    }
+                    
+                }
+            }
+            
+            vm.otherRanksExist = vm.otherRanks.length>0 ? true : false;
         }
 
         function deleteButtonAccess() {

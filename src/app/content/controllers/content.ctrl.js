@@ -5,9 +5,9 @@
         .module('app')
         .controller('content', content);
 
-    content.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope'];
+    content.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope','answers'];
 
-    function content($rootScope, $state, $http, $stateParams, $scope) {
+    function content($rootScope, $state, $http, $stateParams, $scope, answers) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'content';
@@ -46,6 +46,8 @@
             //Load current category
             $rootScope.content = {};
             $rootScope.viewCtn = 0;
+            
+            getEstablishmentNames();
 
             $http.get('../../../assets/testcontent.json').success(function (response) {
                 $rootScope.content = response;
@@ -168,6 +170,15 @@
                 vm.results = [];
             }
             $rootScope.viewNum = 999;
+        }
+        
+        function getEstablishmentNames(){
+            $rootScope.answerNames=[];
+            for (var i=0; i<answers.length; i++){
+                if (answers[i].type == 'Establishment'){
+                    $rootScope.answerNames.push(answers[i].name);    
+                }                
+            }
         }
 
         function closeRank() {

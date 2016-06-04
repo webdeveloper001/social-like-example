@@ -248,5 +248,75 @@
                 }]
             });
         }
+        
+        function checkSameAnswer(answer, callback) {
+
+            var answerhtml = '';
+            var categoryhtml = '';
+            var newline = '';
+            
+            for (var i = 0; i < $rootScope.fields.length; i++) {
+                switch ($rootScope.fields[i].name) {
+                    case "name": {
+                        newline = '<strong class="capitalize">' + 'Name' + '</strong>: ' + answer.name + '</br>';
+                        break;
+                    }
+                    case "location": {
+                        if (answer.location) newline = '<strong class="capitalize">' + 'Location' + '</strong>: ' + answer.location + '</br>';
+                        else newline = '<strong>' + 'Location' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
+                    case "cityarea": {
+                        //newline = '<strong class="capitalize">'+addinfo+'</strong>: ' + $rootScope.cCountries[answer.cnum] + '</br>';
+                        newline = '<strong class="capitalize">' + 'City Area' + '</strong>: ' + answer.cityarea + '</br>';
+                        break;
+                    }
+                    case "addinfo": {
+                        if (answer.addinfo) newline = '<strong class="capitalize">' + 'Additional Info' + 'b</strong>: ' + answer.addinfo + '</br>';
+                        else newline = '<strong>' + 'Additional Info' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
+                }
+                answerhtml = answerhtml + newline;
+            }
+
+            showSameAnswer(answer, categoryhtml, answerhtml, callback);
+            //console.log("headline ", categoryhtml)
+       
+        }
+        function showSameAnswer(answer, categoryhtml, answerhtml, callback) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Just checking';
+            btnCancelLabel = 'No, that&quot;snot it';
+            btnOkLabel = 'Yeah, that&quot;s it';
+            message = 'Are you trying to add this establishment? </br></br>' +
+            answerhtml + '</br>' +
+            '<img src=' + answer.imageurl + ' class="thumbnail" style="width:60%; max-height:150px">';
+
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-primary',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) callback(answer);
+                    //dialogRef.close();
+                }
+            });
+        }
+        
     }
 })();

@@ -33,29 +33,12 @@
                 name: 'content',
                 parent: 'layout',
                 url: '/content',
-                views:{
-                    "@layout":{
+                views: {
+                    "@layout": {
                         templateUrl: 'app/content/partials/content.html',
                         controller: 'content as vm'
                     }
-                    /*
-                    ,
-                    "rankSummary@content":{
-                        url: '/rankSummary/:index',
-                        templateUrl: 'app/content/partials/content.html',
-                        controller: 'content as vm'
-                    },*/
-                }               
-                
-            },
-           
-           
-            {
-                name: 'rankSummary',
-                parent: 'content',
-                url: '/rankSummary/:index',
-                templateUrl: 'app/rank/Partials/RankSummary.html',
-                controller: 'rankSummary as vm',
+                },
                 resolve: {
 
                     answers: ['answer', function (answer) {
@@ -63,30 +46,48 @@
 
                             return result;
                         });
-                    }],
+                    }]
+                }
+            },
+
+
+            {
+                name: 'rankSummary',
+                parent: 'content',
+                url: '/rankSummary/:index',
+                templateUrl: 'app/rank/Partials/RankSummary.html',
+                controller: 'rankSummary as vm',
+                resolve: {
                     mrecs: ['matchrec', function (matchrec) {
 
                         return matchrec.GetMatchTable().then(function (result) {
 
                             return result;
                         });
-                    }],                    
+                    }],
                     edits: ['edit', function (edit) {
 
                         return edit.getEdits().then(function (result) {
 
                             return result;
                         });
-                    }],                    
+                    }],
                     useractivities: ['useractivity', function (useractivity) {
 
                         return useractivity.getAllUserActivity().then(function (result) {
 
                             return result;
                         });
+                    }],
+                    catansrecs: ['catans', function (catans) {
+
+                        return catans.getAllcatans().then(function (result) {
+
+                            return result;
+                        });
                     }]
                 }
-            },            
+            },
             {
                 name: 'addAnswer',
                 parent: 'content',

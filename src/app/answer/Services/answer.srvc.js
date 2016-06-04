@@ -5,9 +5,9 @@
         .module('app')
         .factory('answer', answer);
 
-    answer.$inject = ['$http', '$q', '$rootScope'];
+    answer.$inject = ['$http', '$q', '$rootScope', 'catans'];
 
-    function answer($http, $q, $rootScope) {
+    function answer($http, $q, $rootScope, catans) {
 
         //Members
         var _answers = [];
@@ -81,7 +81,10 @@
                 var answerx = answer;
                 answerx.id = result.data.resource[0].id; 
                 _answers.push(answerx);
-
+                
+                
+                catans.postRec(answerx.id);
+                
                 console.log("result", result);
                 return result.data;
             }

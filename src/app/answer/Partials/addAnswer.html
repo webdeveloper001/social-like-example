@@ -60,7 +60,7 @@
             <div class="col-sm-8 col-md-8">
                 <!--<input class="form-control" ng-model="x.val" type="text" placeholder="{{ x.field | translate}}" required>-->                
                 <input class="form-control" ng-model="x.val" bs-options="{{x.opts}}" bs-typeahead type="{{x.textstyle}}" 
-                    placeholder="{{x.label}}" ng-hide="{{x.name=='addinfo'}}">
+                    bs-typeahead-on-select="vm.onSelect(x.val)" placeholder="{{x.label}}" ng-hide="{{x.name=='addinfo'}}">
                 <textarea class = "form-control" ng-model="x.val" placeholder="{{x.label}}" ng-show="{{x.name=='addinfo'}}" 
                     rows = "3"></textarea>    
             </div>

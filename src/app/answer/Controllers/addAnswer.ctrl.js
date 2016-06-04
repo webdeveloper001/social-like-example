@@ -5,9 +5,9 @@
         .module('app')
         .controller('addAnswer', addAnswer);
 
-    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'image'];
+    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'image','answers'];
 
-    function addAnswer(dialog, $state, answer, $rootScope, $modal, image) {
+    function addAnswer(dialog, $state, answer, $rootScope, $modal, image, answers) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'addAnswer';
@@ -50,6 +50,7 @@
         vm.viewPrev = viewPrev;
         vm.closeRank = closeRank;
         vm.showHowItWorksDialog = showHowItWorksDialog;
+        vm.onSelect = onSelect;
 
         vm.imageURL = '../../../assets/images/noimage.jpg';
         vm.header = $rootScope.header;
@@ -70,21 +71,26 @@
             vm.emptyarray = [];
             if ($rootScope.isDowntown) vm.neighborhoods = $rootScope.districts; 
             else vm.neighborhoods = $rootScope.neighborhoods;
+            vm.establishmentNames = $rootScope.answerNames;
             
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
-            console.log("vm.type", $rootScope.cCategory.type);
                        
             //Add extra info
             vm.fields.opts = [];
             vm.fields.val = [];
             vm.fields.textstyle = [];
             
+                
             for (var i=0; i<vm.fields.length; i++){
                 vm.fields[i].val='';
                 
                 if (vm.fields[i].name=="cityarea") vm.fields[i].opts="c for c in vm.neighborhoods";
                 else vm.fields[i].opts="c for c in vm.emptyarray";
+                
+                if (vm.fields[i].name=="name" && $rootScope.cCategory.type=='Establishment') {
+                    vm.fields[i].opts="c for c in vm.establishmentNames";
+                }
                 
                 if (vm.fields[i].name=="addinfo") vm.fields[i].textstyle="textarea";
                 else vm.fields[i].textstyle="text";                 
@@ -93,7 +99,6 @@
         }
         
         
-
         function addAnswer() {
 
             myAnswer.imageurl = imageLinks[vm.linkIdx];
@@ -101,9 +106,9 @@
             
             myAnswer.upV = 0;
             myAnswer.downV = 0;
-            //myAnswer.userid = $rootScope.user.id;
+            myAnswer.type = vm.type;
             myAnswer.userid = 1;
-            myAnswer.category = $rootScope.cCategory.id;
+            //myAnswer.category = $rootScope.cCategory.id;
 
             dialog.addAnswer(myAnswer, vm.imageURL, addAnswerConfirmed);
 
@@ -219,8 +224,7 @@
             testImageUrl(imageLinks[vm.linkIdx], showImageNotOk);
 
             if (vm.numLinks > 0) vm.imagefunctions = 'inline';
-            console.log('attNum  ', attNum);
-
+            
         }
 
 
@@ -275,6 +279,36 @@
                 vm.imageURL = '../../../assets/images/noimage.jpg';
             }
         }
+        
+        function onSelect($item, $model, $label){
+            console.log("$item", $item);
+            console.log("$model", $model);
+            console.log("$label", $label);
+            
+            console.log("onNameSelect");
+            for (var i=0; i<answers.length; i++){
+                if (answers[i].name == newName){
+                    //checkSameAnswer(answer, callback1, callback2) {
+                    dialog.checkSameAnswer(answers[i], popFields);
+                }
+            }
+            
+        }
+        
+        function popFields(answer){
+            for (var i = 0; i < vm.fields.length; i++) {
+                switch (vm.fields[i].name) {
+
+                    case "name": { vm.fields[i].val = answer.name; break; }
+                    case "location": { vm.fields[i].val = answer.location; break; }
+                    case "addinfo": { vm.fields[i].val = answer.addinfo; break; }
+                    case "cityarea": { vm.fields[i].val = answer.cityarea; break; } 
+                    
+                }
+            }
+            vm.imageURL = answer.imageurl;
+        }
+        
          function closeRank() {
                 $rootScope.viewCtn = 0;
                 $rootScope.$emit('closeRank');                            
