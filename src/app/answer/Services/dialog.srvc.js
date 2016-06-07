@@ -17,6 +17,9 @@
             addAnswer: addAnswer,
             showAddAnswer: showAddAnswer,
             editChangeEffective: editChangeEffective,
+            checkSameAnswer: checkSameAnswer,
+            showSameAnswer: showSameAnswer,
+            deleteType: deleteType,
             url: url
         };
 
@@ -249,42 +252,50 @@
             });
         }
         
-        function checkSameAnswer(answer, callback) {
+        function checkSameAnswer(answer1, answer2, callback1, callback2) {
 
             var answerhtml = '';
-            var categoryhtml = '';
+            var answerhtml2 = '';
             var newline = '';
+            var newline2 = '';
             
             for (var i = 0; i < $rootScope.fields.length; i++) {
                 switch ($rootScope.fields[i].name) {
                     case "name": {
-                        newline = '<strong class="capitalize">' + 'Name' + '</strong>: ' + answer.name + '</br>';
+                        newline = '<strong class="capitalize">' + 'Name' + '</strong>: ' + answer1.name + '</br>';
+                        newline2 = '<strong class="capitalize">' + 'Name' + '</strong>: ' + answer2.name + '</br>';
                         break;
                     }
                     case "location": {
-                        if (answer.location) newline = '<strong class="capitalize">' + 'Location' + '</strong>: ' + answer.location + '</br>';
+                        if (answer1.location) newline = '<strong class="capitalize">' + 'Location' + '</strong>: ' + answer1.location + '</br>';
                         else newline = '<strong>' + 'Location' + '</strong>: ' + '' + '</br>';
+                        if (answer2.location) newline2 = '<strong class="capitalize">' + 'Location' + '</strong>: ' + answer2.location + '</br>';
+                        else newline2 = '<strong>' + 'Location' + '</strong>: ' + '' + '</br>';
                         break;
                     }
                     case "cityarea": {
                         //newline = '<strong class="capitalize">'+addinfo+'</strong>: ' + $rootScope.cCountries[answer.cnum] + '</br>';
-                        newline = '<strong class="capitalize">' + 'City Area' + '</strong>: ' + answer.cityarea + '</br>';
+                        newline = '<strong class="capitalize">' + 'City Area' + '</strong>: ' + answer1.cityarea + '</br>';
+                        newline2 = '<strong class="capitalize">' + 'City Area' + '</strong>: ' + answer2.cityarea + '</br>';
                         break;
                     }
                     case "addinfo": {
-                        if (answer.addinfo) newline = '<strong class="capitalize">' + 'Additional Info' + 'b</strong>: ' + answer.addinfo + '</br>';
+                        if (answer1.addinfo) newline = '<strong class="capitalize">' + 'Additional Info' + 'b</strong>: ' + answer1.addinfo + '</br>';
                         else newline = '<strong>' + 'Additional Info' + '</strong>: ' + '' + '</br>';
+                        if (answer2.addinfo) newline2 = '<strong class="capitalize">' + 'Additional Info' + 'b</strong>: ' + answer2.addinfo + '</br>';
+                        else newline2 = '<strong>' + 'Additional Info' + '</strong>: ' + '' + '</br>';
                         break;
                     }
                 }
                 answerhtml = answerhtml + newline;
+                answerhtml2 = answerhtml2 + newline2;
             }
 
-            showSameAnswer(answer, categoryhtml, answerhtml, callback);
+            showSameAnswer(answer1, answerhtml, answer2, answerhtml2, callback1, callback2);
             //console.log("headline ", categoryhtml)
        
         }
-        function showSameAnswer(answer, categoryhtml, answerhtml, callback) {
+        function showSameAnswer(answer1, answerhtml, answer2, answerhtml2, callback1, callback2) {
 
             var title = '';
             var message = '';
@@ -292,11 +303,15 @@
             var btnOkLabel = '';
 
             title = 'Just checking';
-            btnCancelLabel = 'No, that&quot;snot it';
-            btnOkLabel = 'Yeah, that&quot;s it';
-            message = 'Are you trying to add this establishment? </br></br>' +
-            answerhtml + '</br>' +
-            '<img src=' + answer.imageurl + ' class="thumbnail" style="width:60%; max-height:150px">';
+            btnCancelLabel = 'No, they are different';
+            btnOkLabel = 'Yeah, same';
+            message = 'Are these the same establishment? </br></br><div class="row">' +
+            '<div class="col-sm-6">' + answerhtml + '</br>' +           
+            '<img src=' + answer1.imageurl + ' class="thumbnail" style="width:60%; max-height:150px"></div>'+
+            
+            '<div class="col-sm-6">' + answerhtml2 + '</br>' +           
+            '<img src=' + answer2.imageurl + ' class="thumbnail" style="width:60%; max-height:150px"></div>'+
+            '</div>';            
 
             BootstrapDialog.confirm({
                 type: BootstrapDialog.TYPE_PRIMARY,
@@ -308,12 +323,46 @@
                 btnOKLabel: btnOkLabel,
                 btnOKClass: 'btn-primary',
                 btnCancelAction: function (dialogRef) {
-                    dialogRef.close();
+                    dialogRef.close();                   
                 },
                 //callback: function (dialogRef, result) {
                 callback: function (result) {
-                    if (result) callback(answer);
-                    //dialogRef.close();
+                    if (result) callback2();
+                    else callback1(answer1);
+                    
+                }
+            });
+        }
+        
+        function deleteType(thisCatOnly, everywhere) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Scope of Delete';
+            btnCancelLabel = 'Just this category';
+            btnOkLabel = 'Everywhere';
+            message = 'Choose scope to delete:';
+         
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_DANGER,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-primary',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();                   
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) everywhere();
+                    else thisCatOnly();
+                    
                 }
             });
         }

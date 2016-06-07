@@ -6,10 +6,10 @@
         .controller('answerDetail', answerDetail);
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope',
-     'votes', 'matchrec', 'edit', 'editvote','catans']; //AM:added user service
+        'votes', 'matchrec', 'edit', 'editvote', 'catans']; //AM:added user service
 
-    function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, 
-    votes, matchrec, edit, editvote, catans) { //AM:added user service
+    function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope,
+        votes, matchrec, edit, editvote, catans) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
@@ -31,7 +31,6 @@
         vm.numEdits = 0;
         
         // Members
-        //vm.user = currentUser; //AM: For now use only one user, user[0]
         vm.relativetable = [];
                
         // Methods
@@ -46,9 +45,9 @@
         vm.showUrl = showUrl;
         vm.closeRank = closeRank;
         vm.rankSel = rankSel;
-        
+
         vm.fields = $rootScope.fields;
-        vm.type = $rootScope.cCategory.type; 
+        vm.type = $rootScope.cCategory.type;
 
         if ($stateParams.index) vm.answer = answers[A.indexOf(+$stateParams.index)];
         upVi = vm.answer.upV;
@@ -173,7 +172,7 @@
             upVi = vm.answer.upV;
             downVi = vm.answer.downV;
             getHeader();
-            getAnswerVote(x);            
+            getAnswerVote(x);
             makeRelativeTable(x);
             getOtherRanks();
         }
@@ -303,7 +302,7 @@
             //TODO need to pass current Table index
             if (!recordsUpdated) updateRecords();
             if ($rootScope.previousState == 'match') {
-                $rootScope.viewCtn = 0;                
+                $rootScope.viewCtn = 0;
                 $state.go('match');
             }
             else {
@@ -311,37 +310,45 @@
                 $state.go('rankSummary', { index: $rootScope.cCategory.id });
             }
         }
-        
-        function rankSel(x){
+
+        function rankSel(x) {
             //console.log(x);
             $rootScope.viewCtn = 0;
             $rootScope.title = x.title;
             $state.go('rankSummary', { index: x.id });
         }
-        
+
 
         function editAnswer() {
             $rootScope.viewCtn = 0;
             $state.go("editAnswer", { index: vm.answer.id });
-
         }
 
-        function deleteAnswer(x) {
-            //delete answer 
-            answer.deleteAnswer(vm.answer.id);
-            //delete match records of that answer
-            matchrec.deleteRecordsbyAnswer(vm.answer.id);
-            //delete vote records from that answer
-            votes.deleteVotesbyAnswer(vm.answer.id);
-            //delete edits for this answer
-            edit.deleteEditbyAnswer(vm.answer.id);
-            //delete edit votes for this answer
-            editvote.deleteEditVotesbyAnswer(vm.answer.id);
-            //delete catans for this answer
-            catans.deleteRec(vm.answer.id);
+        function deleteAnswer() {
 
-            $rootScope.viewCtn = 0;
-            $state.go("rankSummary", { index: $rootScope.cCategory.id });
+            dialog.deleteType(function () {
+                //delete catans for this answer
+                catans.deleteRec(vm.answer.id, $rootScope.cCategory.id).then(function () {
+                    $rootScope.viewCtn = 0;
+                    $state.go("rankSummary", { index: $rootScope.cCategory.id });
+                });
+            }, function () {
+                //delete answer 
+                answer.deleteAnswer(vm.answer.id);
+                //delete match records of that answer
+                matchrec.deleteRecordsbyAnswer(vm.answer.id);
+                //delete vote records from that answer
+                votes.deleteVotesbyAnswer(vm.answer.id);
+                //delete edits for this answer
+                edit.deleteEditbyAnswer(vm.answer.id);
+                //delete edit votes for this answer
+                editvote.deleteEditVotesbyAnswer(vm.answer.id);
+                //delete catans for this answer
+                catans.deleteAnswer(vm.answer.id);
+                $rootScope.viewCtn = 0;
+                $state.go("rankSummary", { index: $rootScope.cCategory.id });
+            });
+
         }
 
         function flagAnswer(x) {
@@ -353,40 +360,38 @@
             }
             else dialog.getDialog('notLoggedIn');
         }
-        
-        function getOtherRanks(){
-            console.log("$rootScope.catansrecs", $rootScope.catansrecs);
-            
+
+        function getOtherRanks() {
+
             vm.otherRanks = [];
-            for (var i=0; i < $rootScope.catansrecs.length; i++){
-                if($rootScope.catansrecs[i].answer == vm.answer.id && $rootScope.catansrecs[i].category != $rootScope.cCategory.id){
-                    for (var j=0; j<$rootScope.content.length; j++){
-                        if ($rootScope.content[j].id == $rootScope.catansrecs[i].category){
-                            vm.otherRanks.push($rootScope.content[j]);      
+            for (var i = 0; i < $rootScope.catansrecs.length; i++) {
+                if ($rootScope.catansrecs[i].answer == vm.answer.id && $rootScope.catansrecs[i].category != $rootScope.cCategory.id) {
+                    for (var j = 0; j < $rootScope.content.length; j++) {
+                        if ($rootScope.content[j].id == $rootScope.catansrecs[i].category) {
+                            vm.otherRanks.push($rootScope.content[j]);
                         }
                     }
-                    
+
                 }
             }
-            
-            vm.otherRanksExist = vm.otherRanks.length>0 ? true : false;
+            vm.otherRanksExist = vm.otherRanks.length > 0 ? true : false;
         }
 
         function deleteButtonAccess() {
             if ($rootScope.isLoggedIn) {
                 var username = $rootScope.user.name;
-                var n = username.localeCompare("Andres Moctezuma"); 
-                if ($rootScope.user.id == 7 && n==0 ) vm.deleteButton = 'inline';
-                 else vm.deleteButton = 'none';
+                var n = username.localeCompare("Andres Moctezuma");
+                if ($rootScope.user.id == 7 && n == 0) vm.deleteButton = 'inline';
+                else vm.deleteButton = 'none';
             }
         }
-        
-        function showUrl(){
+
+        function showUrl() {
             dialog.url(vm.answer.imageurl);
         }
         function closeRank() {
-                $rootScope.viewCtn = 0;
-                $rootScope.$emit('closeRank');                            
+            $rootScope.viewCtn = 0;
+            $rootScope.$emit('closeRank');
         }
 
     }

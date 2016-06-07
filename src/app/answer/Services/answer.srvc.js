@@ -81,8 +81,7 @@
                 var answerx = answer;
                 answerx.id = result.data.resource[0].id; 
                 _answers.push(answerx);
-                
-                
+                                
                 catans.postRec(answerx.id);
                 
                 console.log("result", result);

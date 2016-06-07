@@ -5,9 +5,9 @@
         .module('app')
         .controller('addAnswer', addAnswer);
 
-    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'image','answers'];
+    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'image','answers','catans'];
 
-    function addAnswer(dialog, $state, answer, $rootScope, $modal, image, answers) {
+    function addAnswer(dialog, $state, answer, $rootScope, $modal, image, answers, catans) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'addAnswer';
@@ -33,14 +33,17 @@
         var attNum = 1;
         vm.imagefunctions = 'none';
 
-        var answerhtml = '';
-        var categoryhtml = '';
-        var countryIsValid = false;
-        var countryIdx = -1;
-        var cFld = -1;
+        //var answerhtml = '';
+        //var categoryhtml = '';
+        //var countryIsValid = false;
+        //var countryIdx = -1;
+        //var cFld = -1;
+        var duplicateExists = false;
+        var duplicateSameCategory = false;
         
         // Members
         var myAnswer = {};
+        var extAnswer = {};
 
         // Methods
         vm.callAddAnswer = callAddAnswer;
@@ -50,8 +53,7 @@
         vm.viewPrev = viewPrev;
         vm.closeRank = closeRank;
         vm.showHowItWorksDialog = showHowItWorksDialog;
-        vm.onSelect = onSelect;
-
+        
         vm.imageURL = '../../../assets/images/noimage.jpg';
         vm.header = $rootScope.header;
 
@@ -71,7 +73,8 @@
             vm.emptyarray = [];
             if ($rootScope.isDowntown) vm.neighborhoods = $rootScope.districts; 
             else vm.neighborhoods = $rootScope.neighborhoods;
-            vm.establishmentNames = $rootScope.answerNames;
+            
+            vm.establishmentNames = $rootScope.estNames;                         
             
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
@@ -108,9 +111,9 @@
             myAnswer.downV = 0;
             myAnswer.type = vm.type;
             myAnswer.userid = 1;
-            //myAnswer.category = $rootScope.cCategory.id;
-
-            dialog.addAnswer(myAnswer, vm.imageURL, addAnswerConfirmed);
+            
+            if (duplicateExists) dialog.checkSameAnswer(myAnswer, extAnswer, addAnswerConfirmed, answerIsSame);
+            else dialog.addAnswer(myAnswer, vm.imageURL, addAnswerConfirmed);
 
         }
 
@@ -187,6 +190,8 @@
         function callAddAnswer() {
             loadFormData();
             validateData();
+            checkAnswerExists(myAnswer);
+            
             if (addAnswerDataOk) {
                 addAnswer();
             }
@@ -242,10 +247,21 @@
         }
 
         function addAnswerConfirmed(myAnswer) {
+            //Add new answer, also add new post to catans (inside addAnser)
+            console.log("addAnswerConfrimed");
             answer.addAnswer(myAnswer).then(rankSummary);
-
         }
-
+        
+                
+        function answerIsSame(){
+            console.log("answerIsSame");
+            //Answer already exist in this category, do not add
+            if (duplicateSameCategory) dialog.getDialog('answerDuplicated');
+            //Answer already exist, just post new category-answer record            
+            else catans.postRec(extAnswer.id);
+            rankSummary();
+        }
+         
         function showHowItWorksDialog() {
             dialog.howItWorks('addAnswer');
         }
@@ -273,40 +289,31 @@
             }, timeout);
         }
 
-
         function showImageNotOk(url, result) {
             if (result == "error" || result == "timeout") {
                 vm.imageURL = '../../../assets/images/noimage.jpg';
             }
         }
         
-        function onSelect($item, $model, $label){
-            console.log("$item", $item);
-            console.log("$model", $model);
-            console.log("$label", $label);
-            
-            console.log("onNameSelect");
-            for (var i=0; i<answers.length; i++){
-                if (answers[i].name == newName){
-                    //checkSameAnswer(answer, callback1, callback2) {
-                    dialog.checkSameAnswer(answers[i], popFields);
+        function checkAnswerExists(answer){
+            console.log("--- checkAnswerExists ---");
+            console.log(answer.name);
+            console.log($rootScope.estAnswers);
+            //Check if answer about to be added exists already among establishments
+            for (var i=0; i < $rootScope.estAnswers.length; i++){
+                if (answer.name == $rootScope.estAnswers[i].name){
+                    duplicateExists = true;
+                    extAnswer = $rootScope.estAnswers[i];
+                    console.log("duplicateExists  ",duplicateExists);
+                    for (var j=0; j < $rootScope.catansrecs.length; j++){
+                       if ($rootScope.catansrecs[j].answer == $rootScope.estAnswers[i].id && 
+                           $rootScope.catansrecs[j].category == $rootScope.cCategory.id){
+                               duplicateSameCategory = true;
+                               console.log("duplicateSameCategoryExists  ", duplicateSameCategory);                               
+                           }
+                    }
                 }
             }
-            
-        }
-        
-        function popFields(answer){
-            for (var i = 0; i < vm.fields.length; i++) {
-                switch (vm.fields[i].name) {
-
-                    case "name": { vm.fields[i].val = answer.name; break; }
-                    case "location": { vm.fields[i].val = answer.location; break; }
-                    case "addinfo": { vm.fields[i].val = answer.addinfo; break; }
-                    case "cityarea": { vm.fields[i].val = answer.cityarea; break; } 
-                    
-                }
-            }
-            vm.imageURL = answer.imageurl;
         }
         
          function closeRank() {

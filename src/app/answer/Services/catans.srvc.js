@@ -16,7 +16,8 @@
         var service = {
             getAllcatans: getAllcatans,
             postRec: postRec,
-            deleteRec: deleteRec            
+            deleteRec: deleteRec,
+            deleteAnswer: deleteAnswer            
         };
 
         return service;
@@ -69,7 +70,7 @@
                 return result.data;
             }
         }
-         function deleteRec(answer_id) {
+         function deleteAnswer(answer_id) {
             
             //delete records from local copy
             for (var i=0; i<_allcatans.length;i++){
@@ -78,13 +79,33 @@
                 } 
             }
             
-           var url = baseURI + '/_table/catans?filter=answer=' + answer_id; 
+           var url = baseURI + '?filter=answer=' + answer_id; 
             
             return $http.delete(url).then(querySucceeded, _queryFailed);
             
             function querySucceeded(result) {
 
                 console.log("Deleting catans records was succesful");
+                return result.data;
+            }
+        }
+        
+        function deleteRec(answer_id, category_id) {
+            
+            //delete records from local copy
+            for (var i=0; i<_allcatans.length;i++){
+                if (_allcatans[i].answer == answer_id && _allcatans[i].category == $rootScope.cCategory.id){
+                    _allcatans.splice(i,1);
+                } 
+            }
+            
+           var url = baseURI + '?filter=(answer=' + answer_id+') AND (category='+category_id+')'; 
+            
+            return $http.delete(url).then(querySucceeded, _queryFailed);
+            
+            function querySucceeded(result) {
+
+                console.log("Deleting catans records by answer and category was succesful");
                 return result.data;
             }
         }

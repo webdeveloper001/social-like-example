@@ -18,5 +18,7 @@
     "dialog.noPersonalRank.title": "No Personal Rank",
     "dialog.noPersonalRank.text": "You have no personal rank. Play rank and contribute to the ranking.",    
     "dialog.answerFlagged.title": "Answer was flagged",
-    "dialog.answerFlagged.text": "Thank you for reporting this answer. A content administrator will look at this shortly."
+    "dialog.answerFlagged.text": "Thank you for reporting this answer. A content administrator will look at this shortly.",
+    "dialog.answerDuplicated.tile": "Answer already exists.",
+    "dialog.answerDuplicated.text": "This answer is already registered for this category. Use the Edit function to modify and correct any information."
 }

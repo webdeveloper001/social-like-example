@@ -36,7 +36,7 @@
         $rootScope.ceditvotes = [];
         $rootScope.cmrecs_user = [];
         $rootScope.catansrecs = catansrecs;
-
+        
         var answersFull = false;
 
         $rootScope.userHasRank = false;

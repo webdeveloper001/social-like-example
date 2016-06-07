@@ -47,7 +47,7 @@
             $rootScope.content = {};
             $rootScope.viewCtn = 0;
             
-            getEstablishmentNames();
+            getEstablishmentAnswers();
 
             $http.get('../../../assets/testcontent.json').success(function (response) {
                 $rootScope.content = response;
@@ -172,11 +172,13 @@
             $rootScope.viewNum = 999;
         }
         
-        function getEstablishmentNames(){
-            $rootScope.answerNames=[];
+        function getEstablishmentAnswers(){
+            $rootScope.estAnswers=[];
+            $rootScope.estNames=[];
             for (var i=0; i<answers.length; i++){
                 if (answers[i].type == 'Establishment'){
-                    $rootScope.answerNames.push(answers[i].name);    
+                    $rootScope.estNames.push(answers[i].name);
+                    $rootScope.estAnswers.push(answers[i]);    
                 }                
             }
         }
