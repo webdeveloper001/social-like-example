@@ -54,14 +54,8 @@
                 } 
             });
         
-        //This code, keeps the controller from executing for all search results
-        if ($rootScope.viewCtn == $rootScope.viewNum) {
-            activate();
-            $rootScope.viewCtn++;
-        }
-        else {
-            $rootScope.viewCtn++;
-        }
+        //Execute this view only if rankWindow is open
+        if ($rootScope.showR) activate();
 
         function activate() {
             
@@ -152,13 +146,11 @@
         function rankSummary() {
             //update records
             //if (mrecs_session.length > 0) matchrec.postRec(mrecs_session);
-            $rootScope.viewCtn = 0;
             $state.go("rankSummary", { index: vm.table.id });
         }
 
         function answerDetail(x) {
             
-            $rootScope.viewCtn = 0;
             if (x === 1) $state.go("answerDetail", { index: vm.answer1.id });
             else $state.go("answerDetail", { index: vm.answer2.id });
 
@@ -212,7 +204,6 @@
         }
         
         function closeRank() {
-                $rootScope.viewCtn = 0;
                 $rootScope.$emit('closeRank');                            
         }
     }

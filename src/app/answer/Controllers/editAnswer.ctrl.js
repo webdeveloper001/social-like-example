@@ -67,14 +67,8 @@
                 }
             });
 
-        //This code, keeps the controller from executing for all search results
-        if ($rootScope.viewCtn == $rootScope.viewNum) {
-            activate();
-            $rootScope.viewCtn++;
-        }
-        else {
-            $rootScope.viewCtn++;
-        }
+        //Execute this view only if rankWindow is open
+        if ($rootScope.showR) activate();
 
         function activate() {
             
@@ -496,7 +490,6 @@
         }
 
         function answerDetail() {
-            $rootScope.viewCtn = 0;
             $state.go("answerDetail", { index: vm.answer.id });
         }
 
@@ -533,7 +526,6 @@
             vm.imageURL = imageLinks[vm.linkIdx];
         }
           function closeRank() {
-                $rootScope.viewCtn = 0;
                 $rootScope.$emit('closeRank');                            
         }
 

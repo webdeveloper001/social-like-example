@@ -17,7 +17,8 @@
             getAllcatans: getAllcatans,
             postRec: postRec,
             deleteRec: deleteRec,
-            deleteAnswer: deleteAnswer            
+            deleteAnswer: deleteAnswer,
+            updateRec: updateRec            
         };
 
         return service;
@@ -46,6 +47,8 @@
             var data = {};
             data.answer = x;
             data.category = $rootScope.cCategory.id;
+            data.upV = 0;
+            data.downV = 0;
             data.timestmp = Date.now();
              
             var obj = {};
@@ -106,6 +109,50 @@
             function querySucceeded(result) {
 
                 console.log("Deleting catans records by answer and category was succesful");
+                return result.data;
+            }
+        }
+        
+         function updateRec(rec_id, field, val) {
+             
+             console.log("val  ", val);
+           
+            //form match record
+            var obj = {};
+            obj.resource = [];
+
+            var data = {};
+            data.id = rec_id;
+            
+            for (var i=0; i<field.length; i++){
+                switch (field[i]){
+                    case "upV": data.upV = val[i]; break;
+                    case "downV": data.downV = val[i]; break;
+                }
+            }
+            //console.log("data", data);
+            obj.resource.push(data);
+
+            var url = baseURI;
+            
+            //update local copy
+            var idx = $rootScope.B.indexOf(+rec_id);            
+            for (var i=0; i<field.length; i++){
+                switch (field[i]){
+                    case "upV": $rootScope.ccatans[idx].upV = val[i]; break;
+                    case "downV": $rootScope.ccatans[idx].downV = val[i]; break;
+                }
+            }                        
+            
+            return $http.patch(url, obj, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                body: obj
+            }).then(querySucceeded, _queryFailed);
+            function querySucceeded(result) {
+
+                console.log("updating catans record succesful");
                 return result.data;
             }
         }

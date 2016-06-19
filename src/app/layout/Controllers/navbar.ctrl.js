@@ -20,6 +20,7 @@
         vm.logout = logout;
         vm.goToLogin = goToLogin;
         vm.gotoAbout = gotoAbout;
+        vm.gotoAdmin = gotoAdmin;
 
         activate();
 
@@ -33,6 +34,11 @@
         function gotoAbout() {
             //$stateProvider.state('app');
             $state.go('about');
+        }
+        
+        function gotoAdmin() {
+            //$stateProvider.state('app');
+            $state.go('admin');
         }
         
         function goToLogin() {

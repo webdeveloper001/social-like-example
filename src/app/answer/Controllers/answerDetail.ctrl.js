@@ -19,7 +19,7 @@
         
         var voteRecordExists = false;
         var uservote = {};
-        var answerid = 0;
+        var catansid = 0;
         var dV = 0;
         var ansvidx = 0;
         var upVi = 0;  //upVotes initial value
@@ -32,6 +32,7 @@
         
         // Members
         vm.relativetable = [];
+        vm.catans = [];
                
         // Methods
         vm.UpVote = UpVote;
@@ -50,8 +51,7 @@
         vm.type = $rootScope.cCategory.type;
 
         if ($stateParams.index) vm.answer = answers[A.indexOf(+$stateParams.index)];
-        upVi = vm.answer.upV;
-        downVi = vm.answer.downV;
+        
         
         //TODO: Would like to add this abstract template, but dont know how               
         $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
@@ -64,22 +64,17 @@
                 }
             });
 
-        //This code, keeps the controller from executing for all search results
-        if ($rootScope.viewCtn == $rootScope.viewNum) {
-            activate();
-            $rootScope.viewCtn++;
-        }
-        else {
-            $rootScope.viewCtn++;
-        }
+        //Execute this view only if rankWindow is open
+        if ($rootScope.showR) activate();
 
         function activate() {
 
             getHeader();
+            getCatAnsId(vm.answer.id);
             getEdits(vm.answer.id);
             deleteButtonAccess();
-            getAnswerVote($stateParams.index);
-            makeRelativeTable($stateParams.index);
+            getAnswerVote(vm.catans.id);
+            makeRelativeTable(vm.answer.id);
             getOtherRanks();
             console.log("Answer details loaded");
 
@@ -88,7 +83,16 @@
         function getHeader() {
             vm.public = $rootScope.canswers.public;
         }
-
+        
+        function getCatAnsId(x) {
+            for (var i=0; i<$rootScope.ccatans.length; i++){
+                if ($rootScope.ccatans[i].answer == x){
+                    vm.catans = $rootScope.ccatans[i];
+                }
+            }
+            upVi = vm.catans.upV;
+            downVi = vm.catans.downV;
+        }
         function getAnswer() {
 
             if ($stateParams.index) {
@@ -169,10 +173,11 @@
             vm.answer = answers[A.indexOf(+x)];
             getEdits(vm.answer.id);
             //vm.imageURL = INSTANCE_URL + '/api/v2/files/images/' + vm.answer.imagefile + '?api_key='+APP_API_KEY;
-            upVi = vm.answer.upV;
-            downVi = vm.answer.downV;
+            upVi = vm.catans.upV;
+            downVi = vm.catans.downV;
             getHeader();
-            getAnswerVote(x);
+            getCatAnsId(vm.answer.id);
+            getAnswerVote(vm.catans.id);
             makeRelativeTable(x);
             getOtherRanks();
         }
@@ -191,14 +196,15 @@
             }
             if (!voteRecordExists && dV != 0) {
                 //console.log("there is a new vote  ", dV);
-                votes.postRec(1, answerid, dV);
+                votes.postRec(catansid, dV);
             }
             
             //update answer record (vote count) if necessary
             //TODO Need to pass table id
-            if ((vm.answer.upV != upVi) || (vm.answer.downV != downVi)) {
+            if ((vm.catans.upV != upVi) || (vm.catans.downV != downVi)) {
                 //console.log("number of votes changed: ",vm.answer.upV, upVi, vm.answer.downV, downVi);
-                answer.updateAnswer(vm.answer.id, ["upV", "downV"], [vm.answer.upV, vm.answer.downV]);
+                //answer.updateAnswer(vm.answer.id, ["upV", "downV"], [vm.answer.upV, vm.answer.downV]);
+                catans.updateRec(vm.catans.id, ["upV", "downV"], [vm.catans.upV, vm.catans.downV]);
             }
 
             recordsUpdated = true;
@@ -206,9 +212,9 @@
         
         //AM:Refresh Thumb Up and Thumb down Vote Displays
         function getAnswerVote(x) {
-
+console.log("$rootScope.cvotes  ", $rootScope.cvotes);
             for (var i = 0; i < $rootScope.cvotes.length; i++) {
-                if ($rootScope.cvotes[i].answer == x) {
+                if ($rootScope.cvotes[i].catans == x) {
                     uservote = $rootScope.cvotes[i];
 
                     ansvidx = i;
@@ -219,11 +225,11 @@
 
             if (voteRecordExists) {
                 dV = uservote.vote;
-                answerid = uservote.answer;
+                catansid = uservote.catans;
             }
             else {
                 dV = 0;
-                answerid = x;
+                catansid = x;
             }
             displayVote(dV);
 
@@ -262,9 +268,9 @@
             if ($rootScope.isLoggedIn) {
 
                 switch (dV) {
-                    case -1: { dV = 1; vm.answer.upV++; vm.answer.downV--; break; }
-                    case 0: { dV = 1; vm.answer.upV++; break; }
-                    case 1: { dV = 0; vm.answer.upV--; break; }
+                    case -1: { dV = 1; vm.catans.upV++; vm.catans.downV--; break; }
+                    case 0: { dV = 1; vm.catans.upV++; break; }
+                    case 1: { dV = 0; vm.catans.upV--; break; }
                 }
 
                 displayVote(dV);
@@ -281,9 +287,9 @@
 
             if ($rootScope.isLoggedIn) {
                 switch (dV) {
-                    case -1: { dV = 0; vm.answer.downV--; break; }
-                    case 0: { dV = -1; vm.answer.downV++; break; }
-                    case 1: { dV = -1; vm.answer.upV--; vm.answer.downV++; break; }
+                    case -1: { dV = 0; vm.catans.downV--; break; }
+                    case 0: { dV = -1; vm.catans.downV++; break; }
+                    case 1: { dV = -1; vm.catans.upV--; vm.catans.downV++; break; }
                 }
 
                 displayVote(dV);
@@ -302,25 +308,21 @@
             //TODO need to pass current Table index
             if (!recordsUpdated) updateRecords();
             if ($rootScope.previousState == 'match') {
-                $rootScope.viewCtn = 0;
                 $state.go('match');
             }
             else {
-                $rootScope.viewCtn = 0;
                 $state.go('rankSummary', { index: $rootScope.cCategory.id });
             }
         }
 
         function rankSel(x) {
             //console.log(x);
-            $rootScope.viewCtn = 0;
             $rootScope.title = x.title;
             $state.go('rankSummary', { index: x.id });
         }
 
 
         function editAnswer() {
-            $rootScope.viewCtn = 0;
             $state.go("editAnswer", { index: vm.answer.id });
         }
 
@@ -329,7 +331,6 @@
             dialog.deleteType(function () {
                 //delete catans for this answer
                 catans.deleteRec(vm.answer.id, $rootScope.cCategory.id).then(function () {
-                    $rootScope.viewCtn = 0;
                     $state.go("rankSummary", { index: $rootScope.cCategory.id });
                 });
             }, function () {
@@ -345,7 +346,6 @@
                 editvote.deleteEditVotesbyAnswer(vm.answer.id);
                 //delete catans for this answer
                 catans.deleteAnswer(vm.answer.id);
-                $rootScope.viewCtn = 0;
                 $state.go("rankSummary", { index: $rootScope.cCategory.id });
             });
 
@@ -354,7 +354,7 @@
         function flagAnswer(x) {
             if ($rootScope.isLoggedIn) {
                 console.log("answer flagged!!!");
-                flag.flagAnswer(vm.answer.id, x);
+                flag.flagAnswer(vm.catans.id, x);
                 dialog.getDialog('answerFlagged');
                 return;
             }
@@ -390,7 +390,6 @@
             dialog.url(vm.answer.imageurl);
         }
         function closeRank() {
-            $rootScope.viewCtn = 0;
             $rootScope.$emit('closeRank');
         }
 

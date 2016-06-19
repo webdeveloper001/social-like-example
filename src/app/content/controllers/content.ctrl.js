@@ -14,10 +14,12 @@
 
 
         vm.goBack = goBack;
-        vm.rankSel = rankSel;
+        vm.rankSelT = rankSelT;
+        vm.rankSelB = rankSelB;
         vm.switchArray = switchArray;
 
         vm.content = [];
+        vm.emptyspace = '';
 
         $rootScope.$on('newCategory', function (e) {
             console.log("trigger");
@@ -27,6 +29,11 @@
             console.log("trigger closeRank");
             closeRank();
         });
+        
+        //delete these
+        $rootScope.viewNum = 0;
+        $rootScope.viewCtn = 0;
+  
 
         window.onload = function () {
 
@@ -107,13 +114,13 @@
             $state.go('rankSummary', { index: $rootScope.cCategory.id });
 
         }
-
-        function rankSel(x, index) {
-            console.log("clicked on", x.title, index);
-            
+        
+        //Miscellaneous functions, grab header
+        function getRankData(x){
             $rootScope.title = x.title;
-            $rootScope.isDowntown = x.title.includes("downtown");
             
+            $rootScope.isDowntown = x.title.includes("downtown");
+            //Delete the first 3 words, to show ranking theme, not ideal, need to make better
             var n=x.title.length;
             var ctr=0;
             var si=0;
@@ -125,25 +132,45 @@
                 }
             }
             $rootScope.header = x.title.substring(si,n-1);
-            
-            //close all ranks first
-            for (var i = 0; i < $rootScope.content.length; i++) {
-                $rootScope.content[i].showR = false;
-                $rootScope.content[i].showT = true;
-            }
-            
-            x.showR = true;
-            x.showT = false;
-            //vm.show = true;
-            $rootScope.viewNum = index;
-            $rootScope.viewCtn = 0;
-                        
-            $state.go('rankSummary', { index: x.id });
         }
 
+        function rankSelT(x, index) {
+            
+            console.log("rankSelT -- ", x.title);
+            //console.log("resultsT  ", vm.resultsT);
+            
+            getRankData(x);
+
+            var arraytemp = [];
+            for (var i=0; i<vm.resultsT.length; i++){
+                if (i<index) arraytemp[i] = vm.resultsT[i];
+                if (i>index) vm.resultsB.push(vm.resultsT[i]);
+            }
+            vm.resultsT = arraytemp;
+            
+            console.log("resultsT  ", vm.resultsT);
+            console.log("resultsB  ", vm.resultsB);
+            
+            vm.showR = true;
+            $rootScope.showR = true;
+            
+            $state.go('rankSummary', { index: x.id });
+        }
+        
+        function rankSelB(x, index) {
+            //overall index
+            var n = vm.resultsT.length+1+index;
+            closeRank();
+            rankSelT(vm.resultsT[n],n);
+
+        }
+        
+
         function switchArray() {
+            $rootScope.showR = false;
             //console.log("SwitchArray ", vm.cTags.length);
-            vm.results = [];
+            vm.resultsT = [];
+            vm.resultsB = [];
             if (vm.val.length >= 3) {
                 //vm.content = $rootScope.content;
                 var valTags = vm.val.split(" ");
@@ -161,13 +188,14 @@
                     }
                     if (r) {
                         //console.log("push to vm.results array");
-                        vm.results.push($rootScope.content[j]);
+                        vm.resultsT.push($rootScope.content[j]);
                         //console.log("vm.results  ", vm.results);
                     }
                 }
             }
             else{
-                vm.results = [];
+                vm.resultsT = [];
+                vm.resultsB = [];
             }
             $rootScope.viewNum = 999;
         }
@@ -184,11 +212,16 @@
         }
 
         function closeRank() {
+            /*
             //Show ranking titles, hide all ranks
             for (var i = 0; i < $rootScope.content.length; i++) {
                 $rootScope.content[i].showR = false;
                 $rootScope.content[i].showT = true;
             }
+            */
+            vm.showR = false;
+            $rootScope.showR = false;
+            switchArray();
         }
 
     }

@@ -14,6 +14,7 @@
         var R = [];
         var GP = [];
         var A = [];
+        
         var answersR = [];
 
         var service = {
@@ -40,7 +41,7 @@
                     R[i][j] = 0;
                     GP[i][j] = 0;
                 }
-                A[i] = answers[i].id;
+                A[i] = answers[i].id;                
             }
 
             for (i = 0; i < L; i++) {

@@ -44,7 +44,7 @@
                  
         }
 		
-        function postRec(table_id,answer_id, vote) {
+        function postRec(catans_id, vote) {
             
             //form match record
             var obj = {};
@@ -52,8 +52,7 @@
                      
             var data={};
             data.user = $rootScope.user.id;
-            data.answer = answer_id;
-            data.category = $rootScope.cCategory.id;
+            data.catans = catans_id;
             data.vote = vote;
             data.timestmp = Date.now(); 
             

@@ -6,16 +6,21 @@
 </div>
 
 <div class="container">
-	<div ng-repeat="x in vm.results">
-		<h4 ng-click="vm.rankSel(x, $index)" ng-show="x.showT">
-			{{x.title}}		 
+	<div ng-repeat="x in vm.resultsT">
+		<h4 ng-click="vm.rankSelT(x, $index)">
+				{{x.title}}
+				<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;6&nbspanswers-1234&nbspviews</small>	 
 		</h4>
-		<!--
-		<div ui-view="rankSummary" ng-show="{{vm.show}}"></div>
-		-->
-		<div class="span22" ng-show="x.showR">
-			<div ui-view></div>
-		</div>
-
+	</div>
+</div>
+<div class="span22" ng-show="vm.showR">
+	<div ui-view></div>
+</div>
+<div class="container">
+	<div ng-repeat="x in vm.resultsB">
+		<h4 ng-click="vm.rankSelB(x, $index)">
+			{{x.title}}
+			<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;6&nbspanswers-1234&nbspviews</small>		 
+		</h4>
 	</div>
 </div>

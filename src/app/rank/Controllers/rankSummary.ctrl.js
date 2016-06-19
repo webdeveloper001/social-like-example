@@ -47,18 +47,12 @@
             $rootScope.previousState = from.name;
         });
 
-        //This code, keeps the controller from executing for all search results
-        if ($rootScope.viewCtn == $rootScope.viewNum) {
-            activate();
-            $rootScope.viewCtn++;
-        }
-        else {
-            $rootScope.viewCtn++;
-        } 
+        //Execute this view only if rankWindow is open
+        if ($rootScope.showR) activate(); 
         
         function activate() {
 
-            loadData(); //load data and write to RAM
+            loadData(); //load data and write to $rootScope
             getUserData(); //if user is logged in, get user data (vote record, etc)
             createAnswerStatus(); //enables/disables 'Create Answer' button
             
@@ -77,10 +71,12 @@
                 votes.loadVotesTable().then(function (votetable) {
                     //Load votes for this category
                     for (var i = 0; i < votetable.length; i++) {
-                        if (votetable[i].category == $rootScope.cCategory.id) {
-                            var voteitem = votetable[i];
-                            //voteitem.vtidx = i;
-                            $rootScope.cvotes.push(voteitem);
+                        for (var j = 0; j < $rootScope.ccatans.length; j++) {
+                            if (votetable[i].catans == $rootScope.ccatans[j].id) {
+                                var voteitem = votetable[i];
+                                //voteitem.vtidx = i;
+                                $rootScope.cvotes.push(voteitem);
+                            }
                         }
                     }
                 });
@@ -92,7 +88,6 @@
                             $rootScope.ceditvotes.push(editvoteitem);
                         }
                     }
-
                 });
                 
                 //All mrecs for this categroy from this user
@@ -134,13 +129,11 @@
         }
 
         function answerDetail(index) {
-            $rootScope.viewCtn=0;
             $state.go("answerDetail", { index: index });
         }
 
         function goRank() {
             if ($rootScope.canswers.length > 1) {
-                $rootScope.viewCtn = 0;
                 $state.go("match");
             }
             else {
@@ -178,8 +171,7 @@
                     break;
                 }
             }
-            
-            
+                        
             //vm.url = 'http://rankdev.azurewebsites.net/#/rankSummary/' + $rootScope.cCategory.id;
             //vm.header = "table" + $rootScope.cCategory.id + ".header";
             //vm.body = 'table' + $rootScope.cCategory.id + '.body';
@@ -205,12 +197,18 @@
             
             //Load current answers
             $rootScope.canswers = [];
+            $rootScope.ccatans = [];
+            $rootScope.B = [];
             
             for (var i = 0; i < catansrecs.length; i++) {
                 if (catansrecs[i].category == $rootScope.cCategory.id) {
                     for (var k = 0; k < answers.length; k++){
                         if (catansrecs[i].answer == answers[k].id){
                             $rootScope.canswers.push(answers[k]);
+                            $rootScope.ccatans.push(catansrecs[i]);
+                            
+                            //Collect array of 'current' catans records ids
+                            $rootScope.B.push(catansrecs[i].id);
                             break;        
                         }
                     }                    
@@ -306,7 +304,6 @@
         }
         
         function closeRank() {
-                $rootScope.viewCtn = 0;
                 $rootScope.$emit('closeRank');                            
         }
 

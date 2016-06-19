@@ -47,6 +47,13 @@
                             return result;
                         });
                     }]
+                    /*
+                    answers: ['answer', function () {
+                        return function () {
+
+                            return [];
+                        };
+                    }]*/
                 }
             },
 
@@ -57,7 +64,9 @@
                 url: '/rankSummary/:index',
                 templateUrl: 'app/rank/Partials/RankSummary.html',
                 controller: 'rankSummary as vm',
+                
                 resolve: {
+                    
                     mrecs: ['matchrec', function (matchrec) {
 
                         return matchrec.GetMatchTable().then(function (result) {
@@ -86,6 +95,33 @@
                             return result;
                         });
                     }]
+                    
+                    /*
+                    mrecs: ['matchrec', function () {
+                        return function () {
+
+                            return [];
+                        };
+                    }],
+                    edits: ['edit', function () {
+                        return function () {
+
+                            return [];
+                        };
+                    }],
+                    useractivities: ['useractivity', function () {
+                        return function () {
+
+                            return [];
+                        };
+                    }],
+                    catansrecs: ['catans', function () {
+                        return function () {
+
+                            return [];
+                        };
+                    }]*/
+                    
                 }
             },
             {
@@ -101,6 +137,7 @@
                 url: '/editAnswer/:index',
                 templateUrl: 'app/answer/Partials/editAnswer.html',
                 controller: 'editAnswer as vm',
+                
                 resolve: {
                     answers: ['answer', function (answer) {
                         return answer.getAnswers().then(function (result) {
@@ -123,12 +160,21 @@
                 templateUrl: 'app/answer/Partials/answerDetail.html',
                 controller: 'answerDetail as vm',
                 resolve: {
+                    
                     answers: ['answer', function (answer) {
                         return answer.getAnswers().then(function (result) {
 
                             return result;
                         });
                     }]
+                    
+                    /*
+                    answers: ['answer', function () {
+                        return function () {
+
+                            return [];
+                        };
+                    }]*/
 
                 }
             },
@@ -161,7 +207,7 @@
                         controller: 'navbar as vm'
                     }
                 }
-            },
+            }
         ];
 
         $(states).each(function () {

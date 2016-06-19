@@ -1,0 +1,23 @@
+<!-- Navigation Bar -->
+<div ui-view="navbar"></div>
+<br>
+
+<div class="text-center">
+    <div class="btn-group col-sm-6 col-md-6">
+        <button class="btn btn-success {{vm.selKeywords}} " ng-click="vm.keywords() ">Searched-Keyword</button>
+        <button class="btn btn-primary {{vm.selViews}} " ng-click="vm.views() ">Ranking-Answers Views</button>
+        <button class="btn btn-danger {{vm.selFlags}} " ng-click="vm.flags() ">Answer Flags</button>
+    </div>
+</div>
+<br>
+<br>
+<div ui-view></div>
+<br>
+<br>
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">
+            Rank-X is property of Rank-X LLC. San Diego, CA - 2016
+        </p>
+    </div>
+</footer>

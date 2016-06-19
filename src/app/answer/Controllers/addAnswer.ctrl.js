@@ -57,7 +57,8 @@
         vm.imageURL = '../../../assets/images/noimage.jpg';
         vm.header = $rootScope.header;
 
-        activate();
+        //Execute this view only if rankWindow is open
+        if ($rootScope.showR) activate();
 
         function activate() {
             
@@ -317,7 +318,6 @@
         }
         
          function closeRank() {
-                $rootScope.viewCtn = 0;
                 $rootScope.$emit('closeRank');                            
         }
 
