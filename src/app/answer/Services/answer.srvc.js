@@ -108,6 +108,7 @@
                     case "upV": data.upV = val[i]; break;
                     case "downV": data.downV = val[i]; break;
                     case "image": data.imageurl = val[i]; break;
+                    case "views": data.views = val[i]; break;
                 }
             }
             //console.log("data", data);
@@ -126,6 +127,7 @@
                     case "upV": $rootScope.canswers[idx].upV = val[i]; break;
                     case "downV": $rootScope.canswers[idx].downV = val[i]; break;
                     case "image": $rootScope.canswers[idx].imageurl = val[i]; break;
+                    case "views": $rootScope.canswers[idx].views = val[i]; break;
                 }
             }                        
             

@@ -5,13 +5,12 @@
         .module('app')
         .controller('content', content);
 
-    content.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope','answers'];
+    content.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope','answers', 'rankings','query'];
 
-    function content($rootScope, $state, $http, $stateParams, $scope, answers) {
+    function content($rootScope, $state, $http, $stateParams, $scope, answers, rankings, query) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'content';
-
 
         vm.goBack = goBack;
         vm.rankSelT = rankSelT;
@@ -33,7 +32,8 @@
         //delete these
         $rootScope.viewNum = 0;
         $rootScope.viewCtn = 0;
-  
+    
+        var strlen_o = 0;
 
         window.onload = function () {
 
@@ -56,12 +56,11 @@
             
             getEstablishmentAnswers();
 
-            $http.get('../../../assets/testcontent.json').success(function (response) {
-                $rootScope.content = response;
-                console.log("Content Loaded!");
+            //$http.get('../../../assets/testcontent.json').success(function (response) {
+                $rootScope.content = rankings; //response
                 loadContent();
 
-            });
+            //});
             
             $http.get('../../../assets/fields.json').success(function (response) {
                 $rootScope.typeSchema = response;
@@ -104,9 +103,6 @@
                 "Columbia","Core","Cortez Hill","East Village","Gaslamp Quarter","Horton Plaza","Little Italy",
                 "Marina","Seaport Village"];    
 
-
-            console.log("content loaded", $rootScope.content.length);
-
         }
 
         function goBack() {
@@ -136,9 +132,6 @@
 
         function rankSelT(x, index) {
             
-            console.log("rankSelT -- ", x.title);
-            //console.log("resultsT  ", vm.resultsT);
-            
             getRankData(x);
 
             var arraytemp = [];
@@ -147,9 +140,6 @@
                 if (i>index) vm.resultsB.push(vm.resultsT[i]);
             }
             vm.resultsT = arraytemp;
-            
-            console.log("resultsT  ", vm.resultsT);
-            console.log("resultsB  ", vm.resultsB);
             
             vm.showR = true;
             $rootScope.showR = true;
@@ -167,6 +157,8 @@
         
 
         function switchArray() {
+            var userIsTyping = false;
+            vm.showR = false;
             $rootScope.showR = false;
             //console.log("SwitchArray ", vm.cTags.length);
             vm.resultsT = [];
@@ -192,6 +184,13 @@
                         //console.log("vm.results  ", vm.results);
                     }
                 }
+                if (vm.val.length >= strlen_o) userIsTyping = true;
+                else userIsTyping = false;
+                //if less than 5 results, write 'query record
+                if (vm.resultsT.length <= 5 && (vm.val.length%3==0) && userIsTyping){
+                    query.postQuery(vm.val, vm.resultsT.length)
+                }
+                strlen_o = vm.val.length;
             }
             else{
                 vm.resultsT = [];

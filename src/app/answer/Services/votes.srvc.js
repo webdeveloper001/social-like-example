@@ -125,7 +125,7 @@
            var url = baseURI + '/_table/votetable?filter=answer=' + answer_id; 
             
             return $http.delete(url).then(querySucceeded, _queryFailed);
-            v
+            
             function querySucceeded(result) {
 
                 console.log("Deleting vote records was succesful");

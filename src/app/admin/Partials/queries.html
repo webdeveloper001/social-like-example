@@ -1,4 +1,7 @@
 <h1> Queries </h1>
+<br>
+<a ng-click="vm.clearDb()" class="btn btn-danger">Clear Database</a>
+<br>
 <div class="row">
 	<div class="col-sm-2"></div>
 	<div class="col-sm-8">
@@ -12,17 +15,9 @@
 				</thead>
 				<tbody>
 					<!--<tr ng-repeat="x in vm.relativetable | orderBy:'-Rank'" ng-click="vm.refresh(x.id)">-->
-					<tr>
-						<td>piz</td>
-						<td>10</td>
-					</tr>
-					<tr>
-						<td>pizza san</td>
-						<td>3</td>
-					</tr>
-					<tr>
-						<td>pizza san juan</td>
-						<td>1</td>
+					<tr ng-repeat="x in vm.queries | orderBy: '-results' ">
+						<td>{{x.query}}</td>
+						<td>{{x.results}}</td>
 					</tr>
 				</tbody>
 		</table>

@@ -46,6 +46,13 @@
 
                             return result;
                         });
+                    }],
+                    
+                    rankings: ['table', function (table) {
+                        return table.getTables().then(function (result) {
+
+                            return result;
+                        });
                     }]
                     /*
                     answers: ['answer', function () {

@@ -6,11 +6,11 @@
         .controller('rankSummary', rankSummary);
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'answers'
-        , 'answer', 'mrecs', 'rank','catansrecs'
+        , 'answer', 'mrecs', 'rank','catansrecs','table'
         , '$rootScope', '$modal', 'edits', 'editvote', 'votes', 'useractivities'];
 
     function rankSummary(dialog, $stateParams, $state, answers
-        , answer, mrecs, rank, catansrecs
+        , answer, mrecs, rank, catansrecs, table
         , $rootScope, $modal, edits, editvote, votes, useractivities) {
         /* jshint validthis:true */
         var vm = this;
@@ -53,6 +53,9 @@
         function activate() {
 
             loadData(); //load data and write to $rootScope
+            //update number of views and answers
+            table.update($rootScope.cCategory.id,['views','answers'],[$rootScope.cCategory.views+1, $rootScope.canswers.length]);
+            
             getUserData(); //if user is logged in, get user data (vote record, etc)
             createAnswerStatus(); //enables/disables 'Create Answer' button
             
@@ -215,8 +218,6 @@
                 }
             }    
             vm.answers = $rootScope.canswers;
-            console.log("vm.answers", vm.answers);
-            
             
             //*****TEMP********
             //vm.answers.specials = [];

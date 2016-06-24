@@ -112,6 +112,7 @@
             myAnswer.downV = 0;
             myAnswer.type = vm.type;
             myAnswer.userid = 1;
+            myAnswer.views = 0;
             
             if (duplicateExists) dialog.checkSameAnswer(myAnswer, extAnswer, addAnswerConfirmed, answerIsSame);
             else dialog.addAnswer(myAnswer, vm.imageURL, addAnswerConfirmed);

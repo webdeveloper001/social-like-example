@@ -11,6 +11,7 @@
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'views';
+        vm.content = $rootScope.content;
                
        activate();
 

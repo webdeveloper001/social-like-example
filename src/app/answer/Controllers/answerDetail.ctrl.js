@@ -212,7 +212,6 @@
         
         //AM:Refresh Thumb Up and Thumb down Vote Displays
         function getAnswerVote(x) {
-console.log("$rootScope.cvotes  ", $rootScope.cvotes);
             for (var i = 0; i < $rootScope.cvotes.length; i++) {
                 if ($rootScope.cvotes[i].catans == x) {
                     uservote = $rootScope.cvotes[i];
@@ -305,12 +304,16 @@ console.log("$rootScope.cvotes  ", $rootScope.cvotes);
         function goBack() {
 
             console.log("goBack");       
-            //TODO need to pass current Table index
+            
+            //update Up and Down votes, and counter
             if (!recordsUpdated) updateRecords();
+            
             if ($rootScope.previousState == 'match') {
                 $state.go('match');
             }
             else {
+                var nViews = vm.answer.views+1;
+                answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
                 $state.go('rankSummary', { index: $rootScope.cCategory.id });
             }
         }

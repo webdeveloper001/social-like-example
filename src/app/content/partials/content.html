@@ -9,7 +9,7 @@
 	<div ng-repeat="x in vm.resultsT">
 		<h4 ng-click="vm.rankSelT(x, $index)">
 				{{x.title}}
-				<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;6&nbspanswers-1234&nbspviews</small>	 
+				<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;{{x.answers}}&nbspanswers-{{x.views}}&nbspviews</small>	 
 		</h4>
 	</div>
 </div>
@@ -20,7 +20,7 @@
 	<div ng-repeat="x in vm.resultsB">
 		<h4 ng-click="vm.rankSelB(x, $index)">
 			{{x.title}}
-			<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;6&nbspanswers-1234&nbspviews</small>		 
+			<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;{{x.answers}}&nbspanswers-{{x.views}}&nbspviews</small>		 
 		</h4>
 	</div>
 </div>

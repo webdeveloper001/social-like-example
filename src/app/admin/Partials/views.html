@@ -12,17 +12,9 @@
 				</thead>
 				<tbody>
 					<!--<tr ng-repeat="x in vm.relativetable | orderBy:'-Rank'" ng-click="vm.refresh(x.id)">-->
-					<tr>
-						<td>Who makes the best pizza in San Diego?</td>
-						<td>1045</td>
-					</tr>
-					<tr>
-						<td>What are some good ideas for first dates in San Diego?</td>
-						<td>984</td>
-					</tr>
-					<tr>
-						<td>Which are best gyms in Pacific Beach?</td>
-						<td>876</td>
+					<tr ng-repeat="x in vm.content | orderBy: '-views' ">
+						<td>{{x.title}}</td>
+						<td>{{x.views}}</td>
 					</tr>
 				</tbody>
 		</table>

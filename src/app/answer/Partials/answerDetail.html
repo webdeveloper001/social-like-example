@@ -17,12 +17,12 @@
         <h3><span ng-repeat="f in vm.fields" ng-show="{{vm.type != 'Short-Phrase'}}">
     {{(f.name == "name" && vm.answer.name) ? vm.answer.name : ""}}    
         </span></h3>
-
+         
         <strong>{{(vm.answer.location) ? 'Address:' : ""}}</strong> {{(vm.answer.location) ? vm.answer.location : ""}}
         <br style="display:{{(vm.answer.location) ? 'inline' : 'none'}}">
         <strong>{{(vm.answer.cityarea) ? 'Neighboorhood:' : ""}}</strong> {{(vm.answer.cityarea) ? vm.answer.cityarea : ""}}
         <br style="display:{{(vm.answer.cityarea) ? 'inline' : 'none'}}">
-
+        <small class="text-muted">&nbsp;&nbsp;&nbsp{{vm.answer.views}}&nbspviews</small>
     </div>
 
     <div class="col-md-6 col-lg-6">
