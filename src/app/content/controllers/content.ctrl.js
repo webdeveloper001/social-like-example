@@ -22,7 +22,7 @@
 
         vm.content = [];
         vm.emptyspace = '';
-        vm.isAdmin = true;
+        vm.isAdmin = false;
 
         $rootScope.$on('newCategory', function (e) {
             console.log("trigger");
