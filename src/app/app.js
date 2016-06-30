@@ -24,6 +24,8 @@
         // 3rd Party Modules
         'ui.router',                 // state provider
         'ui.bootstrap.modal',
-        'mgcrea.ngStrap'
+        'mgcrea.ngStrap',
+        'color.picker',
+        'ui.calendar'
     ]);
 })();

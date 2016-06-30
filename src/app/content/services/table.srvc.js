@@ -51,6 +51,10 @@
                 switch (field[i]){
                     case "views": data.views = val[i]; break;
                     case "answers": data.answers = val[i]; break;
+                    case "title": data.title = val[i]; break;
+                    case "tags": data.tags = val[i]; break;
+                    case "keywords": data.keywords = val[i]; break;
+                    case "type": data.type = val[i]; break;
                 }
             }
             //console.log("data", data);
@@ -70,6 +74,10 @@
                 switch (field[i]){
                     case "answers": $rootScope.content[idx].answers = val[i]; break;
                     case "views": $rootScope.content[idx].views = val[i]; break;
+                    case "title": $rootScope.content[idx].title = val[i]; break;
+                    case "tags": $rootScope.content[idx].tags = val[i]; break;
+                    case "keywords": $rootScope.content[idx].keywords = val[i]; break;
+                    case "type": $rootScope.content[idx].type = val[i]; break;
                 }
             }                        
             

@@ -1,0 +1,78 @@
+<h1> Specials </h1>
+
+<br>
+<br>
+<div class="row">
+	<div class="col-sm-4 col-md-4">
+		<p>Specials Title</p>
+	</div>
+	<div class="col-sm-4 col-md-4">
+		<input class="form-control" ng-model="vm.val" type="text" placeholder="Special Banner" ng-change="vm.displayCharLength()"
+		maxlength="25">
+	</div>
+	<div class="col-sm-4 col-md-4">
+		<p>{{vm.char}} chars left</p>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-4 col-md-4">
+		<p>Background Color</p>
+	</div>
+	<div class="col-sm-1 col-md-4">
+		<color-picker ng-model="vm.backgroundColor" color-picker-swatch="true" color-picker-swatch-pos="'left'" color-picker-swatch-bootstrap="true"
+		color-picker-swatch-only="true">
+		</color-picker>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-4 col-md-4">
+		<p>Font Color</p>
+	</div>
+	<div class="col-sm-1 col-md-4">
+		<color-picker ng-model="vm.fontColor" color-picker-swatch="true" color-picker-swatch-pos="'left'" color-picker-swatch-bootstrap="true"
+		color-picker-swatch-only="true">
+		</color-picker>
+	</div>
+</div>
+<p>Preview</p>
+<div class="row">
+	<div class="col-sm-2"></div>
+	<div class="col-sm-8">
+		<table class="table table-hover cursor ">
+			<tbody>
+				<thead>
+					<tr>
+						<th>Rank</th>
+						<th>Name</th>
+						<th>Distance</th>
+						<th>Specials</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>#</td>
+						<td>Other place</td>
+						<td>0.2</td>
+						<td>-----</td>
+					</tr>
+					<tr>
+						<td>#</td>
+						<td>Your place</td>
+						<td>0.3</td>
+						<td style="background-color:{{vm.backgroundColor}};color:{{vm.fontColor}}">{{vm.val}}</td>
+					</tr>
+					<tr>
+						<td>#</td>
+						<td>Other place</td>
+						<td>0.5</td>
+						<td>-----</td>
+					</tr>
+				</tbody>
+		</table>
+	</div>
+	<div class="col-sm-2"></div>
+</div>
+<p>Schedule</p>
+<!--
+<div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div> 
+-->

@@ -132,6 +132,21 @@
                 }
             },
             {
+                name: 'editRanking',
+                parent: 'content',
+                url: '/editRanking/:index',
+                templateUrl: 'app/rank/Partials/editRanking.html',
+                controller: 'editRanking as vm',
+                resolve: {
+                    rankings: ['table', function (table) {
+                        return table.getTables().then(function (result) {
+
+                            return result;
+                        });
+                    }]
+                }                
+            },
+            {
                 name: 'addAnswer',
                 parent: 'content',
                 url: '/addAnswer',

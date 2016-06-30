@@ -15,12 +15,13 @@
         vm.selKeywords = 'active';
         vm.selViews = '';
         vm.selFlags = '';
+        vm.selRankings = '';
 
         vm.goBack = goBack;
         vm.keywords = keywords;
         vm.views = views;
         vm.flags = flags;
-
+       
        activate();
 
         function activate() {            

@@ -27,6 +27,7 @@
         function computeRanking(answers, mrecs) {
 
             var N = answers.length;
+            var M = N*(N-1)/2;
             var L = mrecs.length;
             var ansHS = 0;
             var ansLS = 0;
@@ -70,7 +71,7 @@
                     GPtemp = GPtemp + GP[i][j];
                 }
             }
-            mGP = GPtemp / (4*N); //get half of the mean of games played between each answer
+            mGP = GPtemp / (4*M); //get half of the mean of games played between each answer
             //console.log("@rank - mGP: ", mGP); 
    
             //Sum relV points for each answer
@@ -94,7 +95,7 @@
             for (var k = 0; k < N; k++) {
                 for (j = 0; j < N; j++) {
                     if (k != j) {
-                        if ((answers[j].Rank >= answers[k].Rank) && (R[k][j] > R[j][k]) && (GP[k][j] > mGP)) {
+                        if ((answers[j].Rank >= answers[k].Rank) && (R[k][j] > R[j][k]) && (GP[k][j] >= mGP)) {
                             answers[k].Rank = answers[j].Rank + 0.01;
                         }
                     }

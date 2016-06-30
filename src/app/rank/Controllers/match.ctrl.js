@@ -199,7 +199,7 @@
                 case 'Activity': { vm.question = 'What would you rather do?'; break; }
                 case 'Short-Phrase': { vm.question = 'What is more accurate?'; break; }
                 case 'Organization': { vm.question = 'Which one you recommend?'; break; }
-                case 'Event': { vm.question = 'Which one you recommend?'; break; }
+                case 'Event': { vm.question = 'What would you rather do?'; break; }
             }
         }
         

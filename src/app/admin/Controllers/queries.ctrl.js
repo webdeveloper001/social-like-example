@@ -28,15 +28,16 @@
 
         function clearDb() {
                 
-            var data = [];
+            //var resource = [];
             for (var i = 0; i < vm.queries.length; i++) {
-                var item = {};
-                item.id = vm.queries[i].id;
-                data.push(item);
+                //var item = {};
+                //item.id = vm.queries[i].id;
+                //resource.push(item);
+                query.deleteRec(vm.queries[i].id);
             }
 
             //console.log("obj    ---- ", obj)
-            query.flushAll(data);
+            //query.flushAll(resource);
 
         }
     }

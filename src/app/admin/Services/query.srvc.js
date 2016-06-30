@@ -16,7 +16,8 @@
         var service = {
             getQueries: getQueries,
             postQuery: postQuery,
-            flushAll: flushAll
+            flushAll: flushAll,
+            deleteRec: deleteRec
         };
 
         return service;
@@ -66,17 +67,42 @@
             }
 	   }
        
-       function flushAll(data) {
+       function flushAll(resource) {
            
             //form match record
             var obj = {};
-            obj.resource = [];
+            obj.resource = resource;
 
-            obj.resource.push(data);
-            //console.log("obj ---",  obj)
+            //obj.resource.push(data);
+            console.log("obj ---",  resource)
             
             var url = baseURI; 
-            return $http.delete(url,obj , {
+            return $http.delete(url, resource , {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                body: resource
+            }).then(querySucceeded, _queryFailed);
+            function querySucceeded(result) {
+
+                console.log("Flushing queries db was succesful");
+            }
+        }
+        
+        function deleteRec(id){
+            
+             //form match record
+            var obj = {};
+            obj.resource = [];
+
+            var data = {};
+            data.id = id;
+
+            obj.resource.push(data);
+
+            var url = baseURI + '/' + id;
+            
+            return $http.delete(url, data, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 },
@@ -84,8 +110,10 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("Flushing queries db was succesful");
+                console.log("Deleting record was succesful");
+                return result.data;
             }
+            
         }
 	   
         

@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="well-sm">
+        <h3 class="sub-header">{{vm.ranking}}
+                <span class="nomargin">
+                    <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
+                    ng-click="vm.closeRank()">
+                    <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
+                    </button>
+                </span>
+        </h3>
+    </div>
+</div>
+
+<h4> Edit Ranking </h4>
+<br>
+<label><strong>Title:</strong></label>
+<input class="form-control" ng-model="vm.rankTitle" type="text" placeholder="{{vm.rankTitle}}">
+<label><strong>Tags:</strong></label>
+<input class="form-control" ng-model="vm.tags" type="text" placeholder="{{vm.tags}}">
+<label><strong>Keywords:</strong></label>
+<input class="form-control" ng-model="vm.keywords" type="text" placeholder="{{vm.keywords}}">
+<label><strong>Type:</strong></label>
+<input class="form-control" ng-model="vm.type"  bs-typeahead type="text" placeholder="{{vm.type}}" bs-options="c for c in vm.typeList">
+<br>
+<div class="form-group text-right">
+    <button type="button" class="btn btn-primary" ng-click="vm.goEdit()">Edit</button>
+</div>
+<br>

@@ -21,6 +21,7 @@
         vm.goToLogin = goToLogin;
         vm.gotoAbout = gotoAbout;
         vm.gotoAdmin = gotoAdmin;
+        vm.gotoCustomer = gotoCustomer;
 
         activate();
 
@@ -39,6 +40,11 @@
         function gotoAdmin() {
             //$stateProvider.state('app');
             $state.go('admin');
+        }
+        
+        function gotoCustomer() {
+            //$stateProvider.state('app');
+            $state.go('customer');
         }
         
         function goToLogin() {
