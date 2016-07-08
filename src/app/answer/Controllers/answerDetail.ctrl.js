@@ -6,10 +6,10 @@
         .controller('answerDetail', answerDetail);
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope',
-        'votes', 'matchrec', 'edit', 'editvote', 'catans']; //AM:added user service
+        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope,
-        votes, matchrec, edit, editvote, catans) { //AM:added user service
+        votes, matchrec, edit, editvote, catans, datetime) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
@@ -75,6 +75,7 @@
             deleteButtonAccess();
             getAnswerVote(vm.catans.id);
             makeRelativeTable(vm.answer.id);
+            getSpecials(vm.answer.id);
             getOtherRanks();
             console.log("Answer details loaded");
 
@@ -83,10 +84,10 @@
         function getHeader() {
             vm.public = $rootScope.canswers.public;
         }
-        
+
         function getCatAnsId(x) {
-            for (var i=0; i<$rootScope.ccatans.length; i++){
-                if ($rootScope.ccatans[i].answer == x){
+            for (var i = 0; i < $rootScope.ccatans.length; i++) {
+                if ($rootScope.ccatans[i].answer == x) {
                     vm.catans = $rootScope.ccatans[i];
                 }
             }
@@ -179,6 +180,7 @@
             getCatAnsId(vm.answer.id);
             getAnswerVote(vm.catans.id);
             makeRelativeTable(x);
+            getSpecials(vm.answer.id);
             getOtherRanks();
         }
         
@@ -307,12 +309,12 @@
             
             //update Up and Down votes, and counter
             if (!recordsUpdated) updateRecords();
-            
+
             if ($rootScope.previousState == 'match') {
                 $state.go('match');
             }
             else {
-                var nViews = vm.answer.views+1;
+                var nViews = vm.answer.views + 1;
                 answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
                 $state.go('rankSummary', { index: $rootScope.cCategory.id });
             }
@@ -380,6 +382,26 @@
             vm.otherRanksExist = vm.otherRanks.length > 0 ? true : false;
         }
 
+        function getSpecials(answerid) {
+            vm.specialsList = [];
+            for (var i = 0; i < $rootScope.specials.length; i++) {
+                if ($rootScope.specials[i].answer == answerid) {
+                    //format date, load name and html msg
+                    datetime.formatdatetime($rootScope.specials[i]);
+                    $rootScope.specials[i].name = vm.answer.name;  
+                    
+                    var htmlmsg = specialHtml($rootScope.specials[i]);  
+                    $rootScope.specials[i].html = htmlmsg;
+                    //Separate style (not working with ng-bind-html)
+                    var spStyle='background-color:' + $rootScope.specials[i].bc + ';color:' + $rootScope.specials[i].fc + ';'+
+                    'white-space:pre;';
+                    $rootScope.specials[i].style = spStyle;
+                    
+                    vm.specialsList.push($rootScope.specials[i]);
+                }
+            }
+        }
+
         function deleteButtonAccess() {
             if ($rootScope.isLoggedIn) {
                 var username = $rootScope.user.name;
@@ -395,6 +417,38 @@
         function closeRank() {
             $rootScope.$emit('closeRank');
         }
+
+        function specialHtml(x) {
+            var htmlmsg = '';
+            var sch_str = '';
+            if (x.freq == 'weekly') {
+                sch_str = 'Every: ' +
+                (x.mon ? ' - Monday' : '') +
+                (x.tue ? ' - Tuesday' : '') +
+                (x.wed ? ' - Wednesday' : '') +
+                (x.thu ? ' - Thursday' : '') +
+                (x.fri ? ' - Friday' : '') +
+                (x.sat ? ' - Saturday' : '') +
+                (x.sun ? ' - Sunday' : '') +
+                '<br>From: ' + x.stime2 + ' to ' + x.etime2;
+            }
+            if (x.freq == 'onetime') {
+                var sameday = (x.sdate == x.edate);
+                if (sameday) {
+                    sch_str = x.sdate + ' from ' + x.stime + ' to ' + x.etime;
+                }
+                else {
+                    sch_str = 'Starts: ' + x.sdate + ' at ' + x.stime + '<br>Ends: ' + x.edate + ' at ' + x.etime;
+                }
+            }
+
+            htmlmsg = '<div >' + '<p><strong>' + x.stitle + ' @ ' +
+            x.name + '</strong></p><p>' + sch_str + '</p><p>' + x.details + '</p></div>';
+            return htmlmsg;
+        }
+
+
+
 
     }
 })();

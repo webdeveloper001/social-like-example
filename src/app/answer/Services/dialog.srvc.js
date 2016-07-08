@@ -20,7 +20,8 @@
             checkSameAnswer: checkSameAnswer,
             showSameAnswer: showSameAnswer,
             deleteType: deleteType,
-            url: url
+            url: url,
+            createSpecialPreview: createSpecialPreview
         };
 
         return service;
@@ -362,6 +363,68 @@
                 callback: function (result) {
                     if (result) everywhere();
                     else thisCatOnly();
+                    
+                }
+            });
+        }
+        
+        function createSpecialPreview(x, addSpecial){
+            var title = '';
+            var message = '';
+            var htmlmsg = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+            var sch_str = '';
+            
+            title = 'Special Preview';
+            btnCancelLabel = 'Back';
+            btnOkLabel = 'Save Special';
+            if (x.freq == 'weekly'){
+                   sch_str = 'Every: '+
+                   (x.mon ? ' - Monday':'') +
+                   (x.tue ? ' - Tuesday':'') +
+                   (x.wed ? ' - Wednesday':'') +
+                   (x.thu ? ' - Thursday':'') +
+                   (x.fri ? ' - Friday':'') +
+                   (x.sat ? ' - Saturday':'') +
+                   (x.sun ? ' - Sunday':'')+
+                   '<br>From: '+ x.stime2 + ' to '+x.etime2;
+            }
+            if (x.freq == 'onetime'){
+                var sameday = (x.sdate == x.edate);
+                if (sameday){
+                    sch_str = x.sdate + ' from ' + x.stime + ' to ' + x.etime;
+                }
+                else{
+                    sch_str = 'Starts: '+ x.sdate  + ' at '+ x.stime + '<br>Ends: ' + x.edate + ' at ' + x.etime;
+                }
+            }
+            
+            message = 'This is how this special will look: </br></br>In the ranking summary:<br>'+
+            '<table class="table table-hover cursor ">'+
+     '<thead><tr><th>Rank</th><th>Name</th><th>Neighborhood</th><th>Distance</th><th>Specials</th>'+
+     '</tr></thead><tbody><tr><td>1</td><td>'+x.name+'</td><td>Neighborhood</td><td>1.5</td>'+
+     '<td style="background-color:'+x.bc+';color:'+x.fc+';">'+x.stitle+'<td></tr></tbody></table><br>'+
+     'Inside your business profile:<br><br><div style="background-color:'+x.bc+';color:'+x.fc+';">'+
+     '<p><strong>'+ x.stitle+' @ '+x.name+'</strong></p><p>'+sch_str+'</p><p>'+x.details+'</p></div>';
+            
+           
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-primary',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();                   
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) addSpecial();
+                    //else callback1(answer1);
                     
                 }
             });

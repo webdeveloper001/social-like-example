@@ -53,6 +53,13 @@
 
                             return result;
                         });
+                    }],
+                    
+                    specials: ['special', function (special) {
+                        return special.getSpecials().then(function (result) {
+
+                            return result;
+                        });
                     }]
                     /*
                     answers: ['answer', function () {

@@ -1,0 +1,136 @@
+<h1>{{ vm.isEdit ? 'Edit Special':'Add Special'}}</h1>
+<br>
+<div class="well">
+	<div class="row">
+		<div class="col-sm-4 col-md-4">
+			<p class="text-right">Specials Title:</p>
+		</div>
+		<div class="col-sm-4 col-md-4">
+			<input class="form-control" ng-model="vm.sp.stitle" type="text" placeholder="Special Banner" ng-change="vm.displayCharLength()"
+			maxlength="25" style="background-color:{{vm.sp.bc}};color:{{vm.sp.fc}}">
+		</div>
+		<div class="col-sm-4 col-md-4">
+			<p class="text-left">{{vm.char}} chars left</p>
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-sm-6 col-md-4">
+			<p class="text-right">Background Color</p>
+		</div>
+		<div class="col-sm-1 col-md-1">
+			<color-picker ng-model="vm.sp.bc" color-picker-swatch="true" color-picker-swatch-pos="'left'" color-picker-swatch-bootstrap="true"
+			color-picker-swatch-only="true">
+			</color-picker>
+		</div>
+
+		<div class="col-sm-6 col-md-1">
+			<p class="text-right">Font Color</p>
+		</div>
+		<div class="col-sm-1 col-md-1">
+			<color-picker ng-model="vm.sp.fc" color-picker-swatch="true" color-picker-swatch-pos="'left'" color-picker-swatch-bootstrap="true"
+			color-picker-swatch-only="true">
+			</color-picker>
+		</div>
+	</div>
+	<h4>Schedule</h4>
+	<div class="btn-group col-sm-6 col-md-6 ">
+		<button class="btn btn-primary {{vm.sp.freq == 'onetime'? 'active':''}} " ng-click="vm.frequencySel(1)">One-Time</button>
+		<button class="btn btn-primary {{vm.sp.freq == 'weekly'? 'active':''}} " ng-click="vm.frequencySel(2)">Weekly</button>
+		<!--  <button type="button " class="btn btn-primary ">{{"rankSummary.Filtered " | translate}}</button> -->
+	</div>
+	<br>
+	<br>
+	<br>
+	<div class="row">
+		<div class="col-sm-2 col-md-2 col-lg-1" style="display:{{vm.onetime ? 'inline':'none'}}">
+			<p class="text-right">Start date:</p>
+		</div>
+		
+		<div class="col-sm-2 col-md-2 col-lg-1" style="display:{{vm.onetime ? 'inline':'none'}}">
+			<datepicker date-format="EEE MMM d y" date-year-title="selected title------">
+				<input ng-model="vm.sp.sdate" type="text" />
+			</datepicker>
+		</div>
+		
+		<div class="col-sm-2 col-md-2 col-lg-1" style="display:{{vm.onetime ? 'inline':'none'}}">
+			<p class="text-right">Start time:</p>
+		</div>
+		
+		<div class="col-sm-2 col-md-2 col-lg-1" style="display:{{vm.onetime ? 'inline':'none'}}">
+			<select ng-model="vm.sp.stime" ng-options="x for x in vm.timeDD"><option value="">{{vm.sp.stime}}</option>
+			</select>
+		</div>		
+        
+		<div class="col-sm-2 col-md-2 col-lg-1" style="display:{{vm.onetime ? 'inline':'none'}}">
+			<p class="text-right">End date:</p>
+		</div>
+		
+		
+		<div class="col-sm-2 col-md-2 col-lg-1" style="display:{{vm.onetime ? 'inline':'none'}}">
+			<datepicker date-format="EEE MMM d y" date-year-title="selected title------">
+				<input ng-model="vm.sp.edate" type="text" />
+			</datepicker>
+		</div>
+		
+		<div class="col-sm-2 col-md-2 col-lg-1" style="display:{{vm.onetime ? 'inline':'none'}}">
+			<p class="text-right">End time:</p>
+		</div>
+		
+		
+		<div class="col-sm-2 col-md-2 col-lg-1" style="display:{{vm.onetime ? 'inline':'none'}}">
+			<select ng-model="vm.sp.etime" ng-options="x for x in vm.timeDD"><option value="">{{vm.sp.etime}}</option></select>
+		</div>
+		
+	</div>
+	<div class="row">
+		<div class="col-sm-12 col-md-4" style="display:{{vm.weekly ? 'inline':'none'}}">
+
+			<label class="checkbox-inline">
+				<input type="checkbox" ng-model="vm.sp.mon" value="">Mon</label>
+			<label class="checkbox-inline">
+				<input type="checkbox" ng-model="vm.sp.tue" value="">Tue</label>
+			<label class="checkbox-inline">
+				<input type="checkbox" ng-model="vm.sp.wed" value="">Wed</label>
+			<label class="checkbox-inline">
+				<input type="checkbox" ng-model="vm.sp.thu" value="">Thu</label>
+			<label class="checkbox-inline">
+				<input type="checkbox" ng-model="vm.sp.fri" value="">Fri</label>
+			<label class="checkbox-inline">
+				<input type="checkbox" ng-model="vm.sp.sat" value="">Sat</label>
+			<label class="checkbox-inline">
+				<input type="checkbox" ng-model="vm.sp.sun" value="">Sun</label>
+		</div>
+		<div class="col-sm-2 col-md-2 col-lg-1" style="display:{{vm.weekly ? 'inline':'none'}}">
+			<p class="text-right">Start time:</p>
+		</div>
+		
+		<div class="col-sm-2 col-md-2 col-lg-1" style="display:{{vm.weekly ? 'inline':'none'}}">
+			<select ng-model="vm.sp.stime2" ng-options="x for x in vm.timeDD"><option value="">{{vm.sp.stime2}}</option></select>
+		</div>
+		<div class="col-sm-2 col-md-2 col-lg-1" style="display:{{vm.weekly ? 'inline':'none'}}">
+			<p class="text-right">End time:</p>
+		</div>
+		
+		<div class="col-sm-2 col-md-2 col-lg-1" style="display:{{vm.weekly ? 'inline':'none'}}">
+			<select ng-model="vm.sp.etime2" ng-options="x for x in vm.timeDD"><option value="">{{vm.sp.etime2}}</option></select>
+		</div>
+		
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-sm-0 col-md-3 col-lg-3"></div>
+		<div class="container col-sm-12 col-md-6 col-lg-6">
+			<p> Event Details </p>
+			<textarea class="form-control" ng-model="vm.sp.details" placeholder="{{x.label}}" rows="4" style="background-color:{{vm.sp.bc}};color:{{vm.sp.fc}};width:100%"></textarea>
+		</div>
+		<div class="col-sm-0 col-md-3 col-lg-3"></div>
+		<br>
+	</div>
+	<br>
+	<div class="form-group text-center">
+		<button type="button" class="btn btn-success" ng-click="vm.goBack()">Back</button>
+		<button type="button" class="btn btn-primary" ng-click="vm.showPreview()">Preview</button>
+		<button type="button" class="btn btn-danger" ng-click="vm.deleteSpecial()" style="display:{{vm.isEdit ? 'inline':'none'}}">Delete</button>
+
+	</div>

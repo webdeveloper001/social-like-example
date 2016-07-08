@@ -262,16 +262,6 @@
             }
             vm.numContributors = $rootScope.cuseractivity.length;
             
-            //temp test to json to translate
-            /*
-            var JSON_en = [];
-            var item = {};
-            for (var i=0; i<$rootScope.countries_en.length; i++){
-                item = [$rootScope.countries_en[i],$rootScope.countries_po[i]];
-                JSON_en.push(item); 
-            }
-            console.log('JSON_en ----- ',JSON.stringify(JSON_en));
-            */
         }
 
 

@@ -5,9 +5,9 @@
         .module('app')
         .controller('content', content);
 
-    content.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope', 'answers', 'rankings', 'query','table'];
+    content.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope', 'answers', 'rankings', 'query','table','specials'];
 
-    function content($rootScope, $state, $http, $stateParams, $scope, answers, rankings, query, table) {
+    function content($rootScope, $state, $http, $stateParams, $scope, answers, rankings, query, table, specials) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'content';
@@ -63,6 +63,7 @@
 
             //$http.get('../../../assets/testcontent.json').success(function (response) {
             $rootScope.content = rankings; //response
+            $rootScope.specials = specials;
             loadContent();
 
             //});

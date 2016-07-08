@@ -26,6 +26,7 @@
         'ui.bootstrap.modal',
         'mgcrea.ngStrap',
         'color.picker',
-        'ui.calendar'
+        '720kb.datepicker', //date picker for specials
+        
     ]);
 })();

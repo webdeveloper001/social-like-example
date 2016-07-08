@@ -5,9 +5,9 @@
         .module('app')
         .factory('answer', answer);
 
-    answer.$inject = ['$http', '$q', '$rootScope', 'catans'];
+    answer.$inject = ['$http', '$q', '$rootScope','catans'];
 
-    function answer($http, $q, $rootScope, catans) {
+    function answer($http, $q, $rootScope,catans) {
 
         //Members
         var _answers = [];
@@ -20,10 +20,13 @@
             addAnswer: addAnswer,
             updateAnswer: updateAnswer,
             deleteAnswer: deleteAnswer,
-            flagAnswer: flagAnswer
+            flagAnswer: flagAnswer,
+            getAnswerbyCustomer:  getAnswerbyCustomer
+            
         };
 
         return service;
+        
 
         function getAnswers(forceRefresh) {
             // console.log("getAnswers..._areAnswersLoaded()", _areAnswersLoaded());
@@ -58,6 +61,23 @@
             function querySucceeded(result) {
 
                 return _selectedAnswer = result.data;
+            }
+        }
+        
+        function getAnswerbyCustomer(customer_id) {
+/*
+            if (_isSelectedAnswerLoaded(id) && !forceRefresh) {
+
+                return $q.when(_selectedAnswer);
+            }
+*/
+            var url = baseURI + '/?filter=customer='+ customer_id;
+
+            return $http.get(url).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+
+                return result.data;
             }
         }
 

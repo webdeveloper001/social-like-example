@@ -5,9 +5,9 @@
         .module('app')
         .controller('customer', customer);
 
-    customer.$inject = ['$location', '$rootScope', '$state'];
+    customer.$inject = ['$location', '$rootScope', '$state','answer','dialog','special'];
 
-    function customer(location, $rootScope, $state) {
+    function customer(location, $rootScope, $state, answer, dialog, special) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'customer';
@@ -20,27 +20,55 @@
         vm.loadMainPhoto = loadMainPhoto;
         vm.loadSpecials = loadSpecials;
         vm.loadPhotoGallery = loadPhotoGallery;
+        vm.selAnswer = selAnswer;
+        
+        //****Temp, need to create customer object when customer logs in ****//
+        $rootScope.cust = {};
+        $rootScope.cust.id = 1;
+        //**********************************************************************           
 
        activate();
 
         function activate() {            
 
+            //Load answers for this customer
+            answer.getAnswerbyCustomer($rootScope.cust.id).then(function(response){
+                $rootScope.custans = response.resource;
+                console.log("Customer-Answer records: ", $rootScope.custans)
+                //loadSpecialsObjects();
+                displayAnswers();
+            });  
+                      
             console.log("customer page Loaded!");
             
         }
+        
+        function displayAnswers(){
+           vm.answers = $rootScope.custans;
+            
+        }
+        
+        function selAnswer(x){
+            $rootScope.cust.canswer = x.id;
+            console.log("current answer ", x.id, x.name);
+        }
+        
         function loadMainPhoto() {            
-
-            $state.go('mainphoto');
+            
+            if ($rootScope.cust.canswer == undefined ) dialog.getDialog('selectBusiness');
+            else $state.go('mainphoto');
             
         }
         function loadSpecials() {            
 
-            $state.go('specials');
+            if ($rootScope.cust.canswer == undefined ) dialog.getDialog('selectBusiness');
+            else $state.go('specials');
             
         }
         function loadPhotoGallery() {            
-
-            $state.go('photogallery');
+            
+            if ($rootScope.cust.canswer == undefined ) dialog.getDialog('selectBusiness');
+            else $state.go('photogallery');
             
         }
 

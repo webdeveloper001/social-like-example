@@ -1,7 +1,13 @@
 <!-- Navigation Bar -->
 <div ui-view="navbar"></div>
 <br>
+<h2>Select business you wish to manage</h2>
+<div ng-repeat="x in vm.answers">
+		<label><input type="radio" name="businessradio" ng-click="vm.selAnswer(x)">&nbsp;&nbsp;{{x.name}}, {{x.location}}, {{x.cityarea}}</label>
+</div>
 
+<br>
+        
 <div class="text-center">
     <div class="btn-group col-sm-6 col-md-6">
         <button class="btn btn-success {{vm.loadMainPhoto}} " ng-click="vm.loadMainPhoto() ">Main Photo</button>
