@@ -124,7 +124,7 @@
                 
                 if (sizeOk && linkOk) {
                     var url = _searchResults.data.items[i].link;
-                    console.log('url result ', url);
+                    //console.log('url result ', url);
                     _imageLinks.push(url);
                 }
                 //console.log('sizeok ', sizeOk, 'linkOk ', linkOk);

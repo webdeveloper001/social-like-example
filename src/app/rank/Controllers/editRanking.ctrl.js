@@ -5,9 +5,9 @@
         .module('app')
         .controller('editRanking', editRanking);
 
-    editRanking.$inject = ['$location', '$rootScope', '$state','$stateParams', 'table'];
+    editRanking.$inject = ['$location', '$rootScope', '$state','$stateParams', 'table','dialog'];
 
-    function editRanking(location, $rootScope, $state, $stateParams, table) {
+    function editRanking(location, $rootScope, $state, $stateParams, table, dialog) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'editRanking';
@@ -15,6 +15,7 @@
         vm.ranking = $rootScope.title;
         vm.closeRank = closeRank;
         vm.goEdit = goEdit;
+        vm.goDelete = goDelete;
         
         vm.typeList = ["Person", "Establishment", "Place", "Activity", "Short-Phrase", "Organization", "Event"];
 
@@ -72,9 +73,15 @@
                 fields.push('type');
                 vals.push(vm.type);
             }
-            console.log("fields  ", fields);
-            console.log("vals  ", vals);
             table.update(item.id, fields, vals);
+        }
+        
+        function goDelete(){            
+            dialog.deleteRank(confirmDelete);           
+        }
+        
+        function confirmDelete(){
+            table.deleteTable($rootScope.cCategory.id);
         }
     }
 })();

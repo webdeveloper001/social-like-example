@@ -298,20 +298,17 @@
         }
         
         function checkAnswerExists(answer){
-            console.log("--- checkAnswerExists ---");
-            console.log(answer.name);
-            console.log($rootScope.estAnswers);
             //Check if answer about to be added exists already among establishments
             for (var i=0; i < $rootScope.estAnswers.length; i++){
                 if (answer.name == $rootScope.estAnswers[i].name){
+                    
                     duplicateExists = true;
                     extAnswer = $rootScope.estAnswers[i];
-                    console.log("duplicateExists  ",duplicateExists);
+                    
                     for (var j=0; j < $rootScope.catansrecs.length; j++){
                        if ($rootScope.catansrecs[j].answer == $rootScope.estAnswers[i].id && 
                            $rootScope.catansrecs[j].category == $rootScope.cCategory.id){
                                duplicateSameCategory = true;
-                               console.log("duplicateSameCategoryExists  ", duplicateSameCategory);                               
                            }
                     }
                 }

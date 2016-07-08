@@ -15,7 +15,9 @@
 
         var service = {
             getTables: getTables,
-            update: update
+            update: update,
+            addTable: addTable,
+            deleteTable: deleteTable
         };
 
         return service;
@@ -37,6 +39,64 @@
             }
 
         }
+        
+        function addTable(table) {
+
+            var url = baseURI;
+            var resource = [];
+
+            resource.push(table);
+
+            return $http.post(url, resource, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                body: resource
+            }).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+
+                //update local copy
+                var tablex = table;
+                tablex.id = result.data.resource[0].id; 
+                _tables.push(tablex);
+                                
+                console.log("result", result);
+                return result.data;
+            }
+
+        }
+        
+        function deleteTable(table_id) {
+           
+            //form match record
+            var obj = {};
+            obj.resource = [];
+
+            var data = {};
+            data.id = table_id;
+
+            obj.resource.push(data);
+
+            var url = baseURI + '/' + table_id;
+            
+            //update (delete answer) local copy of answers
+            var i = _tables.map(function(x) {return x.id; }).indexOf(table_id);
+            if (i > -1) _tables.splice(i,1);
+            
+            return $http.delete(url, data, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                body: obj
+            }).then(querySucceeded, _queryFailed);
+            function querySucceeded(result) {
+
+                console.log("Deleting answer was succesful");
+                return result.data;
+            }
+        }
+        
         
         function update(id, field, val) {
            

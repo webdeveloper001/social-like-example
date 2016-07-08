@@ -43,6 +43,13 @@
                 url: '/flags',
                 templateUrl: 'app/admin/Partials/flags.html',
                 controller: 'flags as vm'               
+            },
+            {
+                name: 'addRank',
+                parent: 'admin',
+                url: '/addRank',
+                templateUrl: 'app/admin/Partials/addRank.html',
+                controller: 'addRank as vm'               
             }
         ];
 

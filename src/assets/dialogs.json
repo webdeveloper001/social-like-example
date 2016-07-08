@@ -22,5 +22,9 @@
     "dialog.answerDuplicated.title": "Answer already exists.",
     "dialog.answerDuplicated.text": "This answer is already registered for this category. Use the Edit function to modify and correct any information.",
     "dialog.selectBusiness.title": "Select Business.",
-    "dialog.selectBusiness.text": "Please select the business you wish to manage."
+    "dialog.selectBusiness.text": "Please select the business you wish to manage.",
+    "dialog.rankTitle.title": "Missing data",
+    "dialog.rankTitle.text": "Please enter a valid rank title.",
+    "dialog.rankType.title": "Missing data",
+    "dialog.rankType.text": "Please enter a valid rank type."
 }

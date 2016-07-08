@@ -21,6 +21,7 @@
         vm.keywords = keywords;
         vm.views = views;
         vm.flags = flags;
+        vm.addRank = addRank;
        
        activate();
 
@@ -44,6 +45,13 @@
             $state.go('flags');
             
         }
+        
+        function addRank() {            
+
+            $state.go('addRank');
+            
+        }
+        
 
         function goBack() {
             //if ($rootScope.cCategory.id == undefined) $state.go('rankSummary', { index: $rootScope.cCategory.id });

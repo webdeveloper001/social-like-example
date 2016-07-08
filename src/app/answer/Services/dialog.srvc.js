@@ -20,6 +20,7 @@
             checkSameAnswer: checkSameAnswer,
             showSameAnswer: showSameAnswer,
             deleteType: deleteType,
+            deleteRank: deleteRank,
             url: url,
             createSpecialPreview: createSpecialPreview
         };
@@ -426,6 +427,37 @@
                     if (result) addSpecial();
                     //else callback1(answer1);
                     
+                }
+            });
+        }
+        
+        function deleteRank(deleteRank) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Confirm Delete';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Delete';
+            message = 'Just confirming, do you want to delete?';
+         
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_DANGER,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-primary',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();                   
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) deleteRank();
                 }
             });
         }
