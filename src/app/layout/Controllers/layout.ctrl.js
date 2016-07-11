@@ -2,16 +2,16 @@
     'use strict';
 
     angular
-        .module('app') 
-        
-    /*['ngAnimate',
-        'ngCookies',
-        'ngResource',
-        'ngRoute',
-        'ngSanitize',
-        'ngTouch',
-        'pascalprecht.translate',
-        'tmh.dynamicLocale'])*/
+        .module('app')
+
+        /*['ngAnimate',
+         'ngCookies',
+         'ngResource',
+         'ngRoute',
+         'ngSanitize',
+         'ngTouch',
+         'pascalprecht.translate',
+         'tmh.dynamicLocale'])*/
 
         .controller('layout', layout);
 
@@ -34,15 +34,28 @@
 
             $timeout(loadingDone, 1000);
             console.log("Layout Loaded!");
-            
+
         }
+
         function loadingDone() {
             vm.isLoading = false;
         }
-        
-        function searchRank(){
+
+        function searchRank() {
             $rootScope.sval = vm.val;
             $rootScope.$emit('searchRank');
-        }      
+        }
+
+        /**
+         * Set selected city
+         * Now you can use $rootScope.selectCity variable anywhere to load city specific data.
+         * i.e if you want to load ranks from particular city having table rank-la.
+         * so you will get la from $rootScope.selectCity.code
+         * @param city
+         */
+        $rootScope.selectCity = function (city) {
+            $rootScope.selectedCity = city;
+            closeModal("#selectCityModal");
+        }
     }
 })();
