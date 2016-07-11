@@ -51,7 +51,7 @@
         var imageLinks = [];
         vm.linkIdx = 0;
         vm.numLinks = 0;
-        vm.imageCommand = 'image.changeImage';
+        vm.imageCommand = 'Change Image';
         var attNum = 1;
         vm.imagefunctions = 'none';
         vm.emptyarray=[];
@@ -99,6 +99,11 @@
                 
                 vm.fields.push(publicfield_obj);
             }
+            
+            for (var i = 0; i < vm.fields.length; i++){
+                vm.fields[i].val = vm.fields[i].cval; 
+            }
+            
             console.log("fields  ",vm.fields);
             
         }
@@ -500,7 +505,7 @@
             vm.numLinks = imageLinks.length;
             attNum++;
             if (vm.numLinks > 10 || attNum > 4) vm.searchDisabled = 'disabled';
-            if (attNum > 1) vm.imageCommand = 'image.moreImages'; 
+            if (attNum > 1) vm.imageCommand = 'Load More Images'; 
                 
             vm.linkIdx = 0;
 

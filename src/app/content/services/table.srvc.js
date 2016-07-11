@@ -115,6 +115,7 @@
                     case "tags": data.tags = val[i]; break;
                     case "keywords": data.keywords = val[i]; break;
                     case "type": data.type = val[i]; break;
+                    case "question": data.question = val[i]; break;
                 }
             }
             //console.log("data", data);
@@ -138,6 +139,7 @@
                     case "tags": $rootScope.content[idx].tags = val[i]; break;
                     case "keywords": $rootScope.content[idx].keywords = val[i]; break;
                     case "type": $rootScope.content[idx].type = val[i]; break;
+                    case "question": $rootScope.content[idx].question = val[i]; break;
                 }
             }                        
             

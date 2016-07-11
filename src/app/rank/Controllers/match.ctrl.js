@@ -59,7 +59,6 @@
 
         function activate() {
             
-            getQuestion();
             getmatchIndexes();
             createRandomIndexArray();
             getAnswers();
@@ -188,19 +187,6 @@
             
             vm.fields = $rootScope.fields;
   
-        }
-        
-        function getQuestion(){
-            
-            switch(vm.type){
-                case 'Person': { vm.question = 'Who ranks higher?'; break; }
-                case 'Establishment': { vm.question = 'Which one you recommend?'; break; }
-                case 'Place': { vm.question = 'Where would you go?'; break; }
-                case 'Activity': { vm.question = 'What would you rather do?'; break; }
-                case 'Short-Phrase': { vm.question = 'What is more accurate?'; break; }
-                case 'Organization': { vm.question = 'Which one you recommend?'; break; }
-                case 'Event': { vm.question = 'What would you rather do?'; break; }
-            }
         }
         
         function closeRank() {

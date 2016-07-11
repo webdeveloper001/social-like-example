@@ -28,7 +28,7 @@
         var imageLinks = [];
         vm.linkIdx = 0;
         vm.numLinks = 0;
-        vm.imageCommand = 'image.loadImages';
+        vm.imageCommand = 'Load images';
         vm.searchDisabled = '';
         var attNum = 1;
         vm.imagefunctions = 'none';
@@ -223,7 +223,7 @@
             vm.numLinks = imageLinks.length;
             attNum++;
             if (vm.numLinks > 10 || attNum >= 4) vm.searchDisabled = 'disabled';
-            if (attNum > 1) vm.imageCommand = 'image.moreImages';
+            if (attNum > 1) vm.imageCommand = 'More images';
             vm.linkIdx = 0;
 
             vm.imageURL = imageLinks[vm.linkIdx];

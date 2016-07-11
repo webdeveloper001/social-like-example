@@ -41,6 +41,7 @@
             vm.tags = $rootScope.cCategory.tags;
             vm.keywords = $rootScope.cCategory.keywords;
             vm.type = $rootScope.cCategory.type;
+            vm.question = $rootScope.cCategory.question;
   
         }
         
@@ -49,8 +50,8 @@
         }
         
         function goEdit(){
-            
-            var item = $rootScope.cCategory;
+                        
+            var item = JSON.parse(JSON.stringify($rootScope.cCategory));
             var fields = [];
             var vals = [];
             //if title change
@@ -72,6 +73,11 @@
             if (item.type != vm.type) {
                 fields.push('type');
                 vals.push(vm.type);
+            }
+            //if type change
+            if (item.question != vm.question) {
+                fields.push('question');
+                vals.push(vm.question);
             }
             table.update(item.id, fields, vals);
         }

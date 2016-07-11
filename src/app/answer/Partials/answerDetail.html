@@ -26,8 +26,8 @@
     </div>
     <br style="display:{{vm.answer.addinfo ? 'inline':'none'}}">
     <div class="col-md-6 col-lg-6">
-        <br style="display:{{vm.answer.addinfo ? 'inline':'none'}}">
-        <p>{{vm.answer.addinfo}}</p>
+        <!--<br style="display:{{vm.answer.addinfo ? 'inline':'none'}}">-->
+        <p style="display:{{vm.type == 'Short-Phrase' ? 'none':'inline'}}">{{vm.answer.addinfo}}</p>
         <br style="display:{{vm.answer.addinfo ? 'inline':'none'}}">
         <img class="displayed" src="{{vm.answer.imageurl}}" alt="Moustiers Sainte Marie" style="width:100%;height:300px" ng-click="vm.showUrl()"
         ng-show="{{vm.type != 'Short-Phrase'}}">

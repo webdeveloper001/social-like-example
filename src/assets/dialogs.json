@@ -26,5 +26,7 @@
     "dialog.rankTitle.title": "Missing data",
     "dialog.rankTitle.text": "Please enter a valid rank title.",
     "dialog.rankType.title": "Missing data",
-    "dialog.rankType.text": "Please enter a valid rank type."
+    "dialog.rankType.text": "Please enter a valid rank type.",
+    "dialog.rankQuestion.title": "Missing data",
+    "dialog.rankQuestion.text": "Please enter a valid rank question."
 }

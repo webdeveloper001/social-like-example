@@ -5,7 +5,7 @@
         .module('app')
         .controller('content', content);
 
-    content.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope', 'answers', 'rankings', 'query','table','specials'];
+    content.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope', 'answers', 'rankings', 'query', 'table', 'specials'];
 
     function content($rootScope, $state, $http, $stateParams, $scope, answers, rankings, query, table, specials) {
         /* jshint validthis:true */
@@ -22,7 +22,7 @@
 
         vm.content = [];
         vm.emptyspace = '';
-        vm.isAdmin = false;
+        vm.isAdmin = true;
 
         $rootScope.$on('newCategory', function (e) {
             console.log("trigger");
@@ -245,8 +245,8 @@
             console.log("mode -- ", editMode);
 
         }
-        
-        function applyRule(){
+
+        function applyRule() {
             console.log("apply Rule");
             
             /*
@@ -255,15 +255,63 @@
                 var tags = vm.resultsT[i].tags + ' beer';
                 table.update(vm.resultsT[i].id, ['tags'],[tags]);
             } 
-            
+            */
+            /*
             //Use this to remove a tag
             for (var i=0; i < vm.resultsT.length; i++){
-                var tags = vm.resultsT[i].tags.replace("beauty ","hair cut men grooming ");
+                var titlex = vm.resultsT[i].title.replace("places for coffee and studying/working","places with WiFi good for working or studying");
+                var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
                 //console.log("tags ", tags);
-                table.update(vm.resultsT[i].id, ['tags'],[tags]);
+                table.update(vm.resultsT[i].id, ['title','tags'],[titlex, tagsx]);
             } 
             */
-                     
+            /*
+            //Use this to add a neighborhood
+            for (var i=0; i < vm.resultsT.length; i++){
+                
+                //Copy object without reference
+                var tablex = JSON.parse(JSON.stringify(vm.resultsT[i]));
+                tablex.id = undefined;
+                var newtitle = tablex.title.replace("Hillcrest", "Point Loma");
+                tablex.title = newtitle;
+                //console.log("tags ", tags);
+                table.addTable(tablex);
+            }
+              */
+               
+            //Use this to add a ranking to all neighborhood
+            /*
+            for (var i=0; i < vm.resultsT.length; i++){
+                
+                //Copy object without reference
+                var tablex = JSON.parse(JSON.stringify(vm.resultsT[i]));
+                tablex.id = undefined;
+                var newtitle = tablex.title.replace("for coffee and studying/working", "to have breakfast or brunch");
+                tablex.title = newtitle;
+                var newtags = tablex.tags.replace("tea", "food pancakes");
+                tablex.tags = newtags;
+                //console.log("tags ", tags);
+                table.addTable(tablex);
+            }
+                */     
+            //Master change
+            /*
+            
+            var question = '';
+            for (var i = 0; i < $rootScope.content.length; i++) {
+
+                switch ($rootScope.content[i].type) {
+                    case 'Person': { question = 'Who ranks higher?'; break; }
+                    case 'Establishment': { question = 'Which one you recommend?'; break; }
+                    case 'Place': { question = 'Where would you go?'; break; }
+                    case 'Activity': { question = 'What would you rather do?'; break; }
+                    case 'Short-Phrase': { question = 'What is more accurate?'; break; }
+                    case 'Organization': { question = 'Which one you recommend?'; break; }
+                    case 'Event': { question = 'What would you rather do?'; break; }
+                }
+                table.update($rootScope.content[i].id,['question'],[question]);
+            }
+            */
         }
 
     }

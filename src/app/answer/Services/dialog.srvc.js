@@ -115,7 +115,7 @@
                         break;
                     }
                     case "addinfo": {
-                        if (answer.addinfo) newline = '<strong class="capitalize">' + 'Additional Info' + 'b</strong>: ' + answer.addinfo + '</br>';
+                        if (answer.addinfo) newline = '<strong class="capitalize">' + 'Additional Info' + '</strong>: ' + answer.addinfo + '</br>';
                         else newline = '<strong>' + 'Additional Info' + '</strong>: ' + '' + '</br>';
                         break;
                     }
