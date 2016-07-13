@@ -122,11 +122,9 @@
             for (var i=0; i<field.length; i++){
                 switch (field[i]){
                     case "name": data.name = val[i]; break;
-                    case "nickname": data.nickname = val[i]; break;
-                    case "country": data.name = val[i]; break;
-                    case "club": data.club = val[i]; break;
-                    case "upV": data.upV = val[i]; break;
-                    case "downV": data.downV = val[i]; break;
+                    case "addinfo": data.addinfo = val[i]; break;
+                    case "cityarea": data.cityarea = val[i]; break;
+                    case "location": data.location = val[i]; break;
                     case "image": data.imageurl = val[i]; break;
                     case "views": data.views = val[i]; break;
                 }
@@ -141,11 +139,9 @@
             for (var i=0; i<field.length; i++){
                 switch (field[i]){
                     case "name": $rootScope.canswers[idx].name = val[i]; break;
-                    case "nickname": $rootScope.canswers[idx].nickname = val[i]; break;
-                    case "country": $rootScope.canswers[idx].name = val[i]; break;
-                    case "club": $rootScope.canswers[idx].club = val[i]; break;
-                    case "upV": $rootScope.canswers[idx].upV = val[i]; break;
-                    case "downV": $rootScope.canswers[idx].downV = val[i]; break;
+                    case "addinfo": $rootScope.canswers[idx].addinfo = val[i]; break;
+                    case "cityarea": $rootScope.canswers[idx].cityarea = val[i]; break;
+                    case "location": $rootScope.canswers[idx].location = val[i]; break;
                     case "image": $rootScope.canswers[idx].imageurl = val[i]; break;
                     case "views": $rootScope.canswers[idx].views = val[i]; break;
                 }

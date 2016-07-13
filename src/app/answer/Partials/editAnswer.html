@@ -23,7 +23,14 @@
 <div class="row">
     <div class="col-sm-12 col-md-6">
         <div class="">
-            <img class="displayed-uc" src="{{vm.imageURL}}" alt="{{image.errorLoading}}" style="width:100%; max-height:300px">
+            <img class="displayed-uc" src="{{vm.imageURL}}" alt="{{image.errorLoading}}" style="width:100%; max-height:300px" 
+            ng-show="{{vm.type != 'Short-Phrase'}}">
+        </div>
+         <div class="container-answer" style="width:100%; max-height:300px;" ng-show="{{vm.type == 'Short-Phrase'}}">
+            <br>
+            <h2 style="text-align:center"><strong>{{vm.answer.name}}</strong></h2>
+            <br>
+            <h4 style="text-align:center">{{vm.answer.addinfo}}</h4>
         </div>
         <br>
         <button type="submit" class="btn btn-primary" ng-click="vm.editImage()">{{vm.imageCommand}}</button>

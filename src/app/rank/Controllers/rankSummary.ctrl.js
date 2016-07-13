@@ -26,6 +26,7 @@
         vm.closeRank = closeRank;
         vm.rankOverall = rankOverall;
         vm.rankPersonal = rankPersonal;
+        vm.closeAddInfoMsg = closeAddInfoMsg;
 
         vm.selOverall = 'active';
         vm.selPersonal = '';
@@ -40,7 +41,9 @@
         var answersFull = false;
 
         $rootScope.userHasRank = false;
-        $rootScope.userActRecId = 0;        
+        $rootScope.userActRecId = 0;
+        if ($rootScope.addInfoMsgAck)  vm.addInfoMsgAck = $rootScope.addInfoMsgAck;
+        else (vm.addInfoMsgAck = false);
         
         //TODO: Would like to add this abstract template, but dont know how         
         $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
@@ -296,6 +299,11 @@
         
         function closeRank() {
                 $rootScope.$emit('closeRank');                            
+        }
+        
+        function closeAddInfoMsg(){
+            $rootScope.addInfoMsgAck = true;
+            vm.addInfoMsgAck =true;
         }
 
     }

@@ -33,14 +33,11 @@
     <div class="text-right col-sm-6 col-md-6 ">
         <!-- <h4>Contributors: <b style="color:blue; "><i>4563</i></b></h4> -->
         <!-- Twitter -->
-        <a href="http://twitter.com/home?status=" title="Share in Twitter"
-     target="_blank " class="btn btn-twitter "><i class="fa fa-twitter "></i> Twitter</a>
+        <a href="http://twitter.com/home?status=" title="Share in Twitter" target="_blank " class="btn btn-twitter "><i class="fa fa-twitter "></i> Twitter</a>
         <!-- Facebook -->
-        <a href="https://www.facebook.com/sharer/sharer.php " title="Share in Facebook" 
-     target="_blank " class="btn btn-facebook "><i class="fa fa-facebook "></i> Facebook</a>
+        <a href="https://www.facebook.com/sharer/sharer.php " title="Share in Facebook" target="_blank " class="btn btn-facebook "><i class="fa fa-facebook "></i> Facebook</a>
         <!-- Google+ -->
-        <a href="https://plus.google.com/share?url=" title="Share in Google+"
-     target="_blank " class="btn btn-googleplus "><i class="fa fa-google-plus "></i> Google+</a>
+        <a href="https://plus.google.com/share?url=" title="Share in Google+" target="_blank " class="btn btn-googleplus "><i class="fa fa-google-plus "></i> Google+</a>
     </div>
 </div>
 <div class="text-center ">
@@ -70,7 +67,18 @@
             </tr>
         </tbody>
 </table>
-<button ng-click="vm.addAnswer() " class="btn btn-primary ">+</button>
+<div class="row">
+    <div class="col-sm-1">
+        <a class="btn btn-primary" ng-click="vm.addAnswer() " class="btn btn-primary ">+</a>
+    </div>
+    <div class="col-sm-11" style="display:{{vm.addInfoMsgAck == false ? 'inline':'none'}}">
+        <div class="alert alert-warning" style="padding-top: 5px;padding-bottom: 5px;">
+            <a class="close" data-dismiss="alert" aria-label="close" ng-click="vm.closeAddInfoMsg()">&times;</a>
+            <span class="glyphicon glyphicon-arrow-left"></span><strong>&nbsp;&nbsp;Are we missing one?</strong>&nbsp;&nbsp;Use the '+' button to add
+            a new answer.
+        </div>
+    </div>
+</div>
 
 <!-- <a ui-sref="match " class="btn btn-success ">{{"rankSummary.GoRank " | translate}}</a> -->
 <br>

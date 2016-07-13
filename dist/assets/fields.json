@@ -1,0 +1,60 @@
+[
+ {
+   "type":"Place",
+   "fields": [
+     {"name":"name","isrequired":true,"label":"Name of Place"},
+	   {"name":"location","isrequired":false,"label":"Location"},
+	   {"name":"cityarea","isrequired":true,"label":"Neighborhood"},
+     {"name":"addinfo","isrequired":false,"label":"Additional Info"}   
+   ]   
+ },
+ {
+   "type":"Person",
+   "fields": [
+	   {"name":"name","isrequired":true,"label":"Name"},
+	   {"name":"addinfo","isrequired":false,"label":"Additional Info"}
+   ]   
+ },
+ {
+   "type":"Event",
+   "fields": [
+	   {"name":"name","isrequired":true,"label":"Name of Event"},
+	   {"name":"cityarea","isrequired":true,"label":"Neighborhood"},
+	   {"name":"addinfo","isrequired":false,"label":"Additional Info"}
+   ]   
+ },
+ {
+   "type":"Organization",
+   "fields": [
+	   {"name":"name","isrequired":true,"label":"Name"},
+	   {"name":"addinfo","isrequired":false,"label":"Additional Info"}
+   ]   
+ },
+ {
+   "type":"Short-Phrase",
+   "fields": [
+	   {"name":"name","isrequired":true,"label":"Title"},
+	   {"name":"addinfo","isrequired":false,"label":"Details"}
+   ]   
+ },
+ {
+   "type":"Activity",
+   "fields": [
+     {"name":"name","isrequired":true, "label":"Activity"},
+	   {"name":"cityarea","isrequired":true, "label":"Neighborhood"},
+     {"name":"location","isrequired":false, "label":"Location"},
+	   {"name":"addinfo","isrequired":false,"label":"Additional Info"}
+   ]   
+ },
+ {
+   "type":"Establishment",
+   "fields": [
+     {"name":"name","isrequired":true, "label":"Name"},
+     {"name":"cityarea","isrequired":true, "label":"Neighborhood"},
+	   {"name":"location","isrequired":false, "label":"Location"},
+	   {"name":"addinfo","isrequired":false, "label":"Additional Info"}
+   ]   
+ }
+]
+
+

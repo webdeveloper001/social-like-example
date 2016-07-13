@@ -273,6 +273,10 @@
         }
 
         function editAgree(x, index) {
+            if ($rootScope.isAdmin){
+                dialog.editChangeEffective(vm.edits[index], index, 'approve', editEffective);
+                return;
+            }
             if ($rootScope.isLoggedIn) {
 
                 switch (x.vote) {
@@ -304,6 +308,10 @@
         }
 
         function editDisagree(x, index) {
+            if ($rootScope.isAdmin){
+                dialog.editChangeEffective(vm.edits[index], index, 'reject', editEffective);
+                return;
+            }
             if ($rootScope.isLoggedIn) {
                 switch (x.vote) {
                     case 1: {

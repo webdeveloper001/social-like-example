@@ -3,6 +3,7 @@
 
     angular.module('app', [
         // Angular modules 
+        
         'ngAnimate',
         'ngCookies',
         'ngResource',
@@ -12,11 +13,6 @@
         'ngMessages',
         'pascalprecht.translate',
         'tmh.dynamicLocale',
-        //'ngStrap',
-        
-        //'mgcrea.ngStrap.typeahead',
-        //'mgcrea.ngStrap.tooltip',
-        //'mgcrea.ngStrap.helpers.parseOptions',
 
         // Custom modules 
         'login',
@@ -25,8 +21,8 @@
         'ui.router',                 // state provider
         'ui.bootstrap.modal',
         'mgcrea.ngStrap',
-        'color.picker',
-        '720kb.datepicker', //date picker for specials
+        //'color.picker',
+        //'720kb.datepicker', //date picker for specials
         
     ]);
 })();

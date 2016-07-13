@@ -1,0 +1,4232 @@
+[
+ {
+   "id":1,
+   "type":"Place",
+   "tags":"Basketball",
+   "title":"Where are the best places to play pick up basketball in San Diego?",
+   "keywords":"basketball",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":2,
+   "type":"Person",
+   "tags":"Basketball SDSU alumni",
+   "title":"Who are the best basketball players SDSU alumni?",
+   "keywords":"action",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":3,
+   "type":"Event",
+   "tags":"Basketball kids league fitness",
+   "title":"What are the best basketball leagues for kids in San Diego?",
+   "keywords":"activity",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":4,
+   "type":"Event",
+   "tags":"Basketball league",
+   "title":"What are the best basketball leagues for adults in San Diego?",
+   "keywords":"activity",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":5,
+   "type":"Organization",
+   "tags":"Basketball hs high school ",
+   "title":"Which San Diego high school has the best men basketball team?",
+   "keywords":"logo",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":6,
+   "type":"Organization",
+   "tags":"Basketball hs high school ",
+   "title":"Which San Diego high school has the best women basketball team?",
+   "keywords":"logo",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":7,
+   "type":"Person",
+   "tags":"football",
+   "title":"Who are the best football players to come out of San Diego?",
+   "keywords":"action",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":8,
+   "type":"Person",
+   "tags":"football",
+   "title":"Who are the best football players SDSU alumni?",
+   "keywords":"action",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":9,
+   "type":"Event",
+   "tags":"football kids  league",
+   "title":"What are the best flag-football leagues for kids in San Diego?",
+   "keywords":"activity",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":10,
+   "type":"Event",
+   "tags":"football  league",
+   "title":"What are the best flag-football leagues for adults in San Diego?",
+   "keywords":"activity",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":11,
+   "type":"Organization",
+   "tags":"football hs high school ",
+   "title":"Which San Diego high school has the best men football team?",
+   "keywords":"logo",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":12,
+   "type":"Organization",
+   "tags":"football hs high school ",
+   "title":"Which San Diego high school has the best women football team?",
+   "keywords":"logo",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":13,
+   "type":"Person",
+   "tags":"baseball",
+   "title":"Who are the best baseball players to come out of San Diego?",
+   "keywords":"action",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":14,
+   "type":"Person",
+   "tags":"baseball",
+   "title":"Who are the best baseball players SDSU alumni?",
+   "keywords":"action",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":15,
+   "type":"Event",
+   "tags":"baseball kids league",
+   "title":"What are the best baseball leagues for kids in San Diego?",
+   "keywords":"activity",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":16,
+   "type":"Event",
+   "tags":"baseball league",
+   "title":"What are the best baseball leagues for adults in San Diego?",
+   "keywords":"activity",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":17,
+   "type":"Event",
+   "tags":"baseball kids league",
+   "title":"What are the best softball leagues for kids in San Diego?",
+   "keywords":"activity",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":18,
+   "type":"Event",
+   "tags":"baseball league",
+   "title":"What are the best softball leagues for adults in San Diego?",
+   "keywords":"activity",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":19,
+   "type":"Organization",
+   "tags":"baseball hs high school ",
+   "title":"Which San Diego high school has the best men baseball team?",
+   "keywords":"logo",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":20,
+   "type":"Organization",
+   "tags":"baseball hs high school ",
+   "title":"Which San Diego high school has the best women baseball team?",
+   "keywords":"logo",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":21,
+   "type":"Event",
+   "tags":"soccer kids league",
+   "title":"What are the soccer leagues for kids in San Diego?",
+   "keywords":"activity",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":22,
+   "type":"Event",
+   "tags":"soccer league",
+   "title":"What are the best soccer leagues for adults in San Diego?",
+   "keywords":"activity",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":23,
+   "type":"Organization",
+   "tags":"soccer hs high school ",
+   "title":"Which San Diego high school has the best men soccer team?",
+   "keywords":"logo",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":24,
+   "type":"Organization",
+   "tags":"soccer hs high school ",
+   "title":"Which San Diego high school has the best women soccer team?",
+   "keywords":"logo",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":25,
+   "type":"Place",
+   "tags":"soccer",
+   "title":"What is a good place where people play soccer?",
+   "keywords":"soccer",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":26,
+   "type":"Event",
+   "tags":"basketball kids league summer camps ",
+   "title":"What are the best basketball summer camps in San Diego?",
+   "keywords":"activity",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":27,
+   "type":"Event",
+   "tags":"football kids summer camps",
+   "title":"What are the best football summer camps in San Diego?",
+   "keywords":"activity",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":28,
+   "type":"Event",
+   "tags":"soccer kids summer camps",
+   "title":"What are the best soccer summer camps in San Diego?",
+   "keywords":"activity",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":29,
+   "type":"Event",
+   "tags":"baseball kids summer camps",
+   "title":"What are the best baseball/softball summer camps in San Diego?",
+   "keywords":"activity",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":30,
+   "type":"Place",
+   "tags":"triathlon open water swim swimming adventure fitness outdoors",
+   "title":"What is the best place in San Diego to go open water swimming?",
+   "keywords":"swimming",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":31,
+   "type":"Short-Phrase",
+   "tags":"triathlon cycling bicycle ride routes paths adventure fitness outdoors",
+   "title":"What are the best routes to go cycling in San Diego?",
+   "keywords":"cycling",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":32,
+   "type":"Establishment",
+   "tags":"skateboarding extreme sports",
+   "title":"What are the best extreme sports parks in San Diego?",
+   "keywords":"skateboarding",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":33,
+   "type":"Place",
+   "tags":"extreme adventure kayak fitness outdoors",
+   "title":"What are the best place in San Diego to go kayaking?",
+   "keywords":"kayaking",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":34,
+   "type":"Establishment",
+   "tags":"bachelor party women girls babes titties breasts pussy ",
+   "title":"Which are the best strip clubs in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":35,
+   "type":"Person",
+   "tags":"real estate apartments buy house",
+   "title":"Who are the best realtors in San Diego?",
+   "keywords":"suit",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":36,
+   "type":"Place",
+   "tags":"nice beach best outdoors",
+   "title":"Which are the nicest beaches in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":37,
+   "type":"Place",
+   "tags":"surfing beach adventure begginner outdoors",
+   "title":"What are the best beaches to learn surfing in San Diego?",
+   "keywords":"surfing",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":38,
+   "type":"Place",
+   "tags":"surfing beach adventure surf spots outdoors",
+   "title":"What are the best beaches for advance surfers in San Diego?",
+   "keywords":"surfing",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":39,
+   "type":"Establishment",
+   "tags":"nightlife bars sports ",
+   "title":"Which are the best sport bars in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":40,
+   "type":"Place",
+   "tags":"women girls babes dating",
+   "title":"Where can you find the most beautiful women in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":41,
+   "type":"Place",
+   "tags":"men dating",
+   "title":"Where can you find the most handsome men in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":42,
+   "type":"Place",
+   "tags":"pot drugs",
+   "title":"where you find the best weed in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":43,
+   "type":"Establishment",
+   "tags":"beer bars",
+   "title":"What are the best brewries in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":44,
+   "type":"Person",
+   "tags":"chargers football",
+   "title":"Who is your favorite Charger?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":45,
+   "type":"Short-Phrase",
+   "tags":"chargers football",
+   "title":"How far will the Chargers make it next season?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":46,
+   "type":"Person",
+   "tags":"chargers football",
+   "title":"Who has been the best ever San Diego Charger?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":47,
+   "type":"Person",
+   "tags":"baseball",
+   "title":"Who is your favorite San Diego Padres?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":48,
+   "type":"Short-Phrase",
+   "tags":"baseball",
+   "title":"How far will the Padres make it next year?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":49,
+   "type":"Short-Phrase",
+   "tags":"football",
+   "title":"What improvemens the Chargers need to make next year?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":50,
+   "type":"Short-Phrase",
+   "tags":"baseball",
+   "title":"What improvemnents the Padres need to make next year?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":51,
+   "type":"Establishment",
+   "tags":"nightlife",
+   "title":"What are the best bars in downtown San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":52,
+   "type":"Establishment",
+   "tags":"nightlife",
+   "title":"What is the best night club in downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":53,
+   "type":"Establishment",
+   "tags":"nightlife dating",
+   "title":"What are the best roof top bars in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":54,
+   "type":"Establishment",
+   "tags":"nightlife dating",
+   "title":"What is the best place to have a romantic dinner in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":55,
+   "type":"Establishment",
+   "tags":"fitness martial arts",
+   "title":"What is the best MMA gym in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":56,
+   "type":"Establishment",
+   "tags":"fitness martial arts",
+   "title":"What is the best Brazilian Jiujitsu school in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":57,
+   "type":"Establishment",
+   "tags":"fitness dating",
+   "title":"What are the best places for latin dancing in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":58,
+   "type":"Establishment",
+   "tags":"nightlife dating",
+   "title":"What are the best country bars in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":59,
+   "type":"Organization",
+   "tags":"dating",
+   "title":"Which is the best dating app for people in San Diego?",
+   "keywords":"logo",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":60,
+   "type":"Establishment",
+   "tags":"fast food italian",
+   "title":"Who makes the best pizza in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":61,
+   "type":"Establishment",
+   "tags":"fast food italian",
+   "title":"Who makes the best pizza in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":62,
+   "type":"Establishment",
+   "tags":"fast food italian",
+   "title":"Who makes the best pizza in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":63,
+   "type":"Establishment",
+   "tags":"fast food italian",
+   "title":"Who makes the best pizza in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":64,
+   "type":"Establishment",
+   "tags":"fast food italian",
+   "title":"Who makes the best pizza in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":65,
+   "type":"Establishment",
+   "tags":"fast food italian",
+   "title":"Who makes the best pizza in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":66,
+   "type":"Establishment",
+   "tags":"fast food italian",
+   "title":"Who makes the best pizza in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":67,
+   "type":"Establishment",
+   "tags":"fast food italian",
+   "title":"Who makes the best pizza in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":68,
+   "type":"Establishment",
+   "tags":"fast food italian",
+   "title":"Who makes the best pizza in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":69,
+   "type":"Establishment",
+   "tags":"fast food italian",
+   "title":"Who makes the best pizza in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":70,
+   "type":"Establishment",
+   "tags":"fast food italian",
+   "title":"Who makes the best pizza in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":71,
+   "type":"Establishment",
+   "tags":"tacos quesadillas ",
+   "title":"Which is the best Mexican food restaurant in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":72,
+   "type":"Establishment",
+   "tags":"tacos quesadillas ",
+   "title":"Which is the best Mexican food restaurant in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":73,
+   "type":"Establishment",
+   "tags":"tacos quesadillas ",
+   "title":"Which is the best Mexican food restaurant in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":74,
+   "type":"Establishment",
+   "tags":"tacos quesadillas ",
+   "title":"Which is the best Mexican food restaurant in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":75,
+   "type":"Establishment",
+   "tags":"tacos quesadillas ",
+   "title":"Which is the best Mexican food restaurant in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":76,
+   "type":"Establishment",
+   "tags":"tacos quesadillas ",
+   "title":"Which is the best Mexican food restaurant in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":77,
+   "type":"Establishment",
+   "tags":"tacos quesadillas ",
+   "title":"Which is the best Mexican food restaurant in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":78,
+   "type":"Establishment",
+   "tags":"tacos quesadillas ",
+   "title":"Which is the best Mexican food restaurant in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":79,
+   "type":"Establishment",
+   "tags":"tacos quesadillas ",
+   "title":"Which is the best Mexican food restaurant in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":80,
+   "type":"Establishment",
+   "tags":"tacos quesadillas ",
+   "title":"Which is the best Mexican food restaurant in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":81,
+   "type":"Establishment",
+   "tags":"tacos quesadillas ",
+   "title":"Which is the best Mexican food restaurant in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":82,
+   "type":"Establishment",
+   "tags":"pasta pizza wine",
+   "title":"Which is the best Italian food restaurant in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":83,
+   "type":"Establishment",
+   "tags":"pasta pizza wine",
+   "title":"Which is the best Italian food restaurant in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":84,
+   "type":"Establishment",
+   "tags":"pasta pizza wine",
+   "title":"Which is the best Italian food restaurant in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":85,
+   "type":"Establishment",
+   "tags":"pasta pizza wine",
+   "title":"Which is the best Italian food restaurant in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":86,
+   "type":"Establishment",
+   "tags":"pasta pizza wine",
+   "title":"Which is the best Italian food restaurant in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":87,
+   "type":"Establishment",
+   "tags":"pasta pizza wine",
+   "title":"Which is the best Italian food restaurant in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":88,
+   "type":"Establishment",
+   "tags":"pasta pizza wine",
+   "title":"Which is the best Italian food restaurant in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":89,
+   "type":"Establishment",
+   "tags":"pasta pizza wine",
+   "title":"Which is the best Italian food restaurant in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":90,
+   "type":"Establishment",
+   "tags":"pasta pizza wine",
+   "title":"Which is the best Italian food restaurant in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":91,
+   "type":"Establishment",
+   "tags":"pasta pizza wine",
+   "title":"Which is the best Italian food restaurant in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":92,
+   "type":"Establishment",
+   "tags":"pasta pizza wine",
+   "title":"Which is the best Italian food restaurant in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":93,
+   "type":"Establishment",
+   "tags":"seafood japanese",
+   "title":"Who prepares the best Sushi in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":94,
+   "type":"Establishment",
+   "tags":"seafood japanese",
+   "title":"Who prepares the best Sushi in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":95,
+   "type":"Establishment",
+   "tags":"seafood japanese",
+   "title":"Who prepares the best Sushi in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":96,
+   "type":"Establishment",
+   "tags":"seafood japanese",
+   "title":"Who prepares the best Sushi in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":97,
+   "type":"Establishment",
+   "tags":"seafood japanese",
+   "title":"Who prepares the best Sushi in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":98,
+   "type":"Establishment",
+   "tags":"seafood japanese",
+   "title":"Who prepares the best Sushi in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":99,
+   "type":"Establishment",
+   "tags":"seafood japanese",
+   "title":"Who prepares the best Sushi in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":100,
+   "type":"Establishment",
+   "tags":"seafood japanese",
+   "title":"Who prepares the best Sushi in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":101,
+   "type":"Establishment",
+   "tags":"seafood japanese",
+   "title":"Who prepares the best Sushi in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":102,
+   "type":"Establishment",
+   "tags":"seafood japanese",
+   "title":"Who prepares the best Sushi in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":103,
+   "type":"Establishment",
+   "tags":"seafood japanese",
+   "title":"Who prepares the best Sushi in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":104,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Where can you find the best Hamburgers in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":105,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Where can you find the best Hamburgers in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":106,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Where can you find the best Hamburgers in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":107,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Where can you find the best Hamburgers in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":108,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Where can you find the best Hamburgers in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":109,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Where can you find the best Hamburgers in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":110,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Where can you find the best Hamburgers in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":111,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Where can you find the best Hamburgers in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":112,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Where can you find the best Hamburgers in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":113,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Where can you find the best Hamburgers in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":114,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Where can you find the best Hamburgers in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":115,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best french fries in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":116,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best french fries in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":117,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best french fries in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":118,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best french fries in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":119,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best french fries in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":120,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best french fries in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":121,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best french fries in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":122,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best french fries in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":123,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best french fries in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":124,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best french fries in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":125,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best french fries in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":126,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best sweet potato fries in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":127,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best sweet potato fries in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":128,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best sweet potato fries in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":129,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best sweet potato fries in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":130,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best sweet potato fries in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":131,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best sweet potato fries in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":132,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best sweet potato fries in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":133,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best sweet potato fries in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":134,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best sweet potato fries in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":135,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best sweet potato fries in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":136,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who makes the best sweet potato fries in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":137,
+   "type":"Establishment",
+   "tags":"thai vietnamese korean chinese japanese noodles",
+   "title":"Which is the best Asian food restaurant in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":138,
+   "type":"Establishment",
+   "tags":"thai vietnamese korean chinese japanese noodles",
+   "title":"Which is the best Asian food restaurant in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":139,
+   "type":"Establishment",
+   "tags":"thai vietnamese korean chinese japanese noodles",
+   "title":"Which is the best Asian food restaurant in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":140,
+   "type":"Establishment",
+   "tags":"thai vietnamese korean chinese japanese noodles",
+   "title":"Which is the best Asian food restaurant in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":141,
+   "type":"Establishment",
+   "tags":"thai vietnamese korean chinese japanese noodles",
+   "title":"Which is the best Asian food restaurant in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":142,
+   "type":"Establishment",
+   "tags":"thai vietnamese korean chinese japanese noodles",
+   "title":"Which is the best Asian food restaurant in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":143,
+   "type":"Establishment",
+   "tags":"thai vietnamese korean chinese japanese noodles",
+   "title":"Which is the best Asian food restaurant in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":144,
+   "type":"Establishment",
+   "tags":"thai vietnamese korean chinese japanese noodles",
+   "title":"Which is the best Asian food restaurant in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":145,
+   "type":"Establishment",
+   "tags":"thai vietnamese korean chinese japanese noodles",
+   "title":"Which is the best Asian food restaurant in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":146,
+   "type":"Establishment",
+   "tags":"thai vietnamese korean chinese japanese noodles",
+   "title":"Which is the best Asian food restaurant in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":147,
+   "type":"Establishment",
+   "tags":"thai vietnamese korean chinese japanese noodles",
+   "title":"Which is the best Asian food restaurant in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":148,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Which is the best Mediterranean / Greek restaurant in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":149,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Which is the best Mediterranean / Greek restaurant in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":150,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Which is the best Mediterranean / Greek restaurant in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":151,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Which is the best Mediterranean / Greek restaurant in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":152,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Which is the best Mediterranean / Greek restaurant in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":153,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Which is the best Mediterranean / Greek restaurant in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":154,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Which is the best Mediterranean / Greek restaurant in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":155,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Which is the best Mediterranean / Greek restaurant in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":156,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Which is the best Mediterranean / Greek restaurant in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":157,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Which is the best Mediterranean / Greek restaurant in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":158,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Which is the best Mediterranean / Greek restaurant in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":159,
+   "type":"Establishment",
+   "tags":"meat",
+   "title":"Who prepares the best steaks in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":160,
+   "type":"Establishment",
+   "tags":"meat",
+   "title":"Who prepares the best steaks in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":161,
+   "type":"Establishment",
+   "tags":"meat",
+   "title":"Who prepares the best steaks in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":162,
+   "type":"Establishment",
+   "tags":"meat",
+   "title":"Who prepares the best steaks in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":163,
+   "type":"Establishment",
+   "tags":"meat",
+   "title":"Who prepares the best steaks in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":164,
+   "type":"Establishment",
+   "tags":"meat",
+   "title":"Who prepares the best steaks in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":165,
+   "type":"Establishment",
+   "tags":"meat",
+   "title":"Who prepares the best steaks in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":166,
+   "type":"Establishment",
+   "tags":"meat",
+   "title":"Who prepares the best steaks in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":167,
+   "type":"Establishment",
+   "tags":"meat",
+   "title":"Who prepares the best steaks in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":168,
+   "type":"Establishment",
+   "tags":"meat",
+   "title":"Who prepares the best steaks in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":169,
+   "type":"Establishment",
+   "tags":"meat",
+   "title":"Who prepares the best steaks in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":170,
+   "type":"Establishment",
+   "tags":"mexican ",
+   "title":"Who makes the best tacos in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":171,
+   "type":"Establishment",
+   "tags":"mexican ",
+   "title":"Who makes the best tacos in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":172,
+   "type":"Establishment",
+   "tags":"mexican ",
+   "title":"Who makes the best tacos in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":173,
+   "type":"Establishment",
+   "tags":"mexican ",
+   "title":"Who makes the best tacos in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":174,
+   "type":"Establishment",
+   "tags":"mexican ",
+   "title":"Who makes the best tacos in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":175,
+   "type":"Establishment",
+   "tags":"mexican ",
+   "title":"Who makes the best tacos in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":176,
+   "type":"Establishment",
+   "tags":"mexican ",
+   "title":"Who makes the best tacos in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":177,
+   "type":"Establishment",
+   "tags":"mexican ",
+   "title":"Who makes the best tacos in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":178,
+   "type":"Establishment",
+   "tags":"mexican ",
+   "title":"Who makes the best tacos in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":179,
+   "type":"Establishment",
+   "tags":"mexican ",
+   "title":"Who makes the best tacos in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":180,
+   "type":"Establishment",
+   "tags":"mexican ",
+   "title":"Who makes the best tacos in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":181,
+   "type":"Establishment",
+   "tags":"african korean iranian persian arabic argentinian brazilian food",
+   "title":"Which are the best Ethnic restaurants in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":182,
+   "type":"Establishment",
+   "tags":"african korean iranian persian arabic argentinian brazilian food",
+   "title":"Which are the best Ethnic restaurants in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":183,
+   "type":"Establishment",
+   "tags":"african korean iranian persian arabic argentinian brazilian food",
+   "title":"Which are the best Ethnic restaurants in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":184,
+   "type":"Establishment",
+   "tags":"african korean iranian persian arabic argentinian brazilian food",
+   "title":"Which are the best Ethnic restaurants in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":185,
+   "type":"Establishment",
+   "tags":"african korean iranian persian arabic argentinian brazilian food",
+   "title":"Which are the best Ethnic restaurants in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":186,
+   "type":"Establishment",
+   "tags":"african korean iranian persian arabic argentinian brazilian food",
+   "title":"Which are the best Ethnic restaurants in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":187,
+   "type":"Establishment",
+   "tags":"african korean iranian persian arabic argentinian brazilian food",
+   "title":"Which are the best Ethnic restaurants in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":188,
+   "type":"Establishment",
+   "tags":"african korean iranian persian arabic argentinian brazilian food",
+   "title":"Which are the best Ethnic restaurants in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":189,
+   "type":"Establishment",
+   "tags":"african korean iranian persian arabic argentinian brazilian food",
+   "title":"Which are the best Ethnic restaurants in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":190,
+   "type":"Establishment",
+   "tags":"african korean iranian persian arabic argentinian brazilian food",
+   "title":"Which are the best Ethnic restaurants in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":191,
+   "type":"Establishment",
+   "tags":"african korean iranian persian arabic argentinian brazilian food",
+   "title":"Which are the best Ethnic restaurants in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":192,
+   "type":"Establishment",
+   "tags":"veggie vegans",
+   "title":"Which restaurant has best options for vegetarians in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":193,
+   "type":"Establishment",
+   "tags":"veggie vegans",
+   "title":"Which restaurant has best options for vegetarians in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":194,
+   "type":"Establishment",
+   "tags":"veggie vegans",
+   "title":"Which restaurant has best options for vegetarians in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":195,
+   "type":"Establishment",
+   "tags":"veggie vegans",
+   "title":"Which restaurant has best options for vegetarians in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":196,
+   "type":"Establishment",
+   "tags":"veggie vegans",
+   "title":"Which restaurant has best options for vegetarians in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":197,
+   "type":"Establishment",
+   "tags":"veggie vegans",
+   "title":"Which restaurant has best options for vegetarians in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":198,
+   "type":"Establishment",
+   "tags":"veggie vegans",
+   "title":"Which restaurant has best options for vegetarians in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":199,
+   "type":"Establishment",
+   "tags":"veggie vegans",
+   "title":"Which restaurant has best options for vegetarians in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":200,
+   "type":"Establishment",
+   "tags":"veggie vegans",
+   "title":"Which restaurant has best options for vegetarians in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":201,
+   "type":"Establishment",
+   "tags":"veggie vegans",
+   "title":"Which restaurant has best options for vegetarians in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":202,
+   "type":"Establishment",
+   "tags":"veggie vegans",
+   "title":"Which restaurant has best options for vegetarians in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":203,
+   "type":"Establishment",
+   "tags":"alcohol drinks bars",
+   "title":"Who prepares the best margaritas in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":204,
+   "type":"Establishment",
+   "tags":"alcohol drinks bars",
+   "title":"Who prepares the best margaritas in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":205,
+   "type":"Establishment",
+   "tags":"alcohol drinks bars",
+   "title":"Who prepares the best margaritas in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":206,
+   "type":"Establishment",
+   "tags":"alcohol drinks bars",
+   "title":"Who prepares the best margaritas in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":207,
+   "type":"Establishment",
+   "tags":"alcohol drinks bars",
+   "title":"Who prepares the best margaritas in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":208,
+   "type":"Establishment",
+   "tags":"alcohol drinks bars",
+   "title":"Who prepares the best margaritas in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":209,
+   "type":"Establishment",
+   "tags":"alcohol drinks bars",
+   "title":"Who prepares the best margaritas in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":210,
+   "type":"Establishment",
+   "tags":"alcohol drinks bars",
+   "title":"Who prepares the best margaritas in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":211,
+   "type":"Establishment",
+   "tags":"alcohol drinks bars",
+   "title":"Who prepares the best margaritas in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":212,
+   "type":"Establishment",
+   "tags":"alcohol drinks bars",
+   "title":"Who prepares the best margaritas in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":213,
+   "type":"Establishment",
+   "tags":"alcohol drinks bars",
+   "title":"Who prepares the best margaritas in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":214,
+   "type":"Establishment",
+   "tags":"fine dining fancy elegant",
+   "title":"What are the best fine dining restaurants inSan Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":215,
+   "type":"Establishment",
+   "tags":"fine dining fancy elegant",
+   "title":"What are the best fine dining restaurants inDowntown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":216,
+   "type":"Establishment",
+   "tags":"fine dining fancy elegant",
+   "title":"What are the best fine dining restaurants inLa Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":217,
+   "type":"Establishment",
+   "tags":"fine dining fancy elegant",
+   "title":"What are the best fine dining restaurants inPacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":218,
+   "type":"Establishment",
+   "tags":"fine dining fancy elegant",
+   "title":"What are the best fine dining restaurants inHillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":219,
+   "type":"Establishment",
+   "tags":"fine dining fancy elegant",
+   "title":"What are the best fine dining restaurants inUniversity Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":220,
+   "type":"Establishment",
+   "tags":"fine dining fancy elegant",
+   "title":"What are the best fine dining restaurants inOld Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":221,
+   "type":"Establishment",
+   "tags":"fine dining fancy elegant",
+   "title":"What are the best fine dining restaurants inDel Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":222,
+   "type":"Establishment",
+   "tags":"fine dining fancy elegant",
+   "title":"What are the best fine dining restaurants inOcean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":223,
+   "type":"Establishment",
+   "tags":"fine dining fancy elegant",
+   "title":"What are the best fine dining restaurants inNorth Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":224,
+   "type":"Establishment",
+   "tags":"fine dining fancy elegant",
+   "title":"What are the best fine dining restaurants inMission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":225,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who prepares the best smoothies in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":226,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who prepares the best smoothies in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":227,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who prepares the best smoothies in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":228,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who prepares the best smoothies in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":229,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who prepares the best smoothies in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":230,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who prepares the best smoothies in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":231,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who prepares the best smoothies in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":232,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who prepares the best smoothies in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":233,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who prepares the best smoothies in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":234,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who prepares the best smoothies in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":235,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who prepares the best smoothies in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":236,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who makes the best natural juices in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":237,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who makes the best natural juices in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":238,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who makes the best natural juices in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":239,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who makes the best natural juices in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":240,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who makes the best natural juices in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":241,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who makes the best natural juices in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":242,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who makes the best natural juices in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":243,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who makes the best natural juices in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":244,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who makes the best natural juices in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":245,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who makes the best natural juices in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":246,
+   "type":"Establishment",
+   "tags":"juices energy drinks natural healthy",
+   "title":"Who makes the best natural juices in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":247,
+   "type":"Establishment",
+   "tags":"ice cream gelato",
+   "title":"Where can you get the best ice cream in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":248,
+   "type":"Establishment",
+   "tags":"ice cream gelato",
+   "title":"Where can you get the best ice cream in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":249,
+   "type":"Establishment",
+   "tags":"ice cream gelato",
+   "title":"Where can you get the best ice cream in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":250,
+   "type":"Establishment",
+   "tags":"ice cream gelato",
+   "title":"Where can you get the best ice cream in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":251,
+   "type":"Establishment",
+   "tags":"ice cream gelato",
+   "title":"Where can you get the best ice cream in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":252,
+   "type":"Establishment",
+   "tags":"ice cream gelato",
+   "title":"Where can you get the best ice cream in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":253,
+   "type":"Establishment",
+   "tags":"ice cream gelato",
+   "title":"Where can you get the best ice cream in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":254,
+   "type":"Establishment",
+   "tags":"ice cream gelato",
+   "title":"Where can you get the best ice cream in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":255,
+   "type":"Establishment",
+   "tags":"ice cream gelato",
+   "title":"Where can you get the best ice cream in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":256,
+   "type":"Establishment",
+   "tags":"ice cream gelato",
+   "title":"Where can you get the best ice cream in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":257,
+   "type":"Establishment",
+   "tags":"ice cream gelato",
+   "title":"Where can you get the best ice cream in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":258,
+   "type":"Establishment",
+   "tags":"fish oysters shrimp ",
+   "title":"Which restaurant has the best seafood in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":259,
+   "type":"Establishment",
+   "tags":"fish oysters shrimp ",
+   "title":"Which restaurant has the best seafood in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":260,
+   "type":"Establishment",
+   "tags":"fish oysters shrimp ",
+   "title":"Which restaurant has the best seafood in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":261,
+   "type":"Establishment",
+   "tags":"fish oysters shrimp ",
+   "title":"Which restaurant has the best seafood in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":262,
+   "type":"Establishment",
+   "tags":"fish oysters shrimp ",
+   "title":"Which restaurant has the best seafood in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":263,
+   "type":"Establishment",
+   "tags":"fish oysters shrimp ",
+   "title":"Which restaurant has the best seafood in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":264,
+   "type":"Establishment",
+   "tags":"fish oysters shrimp ",
+   "title":"Which restaurant has the best seafood in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":265,
+   "type":"Establishment",
+   "tags":"fish oysters shrimp ",
+   "title":"Which restaurant has the best seafood in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":266,
+   "type":"Establishment",
+   "tags":"fish oysters shrimp ",
+   "title":"Which restaurant has the best seafood in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":267,
+   "type":"Establishment",
+   "tags":"fish oysters shrimp ",
+   "title":"Which restaurant has the best seafood in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":268,
+   "type":"Establishment",
+   "tags":"fish oysters shrimp ",
+   "title":"Which restaurant has the best seafood in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":269,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"Who prepares the best coffee in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":270,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"Who prepares the best coffee in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":271,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"Who prepares the best coffee in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":272,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"Who prepares the best coffee in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":273,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"Who prepares the best coffee in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":274,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"Who prepares the best coffee in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":275,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"Who prepares the best coffee in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":276,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"Who prepares the best coffee in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":277,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"Who prepares the best coffee in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":278,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"Who prepares the best coffee in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":279,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"Who prepares the best coffee in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":280,
+   "type":"Establishment",
+   "tags":"hindu",
+   "title":"What are the best Indian food restaurants in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":281,
+   "type":"Establishment",
+   "tags":"hindu",
+   "title":"What are the best Indian food restaurants in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":282,
+   "type":"Establishment",
+   "tags":"hindu",
+   "title":"What are the best Indian food restaurants in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":283,
+   "type":"Establishment",
+   "tags":"hindu",
+   "title":"What are the best Indian food restaurants in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":284,
+   "type":"Establishment",
+   "tags":"hindu",
+   "title":"What are the best Indian food restaurants in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":285,
+   "type":"Establishment",
+   "tags":"hindu",
+   "title":"What are the best Indian food restaurants in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":286,
+   "type":"Establishment",
+   "tags":"hindu",
+   "title":"What are the best Indian food restaurants in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":287,
+   "type":"Establishment",
+   "tags":"hindu",
+   "title":"What are the best Indian food restaurants in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":288,
+   "type":"Establishment",
+   "tags":"hindu",
+   "title":"What are the best Indian food restaurants in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":289,
+   "type":"Establishment",
+   "tags":"hindu",
+   "title":"What are the best Indian food restaurants in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":290,
+   "type":"Establishment",
+   "tags":"hindu",
+   "title":"What are the best Indian food restaurants in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":291,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"What are the best places for coffee and studying/working in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":292,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"What are the best places for coffee and studying/working in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":293,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"What are the best places for coffee and studying/working in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":294,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"What are the best places for coffee and studying/working in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":295,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"What are the best places for coffee and studying/working in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":296,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"What are the best places for coffee and studying/working in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":297,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"What are the best places for coffee and studying/working in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":298,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"What are the best places for coffee and studying/working in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":299,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"What are the best places for coffee and studying/working in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":300,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"What are the best places for coffee and studying/working in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":301,
+   "type":"Establishment",
+   "tags":"tea",
+   "title":"What are the best places for coffee and studying/working in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":302,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who prepares the best chicken wings in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":303,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who prepares the best chicken wings in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":304,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who prepares the best chicken wings in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":305,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who prepares the best chicken wings in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":306,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who prepares the best chicken wings in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":307,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who prepares the best chicken wings in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":308,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who prepares the best chicken wings in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":309,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who prepares the best chicken wings in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":310,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who prepares the best chicken wings in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":311,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who prepares the best chicken wings in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":312,
+   "type":"Establishment",
+   "tags":"food",
+   "title":"Who prepares the best chicken wings in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":313,
+   "type":"Establishment",
+   "tags":"fitness health beauty",
+   "title":"Which is the best yoga studio in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":314,
+   "type":"Establishment",
+   "tags":"fitness health beauty",
+   "title":"Which is the best yoga studio in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":315,
+   "type":"Establishment",
+   "tags":"fitness health beauty",
+   "title":"Which is the best yoga studio in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":316,
+   "type":"Establishment",
+   "tags":"fitness health beauty",
+   "title":"Which is the best yoga studio in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":317,
+   "type":"Establishment",
+   "tags":"fitness health beauty",
+   "title":"Which is the best yoga studio in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":318,
+   "type":"Establishment",
+   "tags":"fitness health beauty",
+   "title":"Which is the best yoga studio in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":319,
+   "type":"Establishment",
+   "tags":"fitness health beauty",
+   "title":"Which is the best yoga studio in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":320,
+   "type":"Establishment",
+   "tags":"fitness health beauty",
+   "title":"Which is the best yoga studio in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":321,
+   "type":"Establishment",
+   "tags":"fitness health beauty",
+   "title":"Which is the best yoga studio in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":322,
+   "type":"Establishment",
+   "tags":"fitness health beauty",
+   "title":"Which is the best yoga studio in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":323,
+   "type":"Establishment",
+   "tags":"fitness health beauty",
+   "title":"Which is the best yoga studio in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":324,
+   "type":"Establishment",
+   "tags":"fitness ",
+   "title":"Which is the best gym in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":325,
+   "type":"Establishment",
+   "tags":"fitness ",
+   "title":"Which is the best gym in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":326,
+   "type":"Establishment",
+   "tags":"fitness ",
+   "title":"Which is the best gym in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":327,
+   "type":"Establishment",
+   "tags":"fitness ",
+   "title":"Which is the best gym in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":328,
+   "type":"Establishment",
+   "tags":"fitness ",
+   "title":"Which is the best gym in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":329,
+   "type":"Establishment",
+   "tags":"fitness ",
+   "title":"Which is the best gym in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":330,
+   "type":"Establishment",
+   "tags":"fitness ",
+   "title":"Which is the best gym in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":331,
+   "type":"Establishment",
+   "tags":"fitness ",
+   "title":"Which is the best gym in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":332,
+   "type":"Establishment",
+   "tags":"fitness ",
+   "title":"Which is the best gym in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":333,
+   "type":"Establishment",
+   "tags":"fitness ",
+   "title":"Which is the best gym in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":334,
+   "type":"Establishment",
+   "tags":"fitness ",
+   "title":"Which is the best gym in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":335,
+   "type":"Establishment",
+   "tags":"housing",
+   "title":"What are the best apartments in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":336,
+   "type":"Establishment",
+   "tags":"housing",
+   "title":"What are the best apartments in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":337,
+   "type":"Establishment",
+   "tags":"housing",
+   "title":"What are the best apartments in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":338,
+   "type":"Establishment",
+   "tags":"housing",
+   "title":"What are the best apartments in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":339,
+   "type":"Establishment",
+   "tags":"housing",
+   "title":"What are the best apartments in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":340,
+   "type":"Establishment",
+   "tags":"housing",
+   "title":"What are the best apartments in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":341,
+   "type":"Establishment",
+   "tags":"housing",
+   "title":"What are the best apartments in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":342,
+   "type":"Establishment",
+   "tags":"housing",
+   "title":"What are the best apartments in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":343,
+   "type":"Establishment",
+   "tags":"housing",
+   "title":"What are the best apartments in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":344,
+   "type":"Establishment",
+   "tags":"housing",
+   "title":"What are the best apartments in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":345,
+   "type":"Establishment",
+   "tags":"housing",
+   "title":"What are the best apartments in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":346,
+   "type":"Establishment",
+   "tags":"health",
+   "title":"Who are the best dentists in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":347,
+   "type":"Establishment",
+   "tags":"health",
+   "title":"Who are the best dentists in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":348,
+   "type":"Establishment",
+   "tags":"health",
+   "title":"Who are the best dentists in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":349,
+   "type":"Establishment",
+   "tags":"health",
+   "title":"Who are the best dentists in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":350,
+   "type":"Establishment",
+   "tags":"health",
+   "title":"Who are the best dentists in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":351,
+   "type":"Establishment",
+   "tags":"health",
+   "title":"Who are the best dentists in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":352,
+   "type":"Establishment",
+   "tags":"health",
+   "title":"Who are the best dentists in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":353,
+   "type":"Establishment",
+   "tags":"health",
+   "title":"Who are the best dentists in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":354,
+   "type":"Establishment",
+   "tags":"health",
+   "title":"Who are the best dentists in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":355,
+   "type":"Establishment",
+   "tags":"health",
+   "title":"Who are the best dentists in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":356,
+   "type":"Establishment",
+   "tags":"health",
+   "title":"Who are the best dentists in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":357,
+   "type":"Establishment",
+   "tags":"dogs puppy cat pets ",
+   "title":"Who are the best veterinarians in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":358,
+   "type":"Establishment",
+   "tags":"dogs puppy cat pets ",
+   "title":"Who are the best veterinarians in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":359,
+   "type":"Establishment",
+   "tags":"dogs puppy cat pets ",
+   "title":"Who are the best veterinarians in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":360,
+   "type":"Establishment",
+   "tags":"dogs puppy cat pets ",
+   "title":"Who are the best veterinarians in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":361,
+   "type":"Establishment",
+   "tags":"dogs puppy cat pets ",
+   "title":"Who are the best veterinarians in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":362,
+   "type":"Establishment",
+   "tags":"dogs puppy cat pets ",
+   "title":"Who are the best veterinarians in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":363,
+   "type":"Establishment",
+   "tags":"dogs puppy cat pets ",
+   "title":"Who are the best veterinarians in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":364,
+   "type":"Establishment",
+   "tags":"dogs puppy cat pets ",
+   "title":"Who are the best veterinarians in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":365,
+   "type":"Establishment",
+   "tags":"dogs puppy cat pets ",
+   "title":"Who are the best veterinarians in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":366,
+   "type":"Establishment",
+   "tags":"dogs puppy cat pets ",
+   "title":"Who are the best veterinarians in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":367,
+   "type":"Establishment",
+   "tags":"dogs puppy cat pets ",
+   "title":"Who are the best veterinarians in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":368,
+   "type":"Establishment",
+   "tags":"dogs puppy",
+   "title":"What are the best open places to play with your dog in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":369,
+   "type":"Establishment",
+   "tags":"dogs puppy",
+   "title":"What are the best open places to play with your dog in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":370,
+   "type":"Establishment",
+   "tags":"dogs puppy",
+   "title":"What are the best open places to play with your dog in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":371,
+   "type":"Establishment",
+   "tags":"dogs puppy",
+   "title":"What are the best open places to play with your dog in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":372,
+   "type":"Establishment",
+   "tags":"dogs puppy",
+   "title":"What are the best open places to play with your dog in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":373,
+   "type":"Establishment",
+   "tags":"dogs puppy",
+   "title":"What are the best open places to play with your dog in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":374,
+   "type":"Establishment",
+   "tags":"dogs puppy",
+   "title":"What are the best open places to play with your dog in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":375,
+   "type":"Establishment",
+   "tags":"dogs puppy",
+   "title":"What are the best open places to play with your dog in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":376,
+   "type":"Establishment",
+   "tags":"dogs puppy",
+   "title":"What are the best open places to play with your dog in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":377,
+   "type":"Establishment",
+   "tags":"dogs puppy",
+   "title":"What are the best open places to play with your dog in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":378,
+   "type":"Establishment",
+   "tags":"dogs puppy",
+   "title":"What are the best open places to play with your dog in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":379,
+   "type":"Establishment",
+   "tags":"relax massage beauty ",
+   "title":"What are the best spas in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":380,
+   "type":"Establishment",
+   "tags":"relax massage beauty ",
+   "title":"What are the best spas in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":381,
+   "type":"Establishment",
+   "tags":"relax massage beauty ",
+   "title":"What are the best spas in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":382,
+   "type":"Establishment",
+   "tags":"relax massage beauty ",
+   "title":"What are the best spas in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":383,
+   "type":"Establishment",
+   "tags":"relax massage beauty ",
+   "title":"What are the best spas in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":384,
+   "type":"Establishment",
+   "tags":"relax massage beauty ",
+   "title":"What are the best spas in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":385,
+   "type":"Establishment",
+   "tags":"relax massage beauty ",
+   "title":"What are the best spas in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":386,
+   "type":"Establishment",
+   "tags":"relax massage beauty ",
+   "title":"What are the best spas in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":387,
+   "type":"Establishment",
+   "tags":"relax massage beauty ",
+   "title":"What are the best spas in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":388,
+   "type":"Establishment",
+   "tags":"relax massage beauty ",
+   "title":"What are the best spas in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":389,
+   "type":"Establishment",
+   "tags":"relax massage beauty ",
+   "title":"What are the best spas in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":390,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best bars in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":391,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best bars in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":392,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best bars in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":393,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best bars in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":394,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best bars in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":395,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best bars in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":396,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best bars in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":397,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best bars in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":398,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best bars in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":399,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best bars in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":400,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best bars in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":401,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best nightclubs in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":402,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best nightclubs in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":403,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best nightclubs in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":404,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best nightclubs in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":405,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best nightclubs in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":406,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best nightclubs in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":407,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best nightclubs in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":408,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best nightclubs in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":409,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best nightclubs in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":410,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best nightclubs in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":411,
+   "type":"Establishment",
+   "tags":"alcohol nightlife",
+   "title":"What are the best nightclubs in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":412,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Which are the best hair salons in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":413,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Which are the best hair salons in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":414,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Which are the best hair salons in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":415,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Which are the best hair salons in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":416,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Which are the best hair salons in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":417,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Which are the best hair salons in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":418,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Which are the best hair salons in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":419,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Which are the best hair salons in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":420,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Which are the best hair salons in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":421,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Which are the best hair salons in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":422,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Which are the best hair salons in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":423,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Who are the best barbershops in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":424,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Who are the best barbershops in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":425,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Who are the best barbershops in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":426,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Who are the best barbershops in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":427,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Who are the best barbershops in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":428,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Who are the best barbershops in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":429,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Who are the best barbershops in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":430,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Who are the best barbershops in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":431,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Who are the best barbershops in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":432,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Who are the best barbershops in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":433,
+   "type":"Establishment",
+   "tags":"beauty style",
+   "title":"Who are the best barbershops in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":434,
+   "type":"Establishment",
+   "tags":"beauty",
+   "title":"What are the best places to get a pedicure in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":435,
+   "type":"Establishment",
+   "tags":"beauty",
+   "title":"What are the best places to get a pedicure in Downtown?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":436,
+   "type":"Establishment",
+   "tags":"beauty",
+   "title":"What are the best places to get a pedicure in La Jolla?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":437,
+   "type":"Establishment",
+   "tags":"beauty",
+   "title":"What are the best places to get a pedicure in Pacific Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":438,
+   "type":"Establishment",
+   "tags":"beauty",
+   "title":"What are the best places to get a pedicure in HillCrest?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":439,
+   "type":"Establishment",
+   "tags":"beauty",
+   "title":"What are the best places to get a pedicure in University Heights?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":440,
+   "type":"Establishment",
+   "tags":"beauty",
+   "title":"What are the best places to get a pedicure in Old Town?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":441,
+   "type":"Establishment",
+   "tags":"beauty",
+   "title":"What are the best places to get a pedicure in Del Mar?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":442,
+   "type":"Establishment",
+   "tags":"beauty",
+   "title":"What are the best places to get a pedicure in Ocean Beach?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":443,
+   "type":"Establishment",
+   "tags":"beauty",
+   "title":"What are the best places to get a pedicure in North Park?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":444,
+   "type":"Establishment",
+   "tags":"beauty",
+   "title":"What are the best places to get a pedicure in Mission Hills?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":445,
+   "type":"Establishment",
+   "tags":"alcohol wine ",
+   "title":"What are the best wineries at or near (within 2 hours) San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":446,
+   "type":"Activity",
+   "tags":"adventure hike outdoors",
+   "title":"What are the best hikes in or near (within 2 hours) San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":447,
+   "type":"Establishment",
+   "tags":"fitness active",
+   "title":"What are the best rock climbing gyms in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":448,
+   "type":"Place",
+   "tags":"fitness active outdoors",
+   "title":"What are the best spots to go rock climbing in or near (within 2 hours) San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":449,
+   "type":"Place",
+   "tags":"explore adventure art ",
+   "title":"What can you find the best street art in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":450,
+   "type":"Establishment",
+   "tags":"beauty art lifestyle",
+   "title":"What are the best tattoo places in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":451,
+   "type":"Establishment",
+   "tags":"beauty art lifestyle",
+   "title":"What are the best piercing places in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":452,
+   "type":"Place",
+   "tags":"natural healthy food ",
+   "title":"Which are the best farmers markets in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":453,
+   "type":"Establishment",
+   "tags":"outdoors",
+   "title":"What are the best surfing shops in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":454,
+   "type":"Activity",
+   "tags":"outdoors explore",
+   "title":"What are the best outdoor adventures in or near(within 2hrs) San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":455,
+   "type":"Place",
+   "tags":"adventure activities",
+   "title":"What are the top touristic attractions in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":456,
+   "type":"Establishment",
+   "tags":"nighlife music ",
+   "title":"What are best clubs that play techno music in San Diego?",
+   "keywords":"dj",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":457,
+   "type":"Short-Phrase",
+   "tags":"dating love",
+   "title":"What is the best way to get a guy in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":458,
+   "type":"Short-Phrase",
+   "tags":"dating love",
+   "title":"Where do you find high quality women in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":459,
+   "type":"Person",
+   "tags":"dating love",
+   "title":"What stereotype of men women in San Diego find the most attractive?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":460,
+   "type":"Person",
+   "tags":"dating love",
+   "title":"What stereotype of women is the most attractive for men in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":461,
+   "type":"Activity",
+   "tags":"dating love",
+   "title":"What are fun activities for couples to do in San Diego (money is not issue)?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":462,
+   "type":"Activity",
+   "tags":"dating love",
+   "title":"What are fun activities for couples to do in San Diego (under $200)?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":463,
+   "type":"Activity",
+   "tags":"dating love",
+   "title":"What are some first date ideas in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":464,
+   "type":"Short-Phrase",
+   "tags":"dating love",
+   "title":"What do women want for Valentines?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":465,
+   "type":"Place",
+   "tags":"party fouth july",
+   "title":"What are the coolest places to watch the fireworks on 4th of July?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":466,
+   "type":"Establishment",
+   "tags":"party",
+   "title":"Where are the coolest New Year Parties in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":467,
+   "type":"Place",
+   "tags":"pool outdoor sun",
+   "title":"Where can you find the best outdoor swimming pools in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":468,
+   "type":"Organization",
+   "tags":"technology carrier",
+   "title":"Which is the best cell phone carrier in San Diego?",
+   "keywords":"logo",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":469,
+   "type":"Person",
+   "tags":"music techno party",
+   "title":"Who are the best DJs in San Diego?",
+   "keywords":"",
+   "views":0,
+   "answers":0
+ },
+ {
+   "id":470,
+   "type":"Establishment",
+   "tags":"bars nightclubs",
+   "title":"What are good places to listen to live music in San Diego?",
+   "keywords":"live music",
+   "views":0,
+   "answers":0
+ }
+]

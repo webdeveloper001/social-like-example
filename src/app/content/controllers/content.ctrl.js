@@ -22,7 +22,7 @@
 
         vm.content = [];
         vm.emptyspace = '';
-        vm.isAdmin = true;
+        vm.isAdmin = false;
 
         $rootScope.$on('newCategory', function (e) {
             console.log("trigger");
@@ -49,10 +49,12 @@
         function activate() {
             
             //****SUPER TEMP*****************
+            /*
             $rootScope.isLoggedIn = true;
             $rootScope.user = {};
             $rootScope.user.id = 7;
             $rootScope.user.name = "Andres Moctezuma";
+            $rootScope.isAdmin = false;*/
             //******************************
 
             //Load current category
@@ -252,7 +254,7 @@
             /*
             //Use this to add a tag
             for (var i=0; i < vm.resultsT.length; i++){
-                var tags = vm.resultsT[i].tags + ' beer';
+                var tags = vm.resultsT[i].tags + ' food';
                 table.update(vm.resultsT[i].id, ['tags'],[tags]);
             } 
             */
