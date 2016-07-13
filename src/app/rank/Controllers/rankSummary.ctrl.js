@@ -201,6 +201,21 @@
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
             
+             $rootScope.NhImplied = false;
+            if ($rootScope.cCategory.type == 'Establishment'){
+            //Determine if title already contains neighboorhood            
+            for (var i=0; i< $rootScope.neighborhoods.length; i++){
+                if ($rootScope.cCategory.title.includes($rootScope.neighborhoods[i])){
+                    $rootScope.NhImplied = true;
+                }
+            }
+            }
+            if ($rootScope.NhImplied){
+                for (var i=0; i<vm.fields.length;i++){
+                    if (vm.fields[i].name == 'cityarea') vm.fields[i].isrequired = false; 
+                }
+            }
+            
             //Load current answers
             $rootScope.canswers = [];
             $rootScope.ccatans = [];
@@ -264,6 +279,7 @@
                 }
             }
             vm.numContributors = $rootScope.cuseractivity.length;
+            
             
         }
 

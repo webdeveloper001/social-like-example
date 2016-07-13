@@ -182,10 +182,11 @@
                     //check that all tags exist
                     for (var k = 0; k < valTags.length; k++) {
                         var tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
+                        var tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
                         r = r && ($rootScope.searchStr[j].includes(valTags[k]) ||
                             $rootScope.searchStr[j].includes(valTags[k].toUpperCase()) ||
-                            $rootScope.searchStr[j].includes(tagCapitalized));
-                        //console.log("r ", r , valTags[k]);
+                            $rootScope.searchStr[j].includes(tagCapitalized) ||
+                            $rootScope.searchStr[j].includes(tagFirstLowered));
                     }
                     if (r) {
                         //console.log("push to vm.results array");

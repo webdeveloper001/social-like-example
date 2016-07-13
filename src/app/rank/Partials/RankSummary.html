@@ -23,21 +23,23 @@
     </div>
 </div>
 
-<h4>Contributors: <b style="color:blue; "><i>{{vm.numContributors}}</i></b></h4>
+<div class="text-center">
+    <!-- <h4>Contributors: <b style="color:blue; "><i>4563</i></b></h4> -->
+    <!-- Twitter -->
+    <a href="http://twitter.com/home?status=" title="Share in Twitter" target="_blank " class="btn btn-twitter "><i class="fa fa-twitter "></i></a>
+    <!-- Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php " title="Share in Facebook" target="_blank " class="btn btn-facebook "><i class="fa fa-facebook ">acebook</i></a>
+    <!-- Google+ -->
+    <a href="https://plus.google.com/share?url=" title="Share in Google+" target="_blank " class="btn btn-googleplus "><i class="fa fa-google-plus "></i></a>
+</div>
 <div class="row ">
     <div class="btn-group col-sm-6 col-md-6 ">
         <button class="btn btn-primary {{vm.selOverall}} " ng-click="vm.rankOverall() ">Overall</button>
         <button class="btn btn-primary {{vm.selPersonal}} " ng-click="vm.rankPersonal() ">Personal</button>
         <!--  <button type="button " class="btn btn-primary ">{{"rankSummary.Filtered " | translate}}</button> -->
     </div>
-    <div class="text-right col-sm-6 col-md-6 ">
-        <!-- <h4>Contributors: <b style="color:blue; "><i>4563</i></b></h4> -->
-        <!-- Twitter -->
-        <a href="http://twitter.com/home?status=" title="Share in Twitter" target="_blank " class="btn btn-twitter "><i class="fa fa-twitter "></i> Twitter</a>
-        <!-- Facebook -->
-        <a href="https://www.facebook.com/sharer/sharer.php " title="Share in Facebook" target="_blank " class="btn btn-facebook "><i class="fa fa-facebook "></i> Facebook</a>
-        <!-- Google+ -->
-        <a href="https://plus.google.com/share?url=" title="Share in Google+" target="_blank " class="btn btn-googleplus "><i class="fa fa-google-plus "></i> Google+</a>
+    <div class="btn-group text-right col-sm-6 col-md-6 ">
+        <h4>Contributors: <b style="color:blue; "><i>{{vm.numContributors}}</i></b></h4>
     </div>
 </div>
 <div class="text-center ">
@@ -74,8 +76,8 @@
     <div class="col-sm-11" style="display:{{vm.addInfoMsgAck == false ? 'inline':'none'}}">
         <div class="alert alert-warning" style="padding-top: 5px;padding-bottom: 5px;">
             <a class="close" data-dismiss="alert" aria-label="close" ng-click="vm.closeAddInfoMsg()">&times;</a>
-            <span class="glyphicon glyphicon-arrow-left"></span><strong>&nbsp;&nbsp;Are we missing one?</strong>&nbsp;&nbsp;Use the '+' button to add
-            a new answer.
+            <span class="glyphicon glyphicon-arrow-left"></span><strong>&nbsp;&nbsp;Are we missing one?</strong>&nbsp;&nbsp;Use
+            the '+' button to add a new answer.
         </div>
     </div>
 </div>
