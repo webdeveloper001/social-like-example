@@ -1,0 +1,40 @@
+<!-- Modal -->
+<div class="modal fade" id="addUserDetailModal" tabindex="-1" role="dialog" aria-labelledby="addUserDetailModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>-->
+                <h4 class="modal-title" id="addUserDetailModalLabel">Add User Detail</h4>
+            </div>
+            <div class="modal-body" style="height: 286px">
+                <div class="col-md-12">
+                    <form class="form-horizontal" role="form" name="answerForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="location">Location:</label>
+                                <input required ng-model="user.location" type="text" class="form-control" id="location">
+                            </div>
+                            <div class="form-group">
+                                <label for="age">Age:</label>
+                                <input required ng-model="user.age" type="number" class="form-control" id="age">
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Gender:</label>
+                                <div class="clearfix"></div>
+                                <label class="radio-inline"><input name="gender" type="radio" value="Male" ng-model="user.gender">Male</label>
+                                <label class="radio-inline"><input name="gender" type="radio" value="Female" ng-model="user.gender">Female</label>
+                                <label class="radio-inline"><input name="gender" type="radio" value="Other" ng-model="user.gender">Other</label>
+                            </div>
+
+                            <div class="row form-group">
+                                <button type="submit" class="btn btn-success" ng-click="addUserDetail()">Add Detail
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
