@@ -46,7 +46,7 @@
             
             //****SUPER TEMP*****************
             
-            $rootScope.isLoggedIn = false;
+            //$rootScope.isLoggedIn = false;
             //$rootScope.user = {};
             //$rootScope.user.id = 7;
             //$rootScope.user.name = "Andres Moctezuma";
