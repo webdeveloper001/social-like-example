@@ -84,7 +84,7 @@
 
                 switch (mode.mode) {
                     case 2: filter = [" "]; break;
-                    case 3: filter = ["city"]; break;
+                    case 3: filter = ["politics"]; break;
                     case 4: filter = ["lifestyle"]; break;
                     case 5: filter = ["food"]; break;
                     case 6: filter = ["sports"]; break;
@@ -171,10 +171,9 @@
 
         }
 
-
         function switchArray() {
 
-            if (mode.mode == 1) {
+            if (mode.mode == 1 && $rootScope.inputVal!= undefined) {
                 var userIsTyping = false;
                 var inputVal = $rootScope.inputVal;
                 vm.showR = false;
