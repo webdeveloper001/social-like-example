@@ -18,7 +18,6 @@
         vm.addAnswerDisabled = '';
         vm.ranking = $rootScope.title;
         
-       
         // Methods
         vm.answerDetail = answerDetail;
         vm.addAnswer = addAnswer;
@@ -30,6 +29,7 @@
 
         vm.selOverall = 'active';
         vm.selPersonal = '';
+        var myParent = $rootScope.parentNum;
 
         var votetable = [];
         var editvotetable = [];
@@ -54,6 +54,8 @@
         if ($rootScope.showR) activate(); 
         
         function activate() {
+            
+            $rootScope.rankIsActive = true;
 
             loadData(); //load data and write to $rootScope
             //update number of views and answers
@@ -149,15 +151,12 @@
         }
 
         function addAnswer() {
-            //if ($rootScope.isLoggedIn) {
-            if (true) {    
-
+            if ($rootScope.isLoggedIn) {            
                 if (answersFull) {
                     dialog.getDialog('answersFull');
                     return;
                 }
                 else {
-                    $rootScope.viewCtn = 0;
                     $state.go("addAnswer");
                 }
             }

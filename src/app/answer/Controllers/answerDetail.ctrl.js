@@ -53,21 +53,23 @@
         if ($stateParams.index) vm.answer = answers[A.indexOf(+$stateParams.index)];
         
         
-        //TODO: Would like to add this abstract template, but dont know how               
-        $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
-            $rootScope.previousState = from.name;
-        });
-        $rootScope.$on('$stateChangeStart',
-            function (ev, to, toParams, from, fromParams) {
-                if (from.name == 'answerDetail') {
-                    if (!recordsUpdated) updateRecords();
-                }
-            });
+        
 
         //Execute this view only if rankWindow is open
         if ($rootScope.showR) activate();
 
         function activate() {
+
+            //TODO: Would like to add this abstract template, but dont know how               
+            $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
+                $rootScope.previousState = from.name;
+            });
+            $rootScope.$on('$stateChangeStart',
+                function (ev, to, toParams, from, fromParams) {
+                    if (from.name == 'answerDetail') {
+                        if (!recordsUpdated) updateRecords();
+                    }
+                });
 
             getHeader();
             getCatAnsId(vm.answer.id);
@@ -388,15 +390,15 @@
                 if ($rootScope.specials[i].answer == answerid) {
                     //format date, load name and html msg
                     datetime.formatdatetime($rootScope.specials[i]);
-                    $rootScope.specials[i].name = vm.answer.name;  
-                    
-                    var htmlmsg = specialHtml($rootScope.specials[i]);  
+                    $rootScope.specials[i].name = vm.answer.name;
+
+                    var htmlmsg = specialHtml($rootScope.specials[i]);
                     $rootScope.specials[i].html = htmlmsg;
                     //Separate style (not working with ng-bind-html)
-                    var spStyle='background-color:' + $rootScope.specials[i].bc + ';color:' + $rootScope.specials[i].fc + ';'+
-                    'white-space:pre;';
+                    var spStyle = 'background-color:' + $rootScope.specials[i].bc + ';color:' + $rootScope.specials[i].fc + ';' +
+                        'white-space:pre;';
                     $rootScope.specials[i].style = spStyle;
-                    
+
                     vm.specialsList.push($rootScope.specials[i]);
                 }
             }

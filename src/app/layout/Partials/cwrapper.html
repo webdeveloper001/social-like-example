@@ -1,0 +1,142 @@
+<div class="input-group" style="width:100%">
+	<!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
+	<div class="text-center" style="display:{{vm.isAdmin ? 'inline':'none'}}">
+		<div class="btn-group col-sm-6 col-md-6">
+			<button class="btn btn-primary {{vm.selEditRank}} " ng-click="vm.editRank() ">Edit Mode</button>
+			<button class="btn btn-primary {{vm.selViewRank}} " ng-click="vm.viewRank() ">View Mode</button>
+		</div>
+		<button class="btn btn-danger" ng-click="vm.applyRule() ">apply Rule</button>
+	</div>
+	<br style="display:{{vm.isAdmin ? 'inline':'none'}}">
+	<br style="display:{{vm.isAdmin ? 'inline':'none'}}">
+	<br style="display:{{vm.isAdmin ? 'inline':'none'}}">
+</div>
+
+<div>
+	<div class="form-group text-right">
+		<button type="button" class="btn btn-default" ng-click="vm.switchView()">{{vm.isBasic ? 'Classified':'Basic'}}</button>
+	</div>
+
+	<div style="display:{{vm.isBasic ? 'inline':'none'}}">
+		<br>
+		<input class="form-control" ng-model="vm.val" type="text" placeholder="Search San Diego" ng-change="vm.refreshRanks(vm.val)">
+	</div>
+</div>
+
+<div style="display:{{vm.isBasic ? 'inline':'none'}}" ng-mouseover="vm.setObj(1)" ng-if="vm.isBasic">
+	<div ui-view="basic"></div>
+</div>
+<!--
+<div style="display:{{vm.isBasic ? 'none':'inline'}}">
+	
+	<div ui-view="city"></div>
+	<div ui-view="sports"></div>
+	<div ui-view="entertainment"></div>
+	<div ui-view="food"></div>
+	<div ui-view="dating"></div>
+</div>-->
+<div style="display:{{vm.isBasic ? 'none':'inline'}}" ng-mouseover="vm.setObj(2)" ng-if="!vm.isBasic">
+	<div class="col-sm-12 col-md-12">
+		<div class="container" style="display:{{(vm.viewNum == 0 || vm.viewNum == 1) ? 'inline':'none'}};">
+			<div class="well-sm">
+				<h3 class="sub-header">Most Popular</h3>
+			</div>
+			<div class="form-group text-right">
+				<button type="button" class="btn btn-default" ng-click="vm.goBack(1)" style="display:{{(vm.viewNum == 1) ? 'inline':'none'}}">Back</button>
+			</div>
+			<div ui-view="popular"></div>
+			<div class="form-group text-right">
+				<button type="button" class="btn btn-default" ng-click="vm.goBack(1)" style="display:{{(vm.viewNum == 1) ? 'inline':'none'}}">Back</button>
+			</div>
+			<p class="text-right" style="color:blue;" ng-click="vm.seeMore(1)">&lt;&lt;See More&gt;&gt;</p>
+		</div>
+	</div>
+</div>
+<div style="display:{{vm.isBasic ? 'none':'inline'}}" ng-mouseover="vm.setObj(3)" ng-if="!vm.isBasic">
+	<div class="col-sm-12 col-md-12">
+		<div class="container" style="display:{{(vm.viewNum == 0 || vm.viewNum == 2) ? 'inline':'none'}};">
+			<div class="well-sm" style="background-color:gray;">
+				<h3 class="sub-header">City</h3>
+			</div>
+			<div class="form-group text-right">
+				<button type="button" class="btn btn-default" ng-click="vm.goBack(2)" style="display:{{(vm.viewNum == 2) ? 'inline':'none'}}">Back</button>
+			</div>
+			<div ui-view="city"></div>
+			<div class="form-group text-right">
+				<button type="button" class="btn btn-default" ng-click="vm.goBack(2)" style="display:{{(vm.viewNum == 2) ? 'inline':'none'}}">Back</button>
+			</div>
+			<p class="text-right" style="color:blue;" ng-click="vm.seeMore(2)">&lt;&lt;See More&gt;&gt;</p>
+		</div>
+	</div>
+</div>
+<div style="display:{{vm.isBasic ? 'none':'inline'}}" ng-mouseover="vm.setObj(4)" ng-if="!vm.isBasic">
+	<div class="col-sm-12 col-md-12">
+		<div class="container" style="display:{{(vm.viewNum == 0 || vm.viewNum == 3) ? 'inline':'none'}};">
+			<div class="well-sm" style="background-color:green;">
+				<h3 class="sub-header">Lifestyle</h3>
+			</div>
+			<div class="form-group text-right">
+				<button type="button" class="btn btn-default" ng-click="vm.goBack(3)" style="display:{{(vm.viewNum == 3) ? 'inline':'none'}}">Back</button>
+			</div>
+			<div ui-view="lifestyle"></div>
+			<div class="form-group text-right">
+				<button type="button" class="btn btn-default" ng-click="vm.goBack(3)" style="display:{{(vm.viewNum == 3) ? 'inline':'none'}}">Back</button>
+			</div>
+			<p class="text-right" style="color:blue;" ng-click="vm.seeMore(3)">&lt;&lt;See More&gt;&gt;</p>
+		</div>
+	</div>
+</div>
+<div style="display:{{vm.isBasic ? 'none':'inline'}}" ng-mouseover="vm.setObj(5)" ng-if="!vm.isBasic">
+	<div class="col-sm-12 col-md-12 ">
+		<div class="container" style="display:{{(vm.viewNum == 0 || vm.viewNum == 4) ? 'inline':'none'}}">
+			<div class="well-sm " style="background-color:brown;">
+				<h3 class="sub-header ">Food</h3>
+			</div>
+			<div class="form-group text-right">
+				<button type="button" class="btn btn-default" ng-click="vm.goBack(4)" style="display:{{(vm.viewNum == 4) ? 'inline':'none'}}">Back</button>
+			</div>
+			<div ui-view="food"></div>
+			<div class="form-group text-right">
+				<button type="button" class="btn btn-default" ng-click="vm.goBack(4)" style="display:{{(vm.viewNum == 4) ? 'inline':'none'}}">Back</button>
+			</div>
+
+			<p class="text-right" style="color:blue;" ng-click="vm.seeMore(4)">&lt;&lt;See More&gt;&gt;</p>
+		</div>
+	</div>
+</div>
+<div style="display:{{vm.isBasic ? 'none':'inline'}}" ng-mouseover="vm.setObj(6)" ng-if="!vm.isBasic">
+	<div class="col-sm-12 col-md-12 ">
+		<div class="container" style="display:{{(vm.viewNum == 0 || vm.viewNum == 5) ? 'inline':'none'}}">
+			<div class="well-sm " style="background-color:orange;">
+				<h3 class="sub-header">Sports</h3>
+			</div>
+			<div class="form-group text-right">
+				<button type="button" class="btn btn-default" ng-click="vm.goBack(5)" style="display:{{(vm.viewNum == 5) ? 'inline':'none'}}">Back</button>
+			</div>
+			<div ui-view="sports"></div>
+			<div class="form-group text-right">
+				<button type="button" class="btn btn-default" ng-click="vm.goBack(5)" style="display:{{(vm.viewNum == 5) ? 'inline':'none'}}">Back</button>
+			</div>
+
+			<p class="text-right" style="color:blue;" ng-click="vm.seeMore(5)">&lt;&lt;See More&gt;&gt;</p>
+		</div>
+	</div>
+</div>
+<div style="display:{{vm.isBasic ? 'none':'inline'}}" ng-mouseover="vm.setObj(7)" ng-if="!vm.isBasic">
+	<div class="col-sm-12 col-md-12">
+		<div class="container" style="display:{{(vm.viewNum == 0 || vm.viewNum == 6) ? 'inline':'none'}}">
+			<div class="well-sm" style="background-color:red;">
+				<h3 class="sub-header">Dating</h3>
+			</div>
+			<div class="form-group text-right">
+				<button type="button" class="btn btn-default" ng-click="vm.goBack(6)" style="display:{{(vm.viewNum == 6) ? 'inline':'none'}}">Back</button>
+			</div>
+			<div ui-view="dating"></div>
+			<div class="form-group text-right">
+				<button type="button" class="btn btn-default" ng-click="vm.goBack(6)" style="display:{{(vm.viewNum == 6) ? 'inline':'none'}}">Back</button>
+			</div>
+
+			<p class="text-right" style="color:blue;" ng-click="vm.seeMore(6)">&lt;&lt;See More&gt;&gt;</p>
+		</div>
+	</div>
+</div>

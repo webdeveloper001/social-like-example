@@ -5,9 +5,11 @@
         .module('app')
         .controller('content', content);
 
-    content.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope', 'answers', 'rankings', 'query', 'table', 'specials'];
+    content.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope', 'answers',
+        'rankings', 'query', 'table', 'specials', 'mode', '$filter'];
 
-    function content($rootScope, $state, $http, $stateParams, $scope, answers, rankings, query, table, specials) {
+    function content($rootScope, $state, $http, $stateParams, $scope, answers,
+        rankings, query, table, specials, mode, $filter) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'content';
@@ -16,100 +18,100 @@
         vm.rankSelT = rankSelT;
         vm.rankSelB = rankSelB;
         vm.switchArray = switchArray;
-        vm.viewRank = viewRank;
-        vm.editRank = editRank;
-        vm.applyRule = applyRule;
-
+        
         vm.content = [];
         vm.emptyspace = '';
-        vm.isAdmin = false;
-
-        $rootScope.$on('newCategory', function (e) {
-            console.log("trigger");
-            loadContent();
-        });
-        $rootScope.$on('closeRank', function (e) {
-            console.log("trigger closeRank");
+        
+        $rootScope.$on('closeRank', function (e, objNum) {
             closeRank();
         });
+        $rootScope.$on('refreshRanks', function (e) {
+            switchArray();
+        });
+
+        $rootScope.$on('numRes5', function (e, objNum) {
+            if (mode.mode == objNum) {
+                numRes5();
+
+            }
+        });
+        $rootScope.$on('numRes30', function (e, objNum) {
+            if (mode.mode == objNum) {
+                numRes30();
+
+            }
+        });
         
-        //delete these
-        $rootScope.viewNum = 0;
-        $rootScope.viewCtn = 0;
+         $rootScope.$on('numObjChanged', function (e) {
+            refreshActiveObj();
+        });
+        
+        $rootScope.$on('applyRule', function (e) {
+            applyRule();
+        });
+        
+       
+        //$rootScope.activeMode = mode.mode;
 
         var strlen_o = 0;
-        var editMode = false;
-
-        window.onload = function () {
-
-        }
-
+        var myMode = mode.mode;
+        
+        $rootScope.parentNum = myMode;
+       
         activate();
 
         function activate() {
             
-            //****SUPER TEMP*****************
-            /*
-            $rootScope.isLoggedIn = true;
-            $rootScope.user = {};
-            $rootScope.user.id = 7;
-            $rootScope.user.name = "Andres Moctezuma";
-            $rootScope.isAdmin = false;*/
-            //******************************
+            vm.resultsT = [];
+            vm.resultsB = [];
 
-            //Load current category
-            $rootScope.content = {};
-            $rootScope.viewCtn = 0;
+            if (mode.mode == 1) numRes30();
+            if (mode.mode > 1 && mode.mode < 8) numRes5();
 
-            getEstablishmentAnswers();
-
-            //$http.get('../../../assets/testcontent.json').success(function (response) {
-            $rootScope.content = rankings; //response
-            $rootScope.specials = specials;
             loadContent();
-
-            //});
-            
-            $http.get('../../../assets/fields.json').success(function (response) {
-                $rootScope.typeSchema = response;
-                console.log("Fields Loaded!");
-
-            });
-
-            $http.get('../../../assets/dialogs.json').success(function (response) {
-                $rootScope.dialogs = response;
-                console.log("Dialogs Loaded!");
-
-            });
-
-            $state.go('rankSummary', { index: 1 });
+            //$state.go('rankSummary', { index: 1 });
 
         }
 
         function loadContent() {
-            
-            //vm.content=[];
-            vm.searchArray = [];
-            vm.empty = [];
-            vm.cTags = {};
-            $rootScope.searchStr = [];
-            
-            //Show ranking titles, hide all ranks
-            for (var i = 0; i < $rootScope.content.length; i++) {
-                $rootScope.content[i].showR = false;
-                $rootScope.content[i].showT = true;
-                
-                //Tags content of title and tags for better search
-                $rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title;
-            }
 
-            $rootScope.neighborhoods = [
-                "Downtown", "La Jolla", "Pacific Beach", "HillCrest", "University Heights", "Old Town", "Del Mar",
-                "Ocean Beach", "North Park", "Mission Hills", "Barrio Logan", "City Heights", "Clairemont", "Mira Mesa", "Point Loma",
-                "South Park", "Scripps Ranch", "Mission Valley", "Kensington"];
-            $rootScope.districts = [
-                "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
-                "Marina", "Seaport Village"];
+            var filter = [];
+            var temparr = [];
+            if (mode.mode > 1) {
+
+                vm.resultsT = [];
+                vm.resultsB = [];
+
+                switch (mode.mode) {
+                    case 2: filter = [" "]; break;
+                    case 3: filter = ["city"]; break;
+                    case 4: filter = ["lifestyle"]; break;
+                    case 5: filter = ["food"]; break;
+                    case 6: filter = ["sports"]; break;
+                    case 7: filter = ["dating"]; break;
+                }
+                for (var j = 0; j < $rootScope.content.length; j++) {
+                
+                    //filter rankings
+                    for (var k = 0; k < filter.length; k++) {
+                        var tagCapitalized = filter[k].charAt(0).toUpperCase() + filter[k].slice(1);
+                        var tagFirstLowered = filter[k].charAt(0).toLowerCase() + filter[k].slice(1);
+                        var r = ($rootScope.searchStr[j].includes(filter[k]) ||
+                            $rootScope.searchStr[j].includes(filter[k].toUpperCase()) ||
+                            $rootScope.searchStr[j].includes(tagCapitalized) ||
+                            $rootScope.searchStr[j].includes(tagFirstLowered));
+
+                        if (r) {
+                            temparr.push($rootScope.content[j]);
+                        }
+                    }
+
+                }
+                //vm.resutsT = orderBy(vm.resultsT,'views')
+                temparr = $filter('orderBy')(temparr, '-views');
+                vm.resultsT = temparr.slice(0, vm.maxRes);
+
+            }
 
         }
 
@@ -118,7 +120,7 @@
             $state.go('rankSummary', { index: $rootScope.cCategory.id });
 
         }
-        
+
         //Miscellaneous functions, grab header
         function getRankData(x) {
             $rootScope.title = x.title;
@@ -140,6 +142,8 @@
 
         function rankSelT(x, index) {
 
+            console.log("rankSetT executed");
+
             getRankData(x);
 
             var arraytemp = [];
@@ -151,9 +155,12 @@
 
             vm.showR = true;
             $rootScope.showR = true;
-
-            if (editMode) $state.go('editRanking', { index: x.id });
-            else $state.go('rankSummary', { index: x.id });
+           
+            $rootScope.parentNum = myMode;
+            
+                if ($rootScope.editMode) $state.go('editRanking', { index: x.id });
+                else {$rootScope.rankCnt = 0; $state.go('rankSummary', { index: x.id });}
+            
         }
 
         function rankSelB(x, index) {
@@ -166,87 +173,72 @@
 
 
         function switchArray() {
-            var userIsTyping = false;
-            vm.showR = false;
-            $rootScope.showR = false;
-            //console.log("SwitchArray ", vm.cTags.length);
-            vm.resultsT = [];
-            vm.resultsB = [];
-            if (vm.val.length >= 3) {
-                //vm.content = $rootScope.content;
-                var valTags = vm.val.split(" ");
 
-                for (var j = 0; j < $rootScope.content.length; j++) {
-                    //for (var j = 50; j < 60; j++) {
-                    var r = true;
-                    //check that all tags exist
-                    for (var k = 0; k < valTags.length; k++) {
-                        var tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
-                        var tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
-                        r = r && ($rootScope.searchStr[j].includes(valTags[k]) ||
-                            $rootScope.searchStr[j].includes(valTags[k].toUpperCase()) ||
-                            $rootScope.searchStr[j].includes(tagCapitalized) ||
-                            $rootScope.searchStr[j].includes(tagFirstLowered));
-                    }
-                    if (r) {
-                        //console.log("push to vm.results array");
-                        vm.resultsT.push($rootScope.content[j]);
-                        //console.log("vm.results  ", vm.results);
-                    }
-                }
-                if (vm.val.length >= strlen_o) userIsTyping = true;
-                else userIsTyping = false;
-                //if less than 5 results, write 'query record
-                if (vm.resultsT.length <= 5 && (vm.val.length % 3 == 0) && userIsTyping) {
-                    query.postQuery(vm.val, vm.resultsT.length)
-                }
-                strlen_o = vm.val.length;
-            }
-            else {
+            if (mode.mode == 1) {
+                var userIsTyping = false;
+                var inputVal = $rootScope.inputVal;
+                vm.showR = false;
+                $rootScope.showR = false;
                 vm.resultsT = [];
                 vm.resultsB = [];
+                if (inputVal.length >= 3) {
+                    //vm.content = $rootScope.content;
+                    var valTags = inputVal.split(" ");
+                    for (var j = 0; j < $rootScope.content.length; j++) {
+                        //for (var j = 50; j < 60; j++) {
+                        var r = true;
+                        //check that all tags exist
+                        for (var k = 0; k < valTags.length; k++) {
+                            var tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
+                            var tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
+                            r = r && ($rootScope.searchStr[j].includes(valTags[k]) ||
+                                $rootScope.searchStr[j].includes(valTags[k].toUpperCase()) ||
+                                $rootScope.searchStr[j].includes(tagCapitalized) ||
+                                $rootScope.searchStr[j].includes(tagFirstLowered));
+                        }
+                        if (r) {
+                            //console.log("push to vm.results array");
+                            vm.resultsT.push($rootScope.content[j]);
+
+                        }
+                    }
+                    if (inputVal.length >= strlen_o) userIsTyping = true;
+                    else userIsTyping = false;
+                    //if less than 5 results, write 'query record
+                    if (vm.resultsT.length <= 5 && (inputVal.length % 3 == 0) && userIsTyping && mode == 1) {
+                        query.postQuery(inputVal, vm.resultsT.length)
+                    }
+                    strlen_o = inputVal.length;
+                }
+                else {
+                    vm.resultsT = [];
+                    vm.resultsB = [];
+                }
+                $rootScope.viewNum = 999;
             }
-            $rootScope.viewNum = 999;
         }
 
-        function getEstablishmentAnswers() {
-            $rootScope.estAnswers = [];
-            $rootScope.estNames = [];
-            for (var i = 0; i < answers.length; i++) {
-                if (answers[i].type == 'Establishment') {
-                    $rootScope.estNames.push(answers[i].name);
-                    $rootScope.estAnswers.push(answers[i]);
-                }
-            }
-        }
 
         function closeRank() {
-            /*
-            //Show ranking titles, hide all ranks
-            for (var i = 0; i < $rootScope.content.length; i++) {
-                $rootScope.content[i].showR = false;
-                $rootScope.content[i].showT = true;
-            }
-            */
             vm.showR = false;
             $rootScope.showR = false;
-            switchArray();
+            $rootScope.rankIsActive = false;
+            if (mode.mode == 1) switchArray();
+            else loadContent();
+        }
+
+        function numRes5() {
+            vm.maxRes = 5;
+            //loadContent();
+        }
+
+        function numRes30() {
+            vm.maxRes = 30;
+            loadContent();
         }
         
-        //Admin Functions************
-        function editRank() {
-            editMode = true;
-            vm.selEditRank = 'active';
-            vm.selViewRank = '';
-            console.log("mode -- ", editMode);
-
-        }
-        function viewRank() {
-            editMode = false;
-            vm.selEditRank = '';
-            vm.selViewRank = 'active';
-            console.log("mode -- ", editMode);
-
+        function refreshActiveObj(){
+            vm.active = ($rootScope.objNum == myMode);
         }
 
         function applyRule() {
@@ -255,7 +247,7 @@
             /*
             //Use this to add a tag
             for (var i=0; i < vm.resultsT.length; i++){
-                var tags = vm.resultsT[i].tags + ' food';
+                var tags = vm.resultsT[i].tags + ' lifestyle';
                 table.update(vm.resultsT[i].id, ['tags'],[tags]);
             } 
             */
@@ -302,7 +294,7 @@
             
             var question = '';
             for (var i = 0; i < $rootScope.content.length; i++) {
-
+    
                 switch ($rootScope.content[i].type) {
                     case 'Person': { question = 'Who ranks higher?'; break; }
                     case 'Establishment': { question = 'Which one you recommend?'; break; }

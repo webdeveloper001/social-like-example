@@ -1,29 +1,12 @@
-<div class="input-group" style="width:100%">
-	<!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
-	<div class="text-center" style="display:{{vm.isAdmin ? 'inline':'none'}}">
-		<div class="btn-group col-sm-6 col-md-6">
-			<button class="btn btn-primary {{vm.selEditRank}} " ng-click="vm.editRank() ">Edit Mode</button>
-			<button class="btn btn-primary {{vm.selViewRank}} " ng-click="vm.viewRank() ">View Mode</button>
-		</div>
-		<button class="btn btn-danger" ng-click="vm.applyRule() ">apply Rule</button>
-	</div>
-	<br style="display:{{vm.isAdmin ? 'inline':'none'}}">
-	<br style="display:{{vm.isAdmin ? 'inline':'none'}}">
-	<br style="display:{{vm.isAdmin ? 'inline':'none'}}">
-
-	<input class="form-control" ng-model="vm.val" type="text" placeholder="Search San Diego" ng-change="vm.switchArray()">
-
-</div>
-
 <div class="container">
-	<div ng-repeat="x in vm.resultsT">
+	<div ng-repeat="x in vm.resultsT | orderBy: '-views' | limitTo:vm.maxRes">
 		<h4 ng-click="vm.rankSelT(x, $index)">
 				{{x.title}}
 				<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;{{x.answers}}&nbspanswers-{{x.views}}&nbspviews</small>	 
 		</h4>
 	</div>
 </div>
-<div class="span22" ng-show="vm.showR">
+<div class="span22" ng-show="vm.showR" ng-if="vm.active">
 	<div ui-view></div>
 </div>
 <div class="container">

@@ -5,7 +5,7 @@
         .module('app')
         .controller('match', match);
 
-    match.$inject = ['$state', 'dialog', '$location', 'answer', '$rootScope', 'matchrec', '$modal','useractivity'];
+    match.$inject = ['$state', 'dialog', '$location', 'answer', '$rootScope', 'matchrec', '$modal', 'useractivity'];
 
     function match($state, dialog, $location, answer, $rootScope, matchrec, $modal, useractivity) {
         /* jshint validthis:true */
@@ -38,27 +38,29 @@
         vm.answerDetail = answerDetail;
         vm.closeRank = closeRank;
 
-         //TODO: Would like to add this abstract template, but dont know how               
-        $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
-            $rootScope.previousState = from.name;
-        });
-        $rootScope.$on('$stateChangeStart',
-            function (ev, to, toParams, from, fromParams) {
-                if (from.name == 'match') {
-                    if (mrecs_session.length > 0) {
-                        matchrec.postRec(mrecs_session);
-                        if ($rootScope.userHasRank) useractivity.patchRec($rootScope.userActRecId);
-                        else useractivity.postRec();                    
-                        mrecs_session = [];
-                    }
-                } 
-            });
+        
         
         //Execute this view only if rankWindow is open
         if ($rootScope.showR) activate();
 
         function activate() {
             
+            //TODO: Would like to add this abstract template, but dont know how               
+            $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
+                $rootScope.previousState = from.name;
+            });
+            $rootScope.$on('$stateChangeStart',
+                function (ev, to, toParams, from, fromParams) {
+                    if (from.name == 'match') {
+                        if (mrecs_session.length > 0) {
+                            matchrec.postRec(mrecs_session);
+                            if ($rootScope.userHasRank) useractivity.patchRec($rootScope.userActRecId);
+                            else useractivity.postRec();
+                            mrecs_session = [];
+                        }
+                    }
+                });
+
             getmatchIndexes();
             createRandomIndexArray();
             getAnswers();
@@ -149,7 +151,7 @@
         }
 
         function answerDetail(x) {
-            
+
             if (x === 1) $state.go("answerDetail", { index: vm.answer1.id });
             else $state.go("answerDetail", { index: vm.answer2.id });
 
@@ -184,13 +186,13 @@
         }
 
         function getHeaders() {
-            
+
             vm.fields = $rootScope.fields;
-  
+
         }
-        
+
         function closeRank() {
-                $rootScope.$emit('closeRank');                            
+            $rootScope.$emit('closeRank');
         }
     }
 })();

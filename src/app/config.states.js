@@ -10,7 +10,7 @@
 
 
         // For any unmatched url
-        $urlRouterProvider.otherwise('/content');
+        $urlRouterProvider.otherwise('/cwrapper');
 
         var states = [
             {
@@ -28,15 +28,14 @@
                     }
                 }
             },
-
             {
-                name: 'content',
+                name: 'cwrapper',
                 parent: 'layout',
-                url: '/content',
+                url: '/cwrapper',
                 views: {
                     "@layout": {
-                        templateUrl: 'app/content/partials/content.html',
-                        controller: 'content as vm'
+                        templateUrl: 'app/layout/Partials/cwrapper.html',
+                        controller: 'cwrapper as vm'
                     }
                 },
                 resolve: {
@@ -47,20 +46,48 @@
                             return result;
                         });
                     }],
-                    
+
                     rankings: ['table', function (table) {
                         return table.getTables().then(function (result) {
 
                             return result;
                         });
                     }],
-                    
+
                     specials: ['special', function (special) {
                         return special.getSpecials().then(function (result) {
 
                             return result;
                         });
-                    }]
+                    }],
+                     mrecs: ['matchrec', function (matchrec) {
+
+                        return matchrec.GetMatchTable().then(function (result) {
+
+                            return result;
+                        });
+                    }],
+                    edits: ['edit', function (edit) {
+
+                        return edit.getEdits().then(function (result) {
+
+                            return result;
+                        });
+                    }],
+                    useractivities: ['useractivity', function (useractivity) {
+
+                        return useractivity.getAllUserActivity().then(function (result) {
+
+                            return result;
+                        });
+                    }],
+                    catansrecs: ['catans', function (catans) {
+
+                        return catans.getAllcatans().then(function (result) {
+
+                            return result;
+                        });
+                    }]                  
                     /*
                     answers: ['answer', function () {
                         return function () {
@@ -71,16 +98,87 @@
                 }
             },
 
-
+            {
+                name: 'content',
+                parent: 'cwrapper',
+                //abstract: true,
+                url: '/content',
+                //params: {mode: 50},
+                views: {
+                    "basic@cwrapper": {
+                        templateUrl: 'app/content/partials/content.html',
+                        controller: 'content as vm',
+                        resolve: {
+                            mode: function() {
+                                return { mode: 1}   
+                            }          
+                        }
+                    },
+                    "popular@cwrapper": {
+                        templateUrl: 'app/content/partials/content.html',
+                        controller: 'content as vm',
+                        resolve: {
+                            mode: function() {
+                                return { mode: 2}   
+                            }          
+                        }
+                    },
+                    "city@cwrapper": {
+                        templateUrl: 'app/content/partials/content.html',
+                        controller: 'content as vm',
+                        resolve: {
+                            mode: function() {
+                                return { mode: 3}   
+                            }          
+                        }
+                    },
+                    "lifestyle@cwrapper": {
+                        templateUrl: 'app/content/partials/content.html',
+                        controller: 'content as vm',
+                        resolve: {
+                            mode: function() {
+                                return { mode: 4}   
+                            }          
+                        }
+                    },
+                    "food@cwrapper": {
+                        templateUrl: 'app/content/partials/content.html',
+                        controller: 'content as vm',
+                        resolve: {
+                            mode: function() {
+                                return { mode: 5}   
+                            }          
+                        }
+                    },
+                    "sports@cwrapper": {
+                        templateUrl: 'app/content/partials/content.html',
+                        controller: 'content as vm',
+                        resolve: {
+                            mode: function() {
+                                return { mode: 6}   
+                            }          
+                        }
+                    },
+                    "dating@cwrapper": {
+                        templateUrl: 'app/content/partials/content.html',
+                        controller: 'content as vm',
+                        resolve: {
+                            mode: function() {
+                                return { mode: 7}   
+                            }          
+                        }
+                    }
+                },
+            },
             {
                 name: 'rankSummary',
                 parent: 'content',
                 url: '/rankSummary/:index',
                 templateUrl: 'app/rank/Partials/RankSummary.html',
                 controller: 'rankSummary as vm',
-                
+
                 resolve: {
-                    
+
                     mrecs: ['matchrec', function (matchrec) {
 
                         return matchrec.GetMatchTable().then(function (result) {
@@ -108,8 +206,7 @@
 
                             return result;
                         });
-                    }]
-                    
+                    }]                  
                     /*
                     mrecs: ['matchrec', function () {
                         return function () {
@@ -135,7 +232,7 @@
                             return [];
                         };
                     }]*/
-                    
+
                 }
             },
             {
@@ -151,7 +248,7 @@
                             return result;
                         });
                     }]
-                }                
+                }
             },
             {
                 name: 'addAnswer',
@@ -166,7 +263,7 @@
                 url: '/editAnswer/:index',
                 templateUrl: 'app/answer/Partials/editAnswer.html',
                 controller: 'editAnswer as vm',
-                
+
                 resolve: {
                     answers: ['answer', function (answer) {
                         return answer.getAnswers().then(function (result) {
@@ -189,7 +286,7 @@
                 templateUrl: 'app/answer/Partials/answerDetail.html',
                 controller: 'answerDetail as vm',
                 resolve: {
-                    
+
                     answers: ['answer', function (answer) {
                         return answer.getAnswers().then(function (result) {
 
