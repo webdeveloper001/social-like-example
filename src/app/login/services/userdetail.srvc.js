@@ -32,13 +32,9 @@
                 return $q.when(_userDetail);
             }
 
-            var url = baseURI + '';
+            var url = baseURI + '' + '?filter=(user='+$rootScope.user.id+')';
 
-            return $http.get(url,{
-                params: {
-                    user: $rootScope.user.id
-                }
-            }).then(querySucceeded, _queryFailed);
+            return $http.get(url).then(querySucceeded, _queryFailed);
 
             function querySucceeded(result) {
 
