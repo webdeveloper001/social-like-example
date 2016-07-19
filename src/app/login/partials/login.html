@@ -3,7 +3,8 @@
         <h1 class="text-center">RankX</h1>
     </div>
     <div class="panel-body">
-        <form ng-submit="vm.submit()">
+
+        <form ng-submit="vm.submit()" ng-if="!vm.isProgressing">
             <div class="form-group text-center">
                 <button type="button" class="btn btn-primary form-control" ng-click="vm.redirectForFacebook()">
                     <i class="fa fa-facebook"></i>
@@ -30,6 +31,13 @@
             </div>
             -->
         </form>
+
+        <div style="text-align: center" ng-if="vm.isProgressing">
+            <div class="loading-pulse"></div>
+            <p class="text-muted">Loading...</p>
+        </div>
+
+
     </div>
-    
+
 </div>
