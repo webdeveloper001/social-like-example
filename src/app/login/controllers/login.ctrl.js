@@ -16,6 +16,7 @@
         vm.username = '';
         vm.password = '';
         vm.code = '';
+        vm.isProgressing = false;
 
         // Methods
         vm.submit = submit;
@@ -40,6 +41,7 @@
             if (queryString) {
                 //vm.code = vm.response.code;
 
+                vm.isProgressing = true;
                 login.oauthWithFacebook(queryString)
                     .then(function (result) {
 
@@ -72,6 +74,8 @@
 
                         console.log("isLoggedIn", $rootScope.isLoggedIn);
                         $location.path('/');
+                    },function () {
+                        vm.isProgressing = false;
                     });
             }
 
