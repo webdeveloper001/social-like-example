@@ -405,12 +405,13 @@
         }
 
         function deleteButtonAccess() {
-            if ($rootScope.isLoggedIn) {
-                var username = $rootScope.user.name;
-                var n = username.localeCompare("Andres Moctezuma");
-                if ($rootScope.user.id == 7 && n == 0) vm.deleteButton = 'inline';
+            //if ($rootScope.isLoggedIn) {
+                //var username = $rootScope.user.name;
+                //var n = username.localeCompare("Andres Moctezuma");
+                //if ($rootScope.user.id == 8 && n == 0) vm.deleteButton = 'inline';
+                if ($rootScope.isAdmin) vm.deleteButton = 'inline';
                 else vm.deleteButton = 'none';
-            }
+            //}
         }
 
         function showUrl() {

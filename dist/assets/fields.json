@@ -51,7 +51,7 @@
    "fields": [
      {"name":"name","isrequired":true, "label":"Name"},
      {"name":"cityarea","isrequired":true, "label":"Neighborhood"},
-	   {"name":"location","isrequired":false, "label":"Location"},
+	   {"name":"location","isrequired":false, "label":"Address"},
 	   {"name":"addinfo","isrequired":false, "label":"Additional Info"}
    ]   
  }

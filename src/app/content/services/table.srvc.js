@@ -23,23 +23,35 @@
         return service;
 
         function getTables(forceRefresh) {
-            
+
             if (_areTablesLoaded() && !forceRefresh) {
 
                 return $q.when(_tables);
             }
 
-            var url = baseURI;
+            //var url = baseURI;
+            //Get all match records
+            var url0 = baseURI + '?offset=' + 0 * 1000;
+            var url1 = baseURI + '?offset=' + 1 * 1000;
 
-            return $http.get(url).then(querySucceeded, _queryFailed);
+            var p0 = $http.get(url0);
+            var p1 = $http.get(url1);
 
-            function querySucceeded(result) {
+            return $q.all([p0, p1]).then(function (d){
+                _tables = d[0].data.resource.concat(d[1].data.resource);
+                console.log("tables length: ", _tables.length);
+                return _tables;            
+            }, _queryFailed);  
+            //return $http.get(url).then(querySucceeded, _queryFailed);
+           
+            //function querySucceeded(d) {
 
-                return _tables = result.data.resource;
-            }
+                
+                //return _tables = result.data.resource;
+            //}
 
         }
-        
+
         function addTable(table) {
 
             var url = baseURI;
@@ -58,15 +70,15 @@
 
                 //update local copy
                 var tablex = table;
-                tablex.id = result.data.resource[0].id; 
+                tablex.id = result.data.resource[0].id;
                 _tables.push(tablex);
-                                
+
                 console.log("result", result);
                 return result.data;
             }
 
         }
-        
+
         function deleteTable(table_id) {
            
             //form match record
@@ -81,9 +93,9 @@
             var url = baseURI + '/' + table_id;
             
             //update (delete answer) local copy of answers
-            var i = _tables.map(function(x) {return x.id; }).indexOf(table_id);
-            if (i > -1) _tables.splice(i,1);
-            
+            var i = _tables.map(function (x) { return x.id; }).indexOf(table_id);
+            if (i > -1) _tables.splice(i, 1);
+
             return $http.delete(url, data, {
                 headers: {
                     "Content-Type": "multipart/form-data"
@@ -96,8 +108,8 @@
                 return result.data;
             }
         }
-        
-        
+
+
         function update(id, field, val) {
            
             //form match record
@@ -106,9 +118,9 @@
 
             var data = {};
             data.id = id;
-            
-            for (var i=0; i<field.length; i++){
-                switch (field[i]){
+
+            for (var i = 0; i < field.length; i++) {
+                switch (field[i]) {
                     case "views": data.views = val[i]; break;
                     case "answers": data.answers = val[i]; break;
                     case "title": data.title = val[i]; break;
@@ -124,15 +136,15 @@
             var url = baseURI;
             
             //update local copy
-            var idx=0;
-            for (var i=0; i<$rootScope.content.length; i++){
+            var idx = 0;
+            for (var i = 0; i < $rootScope.content.length; i++) {
                 if ($rootScope.content[i].id == id) {
                     idx = i;
                     break;
                 }
-            }            
-            for (var i=0; i<field.length; i++){
-                switch (field[i]){
+            }
+            for (var i = 0; i < field.length; i++) {
+                switch (field[i]) {
                     case "answers": $rootScope.content[idx].answers = val[i]; break;
                     case "views": $rootScope.content[idx].views = val[i]; break;
                     case "title": $rootScope.content[idx].title = val[i]; break;
@@ -141,8 +153,8 @@
                     case "type": $rootScope.content[idx].type = val[i]; break;
                     case "question": $rootScope.content[idx].question = val[i]; break;
                 }
-            }                        
-            
+            }
+
             return $http.patch(url, obj, {
                 headers: {
                     "Content-Type": "multipart/form-data"
@@ -155,7 +167,7 @@
                 return result.data;
             }
         }
-        
+
         function _areTablesLoaded() {
 
             return _tables.length > 0;
