@@ -53,8 +53,7 @@
             //form match record
             var data = {};
             data.user = $rootScope.user.id;
-            data.location = $rootScope.user.location;
-            data.age = $rootScope.user.age;
+            data.birth_date = moment($rootScope.user.birth_date_object).format('YYYY/MM/DD');
             data.gender = $rootScope.user.gender;
 
             var obj = {};

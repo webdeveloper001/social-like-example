@@ -3,7 +3,7 @@
 
     angular.module('app', [
         // Angular modules 
-        
+
         'ngAnimate',
         'ngCookies',
         'ngResource',
@@ -21,6 +21,7 @@
         'ui.router',                 // state provider
         'ui.bootstrap.modal',
         'mgcrea.ngStrap',
+        'daterangepicker'
         //'color.picker',
         //'720kb.datepicker', //date picker for specials
         

@@ -56,14 +56,12 @@
 
                             if (Object.keys(result).length == 0) {
 
-                                //select default options for gender as male
-                                $rootScope.user.gender = "Male";
-                                openModal("#addUserDetailModal")
+                                $rootScope.openUserDetailModal();
 
                             } else {
-                                $rootScope.user.age = result[0].age;
-                                $rootScope.user.location = result[0].location;
+                                $rootScope.user.age = calculateAge(new Date(result[0].birth_date));
                                 $rootScope.user.gender = result[0].gender;
+                                $rootScope.user.birth_date = result[0].birth_date;
 
                                 try {
                                     window.localStorage.user = JSON.stringify($rootScope.user);

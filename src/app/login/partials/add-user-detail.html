@@ -7,20 +7,16 @@
                         aria-hidden="true">&times;</span></button>-->
                 <h4 class="modal-title" id="addUserDetailModalLabel">Add User Detail</h4>
             </div>
-            <div class="modal-body" style="height: 286px">
+            <div class="modal-body" style="height: 214px">
                 <div class="col-md-12">
                     <form class="form-horizontal" role="form" name="answerForm">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="location">Location:</label>
-                                <input required ng-model="user.location" type="text" class="form-control" id="location">
+                                <label for="birthdate">Birth Date:</label>
+                                <input id="birthdate" max="maxDate" options="{'singleDatePicker' : true, showDropdowns : true,locale: {format: 'MM-DD-YYYY'}}" date-range-picker class="form-control date-picker" type="text" ng-model="user.birth_date_object" required />
                             </div>
                             <div class="form-group">
-                                <label for="age">Age:</label>
-                                <input required ng-model="user.age" type="number" class="form-control" id="age">
-                            </div>
-                            <div class="form-group">
-                                <label for="location">Gender:</label>
+                                <label>Gender:</label>
                                 <div class="clearfix"></div>
                                 <label class="radio-inline"><input name="gender" type="radio" value="Male" ng-model="user.gender">Male</label>
                                 <label class="radio-inline"><input name="gender" type="radio" value="Female" ng-model="user.gender">Female</label>
