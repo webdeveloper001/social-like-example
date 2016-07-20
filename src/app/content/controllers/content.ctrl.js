@@ -259,19 +259,37 @@
                 table.update(vm.resultsT[i].id, ['title','tags'],[titlex, tagsx]);
             } 
             */
-            /*
+            
             //Use this to add a neighborhood
+            /*
             for (var i=0; i < vm.resultsT.length; i++){
                 
                 //Copy object without reference
                 var tablex = JSON.parse(JSON.stringify(vm.resultsT[i]));
                 tablex.id = undefined;
-                var newtitle = tablex.title.replace("Hillcrest", "Point Loma");
-                tablex.title = newtitle;
-                //console.log("tags ", tags);
-                table.addTable(tablex);
+                tablex.views = 0;
+                tablex.answers = 0;
+                var title_original = tablex.title;
+                //var nhs = ["Leucadia","Carlsbad","Oceanside","Chula Vista","National City","Rancho Santa Fe","Poway","La Mesa","El Cajon","Escondido","Clairemont"]
+               // var nhs = ["Leucadia","Carlsbad"];
+                
+                //for (var j=0; j<nhs.length; j++){
+                    var newtitle = tablex.title.replace("Hillcrest", "Carlsbad");
+                    tablex.title = newtitle;
+                    //console.log("tags ", tags);
+                    table.addTable(tablex);
+                //}
             }
               */
+              /*
+              //Use this for batch DELETE
+             for (var i=0; i < vm.resultsT.length; i++){
+                
+               table.deleteTable(vm.resultsT[i].id);
+            }
+             */
+             
+             
                
             //Use this to add a ranking to all neighborhood
             /*
@@ -287,7 +305,7 @@
                 //console.log("tags ", tags);
                 table.addTable(tablex);
             }
-                */     
+                */
             //Master change
             /*
             
