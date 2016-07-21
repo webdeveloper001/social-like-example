@@ -13,14 +13,19 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="birthdate">Birth Date:</label>
-                                <input id="birthdate" max="maxDate" options="{'singleDatePicker' : true, showDropdowns : true,locale: {format: 'MM-DD-YYYY'}}" date-range-picker class="form-control date-picker" type="text" ng-model="user.birth_date_object" required />
+                                <datepicker date-year-title="selected year" date-max-limit="{{maxDate}}" date-format="yyyy/MM/dd" date-month-title="selected year">
+                                    <input id="birthdate" ng-model="user.birth_date" class="form-control"/>
+                                </datepicker>
                             </div>
                             <div class="form-group">
                                 <label>Gender:</label>
                                 <div class="clearfix"></div>
-                                <label class="radio-inline"><input name="gender" type="radio" value="Male" ng-model="user.gender">Male</label>
-                                <label class="radio-inline"><input name="gender" type="radio" value="Female" ng-model="user.gender">Female</label>
-                                <label class="radio-inline"><input name="gender" type="radio" value="Other" ng-model="user.gender">Other</label>
+                                <label class="radio-inline"><input name="gender" type="radio" value="Male"
+                                                                   ng-model="user.gender">Male</label>
+                                <label class="radio-inline"><input name="gender" type="radio" value="Female"
+                                                                   ng-model="user.gender">Female</label>
+                                <label class="radio-inline"><input name="gender" type="radio" value="Other"
+                                                                   ng-model="user.gender">Other</label>
                             </div>
 
                             <div class="row form-group">

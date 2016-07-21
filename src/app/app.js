@@ -21,9 +21,8 @@
         'ui.router',                 // state provider
         'ui.bootstrap.modal',
         'mgcrea.ngStrap',
-        'daterangepicker'
         //'color.picker',
-        //'720kb.datepicker', //date picker for specials
+        '720kb.datepicker' //date picker for specials
         
     ]);
 })();

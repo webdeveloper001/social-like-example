@@ -5,7 +5,7 @@ angular.module('app').directive("userDetailModal",
             templateUrl: "app/login/partials/add-user-detail.html",
             link: function ($scope, element, attrs, ngModel) {
 
-                $scope.maxDate = moment().subtract(1,'days').format('MM-DD-YYYY');
+                $scope.maxDate = moment().format('YYYY-MM-DD');
 
                 $rootScope.openUserDetailModal = function(){
 
@@ -13,7 +13,7 @@ angular.module('app').directive("userDetailModal",
                     {
                         //select default options for gender as male
                         $rootScope.user.gender = "Male";
-                        $rootScope.user.birth_date_object = {startDate: null, endDate: null};
+                        $rootScope.user.birth_date = '';
                     }
                     openModal("#addUserDetailModal");
 
