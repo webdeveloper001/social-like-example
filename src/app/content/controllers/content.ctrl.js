@@ -41,6 +41,13 @@
 
             }
         });
+        $rootScope.$on('loadContent', function (e, objNum) {
+            console.log("loadContent received @ content", mode.mode, objNum);
+            if (mode.mode == objNum) {
+               console.log("loadContent called @ content", mode.mode, objNum);
+               loadContent();
+            }
+        });
         
          $rootScope.$on('numObjChanged', function (e) {
             refreshActiveObj();
@@ -89,6 +96,7 @@
                     case 5: filter = ["food"]; break;
                     case 6: filter = ["sports"]; break;
                     case 7: filter = ["dating"]; break;
+                    case 8: filter = [$rootScope.cnh]; break;
                 }
                 for (var j = 0; j < $rootScope.content.length; j++) {
                 
@@ -204,7 +212,8 @@
                     if (inputVal.length >= strlen_o) userIsTyping = true;
                     else userIsTyping = false;
                     //if less than 5 results, write 'query record
-                    if (vm.resultsT.length <= 5 && (inputVal.length % 3 == 0) && userIsTyping && mode == 1) {
+                    if (vm.resultsT.length <= 5 && (inputVal.length % 3 == 0) && userIsTyping && mode.mode == 1) {
+                        
                         query.postQuery(inputVal, vm.resultsT.length)
                     }
                     strlen_o = inputVal.length;

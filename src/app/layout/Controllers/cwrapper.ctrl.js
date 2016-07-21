@@ -20,6 +20,7 @@
         vm.viewRank = viewRank;
         vm.editRank = editRank;
         vm.applyRule = applyRule;
+        vm.selnh = selnh;
         //vm.isAdmin = true;
         $rootScope.editMode = false;
         //*****************************
@@ -58,7 +59,10 @@
 
             //Load current category
             $rootScope.content = {};
-            vm.isBasic = $rootScope.isBasic;
+            //vm.isBasic = $rootScope.isBasic;
+            switchView(1); //Default view is basic query view
+            vm.cnh = 'Select Neighborhood';
+            $rootScope.cnh = vm.cnh;
             vm.viewNum = 0;
 
             $rootScope.content = rankings; //response
@@ -103,22 +107,24 @@
             
             //Show ranking titles, hide all ranks
             for (var i = 0; i < $rootScope.content.length; i++) {
-                $rootScope.content[i].showR = false;
-                $rootScope.content[i].showT = true;
+                //$rootScope.content[i].showR = false;
+                //$rootScope.content[i].showT = true;
                 
                 //Tags cwrapper of title and tags for better search
                 $rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title;
             }
 
             $rootScope.neighborhoods = [
-                "Downtown", "La Jolla", "Pacific Beach", "HillCrest", "University Heights", "Old Town", "Del Mar",
-                "Ocean Beach", "North Park", "Mission Hills", "Barrio Logan", "City Heights", "Clairemont", "Mira Mesa", "Point Loma",
-                "South Park", "Scripps Ranch", "Mission Valley", "Kensington"];
+                "Downtown", "La Jolla", "Pacific Beach", "Hillcrest", "University Heights", "Old Town", "Del Mar",
+                "Ocean Beach", "North Park", "Mission Hills", "Barrio Logan", "City Heights", "Clairemont", "La Mesa", "Point Loma",
+                "South Park", "Scripps Ranch", "Mission Beach", "Kensington", "Cardiff by the Sea", "Coronado",
+                "Leucadia", "Oceanside", "National City", "Rancho Santa Fe", "Solana Beach", "Poway", "El Cajon",
+                "Escondido", "Carlsbad"];
             $rootScope.districts = [
                 "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
                 "Marina", "Seaport Village"];
                 
-            
+                vm.nhs = $rootScope.neighborhoods;            
         }
 
         function getEstablishmentAnswers() {
@@ -137,10 +143,30 @@
             $rootScope.$emit('refreshRanks');
         }
 
-        function switchView() {
-            if (vm.isBasic) $rootScope.isBasic = false;
-            if (!vm.isBasic) $rootScope.isBasic = true;
-            vm.isBasic = $rootScope.isBasic;
+        function switchView(x) {
+            //Basic query view
+            if (x==1){
+                vm.isBasic=true;  //Query View
+                vm.isNh=false; //Neighborhood View
+                vm.isCla=false; //Classified View
+            }
+            if (x==2){
+                vm.isBasic=false;  //Query View
+                vm.isNh=false; //Neighborhood View
+                vm.isCla=true; //Classified View
+            }
+            if (x==3){
+                vm.isBasic=false;  //Query View
+                vm.isNh=true; //Neighborhood View
+                vm.isCla=false; //Classified View
+            }           
+            //vm.isBasic = $rootScope.isBasic;
+        }
+        
+        function selnh(x){
+            $rootScope.cnh = x;
+            vm.cnh = x;
+            emitLoadContent(8);
         }
 
         function seeMore(obj) {
@@ -161,6 +187,10 @@
 
         function emitLim5(objNum) {
             $rootScope.$emit('numRes5', objNum);
+        }
+        
+        function emitLoadContent(objNum) {
+            $rootScope.$emit('loadContent', objNum);
         }
         
         function setObj(objNum) {

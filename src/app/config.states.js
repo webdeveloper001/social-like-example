@@ -31,7 +31,8 @@
             {
                 name: 'cwrapper',
                 parent: 'layout',
-                url: '/cwrapper',
+                //abstract: true,
+                url: '', ///cwrapper',
                 views: {
                     "@layout": {
                         templateUrl: 'app/layout/Partials/cwrapper.html',
@@ -167,7 +168,16 @@
                                 return { mode: 7}   
                             }          
                         }
-                    }
+                    },
+                    "neighborhood@cwrapper": {
+                        templateUrl: 'app/content/partials/content.html',
+                        controller: 'content as vm',
+                        resolve: {
+                            mode: function() {
+                                return { mode: 8}   
+                            }          
+                        }
+                    },
                 },
             },
             {
