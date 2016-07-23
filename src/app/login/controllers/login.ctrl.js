@@ -5,9 +5,9 @@
         .module('login')
         .controller('login', login);
 
-    login.$inject = ['$location', '$window', '$rootScope', 'login', 'dialog', 'userDetail'];
+    login.$inject = ['$location', '$window', '$rootScope', 'login', 'dialog', 'userDetail','$state'];
 
-    function login($location, $window, $rootScope, login, dialog, userDetail) {
+    function login($location, $window, $rootScope, login, dialog, userDetail,$state) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'login';
@@ -71,7 +71,10 @@
                         });
 
                         console.log("isLoggedIn", $rootScope.isLoggedIn);
-                        $location.path('/');
+
+                        //$location.path('/');
+                        $state.go('cwrapper', {}, {location: 'replace'});
+
                     },function () {
                         vm.isProgressing = false;
                     });
