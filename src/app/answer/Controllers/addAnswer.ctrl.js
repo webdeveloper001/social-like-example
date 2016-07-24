@@ -84,18 +84,24 @@
             vm.fields.opts = [];
             vm.fields.val = [];
             vm.fields.textstyle = [];
-            
-                
+                            
             for (var i=0; i<vm.fields.length; i++){
                 vm.fields[i].val='';
                 
+                //Typeahead for neighborhoods
                 if (vm.fields[i].name=="cityarea") vm.fields[i].opts="c for c in vm.neighborhoods";
                 else vm.fields[i].opts="c for c in vm.emptyarray";
                 
+                //Typeahead check for current establishments
                 if (vm.fields[i].name=="name" && $rootScope.cCategory.type=='Establishment') {
                     vm.fields[i].opts="c for c in vm.establishmentNames";
                 }
                 
+                //When neighborhood is implied put it in the input field right away
+                if (vm.fields[i].name=="cityarea" && $rootScope.cCategory.type=='Establishment' && $rootScope.NhImplied == true){
+                    vm.fields[i].val = $rootScope.NhValue;
+                }
+                          
                 if (vm.fields[i].name=="addinfo") vm.fields[i].textstyle="textarea";
                 else vm.fields[i].textstyle="text";                 
             }                  
@@ -111,7 +117,7 @@
             myAnswer.upV = 0;
             myAnswer.downV = 0;
             myAnswer.type = vm.type;
-            myAnswer.userid = 1;
+            myAnswer.userid = $rootScope.user.id;
             myAnswer.views = 0;
             
             if (duplicateExists) dialog.checkSameAnswer(myAnswer, extAnswer, addAnswerConfirmed, answerIsSame);

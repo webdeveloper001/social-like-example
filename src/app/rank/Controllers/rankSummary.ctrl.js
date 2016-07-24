@@ -200,12 +200,15 @@
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
             
-             $rootScope.NhImplied = false;
+            $rootScope.NhImplied = false;
+            $rootScope.NhValue = '';
             if ($rootScope.cCategory.type == 'Establishment'){
             //Determine if title already contains neighboorhood            
             for (var i=0; i< $rootScope.neighborhoods.length; i++){
                 if ($rootScope.cCategory.title.includes($rootScope.neighborhoods[i])){
                     $rootScope.NhImplied = true;
+                    $rootScope.NhValue = $rootScope.neighborhoods[i];
+                    break;                    
                 }
             }
             }

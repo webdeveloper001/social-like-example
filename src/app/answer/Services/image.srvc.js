@@ -83,10 +83,12 @@
                     break;
                 }
             }
+            
+            
 
             switch (attNum) {
-                case 1: { searchQuery = 'q=' + f1 + ' ' + keywords; break; }
-                case 2: { searchQuery = 'q=' + f1 + ' ' + f2 + ' ' + f3 + ' ' + f4 + ' ' + keywords; break; }
+                case 1: { searchQuery = 'q=' + f1 + ' ' + f2 + ' ' + f3 + ' ' + f4 + ' ' + keywords; break; }
+                case 2: { searchQuery = 'q=' + f1 + ' ' + keywords; break; } 
                 case 3: { searchQuery = 'q=' + f1 + ' ' + f3 + ' ' + f4 + ' ' + keywords; break; }
                 case 4: { searchQuery = 'q=' + f1 + ' ' + f2 + ' ' + keywords; break; }
             }

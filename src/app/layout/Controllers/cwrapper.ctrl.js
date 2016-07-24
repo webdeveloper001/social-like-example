@@ -45,15 +45,17 @@
 
         function activate() {
             
+            
+            
             //****SUPER TEMP*****************
             
-            //$rootScope.isLoggedIn = false;
+            //$rootScope.isLoggedIn = true;
             //$rootScope.user = {};
-            //$rootScope.user.id = 7;
+            //$rootScope.user.id = 11;
             //$rootScope.user.name = "Andres Moctezuma";
             $rootScope.isAdmin = false;
             vm.isAdmin=false;
-            //viewRank();
+            viewRank();
             
             //******************************
 
@@ -149,6 +151,7 @@
                 vm.isBasic=true;  //Query View
                 vm.isNh=false; //Neighborhood View
                 vm.isCla=false; //Classified View
+                vm.viewNum = 1;
             }
             if (x==2){
                 vm.isBasic=false;  //Query View
@@ -159,8 +162,9 @@
                 vm.isBasic=false;  //Query View
                 vm.isNh=true; //Neighborhood View
                 vm.isCla=false; //Classified View
+                vm.viewNum = 8;
             }           
-            //vm.isBasic = $rootScope.isBasic;
+            
         }
         
         function selnh(x){
