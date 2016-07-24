@@ -28,5 +28,9 @@
     "dialog.rankType.title": "Missing data",
     "dialog.rankType.text": "Please enter a valid rank type.",
     "dialog.rankQuestion.title": "Missing data",
-    "dialog.rankQuestion.text": "Please enter a valid rank question."
+    "dialog.rankQuestion.text": "Please enter a valid rank question.",
+    "dialog.whyFacebook.title": "Why Facebook?",
+    "dialog.whyFacebook.text": "We use Facebook login as a way to identify users that contribute to the rankings. This is done to ensure that the rankings created truly reflect the collective opinion of the community.",
+    "dialog.whyUserData.title": "Why you want my birth date and my gender?",
+    "dialog.whyUserData.text": "We ask for your birth date and gender to create meaningful and insightful rankings. For some rankings we want to consider only women's opinions, for other rankings, we might just want men's opinions; for some others only for people a certain age, etc. The information you provide help us differentiate between our users."
 }

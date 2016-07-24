@@ -1,5 +1,5 @@
 angular.module('app').directive("userDetailModal",
-    ["$rootScope", "userDetail", function ($rootScope, userDetail) {
+    ["$rootScope", "userDetail", "dialog", function ($rootScope, userDetail, dialog) {
         return {
             restrict: "E",
             templateUrl: "app/login/partials/add-user-detail.html",
@@ -48,7 +48,13 @@ angular.module('app').directive("userDetailModal",
                         closeModal("#addUserDetailModal");
                     });
                 };
-
+                
+                // Dialog - Why this information is required
+                  $rootScope.whyThisInfoDialog = function () {
+                      
+                    dialog.getDialog('whyUserData');
+                    
+                  }
             }
         }
     }]);

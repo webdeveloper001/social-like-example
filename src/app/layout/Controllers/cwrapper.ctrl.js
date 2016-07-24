@@ -151,18 +151,19 @@
                 vm.isBasic=true;  //Query View
                 vm.isNh=false; //Neighborhood View
                 vm.isCla=false; //Classified View
-                vm.viewNum = 1;
+                $rootScope.objNum = 1; //set objNum to 1
             }
             if (x==2){
                 vm.isBasic=false;  //Query View
                 vm.isNh=false; //Neighborhood View
                 vm.isCla=true; //Classified View
+                vm.viewNum = 0; //Show 5 rankings in each categroy
             }
             if (x==3){
                 vm.isBasic=false;  //Query View
                 vm.isNh=true; //Neighborhood View
                 vm.isCla=false; //Classified View
-                vm.viewNum = 8;
+                $rootScope.objNum = 8; //set objNum to 1
             }           
             
         }
