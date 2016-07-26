@@ -6,7 +6,6 @@ angular.module('app').directive("citySelectionModal",
                 link: function ($scope, element, attrs, ngModel) {
 
                     $rootScope.selectedCity = JSON.parse(window.localStorage.selectedCity);
-                    $rootScope.$digest();
 
                 }
             }

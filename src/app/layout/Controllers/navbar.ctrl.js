@@ -60,7 +60,9 @@
 
                 vm.user = '';
                 vm.isLoggedIn = false;
-                $location.path('/');
+
+                //$location.path('/');
+                $state.go('cwrapper', {}, {location: 'replace'});
             });
         }
 
@@ -144,7 +146,7 @@
         function selectCity(detectedCity) {
 
             if ($rootScope.selectedCity) {
-                $rootScope.$digest();
+                
             }else {
                 var isCityInList = false;
                 var cityObject = {};
