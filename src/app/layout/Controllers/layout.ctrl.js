@@ -55,6 +55,7 @@
          */
         $rootScope.selectCity = function (city) {
             $rootScope.selectedCity = city;
+            window.localStorage.selectedCity = JSON.stringify($rootScope.selectedCity);
             closeModal("#selectCityModal");
         }
     }

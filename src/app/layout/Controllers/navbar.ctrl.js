@@ -143,25 +143,29 @@
          */
         function selectCity(detectedCity) {
 
-            var isCityInList = false;
-            var cityObject = {};
-
-            angular.forEach($rootScope.cities, function (city) {
-
-                if (city.name == detectedCity.trim() && city.is_active) {
-                    isCityInList = true;
-                    cityObject = city;
-                }
-
-            });
-
-            if (isCityInList == false) {
-                openModal("#selectCityModal");
-            } else {
-                $rootScope.selectedCity = cityObject;
+            if ($rootScope.selectedCity) {
                 $rootScope.$digest();
-            }
+            }else {
+                var isCityInList = false;
+                var cityObject = {};
 
+                angular.forEach($rootScope.cities, function (city) {
+
+                    if (city.name == detectedCity.trim() && city.is_active) {
+                        isCityInList = true;
+                        cityObject = city;
+                    }
+
+                });
+
+                if (isCityInList == false) {
+                    openModal("#selectCityModal");
+                } else {
+                    $rootScope.selectedCity = cityObject;
+                    window.localStorage.selectedCity = JSON.stringify($rootScope.selectedCity);
+                    $rootScope.$digest();
+                }
+            }
         }
     }
 })();
