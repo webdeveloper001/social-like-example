@@ -56,6 +56,7 @@
         function activate() {
             
             $rootScope.rankIsActive = true;
+            $rootScope.objNumAct = $rootScope.objNum;
 
             loadData(); //load data and write to $rootScope
             //update number of views and answers

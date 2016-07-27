@@ -44,19 +44,24 @@
         activate();
 
         function activate() {
-            
-            
-            
+                
             //****SUPER TEMP*****************
+           $rootScope.isAdmin = false;
+           vm.isAdmin=false;
+           
+           /*
+           $rootScope.isLoggedIn = true;
+           $rootScope.user = {};
+           $rootScope.user.name = "Andres Moctezuma";
+           $rootScope.user.id = 12;
+                       
+            if ($rootScope.isLoggedIn && $rootScope.user.name == "Andres Moctezuma" && $rootScope.user.id == 12 ){
+                $rootScope.isAdmin = true;
+                vm.isAdmin=true;
+            }
             
-            //$rootScope.isLoggedIn = true;
-            //$rootScope.user = {};
-            //$rootScope.user.id = 11;
-            //$rootScope.user.name = "Andres Moctezuma";
-            $rootScope.isAdmin = false;
-            vm.isAdmin=false;
             viewRank();
-            
+            */
             //******************************
 
             //Load current category
@@ -152,6 +157,7 @@
                 vm.isNh=false; //Neighborhood View
                 vm.isCla=false; //Classified View
                 $rootScope.objNum = 1; //set objNum to 1
+                vm.val = '';
             }
             if (x==2){
                 vm.isBasic=false;  //Query View
@@ -201,11 +207,12 @@
         function setObj(objNum) {
             $rootScope.objNum = objNum;
             
-            if (objNum != objNum_o){
+            if (objNum != objNum_o && !$rootScope.rankIsActive){
             
             $rootScope.$emit('numObjChanged');
             }
             objNum_o = objNum;
+            //if (!$rootScope.rankIsActive) $rootScope.objNumAct = $rootScope.objNum;
         }
         
           //*****************Admin Functions************

@@ -22,6 +22,10 @@
         activate();
 
         function activate() {
+            
+            $rootScope.rankIsActive = true;
+            $rootScope.objNumAct = $rootScope.objNum;
+            
             loadData();
             console.log("editRanking page Loaded!");
 
