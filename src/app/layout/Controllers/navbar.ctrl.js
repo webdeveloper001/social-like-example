@@ -60,7 +60,9 @@
 
                 vm.user = '';
                 vm.isLoggedIn = false;
-                $location.path('/');
+
+                //$location.path('/');
+                $state.go('cwrapper', {}, {location: 'replace'});
             });
         }
 
@@ -143,25 +145,29 @@
          */
         function selectCity(detectedCity) {
 
-            var isCityInList = false;
-            var cityObject = {};
+            if ($rootScope.selectedCity) {
+                
+            }else {
+                var isCityInList = false;
+                var cityObject = {};
 
-            angular.forEach($rootScope.cities, function (city) {
+                angular.forEach($rootScope.cities, function (city) {
 
-                if (city.name == detectedCity.trim() && city.is_active) {
-                    isCityInList = true;
-                    cityObject = city;
+                    if (city.name == detectedCity.trim() && city.is_active) {
+                        isCityInList = true;
+                        cityObject = city;
+                    }
+
+                });
+
+                if (isCityInList == false) {
+                    openModal("#selectCityModal");
+                } else {
+                    $rootScope.selectedCity = cityObject;
+                    window.localStorage.selectedCity = JSON.stringify($rootScope.selectedCity);
+                    $rootScope.$digest();
                 }
-
-            });
-
-            if (isCityInList == false) {
-                openModal("#selectCityModal");
-            } else {
-                $rootScope.selectedCity = cityObject;
-                $rootScope.$digest();
             }
-
         }
     }
 })();

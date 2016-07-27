@@ -7,10 +7,9 @@ angular.module('app').directive("userDetailModal",
 
                 $scope.maxDate = moment().format('YYYY-MM-DD');
 
-                $rootScope.openUserDetailModal = function(){
+                $rootScope.openUserDetailModal = function () {
 
-                    if($rootScope.user)
-                    {
+                    if ($rootScope.user) {
                         //select default options for gender as male
                         $rootScope.user.gender = "Male";
                         $rootScope.user.birth_date = '';
@@ -18,7 +17,6 @@ angular.module('app').directive("userDetailModal",
                     openModal("#addUserDetailModal");
 
                 };
-
 
                 /**
                  * Function to call service for adding user detail
@@ -35,26 +33,32 @@ angular.module('app').directive("userDetailModal",
                                 $rootScope.openUserDetailModal();
 
                             } else {
-                                $rootScope.user.birth_date = result[0].birth_date;
                                 $rootScope.user.age = calculateAge(new Date(result[0].birth_date));
-                                $rootScope.user.gender = result.gender;
+                                $rootScope.user.gender = result[0].gender;
+                                $rootScope.user.birth_date = result[0].birth_date;
 
                                 try {
                                     window.localStorage.user = JSON.stringify($rootScope.user);
-                                } catch (e) { }
+                                } catch (e) {
+                                }
                             }
 
                         });
                         closeModal("#addUserDetailModal");
                     });
                 };
-                
+
                 // Dialog - Why this information is required
-                  $rootScope.whyThisInfoDialog = function () {
-                      
+                $rootScope.whyThisInfoDialog = function () {
+
                     dialog.getDialog('whyUserData');
-                    
-                  }
+
+                };
+
+                if ($rootScope.user) {
+                    if (!$rootScope.user.birth_date || !$rootScope.user.gender)
+                        $rootScope.openUserDetailModal();
+                }
             }
         }
     }]);
