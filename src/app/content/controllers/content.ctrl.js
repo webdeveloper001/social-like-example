@@ -287,7 +287,7 @@
         /*
         //Use this to remove a tag
         for (var i=0; i < vm.resultsT.length; i++){
-            var titlex = vm.resultsT[i].title.replace("WiFi","wifi");
+            var titlex = vm.resultsT[i].title.replace("best places that play live music","best places that have live music");
             //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
             //console.log("tags ", tags);
             table.update(vm.resultsT[i].id, ['title'],[titlex]);
@@ -308,13 +308,13 @@
            // var nhs = ["Leucadia","Carlsbad"];
             
             //for (var j=0; j<nhs.length; j++){
-                var newtitle = tablex.title.replace("Hillcrest", "Carlsbad");
+                var newtitle = tablex.title.replace("Hillcrest", "Golden Hills");
                 tablex.title = newtitle;
                 //console.log("tags ", tags);
                 table.addTable(tablex);
             //}
-        }
-          */
+        }*/
+          
         /*
         //Use this for batch DELETE
        for (var i=0; i < vm.resultsT.length; i++){
@@ -332,9 +332,9 @@
             //Copy object without reference
             var tablex = JSON.parse(JSON.stringify(vm.resultsT[i]));
             tablex.id = undefined;
-            var newtitle = tablex.title.replace("Which is the best Asian food restaurant", "What are best flower shops");
+            var newtitle = tablex.title.replace("Which is the best yoga studio", "What are the best car repair shops");
             tablex.title = newtitle;
-            var newtags = tablex.tags.replace("thai vietnamese korean chinese japanese noodles", "florist gift roses");
+            var newtags = tablex.tags.replace("fitness health", "automoviles mechanic inspection oil change");
             tablex.tags = newtags;
             //console.log("tags ", tags);
             table.addTable(tablex);
