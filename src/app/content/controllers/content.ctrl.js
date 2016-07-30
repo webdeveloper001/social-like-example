@@ -6,10 +6,10 @@
         .controller('content', content);
 
     content.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope', 'answers',
-        'rankings', 'query', 'table', 'specials', 'mode', '$filter'];
+        'rankings', 'query', 'table', 'specials', 'mode', '$filter','APP_API_KEY'];
 
     function content($rootScope, $state, $http, $stateParams, $scope, answers,
-        rankings, query, table, specials, mode, $filter) {
+        rankings, query, table, specials, mode, $filter, APP_API_KEY) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'content';
@@ -277,6 +277,20 @@
     function applyRule() {
         console.log("apply Rule");
             
+        /*
+        var API_KEY = 'AIzaSyC2gAzj80m1XpaagvunSDPgEvOCleNNe5A';
+        var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+$rootScope.inputVal+'&key='+API_KEY;
+        delete $http.defaults.headers.common['X-Dreamfactory-API-Key'];
+            $http.get(url,{},{
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                    //'Access-Control-Allow-Headers': 'x-dreamfactory-api-key'
+                 }
+            }).then(function(result){
+                console.log("google response:---", result);
+                $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
+            });    
+        */
         /*
         //Use this to add a tag
         for (var i=0; i < vm.resultsT.length; i++){

@@ -47,9 +47,8 @@
                 
             //****SUPER TEMP*****************
            $rootScope.isAdmin = false;
-           vm.isAdmin=false;
-           
-           /*
+           vm.isAdmin = false;
+           /*         
            $rootScope.isLoggedIn = true;
            $rootScope.user = {};
            $rootScope.user.name = "Andres Moctezuma";

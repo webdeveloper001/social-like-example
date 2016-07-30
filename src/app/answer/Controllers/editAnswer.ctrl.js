@@ -43,8 +43,8 @@
         var downVi = [];
         var editvotes = [];
         var recordsUpdated = false;
-        var numVotes2accept = 5;
-        var numVotes2discard = 5;
+        var numVotes2accept = 1;
+        var numVotes2discard = 1;
         // Methods
      
         //google search
@@ -52,7 +52,7 @@
         vm.linkIdx = 0;
         vm.numLinks = 0;
         vm.imageCommand = 'Change Image';
-        var attNum = 1;
+        var attNum = 3;
         vm.imagefunctions = 'none';
         vm.emptyarray=[];
                 
