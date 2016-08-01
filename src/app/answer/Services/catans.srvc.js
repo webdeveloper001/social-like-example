@@ -29,16 +29,20 @@
 
                 return $q.when(_allcatans);
             }
+            
+            //Get all catans records
+            var url0 = baseURI + '?offset=' + 0 * 1000;
+            var url1 = baseURI + '?offset=' + 1 * 1000;
 
-            var url = baseURI;
+            var p0 = $http.get(url0);
+            var p1 = $http.get(url1);
 
-            return $http.get(url).then(querySucceeded, _queryFailed);
-
-            function querySucceeded(result) {
-
-                return _allcatans = result.data.resource;
-            }
-
+            return $q.all([p0, p1]).then(function (d){
+                _allcatans = d[0].data.resource.concat(d[1].data.resource);
+                console.log("No. Cat-Ans: ", _allcatans.length);
+                return _allcatans;            
+            }, _queryFailed);  
+            
         }
         
         function postRec(x) {

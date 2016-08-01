@@ -277,7 +277,12 @@
     function applyRule() {
         console.log("apply Rule");
             
-        /*
+       /*     
+        var lat_o = 32.7625548; 
+        var lng_o = -117.1476841;   
+        var fa='';
+        var lat=0;
+        var lng=0;
         var API_KEY = 'AIzaSyC2gAzj80m1XpaagvunSDPgEvOCleNNe5A';
         var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+$rootScope.inputVal+'&key='+API_KEY;
         delete $http.defaults.headers.common['X-Dreamfactory-API-Key'];
@@ -288,6 +293,19 @@
                  }
             }).then(function(result){
                 console.log("google response:---", result);
+                fa = result.data.results[0].formatted_address;
+                lat = result.data.results[0].geometry.location.lat;
+                lng = result.data.results[0].geometry.location.lng;
+                console.log("fa - lat - lon", fa, lat, lng);
+                var p = 0.017453292519943295;    // Math.PI / 180
+                var c = Math.cos;
+                var a = 0.5 - c((lat - lat_o) * p)/2 + 
+                c(lat_o * p) * c(lat * p) * 
+                (1 - c((lng - lng_o) * p))/2;
+
+                var dist_km =  12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+                console.log("Distance (mi)---", dist_km/1.609);
+                
                 $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
             });    
         */
@@ -301,7 +319,7 @@
         /*
         //Use this to remove a tag
         for (var i=0; i < vm.resultsT.length; i++){
-            var titlex = vm.resultsT[i].title.replace("best places that play live music","best places that have live music");
+            var titlex = vm.resultsT[i].title.replace("best fine dining restaurants in","best fine dining restaurants in ");
             //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
             //console.log("tags ", tags);
             table.update(vm.resultsT[i].id, ['title'],[titlex]);
@@ -336,24 +354,23 @@
          table.deleteTable(vm.resultsT[i].id);
       }
        */
-             
-             
-               
+                        
+        /*       
         //Use this to add a ranking to all neighborhood
-        /*
+        
         for (var i=0; i < vm.resultsT.length; i++){
             
             //Copy object without reference
             var tablex = JSON.parse(JSON.stringify(vm.resultsT[i]));
             tablex.id = undefined;
-            var newtitle = tablex.title.replace("Which is the best yoga studio", "What are the best car repair shops");
+            var newtitle = tablex.title.replace("What are the best fine dining restaurants in", "What are the best sports bars in");
             tablex.title = newtitle;
-            var newtags = tablex.tags.replace("fitness health", "automoviles mechanic inspection oil change");
+            var newtags = tablex.tags.replace("fine dining fancy elegant", "food dining pubs beer");
             tablex.tags = newtags;
             //console.log("tags ", tags);
             table.addTable(tablex);
-        }
-          */  
+        }*/
+            
         //Master change
         /*
         
