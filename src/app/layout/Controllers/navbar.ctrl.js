@@ -5,9 +5,9 @@
         .module('app')
         .controller('navbar', navbar);
 
-    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state', 'city'];
+    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state', 'city','$cookieStore'];
 
-    function navbar($location, $translate, $rootScope, login, $state, city) {
+    function navbar($location, $translate, $rootScope, login, $state, city,$cookieStore) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'navbar';
@@ -89,6 +89,53 @@
         }
 
         /**
+         * Function to get current location of User based on navigator
+         */
+        $rootScope.getCurrentPositionOfUser = function() {
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position){
+                    setUserLatitudeLongitude(position);
+                }, function(error){
+                }, {maximumAge:60000, timeout:5000, enableHighAccuracy:true});
+            }else{
+                console.log('Geo location not supported.');
+            }
+
+        };
+
+        /**
+         * Function to set latitude and longitude to $rootScope and Cookie
+         * @param position
+         */
+        function setUserLatitudeLongitude(position) {
+
+            /**
+             * Set Latitude and Longitude from navigator to rootScope
+             */
+            $rootScope.currentUserLatitude = position.coords.latitude;
+            $rootScope.currentUserLongitude = position.coords.longitude;
+
+            /**
+             * Set Latitude and Longitude to cookie
+             */
+            $cookieStore.put('currentUserLatitude', $rootScope.currentUserLatitude);
+            $cookieStore.put('currentUserLongitude', $rootScope.currentUserLongitude);
+
+            /**
+             * If user is logged in, then set latitude and longitude to user's object
+             */
+            if($rootScope.isLoggedIn)
+            {
+                $rootScope.user.latitude = $rootScope.currentUserLatitude;
+                $rootScope.user.longitude = $rootScope.currentUserLongitude;
+                console.log("Geo Location is set for logged in user.");
+            }
+
+            console.log("Geo Location is set for user.");
+        }
+
+        /**
          * This function detect City using geo location(lat,long)
          * Geo location works only on secure origins in Google Chrome
          */
@@ -110,6 +157,8 @@
             function showPosition(position) {
 
                 var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+                setUserLatitudeLongitude(position);
 
                 geocoder.geocode(
                     {'latLng': latlng},
