@@ -5,16 +5,18 @@
         .module('app')
         .controller('cwrapper', cwrapper);
 
-    cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope', 'answers', 'rankings', 'query', 'table', 'specials'];
+    cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
+     'answers', 'rankings', 'query', 'table', 'specials'];
 
-    function cwrapper($rootScope, $state, $http, $stateParams, $scope, answers, rankings, query, table, specials) {
+    function cwrapper($rootScope, $state, $http, $stateParams, $scope,
+     answers, rankings, query, table, specials) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'cwrapper';
 
-        vm.switchView = switchView;
+        vm.switchScope = switchScope;
         vm.refreshRanks = refreshRanks;
-        vm.setObj = setObj;
+        //vm.setObj = setObj;
         
         //Admin Functions
         vm.viewRank = viewRank;
@@ -27,25 +29,29 @@
         
         vm.content = [];
         vm.emptyspace = '';
+       
         
-        //delete these
-        $rootScope.viewNum = 0;
-        $rootScope.activeView = 1;
-        //$rootScope.viewCtn = 0;
-        $rootScope.isBasic = true;
-        $rootScope.rankIsActive = false;
-        
-        //Methods
-        vm.seeMore = seeMore;
-        vm.goBack = goBack;
-        
-        var objNum_o = 0;
+        $rootScope.searchActive = false;
+        vm.searchActive = $rootScope.searchActive;
 
-        activate();
+        if ($rootScope.cwrapperLoaded) activate();
+        else init();
 
-        function activate() {
+        function activate(){
+            console.log("activate cwrapper!");
+            vm.isNh = $rootScope.isNh;
+            vm.isCity = $rootScope.isCity;
+            vm.isNhRdy = $rootScope.isNhRdy;
+            vm.nhs = $rootScope.neighborhoods;
+            vm.searchActive = $rootScope.searchActive;
+            vm.cnh = $rootScope.cnh;
+            
+        }
+        function init() {
+
+            console.log("init cwrapper!");
                 
-            //****SUPER TEMP*****************
+           //****SUPER TEMP*****************
            $rootScope.isAdmin = false;
            vm.isAdmin = false;
            /*         
@@ -66,10 +72,12 @@
             //Load current category
             $rootScope.content = {};
             //vm.isBasic = $rootScope.isBasic;
-            switchView(1); //Default view is basic query view
+            switchScope(1); //Default view is basic query view
             vm.cnh = 'Select Neighborhood';
             $rootScope.cnh = vm.cnh;
-            vm.viewNum = 0;
+            vm.isNhRdy = false;
+            $rootScope.isNhRdy = false; 
+            //vm.viewNum = 0;
 
             $rootScope.content = rankings; //response
             $rootScope.specials = specials;
@@ -90,17 +98,7 @@
 
             });
 
-            $state.go('content');
-            
-            //Set results limits  
-            emitLim30(1);
-            emitLim5(2);
-            emitLim5(3);
-            emitLim5(4);
-            emitLim5(5);
-            emitLim5(6);
-            emitLim5(7);
-
+            $rootScope.cwrapperLoaded = true;
         }
 
         function loadcontent() {
@@ -146,51 +144,56 @@
 
         function refreshRanks(val) {
             $rootScope.inputVal = val;
+            if ($rootScope.inputVal.length > 0) $rootScope.searchActive = true;
+            else $rootScope.searchActive = false;
+            vm.searchActive = $rootScope.searchActive;
             $rootScope.$emit('refreshRanks');
         }
 
-        function switchView(x) {
-            //Basic query view
+        function switchScope(x) {
             if (x==1){
-                vm.isBasic=true;  //Query View
-                vm.isNh=false; //Neighborhood View
-                vm.isCla=false; //Classified View
-                $rootScope.objNum = 1; //set objNum to 1
+                vm.isNh=false; //Neighborhood Scope
+                vm.isCity=true; //City Scope
+                $rootScope.isNh = false;
+                $rootScope.isCity = true; 
                 vm.val = '';
+                $rootScope.inputVal = '';
+                $rootScope.searchActive = false;
+                $rootScope.$emit('loadNh');               
             }
             if (x==2){
-                vm.isBasic=false;  //Query View
-                vm.isNh=false; //Neighborhood View
-                vm.isCla=true; //Classified View
-                vm.viewNum = 0; //Show 5 rankings in each categroy
-            }
-            if (x==3){
-                vm.isBasic=false;  //Query View
                 vm.isNh=true; //Neighborhood View
-                vm.isCla=false; //Classified View
-                $rootScope.objNum = 8; //set objNum to 1
-            }           
-            
+                vm.isCity=false; //Classified View
+                $rootScope.isNh = true;
+                $rootScope.isCity = false; 
+                vm.val = '';
+                $rootScope.inputVal = '';
+                $rootScope.searchActive = false;
+                if ($rootScope.isNhRdy)  $rootScope.$emit('loadNh');
+            }
+            vm.searchActive = $rootScope.searchActive;                      
         }
         
         function selnh(x){
             $rootScope.cnh = x;
             vm.cnh = x;
-            emitLoadContent(8);
+            vm.isNhRdy = true;
+            $rootScope.isNhRdy = vm.isNhRdy;
+            $rootScope.$emit('loadNh');
         }
-
+/*
         function seeMore(obj) {
             vm.viewNum = obj;
             $rootScope.activeView = obj+1;
-            emitLim30(obj+1);
+            //emitLim30(obj+1);
         }
         
         function goBack(obj){
             vm.viewNum = 0;
             $rootScope.activeView = obj+1;
-            emitLim5(obj+1);                        
+            //emitLim5(obj+1);                        
         }
-
+/*
         function emitLim30(objNum) {
             $rootScope.$emit('numRes30', objNum);
         }
@@ -201,8 +204,8 @@
         
         function emitLoadContent(objNum) {
             $rootScope.$emit('loadContent', objNum);
-        }
-        
+        }*/
+        /*
         function setObj(objNum) {
             $rootScope.objNum = objNum;
             
@@ -212,7 +215,7 @@
             }
             objNum_o = objNum;
             //if (!$rootScope.rankIsActive) $rootScope.objNumAct = $rootScope.objNum;
-        }
+        }*/
         
           //*****************Admin Functions************
         function editRank() {
@@ -230,7 +233,7 @@
         }
         function applyRule() {          
                  $rootScope.$emit('applyRule');
-                 console.log("apply Rule");
+                 //console.log("apply Rule");
            }
         //***********End Admin Functions********************
     }

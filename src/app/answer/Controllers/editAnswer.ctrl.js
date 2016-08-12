@@ -67,8 +67,7 @@
                 }
             });
 
-        //Execute this view only if rankWindow is open
-        if ($rootScope.showR) activate();
+        activate();
 
         function activate() {
             
@@ -539,7 +538,8 @@
             vm.imageURL = imageLinks[vm.linkIdx];
         }
           function closeRank() {
-                $rootScope.$emit('closeRank');                            
+               // $rootScope.$emit('closeRank');
+               $state.go('cwrapper');                               
         }
 
     }

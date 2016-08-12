@@ -6,11 +6,11 @@
         .controller('rankSummary', rankSummary);
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'answers'
-        , 'answer', 'mrecs', 'rank','catansrecs','table'
+        , 'answer', 'mrecs', 'rank','catansrecs','$filter','table'
         , '$rootScope', '$modal', 'edits', 'editvote', 'votes', 'useractivities'];
 
     function rankSummary(dialog, $stateParams, $state, answers
-        , answer, mrecs, rank, catansrecs, table
+        , answer, mrecs, rank, catansrecs, $filter, table
         , $rootScope, $modal, edits, editvote, votes, useractivities) {
         /* jshint validthis:true */
         var vm = this;
@@ -29,7 +29,7 @@
 
         vm.selOverall = 'active';
         vm.selPersonal = '';
-        var myParent = $rootScope.parentNum;
+        //var myParent = $rootScope.parentNum;
 
         var votetable = [];
         var editvotetable = [];
@@ -42,6 +42,8 @@
 
         $rootScope.userHasRank = false;
         $rootScope.userActRecId = 0;
+
+        var canswers = [];
         if ($rootScope.addInfoMsgAck)  vm.addInfoMsgAck = $rootScope.addInfoMsgAck;
         else (vm.addInfoMsgAck = false);
         
@@ -51,7 +53,8 @@
         });
 
         //Execute this view only if rankWindow is open
-        if ($rootScope.showR) activate(); 
+        //if ($rootScope.showR) 
+        activate(); 
         
         function activate() {
             
@@ -60,14 +63,94 @@
 
             loadData(); //load data and write to $rootScope
             //update number of views and answers
-            table.update($rootScope.cCategory.id,['views','answers'],[$rootScope.cCategory.views+1, $rootScope.canswers.length]);
+ //           table.update($rootScope.cCategory.id,['views','answers'],[$rootScope.cCategory.views+1, $rootScope.canswers.length]);
             
             getUserData(); //if user is logged in, get user data (vote record, etc)
             createAnswerStatus(); //enables/disables 'Create Answer' button
             
             vm.tableimage = $rootScope.cCategory.imagefile;
             rank.computeRanking($rootScope.canswers, $rootScope.cmrecs);
+
+            //Sort by rank here (this is to grab images of top 3 results)
+            vm.answers = $filter('orderBy')(vm.answers, '-Rank');
             
+            //Check number of answers for this ranking
+            if (vm.answers.length == 0){
+                    vm.numAns = 0;
+                    table.update($rootScope.cCategory.id,
+                        ['views','answers'],
+                        [$rootScope.cCategory.views+1, $rootScope.canswers.length]);
+                        
+            }
+            if (vm.answers.length == 1){
+                vm.numAns = 1;
+                        if ($rootScope.cCategory.type == 'Short-Phrase'){
+                            vm.isShortPhrase = true;
+                            vm.title1 = vm.answers[0].name;
+                            vm.addinfo1 = vm.answers[0].addinfo;
+                            vm.image1 = vm.title1 + '##'+ vm.title1;    
+                        }
+                        else{
+                            vm.isShortPhrase = false;
+                            vm.image1 = vm.answers[0].imageurl;
+                        }
+                        
+                    table.update($rootScope.cCategory.id,
+                        ['views','answers','image1url'],
+                        [$rootScope.cCategory.views+1, $rootScope.canswers.length,
+                        vm.image1]);                        
+            }
+            if (vm.answers.length == 2){
+                 vm.numAns = 2;
+                    if ($rootScope.cCategory.type == 'Short-Phrase'){
+                            vm.isShortPhrase = true;
+                            vm.title1 = vm.answers[0].name;
+                            vm.addinfo1 = vm.answers[0].addinfo;
+                            vm.image1 = vm.title1 + '##'+ vm.title1;
+                            vm.title2 = vm.answers[1].name;
+                            vm.addinfo2 = vm.answers[1].addinfo;
+                            vm.image2 = vm.title2 + '##'+ vm.title2;    
+    
+                        }
+                        else {
+                            vm.isShortPhrase = false;
+                            vm.image1 = vm.answers[0].imageurl;
+                            vm.image2 = vm.answers[1].imageurl;
+                        }
+                    table.update($rootScope.cCategory.id,
+                        ['views','answers','image1url','image2url'],
+                        [$rootScope.cCategory.views+1, $rootScope.canswers.length,
+                        vm.image1, vm.image2]);
+            }
+
+            if (vm.answers.length > 2){
+                vm.numAns = 3;
+                 if ($rootScope.cCategory.type == 'Short-Phrase'){
+                            vm.isShortPhrase = true;
+                            vm.title1 = vm.answers[0].name;
+                            vm.addinfo1 = vm.answers[0].addinfo;
+                            vm.image1 = vm.title1 + '##'+ vm.title1;
+                            vm.title2 = vm.answers[1].name;
+                            vm.addinfo2 = vm.answers[1].addinfo;
+                            vm.image2 = vm.title2 + '##'+ vm.title2;
+                            vm.title3 = vm.answers[2].name;
+                            vm.addinfo3 = vm.answers[2].addinfo;
+                            vm.image3 = vm.title3 + '##'+ vm.title3;    
+    
+                        }
+                        else {
+                            vm.isShortPhrase = false;
+                            vm.image1 = vm.answers[0].imageurl;
+                            vm.image2 = vm.answers[1].imageurl;
+                            vm.image3 = vm.answers[2].imageurl;
+                        }
+
+                    table.update($rootScope.cCategory.id,
+                        ['views','answers','image1url','image2url','image3url'],
+                        [$rootScope.cCategory.views+1, $rootScope.canswers.length,
+                        vm.image1, vm.image2, vm.image3]);                        
+            }
+         
             //TODO update answers in DB
             console.log("Rank Summary Loaded!");
             //console.log("$rootScope.user", $rootScope.user);
@@ -317,7 +400,7 @@
         }
         
         function closeRank() {
-                $rootScope.$emit('closeRank');                            
+               $state.go('cwrapper');                            
         }
         
         function closeAddInfoMsg(){

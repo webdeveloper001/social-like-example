@@ -89,105 +89,24 @@
                             return result;
                         });
                     }]                  
-                    /*
-                    answers: ['answer', function () {
-                        return function () {
-
-                            return [];
-                        };
-                    }]*/
                 }
             },
 
             {
-                name: 'content',
-                parent: 'cwrapper',
-                //abstract: true,
-                url: '/content',
-                //params: {mode: 50},
-                views: {
-                    "basic@cwrapper": {
-                        templateUrl: 'app/content/partials/content.html',
-                        controller: 'content as vm',
-                        resolve: {
-                            mode: function() {
-                                return { mode: 1}   
-                            }          
-                        }
-                    },
-                    "popular@cwrapper": {
-                        templateUrl: 'app/content/partials/content.html',
-                        controller: 'content as vm',
-                        resolve: {
-                            mode: function() {
-                                return { mode: 2}   
-                            }          
-                        }
-                    },
-                    "city@cwrapper": {
-                        templateUrl: 'app/content/partials/content.html',
-                        controller: 'content as vm',
-                        resolve: {
-                            mode: function() {
-                                return { mode: 3}   
-                            }          
-                        }
-                    },
-                    "lifestyle@cwrapper": {
-                        templateUrl: 'app/content/partials/content.html',
-                        controller: 'content as vm',
-                        resolve: {
-                            mode: function() {
-                                return { mode: 4}   
-                            }          
-                        }
-                    },
-                    "food@cwrapper": {
-                        templateUrl: 'app/content/partials/content.html',
-                        controller: 'content as vm',
-                        resolve: {
-                            mode: function() {
-                                return { mode: 5}   
-                            }          
-                        }
-                    },
-                    "sports@cwrapper": {
-                        templateUrl: 'app/content/partials/content.html',
-                        controller: 'content as vm',
-                        resolve: {
-                            mode: function() {
-                                return { mode: 6}   
-                            }          
-                        }
-                    },
-                    "dating@cwrapper": {
-                        templateUrl: 'app/content/partials/content.html',
-                        controller: 'content as vm',
-                        resolve: {
-                            mode: function() {
-                                return { mode: 7}   
-                            }          
-                        }
-                    },
-                    "neighborhood@cwrapper": {
-                        templateUrl: 'app/content/partials/content.html',
-                        controller: 'content as vm',
-                        resolve: {
-                            mode: function() {
-                                return { mode: 8}   
-                            }          
-                        }
-                    },
-                },
-            },
-            {
                 name: 'rankSummary',
-                parent: 'content',
+                parent: 'layout',
                 url: '/rankSummary/:index',
                 templateUrl: 'app/rank/Partials/RankSummary.html',
                 controller: 'rankSummary as vm',
 
                 resolve: {
+                     
+                    answers: ['answer', function (answer) {
+                        return answer.getAnswers().then(function (result) {
+
+                            return result;
+                        });
+                    }],
 
                     mrecs: ['matchrec', function (matchrec) {
 
@@ -220,25 +139,21 @@
                     /*
                     mrecs: ['matchrec', function () {
                         return function () {
-
                             return [];
                         };
                     }],
                     edits: ['edit', function () {
                         return function () {
-
                             return [];
                         };
                     }],
                     useractivities: ['useractivity', function () {
                         return function () {
-
                             return [];
                         };
                     }],
                     catansrecs: ['catans', function () {
                         return function () {
-
                             return [];
                         };
                     }]*/
@@ -247,7 +162,7 @@
             },
             {
                 name: 'editRanking',
-                parent: 'content',
+                parent: 'layout',
                 url: '/editRanking/:index',
                 templateUrl: 'app/rank/Partials/editRanking.html',
                 controller: 'editRanking as vm',
@@ -262,14 +177,14 @@
             },
             {
                 name: 'addAnswer',
-                parent: 'content',
+                parent: 'layout',
                 url: '/addAnswer',
                 templateUrl: 'app/answer/Partials/addAnswer.html',
                 controller: 'addAnswer as vm'
             },
             {
                 name: 'editAnswer',
-                parent: 'content',
+                parent: 'layout',
                 url: '/editAnswer/:index',
                 templateUrl: 'app/answer/Partials/editAnswer.html',
                 controller: 'editAnswer as vm',
@@ -291,7 +206,7 @@
             },
             {
                 name: 'answerDetail',
-                parent: 'content',
+                parent: 'layout',
                 url: '/answerDetail/:index',
                 templateUrl: 'app/answer/Partials/answerDetail.html',
                 controller: 'answerDetail as vm',
@@ -307,7 +222,6 @@
                     /*
                     answers: ['answer', function () {
                         return function () {
-
                             return [];
                         };
                     }]*/
@@ -316,7 +230,7 @@
             },
             {
                 name: 'match',
-                parent: 'content',
+                parent: 'layout',
                 url: '/match',
                 templateUrl: 'app/rank/Partials/match.html',
                 controller: 'match as vm',

@@ -38,10 +38,7 @@
         vm.answerDetail = answerDetail;
         vm.closeRank = closeRank;
 
-        
-        
-        //Execute this view only if rankWindow is open
-        if ($rootScope.showR) activate();
+        activate();
 
         function activate() {
             
@@ -192,7 +189,7 @@
         }
 
         function closeRank() {
-            $rootScope.$emit('closeRank');
+               $state.go('cwrapper');                            
         }
     }
 })();

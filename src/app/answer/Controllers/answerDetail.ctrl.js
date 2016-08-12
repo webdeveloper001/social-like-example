@@ -51,12 +51,7 @@
         vm.type = $rootScope.cCategory.type;
 
         if ($stateParams.index) vm.answer = answers[A.indexOf(+$stateParams.index)];
-        
-        
-        
-
-        //Execute this view only if rankWindow is open
-        if ($rootScope.showR) activate();
+        activate();
 
         function activate() {
 
@@ -208,6 +203,8 @@
             if ((vm.catans.upV != upVi) || (vm.catans.downV != downVi)) {
                 //console.log("number of votes changed: ",vm.answer.upV, upVi, vm.answer.downV, downVi);
                 //answer.updateAnswer(vm.answer.id, ["upV", "downV"], [vm.answer.upV, vm.answer.downV]);
+                console.log("vm.catans.upV",vm.catans.upV,upVi);
+                console.log("vm.catans.downV",vm.catans.downV,downVi);
                 catans.updateRec(vm.catans.id, ["upV", "downV"], [vm.catans.upV, vm.catans.downV]);
             }
 
@@ -405,20 +402,16 @@
         }
 
         function deleteButtonAccess() {
-            //if ($rootScope.isLoggedIn) {
-                //var username = $rootScope.user.name;
-                //var n = username.localeCompare("Andres Moctezuma");
-                //if ($rootScope.user.id == 8 && n == 0) vm.deleteButton = 'inline';
                 if ($rootScope.isAdmin) vm.deleteButton = 'inline';
-                else vm.deleteButton = 'none';
-            //}
+                else vm.deleteButton = 'none';            
         }
 
         function showUrl() {
             dialog.url(vm.answer.imageurl);
         }
+        
         function closeRank() {
-            $rootScope.$emit('closeRank');
+               $state.go('cwrapper');                            
         }
 
         function specialHtml(x) {

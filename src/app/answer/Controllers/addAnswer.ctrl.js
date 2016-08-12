@@ -57,13 +57,9 @@
         vm.imageURL = '../../../assets/images/noimage.jpg';
         vm.header = $rootScope.header;
 
-        //Execute this view only if rankWindow is open
-        if ($rootScope.showR) activate();
+        activate();
 
         function activate() {
-            
-            //country.loadCountries();
-            //vm.countries = $rootScope.cCountries;
             
             loadPublicFields();
             console.log("Add Answer Activated!");
@@ -321,8 +317,8 @@
             }
         }
         
-         function closeRank() {
-                $rootScope.$emit('closeRank');                            
+        function closeRank() {
+               $state.go('cwrapper');                            
         }
 
     }
