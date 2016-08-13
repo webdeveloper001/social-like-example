@@ -116,6 +116,9 @@
             $rootScope.currentUserLatitude = position.coords.latitude;
             $rootScope.currentUserLongitude = position.coords.longitude;
 
+            //console.log("$rootScope.currentUserLatitude", $rootScope.currentUserLatitude);
+            //console.log("$rootScope.currentUserLongitude", $rootScope.currentUserLongitude);
+
             /**
              * Set Latitude and Longitude to cookie
              */

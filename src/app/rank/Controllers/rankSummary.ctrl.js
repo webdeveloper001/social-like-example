@@ -303,6 +303,7 @@
             }
             
             //Load current answers
+            $rootScope.answers = answers;
             $rootScope.canswers = [];
             $rootScope.ccatans = [];
             $rootScope.B = [];

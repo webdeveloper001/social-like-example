@@ -5,9 +5,9 @@
         .module('app')
         .controller('addAnswer', addAnswer);
 
-    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'image','answers','catans'];
+    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'image','catans'];
 
-    function addAnswer(dialog, $state, answer, $rootScope, $modal, image, answers, catans) {
+    function addAnswer(dialog, $state, answer, $rootScope, $modal, image, catans) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'addAnswer';
@@ -20,6 +20,7 @@
         var publicfield_obj = {};
         var loadImageDataOk = false;
         var addAnswerDataOk = false;
+        var answers = $rootScope.answers;
         
         //load public fields
         var fieldreq = [];
