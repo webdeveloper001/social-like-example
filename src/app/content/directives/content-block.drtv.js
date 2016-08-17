@@ -9,7 +9,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             isDynamic: '=dynamic',
             isRoW: '=rankofweek'
         },
-        controller: ['$scope','query','$filter', 'table', function contentCtrl($scope, query, $filter, table) {
+        controller: ['$scope','query','$filter','$http','answer', function contentCtrl($scope, query, $filter, $http, answer) {
             var vm = $scope;
             vm.title = 'mycontent';
 
@@ -203,15 +203,78 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
              function applyRule() {
         console.log("apply Rule");
             
-       /*     
-        var lat_o = 32.7625548; 
-        var lng_o = -117.1476841;   
+            /*
+        //var lat_o = 32.7625548; 
+        //var lng_o = -117.1476841;   
         var fa='';
         var lat=0;
         var lng=0;
+        
         var API_KEY = 'AIzaSyC2gAzj80m1XpaagvunSDPgEvOCleNNe5A';
-        var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+$rootScope.inputVal+'&key='+API_KEY;
+        var APP_API_KEY = '7e9a54a80a6ae850bc38ff768d75e143e75c273d1f7e2f265648020bf8c42a3b';
+        var cAnswer = {};
+        var url = '';
+        var myLoc = '';
+        
         delete $http.defaults.headers.common['X-Dreamfactory-API-Key'];
+        
+        cAnswer = $rootScope.answers[$rootScope.answeridxgps];
+        
+        //console.log("cAnswer",cAnswer);
+        
+        if (cAnswer.type == 'Establishment' && (cAnswer.location != undefined && cAnswer.location != "" && cAnswer.location != null)){
+            //if ($rootScope.answers[i].id == 190){
+                //cAnswer = $rootScope.answers[i];
+                console.log("answer: ",$rootScope.answeridxgps, " location: ", cAnswer.location);
+                if (cAnswer.location.includes('San Diego') == false) {
+                    myLoc = cAnswer.location + ' San Diego, CA';
+                }
+                else myLoc = cAnswer.location;
+                
+                url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+ myLoc +'&key='+API_KEY;
+                
+                $http.get(url,{},{
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                    //'Access-Control-Allow-Headers': 'x-dreamfactory-api-key'
+                 }
+            }).then(function(result){
+                //console.log("google response:---", result);
+                fa = result.data.results[0].formatted_address;
+                lat = result.data.results[0].geometry.location.lat;
+                lng = result.data.results[0].geometry.location.lng;
+                console.log("fa - lat - lon", fa, lat, lng);
+                
+                $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
+                answer.updateAnswer(cAnswer.id,['lat','lng','location'],[lat,lng,fa]);
+                
+                if ($rootScope.answeridxgps < ($rootScope.answers.length-1)){
+                        $rootScope.answeridxgps = $rootScope.answeridxgps + 1; 
+                        $rootScope.$emit('applyRule');
+                    }
+                
+                /*
+                var p = 0.017453292519943295;    // Math.PI / 180
+                var c = Math.cos;
+                var a = 0.5 - c((lat - lat_o) * p)/2 + 
+                c(lat_o * p) * c(lat * p) * 
+                (1 - c((lng - lng_o) * p))/2;
+
+                var dist_km =  12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+                console.log("Distance (mi)---", dist_km/1.609);
+                */
+        /*        
+            });    
+        }
+        else{
+            if ($rootScope.answeridxgps < ($rootScope.answers.length-2)){
+                $rootScope.answeridxgps = $rootScope.answeridxgps + 1; 
+                $rootScope.$emit('applyRule');
+            }
+        }    
+            //}
+        
+        /*
             $http.get(url,{},{
                 headers: {
                     'Content-Type': 'multipart/form-data'

@@ -54,11 +54,12 @@
            //****SUPER TEMP*****************
            $rootScope.isAdmin = false;
            vm.isAdmin = false;
-                   /* 
+                    /*
            $rootScope.isLoggedIn = true;
            $rootScope.user = {};
            $rootScope.user.name = "Andres Moctezuma";
            $rootScope.user.id = 12;
+           $rootScope.answeridxgps = 1258;
                        
             if ($rootScope.isLoggedIn && $rootScope.user.name == "Andres Moctezuma" && $rootScope.user.id == 12 ){
                 $rootScope.isAdmin = true;
@@ -81,6 +82,7 @@
 
             $rootScope.content = rankings; //response
             $rootScope.specials = specials;
+            $rootScope.answers = answers;
             loadcontent();
             getEstablishmentAnswers();
 

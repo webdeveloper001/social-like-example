@@ -324,8 +324,28 @@
             }    
             vm.answers = $rootScope.canswers;
             
+            //Calculate distances to user
+            var p = 0.017453292519943295;    // Math.PI / 180
+            var c = Math.cos;
+            var a = 0;
+            var lat_o = $rootScope.currentUserLatitude;
+            var lng_o = $rootScope.currentUserLongitude;
+            var lat = 0;
+            var lng = 0;
+            var dist_mi = 0;
+            for (var i=0; i < vm.answers.length; i++){
+                lat = vm.answers[i].lat;
+                lng = vm.answers[i].lng;
+                a = 0.5 - c((lat - lat_o) * p)/2 + c(lat_o * p) * c(lat * p) * (1 - c((lng - lng_o) * p))/2;
+
+                dist_mi =  ( 12742 * Math.asin(Math.sqrt(a)) ) / 1.609; // 2 * R; R = 6371 km
+                vm.answers[i].dist = dist_mi.toPrecision(3);
+                    
+            }
+            
             //*****TEMP********
             //vm.answers.specials = [];
+            /*
             for (var i = 0; i < vm.answers.length; i++) {
                 if (i==1) {
                     vm.answers[i].specials = 'Its Happy Hour!';
@@ -337,6 +357,7 @@
                 }
                 
             }
+            */
             //**************************************88
             
            

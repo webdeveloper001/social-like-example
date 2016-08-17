@@ -131,6 +131,8 @@
                     case "location": data.location = val[i]; break;
                     case "image": data.imageurl = val[i]; break;
                     case "views": data.views = val[i]; break;
+                    case "lat": data.lat = val[i]; break;
+                    case "lng": data.lng = val[i]; break;
                 }
             }
             //console.log("data", data);
@@ -148,6 +150,8 @@
                     case "location": $rootScope.canswers[idx].location = val[i]; break;
                     case "image": $rootScope.canswers[idx].imageurl = val[i]; break;
                     case "views": $rootScope.canswers[idx].views = val[i]; break;
+                    case "lat": $rootScope.canswers[idx].lat = val[i]; break;
+                    case "lng": $rootScope.canswers[idx].lng = val[i]; break;
                 }
             }                        
             

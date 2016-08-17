@@ -97,7 +97,7 @@
                 <tr>
                     <th>Rank</th>
                     <th class="capitalize " ng-repeat="h in vm.fields | filter:(h.isrequired=true)">{{h.label}}</th>
-                    <th ng-show="{{vm.type == 'Establishment'}}">Distance</th>
+                    <th ng-show="{{vm.type == 'Establishment'}}">Distance (mi)</th>
                     <th ng-show="{{vm.type == 'Establishment'}}">Specials</th>
                     <!-- ng-show="{{vm.type == 'Establishment'}}" -->
                 </tr>
@@ -109,7 +109,7 @@
                     <!--<td>{{x.Rank}}</td>-->
                     <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
                     <td ng-repeat="h in vm.fields | filter:(h.isrequired=true)">{{ x[h.name]}}</td>
-                    <td ng-show="{{vm.type == 'Establishment'}}">0.5</td>
+                    <td ng-show="{{vm.type == 'Establishment'}}">{{x.dist}}</td>
                     <td ng-show="{{vm.type == 'Establishment'}}" class="{{x.style}}">{{x.specials}}</td>
                 </tr>
             </tbody>
