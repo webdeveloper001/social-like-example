@@ -161,7 +161,8 @@
                 vm.val = '';
                 $rootScope.inputVal = '';
                 $rootScope.searchActive = false;
-                $rootScope.$emit('loadNh');               
+                $rootScope.$emit('loadNh');
+                vm.searchScope = 'all San Diego';               
             }
             if (x==2){
                 vm.isNh=true; //Neighborhood View
@@ -172,6 +173,7 @@
                 $rootScope.inputVal = '';
                 $rootScope.searchActive = false;
                 if ($rootScope.isNhRdy)  $rootScope.$emit('loadNh');
+                vm.searchScope = 'Neighborhood';
             }
             vm.searchActive = $rootScope.searchActive;                      
         }
@@ -182,6 +184,9 @@
             vm.isNhRdy = true;
             $rootScope.isNhRdy = vm.isNhRdy;
             $rootScope.$emit('loadNh');
+            vm.searchScope = x;
+            vm.val = '';
+            $rootScope.inputVal = '';
         }
 /*
         function seeMore(obj) {
