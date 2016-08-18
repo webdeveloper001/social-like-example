@@ -38,7 +38,9 @@
 				{{vm.cnh}} <span class="caret">
 			</button>
 		<ul class="dropdown-menu dropdown-menu-middle">
-			<li ng-repeat="x in vm.nhs | orderBy: x"><a ng-click="vm.selnh(x)" data-toggle="collapse" data-target=".navbar-collapse.in">{{x}}</a></li>
+	<!--		<li ng-repeat="x in vm.nhs | orderBy: x"><a ng-click="vm.selnh(x)">{{x}}</a></li>  -->
+	<!--		<li ng-repeat="x in vm.nhs | orderBy: x"><span ng-click="vm.selnh(x)">{{x}}</span></li> -->
+				<li ng-repeat="x in vm.nhs | orderBy: x" ng-click="vm.selnh(x)"><a>{{x}}</a></li>
 		</ul>
 	</div>
 </div>
