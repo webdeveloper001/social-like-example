@@ -87,12 +87,16 @@
             }
 
         }
+        
+        $rootScope.$on('getLocation', function (e) {
+                autoDetectCity();
+            });
 
         /**
          * Function to get current location of User based on navigator
          */
         $rootScope.getCurrentPositionOfUser = function() {
-
+            
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position){
                     setUserLatitudeLongitude(position);
@@ -136,6 +140,9 @@
             }
 
             console.log("Geo Location is set for user.");
+            if ($state.current.name == 'rankSummary'){
+                $state.reload();
+            }
         }
 
         /**
@@ -143,7 +150,7 @@
          * Geo location works only on secure origins in Google Chrome
          */
         function autoDetectCity() {
-
+            
             var geocoder;
             geocoder = new google.maps.Geocoder();
 

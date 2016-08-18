@@ -202,6 +202,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
              function applyRule() {
         console.log("apply Rule");
+        // $rootScope.$emit('getLocation');   
             
             /*
         //var lat_o = 32.7625548; 

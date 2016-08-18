@@ -21,6 +21,7 @@
             showSameAnswer: showSameAnswer,
             deleteType: deleteType,
             deleteRank: deleteRank,
+            getLocation: getLocation,
             url: url,
             createSpecialPreview: createSpecialPreview
         };
@@ -460,6 +461,38 @@
                     if (result) deleteRank();
                 }
             });
+        }
+        
+        function getLocation(callback){
+            
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Share Location';
+            btnCancelLabel = 'Not Now';
+            btnOkLabel = 'Ok';
+            message = 'Please allow browser share location so we can calculate distance to the best places.'
+
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-primary',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                callback: function (result) {
+                    if (result) callback();
+                }
+            });
+            
+            
         }
         
     }

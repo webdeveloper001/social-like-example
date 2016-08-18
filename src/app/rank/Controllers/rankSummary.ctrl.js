@@ -26,6 +26,7 @@
         vm.rankOverall = rankOverall;
         vm.rankPersonal = rankPersonal;
         vm.closeAddInfoMsg = closeAddInfoMsg;
+        vm.whyNoDistance = whyNoDistance;
 
         vm.selOverall = 'active';
         vm.selPersonal = '';
@@ -342,6 +343,14 @@
                 vm.answers[i].dist = dist_mi.toPrecision(3);
                     
             }
+            vm.haveLocation = true;
+            if (vm.answers.length > 0){
+                if (isNaN(vm.answers[0].dist)) {
+                    vm.haveLocation = false;
+                    }
+                else vm.haveLocation = true;
+            }
+            
             
             //*****TEMP********
             //vm.answers.specials = [];
@@ -429,6 +438,14 @@
             $rootScope.addInfoMsgAck = true;
             vm.addInfoMsgAck =true;
         }
-
+        
+        function whyNoDistance(){
+            dialog.getLocation(callGetLocation);
+        }
+        
+        function callGetLocation(){
+            $rootScope.$emit('getLocation');  
+        }
+        
     }
 })();

@@ -86,8 +86,11 @@
                 <h4>Contributors: <b style="color:blue; "><i>{{vm.numContributors}}</i></b></h4>
             </div>
         </div>
-        <div class="text-center ">
+        <div class="text-center">
             <button ng-click="vm.goRank() " class="btn btn-success ">Go Rank</button>
+        </div>
+        <div class="text-right" style="display:{{vm.haveLocation ? 'none':'inline'}}">
+            <p class="hiw text-right" ng-click="vm.whyNoDistance()"><u>why I cant see distances?</u></p>
         </div>
         <br>
     </div>
