@@ -23,7 +23,14 @@
             deleteRank: deleteRank,
             getLocation: getLocation,
             url: url,
-            createSpecialPreview: createSpecialPreview
+            createSpecialPreview: createSpecialPreview,
+            bizRegistration: bizRegistration,
+            bindAccount: bindAccount,
+            addVRow: addVRow,
+            deleteVRow: deleteVRow,
+            addVRowGroup: addVRowGroup,
+            editVRowGroup: editVRowGroup,
+            deleteVRowGroup: deleteVRowGroup
         };
 
         return service;
@@ -118,6 +125,16 @@
                     case "addinfo": {
                         if (answer.addinfo) newline = '<strong class="capitalize">' + 'Additional Info' + '</strong>: ' + answer.addinfo + '</br>';
                         else newline = '<strong>' + 'Additional Info' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
+                    case "phone": {
+                        if (answer.phone) newline = '<strong class="capitalize">' + 'Phone' + '</strong>: ' + answer.phone + '</br>';
+                        else newline = '<strong>' + 'Phone' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
+                    case "website": {
+                        if (answer.website) newline = '<strong class="capitalize">' + 'Website' + '</strong>: ' + answer.website + '</br>';
+                        else newline = '<strong>' + 'Website' + '</strong>: ' + '' + '</br>';
                         break;
                     }
                 }
@@ -254,14 +271,14 @@
                 }]
             });
         }
-        
+
         function checkSameAnswer(answer1, answer2, callback1, callback2) {
 
             var answerhtml = '';
             var answerhtml2 = '';
             var newline = '';
             var newline2 = '';
-            
+
             for (var i = 0; i < $rootScope.fields.length; i++) {
                 switch ($rootScope.fields[i].name) {
                     case "name": {
@@ -309,12 +326,12 @@
             btnCancelLabel = 'No, they are different';
             btnOkLabel = 'Yeah, same';
             message = 'Are these the same establishment? </br></br><div class="row">' +
-            '<div class="col-sm-6">' + answerhtml + '</br>' +           
-            '<img src=' + answer1.imageurl + ' class="thumbnail" style="width:60%; max-height:150px"></div>'+
-            
-            '<div class="col-sm-6">' + answerhtml2 + '</br>' +           
-            '<img src=' + answer2.imageurl + ' class="thumbnail" style="width:60%; max-height:150px"></div>'+
-            '</div>';            
+            '<div class="col-sm-6">' + answerhtml + '</br>' +
+            '<img src=' + answer1.imageurl + ' class="thumbnail" style="width:60%; max-height:150px"></div>' +
+
+            '<div class="col-sm-6">' + answerhtml2 + '</br>' +
+            '<img src=' + answer2.imageurl + ' class="thumbnail" style="width:60%; max-height:150px"></div>' +
+            '</div>';
 
             BootstrapDialog.confirm({
                 type: BootstrapDialog.TYPE_PRIMARY,
@@ -326,17 +343,17 @@
                 btnOKLabel: btnOkLabel,
                 btnOKClass: 'btn-primary',
                 btnCancelAction: function (dialogRef) {
-                    dialogRef.close();                   
+                    dialogRef.close();
                 },
                 //callback: function (dialogRef, result) {
                 callback: function (result) {
                     if (result) callback2();
                     else callback1(answer1);
-                    
+
                 }
             });
         }
-        
+
         function deleteType(thisCatOnly, everywhere) {
 
             var title = '';
@@ -348,7 +365,7 @@
             btnCancelLabel = 'Just this category';
             btnOkLabel = 'Everywhere';
             message = 'Choose scope to delete:';
-         
+
             BootstrapDialog.confirm({
                 type: BootstrapDialog.TYPE_DANGER,
                 title: title,
@@ -359,58 +376,58 @@
                 btnOKLabel: btnOkLabel,
                 btnOKClass: 'btn-primary',
                 btnCancelAction: function (dialogRef) {
-                    dialogRef.close();                   
+                    dialogRef.close();
                 },
                 //callback: function (dialogRef, result) {
                 callback: function (result) {
                     if (result) everywhere();
                     else thisCatOnly();
-                    
+
                 }
             });
         }
-        
-        function createSpecialPreview(x, addSpecial){
+
+        function createSpecialPreview(x, addSpecial) {
             var title = '';
             var message = '';
             var htmlmsg = '';
             var btnCancelLabel = '';
             var btnOkLabel = '';
             var sch_str = '';
-            
+
             title = 'Special Preview';
             btnCancelLabel = 'Back';
             btnOkLabel = 'Save Special';
-            if (x.freq == 'weekly'){
-                   sch_str = 'Every: '+
-                   (x.mon ? ' - Monday':'') +
-                   (x.tue ? ' - Tuesday':'') +
-                   (x.wed ? ' - Wednesday':'') +
-                   (x.thu ? ' - Thursday':'') +
-                   (x.fri ? ' - Friday':'') +
-                   (x.sat ? ' - Saturday':'') +
-                   (x.sun ? ' - Sunday':'')+
-                   '<br>From: '+ x.stime2 + ' to '+x.etime2;
+            if (x.freq == 'weekly') {
+                sch_str = 'Every: ' +
+                (x.mon ? ' - Monday' : '') +
+                (x.tue ? ' - Tuesday' : '') +
+                (x.wed ? ' - Wednesday' : '') +
+                (x.thu ? ' - Thursday' : '') +
+                (x.fri ? ' - Friday' : '') +
+                (x.sat ? ' - Saturday' : '') +
+                (x.sun ? ' - Sunday' : '') +
+                '<br>From: ' + x.stime2 + ' to ' + x.etime2;
             }
-            if (x.freq == 'onetime'){
+            if (x.freq == 'onetime') {
                 var sameday = (x.sdate == x.edate);
-                if (sameday){
+                if (sameday) {
                     sch_str = x.sdate + ' from ' + x.stime + ' to ' + x.etime;
                 }
-                else{
-                    sch_str = 'Starts: '+ x.sdate  + ' at '+ x.stime + '<br>Ends: ' + x.edate + ' at ' + x.etime;
+                else {
+                    sch_str = 'Starts: ' + x.sdate + ' at ' + x.stime + '<br>Ends: ' + x.edate + ' at ' + x.etime;
                 }
             }
-            
-            message = 'This is how this special will look: </br></br>In the ranking summary:<br>'+
-            '<table class="table table-hover cursor ">'+
-     '<thead><tr><th>Rank</th><th>Name</th><th>Neighborhood</th><th>Distance</th><th>Specials</th>'+
-     '</tr></thead><tbody><tr><td>1</td><td>'+x.name+'</td><td>Neighborhood</td><td>1.5</td>'+
-     '<td style="background-color:'+x.bc+';color:'+x.fc+';">'+x.stitle+'<td></tr></tbody></table><br>'+
-     'Inside your business profile:<br><br><div style="background-color:'+x.bc+';color:'+x.fc+';">'+
-     '<p><strong>'+ x.stitle+' @ '+x.name+'</strong></p><p>'+sch_str+'</p><p>'+x.details+'</p></div>';
-            
-           
+
+            message = 'This is how this special will look: </br></br>In the ranking summary:<br>' +
+            '<table class="table table-hover cursor ">' +
+            '<thead><tr><th>Rank</th><th>Name</th><th>Neighborhood</th><th>Distance</th><th>Specials</th>' +
+            '</tr></thead><tbody><tr><td>1</td><td>' + x.name + '</td><td>Neighborhood</td><td>1.5</td>' +
+            '<td style="background-color:' + x.bc + ';color:' + x.fc + ';">' + x.stitle + '<td></tr></tbody></table><br>' +
+            'Inside your business profile:<br><br><div style="background-color:' + x.bc + ';color:' + x.fc + ';">' +
+            '<p><strong>' + x.stitle + ' @ ' + x.name + '</strong></p><p>' + sch_str + '</p><p>' + x.details + '</p></div>';
+
+
             BootstrapDialog.confirm({
                 type: BootstrapDialog.TYPE_PRIMARY,
                 title: title,
@@ -421,7 +438,7 @@
                 btnOKLabel: btnOkLabel,
                 btnOKClass: 'btn-primary',
                 btnCancelAction: function (dialogRef) {
-                    dialogRef.close();                   
+                    dialogRef.close();
                 },
                 //callback: function (dialogRef, result) {
                 callback: function (result) {
@@ -431,7 +448,7 @@
                 }
             });
         }
-        
+
         function deleteRank(deleteRank) {
 
             var title = '';
@@ -443,7 +460,7 @@
             btnCancelLabel = 'Cancel';
             btnOkLabel = 'Delete';
             message = 'Just confirming, do you want to delete?';
-         
+
             BootstrapDialog.confirm({
                 type: BootstrapDialog.TYPE_DANGER,
                 title: title,
@@ -454,7 +471,7 @@
                 btnOKLabel: btnOkLabel,
                 btnOKClass: 'btn-primary',
                 btnCancelAction: function (dialogRef) {
-                    dialogRef.close();                   
+                    dialogRef.close();
                 },
                 //callback: function (dialogRef, result) {
                 callback: function (result) {
@@ -462,9 +479,9 @@
                 }
             });
         }
-        
-        function getLocation(callback){
-            
+
+        function getLocation(callback) {
+
             var title = '';
             var message = '';
             var btnCancelLabel = '';
@@ -473,7 +490,7 @@
             title = 'Share Location';
             btnCancelLabel = 'Not Now';
             btnOkLabel = 'Ok';
-            message = 'Please allow browser share location so we can calculate distance to the best places.'
+            message = 'Please allow browser share location so we can calculate distance to the best places.';
 
             BootstrapDialog.confirm({
                 type: BootstrapDialog.TYPE_PRIMARY,
@@ -491,9 +508,273 @@
                     if (result) callback();
                 }
             });
-            
-            
+
+
+        }
+
+        function bizRegistration(callback) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Do you own this business?';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Bind';
+            message = 'If you own or represent this business, please bind to your account so only you can change or edit its information.' +
+            '<br><br><strong>* Name of Business</strong>' +
+            '<br><strong>* Address</strong>' +
+            '<br><strong>* Phone Number</strong>' +
+            '<br><strong>* Main Photo</strong>' +
+            '<br><strong>* Hours</strong>' +
+            '<br><br>Binding this business to your account is free.';
+
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-primary',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                callback: function (result) {
+                    if (result) callback();
+                }
+            });
+
+        }
+
+        function bindAccount(name, business, callback) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Confirmation';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Yes, bind this business to my account';
+            message = '<br><strong>Note:</strong> Claiming to have false authority over a business is against the law.' +
+            '<br><br>Please confirm:' +
+            '<br><br>' +
+            'You, <strong>' + name + '</strong>, have the authority to represent <strong>' + business + '</strong>.';
+
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-primary',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                callback: function (result) {
+                    if (result) callback();
+                }
+            });
+
+        }
+
+        function addVRow(x, callback) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Enter Data';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Add';
+            message = '<br> Enter new vote row to be added in Group: <strong>' + x.gtitle + '</strong>' +
+            '<br><br>Vote Row Name:' +
+            '<input class="form-control" type="text" placeholder="Enter Vote Row Name">' +
+            '<br><br>';
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                
+                buttons: [{
+                    label: 'Cancel',
+                    action: function (dialogRef) {
+                        //console.log("dialogRef2---", dialogRef);
+                        dialogRef.close();
+                    },
+                },
+                    {
+                        label: 'OK',
+                        action: function (dialogRef, result) {
+                            //console.log("dialogRef---", dialogRef);
+                            var vrowname = dialogRef.getModalBody().find('input').val();
+                            if (result) callback(x, vrowname);
+                            dialogRef.close();
+                        },
+                    }]
+            });
+        }
+
+        function deleteVRow(x, callback) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Please Confirm';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Yes, Delete';
+            message = '<br>Please confirm, you want to delete vote row <strong>' + x.title +
+            '</strong> from <strong>' + x.gtitle + '</strong>.' +
+            '<br><br><strong>Note:</strong> All vote records will be lost';
+
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_DANGER,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-default',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                callback: function (result) {
+                    if (result) callback(x);
+                }
+            });
+        }
+
+        function addVRowGroup(x, callback) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Enter Data';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Add';
+            message = '<br>Enter name of Vote Group you want to create: ' +
+            '<br><br>Group Name:' +
+            '<input class="form-control" type="text" placeholder="Enter Vote Row Group Name">' +
+            '<br><br>';
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                
+                buttons: [{
+                    label: 'Cancel',
+                    action: function (dialogRef) {
+                        //console.log("dialogRef2---", dialogRef);
+                        dialogRef.close();
+                    },
+                },
+                    {
+                        label: 'OK',
+                        action: function (dialogRef, result) {
+                            //console.log("dialogRef---", dialogRef);
+                            var vrowgroupname = dialogRef.getModalBody().find('input').val();
+                            if (result) callback(x, vrowgroupname);
+                            dialogRef.close();
+                        },
+                    }]
+            });
         }
         
+        function editVRowGroup(x, callback, callback2) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Enter Data';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Edit';
+            message = '<br>Enter new name of Vote Group: ' +
+            '<br><br>Group Name:' +
+            '<input class="form-control" type="text" placeholder="'+ x.gtitle + '">' +
+            '<br><br>';
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                
+                buttons: [{
+                    label: 'Cancel',
+                    action: function (dialogRef) {
+                        //console.log("dialogRef2---", dialogRef);
+                        dialogRef.close();
+                    },
+                },
+                    {
+                        label: 'Edit',
+                        action: function (dialogRef, result) {
+                            //console.log("dialogRef---", dialogRef);
+                            var vrowgroupname = dialogRef.getModalBody().find('input').val();
+                            if (result) callback(x, vrowgroupname);
+                            dialogRef.close();
+                        },
+                    },
+                    {
+                    label: 'Delete',
+                        action: function (dialogRef, result) {
+                            //console.log("dialogRef---", dialogRef);
+                            if (result) callback2(x);
+                            dialogRef.close();
+                        },
+                    }
+                    ]
+            });
+        }
+  
+        function deleteVRowGroup(x, callback) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Please Confirm';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Yes, Delete';
+            message = '<br>Please confirm, you want to delete the vote group <strong>' + x.gtitle +
+            '</strong> and all the items within it.' +
+            '<br><br><strong>Note:</strong> All vote records for all items will be lost';
+
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_DANGER,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-default',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                callback: function (result) {
+                    if (result) callback(x);
+                }
+            });
+        }
+
     }
 })();

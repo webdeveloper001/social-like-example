@@ -88,6 +88,13 @@
 
                             return result;
                         });
+                    }],
+                    allvrows: ['vrows', function (vrows) {
+
+                        return vrows.getAllvrows().then(function (result) {
+                            
+                            return result;
+                        });
                     }]                  
                 }
             },
@@ -133,6 +140,13 @@
 
                         return catans.getAllcatans().then(function (result) {
 
+                            return result;
+                        });
+                    }],
+                    allvrows: ['vrows', function (vrows) {
+
+                        return vrows.getAllvrows().then(function (result) {
+                            
                             return result;
                         });
                     }]                  
@@ -204,6 +218,20 @@
                     }]
                 }
             },
+             {
+                name: 'specials',
+                parent: 'layout',
+                url: '/specials',
+                templateUrl: 'app/customer/Partials/specials.html',
+                controller: 'specials as vm'               
+            },
+            {
+                name: 'editspecial',
+                parent: 'layout',
+                url: '/editspecial',
+                templateUrl: 'app/customer/Partials/editspecial.html',
+                controller: 'editspecial as vm'               
+            },
             {
                 name: 'answerDetail',
                 parent: 'layout',
@@ -227,6 +255,13 @@
                     }]*/
 
                 }
+            },
+            {
+                name: 'editvrows',
+                parent: 'layout',
+                url: '/editvrows',
+                templateUrl: 'app/customer/Partials/editvrows.html',
+                controller: 'editvrows as vm'               
             },
             {
                 name: 'match',
@@ -253,6 +288,20 @@
                         controller: 'about as vm'
                     },
                     "navbar@about": {
+                        templateUrl: 'app/layout/Partials/navbar.html',
+                        controller: 'navbar as vm'
+                    }
+                }
+            },
+             {
+                name: 'fileuploadtest',
+                url: '/fileuploadtest',
+                views: {
+                    "@": {
+                        templateUrl: 'app/layout/Partials/fileuploadtest.html',
+                        controller: 'fileuploadtest'
+                    },
+                    "navbar@fileuploadtest": {
                         templateUrl: 'app/layout/Partials/navbar.html',
                         controller: 'navbar as vm'
                     }

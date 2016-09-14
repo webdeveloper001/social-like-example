@@ -5,9 +5,9 @@
         .module('app')
         .controller('addAnswer', addAnswer);
 
-    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'image','catans'];
+    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'image','catans','getgps'];
 
-    function addAnswer(dialog, $state, answer, $rootScope, $modal, image, catans) {
+    function addAnswer(dialog, $state, answer, $rootScope, $modal, image, catans, getgps) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'addAnswer';
@@ -57,6 +57,11 @@
         
         vm.imageURL = '../../../assets/images/noimage.jpg';
         vm.header = $rootScope.header;
+        
+         //TODO: Would like to add this abstract template, but dont know how         
+        $rootScope.$on('answerGPSready', function () {
+            addAnswerGPS();
+        });
 
         activate();
 
@@ -130,7 +135,9 @@
                     case "name": { myAnswer.name = vm.fields[i].val; break; }
                     case "location": { myAnswer.location = vm.fields[i].val; break; }
                     case "addinfo": { myAnswer.addinfo = vm.fields[i].val; break; }
-                    case "cityarea": { myAnswer.cityarea = vm.fields[i].val; break; } 
+                    case "cityarea": { myAnswer.cityarea = vm.fields[i].val; break; }
+                    case "phone": { myAnswer.phone = vm.fields[i].val; break; }
+                    case "website": { myAnswer.website = vm.fields[i].val; break; }  
                     
                 }
             }
@@ -156,18 +163,6 @@
 
             $state.go("rankSummary", { index: $rootScope.cCategory.id });
         }
-        
-        /*
-        //Upload Image
-        function uploadFile() {
-            console.log('file is ');
-            console.dir(vm.myFile);
-
-            if (vm.myFile) {
-                fileupload.uploadFileToUrl(vm.myFile);
-            }
-
-        }*/
 
         function callSearchImage() {
             var pFields = [];
@@ -177,6 +172,7 @@
             
             if (loadImageDataOk) {
                 pFields = JSON.parse(JSON.stringify(vm.fields));
+                console.log("pFields --", pFields);
                 //pFields[cFld].val = $rootScope.countries_en[countryIdx];
                 var q1 = image.getImageLinks(pFields, attNum, 'add');
                 q1.then(processImageResults, imageQueryFailed)
@@ -253,11 +249,23 @@
 
         function addAnswerConfirmed(myAnswer) {
             //Add new answer, also add new post to catans (inside addAnser)
-            console.log("addAnswerConfrimed");
+            console.log("addAnswerConfrimed", myAnswer);
+            if (myAnswer.type == 'Establishment' && (myAnswer.location != undefined && myAnswer.location != "" && myAnswer.location != null)) {
+                var promise = getgps.getLocationGPS(myAnswer);
+                promise.then(function () {
+                    console.log("myAnswer --- ", myAnswer);
+                    //answer.addAnswer(myAnswer).then(rankSummary);
+                });
+            }
+            else {
             answer.addAnswer(myAnswer).then(rankSummary);
+            }
         }
         
-                
+        function addAnswerGPS(){
+            answer.addAnswer(myAnswer).then(rankSummary);
+        }
+                    
         function answerIsSame(){
             console.log("answerIsSame");
             //Answer already exist in this category, do not add

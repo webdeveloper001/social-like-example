@@ -17,7 +17,7 @@
         vm.goEdit = goEdit;
         vm.goDelete = goDelete;
         
-        vm.typeList = ["Person", "Establishment", "Place", "Activity", "Short-Phrase", "Organization", "Event"];
+        vm.typeList = ["Person", "Establishment", "Place", "Activity", "Short-Phrase", "Organization", "Event","Thing"];
 
         activate();
 
@@ -46,11 +46,12 @@
             vm.keywords = $rootScope.cCategory.keywords;
             vm.type = $rootScope.cCategory.type;
             vm.question = $rootScope.cCategory.question;
+            vm.answertags = $rootScope.cCategory.answertags;
   
         }
         
          function closeRank() {
-                $rootScope.$emit('closeRank');                            
+               $state.go('cwrapper');                            
         }
         
         function goEdit(){
@@ -83,6 +84,12 @@
                 fields.push('question');
                 vals.push(vm.question);
             }
+            //if type change
+            if (item.answertags != vm.answertags) {
+                fields.push('answertags');
+                vals.push(vm.answertags);
+            }
+            
             table.update(item.id, fields, vals);
         }
         
@@ -92,6 +99,6 @@
         
         function confirmDelete(){
             table.deleteTable($rootScope.cCategory.id);
-        }
+        }      
     }
 })();

@@ -6,27 +6,21 @@
         .controller('answerDetail', answerDetail);
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope',
-        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime']; //AM:added user service
+        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime', '$location', 'vrows', 'vrowvotes']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope,
-        votes, matchrec, edit, editvote, catans, datetime) { //AM:added user service
+        votes, matchrec, edit, editvote, catans, datetime, $location, vrows, vrowvotes) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
-        //vm.header = "table" + $rootScope.cCategory.id + ".header";
         vm.ranking = $rootScope.title;
-        //vm.body = 'table' + $rootScope.cCategory.id + '.body';
         
         var voteRecordExists = false;
-        var uservote = {};
-        var catansid = 0;
         var dV = 0;
-        var ansvidx = 0;
         var upVi = 0;  //upVotes initial value
         var downVi = 0; //downVotes initial value
         var A = $rootScope.A;
         var answers = $rootScope.canswers;
-        var headerstr = '';
         var recordsUpdated = false;
         vm.numEdits = 0;
         
@@ -46,15 +40,25 @@
         vm.showUrl = showUrl;
         vm.closeRank = closeRank;
         vm.rankSel = rankSel;
+        vm.bizRegDialog = bizRegDialog;
+        vm.openSpecials = openSpecials;
+        vm.editVRows = editVRows;
+        vm.showImages = showImages;
+        vm.gotoRank = gotoRank;
+        vm.vrowVoteUp = vrowVoteUp;
+        vm.vrowVoteDown = vrowVoteDown;
 
         vm.fields = $rootScope.fields;
         vm.type = $rootScope.cCategory.type;
+        //vm.userIsOwner = $rootScope.userIsOwner;
 
         if ($stateParams.index) vm.answer = answers[A.indexOf(+$stateParams.index)];
+        $rootScope.canswer = vm.answer;
         activate();
 
         function activate() {
 
+            vm.showImageGallery = false;
             //TODO: Would like to add this abstract template, but dont know how               
             $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
                 $rootScope.previousState = from.name;
@@ -67,30 +71,36 @@
                 });
 
             getHeader();
-            getCatAnsId(vm.answer.id);
+    //        getCatAnsId(vm.answer.id);
             getEdits(vm.answer.id);
             deleteButtonAccess();
-            getAnswerVote(vm.catans.id);
+
             makeRelativeTable(vm.answer.id);
             getSpecials(vm.answer.id);
-            getOtherRanks();
+            getVRows(vm.answer.id);
+            getAnswerRanks();
+            getAnswerVotes();
+
+            if ($rootScope.isLoggedIn){
+                if ($rootScope.user.id == vm.answer.owner) {
+                    vm.userIsOwner = true;
+                }
+            }
+            else vm.userIsOwner = false;
+
+            $rootScope.userIsOwner = vm.userIsOwner;
             console.log("Answer details loaded");
 
         }
 
         function getHeader() {
             vm.public = $rootScope.canswers.public;
+            if (vm.answer.owner == undefined || vm.answer.owner == null) {
+                vm.answer.hasOwner = false;
+            }
+            else vm.answer.hasOwner = true;
         }
 
-        function getCatAnsId(x) {
-            for (var i = 0; i < $rootScope.ccatans.length; i++) {
-                if ($rootScope.ccatans[i].answer == x) {
-                    vm.catans = $rootScope.ccatans[i];
-                }
-            }
-            upVi = vm.catans.upV;
-            downVi = vm.catans.downV;
-        }
         function getAnswer() {
 
             if ($stateParams.index) {
@@ -169,16 +179,17 @@
             recordsUpdated = false;
             voteRecordExists = false;
             vm.answer = answers[A.indexOf(+x)];
+            $rootScope.canswer = vm.answer;
             getEdits(vm.answer.id);
-            //vm.imageURL = INSTANCE_URL + '/api/v2/files/images/' + vm.answer.imagefile + '?api_key='+APP_API_KEY;
             upVi = vm.catans.upV;
             downVi = vm.catans.downV;
             getHeader();
-            getCatAnsId(vm.answer.id);
-            getAnswerVote(vm.catans.id);
+            getAnswerRanks();
+            getAnswerVotes();
             makeRelativeTable(x);
             getSpecials(vm.answer.id);
-            getOtherRanks();
+            getVRows(vm.answer.id);
+            getAnswerRanks();
         }
         
         //Update Records
@@ -187,54 +198,109 @@
             console.log("UpdateRecords @ answerDetail");    
             //update vote record if necessary
             //TODO Need to pass table id
-            if (voteRecordExists && uservote.vote != dV) {
+            for (var i=0; i<vm.answerRanks.length; i++){
+                var voteRecordExists = vm.answerRanks[i].voteRecordExists;
+                if (voteRecordExists && vm.answerRanks[i].uservote.vote != vm.answerRanks[i].dV) {
                 //console.log("vote exists and vote is different now", uservote.vote, dV);
-                $rootScope.cvotes[ansvidx].vote = dV;
-                votes.patchRec(uservote.id, dV);
-
-            }
-            if (!voteRecordExists && dV != 0) {
-                //console.log("there is a new vote  ", dV);
-                votes.postRec(catansid, dV);
+                    $rootScope.cvotes[vm.answerRanks[i].uservote.ansvidx].vote = vm.answerRanks[i].dV;
+                    votes.patchRec(vm.answerRanks[i].uservote.id, vm.answerRanks[i].dV);
+                }
+                if (!voteRecordExists && vm.answerRanks[i].dV != 0) {
+                    votes.postRec(vm.answerRanks[i].catans, vm.answerRanks[i].dV);
+                }
+            
+                //update answer record (vote count) if necessary
+                //TODO Need to pass table id
+                if ((vm.answerRanks[i].upV != vm.answerRanks[i].upVi) || (vm.answerRanks[i].downV != vm.answerRanks[i].downVi)) {
+                    catans.updateRec(vm.answerRanks[i].catans, ["upV", "downV"], [vm.answerRanks[i].upV, vm.answerRanks[i].downV]);
+                }
             }
             
-            //update answer record (vote count) if necessary
-            //TODO Need to pass table id
-            if ((vm.catans.upV != upVi) || (vm.catans.downV != downVi)) {
-                //console.log("number of votes changed: ",vm.answer.upV, upVi, vm.answer.downV, downVi);
-                //answer.updateAnswer(vm.answer.id, ["upV", "downV"], [vm.answer.upV, vm.answer.downV]);
-                console.log("vm.catans.upV",vm.catans.upV,upVi);
-                console.log("vm.catans.downV",vm.catans.downV,downVi);
-                catans.updateRec(vm.catans.id, ["upV", "downV"], [vm.catans.upV, vm.catans.downV]);
+            for (var i=0; i<vm.vrows.length; i++){
+                var voteRecExists = vm.vrows[i].voteExists;
+                console.log("vm.vrows --- ", vm.vrows);
+                if (voteRecExists && vm.vrows[i].dVi != vm.vrows[i].dV) {
+                    $rootScope.cvrowvotes[vm.vrows[i].vidx].val = vm.vrows[i].dV;
+                    vrowvotes.patchRec(vm.vrows[i].voteid, vm.vrows[i].dV);
+                }
+                if (!voteRecExists && vm.vrows[i].dV != 0) {
+                    vrowvotes.postRec(vm.vrows[i].id, vm.vrows[i].dV);
+                }
+            
+                if ((vm.vrows[i].upV != vm.vrows[i].upVi) || (vm.vrows[i].downV != vm.vrows[i].downVi)) {
+                    vrows.updateRec(vm.vrows[i].id, ["upV", "downV"], [vm.vrows[i].upV, vm.vrows[i].downV]);
+                }
             }
-
             recordsUpdated = true;
         }
         
         //AM:Refresh Thumb Up and Thumb down Vote Displays
-        function getAnswerVote(x) {
-            for (var i = 0; i < $rootScope.cvotes.length; i++) {
-                if ($rootScope.cvotes[i].catans == x) {
-                    uservote = $rootScope.cvotes[i];
-
-                    ansvidx = i;
-                    voteRecordExists = true;
-                    break;
+        
+        function getAnswerVotes() {
+            //look for user vote for this catans
+            for (var i = 0; i < vm.answerRanks.length; i++) {
+                vm.answerRanks[i].voteRecordExists = false;
+                
+                for (var j = 0; j < $rootScope.cvotes.length; j++) {
+                    if ($rootScope.cvotes[j].catans == vm.answerRanks[i].catans) {
+                        vm.answerRanks[i].uservote = $rootScope.cvotes[j];
+                        vm.answerRanks[i].uservote.ansvidx = i;
+                        //ansvidx = i;
+                        vm.answerRanks[i].voteRecordExists = true;
+                        break;
+                    }
+                   
                 }
+                 if (vm.answerRanks[i].voteRecordExists) {
+                        vm.answerRanks[i].dV = vm.answerRanks[i].uservote.vote;
+                        //catansid = uservote.catans;
+                 }
+                 else {
+                        vm.answerRanks[i].dV = 0;
+                        //catansid = x;
+                 }
+                 displayVote(vm.answerRanks[i]);
             }
-
-            if (voteRecordExists) {
-                dV = uservote.vote;
-                catansid = uservote.catans;
-            }
-            else {
-                dV = 0;
-                catansid = x;
-            }
-            displayVote(dV);
 
         }
         
+        function getVRowVotes(){
+                for (var i = 0; i < $rootScope.cansvrows.length; i++) {
+                    //check votes for display
+                    for (var j=0; j < $rootScope.cvrowvotes.length; j++){
+                        
+                        if ($rootScope.cvrowvotes[j].vrow == $rootScope.cansvrows[i].id){
+                            $rootScope.cansvrows[i].voteExists = true;
+                            $rootScope.cansvrows[i].dVi = $rootScope.cvrowvotes[j].val;
+                            $rootScope.cansvrows[i].dV = $rootScope.cvrowvotes[j].val;
+                            $rootScope.cansvrows[i].voteid = $rootScope.cvrowvotes[j].id;
+                            $rootScope.cansvrows[i].vidx = j;
+                            setVRowVoteImage($rootScope.cansvrows[i], $rootScope.cvrowvotes[j].val);                           
+                        }
+                    }
+                }
+                displayVRows();
+        }
+        
+        function setVRowVoteImage(obj, val) {
+            if (val == 1) {
+                
+                obj.upImage = 'thumbs_up_blue_table.png';
+                obj.downImage = 'thumbs_down_gray_table.png';
+            }
+            if (val == 0) {
+                obj.dVi = 0;
+                obj.dV = 0;
+                obj.upImage = 'thumbs_up_gray_table.png';
+                obj.downImage = 'thumbs_down_gray_table.png';
+            }
+            if (val == -1) {
+                obj.dVi = -1;
+                obj.dV = -1;
+                obj.upImage = 'thumbs_up_gray_table.png';
+                obj.downImage = 'thumbs_down_blue_table.png';
+            }
+        }
         //See if there are edits for this answer
         function getEdits(id) {
             vm.numEdits = 0;
@@ -245,61 +311,62 @@
             }
         }
 
-        function displayVote(dV) {
-
-            if (dV == 1) {
-                vm.answer.thumbUp = "thumbs_up_blue.png";
-                vm.answer.thumbDn = "thumbs_down_gray.png";
+        function displayVote(x) {
+            
+            if (x.dV == 1) {
+                x.thumbUp = "thumbs_up_blue.png";
+                x.thumbDn = "thumbs_down_gray.png";
             }
 
-            if (dV == 0) {
-                vm.answer.thumbUp = "thumbs_up_gray.png";
-                vm.answer.thumbDn = "thumbs_down_gray.png";
+            if (x.dV == 0) {
+                x.thumbUp = "thumbs_up_gray.png";
+                x.thumbDn = "thumbs_down_gray.png";
             }
-            if (dV == -1) {
-                vm.answer.thumbUp = "thumbs_up_gray.png";
-                vm.answer.thumbDn = "thumbs_down_blue.png";
+            if (x.dV == -1) {
+                x.thumbUp = "thumbs_up_gray.png";
+                x.thumbDn = "thumbs_down_blue.png";
             }
         }
         
         //AM:UpVote
-        function UpVote() {
+        function UpVote(x) {
 
             if ($rootScope.isLoggedIn) {
 
-                switch (dV) {
-                    case -1: { dV = 1; vm.catans.upV++; vm.catans.downV--; break; }
-                    case 0: { dV = 1; vm.catans.upV++; break; }
-                    case 1: { dV = 0; vm.catans.upV--; break; }
+                switch (x.dV) {
+                    case -1: { x.dV = 1; x.upV++; x.downV--; break; }
+                    case 0: { x.dV = 1; x.upV++; break; }
+                    case 1: { x.dV = 0; x.upV--; break; }
                 }
 
-                displayVote(dV);
+                displayVote(x);
                 console.log("UpVote");
             }
             else {
                 dialog.getDialog('notLoggedIn');
                 return;
             }
+            
         }
         
         //AM:DownVote
-        function DownVote() {
+        function DownVote(x) {
 
             if ($rootScope.isLoggedIn) {
-                switch (dV) {
-                    case -1: { dV = 0; vm.catans.downV--; break; }
-                    case 0: { dV = -1; vm.catans.downV++; break; }
-                    case 1: { dV = -1; vm.catans.upV--; vm.catans.downV++; break; }
+                switch (x.dV) {
+                    case -1: { x.dV = 0; x.downV--; break; }
+                    case 0: { x.dV = -1; x.downV++; break; }
+                    case 1: { x.dV = -1; x.upV--; x.downV++; break; }
                 }
 
-                displayVote(dV);
+                displayVote(x);
                 console.log("DownVote");
             }
             else {
                 dialog.getDialog('notLoggedIn');
                 return;
             }
-
+            
         }
 
         function goBack() {
@@ -365,20 +432,33 @@
             else dialog.getDialog('notLoggedIn');
         }
 
-        function getOtherRanks() {
+        function getAnswerRanks() {
 
-            vm.otherRanks = [];
+            vm.answerRanks = [];
             for (var i = 0; i < $rootScope.catansrecs.length; i++) {
-                if ($rootScope.catansrecs[i].answer == vm.answer.id && $rootScope.catansrecs[i].category != $rootScope.cCategory.id) {
+                //if ($rootScope.catansrecs[i].answer == vm.answer.id && $rootScope.catansrecs[i].category != $rootScope.cCategory.id) {
+                if ($rootScope.catansrecs[i].answer == vm.answer.id) {
+                    //console.log("catansrec ---,",$rootScope.catansrecs[i]);
                     for (var j = 0; j < $rootScope.content.length; j++) {
                         if ($rootScope.content[j].id == $rootScope.catansrecs[i].category) {
-                            vm.otherRanks.push($rootScope.content[j]);
+                            //to each rank object attach catans data
+                            var rankObj = $rootScope.content[j];
+                            rankObj.upV = $rootScope.catansrecs[i].upV;
+                            rankObj.downV = $rootScope.catansrecs[i].downV;
+                            rankObj.catans = $rootScope.catansrecs[i].id;
+                            rankObj.rank = $rootScope.catansrecs[i].rank;
+                            rankObj.uservote = {};
+                            rankObj.upVi = $rootScope.catansrecs[i].upV;
+                            rankObj.downVi = $rootScope.catansrecs[i].downV;
+   
+                            //TODO insert rank position out of total list, will be in catans
+                            vm.answerRanks.push(rankObj);
                         }
                     }
-
                 }
             }
-            vm.otherRanksExist = vm.otherRanks.length > 0 ? true : false;
+            //vm.otherRanksExist = vm.otherRanks.length > 0 ? true : false;
+            vm.otherRanksExist = true;            
         }
 
         function getSpecials(answerid) {
@@ -401,17 +481,111 @@
             }
         }
 
+        function getVRows(answerid) {
+            $rootScope.cansvrows = [];
+            //Load vrows for this answer           
+            for (var i = 0; i < $rootScope.cvrows.length; i++) {
+                if ($rootScope.cvrows[i].answer == answerid) {
+                    var obj = $rootScope.cvrows[i];
+                    obj.idx = i; //Store object but store index in main local copy
+                    obj.voteExists = false;
+                    obj.dV = 0;
+                    obj.upVi = $rootScope.cvrows[i].upV;
+                    obj.downVi = $rootScope.cvrows[i].downV;
+                    obj.upImage = 'thumbs_up_gray_table.png';
+                    obj.downImage = 'thumbs_down_gray_table.png';
+                    $rootScope.cansvrows.push(obj);
+                }
+            }
+            getVRowVotes();
+            
+        }
+
+        function displayVRows() {
+
+            vm.vrows = [];
+            function compare(a, b) {
+                return a.gnum - b.gnum;
+            }
+            console.log("$rootScope.cansvrows --- ",$rootScope.cansvrows);
+            if ($rootScope.cansvrows.length > 0) {
+                vm.vrows = $rootScope.cansvrows.sort(compare);
+                vm.vrows[0].shdr = true;
+                for (var i = 1; i < vm.vrows.length; i++) {
+                    if (vm.vrows[i].gnum == vm.vrows[i - 1].gnum) vm.vrows[i].shdr = false;
+                    else vm.vrows[i].shdr = true;
+                }
+                vm.vrows[vm.vrows.length - 1].saddr = true;
+                for (var i = 0; i < vm.vrows.length - 1; i++) {
+                    if (vm.vrows[i].gnum != vm.vrows[i + 1].gnum) vm.vrows[i].saddr = true;
+                    else vm.vrows[i].saddr = false;
+                }
+                console.log("vm.vrows --- ",vm.vrows);
+                
+                vm.vrowgroups = [];
+                var vrowgroup = [];
+                var tgroup = vm.vrows[0].gnum;
+                for (var i=0; i<vm.vrows.length; i++){
+                
+                    if (tgroup != vm.vrows[i].gnum) {
+                        //console.log("vrowgroup --- ", vrowgroup);
+                        vm.vrowgroups.push(vrowgroup);
+                        vrowgroup = [];
+                        vrowgroup.push(vm.vrows[i]);
+                        tgroup = vm.vrows[i].gnum;
+
+                    }
+                    else {
+                        vrowgroup.push(vm.vrows[i]);
+                    }
+                    //for last element
+                    if (i == vm.vrows.length - 1) {
+                        vm.vrowgroups.push(vrowgroup);
+                    }
+                }
+                console.log("vm.vrowgroups --- ",vm.vrowgroups);
+            }
+        }
+      
         function deleteButtonAccess() {
-                if ($rootScope.isAdmin) vm.deleteButton = 'inline';
-                else vm.deleteButton = 'none';            
+            if ($rootScope.isAdmin) vm.deleteButton = 'inline';
+            else vm.deleteButton = 'none';
         }
 
         function showUrl() {
             dialog.url(vm.answer.imageurl);
         }
-        
+
         function closeRank() {
-               $state.go('cwrapper');                            
+            //$state.go('cwrapper');
+            goBack();
+        }
+
+        function bizRegDialog() {
+            dialog.bizRegistration(bizRegistration);
+        }
+
+        function bizRegistration() {
+            if ($rootScope.isLoggedIn) {
+                dialog.bindAccount($rootScope.user.name, vm.answer.name, bindAccount);
+            }
+            else {
+                dialog.getDialog('notLoggedInBiz');
+            }
+            //$state.go('register');
+        }
+
+        function bindAccount() {
+            console.log("Bind business to user account");
+            answer.updateAnswer(vm.answer.id, ['owner'], [$rootScope.user.id]);
+        }
+
+        function openSpecials() {
+            $state.go('specials');
+        }
+
+        function editVRows() {
+            $state.go('editvrows');
         }
 
         function specialHtml(x) {
@@ -438,13 +612,77 @@
                 }
             }
 
-            htmlmsg = '<div >' + '<p><strong>' + x.stitle + ' @ ' +
-            x.name + '</strong></p><p>' + sch_str + '</p><p>' + x.details + '</p></div>';
+            htmlmsg = '<div class="text-center">' + '<h3>' + x.stitle +
+            '</h3><p>' + sch_str + '</p><p>' + x.details + '</p></div>';
             return htmlmsg;
         }
 
+        function showImages() {
+            vm.showImageGallery = true;
+        }
+        
+        function gotoRank(x){
+            var nViews = vm.answer.views + 1;
+            answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
+            $state.go('rankSummary', { index: x.id });
+        }
+        
+        function vrowVoteUp(x) {
 
+            if ($rootScope.isLoggedIn) {
 
+                switch (x.dV) {
+                    case -1: { x.dV = 1; x.upV++; x.downV--; break; }
+                    case 0: { x.dV = 1; x.upV++; break; }
+                    case 1: { x.dV = 0; x.upV--; break; }
+                }
 
+                displayVRowVote(x);
+                console.log("VRow UpVote");
+            }
+            else {
+                dialog.getDialog('notLoggedIn');
+                return;
+            }
+            //console.log("vm.answerRanks ---", vm.answerRanks);
+        }
+        
+        //AM:DownVote
+        function vrowVoteDown(x) {
+
+            if ($rootScope.isLoggedIn) {
+                switch (x.dV) {
+                    case -1: { x.dV = 0; x.downV--; break; }
+                    case 0: { x.dV = -1; x.downV++; break; }
+                    case 1: { x.dV = -1; x.upV--; x.downV++; break; }
+                }
+
+                displayVRowVote(x);
+                console.log("DownVote");
+            }
+            else {
+                dialog.getDialog('notLoggedIn');
+                return;
+            }
+            //console.log("vm.answerRanks ---", vm.answerRanks);
+        }
+        
+        function displayVRowVote(x) {
+            
+            if (x.dV == 1) {
+                x.upImage = "thumbs_up_blue_table.png";
+                x.downImage = "thumbs_down_gray_table.png";
+            }
+
+            if (x.dV == 0) {
+                x.upImage = "thumbs_up_gray_table.png";
+                x.downImage = "thumbs_down_gray_table.png";
+            }
+            if (x.dV == -1) {
+                x.upImage = "thumbs_up_gray_table.png";
+                x.downImage = "thumbs_down_blue_table.png";
+            }
+        }
+ 
     }
 })();

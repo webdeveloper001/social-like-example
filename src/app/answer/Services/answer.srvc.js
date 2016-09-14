@@ -133,6 +133,9 @@
                     case "views": data.views = val[i]; break;
                     case "lat": data.lat = val[i]; break;
                     case "lng": data.lng = val[i]; break;
+                    case "owner": data.owner = val[i]; break;
+                    case "phone": data.phone = val[i]; break;
+                    case "website": data.website = val[i]; break;
                 }
             }
             //console.log("data", data);
@@ -141,7 +144,7 @@
             var url = baseURI;
             
             //update local copy
-            var idx = $rootScope.A.indexOf(+answer_id);            
+            var idx = $rootScope.A.indexOf(+answer_id);
             for (var i=0; i<field.length; i++){
                 switch (field[i]){
                     case "name": $rootScope.canswers[idx].name = val[i]; break;
@@ -152,6 +155,9 @@
                     case "views": $rootScope.canswers[idx].views = val[i]; break;
                     case "lat": $rootScope.canswers[idx].lat = val[i]; break;
                     case "lng": $rootScope.canswers[idx].lng = val[i]; break;
+                    case "owner": $rootScope.canswers[idx].owner = val[i]; break;
+                    case "phone": $rootScope.canswers[idx].phone = val[i]; break;
+                    case "website": $rootScope.canswers[idx].website = val[i]; break;
                 }
             }                        
             

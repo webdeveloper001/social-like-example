@@ -48,6 +48,8 @@
             var f2 = '';
             var f3 = '';
             var f4 = '';
+            var f5 = '';
+            var f6 = '';
             var keywords = $rootScope.cCategory.keywords;
             
             var data = [];
@@ -58,34 +60,25 @@
                 else if (type == 'add') data[i] = fields[i].val;   
             }
             
-
-            switch (fields.length) {
-                case 1: {
-                    if (data[0]) f1 = data[0];
-                    break;
-                }
-                case 2: {
-                    if (data[0]) f1 = data[0];
-                    if (data[1]) f2 = data[1];
-                    break;
-                }
-                case 3: {
-                    if (data[0]) f1 = data[0];
-                    if (data[1]) f2 = data[1];
-                    if (data[2]) f3 = data[2];
-                    break;
-                }
-                case 4: {
-                    if (data[0]) f1 = data[0];
-                    if (data[1]) f2 = data[1];
-                    if (data[2]) f3 = data[2];
-                    if (data[3]) f4 = data[3];
-                    break;
-                }
+            if (fields.length == 1){
+                if (data[0]) f1 = data[0];
+            }
+            if (fields.length == 2){
+                if (data[0]) f1 = data[0];
+                if (data[1]) f2 = data[1];
+            }
+            if (fields.length == 3){
+                if (data[0]) f1 = data[0];
+                if (data[1]) f2 = data[1];
+                if (data[2]) f3 = data[2];
+            }
+            if (fields.length > 3){
+                if (data[0]) f1 = data[0];
+                if (data[1]) f2 = data[1];
+                if (data[2]) f3 = data[2];
+                if (data[3]) f4 = data[3];
             }
             
-            
-
             switch (attNum) {
                 case 1: { searchQuery = 'q=' + f1 + ' ' + f2 + ' ' + f3 + ' ' + f4 + ' ' + keywords; break; }
                 case 2: { searchQuery = 'q=' + f1 + ' ' + keywords; break; } 

@@ -40,20 +40,6 @@
                 controller: 'mainphoto as vm'               
             },
             {
-                name: 'specials',
-                parent: 'customer',
-                url: '/specials',
-                templateUrl: 'app/customer/Partials/specials.html',
-                controller: 'specials as vm'               
-            },
-            {
-                name: 'editspecial',
-                parent: 'customer',
-                url: '/editspecial',
-                templateUrl: 'app/customer/Partials/editspecial.html',
-                controller: 'editspecial as vm'               
-            },
-            {
                 name: 'photogallery',
                 parent: 'customer',
                 url: '/photogallery',

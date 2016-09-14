@@ -40,7 +40,7 @@
                 first_name: vm.firstName || 'Address',
                 last_name: vm.lastName || 'Book'
             }).then(function () {
-                $location.path('/login');
+                $location.path('/bizlogin');
             }, function (error) {
 
                 vm.message = error.Message;
@@ -50,7 +50,7 @@
 
         function signIn() {
 
-            $location.path('/login');
+            $location.path('/bizlogin');
         }
     }
 })();

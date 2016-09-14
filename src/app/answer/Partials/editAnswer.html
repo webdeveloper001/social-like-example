@@ -23,43 +23,47 @@
 <div class="row">
     <div class="col-sm-12 col-md-6">
         <div class="">
-            <img class="displayed-uc" src="{{vm.imageURL}}" alt="{{image.errorLoading}}" style="width:100%; max-height:300px" 
-            ng-show="{{vm.type != 'Short-Phrase'}}">
+            <img class="displayed-uc" src="{{vm.imageURL}}" alt="{{image.errorLoading}}" style="width:100%; max-height:300px" ng-show="{{vm.type != 'Short-Phrase'}}">
         </div>
-         <div class="container-answer" style="width:100%; max-height:300px;" ng-show="{{vm.type == 'Short-Phrase'}}">
+        <div class="container-answer" style="width:100%; max-height:300px;" ng-show="{{vm.type == 'Short-Phrase'}}">
             <br>
             <h2 style="text-align:center"><strong>{{vm.answer.name}}</strong></h2>
             <br>
             <h4 style="text-align:center">{{vm.answer.addinfo}}</h4>
         </div>
         <br>
-        <button type="submit" class="btn btn-primary" ng-click="vm.editImage()">{{vm.imageCommand}}</button>
-        <button type="submit" class="btn btn-primary" ng-click="vm.viewPrev()" style="display:{{vm.imagefunctions}}">&laquo</button>
-        <button type="submit" class="btn btn-primary" ng-click="vm.viewNext()" style="display:{{vm.imagefunctions}}">&raquo</button>
-        <a style="display:{{vm.imagefunctions}}">{{vm.linkIdx+1}} of {{vm.numLinks}}</a>
-        <button type="submit" class="btn btn-success" ng-click="vm.selectImage()" style="display:{{vm.imagefunctions}}">Select</button>
+        <div style="display:{{vm.userIsOwner ? 'inline':'none'}}">
+            <blob-upload>
+        </div>
+        <div style="display:{{vm.userIsOwner ? 'none':'inline'}}">
+            <button type="submit" class="btn btn-primary" ng-click="vm.editImage()">{{vm.imageCommand}}</button>
+            <button type="submit" class="btn btn-primary" ng-click="vm.viewPrev()" style="display:{{vm.imagefunctions}}">&laquo</button>
+            <button type="submit" class="btn btn-primary" ng-click="vm.viewNext()" style="display:{{vm.imagefunctions}}">&raquo</button>
+            <a style="display:{{vm.imagefunctions}}">{{vm.linkIdx+1}} of {{vm.numLinks}}</a>
+            <button type="submit" class="btn btn-success" ng-click="vm.selectImage()" style="display:{{vm.imagefunctions}}">Select</button>
+        </div>
     </div>
 
-    <form class="form-horizontal col-sm-12 col-md-6" role="form" name="answerForm">
-        <div class="form-group" ng-repeat="x in vm.fields">
-            <label class="control-label capitalize">{{x.label}}:</label>
-            <!--<div class="col-sm-8 col-md-8">-->
-            <div class="input-group" style="display:{{x.field!='addinfo' ? 'inline':'none'}}">
+    <form class="form-horizontal col-sm-12 col-md-6" role="form" name="answerForm" ng-repeat="x in vm.fields">
+        <!--  <div class="form-group" ng-repeat="x in vm.fields"> -->
+        <!--   <div ng-repeat="x in vm.fields">  -->
+        <label class="control-label capitalize">{{x.label}}:</label>
+        <!--<div class="col-sm-8 col-md-8">-->
+        <div style="display:{{x.field!='addinfo' ? 'inline':'none'}}">
+            <div class="input-group">
                 <!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
-                <input class="form-control" ng-model="x.val" bs-options="{{x.opts}}" bs-typeahead type="text" placeholder="{{x.cval}}">
+                <input type="text" class="form-control" ng-model="x.val" bs-options="{{x.opts}}" bs-typeahead placeholder="{{x.cval}}">
                 <span class="input-group-btn text-right">
                         <button class="btn btn-primary" type="button" ng-click="vm.editField(x)">Edit</button>
                     </span>
             </div>
+        </div>
             <div class="input-group" style="display:{{x.field=='addinfo' ? 'inline':'none'}}">
                 <textarea class="form-control" ng-model="x.val" placeholder="{{x.cval}}" rows="5"></textarea>
                 <span class="input-group-btn text-right">
                 <button class="btn btn-primary" type="button" ng-click="vm.editField(x)">Edit</button>
                 </span>
-            </div>
-   
-        </div>
-        <!--</div>-->
+            </div>        
     </form>
 
 </div>
@@ -81,7 +85,7 @@
         </div>
     </div>
 </div>
-<div class="text-center">
+<div class="text-center ">
 <a ng-click="vm.answerDetail() " class="btn btn-success ">Back</a>
 </div>
 <br>

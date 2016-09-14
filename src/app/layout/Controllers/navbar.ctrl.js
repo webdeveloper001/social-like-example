@@ -21,6 +21,7 @@
         vm.goToLogin = goToLogin;
         vm.gotoAbout = gotoAbout;
         vm.gotoAdmin = gotoAdmin;
+        vm.gotoFileUpload = gotoFileUpload;
         vm.gotoCustomer = gotoCustomer;
         vm.openCitySelection = openCitySelection;
 
@@ -37,6 +38,11 @@
         function gotoAbout() {
             //$stateProvider.state('app');
             $state.go('about');
+        }
+        
+        function gotoFileUpload() {
+            //$stateProvider.state('app');
+            $state.go('fileuploadtest');
         }
 
         function gotoAdmin() {

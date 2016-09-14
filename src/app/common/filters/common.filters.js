@@ -24,7 +24,7 @@
     }).filter('searchObject', function () {
         return function (items, query, field) {
             if (!items)
-                return false;
+                return null;
 
             var result = [];
             if (!query) {

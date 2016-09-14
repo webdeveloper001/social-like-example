@@ -10,100 +10,258 @@
         </h3>
     </div>
 </div>
-<!--<h3>{{vm.answerheader}}</h3>-->
+
 <div class="row">
-
-    <div>
-        <h3><span ng-repeat="f in vm.fields" ng-show="{{vm.type != 'Short-Phrase'}}">
+    <div class="col-xs-8 col-sm-9 col-md-10">
+        <h2><span ng-repeat="f in vm.fields" ng-show="{{vm.type != 'Short-Phrase'}}">
     {{(f.name == "name" && vm.answer.name) ? vm.answer.name : ""}}    
-        </span></h3>
-         
-        <strong>{{(vm.answer.location) ? 'Address:' : ""}}</strong> {{(vm.answer.location) ? vm.answer.location : ""}}
-        <br style="display:{{(vm.answer.location) ? 'inline' : 'none'}}">
-        <strong>{{(vm.answer.cityarea) ? 'Neighboorhood:' : ""}}</strong> {{(vm.answer.cityarea) ? vm.answer.cityarea : ""}}
-        <br style="display:{{(vm.answer.cityarea) ? 'inline' : 'none'}}">
-        <small class="text-muted">&nbsp;&nbsp;&nbsp{{vm.answer.views}}&nbspviews</small>
+        </span></h2>
     </div>
-    <br style="display:{{vm.answer.addinfo ? 'inline':'none'}}">
-    <div class="col-md-6 col-lg-6">
-        <!--<br style="display:{{vm.answer.addinfo ? 'inline':'none'}}">-->
-        <p style="display:{{vm.type == 'Short-Phrase' ? 'none':'inline'}}">{{vm.answer.addinfo}}</p>
-        <br style="display:{{vm.answer.addinfo ? 'inline':'none'}}">
-        <img class="displayed" src="{{vm.answer.imageurl}}" alt="Moustiers Sainte Marie" style="width:100%;height:300px" ng-click="vm.showUrl()"
-        ng-show="{{vm.type != 'Short-Phrase'}}">
-        <div class="container-answer" style="width:100%; max-height:300px;" ng-show="{{vm.type == 'Short-Phrase'}}">
+    <div class="col-xs-4 col-sm-3 col-md-2">
+        <div class="text-right">
+            <small class="text-muted">&nbsp;&nbsp;&nbsp{{vm.answer.views}}&nbspviews</small>
             <br>
-            <h2 style="text-align:center"><strong>{{vm.answer.name}}</strong></h2>
-            <br>
-            <h4 style="text-align:center">{{vm.answer.addinfo}}</h4>
-        </div>
-        <br>
-        <br>
-        <p>Vote up if you support this answer in this ranking. Vote down if this answer is weak and does not belong in this
-            ranking.
-        </p>
-        <div class="row">
-            <label style="width:10%" class="col-md-1 col-lg-1"><font size="  "></font></label>
-            <img style="width:20%" class="img-circle col-md-1 col-lg-1 cursor" src="../../../assets/images/{{vm.answer.thumbUp}}" ng-click="vm.UpVote()">
-            <label style="width:20%" class="col-md-1 col-lg-1"><font size="5">{{vm.catans.upV}}</font></label>
-            <img style="width:20%" class="img-circle col-md-1 col-lg-1 cursor" src="../../../assets/images/{{vm.answer.thumbDn}}" ng-click="vm.DownVote()">
-            <label style="width:20%" class="col-md-1 col-lg-1"><font size="5">{{vm.catans.downV}}</font></label>
-            <label style="width:10%" class="col-md-1 col-lg-1"><font size="  "></font></label>
-        </div>
-        <br>
-
-        <button type="button" class="btn btn-primary btn-block" ng-click="vm.editAnswer()">Edit {{vm.numEdits > 0? "("+vm.numEdits+")" : ""}}
-        </button>
-        <br>
-        <a ng-click="vm.goBack()" class="btn btn-success">Back</a>
-        <div class="btn-group">
-            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-                Flag<span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                <li><a id="action-x" ng-click="vm.flagAnswer(1)">Flag Offensive</a></li>
-                <li><a id="action-y" ng-click="vm.flagAnswer(2)">Flag Duplicated</a></li>
-            </ul>
-        </div>
-        <a ng-click="vm.deleteAnswer()" class="btn btn-danger" style="display:{{vm.deleteButton}}">Delete</a>
-        <br>
-        <br>
-
-    </div>
-
-    <div class="col-md-6 col-lg-6">
-      
-            
-      <div ng-repeat="x in vm.specialsList">
-          <div ng-bind-html="x.html" style="{{x.style}}"><br>
-         </div>              
-      </div>
-
-        <table class="table table-hover cursor" id="mytable">
-            <tbody>
-                <thead>
-                    <tr>
-                        <th>Pct (%)</th>
-                        <th>vs. Opponent</th>
-                        <th>Pct (%)</th>
-                        <th>GP</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="x in vm.relativetable | orderBy:'-Rank'" ng-click="vm.refresh(x.id)">
-                        <td align="middle">{{x.PctF}}</td>
-                        <td align="middle">{{x.vsName}}</td>
-                        <td align="middle">{{x.PctC}}</td>
-                        <td align="middle">{{x.GP}}</td>
-                    </tr>
-                </tbody>
-        </table>
-        <p class="text-left" ng-show="vm.otherRanksExist"><strong>{{vm.answer.name}}</strong> is also feautured in the following ranks:</p>
-        <br>
-        <div ng-repeat="r in vm.otherRanks">
-            <p ng-click="vm.rankSel(r)">{{r.title}}</p>
+            <div ng-show="{{vm.type == 'Establishment'}}">
+                <p style="display:{{vm.answer.hasOwner ? 'none':'inline'}}" class="hiw text-right" ng-click="vm.bizRegDialog()"><u>I represent this business</u></p>
+                <!--<br style="display:{{vm.answer.hasOwner ? 'inline':'none'}}">-->
+                <span class="glyphicon glyphicon-star-empty" style="display:{{vm.answer.hasOwner ? 'inline':'none'}}"></span>
+            </div>
         </div>
     </div>
-
 </div>
+
+<!--<h3>{{vm.answerheader}}</h3>-->
+<div class="text-middle">
+    <img class="displayed" src="{{vm.answer.imageurl}}" alt="Moustiers Sainte Marie" style="height:300px;width:auto;margin-left:auto;margin-right:auto;"
+    ng-click="vm.showUrl()" ng-show="{{vm.type != 'Short-Phrase'}}">
+</div>
+<div class="container-answer" style="width:100%;height:300px" ng-show="{{vm.type == 'Short-Phrase'}}">
+    <br>
+    <h2 style="text-align:center"><strong>{{vm.answer.name}}</strong></h2>
+    <br>
+    <h4 style="text-align:center">{{vm.answer.addinfo}}</h4>
+</div>
+<div>
+    <br>
+    <br>
+    <strong>{{(vm.answer.location) ? 'Address:' : ""}}</strong> {{(vm.answer.location) ? vm.answer.location : ""}}
+    <br style="display:{{(vm.answer.location) ? 'inline' : 'none'}}">
+    <strong>{{(vm.answer.cityarea) ? 'Neighboorhood:' : ""}}</strong> {{(vm.answer.cityarea) ? vm.answer.cityarea : ""}}
+    <br style="display:{{(vm.answer.cityarea) ? 'inline' : 'none'}}">
+    <strong>{{(vm.answer.phone) ? 'Phone:' : ""}}</strong> {{(vm.answer.phone) ? vm.answer.phone : ""}}
+    <br style="display:{{(vm.answer.phone) ? 'inline' : 'none'}}">
+    <strong>{{(vm.answer.website) ? 'Website:' : ""}}</strong> {{(vm.answer.website) ? vm.answer.website : ""}}
+    <br style="display:{{(vm.answer.website) ? 'inline' : 'none'}}">
+</div>
+<br style="display:{{vm.answer.addinfo ? 'inline':'none'}}">
+
+<!--<br style="display:{{vm.answer.addinfo ? 'inline':'none'}}">-->
+<p style="display:{{vm.type == 'Short-Phrase' ? 'none':'inline'}}">{{vm.answer.addinfo}}</p>
+<br style="display:{{vm.answer.addinfo ? 'inline':'none'}}">
+<br>
+
+<a type="button" class="btn btn-primary btn-block" ng-click="vm.editAnswer()" style="display:{{(vm.answer.hasOwner == false || vm.userIsOwner == true) ? 'inline':'none'}}">
+            Edit {{vm.numEdits > 0? "("+vm.numEdits+")" : ""}}
+        </a>
+<div class="well-sm" style="background-color:#666666;color:#f8f8ff">
+    <h3 class="sub-header">Endorsements</h3>
+</div>
+<p class="text-left"><strong>{{vm.answer.name}}</strong> is featured in the following ranks:</p>
+<p>Vote up if you endorse. Vote down if you disapprove.</p>
+<!--
+<div class="well well-light-ranks col-md-4 col-lg-4">
+    <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
+        <h4 class="sub-header">{{vm.ranking}}</h4>
+    </div>
+    <p>Ranked <strong>#1</strong> out of <strong>10</strong></p>
+    <div class="row">
+        <div class="col-xs-1 col-md-1 col-lg-1" style="width:20%"></div>
+        <img style="width:20%" class="img-circle col-xs-1 col-md-1 col-lg-1 cursor" src="../../../assets/images/{{vm.answer.thumbUp}}"
+        ng-click="vm.UpVote()">
+        <label style="width:20%" class="col-xs-1 col-md-1 col-lg-1"><font size="5">{{vm.catans.upV}}</font></label>
+        <img style="width:20%" class="img-circle col-xs-1 col-md-1 col-lg-1 cursor" src="../../../assets/images/{{vm.answer.thumbDn}}"
+        ng-click="vm.DownVote()">
+        <label style="width:20%" class="col-xs-1 col-md-1 col-lg-1"><font size="5">{{vm.catans.downV}}</font></label>
+        <div class="col-xs-1 col-md-1 col-lg-1"></div>
+    </div>
+    <br>
+    <p class="hiw text-right" ng-click="vm.bizRegDialog()">&lt;&lt;See full ranking&gt;&gt;</p>
+</div>-->
+<div class="well well-light-ranks col-md-4 col-lg-4" ng-repeat="r in vm.answerRanks">
+    <!--<p ng-click="vm.rankSel(r)"></p>-->
+    <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
+        <h4 class="sub-header">{{r.title}}</h4>
+    </div>
+    <p>Ranked <strong>#{{r.rank}}</strong> out of <strong>{{r.answers}}</strong></p>
+    <div class="row">
+        <div class="col-xs-1 col-md-1 col-lg-1" style="width:20%"></div>
+        <img style="width:20%" class="img-circle col-xs-1 col-md-1 col-lg-1 cursor" src="../../../assets/images/{{r.thumbUp}}" ng-click="vm.UpVote(r)">
+        <label style="width:20%" class="col-xs-1 col-md-1 col-lg-1"><font size="5">{{r.upV}}</font></label>
+        <img style="width:20%" class="img-circle col-xs-1 col-md-1 col-lg-1 cursor" src="../../../assets/images/{{r.thumbDn}}" ng-click="vm.DownVote(r)">
+        <label style="width:20%" class="col-xs-1 col-md-1 col-lg-1"><font size="5">{{r.downV}}</font></label>
+        <div class="col-xs-1 col-md-1 col-lg-1"></div>
+    </div>
+    <br>
+    <p class="hiw text-right" ng-click="vm.gotoRank(r)">&lt;&lt;See full ranking&gt;&gt;</p>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="well-sm" style="background-color:#666666;color:#f8f8ff;">
+            <h3 class="sub-header">Photo Gallery</h3>
+        </div>
+    </div>
+</div>
+<div class="text-right">
+    <a type="button" class="btn btn-success btn-block" ng-click="vm.showImages()" style="display:{{vm.showImageGallery == false ? 'inline':'none'}}">
+            Show Images </a>
+</div>
+<div style="display:{{vm.showImageGallery == true ? 'inline':'none'}}">
+
+    <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2">
+            <a href="pulpitrock.jpg" class="thumbnail">
+                <p>Pulpit Rock: A famous tourist attraction in Forsand, Ryfylke, Norway.</p>
+                <img src="pulpitrock.jpg" alt="Pulpit Rock" style="width:150px;max-height:150px">
+            </a>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2">
+            <a href="moustiers-sainte-marie.jpg" class="thumbnail">
+                <p>Moustiers-Sainte-Marie: Considered as one of the "most beautiful villages of France".</p>
+                <img src="moustiers-sainte-marie.jpg" alt="Moustiers Sainte Marie" style="width:150px;max-height:150px">
+            </a>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2">
+            <a href="cinqueterre.jpg" class="thumbnail">
+                <p>The Cinque Terre: A rugged portion of coast in the Liguria region of Italy.</p>
+                <img src="cinqueterre.jpg" alt="Cinque Terre" style="width:150px;max-height:150px">
+            </a>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2">
+            <a href="pulpitrock.jpg" class="thumbnail">
+                <p>Pulpit Rock: A famous tourist attraction in Forsand, Ryfylke, Norway.</p>
+                <img src="pulpitrock.jpg" alt="Pulpit Rock" style="width:150px;max-height:150px">
+            </a>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2">
+            <a href="moustiers-sainte-marie.jpg" class="thumbnail">
+                <p>Moustiers-Sainte-Marie: Considered as one of the "most beautiful villages of France".</p>
+                <img src="moustiers-sainte-marie.jpg" alt="Moustiers Sainte Marie" style="width:150px;max-height:150px">
+            </a>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2">
+            <a href="cinqueterre.jpg" class="thumbnail">
+                <p>The Cinque Terre: A rugged portion of coast in the Liguria region of Italy.</p>
+                <img src="cinqueterre.jpg" alt="Cinque Terre" style="width:150px;max-height:150px">
+            </a>
+        </div>
+    </div>
+</div>
+<div ui-view></div>
+<div ng-show="{{vm.type == 'Establishment'}}">
+    <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
+        <h3 class="sub-header">Specials</h3>
+    </div>
+
+    <div ng-repeat="x in vm.specialsList">
+        <div ng-bind-html="x.html" style="{{x.style}}">
+            <br>
+        </div>
+    </div>
+
+    <div class="text-right">
+        <a type="button" class="btn btn-primary btn-block" ng-click="vm.openSpecials()" style="display:{{(vm.answer.hasOwner == false || vm.userIsOwner == true) ? 'inline':'none'}}">
+            Edit Specials </a>
+    </div>
+</div>
+<div ng-show="{{vm.type == 'Establishment'}}">
+    <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
+        <h3 class="sub-header">How do we do?</h3>
+    </div>
+    <!--
+<table class="table table-hover cursor">
+    <!--
+    <thead>
+            <tr>
+                <th>   </th>
+                <th>   </th>
+                <th align="middle">FOOD</th>
+                <th>   </th>
+                <th>   </th>
+            </tr>
+        </thead> -->
+
+    <!--
+        <div class="row">
+            <!--<div style="display:{{x.shdr ? 'inline':'none'}}"> -->
+    <!--    <div>
+                <div style="background-color:gray;color:white;">
+                    <p>{{x[0].gtitle}}</p>
+                </div>
+            </div>
+        </div>  -->
+
+    <table class="table table-hover cursor" ng-repeat="x in vm.vrowgroups track by $index">
+
+        <thead class="thead-inverse">
+            <tr>
+                <th colspan="5" class="text-center" style="background-color:#d9d9d9;width:100%">{{x[0].gtitle}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in x">
+                <td align="middle" style="width:10%"><img src="../../../assets/images/{{item.upImage}} " style="max-height:30px;margin:0px;" ng-click="vm.vrowVoteUp(item)"></td>
+                <td align="left" style="width:10%">{{item.upV}}</td>
+                <td align="middle" style="width:60%">{{item.title}}</td>
+                <td align="right" style="width:10%">{{item.downV}}</td>
+                <td align="middle" style="width:10%"><img src="../../../assets/images/{{item.downImage}}" style="max-height:30px;margin:0px; " ng-click="vm.vrowVoteDown(item)"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!--</table>-->
+
+    <div class="text-right ">
+        <a type="button " class="btn btn-primary btn-block " ng-click="vm.editVRows()" style="display:{{(vm.answer.hasOwner==false || vm.userIsOwner==true) ? 'inline': 'none'}}">
+            Edit VoteRows </a>
+    </div>
+</div>
+
+<div ng-show="{{vm.type != 'Establishment'}}">
+    <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
+        <h3 class="sub-header">Versus Table</h3>
+    </div>
+
+    <table class="table table-hover cursor ">
+        <tbody>
+            <thead>
+                <tr>
+                    <th align="middle" style="width:15%">Pct (%)</th>
+                    <th align="middle" style="width:60%">vs. Opponent</th>
+                    <th align="middle" style="width:15%">Pct (%)</th>
+                    <th align="middle" style="width:10%">GP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="x in vm.relativetable | orderBy: '-Rank' " ng-click="vm.refresh(x.id) ">
+                    <td align="middle" style="width:15%">{{x.PctF}}</td>
+                    <td align="middle" style="width:60%">{{x.vsName}}</td>
+                    <td align="middle" style="width:15%">{{x.PctC}}</td>
+                    <td align="middle" style="width:10%">{{x.GP}}</td>
+                </tr>
+            </tbody>
+    </table>
+</div>
+<br>
+<a ng-click="vm.goBack() " class="btn btn-success ">Back</a>
+<div class="btn-group ">
+    <button type="button " class="btn btn-danger dropdown-toggle " data-toggle="dropdown ">
+        Flag<span class="caret "></span>
+    </button>
+    <ul class="dropdown-menu " role="menu ">
+        <li><a id="action-x " ng-click="vm.flagAnswer(1) ">Flag Offensive</a></li>
+        <li><a id="action-y " ng-click="vm.flagAnswer(2) ">Flag Duplicated</a></li>
+    </ul>
+</div>
+<a ng-click="vm.deleteAnswer() " class="btn btn-danger " style="display:{{vm.deleteButton}} ">Delete</a>
+<br>
 <br>

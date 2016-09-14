@@ -33,12 +33,14 @@
             //Get all catans records
             var url0 = baseURI + '?offset=' + 0 * 1000;
             var url1 = baseURI + '?offset=' + 1 * 1000;
+            var url2 = baseURI + '?offset=' + 2 * 1000;
 
             var p0 = $http.get(url0);
             var p1 = $http.get(url1);
+            var p2 = $http.get(url2);
 
-            return $q.all([p0, p1]).then(function (d){
-                _allcatans = d[0].data.resource.concat(d[1].data.resource);
+            return $q.all([p0, p1, p2]).then(function (d){
+                _allcatans = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource);
                 console.log("No. Cat-Ans: ", _allcatans.length);
                 return _allcatans;            
             }, _queryFailed);  
@@ -132,6 +134,7 @@
                 switch (field[i]){
                     case "upV": data.upV = val[i]; break;
                     case "downV": data.downV = val[i]; break;
+                    case "rank": data.rank = val[i]; break;
                 }
             }
             //console.log("data", data);
@@ -140,11 +143,13 @@
             var url = baseURI;
             
             //update local copy
-            var idx = $rootScope.B.indexOf(+rec_id);            
+            //var idx = $rootScope.B.indexOf(+rec_id);
+            var idx = _allcatans.map(function(x) {return x.id; }).indexOf(rec_id);            
             for (var i=0; i<field.length; i++){
                 switch (field[i]){
-                    case "upV": $rootScope.ccatans[idx].upV = val[i]; break;
-                    case "downV": $rootScope.ccatans[idx].downV = val[i]; break;
+                    case "upV": $rootScope.catansrecs[idx].upV = val[i]; break;
+                    case "downV": $rootScope.catansrecs[idx].downV = val[i]; break;
+                    case "rank": $rootScope.catansrecs[idx].rank = val[i]; break;
                 }
             }                        
             

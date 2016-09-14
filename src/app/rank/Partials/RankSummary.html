@@ -26,110 +26,115 @@
 <!-- Images -->
 <div class="row" style="display:{{vm.isShortPhrase == false? 'inline':'none'}}">
     <div class="col-sm-6 col-md-6 col-lg-4">
-		<img class="displayed" src="{{vm.image1}}" 
-		style="width:100%;max-height:200px;display:{{vm.image1 != undefined ? 'inline':'none'}}">
-	</div>
-	<div class="hidden-xs col-sm-6 col-md-6 col-lg-4">
-		<img class="displayed" src="{{vm.image2}}" 
-		style="width:100%;max-height:200px;display:{{vm.image2 != undefined ? 'inline':'none'}}">
-	</div>
-	<div class="hidden-xs hidden-sm hidden-md col-lg-4">
-		<img class="displayed" src="{{vm.image3}}" 
-		style="width:100%;max-height:200px;display:{{vm.image3 != undefined ? 'inline':'none'}}">
-	</div>
+        <img class="displayed" src="{{vm.image1}}" style="width:100%;max-height:200px;display:{{vm.image1 != undefined ? 'inline':'none'}}">
+    </div>
+    <div class="hidden-xs col-sm-6 col-md-6 col-lg-4">
+        <img class="displayed" src="{{vm.image2}}" style="width:100%;max-height:200px;display:{{vm.image2 != undefined ? 'inline':'none'}}">
+    </div>
+    <div class="hidden-xs hidden-sm hidden-md col-lg-4">
+        <img class="displayed" src="{{vm.image3}}" style="width:100%;max-height:200px;display:{{vm.image3 != undefined ? 'inline':'none'}}">
+    </div>
 </div>
 <!-- Short-Phrases -->
 <div class="row" style="display:{{vm.isShortPhrase == true? 'inline':'none'}}">
     <div class="col-sm-6 col-md-6 col-lg-4">
-		<div class="container-answer" style="width:100%; max-height:300px;">
+        <div class="container-answer" style="width:100%; max-height:300px;">
             <br>
             <h2 style="text-align:center"><strong>{{vm.title1}}</strong></h2>
             <br>
             <h4 style="text-align:center">{{vm.addinfo1}}</h4>
         </div>
-	</div>
-	<div class="hidden-xs col-sm-6 col-md-6 col-lg-4">
-		<div class="container-answer" style="width:100%; max-height:300px;">
+    </div>
+    <div class="hidden-xs col-sm-6 col-md-6 col-lg-4">
+        <div class="container-answer" style="width:100%; max-height:300px;">
             <br>
             <h2 style="text-align:center"><strong>{{vm.title2}}</strong></h2>
             <br>
             <h4 style="text-align:center">{{vm.addinfo2}}</h4>
         </div>
-	</div>
-	<div class="hidden-xs hidden-sm hidden-md col-lg-4">
-		<div class="container-answer" style="width:100%; max-height:300px;">
+    </div>
+    <div class="hidden-xs hidden-sm hidden-md col-lg-4">
+        <div class="container-answer" style="width:100%; max-height:300px;">
             <br>
             <h2 style="text-align:center"><strong>{{vm.title3}}</strong></h2>
             <br>
             <h4 style="text-align:center">{{vm.addinfo3}}</h4>
         </div>
-	</div>
+    </div>
 </div>
-        <br>
+<br>
 
-        <div class="text-center">
-            <!-- <h4>Contributors: <b style="color:blue; "><i>4563</i></b></h4> -->
-            <!-- Twitter -->
-            <a href="http://twitter.com/home?status=" title="Share in Twitter" target="_blank " class="btn btn-twitter "><i class="fa fa-twitter "></i></a>
-            <!-- Facebook -->
-            <a href="https://www.facebook.com/sharer/sharer.php " title="Share in Facebook" target="_blank " class="btn btn-facebook "><i class="fa fa-facebook ">acebook</i></a>
-            <!-- Google+ -->
-            <a href="https://plus.google.com/share?url=" title="Share in Google+" target="_blank " class="btn btn-googleplus "><i class="fa fa-google-plus "></i></a>
-        </div>
-        <div class="row ">
-            <div class="btn-group col-sm-6 col-md-6 ">
-                <button class="btn btn-primary {{vm.selOverall}} " ng-click="vm.rankOverall() ">Overall</button>
-                <button class="btn btn-primary {{vm.selPersonal}} " ng-click="vm.rankPersonal() ">Personal</button>
-                <!--  <button type="button " class="btn btn-primary ">{{"rankSummary.Filtered " | translate}}</button> -->
-            </div>
-            <div class="btn-group text-right col-sm-6 col-md-6 ">
-                <h4>Contributors: <b style="color:blue; "><i>{{vm.numContributors}}</i></b></h4>
-            </div>
-        </div>
-        <div class="text-center">
-            <button ng-click="vm.goRank() " class="btn btn-success ">Go Rank</button>
-        </div>
-        <div class="text-right" style="display:{{vm.haveLocation ? 'none':'inline'}}">
-            <p class="hiw text-right" ng-click="vm.whyNoDistance()"><u>why I cant see distances?</u></p>
-        </div>
-        <br>
+<div class="text-center">
+    <!-- <h4>Contributors: <b style="color:blue; "><i>4563</i></b></h4> -->
+    <!-- Twitter -->
+    <a href="http://twitter.com/home?status=" title="Share in Twitter" target="_blank " class="btn btn-twitter "><i class="fa fa-twitter "></i></a>
+    <!-- Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php " title="Share in Facebook" target="_blank " class="btn btn-facebook "><i class="fa fa-facebook ">acebook</i></a>
+    <!-- Google+ -->
+    <a href="https://plus.google.com/share?url=" title="Share in Google+" target="_blank " class="btn btn-googleplus "><i class="fa fa-google-plus "></i></a>
+</div>
+<br class="hidden-md hidden-lg hidden-xl">
+<div class="row ">
+           
+    <div class="btn-group col-sm-6 col-md-6">
+        <div ng-show="{{vm.type == 'Establishment' || vm.type == 'Activity'}}">
+        <p>Sort by: <span>        
+        <button class="btn btn-default {{vm.selRank}} " ng-click="vm.sortByRank()">Rank</button>
+        <button class="btn btn-default {{vm.selDistance}} " ng-click="vm.sortByDistance()">Distance</button>        
+        <!--  <button type="button " class="btn btn-primary ">{{"rankSummary.Filtered " | translate}}</button> -->
+        </span></p>
     </div>
-    <table class="table table-hover cursor ">
+    </div>
+    <div class="btn-group text-right col-sm-6 col-md-6 ">
+        <h4>Contributors: <b style="color:blue; "><i>{{vm.numContributors}}</i></b></h4>
+    </div>
+</div>
+<div class="text-center">
+    <button ng-click="vm.goRank() " class="btn btn-success ">Go Rank</button>
+</div>
+<div ng-show="{{vm.type == 'Establishment'}}">
+    <div class="text-right" style="display:{{vm.haveLocation ? 'none':'inline'}}">
+        <p class="hiw text-right" ng-click="vm.whyNoDistance()"><u>why I cant see distances?</u></p>
+    </div>
+</div>
+<br>
+</div>
+<table class="table table-hover cursor ">
+    <tbody>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th class="capitalize " ng-repeat="h in vm.fields | filter:(h.isrequired=true)">{{h.label}}</th>
+                <th ng-show="{{vm.type == 'Establishment'}}">Distance (mi)</th>
+                <th ng-show="{{vm.type == 'Establishment'}}">Specials</th>
+                <!-- ng-show="{{vm.type == 'Establishment'}}" -->
+            </tr>
+        </thead>
         <tbody>
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th class="capitalize " ng-repeat="h in vm.fields | filter:(h.isrequired=true)">{{h.label}}</th>
-                    <th ng-show="{{vm.type == 'Establishment'}}">Distance (mi)</th>
-                    <th ng-show="{{vm.type == 'Establishment'}}">Specials</th>
-                    <!-- ng-show="{{vm.type == 'Establishment'}}" -->
-                </tr>
-            </thead>
-            <tbody>
-                <!--| orderBy: '-Rank' -->
-                <tr ng-repeat="x in vm.answers" ng-click="vm.answerDetail(x.id) ">
-                    <td>{{$index+1}}</td>
-                    <!--<td>{{x.Rank}}</td>-->
-                    <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
-                    <td ng-repeat="h in vm.fields | filter:(h.isrequired=true)">{{ x[h.name]}}</td>
-                    <td ng-show="{{vm.type == 'Establishment'}}">{{x.dist}}</td>
-                    <td ng-show="{{vm.type == 'Establishment'}}" class="{{x.style}}">{{x.specials}}</td>
-                </tr>
-            </tbody>
-    </table>
-    <div class="row">
-        <div class="col-sm-1">
-            <a class="btn btn-primary" ng-click="vm.addAnswer() " class="btn btn-primary ">+</a>
-        </div>
-        <div class="col-sm-11" style="display:{{vm.addInfoMsgAck == false ? 'inline':'none'}}">
-            <div class="alert alert-warning" style="padding-top: 5px;padding-bottom: 5px;">
-                <a class="close" data-dismiss="alert" aria-label="close" ng-click="vm.closeAddInfoMsg()">&times;</a>
-                <span class="glyphicon glyphicon-arrow-left"></span><strong>&nbsp;&nbsp;Are we missing one?</strong>&nbsp;&nbsp;Use
-                the '+' button to add a new answer.
-            </div>
+            <!--| orderBy: '-Rank' -->
+            <tr ng-repeat="x in vm.answers" ng-click="vm.answerDetail(x.id) ">
+                <td>{{x.Rank}}</td>
+                <!--<td>{{x.Rank}}</td>-->
+                <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
+                <td ng-repeat="h in vm.fields | filter:(h.isrequired=true)">{{ x[h.name]}}</td>
+                <td ng-show="{{vm.type == 'Establishment'}}">{{x.dist}}</td>
+                <td ng-show="{{vm.type == 'Establishment'}}" class="{{x.style}}">{{x.specials}}</td>
+            </tr>
+        </tbody>
+</table>
+<div class="row">
+    <div class="col-sm-1">
+        <a class="btn btn-primary" ng-click="vm.addAnswer() " class="btn btn-primary ">+</a>
+    </div>
+    <div class="col-sm-11" style="display:{{vm.addInfoMsgAck == false ? 'inline':'none'}}">
+        <div class="alert alert-warning" style="padding-top: 5px;padding-bottom: 5px;">
+            <a class="close" data-dismiss="alert" aria-label="close" ng-click="vm.closeAddInfoMsg()">&times;</a>
+            <span class="glyphicon glyphicon-arrow-left"></span><strong>&nbsp;&nbsp;Are we missing one?</strong>&nbsp;&nbsp;Use
+            the '+' button to add a new answer.
         </div>
     </div>
+</div>
 
-    <!-- <a ui-sref="match " class="btn btn-success ">{{"rankSummary.GoRank " | translate}}</a> -->
-    <br>
-    <br>
+<!-- <a ui-sref="match " class="btn btn-success ">{{"rankSummary.GoRank " | translate}}</a> -->
+<br>
+<br>

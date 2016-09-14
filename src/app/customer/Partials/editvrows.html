@@ -1,0 +1,62 @@
+<div class="container">
+        <div class="well-sm">
+                <h3 class="sub-header">{{vm.header}}
+                <span class="nomargin">
+                    <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
+                    ng-click="vm.closeRank()">
+                    <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
+                    </button>
+                </span>
+        </h3>
+        </div>
+</div>
+
+<div ng-repeat="x in vm.vrows track by $index">
+        <div style="display:{{x.shdr ? 'inline':'none'}}">
+                <br>
+        </div>
+        <div class="row">
+                <div style="display:{{x.shdr ? 'inline':'none'}}">
+                        <div class="col-xs-10" style="background-color:gray;color:white;">
+                                <p>{{x.gtitle}}</p>
+                        </div>
+                        <div class="col-xs-2">
+                                <button type="button" class="btn btn-default" ng-click="vm.editVRowGroupDiag(x)">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                </button>
+                        </div>
+                </div>
+        </div>
+        <div style="display:{{x.title != '-' ? 'inline':'none'}}">
+                <div class="row">
+                        <div class="col-xs-10" style="background-color:#d9d9d9;padding-top:2px;padding-bottom:2px;">
+                                {{x.title}}
+                        </div>
+                        <div class="col-xs-2">
+                                <div class="btn-group">
+                                        <!--
+                                <button type="button" class="btn btn-default" style="margin-right:5px"ng-click="vm.editVrow(x)">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                </button> -->
+                                        <button type="button" class="btn btn-default" ng-click="vm.deleteVRowDiag(x)">
+                                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        </button>
+                                </div>
+                        </div>
+                </div>
+        </div>
+        <div style="display:{{x.saddr ? 'inline':'none'}}">
+                <div class="row">
+                        <div class="col-xs-10">
+                                <div class="text-right">
+                                     <button type="button" class="btn btn-default" ng-click="vm.addVRowDiag(x)">Add Vote Row</button>
+                                </div>
+                        </div>
+                        <div class="col-xs-2"></div>
+                </div>
+        </div>
+</div>
+<br>
+<div class="text-left">
+        <button type="button" class="btn btn-default" ng-click="vm.addVRowGroupDiag()">Add Group</button>
+</div>

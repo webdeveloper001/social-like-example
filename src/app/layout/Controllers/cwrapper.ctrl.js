@@ -6,10 +6,10 @@
         .controller('cwrapper', cwrapper);
 
     cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
-     'answers', 'rankings', 'query', 'table', 'specials'];
+     'answers', 'rankings', 'catansrecs','query', 'table', 'specials','fileupload','allvrows'];
 
     function cwrapper($rootScope, $state, $http, $stateParams, $scope,
-     answers, rankings, query, table, specials) {
+     answers, rankings, catansrecs, query, table, specials, fileupload, allvrows) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'cwrapper';
@@ -23,6 +23,8 @@
         vm.editRank = editRank;
         vm.applyRule = applyRule;
         vm.selnh = selnh;
+        vm.uploadFile = uploadFile;
+        
         //vm.isAdmin = true;
         $rootScope.editMode = false;
         //*****************************
@@ -59,7 +61,7 @@
            $rootScope.user = {};
            $rootScope.user.name = "Andres Moctezuma";
            $rootScope.user.id = 12;
-           $rootScope.answeridxgps = 1258;
+           $rootScope.answeridxgps = 1258; //starting indx for gps conversion
                        
             if ($rootScope.isLoggedIn && $rootScope.user.name == "Andres Moctezuma" && $rootScope.user.id == 12 ){
                 $rootScope.isAdmin = true;
@@ -83,6 +85,8 @@
             $rootScope.content = rankings; //response
             $rootScope.specials = specials;
             $rootScope.answers = answers;
+            $rootScope.cvrows = allvrows;
+            
             loadcontent();
             getEstablishmentAnswers();
 
@@ -111,13 +115,44 @@
             vm.cTags = {};
             $rootScope.searchStr = [];
             
-            //Show ranking titles, hide all ranks
+            
+            //start temp code to load answertags
+            /*
+            $rootScope.answers = answers;
+            
             for (var i = 0; i < $rootScope.content.length; i++) {
-                //$rootScope.content[i].showR = false;
-                //$rootScope.content[i].showT = true;
-                
+            //for (var i = 400; i < 500; i++) {               
+                       //Load current answers
+            $rootScope.canswers = [];
+            
+            for (var j = 0; j < catansrecs.length; j++) {
+                if (catansrecs[j].category == $rootScope.content[i].id) {
+                    for (var k = 0; k < answers.length; k++){
+                        if (catansrecs[j].answer == answers[k].id){
+                            $rootScope.canswers.push(answers[k]);
+                            //$rootScope.ccatans.push(catansrecs[i]);
+                            
+                            //Collect array of 'current' catans records ids
+                            //$rootScope.B.push(catansrecs[i].id);
+                            break;        
+                        }
+                    }                    
+                }
+            }    
+            var answertags = '';
+            for (var n=0; n < $rootScope.canswers.length; n++){
+                answertags = answertags + ' ' + $rootScope.canswers[n].name;
+            }
+            table.update($rootScope.content[i].id,['answertags'],[answertags]);        
+            //console.log(answertags);
+            }
+            */
+            //end temp code to add answer tags
+            
+            //Create seach strings combination of tags, title and answers            
+            for (var i = 0; i < $rootScope.content.length; i++) {                
                 //Tags cwrapper of title and tags for better search
-                $rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title;
+                $rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title + " " + $rootScope.content[i].answertags;
             }
 
             $rootScope.neighborhoods = [
@@ -188,41 +223,6 @@
             vm.val = '';
             $rootScope.inputVal = '';
         }
-/*
-        function seeMore(obj) {
-            vm.viewNum = obj;
-            $rootScope.activeView = obj+1;
-            //emitLim30(obj+1);
-        }
-        
-        function goBack(obj){
-            vm.viewNum = 0;
-            $rootScope.activeView = obj+1;
-            //emitLim5(obj+1);                        
-        }
-/*
-        function emitLim30(objNum) {
-            $rootScope.$emit('numRes30', objNum);
-        }
-
-        function emitLim5(objNum) {
-            $rootScope.$emit('numRes5', objNum);
-        }
-        
-        function emitLoadContent(objNum) {
-            $rootScope.$emit('loadContent', objNum);
-        }*/
-        /*
-        function setObj(objNum) {
-            $rootScope.objNum = objNum;
-            
-            if (objNum != objNum_o && !$rootScope.rankIsActive){
-            
-            $rootScope.$emit('numObjChanged');
-            }
-            objNum_o = objNum;
-            //if (!$rootScope.rankIsActive) $rootScope.objNumAct = $rootScope.objNum;
-        }*/
         
           //*****************Admin Functions************
         function editRank() {
@@ -239,9 +239,19 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-                 $rootScope.$emit('applyRule');
-                 //console.log("apply Rule");
+                 //$rootScope.$emit('applyRule');
            }
+           
+        //Upload Image
+        function uploadFile() {
+            console.log('file is ');
+            console.log(vm.myFile);
+
+            if (vm.myFile) {
+                fileupload.uploadFileToUrl(vm.myFile);
+            }
+
+        }
         //***********End Admin Functions********************
     }
 })();

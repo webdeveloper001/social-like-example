@@ -14,18 +14,20 @@
 
         vm.addSpecial = addSpecial;
         vm.selSpecial = selSpecial;
+        vm.closeRank = closeRank;
+        vm.header = $rootScope.canswer.name;
 
         vm.specialsList = [];
 
-        $rootScope.cust.specials = [];
+        //$rootScope.cust.specials = [];
 
         activate();
 
         function activate() {
            
             //Load specials for this answer
-            special.getSpecialsbyAnswer($rootScope.cust.canswer).then(function (response) {
-                $rootScope.cust.specials = response;
+            special.getSpecialsbyAnswer($rootScope.canswer.id).then(function (response) {
+                $rootScope.specials = response;
                 displaySpecials();
             });
 
@@ -34,7 +36,7 @@
         }
 
         function displaySpecials() {
-            vm.specialsList = $rootScope.cust.specials;
+            vm.specialsList = $rootScope.specials;
         }
 
         function addSpecial() {
@@ -47,6 +49,10 @@
             $rootScope.cspecial = x;
             $rootScope.specialmode = 'edit'
             $state.go('editspecial');
+        }
+        
+        function closeRank() {
+               $state.go("answerDetail", { index: $rootScope.canswer.id });                              
         }
 
     }

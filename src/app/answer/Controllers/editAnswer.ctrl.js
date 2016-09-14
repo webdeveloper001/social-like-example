@@ -31,6 +31,7 @@
         vm.editDisagree = editDisagree;
         vm.answerDetail = answerDetail;
         vm.ranking = $rootScope.title;
+        vm.userIsOwner = $rootScope.userIsOwner;
 
         var A = $rootScope.A;
         if ($stateParams.index) vm.answer = $rootScope.canswers[A.indexOf(+$stateParams.index)];
@@ -67,6 +68,11 @@
                 }
             });
 
+        $rootScope.$on('fileUploaded', function (event, data){
+            vm.imageURL = data;
+            selectImage();
+        });
+            
         activate();
 
         function activate() {
@@ -539,7 +545,7 @@
         }
           function closeRank() {
                // $rootScope.$emit('closeRank');
-               $state.go('cwrapper');                               
+               answerDetail();                              
         }
 
     }

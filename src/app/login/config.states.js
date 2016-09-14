@@ -16,6 +16,12 @@
                 controller: 'login as vm'
             },
             {
+                name: 'bizlogin',
+                url: '/bizlogin',
+                templateUrl: 'app/login/partials/bizlogin.html',
+                controller: 'bizlogin as vm'
+            },
+            {
                 name: 'register',
                 url: '/register',
                 templateUrl: 'app/login/partials/register.html',

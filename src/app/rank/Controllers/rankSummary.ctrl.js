@@ -6,17 +6,17 @@
         .controller('rankSummary', rankSummary);
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'answers'
-        , 'answer', 'mrecs', 'rank','catansrecs','$filter','table'
-        , '$rootScope', '$modal', 'edits', 'editvote', 'votes', 'useractivities'];
+        , 'answer', 'mrecs', 'rank','catansrecs','$filter','table','vrowvotes'
+        , '$rootScope', '$modal', 'edits', 'editvote', 'votes', 'useractivities','catans'];
 
     function rankSummary(dialog, $stateParams, $state, answers
-        , answer, mrecs, rank, catansrecs, $filter, table
-        , $rootScope, $modal, edits, editvote, votes, useractivities) {
+        , answer, mrecs, rank, catansrecs, $filter, table, vrowvotes
+        , $rootScope, $modal, edits, editvote, votes, useractivities, catans) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'rankSummary';
         vm.addAnswerDisabled = '';
-        vm.ranking = $rootScope.title;
+        
         
         // Methods
         vm.answerDetail = answerDetail;
@@ -27,9 +27,13 @@
         vm.rankPersonal = rankPersonal;
         vm.closeAddInfoMsg = closeAddInfoMsg;
         vm.whyNoDistance = whyNoDistance;
+        vm.sortByRank = sortByRank;
+        vm.sortByDistance = sortByDistance;
 
         vm.selOverall = 'active';
         vm.selPersonal = '';
+        vm.selRank = 'active';
+        vm.selDistance = '';
         //var myParent = $rootScope.parentNum;
 
         var votetable = [];
@@ -74,6 +78,32 @@
 
             //Sort by rank here (this is to grab images of top 3 results)
             vm.answers = $filter('orderBy')(vm.answers, '-Rank');
+            
+            //Instead of rank point just show index in array
+            for (var i=0; i< vm.answers.length; i++){
+                vm.answers[i].Rank = i+1;
+            }
+            vm.answers = $filter('orderBy')(vm.answers, 'Rank');
+            
+            
+            //Check and update if necessary ranking and Num of items per rank
+            for (var i=0; i<vm.answers.length; i++){
+                if (vm.answers[i].Rank != vm.answers[i].catansrank ){
+                    console.log("Updated Catans Rank")
+                    catans.updateRec(vm.answers[i].catans, ['rank'], [vm.answers[i].Rank]);
+                }
+            }
+                        
+            //check that number of answer is same as store in content object
+            //if different, compute answertags and update table
+            if(vm.answers.length != $rootScope.cCategory.answers){
+                console.log("Updating Answer Tags");
+                var answertags = vm.answers[0].name;
+               for (var n=1; n < vm.answers.length; n++){
+                answertags = answertags + ' ' + vm.answers[n].name;
+                }
+                table.update($rootScope.cCategory.id,['answertags'],[answertags]);  
+            }
             
             //Check number of answers for this ranking
             if (vm.answers.length == 0){
@@ -165,11 +195,11 @@
                     //Load votes for this category
                     for (var i = 0; i < votetable.length; i++) {
                         for (var j = 0; j < $rootScope.ccatans.length; j++) {
-                            if (votetable[i].catans == $rootScope.ccatans[j].id) {
+                           // if (votetable[i].catans == $rootScope.ccatans[j].id) {
                                 var voteitem = votetable[i];
                                 //voteitem.vtidx = i;
                                 $rootScope.cvotes.push(voteitem);
-                            }
+                           // }
                         }
                     }
                 });
@@ -182,6 +212,12 @@
                         }
                     }
                 });
+                
+                //Vrow Votes for this user
+                vrowvotes.loadVrowVotes().then(function (vrowvotes) {
+                   $rootScope.cvrowvotes = vrowvotes;
+                });
+                
                 
                 //All mrecs for this categroy from this user
                 $rootScope.cmrecs_user = [];
@@ -261,6 +297,8 @@
                     break;
                 }
             }
+            
+            vm.ranking = $rootScope.cCategory.title;
                         
             //vm.url = 'http://rankdev.azurewebsites.net/#/rankSummary/' + $rootScope.cCategory.id;
             //vm.header = "table" + $rootScope.cCategory.id + ".header";
@@ -278,6 +316,7 @@
                 case "Short-Phrase":{fidx=4; break;}
                 case "Activity":    {fidx=5; break;}
                 case "Establishment":{fidx=6; break;}
+                case "Thing":{fidx=7; break;}
             }
                  
             fields = $rootScope.typeSchema[fidx].fields;  
@@ -313,7 +352,10 @@
                 if (catansrecs[i].category == $rootScope.cCategory.id) {
                     for (var k = 0; k < answers.length; k++){
                         if (catansrecs[i].answer == answers[k].id){
-                            $rootScope.canswers.push(answers[k]);
+                            var obj = answers[k];
+                            obj.catans = catansrecs[i].id;
+                            obj.catansrank = catansrecs[i].rank;
+                            $rootScope.canswers.push(obj);
                             $rootScope.ccatans.push(catansrecs[i]);
                             
                             //Collect array of 'current' catans records ids
@@ -428,6 +470,18 @@
             vm.selPersonal = '';
             vm.numContributors = $rootScope.cuseractivity.length;
             rank.computeRanking($rootScope.canswers, $rootScope.cmrecs);
+        }
+        
+        function sortByRank(){
+            vm.answers = $filter('orderBy')(vm.answers, 'Rank');
+            vm.selRank = 'active';
+            vm.selDistance = '';
+        }
+        
+        function sortByDistance(){
+            vm.answers = $filter('orderBy')(vm.answers, 'dist');
+            vm.selRank = '';
+            vm.selDistance = 'active';
         }
         
         function closeRank() {

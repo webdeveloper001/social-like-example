@@ -1,7 +1,28 @@
-<h1> Specials </h1>
-<label>{{vm.specialsList.length > 0? 'Choose a special to Edit':'There are no specials registered to this answer'}}</label>
+<div class="container">
+    <div class="well-sm">
+        <h3 class="sub-header">{{vm.header}}
+                <span class="nomargin">
+                    <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
+                    ng-click="vm.closeRank()">
+                    <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
+                    </button>
+                </span>
+        </h3>
+    </div>
+</div>
+
+<label>{{vm.specialsList.length > 0? 'Choose a special to Edit':'There are no specials registered to this establishment'}}</label>
 <div ng-repeat="x in vm.specialsList">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <label style="background-color:{{x.bc}};color:{{x.fc}};padding:3px;width:100%;cursor:pointer;" ng-click="vm.selSpecial(x)">{{x.stitle}}</label>
+            <br>
+        </div>
+    </div>
+    <!--
 		<label><input type="radio" name="specialradio" ng-click="vm.selSpecial(x)">&nbsp;&nbsp;{{x.stitle}}, {{x.freq}}</label>
+-->
+
 </div>
 <br>
 <button ng-click="vm.addSpecial() " class="btn btn-primary ">Add Special</button>

@@ -1,5 +1,6 @@
 angular.module('app').directive("userDetailModal",
     ["$rootScope", "userDetail", "dialog", function ($rootScope, userDetail, dialog) {
+        'use strict';
         return {
             restrict: "E",
             templateUrl: "app/login/partials/add-user-detail.html",

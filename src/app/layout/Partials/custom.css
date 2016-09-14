@@ -38,7 +38,14 @@
       background-color: #d8d8d8;
       *background-color: #e0e0e0;
       padding-top: 0px;
+      padding-bottom: 0px;      
+    }
+     .well-light-ranks {
+      background-color: #d8d8d8;
+      *background-color: #e0e0e0;
+      padding-top: 0px;
       padding-bottom: 0px;
+      border: 2px solid white;
     }
     
 th.capitalize {

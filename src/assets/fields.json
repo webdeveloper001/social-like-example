@@ -20,6 +20,8 @@
    "fields": [
 	   {"name":"name","isrequired":true,"label":"Name of Event"},
 	   {"name":"cityarea","isrequired":true,"label":"Neighborhood"},
+     {"name":"phone","isrequired":false, "label":"Phone Number"},
+     {"name":"website","isrequired":false, "label":"Website"},
 	   {"name":"addinfo","isrequired":false,"label":"Additional Info"}
    ]   
  },
@@ -43,6 +45,8 @@
      {"name":"name","isrequired":true, "label":"Activity"},
 	   {"name":"cityarea","isrequired":true, "label":"Neighborhood"},
      {"name":"location","isrequired":false, "label":"Location"},
+     {"name":"phone","isrequired":false, "label":"Phone Number"},
+     {"name":"website","isrequired":false, "label":"Website"},
 	   {"name":"addinfo","isrequired":false,"label":"Additional Info"}
    ]   
  },
@@ -52,7 +56,16 @@
      {"name":"name","isrequired":true, "label":"Name"},
      {"name":"cityarea","isrequired":true, "label":"Neighborhood"},
 	   {"name":"location","isrequired":false, "label":"Address"},
+     {"name":"phone","isrequired":false, "label":"Phone Number"},
+     {"name":"website","isrequired":false, "label":"Website"},
 	   {"name":"addinfo","isrequired":false, "label":"Additional Info"}
+   ]   
+ },
+ {
+   "type":"Thing",
+   "fields": [
+	   {"name":"name","isrequired":true,"label":"Name"},
+	   {"name":"addinfo","isrequired":false,"label":"Details"}
    ]   
  }
 ]

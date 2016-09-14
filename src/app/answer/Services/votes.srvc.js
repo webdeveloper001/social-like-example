@@ -96,7 +96,7 @@
             
             var url = baseURI + '/_table/votetable'; 
             
-             //update local record of votes
+            //update local record of votes
             var i = _votes.map(function(x) {return x.id; }).indexOf(rec_id);
             _votes[i].vote = vote;
             _votes[i].timestmp = data.timestmp;
