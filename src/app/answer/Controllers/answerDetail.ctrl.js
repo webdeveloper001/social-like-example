@@ -516,7 +516,6 @@
             function compare(a, b) {
                 return a.gnum - b.gnum;
             }
-            console.log("$rootScope.cansvrows --- ",$rootScope.cansvrows);
             if ($rootScope.cansvrows.length > 0) {
                 vm.vrows = $rootScope.cansvrows.sort(compare);
                 vm.vrows[0].shdr = true;
@@ -529,7 +528,6 @@
                     if (vm.vrows[i].gnum != vm.vrows[i + 1].gnum) vm.vrows[i].saddr = true;
                     else vm.vrows[i].saddr = false;
                 }
-                console.log("vm.vrows --- ",vm.vrows);
                 
                 vm.vrowgroups = [];
                 var vrowgroup = [];
@@ -552,7 +550,7 @@
                         vm.vrowgroups.push(vrowgroup);
                     }
                 }
-                console.log("vm.vrowgroups --- ",vm.vrowgroups);
+                
             }
         }
       
