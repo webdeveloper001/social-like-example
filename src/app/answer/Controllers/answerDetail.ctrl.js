@@ -5,10 +5,10 @@
         .module('app')
         .controller('answerDetail', answerDetail);
 
-    answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope',
+    answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window',
         'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime', '$location', 'vrows', 'vrowvotes']; //AM:added user service
 
-    function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope,
+    function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope,$window,
         votes, matchrec, edit, editvote, catans, datetime, $location, vrows, vrowvotes) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
@@ -55,7 +55,12 @@
         if ($stateParams.index) vm.answer = answers[A.indexOf(+$stateParams.index)];
         $rootScope.canswer = vm.answer;
         activate();
-
+        
+        //Adjust picture size for very small displays
+        //console.log('height and width ---', $window.innerHeight,$window.innerWidth);
+        if ($window.innerWidth < 512) vm.mxheight = '250px';
+        else vm.mxheight = '300px';
+        
         function activate() {
 
             vm.showImageGallery = false;
@@ -395,7 +400,10 @@
 
 
         function editAnswer() {
-            $state.go("editAnswer", { index: vm.answer.id });
+            if ($rootScope.isLoggedIn) {
+                $state.go("editAnswer", { index: vm.answer.id });
+            }
+            else dialog.getDialog('notLoggedIn');           
         }
 
         function deleteAnswer() {
@@ -581,7 +589,7 @@
             answer.updateAnswer(vm.answer.id, ['owner'], [$rootScope.user.id]);
         }
 
-        function openSpecials() {
+        function openSpecials() {          
             $state.go('specials');
         }
 
