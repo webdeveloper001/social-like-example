@@ -121,8 +121,6 @@
         
          function updateRec(rec_id, field, val) {
              
-             console.log("val  ", val);
-           
             //form match record
             var obj = {};
             obj.resource = [];

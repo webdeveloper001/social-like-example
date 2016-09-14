@@ -218,7 +218,6 @@
             
             for (var i=0; i<vm.vrows.length; i++){
                 var voteRecExists = vm.vrows[i].voteExists;
-                console.log("vm.vrows --- ", vm.vrows);
                 if (voteRecExists && vm.vrows[i].dVi != vm.vrows[i].dV) {
                     $rootScope.cvrowvotes[vm.vrows[i].vidx].val = vm.vrows[i].dV;
                     vrowvotes.patchRec(vm.vrows[i].voteid, vm.vrows[i].dV);
@@ -265,6 +264,7 @@
         }
         
         function getVRowVotes(){
+            if ($rootScope.isLoggedIn) {
                 for (var i = 0; i < $rootScope.cansvrows.length; i++) {
                     //check votes for display
                     for (var j=0; j < $rootScope.cvrowvotes.length; j++){
@@ -279,6 +279,7 @@
                         }
                     }
                 }
+            }
                 displayVRows();
         }
         
