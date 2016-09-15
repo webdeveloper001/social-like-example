@@ -33,12 +33,14 @@
             //Get all match records
             var url0 = baseURI + '?offset=' + 0 * 1000;
             var url1 = baseURI + '?offset=' + 1 * 1000;
+            var url2 = baseURI + '?offset=' + 2 * 1000;
 
             var p0 = $http.get(url0);
             var p1 = $http.get(url1);
+            var p2 = $http.get(url2);
 
-            return $q.all([p0, p1]).then(function (d){
-                _tables = d[0].data.resource.concat(d[1].data.resource);
+            return $q.all([p0, p1, p2]).then(function (d){
+                _tables = d[0].data.resource.concat(d[1].data.resource,d[2].data.resource);
                 console.log("tables length: ", _tables.length);
                 return _tables;            
             }, _queryFailed);  

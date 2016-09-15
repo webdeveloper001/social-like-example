@@ -47,6 +47,7 @@
             vm.nhs = $rootScope.neighborhoods;
             vm.searchActive = $rootScope.searchActive;
             vm.cnh = $rootScope.cnh;
+            vm.isAdmin = $rootScope.isAdmin;
             
         }
         function init() {
@@ -56,7 +57,7 @@
            //****SUPER TEMP*****************
            $rootScope.isAdmin = false;
            vm.isAdmin = false;
-                    /*
+         /*           
            $rootScope.isLoggedIn = true;
            $rootScope.user = {};
            $rootScope.user.name = "Andres Moctezuma";
@@ -69,7 +70,7 @@
             }
             
             viewRank();
-            */
+           */ 
             //******************************
 
             //Load current category
@@ -118,12 +119,12 @@
             
             //start temp code to load answertags
             /*
-            $rootScope.answers = answers;
+            //$rootScope.answers = answers;
             
             for (var i = 0; i < $rootScope.content.length; i++) {
             //for (var i = 400; i < 500; i++) {               
                        //Load current answers
-            $rootScope.canswers = [];
+            //$rootScope.canswers = [];
             
             for (var j = 0; j < catansrecs.length; j++) {
                 if (catansrecs[j].category == $rootScope.content[i].id) {
@@ -165,7 +166,7 @@
                 "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
                 "Marina", "Seaport Village"];
                 
-                vm.nhs = $rootScope.neighborhoods;            
+                vm.nhs = $rootScope.neighborhoods;       
         }
 
         function getEstablishmentAnswers() {
@@ -239,7 +240,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-                 //$rootScope.$emit('applyRule');
+            //     $rootScope.$emit('applyRule');
            }
            
         //Upload Image

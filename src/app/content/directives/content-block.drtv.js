@@ -9,7 +9,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             isDynamic: '=dynamic',
             isRoW: '=rankofweek'
         },
-        controller: ['$scope','query','$filter','$http','answer', function contentCtrl($scope, query, $filter, $http, answer) {
+        controller: ['$scope','query','$filter','$http','answer','table', function contentCtrl($scope, query, $filter, $http, answer, table) {
             var vm = $scope;
             vm.title = 'mycontent';
 
@@ -108,49 +108,49 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             break;
                         }
                         case 2: {
-                            filters = [" ", " "];
+                            filters = ["isMP", " "];
                             headlines = ['Most Popular', 'Most Popular'];
                             vm.fc = '#f8f8ff';
                             vm.bgc = '#4682b4';
                             break;
                         }
                         case 3: {
-                            filters = ["food", "food"];
+                            filters = ["food isMP", "food"];
                             headlines = ['Food', 'Food'];
                             vm.fc = '#f8f8ff';
                             vm.bgc = 'brown';
                             break;
                         }
                         case 4: {
-                            filters = ["lifestyle", "fitness"];
+                            filters = ["lifestyle isMP", "fitness"];
                             headlines = ['LifeStyle', 'Fitness'];
                             vm.fc = '#f8f8ff';
                             vm.bgc = 'green';
                             break;
                         }
                         case 5: {
-                            filters = ["politics", "neighborhood"];
+                            filters = ["politics isMP", "neighborhood"];
                             headlines = ['City and Politics', 'Neighboorhood Topics'];
                             vm.fc = '#f8f8ff';
                             vm.bgc = 'gray';
                             break;
                         }
                         case 6: {
-                            filters = ["sports", "services"];
+                            filters = ["sports isMP", "services"];
                             headlines = ['Sports', 'Services'];
                             vm.fc = '#f8f8ff';
                             vm.bgc = 'blue';
                             break;
                         }
                         case 7: {
-                            filters = ["dating", "beauty"];
+                            filters = ["dating isMP", "beauty"];
                             headlines = ['Dating and Relationships', 'Beauty']
                             vm.fc = '#f8f8ff';
                             vm.bgc = '#b22222';
                             break;
                         }
                         case 8: {
-                            filters = ["technology", "health"];
+                            filters = ["technology isMP", "health"];
                             headlines = ['Technology', 'Health']
                             vm.fc = '#f8f8ff';
                             vm.bgc = 'gray';
@@ -189,15 +189,35 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     //vm.resutsT = orderBy(vm.resultsT,'views')
                     temparr = $filter('orderBy')(temparr, '-views');
                     //vm.resultsT = temparr.slice(0, vm.maxRes);
-                    vm.resultsT = temparr;
-                    //Check if photos exist   
+                    vm.resultsT = shuffle(temparr);
+                    //Check if photos exist for Rank of Week   
                     if (vm.isRoW && vm.resultsT.length > 0) {
                         vm.image1 = vm.resultsT[0].image1url;
                         vm.image2 = vm.resultsT[0].image2url;
                         vm.image3 = vm.resultsT[0].image3url;
 
                     }
+                    
                 }
+            }
+            
+            function shuffle(array) {
+                var currentIndex = array.length, temporaryValue, randomIndex;
+
+                // While there remain elements to shuffle...
+                while (0 !== currentIndex) {
+
+                    // Pick a remaining element...
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex -= 1;
+
+                    // And swap it with the current element.
+                    temporaryValue = array[currentIndex];
+                    array[currentIndex] = array[randomIndex];
+                    array[randomIndex] = temporaryValue;
+                }
+
+                return array;
             }
 
              function applyRule() {
@@ -309,12 +329,12 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
         /*
         //Use this to remove a tag
         for (var i=0; i < vm.resultsT.length; i++){
-            var titlex = vm.resultsT[i].title.replace("best fine dining restaurants in","best fine dining restaurants in ");
+            var titlex = vm.resultsT[i].title.replace("Best places to get a manicure","Best nail salons");
             //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
             //console.log("tags ", tags);
             table.update(vm.resultsT[i].id, ['title'],[titlex]);
-        } 
-        */
+        } */
+        
             
         //Use this to add a neighborhood
         /*
@@ -341,24 +361,41 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
         //Use this for batch DELETE
        for (var i=0; i < vm.resultsT.length; i++){          
          table.deleteTable(vm.resultsT[i].id);
-      }
-       */
+      }*/
+       
                         
-        /*       
+               
         //Use this to add a ranking to all neighborhood
-        
-        for (var i=0; i < vm.resultsT.length; i++){
-            
+       /* 
+        for (var i=0; i < vm.resultsT.length; i++){            
             //Copy object without reference
             var tablex = JSON.parse(JSON.stringify(vm.resultsT[i]));
             tablex.id = undefined;
-            var newtitle = tablex.title.replace("What are the best fine dining restaurants in", "What are the best sports bars in");
+            var newtitle = tablex.title.replace("Best steaks in", "Best art galleries in");
             tablex.title = newtitle;
-            var newtags = tablex.tags.replace("fine dining fancy elegant", "food dining pubs beer");
+            //var newtags = tablex.tags.replace("meat food", "beer pb bars");
+            var newtags = "paintings culture";
             tablex.tags = newtags;
+            tablex.answertags = '';
             //console.log("tags ", tags);
             table.addTable(tablex);
         }*/
+                //add 'isMain' to all non-neighborhood ranks
+      /*          
+                var isMain = true;
+                for (var i=50; i<$rootScope.content.length; i++){
+                    isMain = true;    
+                    for (var j=0; j<$rootScope.neighborhoods.length; j++){
+                        if ($rootScope.content[i].title.includes($rootScope.neighborhoods[j])){
+                            isMain = false; break;
+                        }
+                    }
+                    if (isMain){
+                            var tags = $rootScope.content[i].tags + ' isMP';
+                            table.update($rootScope.content[i].id, ['tags'],[tags]);                         
+                    }
+                } */
+                            
              }
         }], //end controller
 
@@ -375,7 +412,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     //console.log("inc to 30!--now:",maxRes);
                     //scope.$apply(function(){
                     scope.btext = 'see less';
-                    scope.maxRes = 60;
+                    scope.maxRes = 100;
                     //});                
                 }
                 else {

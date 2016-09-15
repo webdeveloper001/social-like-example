@@ -96,7 +96,7 @@
                         
             //check that number of answer is same as store in content object
             //if different, compute answertags and update table
-            if(vm.answers.length != $rootScope.cCategory.answers){
+            if(vm.answers.length != $rootScope.cCategory.answers && vm.answers.length > 0){
                 console.log("Updating Answer Tags");
                 var answertags = vm.answers[0].name;
                for (var n=1; n < vm.answers.length; n++){

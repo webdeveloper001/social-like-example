@@ -15,9 +15,9 @@
 
         .controller('layout', layout);
 
-    layout.$inject = ['$location', '$rootScope', '$translate', '$timeout'];
+    layout.$inject = ['$location', '$rootScope', '$translate', '$timeout','$window'];
 
-    function layout($location, $rootScope, $translate, $timeout) {
+    function layout($location, $rootScope, $translate, $timeout, $window) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'layout';
@@ -29,6 +29,9 @@
         // Members
 
         activate();
+        
+        if ($window.innerWidth < 512) vm.logoimage = "../../../assets/images/rankxlogosd_sm.png";
+        else vm.logoimage = "../../../assets/images/rankxlogosd.png";;
 
         function activate() {
 
