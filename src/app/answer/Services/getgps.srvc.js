@@ -5,9 +5,9 @@
         .module('app')
         .service('getgps', getgps);
 
-    getgps.$inject = ['$rootScope', '$http', 'APP_API_KEY', 'GOOGLE_API_KEY'];
+    getgps.$inject = ['$rootScope', '$http', 'APP_API_KEY', 'GOOGLE_API_KEY','$cookies'];
 
-    function getgps($rootScope, $http, APP_API_KEY, GOOGLE_API_KEY) {
+    function getgps($rootScope, $http, APP_API_KEY, GOOGLE_API_KEY, $cookies) {
 
         var service = {
 
@@ -19,6 +19,8 @@
         function getLocationGPS(answer) {
 
             delete $http.defaults.headers.common['X-Dreamfactory-API-Key'];
+            delete $http.defaults.headers.common['X-DreamFactory-Session-Token'];
+            
             var myLoc = '';
                 if (answer.location.includes('San Diego') == false) {
                     myLoc = answer.location + ' San Diego, CA';
@@ -39,6 +41,7 @@
                     answer.lng = result.data.results[0].geometry.location.lng;
 
                     $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
+                    $http.defaults.headers.common['X-DreamFactory-Session-Token'] = $cookies.session_token;
                     $rootScope.$emit('answerGPSready');
                     //answer.updateAnswer(cAnswer.id,['lat','lng','location'],[lat,lng,fa]);
                 });

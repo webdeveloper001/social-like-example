@@ -6,10 +6,10 @@
         .controller('editAnswer', editAnswer);
 
     editAnswer.$inject = ['dialog', '$stateParams', '$state', 'answers', '$rootScope', 
-    '$modal', 'edit', 'editvote', 'answer', 'image'];
+    '$modal', 'edit', 'editvote', 'answer', 'image','getgps'];
 
     function editAnswer(dialog, $stateParams, $state, answers, $rootScope, 
-    $modal, edit, editvote, answer, image) {
+    $modal, edit, editvote, answer, image, getgps) {
         /* jshint validthis:true */
         var vm = this;
 
@@ -71,6 +71,10 @@
         $rootScope.$on('fileUploaded', function (event, data){
             vm.imageURL = data;
             selectImage();
+        });
+        
+           $rootScope.$on('answerGPSready', function () {
+            editAnswerGPS();
         });
             
         activate();
@@ -460,6 +464,16 @@
             if (vm.edits[index].field == "image") {
                 answer.updateAnswer(vm.edits[index].answer, [vm.edits[index].field], [vm.edits[index].imageURL]);
             }
+            else if (vm.edits[index].field == "location"){
+                     if (vm.edits[index].nval != undefined && vm.edits[index].nval != "" && vm.edits[index].nval != null) {
+                         //var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(vm.edits[index].answer);
+                        var promise = getgps.getLocationGPS(vm.answer);
+                        promise.then(function () {
+                        //console.log("myAnswer --- ", myAnswer);
+                        //answer.addAnswer(myAnswer).then(rankSummary);
+                        });
+                     }
+            }
             else {
                 answer.updateAnswer(vm.edits[index].answer, [vm.edits[index].field], [vm.edits[index].nval]);
             }
@@ -469,6 +483,11 @@
             $rootScope.cedits.splice(vm.edits[index].idx, 1);
             vm.edits.splice(index, 1);
 
+        }
+        
+        function editAnswerGPS(){
+            console.log("@editAnswer ---> location, lat, lng --- ",vm.answer.location, vm.answer.lat, vm.answer.lng);       
+            answer.updateAnswer(vm.answer.id,['location','lat','lng'],[vm.answer.location, vm.answer.lat, vm.answer.lng]).then(answerDetail);
         }
 
         function discardEdit(index) {

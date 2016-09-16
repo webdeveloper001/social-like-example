@@ -253,7 +253,7 @@
             if (myAnswer.type == 'Establishment' && (myAnswer.location != undefined && myAnswer.location != "" && myAnswer.location != null)) {
                 var promise = getgps.getLocationGPS(myAnswer);
                 promise.then(function () {
-                    console.log("myAnswer --- ", myAnswer);
+                    //console.log("myAnswer --- ", myAnswer);
                     //answer.addAnswer(myAnswer).then(rankSummary);
                 });
             }
