@@ -56,7 +56,7 @@
 
                             if (Object.keys(result).length == 0) {
 
-                                $rootScope.openUserDetailModal();
+                               // $rootScope.openUserDetailModal();
 
                             } else {
                                 $rootScope.user.age = calculateAge(new Date(result[0].birth_date));

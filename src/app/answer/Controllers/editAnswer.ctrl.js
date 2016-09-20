@@ -467,6 +467,7 @@
             else if (vm.edits[index].field == "location"){
                      if (vm.edits[index].nval != undefined && vm.edits[index].nval != "" && vm.edits[index].nval != null) {
                          //var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(vm.edits[index].answer);
+                        vm.answer.location = vm.edits[index].nval;
                         var promise = getgps.getLocationGPS(vm.answer);
                         promise.then(function () {
                         //console.log("myAnswer --- ", myAnswer);

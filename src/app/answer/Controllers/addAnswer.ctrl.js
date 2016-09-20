@@ -249,7 +249,7 @@
 
         function addAnswerConfirmed(myAnswer) {
             //Add new answer, also add new post to catans (inside addAnser)
-            console.log("addAnswerConfrimed", myAnswer);
+            console.log("No, different! @addAnswerConfirmed");
             if (myAnswer.type == 'Establishment' && (myAnswer.location != undefined && myAnswer.location != "" && myAnswer.location != null)) {
                 var promise = getgps.getLocationGPS(myAnswer);
                 promise.then(function () {
@@ -267,7 +267,7 @@
         }
                     
         function answerIsSame(){
-            console.log("answerIsSame");
+            console.log("Yeah Same, @answerIsSame");
             //Answer already exist in this category, do not add
             if (duplicateSameCategory) dialog.getDialog('answerDuplicated');
             //Answer already exist, just post new category-answer record            
@@ -324,6 +324,7 @@
                     }
                 }
             }
+            console.log("duplicateExists: ", duplicateExists," duplicateSameCategory: ", duplicateSameCategory);
         }
         
         function closeRank() {

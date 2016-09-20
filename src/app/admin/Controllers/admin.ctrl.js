@@ -11,7 +11,7 @@
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'admin';
-        
+
         vm.selKeywords = 'active';
         vm.selViews = '';
         vm.selFlags = '';
@@ -22,36 +22,82 @@
         vm.views = views;
         vm.flags = flags;
         vm.addRank = addRank;
-       
-       activate();
+        vm.dbMaint = dbMaint;
+        vm.dbQuery = dbQuery;
 
-        function activate() {            
+        activate();
+
+        function activate() {
 
             console.log("admin page Loaded!");
-            
+
         }
-        function keywords() {            
+        function keywords() {
+            vm.selKeywords = 'active';
+            vm.selViews = '';
+            vm.selFlags = '';
+            vm.selRankings = '';
+            vm.selDbMaint = '';
+            vm.selQuery = '';
 
             $state.go('queries');
-            
+
         }
-        function views() {            
+        function views() {
+            vm.selKeywords = '';
+            vm.selViews = 'active';
+            vm.selFlags = '';
+            vm.selRankings = '';
+            vm.selDbMaint = '';
+            vm.selQuery = '';
 
             $state.go('views');
-            
+
         }
-        function flags() {            
+        function flags() {
+            vm.selKeywords = '';
+            vm.selViews = '';
+            vm.selFlags = 'active';
+            vm.selRankings = '';
+            vm.selDbMaint = '';
+            vm.selQuery = '';
 
             $state.go('flags');
-            
+
         }
-        
-        function addRank() {            
+
+        function addRank() {
+            vm.selKeywords = '';
+            vm.selViews = '';
+            vm.selFlags = '';
+            vm.selRankings = 'active';
+            vm.selDbMaint = '';
+            vm.selQuery = '';
 
             $state.go('addRank');
-            
+
         }
-        
+
+        function dbMaint() {
+            vm.selKeywords = '';
+            vm.selViews = '';
+            vm.selFlags = '';
+            vm.selRankings = '';
+            vm.selDbMaint = 'active';
+            vm.selQuery = '';
+            $state.go('dbMaint');
+        }
+
+        function dbQuery() {
+            vm.selKeywords = '';
+            vm.selViews = '';
+            vm.selFlags = '';
+            vm.selRankings = '';
+            vm.selDbMaint = '';
+            vm.selQuery = 'active';
+            $state.go('dbQuery');
+        }
+
 
         function goBack() {
             //if ($rootScope.cCategory.id == undefined) $state.go('rankSummary', { index: $rootScope.cCategory.id });

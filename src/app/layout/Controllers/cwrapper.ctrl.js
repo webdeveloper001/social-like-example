@@ -49,6 +49,9 @@
             vm.cnh = $rootScope.cnh;
             vm.isAdmin = $rootScope.isAdmin;
             
+            vm.selEditRank = $rootScope.editMode ? 'active':'none';
+            vm.selViewRank = $rootScope.editMode ? 'none':'active';
+                       
         }
         function init() {
 
@@ -57,7 +60,7 @@
            //****SUPER TEMP*****************
            $rootScope.isAdmin = false;
            vm.isAdmin = false;
-         /*           
+                    /*
            $rootScope.isLoggedIn = true;
            $rootScope.user = {};
            $rootScope.user.name = "Andres Moctezuma";
@@ -70,7 +73,7 @@
             }
             
             viewRank();
-           */ 
+            */
             //******************************
 
             //Load current category
@@ -86,6 +89,7 @@
             $rootScope.content = rankings; //response
             $rootScope.specials = specials;
             $rootScope.answers = answers;
+            $rootScope.catansrecs = catansrecs;
             $rootScope.cvrows = allvrows;
             
             loadcontent();
@@ -240,7 +244,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-            //     $rootScope.$emit('applyRule');
+                 $rootScope.$emit('applyRule');
            }
            
         //Upload Image

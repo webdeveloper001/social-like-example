@@ -50,6 +50,20 @@
                 url: '/addRank',
                 templateUrl: 'app/admin/Partials/addRank.html',
                 controller: 'addRank as vm'               
+            },
+            {
+                name: 'dbMaint',
+                parent: 'admin',
+                url: '/dbMaint',
+                templateUrl: 'app/admin/Partials/dbMaint.html',
+                controller: 'dbMaint as vm'               
+            },
+             {
+                name: 'dbQuery',
+                parent: 'admin',
+                url: '/dbQuery',
+                templateUrl: 'app/admin/Partials/dbQuery.html',
+                controller: 'dbQuery as vm'               
             }
         ];
 

@@ -91,6 +91,7 @@
             }
             
             table.update(item.id, fields, vals);
+            closeRank();
         }
         
         function goDelete(){            

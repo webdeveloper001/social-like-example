@@ -1,0 +1,23 @@
+<h1>Database Maintenance</h1>
+<button class="btn btn-success" ng-click="vm.showUrefAns()">Unreferenced Answers</button><br>
+<button class="btn btn-danger" ng-click="vm.deleteAnswers()" >Delete Answers</button>
+<button class="btn btn-default" ng-click="vm.showDuplicated()">Show Duplicated</button>
+<button class="btn btn-default" ng-click="vm.showDuplicatedOnlyName()">Show Duplicated Only Name</button><br>
+<br><br>
+<p ng-repeat="x in vm.unrefans">{{x.name}} --- {{x.id}}</p>
+<div ng-repeat="x in vm.dupAnswers track by $index">
+	<img src="{{x.image1}}" style="width:120px">        <img src="{{x.image2}}" style="width:120px">
+<p> {{x.name1}} --- {{x.idx1}} --- {{x.loc1}} --- {{x.nh1}} --- {{x.add1}} --- {{x.id1}}</p>
+<p> {{x.name2}} --- {{x.idx2}} --- {{x.loc2}} --- {{x.nh2}} --- {{x.add2}} --- {{x.id2}}</p>
+<button class="btn btn-default" ng-click="vm.syncToFirst(x)">Sync 1st</button>
+<button class="btn btn-default" ng-click="vm.syncToSecond(x)">Sync 2nd</button>
+<p>-------------------------------------------------------</p>
+</div>	 
+<div ng-repeat="x in vm.dupAnsNames track by $index">
+	<img src="{{x.image1}}" style="width:120px">        <img src="{{x.image2}}" style="width:120px">
+<p> {{x.name1}} --- {{x.idx1}} --- {{x.loc1}} --- {{x.nh1}} --- {{x.add1}} --- {{x.id1}}</p>
+<p> {{x.name2}} --- {{x.idx2}} --- {{x.loc2}} --- {{x.nh2}} --- {{x.add2}} --- {{x.id2}}</p>
+<button class="btn btn-default" ng-click="vm.syncToFirst(x)">Sync 1st</button>
+<button class="btn btn-default" ng-click="vm.syncToSecond(x)">Sync 2nd</button>
+<p>-------------------------------------------------------</p>
+</div>	 

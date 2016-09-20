@@ -118,7 +118,8 @@
                 <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
                 <td ng-repeat="h in vm.fields | filter:(h.isrequired=true)">{{ x[h.name]}}</td>
                 <td ng-show="{{vm.type == 'Establishment'}}">{{x.dist}}</td>
-                <td ng-show="{{vm.type == 'Establishment'}}" class="{{x.style}}">{{x.specials}}</td>
+                <td ng-show="{{vm.type == 'Establishment'}}" style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">
+                {{x.sp_title}}</td>
             </tr>
         </tbody>
 </table>

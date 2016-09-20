@@ -1,0 +1,12 @@
+<h1>Database Query</h1>
+ <input class="form-control" ng-model="vm.val" placeholder="Enter answer to search">
+ <button class="btn btn-primary" ng-click="vm.queryAnswer()">Query</button>
+ <div ng-repeat="x in vm.ansRes">
+	 <p>Answer</p>
+	 {{x.id}} --- {{x.name}} <br>
+	 <p>Catans</p>
+	 <div ng-repeat="y in x.catans">
+		 {{y.id}} --- {{y.category}} --- {{y.answer}} --- {{y.rank}} <button class="btn btn-danger" ng-click="vm.delCatans(y)">Delete</button><br>
+		 </div>
+ </div>
+ 

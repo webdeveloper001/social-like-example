@@ -306,6 +306,20 @@
                         else newline2 = '<strong>' + 'Additional Info' + '</strong>: ' + '' + '</br>';
                         break;
                     }
+                    case "phone": {
+                        if (answer1.phone) newline = '<strong class="capitalize">' + 'Phone' + 'b</strong>: ' + answer1.phone + '</br>';
+                        else newline = '<strong>' + 'Phone' + '</strong>: ' + '' + '</br>';
+                        if (answer2.phone) newline2 = '<strong class="capitalize">' + 'Phone' + 'b</strong>: ' + answer2.phone + '</br>';
+                        else newline2 = '<strong>' + 'Phone' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
+                    case "website": {
+                        if (answer1.website) newline = '<strong class="capitalize">' + 'Website' + 'b</strong>: ' + answer1.website + '</br>';
+                        else newline = '<strong>' + 'Website' + '</strong>: ' + '' + '</br>';
+                        if (answer2.website) newline2 = '<strong class="capitalize">' + 'Website' + 'b</strong>: ' + answer2.website + '</br>';
+                        else newline2 = '<strong>' + 'Website' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
                 }
                 answerhtml = answerhtml + newline;
                 answerhtml2 = answerhtml2 + newline2;

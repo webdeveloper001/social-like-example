@@ -107,7 +107,7 @@
                 _answers.push(answerx);
                                 
                 catans.postRec(answerx.id);
-                
+                console.log("created catans for a new answer");
                 console.log("result", result);
                 return result.data;
             }

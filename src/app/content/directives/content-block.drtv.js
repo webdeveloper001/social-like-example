@@ -221,7 +221,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             }
 
              function applyRule() {
-        //console.log("apply Rule");
+        console.log("apply Rule");
         // $rootScope.$emit('getLocation');   
             
       /*      
@@ -322,19 +322,19 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
         /*
         //Use this to add a tag
         for (var i=0; i < vm.resultsT.length; i++){
-            var tags = vm.resultsT[i].tags + ' services';
+            var tags = vm.resultsT[i].tags + ' donuts bagels';
             table.update(vm.resultsT[i].id, ['tags'],[tags]);
         } 
         */
         /*
         //Use this to remove a tag
         for (var i=0; i < vm.resultsT.length; i++){
-            var titlex = vm.resultsT[i].title.replace("Best places to get a manicure","Best nail salons");
+            var titlex = vm.resultsT[i].title.replace("veterinarians","Veterinarians");
             //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
             //console.log("tags ", tags);
             table.update(vm.resultsT[i].id, ['title'],[titlex]);
-        } */
-        
+        } 
+        */
             
         //Use this to add a neighborhood
         /*
@@ -357,11 +357,11 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             //}
         }
           */
-        /*
+        
         //Use this for batch DELETE
        for (var i=0; i < vm.resultsT.length; i++){          
          table.deleteTable(vm.resultsT[i].id);
-      }*/
+      }
        
                         
                
@@ -395,7 +395,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             table.update($rootScope.content[i].id, ['tags'],[tags]);                         
                     }
                 } */
-                            
+                   
              }
         }], //end controller
 

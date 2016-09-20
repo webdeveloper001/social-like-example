@@ -5,11 +5,11 @@
         .module('app')
         .controller('rankSummary', rankSummary);
 
-    rankSummary.$inject = ['dialog', '$stateParams', '$state', 'answers'
+    rankSummary.$inject = ['dialog', '$stateParams', '$state', 'answers', 'datetime'
         , 'answer', 'mrecs', 'rank','catansrecs','$filter','table','vrowvotes'
         , '$rootScope', '$modal', 'edits', 'editvote', 'votes', 'useractivities','catans'];
 
-    function rankSummary(dialog, $stateParams, $state, answers
+    function rankSummary(dialog, $stateParams, $state, answers, datetime
         , answer, mrecs, rank, catansrecs, $filter, table, vrowvotes
         , $rootScope, $modal, edits, editvote, votes, useractivities, catans) {
         /* jshint validthis:true */
@@ -40,8 +40,7 @@
         var editvotetable = [];
         $rootScope.cvotes = [];
         $rootScope.ceditvotes = [];
-        $rootScope.cmrecs_user = [];
-        $rootScope.catansrecs = catansrecs;
+        $rootScope.cmrecs_user = [];        
         
         var answersFull = false;
 
@@ -89,7 +88,7 @@
             //Check and update if necessary ranking and Num of items per rank
             for (var i=0; i<vm.answers.length; i++){
                 if (vm.answers[i].Rank != vm.answers[i].catansrank ){
-                    console.log("Updated Catans Rank")
+                    console.log("Updated Catans Rank", vm.answers[i].catans);
                     catans.updateRec(vm.answers[i].catans, ['rank'], [vm.answers[i].Rank]);
                 }
             }
@@ -392,7 +391,44 @@
                     }
                 else vm.haveLocation = true;
             }
+           var cdate = new Date();
+           var dayOfWeek = cdate.getDay();
+           var isToday = false;
             
+           console.log("Today is ", dayOfWeek); 
+           for (var j=0; j<vm.answers.length; j++){
+               isToday = false;
+               for (var i=0; i< $rootScope.specials.length; i++){
+                   if (vm.answers[j].id == $rootScope.specials[i].answer){
+                       console.log("Found answer");
+                       if ($rootScope.specials[i].freq == 'weekly'){
+                           if (dayOfWeek == 0 && $rootScope.specials[i].sun) isToday = true;
+                           if (dayOfWeek == 1 && $rootScope.specials[i].mon) isToday = true;
+                           if (dayOfWeek == 2 && $rootScope.specials[i].tue) isToday = true;
+                           if (dayOfWeek == 3 && $rootScope.specials[i].wed) isToday = true;
+                           if (dayOfWeek == 4 && $rootScope.specials[i].thu) isToday = true;
+                           if (dayOfWeek == 5 && $rootScope.specials[i].fri) isToday = true;
+                           if (dayOfWeek == 6 && $rootScope.specials[i].sat) isToday = true;
+                           if (isToday){
+                               console.log("added specials info to vm.answers");                               
+                                vm.answers[j].sp_bc = $rootScope.specials[i].bc;
+                                vm.answers[j].sp_fc = $rootScope.specials[i].fc;
+                                vm.answers[j].sp_title = $rootScope.specials[i].stitle;
+                                break;
+                           }
+                       }
+                       
+                   }
+               }
+               /*
+               if (!isToday){
+                   vm.answers.sp_bc = 'auto';
+                   vm.answers.sp_fc = 'auto';
+                   vm.answers.sp_title = '';
+               }
+               */
+           } 
+           
             
             //*****TEMP********
             //vm.answers.specials = [];

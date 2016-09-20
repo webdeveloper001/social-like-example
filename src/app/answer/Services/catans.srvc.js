@@ -103,7 +103,7 @@
             
             //delete records from local copy
             for (var i=0; i<_allcatans.length;i++){
-                if (_allcatans[i].answer == answer_id && _allcatans[i].category == $rootScope.cCategory.id){
+                if (_allcatans[i].answer == answer_id && _allcatans[i].category == category_id){
                     _allcatans.splice(i,1);
                 } 
             }
@@ -133,6 +133,7 @@
                     case "upV": data.upV = val[i]; break;
                     case "downV": data.downV = val[i]; break;
                     case "rank": data.rank = val[i]; break;
+                    case "answer": data.answer = val[i];break;
                 }
             }
             //console.log("data", data);
@@ -148,6 +149,7 @@
                     case "upV": $rootScope.catansrecs[idx].upV = val[i]; break;
                     case "downV": $rootScope.catansrecs[idx].downV = val[i]; break;
                     case "rank": $rootScope.catansrecs[idx].rank = val[i]; break;
+                    case "answer": $rootScope.catansrecs[idx].answer = val[i]; break;
                 }
             }                        
             
