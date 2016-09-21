@@ -435,8 +435,8 @@
 
             message = 'This is how this special will look: </br></br>In the ranking summary:<br>' +
             '<table class="table table-hover cursor ">' +
-            '<thead><tr><th>Rank</th><th>Name</th><th>Neighborhood</th><th>Distance</th><th>Specials</th>' +
-            '</tr></thead><tbody><tr><td>1</td><td>' + x.name + '</td><td>Neighborhood</td><td>1.5</td>' +
+            '<thead><tr><th>Rank</th><th>Name</th><th>Distance</th><th>Specials</th>' +
+            '</tr></thead><tbody><tr><td>1</td><td>' + x.name + '</td><td>1.5</td>' +
             '<td style="background-color:' + x.bc + ';color:' + x.fc + ';">' + x.stitle + '<td></tr></tbody></table><br>' +
             'Inside your business profile:<br><br><div style="background-color:' + x.bc + ';color:' + x.fc + ';">' +
             '<p><strong>' + x.stitle + ' @ ' + x.name + '</strong></p><p>' + sch_str + '</p><p>' + x.details + '</p></div>';

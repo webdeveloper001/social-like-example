@@ -64,11 +64,11 @@
             else {
                 if (rankTitleOk && rankTypeOk && rankQuestionOk) {
                     for (var i = 0; i < $rootScope.content.length; i++) {
-                        if ($rootScope.content[i].title.includes('Best yoga studio in')) {
+                        if ($rootScope.content[i].title.includes('Best yoga studios in')) {
                             //Copy object without reference
                             var tablex = JSON.parse(JSON.stringify($rootScope.content[i]));
                             tablex.id = undefined;
-                            var newtitle = tablex.title.replace("Best yoga studio in", vm.rankTitle);
+                            var newtitle = tablex.title.replace("Best yoga studios in", vm.rankTitle);
                             tablex.title = newtitle;
                             //var newtags = tablex.tags.replace("meat food", "beer pb bars");
                             var newtags = vm.tags

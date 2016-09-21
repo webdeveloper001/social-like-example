@@ -6,11 +6,11 @@
         .controller('rankSummary', rankSummary);
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'answers', 'datetime'
-        , 'answer', 'mrecs', 'rank','catansrecs','$filter','table','vrowvotes'
+        , 'answer', 'mrecs', 'rank','catansrecs','$filter','table','vrowvotes', '$window'
         , '$rootScope', '$modal', 'edits', 'editvote', 'votes', 'useractivities','catans'];
 
     function rankSummary(dialog, $stateParams, $state, answers, datetime
-        , answer, mrecs, rank, catansrecs, $filter, table, vrowvotes
+        , answer, mrecs, rank, catansrecs, $filter, table, vrowvotes, $window
         , $rootScope, $modal, edits, editvote, votes, useractivities, catans) {
         /* jshint validthis:true */
         var vm = this;
@@ -55,6 +55,10 @@
         $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
             $rootScope.previousState = from.name;
         });
+        
+        //Adjust picture size for very small displays
+        if ($window.innerWidth < 512) vm.sm = true;
+        else vm.sm = true;
 
         //Execute this view only if rankWindow is open
         //if ($rootScope.showR) 
@@ -335,9 +339,10 @@
                 }
             }
             }
-            if ($rootScope.NhImplied){
+            //if neighborhood is implied or screen is small dont show column
+            if ($rootScope.NhImplied || vm.sm){
                 for (var i=0; i<vm.fields.length;i++){
-                    if (vm.fields[i].name == 'cityarea') vm.fields[i].isrequired = false; 
+                    if (vm.fields[i].name == 'cityarea' ) vm.fields[i].isrequired = false; 
                 }
             }
             
@@ -480,7 +485,7 @@
 
 
         function createAnswerStatus() {
-            if ($rootScope.canswers.length >= 20) {
+            if ($rootScope.canswers.length >= 30) {
                 answersFull = true;
             }
             else {

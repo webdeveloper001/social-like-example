@@ -58,7 +58,7 @@
             console.log("init cwrapper!");
                 
            //****SUPER TEMP*****************
-           $rootScope.isAdmin = false;
+           $rootScope.isAdmin =false;
            vm.isAdmin = false;
                     /*
            $rootScope.isLoggedIn = true;
@@ -244,7 +244,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-                 $rootScope.$emit('applyRule');
+            //     $rootScope.$emit('applyRule');
            }
            
         //Upload Image

@@ -57,9 +57,18 @@
         activate();
         
         //Adjust picture size for very small displays
-        //console.log('height and width ---', $window.innerHeight,$window.innerWidth);
-        if ($window.innerWidth < 512) vm.mxheight = '250px';
-        else vm.mxheight = '300px';
+        if ($window.innerWidth < 512) {
+            vm.mxheight = '250px';
+            vm.sp1 = 'width:10%';
+            vm.sp2 = 'width:25%';
+            vm.sp3 = 'width:20%';
+        }
+        else {
+            vm.mxheight = '300px';
+            vm.sp1 = 'width:15%';
+            vm.sp2 = 'width:22.5%';
+            vm.sp3 = 'width:20%';
+        }
         
         function activate() {
 

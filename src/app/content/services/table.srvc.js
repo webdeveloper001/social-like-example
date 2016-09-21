@@ -106,7 +106,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("Deleting answer was succesful");
+                console.log("Deleting table was succesful");
                 return result.data;
             }
         }

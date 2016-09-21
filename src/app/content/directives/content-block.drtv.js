@@ -9,7 +9,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             isDynamic: '=dynamic',
             isRoW: '=rankofweek'
         },
-        controller: ['$scope','query','$filter','$http','answer','table', function contentCtrl($scope, query, $filter, $http, answer, table) {
+        controller: ['$scope','query','$filter','$http','answer','table','catans', function contentCtrl($scope, query, $filter, $http, answer, table,catans) {
             var vm = $scope;
             vm.title = 'mycontent';
 
@@ -322,14 +322,14 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
         /*
         //Use this to add a tag
         for (var i=0; i < vm.resultsT.length; i++){
-            var tags = vm.resultsT[i].tags + ' donuts bagels';
+            var tags = vm.resultsT[i].tags + ' mission';
             table.update(vm.resultsT[i].id, ['tags'],[tags]);
         } 
         */
         /*
-        //Use this to remove a tag
+        //Use this to correct a title
         for (var i=0; i < vm.resultsT.length; i++){
-            var titlex = vm.resultsT[i].title.replace("veterinarians","Veterinarians");
+            var titlex = vm.resultsT[i].title.replace("studio","studios");
             //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
             //console.log("tags ", tags);
             table.update(vm.resultsT[i].id, ['title'],[titlex]);
@@ -357,12 +357,19 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             //}
         }
           */
-        
+        /*
         //Use this for batch DELETE
-       for (var i=0; i < vm.resultsT.length; i++){          
-         table.deleteTable(vm.resultsT[i].id);
+       for (var i=0; i < vm.resultsT.length; i++){
+           if (vm.resultsT[i].title.includes("Mission Beach")){
+                for (var j=0; j<$rootScope.catansrecs.length; j++){
+                    if ($rootScope.catansrecs[j].category == vm.resultsT[i].id){
+                        catans.deleteRec($rootScope.catansrecs[j].answer,$rootScope.catansrecs[j].category);
+                    }
+                }
+                table.deleteTable(vm.resultsT[i].id);      
+           }                   
       }
-       
+       */
                         
                
         //Use this to add a ranking to all neighborhood
