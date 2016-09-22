@@ -224,9 +224,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
         console.log("apply Rule");
         // $rootScope.$emit('getLocation');   
             
-      /*      
-        //var lat_o = 32.7625548; 
-        //var lng_o = -117.1476841;   
+      /*//  1.Use this code to get GPS location for alls answers starting at index $rootScope.answeridxgp
+           
         var fa='';
         var lat=0;
         var lng=0;
@@ -274,17 +273,6 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         $rootScope.$emit('applyRule');
                     }
                 
-                /*
-                var p = 0.017453292519943295;    // Math.PI / 180
-                var c = Math.cos;
-                var a = 0.5 - c((lat - lat_o) * p)/2 + 
-                c(lat_o * p) * c(lat * p) * 
-                (1 - c((lng - lng_o) * p))/2;
-
-                var dist_km =  12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
-                console.log("Distance (mi)---", dist_km/1.609);
-                */
-        /*        
             });    
         }
         else{
@@ -293,51 +281,29 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 $rootScope.$emit('applyRule');
             }
         }    
-            //}
+        *///End of 1    
         
-        /*
-            $http.get(url,{},{
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                    //'Access-Control-Allow-Headers': 'x-dreamfactory-api-key'
-                 }
-            }).then(function(result){
-                console.log("google response:---", result);
-                fa = result.data.results[0].formatted_address;
-                lat = result.data.results[0].geometry.location.lat;
-                lng = result.data.results[0].geometry.location.lng;
-                console.log("fa - lat - lon", fa, lat, lng);
-                var p = 0.017453292519943295;    // Math.PI / 180
-                var c = Math.cos;
-                var a = 0.5 - c((lat - lat_o) * p)/2 + 
-                c(lat_o * p) * c(lat * p) * 
-                (1 - c((lng - lng_o) * p))/2;
-
-                var dist_km =  12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
-                console.log("Distance (mi)---", dist_km/1.609);
-                
-                $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
-            });    
-        */
-        /*
-        //Use this to add a tag
+        
+        /*//  2. Use this to add/remove a tag from a rank 
         for (var i=0; i < vm.resultsT.length; i++){
-            var tags = vm.resultsT[i].tags + ' mission';
-            table.update(vm.resultsT[i].id, ['tags'],[tags]);
+            if (vm.resultsT[i].includes("Pizza")){
+                //var tags = vm.resultsT[i].tags + ' mission';
+                var tags = vm.resultsT[i].tags.replace('italian','');
+                table.update(vm.resultsT[i].id, ['tags'],[tags]);    
+            }            
         } 
-        */
-        /*
-        //Use this to correct a title
+        *///End of 2
+        
+        /*//  3.Use this to correct the title of a group of ranks
         for (var i=0; i < vm.resultsT.length; i++){
-            var titlex = vm.resultsT[i].title.replace("studio","studios");
+            var titlex = vm.resultsT[i].title.replace("gym","gyms");
             //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
             //console.log("tags ", tags);
             table.update(vm.resultsT[i].id, ['title'],[titlex]);
         } 
-        */
+        *///End of 3
             
-        //Use this to add a neighborhood
-        /*
+        /*//  4.Use this to add a neighborhood
         for (var i=0; i < vm.resultsT.length; i++){
             
             //Copy object without reference
@@ -356,9 +322,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 table.addTable(tablex);
             //}
         }
-          */
-        /*
-        //Use this for batch DELETE
+        *///End 4
+        
+        /*//  5.Use this for batch DELETE
        for (var i=0; i < vm.resultsT.length; i++){
            if (vm.resultsT[i].title.includes("Mission Beach")){
                 for (var j=0; j<$rootScope.catansrecs.length; j++){
@@ -369,11 +335,11 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 table.deleteTable(vm.resultsT[i].id);      
            }                   
       }
-       */
+       *///End 5
                         
                
-        //Use this to add a ranking to all neighborhood
-       /* 
+        
+       /*//6. Use this to add a ranking to all neighborhood 
         for (var i=0; i < vm.resultsT.length; i++){            
             //Copy object without reference
             var tablex = JSON.parse(JSON.stringify(vm.resultsT[i]));
@@ -386,9 +352,11 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             tablex.answertags = '';
             //console.log("tags ", tags);
             table.addTable(tablex);
-        }*/
-                //add 'isMain' to all non-neighborhood ranks
-      /*          
+        }
+        *///End 6
+        
+        /*//7. Add 'isMP' to all non-neighborhood ranks
+                
                 var isMain = true;
                 for (var i=50; i<$rootScope.content.length; i++){
                     isMain = true;    
@@ -401,8 +369,45 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             var tags = $rootScope.content[i].tags + ' isMP';
                             table.update($rootScope.content[i].id, ['tags'],[tags]);                         
                     }
-                } */
-                   
+                } 
+         *///End 7
+         
+         
+                
+             /*//8. Generate Category Strings for non neighborhood ranks            
+                for (var i=0; i<vm.resultsT.length; i++){
+                    if (vm.resultsT[i].title.includes("Hillcrest")){
+                        var catstr = '';
+                        var fcatstr = '';
+                        var genRank = vm.resultsT[i].title.replace("Hillcrest", "San Diego");
+                        for (var j=0; j<$rootScope.content.length; j++){
+                            if (genRank == $rootScope.content[j].title){
+                                console.log("Found gen rank --- ", $rootScope.content[j].title);
+                                var srchStr = $rootScope.content[j].title.replace("San Diego?","");
+                                    for (var k=0; k<$rootScope.content.length; k++){
+                                        if ($rootScope.content[k].title.includes(srchStr) && k!=j ){
+                                            console.log("Found sub rank --- ", $rootScope.content[k].title);
+                                            catstr = catstr + ':' + $rootScope.content[k].id;
+                                        }
+                                    }
+                                    fcatstr = catstr.substring(1);
+                                    console.log("final catstr ---", fcatstr)
+                                    table.update($rootScope.content[j].id, ['isatomic','catstr'],[false, fcatstr]);
+                            break;
+                            }
+                        }                                              
+                    }
+                }
+               */ //End 8
+               
+            /*//  9. Clear answer string for all non-atomic ranks 
+            for (var i=0; i < $rootScope.content.length; i++){
+                if ($rootScope.content[i].isatomic == false){                
+                    var answertags = '';
+                    table.update($rootScope.content[i].id, ['answertags'],[answertags]);    
+                }            
+            } 
+            *///End of 9                  
              }
         }], //end controller
 

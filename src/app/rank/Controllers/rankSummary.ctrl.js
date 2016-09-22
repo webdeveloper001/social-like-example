@@ -58,7 +58,7 @@
         
         //Adjust picture size for very small displays
         if ($window.innerWidth < 512) vm.sm = true;
-        else vm.sm = true;
+        else vm.sm = false;
 
         //Execute this view only if rankWindow is open
         //if ($rootScope.showR) 
@@ -76,7 +76,6 @@
             getUserData(); //if user is logged in, get user data (vote record, etc)
             createAnswerStatus(); //enables/disables 'Create Answer' button
             
-            vm.tableimage = $rootScope.cCategory.imagefile;
             rank.computeRanking($rootScope.canswers, $rootScope.cmrecs);
 
             //Sort by rank here (this is to grab images of top 3 results)
@@ -89,23 +88,27 @@
             vm.answers = $filter('orderBy')(vm.answers, 'Rank');
             
             
-            //Check and update if necessary ranking and Num of items per rank
-            for (var i=0; i<vm.answers.length; i++){
-                if (vm.answers[i].Rank != vm.answers[i].catansrank ){
-                    console.log("Updated Catans Rank", vm.answers[i].catans);
-                    catans.updateRec(vm.answers[i].catans, ['rank'], [vm.answers[i].Rank]);
+            //Check and update if necessary ranking and Num of items per rank, only for atomic ranks
+            if ($rootScope.cCategory.isatomic == true){
+                for (var i = 0; i < vm.answers.length; i++) {
+                    if (vm.answers[i].Rank != vm.answers[i].catansrank) {
+                        console.log("Updated Catans Rank", vm.answers[i].catans);
+                        catans.updateRec(vm.answers[i].catans, ['rank'], [vm.answers[i].Rank]);
+                    }
                 }
             }
                         
             //check that number of answer is same as store in content object
-            //if different, compute answertags and update table
-            if(vm.answers.length != $rootScope.cCategory.answers && vm.answers.length > 0){
-                console.log("Updating Answer Tags");
-                var answertags = vm.answers[0].name;
-               for (var n=1; n < vm.answers.length; n++){
-                answertags = answertags + ' ' + vm.answers[n].name;
+            //if different, compute answertags and update table - only if rank is atomic
+            if ($rootScope.cCategory.isatomic == true){
+                if (vm.answers.length != $rootScope.cCategory.answers && vm.answers.length > 0) {
+                    console.log("Updating Answer Tags");
+                    var answertags = vm.answers[0].name;
+                    for (var n = 1; n < vm.answers.length; n++) {
+                        answertags = answertags + ' ' + vm.answers[n].name;
+                    }
+                    table.update($rootScope.cCategory.id, ['answertags'], [answertags]);
                 }
-                table.update($rootScope.cCategory.id,['answertags'],[answertags]);  
             }
             
             //Check number of answers for this ranking
@@ -340,9 +343,13 @@
             }
             }
             //if neighborhood is implied or screen is small dont show column
-            if ($rootScope.NhImplied || vm.sm){
+            //if ($rootScope.NhImplied || vm.sm){
+            if ($rootScope.NhImplied || vm.sm){    
                 for (var i=0; i<vm.fields.length;i++){
-                    if (vm.fields[i].name == 'cityarea' ) vm.fields[i].isrequired = false; 
+                    if (vm.fields[i].name == 'cityarea' ) {
+                        vm.fields[i].isrequired = false;
+                        break;
+                    } 
                 }
             }
             
@@ -352,21 +359,49 @@
             $rootScope.ccatans = [];
             $rootScope.B = [];
             
+            var obj = {};
             for (var i = 0; i < catansrecs.length; i++) {
-                if (catansrecs[i].category == $rootScope.cCategory.id) {
-                    for (var k = 0; k < answers.length; k++){
-                        if (catansrecs[i].answer == answers[k].id){
-                            var obj = answers[k];
-                            obj.catans = catansrecs[i].id;
-                            obj.catansrank = catansrecs[i].rank;
-                            $rootScope.canswers.push(obj);
-                            $rootScope.ccatans.push(catansrecs[i]);
+                //if rank is atomic 
+                if ($rootScope.cCategory.isatomic) {
+                    if (catansrecs[i].category == $rootScope.cCategory.id) {
+                        for (var k = 0; k < answers.length; k++) {
+                            if (catansrecs[i].answer == answers[k].id) {
+                                obj = {};
+                                obj = answers[k]; 
+                                obj.catans = catansrecs[i].id;
+                                obj.catansrank = catansrecs[i].rank;
+                                $rootScope.canswers.push(obj);
+                                $rootScope.ccatans.push(catansrecs[i]);
                             
-                            //Collect array of 'current' catans records ids
-                            $rootScope.B.push(catansrecs[i].id);
-                            break;        
+                                //Collect array of 'current' catans records ids
+                                $rootScope.B.push(catansrecs[i].id);
+                                break;
+                            }
                         }
-                    }                    
+                    }
+                }
+                //if not atomic
+                else {
+                    //Puts numbers into array. Pretty sweet!
+                    var catArr = $rootScope.cCategory.catstr.split(':').map(Number);
+                    for (var n = 0; n < catArr.length; n++) {
+                        if (catansrecs[i].category == catArr[n]) {
+                            for (var k = 0; k < answers.length; k++) {
+                                if (catansrecs[i].answer == answers[k].id) {
+                                    obj = {};
+                                    obj = answers[k];
+                                    obj.catans = catansrecs[i].id;
+                                    obj.catansrank = catansrecs[i].rank;
+                                    $rootScope.canswers.push(obj);
+                                    $rootScope.ccatans.push(catansrecs[i]);
+                            
+                                    //Collect array of 'current' catans records ids
+                                    $rootScope.B.push(catansrecs[i].id);
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
             }    
             vm.answers = $rootScope.canswers;
@@ -514,13 +549,21 @@
         }
         
         function sortByRank(){
-            vm.answers = $filter('orderBy')(vm.answers, 'Rank');
+            function compare(a, b) {
+                return a.Rank - b.Rank;
+            }
+            vm.answers = vm.answers.sort(compare);
+            //vm.answers = $filter('orderBy')(vm.answers, 'Rank');
             vm.selRank = 'active';
             vm.selDistance = '';
         }
         
         function sortByDistance(){
-            vm.answers = $filter('orderBy')(vm.answers, 'dist');
+            function compare(a, b) {
+                return a.dist - b.dist;
+            }
+            vm.answers = vm.answers.sort(compare);
+            //vm.answers = $filter('orderBy')(vm.answers, 'dist');
             vm.selRank = '';
             vm.selDistance = 'active';
         }

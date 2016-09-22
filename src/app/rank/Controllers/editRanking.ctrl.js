@@ -47,6 +47,8 @@
             vm.type = $rootScope.cCategory.type;
             vm.question = $rootScope.cCategory.question;
             vm.answertags = $rootScope.cCategory.answertags;
+            vm.isatomic = $rootScope.cCategory.isatomic;
+            vm.catstr = $rootScope.cCategory.catstr;
   
         }
         
@@ -88,6 +90,16 @@
             if (item.answertags != vm.answertags) {
                 fields.push('answertags');
                 vals.push(vm.answertags);
+            }
+            //if isatomic changes
+            if (item.isatomic != vm.isatomic) {
+                fields.push('isatomic');
+                vals.push(vm.isatomic);
+            }
+            //if category-string changes
+            if (item.catstr != vm.catstr) {
+                fields.push('catstr');
+                vals.push(vm.catstr);
             }
             
             table.update(item.id, fields, vals);
