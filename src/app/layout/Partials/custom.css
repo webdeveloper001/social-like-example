@@ -142,3 +142,13 @@ td.happy {
   margin-right: 0px;
   margin-left: 0px;
 }
+
+.answer_info .col-sm-4{
+   padding: 20px;
+   text-align: center;
+    
+}
+.answer_info .answer_info_buttons i.fa{
+    font-size: 38px; 
+    padding-right: 20px;
+}
