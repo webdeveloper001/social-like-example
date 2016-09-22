@@ -46,10 +46,12 @@
     <br>
     <strong ng-if="vm.answer.location">Address:</strong>
     <a ng-if="vm.answer.location" href="http://maps.apple.com/maps?q={{vm.answer.location}}" target="_blank">{{vm.answer.location}}</a>
+    <a ng-if="vm.answer.lat && vm.answer.lng" href="http://maps.apple.com/maps?q={{vm.answer.lat}}, {{vm.answer.lng}}" target="_blank"><i style="font-size: 26px" class="fa fa-map-marker"></i></a>
     <br ng-if="vm.answer.location">
     <strong>{{(vm.answer.cityarea) ? 'Neighboorhood:' : ""}}</strong> {{(vm.answer.cityarea) ? vm.answer.cityarea : ""}}
     <br style="display:{{(vm.answer.cityarea) ? 'inline' : 'none'}}">
     <strong ng-if="vm.answer.phone">Phone:</strong>  <a ng-if="vm.answer.phone" href="tel:{{vm.answer.phone}}">{{vm.answer.phone}}</a>
+    <a ng-if="vm.isMobile && vm.answer.phone"  href="tel:{{vm.answer.phone}}"><i style="font-size: 26px" class="fa fa-phone"></i></a>
     <br style="display:{{(vm.answer.phone) ? 'inline' : 'none'}}">
     <strong ng-if="vm.answer.website">Website:</strong>
      <a ng-if="vm.answer.website.indexOf('http') >=0" href="{{vm.answer.website}}" target="_blank">{{vm.answer.website}}</a>
