@@ -55,6 +55,8 @@
         }
 
         function addTable(table) {
+            
+            table.isatomic = true;
 
             var url = baseURI;
             var resource = [];

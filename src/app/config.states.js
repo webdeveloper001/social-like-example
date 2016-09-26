@@ -95,7 +95,21 @@
                             
                             return result;
                         });
-                    }]                  
+                    }],
+                    headlines: ['headline', function (headline) {
+
+                        return headline.getheadlines().then(function (result) {
+                            
+                            return result;
+                        });
+                    }],
+                    cblocks: ['cblock', function (cblock) {
+
+                        return cblock.getcblocks().then(function (result) {
+                            
+                            return result;
+                        });
+                    }]                   
                 }
             },
 

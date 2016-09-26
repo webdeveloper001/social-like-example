@@ -1,0 +1,17 @@
+<br>
+<br>
+<h1>Refresh Headlines</h1>
+<br>
+<div class="text-center">
+    <button ng-click="vm.refresh()" class="btn btn-success ">Shuffle Headers</button>
+    <br><br>
+    <button ng-click="vm.createCBlocksRecsCity()" class="btn btn-success ">Create C-Blocks City</button>
+    <br><br>
+    <button ng-click="vm.createCBlocksRecsNh()" class="btn btn-success ">Create C-Blocks Neighborhood</button>
+    <br><br>
+    <button ng-click="vm.deleteCBlocks()" class="btn btn-warning ">Delete ALL C-Blocks</button>
+</div>
+
+<div ng-repeat="x in vm.res track by $index">
+    {{x.modeNum}} - {{x.htitle}} - {{x.scope}} - {{x.title}}
+</div>  

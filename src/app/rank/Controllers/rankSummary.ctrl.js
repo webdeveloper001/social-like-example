@@ -92,7 +92,7 @@
             if ($rootScope.cCategory.isatomic == true){
                 for (var i = 0; i < vm.answers.length; i++) {
                     if (vm.answers[i].Rank != vm.answers[i].catansrank) {
-                        console.log("Updated Catans Rank", vm.answers[i].catans);
+                        //console.log("Updated Catans Rank", vm.answers[i].catans);
                         catans.updateRec(vm.answers[i].catans, ['rank'], [vm.answers[i].Rank]);
                     }
                 }
@@ -435,12 +435,10 @@
            var dayOfWeek = cdate.getDay();
            var isToday = false;
             
-           console.log("Today is ", dayOfWeek); 
            for (var j=0; j<vm.answers.length; j++){
                isToday = false;
                for (var i=0; i< $rootScope.specials.length; i++){
                    if (vm.answers[j].id == $rootScope.specials[i].answer){
-                       console.log("Found answer");
                        if ($rootScope.specials[i].freq == 'weekly'){
                            if (dayOfWeek == 0 && $rootScope.specials[i].sun) isToday = true;
                            if (dayOfWeek == 1 && $rootScope.specials[i].mon) isToday = true;
@@ -450,7 +448,6 @@
                            if (dayOfWeek == 5 && $rootScope.specials[i].fri) isToday = true;
                            if (dayOfWeek == 6 && $rootScope.specials[i].sat) isToday = true;
                            if (isToday){
-                               console.log("added specials info to vm.answers");                               
                                 vm.answers[j].sp_bc = $rootScope.specials[i].bc;
                                 vm.answers[j].sp_fc = $rootScope.specials[i].fc;
                                 vm.answers[j].sp_title = $rootScope.specials[i].stitle;

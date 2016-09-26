@@ -24,6 +24,7 @@
         vm.addRank = addRank;
         vm.dbMaint = dbMaint;
         vm.dbQuery = dbQuery;
+        vm.update = update;
 
         activate();
 
@@ -39,6 +40,7 @@
             vm.selRankings = '';
             vm.selDbMaint = '';
             vm.selQuery = '';
+            vm.selUpdate = '';
 
             $state.go('queries');
 
@@ -50,6 +52,7 @@
             vm.selRankings = '';
             vm.selDbMaint = '';
             vm.selQuery = '';
+            vm.selUpdate = '';
 
             $state.go('views');
 
@@ -61,6 +64,7 @@
             vm.selRankings = '';
             vm.selDbMaint = '';
             vm.selQuery = '';
+            vm.selUpdate = '';
 
             $state.go('flags');
 
@@ -73,6 +77,7 @@
             vm.selRankings = 'active';
             vm.selDbMaint = '';
             vm.selQuery = '';
+            vm.selUpdate = '';
 
             $state.go('addRank');
 
@@ -85,6 +90,8 @@
             vm.selRankings = '';
             vm.selDbMaint = 'active';
             vm.selQuery = '';
+            vm.selUpdate = '';
+            
             $state.go('dbMaint');
         }
 
@@ -95,7 +102,21 @@
             vm.selRankings = '';
             vm.selDbMaint = '';
             vm.selQuery = 'active';
+            vm.selUpdate = '';
+            
             $state.go('dbQuery');
+        }
+        
+         function update() {
+            vm.selKeywords = '';
+            vm.selViews = '';
+            vm.selFlags = '';
+            vm.selRankings = '';
+            vm.selDbMaint = '';
+            vm.selQuery = '';
+            vm.selUpdate = 'active';
+            
+            $state.go('updateHeaders');
         }
 
 

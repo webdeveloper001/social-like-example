@@ -46,16 +46,21 @@
 </div>
 
 <div style="display:{{vm.searchActive ? 'inline':'none'}}">
-	<content-block mode=9 dynamic=true></content-block>
+	<content-block type='query' dynamic=true></content-block>
 </div>
 </br>
 <div style="display:{{((vm.isNhRdy || vm.isCity) && (vm.searchActive == false)) ? 'inline':'none'}}">
-	<content-block mode=1 dynamic=false rankofweek=true></content-block>
-	<content-block mode=2 dynamic=false></content-block>
-	<content-block mode=3 dynamic=false></content-block>
-	<content-block mode=4 dynamic=false></content-block>
-	<content-block mode=5 dynamic=false></content-block>
-	<content-block mode=6 dynamic=false></content-block>
-	<content-block mode=7 dynamic=false></content-block>
-	<content-block mode=8 dynamic=false></content-block>    
+	<content-block type='rankofweek' dynamic=false rankofweek=true></content-block>
+	<content-block type='rankofweeknh' dynamic=false rankofweek=true></content-block>
+	<content-block type='lifestyle' dynamic=false></content-block>
+	<content-block type='sports' dynamic=false></content-block> 
+	<content-block type='food' dynamic=false></content-block>
+	<content-block type='city' dynamic=false></content-block>
+	<content-block type='neighborhood' dynamic=false></content-block>
+	<content-block type='services' dynamic=false></content-block>
+	<content-block type='personalities' dynamic=false></content-block>
+	<content-block type='health' dynamic=false></content-block>
+	<content-block type='beauty' dynamic=false></content-block>
+	<content-block type='dating' dynamic=false></content-block>
+	<content-block type='technology' dynamic=false></content-block>        
 </div>

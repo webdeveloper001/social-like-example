@@ -5,10 +5,10 @@
         .module('app')
         .controller('cwrapper', cwrapper);
 
-    cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
+    cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope', 'headlines', 'cblocks',
      'answers', 'rankings', 'catansrecs','query', 'table', 'specials','fileupload','allvrows'];
 
-    function cwrapper($rootScope, $state, $http, $stateParams, $scope,
+    function cwrapper($rootScope, $state, $http, $stateParams, $scope, headlines, cblocks,
      answers, rankings, catansrecs, query, table, specials, fileupload, allvrows) {
         /* jshint validthis:true */
         var vm = this;
@@ -60,7 +60,7 @@
            //****SUPER TEMP*****************
            $rootScope.isAdmin = false;
            vm.isAdmin = false;
-                  /*  
+                /*    
            $rootScope.isLoggedIn = true;
            $rootScope.user = {};
            $rootScope.user.name = "Andres Moctezuma";
@@ -73,7 +73,7 @@
             }
             
             viewRank();
-            */
+           */
             //******************************
 
             //Load current category
@@ -91,6 +91,8 @@
             $rootScope.answers = answers;
             $rootScope.catansrecs = catansrecs;
             $rootScope.cvrows = allvrows;
+            $rootScope.headlines = headlines;
+            $rootScope.cblocks = cblocks;
             
             loadcontent();
             getEstablishmentAnswers();
@@ -244,7 +246,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-             //    $rootScope.$emit('applyRule');
+              //  $rootScope.$emit('applyRule');
            }
            
         //Upload Image

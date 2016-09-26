@@ -54,7 +54,7 @@
     <strong ng-if="vm.answer.website">Website:</strong>
      <a ng-if="vm.answer.website.indexOf('http') >=0" href="{{vm.answer.website}}" target="_blank">{{vm.answer.website}}</a>
      <a ng-if="vm.answer.website.indexOf('http') == -1" href="http://{{vm.answer.website}}" target="_blank">{{vm.answer.website}}</a>
-    <br ng-if="{vm.answer.website}">
+    <br ng-if="vm.answer.website">
     </div>
     <div class="col-sm-4 answer_info_buttons">
         <a ng-if="vm.answer.lat && vm.answer.lng" href="http://maps.apple.com/maps?q={{vm.answer.lat}}, {{vm.answer.lng}}" target="_blank">

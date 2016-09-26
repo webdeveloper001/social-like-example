@@ -64,6 +64,13 @@
                 url: '/dbQuery',
                 templateUrl: 'app/admin/Partials/dbQuery.html',
                 controller: 'dbQuery as vm'               
+            },
+             {
+                name: 'updateHeaders',
+                parent: 'admin',
+                url: '/updateHeaders',
+                templateUrl: 'app/admin/Partials/updateHeaders.html',
+                controller: 'updateHeaders as vm'               
             }
         ];
 

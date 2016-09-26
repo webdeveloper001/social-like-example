@@ -216,7 +216,6 @@
         //Update Records
         function updateRecords() {
 
-            console.log("UpdateRecords @ answerDetail");    
             //update vote record if necessary
             //TODO Need to pass table id
             for (var i=0; i<vm.answerRanks.length; i++){
