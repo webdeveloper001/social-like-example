@@ -19,7 +19,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             //Methods
             vm.loadContent = loadContent;
 
-            vm.maxRes = 6;
+            if (vm.modType == 'query') vm.maxRes = 20;
+            else vm.maxRes = 6;
+            
             vm.btext = 'see more';
             var strlen_o = 0;
 
