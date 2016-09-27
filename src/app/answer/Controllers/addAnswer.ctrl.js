@@ -74,8 +74,10 @@
 
         function loadPublicFields() {
             vm.emptyarray = [];
-            if ($rootScope.isDowntown) vm.neighborhoods = $rootScope.districts; 
-            else vm.neighborhoods = $rootScope.neighborhoods;
+            //if ($rootScope.isDowntown) vm.neighborhoods = $rootScope.districts; 
+            //else vm.neighborhoods = $rootScope.neighborhoods.concat($rootScope.districts);
+            
+            vm.neighborhoods = $rootScope.neighborhoods.concat($rootScope.districts);
             
             vm.establishmentNames = $rootScope.estNames;                         
             

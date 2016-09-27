@@ -56,6 +56,8 @@
         var attNum = 3;
         vm.imagefunctions = 'none';
         vm.emptyarray=[];
+        
+        vm.neighborhoods = $rootScope.neighborhoods.concat($rootScope.districts);
                 
         //TODO: Would like to add this abstract template, but dont know how               
         $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
@@ -103,7 +105,7 @@
                 publicfield_obj.val = '';
                 publicfield_obj.label = $rootScope.fields[i].label;
                 
-                if (publicfield_obj.field == "country") publicfield_obj.opts ="c for c in vm.countries";
+                if (publicfield_obj.field == "cityarea") publicfield_obj.opts ="c for c in vm.neighborhoods";
                 else publicfield_obj.opts = "c for c in vm.emptyarray";
                 
                 vm.fields.push(publicfield_obj);

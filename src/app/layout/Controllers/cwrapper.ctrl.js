@@ -60,7 +60,7 @@
            //****SUPER TEMP*****************
            $rootScope.isAdmin = false;
            vm.isAdmin = false;
-                /*    
+                  /*  
            $rootScope.isLoggedIn = true;
            $rootScope.user = {};
            $rootScope.user.name = "Andres Moctezuma";
@@ -73,7 +73,7 @@
             }
             
             viewRank();
-           */
+            */
             //******************************
 
             //Load current category
@@ -246,7 +246,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-              //  $rootScope.$emit('applyRule');
+          //      $rootScope.$emit('applyRule');
            }
            
         //Upload Image

@@ -344,7 +344,7 @@
             }
             //if neighborhood is implied or screen is small dont show column
             //if ($rootScope.NhImplied || vm.sm){
-            if ($rootScope.NhImplied || vm.sm){    
+            if (vm.sm){    
                 for (var i=0; i<vm.fields.length;i++){
                     if (vm.fields[i].name == 'cityarea' ) {
                         vm.fields[i].isrequired = false;

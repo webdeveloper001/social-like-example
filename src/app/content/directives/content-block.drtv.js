@@ -220,44 +220,43 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 *///End of 2
         
                 /*//  3.Use this to correct the title of a group of ranks
-                for (var i=0; i < vm.resultsT.length; i++){
-                    var titlex = vm.resultsT[i].title.replace("gym","gyms");
+                for (var i=0; i < vm.results.length; i++){
+                    var titlex = vm.results[i].title.replace("Gaslamp Quater","Gaslamp Quarter");
                     //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
                     //console.log("tags ", tags);
-                    table.update(vm.resultsT[i].id, ['title'],[titlex]);
+                    table.update(vm.results[i].id, ['title'],[titlex]);
                 } 
-                */ //End of 3
+                 *///End of 3
             
                 /*//  4.Use this to add a neighborhood
-                for (var i=0; i < vm.resultsT.length; i++){
+                for (var i=0; i < vm.results.length; i++){
                     
                     //Copy object without reference
-                    var tablex = JSON.parse(JSON.stringify(vm.resultsT[i]));
+                    var tablex = JSON.parse(JSON.stringify(vm.results[i]));
                     tablex.id = undefined;
                     tablex.views = 0;
                     tablex.answers = 0;
-                    var title_original = tablex.title;
-                    //var nhs = ["Leucadia","Carlsbad","Oceanside","Chula Vista","National City","Rancho Santa Fe","Poway","La Mesa","El Cajon","Escondido","Clairemont"]
-                   // var nhs = ["Leucadia","Carlsbad"];
+                    //  "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
+                //"Marina", "Seaport Village"];
                     
                     //for (var j=0; j<nhs.length; j++){
-                        var newtitle = tablex.title.replace("Hillcrest", "South Park");
+                        var newtitle = tablex.title.replace("Hillcrest", "Seaport Village");
                         tablex.title = newtitle;
                         //console.log("tags ", tags);
                         table.addTable(tablex);
                     //}
                 }
-                *///End 4
+                */ //End 4
         
                 /*//  5.Use this for batch DELETE
-               for (var i=0; i < vm.resultsT.length; i++){
-                   if (vm.resultsT[i].title.includes("Mission Beach")){
-                        for (var j=0; j<$rootScope.catansrecs.length; j++){
-                            if ($rootScope.catansrecs[j].category == vm.resultsT[i].id){
-                                catans.deleteRec($rootScope.catansrecs[j].answer,$rootScope.catansrecs[j].category);
-                            }
-                        }
-                        table.deleteTable(vm.resultsT[i].id);      
+               for (var i=0; i < vm.results.length; i++){
+                   if (vm.results[i].title.includes("in Seaport Village")){
+                        //for (var j=0; j<$rootScope.catansrecs.length; j++){
+                            //if ($rootScope.catansrecs[j].category == vm.resultsT[i].id){
+                              //  catans.deleteRec($rootScope.catansrecs[j].answer,$rootScope.catansrecs[j].category);
+                            //}
+                        //}
+                        table.deleteTable(vm.results[i].id);      
                    }                   
               }
                *///End 5
