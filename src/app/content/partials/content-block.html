@@ -2,13 +2,35 @@
 	<h3 class="sub-header">{{headline}}</h3>
 </div> -->
 <div style="display:{{hideme ? 'none':'inline'}}">
-	<div class="container">
-		<div class="well-sm" style="background-color:{{bgc}};color:{{fc}}">
-			<h3 class="sub-header">{{headline}}
-        	</h3>
-		</div>
+	
+<!--	<div class="container">
+		<!--<div class="well-sm" style="background-color:{{bgc}};color:{{fc}}">-->
+			
+	<!--		<label class="sub-header" style="background-color:{{bgc}};color:{{fc}};width:95%">
+				{{headline}}
+        	</label>
+		<!--</div>-->
+<!--	</div>-->
+	<div class="table">
+  		<table class="table" style="border:0px;">
+			<tbody>
+				<thead>
+            		<tr>
+                		<th style="background-color:{{bgc}};color:{{fc}};width:50%;border:0px">
+							{{headline}}</th>
+            		</tr>
+        		</thead>
+		<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
+				<tr ng-repeat="x in results | limitTo:maxRes" ng-click="rankSel(x, $index)">
+					<td style="width:50%">
+						{{x.title}}
+						<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;{{x.answers}}&nbspanswers-{{x.views}}&nbspviews</small>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
-
+	
 	<div class="row" style="display:{{isRoW ? 'inline':'none'}}">
 		<div class="col-sm-6 col-md-6 col-lg-4">
 			<img class="displayed" src="{{image1}}" style="width:100%;max-height:200px;display:{{image1 != undefined ? 'inline':'none'}}">
@@ -20,14 +42,6 @@
 			<img class="displayed" src="{{image3}}" style="width:100%;max-height:200px;display:{{image3 != undefined ? 'inline':'none'}}">
 		</div>
 	</div>
-	<div class="container">
-		<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
-		<div ng-repeat="x in results | limitTo:maxRes">
-			<h4 ng-click="rankSel(x, $index)">
-			{{x.title}}
-			<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;{{x.answers}}&nbspanswers-{{x.views}}&nbspviews</small>
-		</h4>
-		</div>
-	</div>
+	
 	<p class="text-right" style="color:blue;" ng-click="seeMore(maxRes, btext)" ng-hide="{{isRoW || resLT6}}">&lt;&lt;{{btext}}&gt;&gt;</p>
 </div>

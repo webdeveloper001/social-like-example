@@ -161,7 +161,18 @@
                 //Tags cwrapper of title and tags for better search
                 $rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title + " " + $rootScope.content[i].answertags;
             }
-
+            
+            //temp
+            for (var i=0; i< $rootScope.content.length; i++) {
+                $rootScope.content[i].title = $rootScope.content[i].title.replace('Best ', '');
+                $rootScope.content[i].title = $rootScope.content[i].title.replace('Top ', '');
+                $rootScope.content[i].title = $rootScope.content[i].title.replace('Most ', '');
+                $rootScope.content[i].title = $rootScope.content[i].title.replace('?', '');
+                $rootScope.content[i].title = $rootScope.content[i].title.charAt(0).toUpperCase() + $rootScope.content[i].title.slice(1);
+            }
+            $rootScope.cityranks = ['city','lifestyle','food','politics','services','social','beauty','sports','personalities','technology','dating','health'];
+            $rootScope.nhranks = ['neighborhood','lifestyle','food','services','social','beauty','health'];
+            
             $rootScope.neighborhoods = [
                 "Downtown", "La Jolla", "Pacific Beach", "Hillcrest", "University Heights", "Old Town", "Del Mar",
                 "Ocean Beach", "North Park", "Mission Hills", "Barrio Logan", "City Heights", "Clairemont", "La Mesa", "Point Loma",
@@ -204,7 +215,8 @@
                 $rootScope.inputVal = '';
                 $rootScope.searchActive = false;
                 $rootScope.$emit('loadNh');
-                vm.searchScope = 'all San Diego';               
+                vm.searchScope = 'all San Diego';
+                vm.ranks = $rootScope.cityranks;               
             }
             if (x==2){
                 vm.isNh=true; //Neighborhood View
@@ -216,6 +228,7 @@
                 $rootScope.searchActive = false;
                 if ($rootScope.isNhRdy)  $rootScope.$emit('loadNh');
                 vm.searchScope = 'Neighborhood';
+                vm.ranks = $rootScope.nhranks;
             }
             vm.searchActive = $rootScope.searchActive;                      
         }
