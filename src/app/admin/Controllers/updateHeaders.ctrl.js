@@ -105,7 +105,7 @@
         }
         
         function createCBlocksRecsCity(){
-            var cityArr = ['rankofweek','lifestyle','food','city','services','social','beauty','sports','personalities','technology','dating','health'];
+            var cityArr = ['rankofweek','city','lifestyle','food','politics','services','social','beauty','sports','personalities','technology','dating','health'];
             var cbObj = {};
             for (var i=0; i< cityArr.length; i++){
                 cbObj = {};

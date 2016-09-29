@@ -144,6 +144,7 @@
             var url = baseURI;
             
             //update local copy
+            //var idx = _answers.map(function(x) {return x.id; }).indexOf(answer_id);
             var idx = $rootScope.A.indexOf(+answer_id);
             for (var i=0; i<field.length; i++){
                 switch (field[i]){

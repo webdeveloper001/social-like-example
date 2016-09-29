@@ -31,7 +31,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
             $rootScope.$on('refreshRanks', function (e) {
                 vm.input = $rootScope.inputVal;                
-                getRanks();
+                if (vm.modType == 'query') getRanks();
             });
 
             $rootScope.$on('loadNh', function (e) {
@@ -44,6 +44,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
             //Filter content based on user input
             function getRanks() {
+                vm.hideme = false;
                 if ($rootScope.inputVal != undefined && vm.isDynamic) {
                     var userIsTyping = false;
                     var inputVal = $rootScope.inputVal;
@@ -72,6 +73,11 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
                             }
                         }
+                        
+                        //resLT6 is used to hide the <<see more>> choice
+                        if (vm.results.length < 6) vm.resLT6 = true;
+                        else vm.resLT6 = false;
+                        
                         if (inputVal.length >= strlen_o) userIsTyping = true;
                         else userIsTyping = false;
                         //if less than 5 results, write 'query record
@@ -131,6 +137,10 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         break;
                     }
                 }
+                
+                //resLT6 is used to hide the <<see more>> choice
+                if (vm.results.length <= 6) vm.resLT6 = true;
+                else vm.resLT6 = false;
 
                 var resGT0 = (vm.results[0] != undefined);
                 vm.updateView(bFound && resGT0);
@@ -146,7 +156,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 }
 
             }
-
+            var applyRuleDone = false;
             function applyRule() {
                 console.log("apply Rule");
                 // $rootScope.$emit('getLocation');   
@@ -231,37 +241,49 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                  *///End of 3
             
                 /*//  4.Use this to add a neighborhood
+                var nhs = ["Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
+                        "Marina", "Seaport Village"];
+                var logi = 1;
+                var basetitle = '';
+                if (applyRuleDone == false){
                 for (var i=0; i < vm.results.length; i++){
                     
+                    basetitle = vm.results[i].title;
                     //Copy object without reference
                     var tablex = JSON.parse(JSON.stringify(vm.results[i]));
                     tablex.id = undefined;
                     tablex.views = 0;
                     tablex.answers = 0;
-                    //  "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
-                //"Marina", "Seaport Village"];
+                    tablex.answertags = '';
+                    var newtitle = '';
                     
-                    //for (var j=0; j<nhs.length; j++){
-                        var newtitle = tablex.title.replace("Hillcrest", "Seaport Village");
-                        tablex.title = newtitle;
-                        //console.log("tags ", tags);
-                        table.addTable(tablex);
-                    //}
+                    if (tablex.title.includes("in Hillcrest")){
+                        //for (var j=0; j<nhs.length; j++){
+                            newtitle = basetitle.replace("Hillcrest", nhs[8]);
+                            tablex.title = newtitle;                            
+                            table.addTable(tablex);
+                            //console.log(logi,tablex.id, tablex.title);
+                            console.log("log idx: ",logi++);
+                        //}
+                    }
                 }
-                */ //End 4
+                applyRuleDone = true;
+                }
+                else console.log("Rule already executed!!");
+                *///End 4
         
-                /*//  5.Use this for batch DELETE
+               /*//  5.Use this for batch DELETE
                for (var i=0; i < vm.results.length; i++){
-                   if (vm.results[i].title.includes("in Seaport Village")){
+        //           if (vm.results[i].title.includes("in Core")){
                         //for (var j=0; j<$rootScope.catansrecs.length; j++){
                             //if ($rootScope.catansrecs[j].category == vm.resultsT[i].id){
                               //  catans.deleteRec($rootScope.catansrecs[j].answer,$rootScope.catansrecs[j].category);
                             //}
                         //}
                         table.deleteTable(vm.results[i].id);      
-                   }                   
+        //           }                   
               }
-               *///End 5
+            */  //End 5
                         
                
         

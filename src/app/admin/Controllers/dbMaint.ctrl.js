@@ -18,6 +18,8 @@
         vm.syncToFirst = syncToFirst;
         vm.syncToSecond = syncToSecond;
         vm.showDuplicatedOnlyName = showDuplicatedOnlyName;
+        vm.findPhoneWebsite = findPhoneWebsite;
+        vm.findDuplicatedRanks = findDuplicatedRanks;
     
         activate();
 
@@ -153,6 +155,52 @@
                     }
                 }
           }                 
-        }             
+        }
+        
+        function findPhoneWebsite(){
+            var regex_pn = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
+            var regex_url = /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm;
+            var phoneNum = '';
+            var url = '';
+            var idx = 1;
+            var obj = {};
+            for (var i=0; i<$rootScope.answers.length; i++){
+                if ($rootScope.answers[i].addinfo.length > 0){
+                    var regRes = regex_pn.exec($rootScope.answers[i].addinfo);
+                    //var regRes_url = regex_url.exec($rootScope.answers[i].addinfo);
+                    //
+                    if (regRes != null) phoneNum = regRes[0];
+                    else phoneNum = '';
+                    
+                    //if (regRes_url != null) url = regRes_url[0];
+                    //else url = '';
+                    
+                    if (phoneNum.length > 0){
+                        obj = JSON.parse(JSON.stringify($rootScope.answers[i]));
+                        var addinfox = obj.addinfo.replace(phoneNum, '');;
+                        answer.updateAnswer($rootScope.answers[i].id,['phone','addinfo'],[phoneNum, addinfox]);
+                        //addinfox.
+                        //console.log(idx++, $rootScope.answers[i].name, " Phone Num: ", phoneNum);
+                        //console.log(idx++, $rootScope.answers[i].name, " url: ", url);
+                        //console.log("add info: ", $rootScope.answers[i].addinfo, addinfox);
+                        //console.log(regRes);
+                    }
+                }
+            }
+        }
+        
+        function findDuplicatedRanks(){
+            
+            var resDupRanks = [];
+            for (var i=0; i<$rootScope.content.length; i++){
+                for (var j=i; j<$rootScope.content.length; j++){
+                    if ($rootScope.content[i].title == $rootScope.content[j].title && i != j){
+                        console.log("duplicated rank --- ", $rootScope.content[i].title);
+                        resDupRanks.push($rootScope.content[i]);
+                    }
+                }
+            }
+        }
+                     
     }
 })();
