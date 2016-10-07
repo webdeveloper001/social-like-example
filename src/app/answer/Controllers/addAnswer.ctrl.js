@@ -5,7 +5,7 @@
         .module('app')
         .controller('addAnswer', addAnswer);
 
-    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'image','catans','getgps'];
+    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'image', 'catans', 'getgps'];
 
     function addAnswer(dialog, $state, answer, $rootScope, $modal, image, catans, getgps) {
         /* jshint validthis:true */
@@ -54,22 +54,21 @@
         vm.viewPrev = viewPrev;
         vm.closeRank = closeRank;
         vm.showHowItWorksDialog = showHowItWorksDialog;
-        
+
         vm.imageURL = '../../../assets/images/noimage.jpg';
         vm.header = $rootScope.header;
         
-         //TODO: Would like to add this abstract template, but dont know how         
+        //TODO: Would like to add this abstract template, but dont know how         
         $rootScope.$on('answerGPSready', function () {
-            addAnswerGPS();
+            if ($state.current.name == 'addAnswer') addAnswerGPS();
         });
 
         activate();
 
         function activate() {
-            
             loadPublicFields();
             console.log("Add Answer Activated!");
-            
+
         }
 
         function loadPublicFields() {
@@ -78,8 +77,9 @@
             //else vm.neighborhoods = $rootScope.neighborhoods.concat($rootScope.districts);
             
             vm.neighborhoods = $rootScope.neighborhoods.concat($rootScope.districts);
-            
-            vm.establishmentNames = $rootScope.estNames;                         
+
+            vm.establishmentNames = $rootScope.estNames;
+            vm.peopleNames = $rootScope.pplNames;
             
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
@@ -88,42 +88,49 @@
             vm.fields.opts = [];
             vm.fields.val = [];
             vm.fields.textstyle = [];
-                            
-            for (var i=0; i<vm.fields.length; i++){
-                vm.fields[i].val='';
+
+            for (var i = 0; i < vm.fields.length; i++) {
+                vm.fields[i].val = '';
                 
                 //Typeahead for neighborhoods
-                if (vm.fields[i].name=="cityarea") vm.fields[i].opts="c for c in vm.neighborhoods";
-                else vm.fields[i].opts="c for c in vm.emptyarray";
+                if (vm.fields[i].name == "cityarea") vm.fields[i].opts = "c for c in vm.neighborhoods";
+                else vm.fields[i].opts = "c for c in vm.emptyarray";
                 
                 //Typeahead check for current establishments
-                if (vm.fields[i].name=="name" && $rootScope.cCategory.type=='Establishment') {
-                    vm.fields[i].opts="c for c in vm.establishmentNames";
+                if (vm.fields[i].name == "name" && $rootScope.cCategory.type == 'Establishment') {
+                    vm.fields[i].opts = "c for c in vm.establishmentNames";
+                }
+                
+                //Typeahead check for current establishments
+                if (vm.fields[i].name == "name" && $rootScope.cCategory.type == 'Person') {
+                    vm.fields[i].opts = "c for c in vm.peopleNames";
                 }
                 
                 //When neighborhood is implied put it in the input field right away
-                if (vm.fields[i].name=="cityarea" && $rootScope.cCategory.type=='Establishment' && $rootScope.NhImplied == true){
+                if (vm.fields[i].name == "cityarea" && $rootScope.cCategory.type == 'Establishment' && $rootScope.NhImplied == true) {
                     vm.fields[i].val = $rootScope.NhValue;
                 }
-                          
-                if (vm.fields[i].name=="addinfo") vm.fields[i].textstyle="textarea";
-                else vm.fields[i].textstyle="text";                 
-            }                  
-  
+
+                if (vm.fields[i].name == "addinfo") vm.fields[i].textstyle = "textarea";
+                else vm.fields[i].textstyle = "text";
+                
+                //console.log("name, opts -- ", vm.fields[i].name, vm.fields[i].opts);
+            }
+
         }
-        
-        
+
+
         function addAnswer() {
 
             myAnswer.imageurl = imageLinks[vm.linkIdx];
-            if ($rootScope.cCategory.type == 'Short-Phrase') myAnswer.imageurl='none';
-            
+            if ($rootScope.cCategory.type == 'Short-Phrase') myAnswer.imageurl = 'none';
+
             myAnswer.upV = 0;
             myAnswer.downV = 0;
             myAnswer.type = vm.type;
             myAnswer.userid = $rootScope.user.id;
             myAnswer.views = 0;
-            
+
             if (duplicateExists) dialog.checkSameAnswer(myAnswer, extAnswer, addAnswerConfirmed, answerIsSame);
             else dialog.addAnswer(myAnswer, vm.imageURL, addAnswerConfirmed);
 
@@ -139,8 +146,8 @@
                     case "addinfo": { myAnswer.addinfo = vm.fields[i].val; break; }
                     case "cityarea": { myAnswer.cityarea = vm.fields[i].val; break; }
                     case "phone": { myAnswer.phone = vm.fields[i].val; break; }
-                    case "website": { myAnswer.website = vm.fields[i].val; break; }  
-                    
+                    case "website": { myAnswer.website = vm.fields[i].val; break; }
+
                 }
             }
         }
@@ -158,7 +165,7 @@
             //loadImageDataOk = loadImageDataOk && countryIsValid;
             if ($rootScope.cCategory.type == 'Short-Phrase') addAnswerDataOk = loadImageDataOk;
             else addAnswerDataOk = (loadImageDataOk && vm.numLinks > 0);
-            
+
         }
 
         function rankSummary() {
@@ -168,13 +175,13 @@
 
         function callSearchImage() {
             var pFields = [];
-            
+
             loadFormData();
             validateData();
-            
+
             if (loadImageDataOk) {
                 pFields = JSON.parse(JSON.stringify(vm.fields));
-                console.log("pFields --", pFields);
+                //console.log("pFields --", pFields);
                 //pFields[cFld].val = $rootScope.countries_en[countryIdx];
                 var q1 = image.getImageLinks(pFields, attNum, 'add');
                 q1.then(processImageResults, imageQueryFailed)
@@ -193,8 +200,8 @@
         function callAddAnswer() {
             loadFormData();
             validateData();
-            checkAnswerExists(myAnswer);
-            
+            if (vm.type == 'Establishment' || vm.type == 'Person') checkAnswerExists(myAnswer);
+
             if (addAnswerDataOk) {
                 addAnswer();
             }
@@ -228,11 +235,11 @@
             vm.linkIdx = 0;
 
             vm.imageURL = imageLinks[vm.linkIdx];
-                 
+
             testImageUrl(imageLinks[vm.linkIdx], showImageNotOk);
 
             if (vm.numLinks > 0) vm.imagefunctions = 'inline';
-            
+
         }
 
 
@@ -260,15 +267,15 @@
                 });
             }
             else {
-            answer.addAnswer(myAnswer).then(rankSummary);
+                answer.addAnswer(myAnswer).then(rankSummary);
             }
         }
-        
-        function addAnswerGPS(){
+
+        function addAnswerGPS() {
             answer.addAnswer(myAnswer).then(rankSummary);
         }
-                    
-        function answerIsSame(){
+
+        function answerIsSame() {
             console.log("Yeah Same, @answerIsSame");
             //Answer already exist in this category, do not add
             if (duplicateSameCategory) dialog.getDialog('answerDuplicated');
@@ -276,7 +283,7 @@
             else catans.postRec(extAnswer.id);
             rankSummary();
         }
-         
+
         function showHowItWorksDialog() {
             dialog.howItWorks('addAnswer');
         }
@@ -309,28 +316,46 @@
                 vm.imageURL = '../../../assets/images/noimage.jpg';
             }
         }
-        
-        function checkAnswerExists(answer){
+
+        function checkAnswerExists(answer) {
             //Check if answer about to be added exists already among establishments
-            for (var i=0; i < $rootScope.estAnswers.length; i++){
-                if (answer.name == $rootScope.estAnswers[i].name){
-                    
-                    duplicateExists = true;
-                    extAnswer = $rootScope.estAnswers[i];
-                    
-                    for (var j=0; j < $rootScope.catansrecs.length; j++){
-                       if ($rootScope.catansrecs[j].answer == $rootScope.estAnswers[i].id && 
-                           $rootScope.catansrecs[j].category == $rootScope.cCategory.id){
-                               duplicateSameCategory = true;
-                           }
+            if (vm.type == 'Establishment') {
+                for (var i = 0; i < $rootScope.estAnswers.length; i++) {
+                    if (answer.name == $rootScope.estAnswers[i].name) {
+
+                        duplicateExists = true;
+                        extAnswer = $rootScope.estAnswers[i];
+
+                        for (var j = 0; j < $rootScope.catansrecs.length; j++) {
+                            if ($rootScope.catansrecs[j].answer == $rootScope.estAnswers[i].id &&
+                                $rootScope.catansrecs[j].category == $rootScope.cCategory.id) {
+                                duplicateSameCategory = true;
+                            }
+                        }
                     }
                 }
             }
-            console.log("duplicateExists: ", duplicateExists," duplicateSameCategory: ", duplicateSameCategory);
+            else if (vm.type == 'Person') {
+                for (var i = 0; i < $rootScope.pplAnswers.length; i++) {
+                    if (answer.name == $rootScope.pplAnswers[i].name) {
+
+                        duplicateExists = true;
+                        extAnswer = $rootScope.pplAnswers[i];
+
+                        for (var j = 0; j < $rootScope.catansrecs.length; j++) {
+                            if ($rootScope.catansrecs[j].answer == $rootScope.estAnswers[i].id &&
+                                $rootScope.catansrecs[j].category == $rootScope.cCategory.id) {
+                                duplicateSameCategory = true;
+                            }
+                        }
+                    }
+                }
+            }
+            //console.log("duplicateExists: ", duplicateExists, " duplicateSameCategory: ", duplicateSameCategory);
         }
-        
+
         function closeRank() {
-               $state.go('cwrapper');                            
+            $state.go('cwrapper');
         }
 
     }

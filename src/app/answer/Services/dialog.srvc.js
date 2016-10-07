@@ -339,7 +339,7 @@
             title = 'Just checking';
             btnCancelLabel = 'No, they are different';
             btnOkLabel = 'Yeah, same';
-            message = 'Are these the same establishment? </br></br><div class="row">' +
+            message = 'Are these the same '+ $rootScope.cCategory.type +'? </br></br><div class="row">' +
             '<div class="col-sm-6">' + answerhtml + '</br>' +
             '<img src=' + answer1.imageurl + ' class="thumbnail" style="width:60%; max-height:150px"></div>' +
 

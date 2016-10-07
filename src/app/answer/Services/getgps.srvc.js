@@ -26,9 +26,9 @@
                     myLoc = answer.location + ' San Diego, CA';
                 }
                 else myLoc = answer.location;
-                console.log("myLoc, GOOGLE_API_KEY --- ", myLoc, GOOGLE_API_KEY);
+                //console.log("myLoc, GOOGLE_API_KEY --- ", myLoc, GOOGLE_API_KEY);
                 var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + myLoc + '&key=' + GOOGLE_API_KEY;
-                console.log("url --- ", url);
+                //console.log("url --- ", url);
                 return $http.get(url, {}, {
                     headers: {
                         'Content-Type': 'multipart/form-data'

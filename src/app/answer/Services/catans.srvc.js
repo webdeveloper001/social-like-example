@@ -5,9 +5,9 @@
         .module('app')
         .factory('catans', catans);
 
-    catans.$inject = ['$http', '$q','$rootScope'];
+    catans.$inject = ['$http', '$q','$rootScope','votes'];
 
-    function catans($http, $q, $rootScope) {
+    function catans($http, $q, $rootScope, votes) {
 
         // Members
         var _allcatans = [];
@@ -18,7 +18,8 @@
             postRec: postRec,
             deleteRec: deleteRec,
             deleteAnswer: deleteAnswer,
-            updateRec: updateRec            
+            updateRec: updateRec,
+            deletebyCategory: deletebyCategory            
         };
 
         return service;
@@ -62,9 +63,7 @@
 
             obj.resource.push(data);
             
-            //update local copy
             _allcatans.push(data);
-            
             var url = baseURI;
 
             return $http.post(url, obj, {
@@ -74,6 +73,10 @@
                 body: obj
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
+                
+                //update local copies
+                var id = result.data.resource[0].id; 
+                _allcatans[_allcatans.length-1].id = id;
                 
                 console.log("creating catans record was succesful");
                 return result.data;
@@ -93,7 +96,11 @@
             return $http.delete(url).then(querySucceeded, _queryFailed);
             
             function querySucceeded(result) {
-
+                
+                //Everytime a CatAns record is deleted, delete associated user votes with it
+                for (var i=0; i<result.data.resource.length; i++){
+                    votes.deleteVotesbyCatans(result.data.resource[i].id);
+                }
                 console.log("Deleting catans records was succesful");
                 return result.data;
             }
@@ -113,8 +120,37 @@
             return $http.delete(url).then(querySucceeded, _queryFailed);
             
             function querySucceeded(result) {
-
+                
+                //Everytime a CatAns record is deleted, delete associated user votes with it
+                for (var i=0; i<result.data.resource.length; i++){
+                    votes.deleteVotesbyCatans(result.data.resource[i].id);
+                }
+                
                 console.log("Deleting catans records by answer and category was succesful");
+                return result.data;
+            }
+        }
+        
+        function deletebyCategory(category_id) {
+            
+            //delete records from local copy
+            for (var i=0; i<_allcatans.length;i++){
+                if (_allcatans[i].category == category_id){
+                    _allcatans.splice(i,1);
+                } 
+            }
+            
+           var url = baseURI + '?filter=category=' + category_id; 
+            
+            return $http.delete(url).then(querySucceeded, _queryFailed);
+            
+            function querySucceeded(result) {
+                
+                //Everytime a CatAns record is deleted, delete associated user votes with it
+                for (var i=0; i<result.data.resource.length; i++){
+                    votes.deleteVotesbyCatans(result.data.resource[i].id);
+                }
+                console.log("Deleting catans records by category was succesful");
                 return result.data;
             }
         }

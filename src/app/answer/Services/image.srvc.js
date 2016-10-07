@@ -88,7 +88,7 @@
 
             var url = googleAPIurl + searchQuery + googleCSEid + googleCSEconfig + googleAPI_KEY;
 
-            console.log('url', url);
+            //console.log('url', url);
 
             return $http.get(url);
 

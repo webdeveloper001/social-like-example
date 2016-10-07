@@ -75,22 +75,23 @@
 </div>
 <br class="hidden-md hidden-lg hidden-xl">
 <div class="row ">
-           
+
     <div class="btn-group col-sm-6 col-md-6">
         <div ng-show="{{vm.type == 'Establishment' || vm.type == 'Activity'}}">
-        <p>Sort by: <span>        
+            <p>Sort by: <span>        
         <button class="btn btn-default {{vm.selRank}} " ng-click="vm.sortByRank()">Rank</button>
+        <button class="btn btn-default {{vm.selUpV}} " ng-click="vm.sortByUpV()">UpVotes</button>
         <button class="btn btn-default {{vm.selDistance}} " ng-click="vm.sortByDistance()">Distance</button>        
         <!--  <button type="button " class="btn btn-primary ">{{"rankSummary.Filtered " | translate}}</button> -->
         </span></p>
-    </div>
+        </div>
     </div>
     <div class="btn-group text-right col-sm-6 col-md-6 ">
         <h4>Contributors: <b style="color:blue; "><i>{{vm.numContributors}}</i></b></h4>
     </div>
 </div>
 <div class="text-center">
-    <button ng-click="vm.goRank() " class="btn btn-success ">Go Rank</button>
+    <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">Rank</button>
 </div>
 <div ng-show="{{vm.type == 'Establishment'}}">
     <div class="text-right" style="display:{{vm.haveLocation ? 'none':'inline'}}">
@@ -103,7 +104,8 @@
     <tbody>
         <thead>
             <tr>
-                <th>Rank</th>
+                <th>{{vm.showR ? 'Rank' : 'upV'}}</th>
+                <th ng-show="{{vm.sm == false}}">UpV</th>
                 <th class="capitalize " ng-repeat="h in vm.fields | filter:(h.isrequired=true)">{{h.label}}</th>
                 <th ng-show="{{vm.type == 'Establishment'}}">Distance (mi)</th>
                 <th ng-show="{{vm.type == 'Establishment'}}">Specials</th>
@@ -112,14 +114,15 @@
         </thead>
         <tbody>
             <!--| orderBy: '-Rank' -->
-            <tr ng-repeat="x in vm.answers" ng-click="vm.answerDetail(x.id) ">
-                <td>{{x.Rank}}</td>
+            <tr ng-repeat="x in vm.answers track by $index" ng-click="vm.answerDetail(x.id) ">
+                <td>{{vm.showR ? x.Rank : x.upV}}</td>
+                <td ng-show="{{vm.sm == false}}">{{x.upV}}</td>
                 <!--<td>{{x.Rank}}</td>-->
                 <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
                 <td ng-repeat="h in vm.fields | filter:(h.isrequired=true)">{{ x[h.name]}}</td>
                 <td ng-show="{{vm.type == 'Establishment'}}">{{x.dist}}</td>
                 <td ng-show="{{vm.type == 'Establishment'}}" style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">
-                {{x.sp_title}}</td>
+                    {{x.sp_title}}</td>
             </tr>
         </tbody>
 </table>
@@ -139,3 +142,47 @@
 <!-- <a ui-sref="match " class="btn btn-success ">{{"rankSummary.GoRank " | translate}}</a> -->
 <br>
 <br>
+<div class="text-center">
+    <button ng-click="vm.loadComments()" class="btn btn-default" style="background-color:#e6e6e6;width:100%">COMMENTS ({{vm.numcom}})</button>
+</div>
+<br>
+<div style="display:{{vm.commLoaded ? 'inline':'none'}}">
+    <div ng-repeat="x in vm.comments">
+        <div class="row">
+            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1" style="background-color:{{x.bc}};color:{{x.fc}};padding:5px;" align="middle">
+                {{x.initials}}
+            </div>
+            <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11">
+                {{x.body}}
+                <br>
+                <small>{{x.username}} - {{x.date}}</small>
+            </div>
+        </div>
+        <br>
+    </div>
+    <div style="display:{{(vm.commLoaded && vm.comments.length == 0 && !vm.isLoggedIn) ? 'inline':'none'}}">
+        <br>
+        <p><small> Nobody has commented yet. Be the first. Log in, endorse answers and leave a comment. </small></p>
+    </div>
+    <div style="display:{{(vm.commLoaded && vm.comments.length > 0 && !vm.isLoggedIn) ? 'inline':'none'}}">
+        <br>
+        <p><small> You must log in and endorse one or more answers to leave a comment. </small></p>
+    </div>
+    <div style="display:{{(vm.commLoaded && vm.isLoggedIn && !vm.commentAllowed) ? 'inline':'none'}}">
+        <br>
+        <p><small> Endorse one or more answers to leave a comment. </small></p>
+    </div>
+    <div style="display:{{(vm.isLoggedIn && vm.commentAllowed) ? 'inline':'none'}}">
+        <div class="row">
+            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1" style="background-color:{{vm.bc}};color:{{vm.fc}};padding:5px;" align="middle">
+                {{vm.initials}}
+            </div>
+            <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11">
+                <input type="text" class="form-control" ng-model="vm.comment" placeholder="Leave a comment">
+            </div>            
+        </div>
+        <div class="text-right">
+                <button ng-click="vm.postComment()" class="btn btn-primary">Post</button>
+        </div>
+    </div> 
+</div>

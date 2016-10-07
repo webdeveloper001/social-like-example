@@ -11,13 +11,13 @@
 
         // Members
         var _votes = [];
-        var baseURI = '/api/v2/mysql';
+        var baseURI = '/api/v2/mysql/_table/votetable';
 
         var service = {
             loadVotesTable: loadVotesTable,
             patchRec: patchRec,
 			postRec: postRec,
-            deleteVotesbyAnswer: deleteVotesbyAnswer
+            deleteVotesbyCatans: deleteVotesbyCatans
 			
             //    addTable: addTable
         };
@@ -33,7 +33,7 @@
             }
             
            //Get all vote records for current user
-            var url = baseURI + '/_table/votetable/?filter=user='+ $rootScope.user.id;
+            var url = baseURI + '/?filter=user='+ $rootScope.user.id;
              
             return $http.get(url).then(querySucceeded, _queryFailed);
             
@@ -58,7 +58,7 @@
             
             obj.resource.push(data); 
             
-            var url = baseURI + '/_table/votetable'; 
+            var url = baseURI; 
             
             return $http.post(url, obj, {
                 headers: {
@@ -73,7 +73,8 @@
                 datax.id = result.data.resource[0].id; 
                 _votes.push(datax);
                 
-                $rootScope.cvotes.push(datax);
+                //$rootScope.cvotes.push(datax);
+                $rootScope.$emit('updateVoteTable');
                 
                 console.log("Creating new voting record was succesful");
                 return result.data;
@@ -94,7 +95,7 @@
             
             obj.resource.push(data); 
             
-            var url = baseURI + '/_table/votetable'; 
+            var url = baseURI; 
             
             //update local record of votes
             var i = _votes.map(function(x) {return x.id; }).indexOf(rec_id);
@@ -113,16 +114,16 @@
                 return result.data;
             }
         }
-        function deleteVotesbyAnswer(answer_id) {
+        function deleteVotesbyCatans(catans_id) {
             
             //delete records from local copy
             for (var i=0; i<_votes.length;i++){
-                if (_votes[i].answer == answer_id){
+                if (_votes[i].catans == catans_id){
                     _votes.splice(i,1);
                 } 
             }
             
-           var url = baseURI + '/_table/votetable?filter=answer=' + answer_id; 
+           var url = baseURI + '/?filter=catans=' + catans_id; 
             
             return $http.delete(url).then(querySucceeded, _queryFailed);
             

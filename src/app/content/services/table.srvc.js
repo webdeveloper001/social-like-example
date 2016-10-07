@@ -141,7 +141,8 @@
                     case "image3url": data.image3url = val[i]; break;
                     case "answertags": data.answertags = val[i]; break;
                     case "isatomic": data.isatomic = val[i]; break;
-                    case "catstr": data.catstr = val[i]; break;                    
+                    case "catstr": data.catstr = val[i]; break;
+                    case "numcom": data.numcom = val[i]; break;                    
                 }
             }
             //console.log("data", data);
@@ -171,7 +172,8 @@
                     case "image3url": $rootScope.content[idx].image3url = val[i]; break;
                     case "answertags": $rootScope.content[idx].answertags = val[i]; break;
                     case "isatomic": $rootScope.content[idx].isatomic = val[i]; break;
-                    case "catstr": $rootScope.content[idx].catstr = val[i]; break;                   
+                    case "catstr": $rootScope.content[idx].catstr = val[i]; break;
+                    case "numcom": $rootScope.content[idx].numcom = val[i]; break;                   
                 }
             }
 

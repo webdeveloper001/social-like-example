@@ -16,9 +16,9 @@
         vm.ranking = $rootScope.title;
         var HS = [];
         var LS = [];
-        var answers = $rootScope.canswers;
-        var N = answers.length;
-        var M = N * (N - 1) / 2;
+        var answers = [];
+        var N = 0;
+        var M = 0;
         var r = [];
         var GPIdx = 0;
         var returningUser = $rootScope.cmrecs_user.length > 0;
@@ -57,10 +57,12 @@
                         }
                     }
                 });
-
+            
+            loadAnswers();
             getmatchIndexes();
             createRandomIndexArray();
             getAnswers();
+            
         }
 
         function selectAnswer(number) {
@@ -101,13 +103,26 @@
             if (GPIdx >= M) GPIdx = 0;
             getAnswers();
         }
-
-        function getAnswers() {
+        
+        function loadAnswers(){
+            //console.log("$rootScope.cvotes - ", $rootScope.cvotes);
+            //console.log("$rootScope.ccatans - ", $rootScope.ccatans);
+            //console.log("$rootScope.canswers - ", $rootScope.canswers);
+            //console.log("$rootScope.canswers4rank --- ", $rootScope.canswers4rank);
+            answers = $rootScope.canswers4rank;
+            N = answers.length;
+            M = N * (N - 1) / 2;
+            console.log("$rootScope.canswers4rank --- ", $rootScope.canswers4rank, N, M);
+            
+        }
+        
+        function getAnswers() {         
 
             vm.GP = $rootScope.cmrecs_user.length;
-            vm.Tot = M;
+            vm.Tot = M;            
             
             //if already played all matches
+            console.log("cmrecs_length, M", $rootScope.cmrecs_user.length, M);
             if ($rootScope.cmrecs_user.length >= M) {
                 if (rankInProgress) dialog.getDialog('goodJobRankComplete');
                 else dialog.getDialog('rankComplete');

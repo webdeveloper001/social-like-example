@@ -47,7 +47,7 @@
         vm.gotoRank = gotoRank;
         vm.vrowVoteUp = vrowVoteUp;
         vm.vrowVoteDown = vrowVoteDown;
-
+        
         vm.fields = $rootScope.fields;
         vm.type = $rootScope.cCategory.type;
         //vm.userIsOwner = $rootScope.userIsOwner;
@@ -95,7 +95,7 @@
     //        getCatAnsId(vm.answer.id);
             getEdits(vm.answer.id);
             deleteButtonAccess();
-
+            getHours();
             makeRelativeTable(vm.answer.id);
             getSpecials(vm.answer.id);
             getVRows(vm.answer.id);
@@ -144,7 +144,26 @@
         function getAnswerImage() {
 
         }
-              
+        
+        function getHours(){
+            vm.hrset = false;
+            if (vm.answer.strhours != undefined && vm.answer.strhours != null){
+                vm.hrset = true;
+                var cdate = new Date();
+                var dayOfWeek = cdate.getDay();
+                var idx = dayOfWeek - 1;
+                if (idx < 0) idx = 6;
+                
+                var openhours = JSON.parse(vm.answer.strhours);
+                if (openhours[idx].opn == 'CLOSED'){
+                    vm.hourstr = 'Closed today';
+                }
+                else{
+                    vm.hourstr = 'Open today from: '+ openhours[idx].st + ' to '+ openhours[idx].ct;
+                }
+            }
+        }
+                      
         //AM: Create the relative table of this answer with respect to the other ones.
         function makeRelativeTable(id) {
             //rank.computeRanking(answers,mrecs);
@@ -425,16 +444,18 @@
 
             dialog.deleteType(function () {
                 //delete catans for this answer
+                matchrec.deleteRecordsbyCatans($rootScope.cCategory.id, vm.answer.id);
                 catans.deleteRec(vm.answer.id, $rootScope.cCategory.id).then(function () {
                     $state.go("rankSummary", { index: $rootScope.cCategory.id });
                 });
+                
             }, function () {
                 //delete answer 
                 answer.deleteAnswer(vm.answer.id);
                 //delete match records of that answer
                 matchrec.deleteRecordsbyAnswer(vm.answer.id);
                 //delete vote records from that answer
-                votes.deleteVotesbyAnswer(vm.answer.id);
+                //votes.deleteVotesbyCatans(vm.answer.id);
                 //delete edits for this answer
                 edit.deleteEditbyAnswer(vm.answer.id);
                 //delete edit votes for this answer
@@ -462,7 +483,6 @@
             for (var i = 0; i < $rootScope.catansrecs.length; i++) {
                 //if ($rootScope.catansrecs[i].answer == vm.answer.id && $rootScope.catansrecs[i].category != $rootScope.cCategory.id) {
                 if ($rootScope.catansrecs[i].answer == vm.answer.id) {
-                    //console.log("catansrec ---,",$rootScope.catansrecs[i]);
                     for (var j = 0; j < $rootScope.content.length; j++) {
                         if ($rootScope.content[j].id == $rootScope.catansrecs[i].category) {
                             //to each rank object attach catans data

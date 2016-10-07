@@ -62,6 +62,7 @@
         <a ng-if="vm.isMobile && vm.answer.phone"  href="tel:{{vm.answer.phone}}"><i class="fa fa-phone"></i></a>
 
     </div>
+    <i style="display:{{vm.hrset ? 'inline':'none'}}">{{vm.hourstr}}</i>
 </div>
 
 <br style="display:{{vm.answer.addinfo ? 'inline':'none'}}">
@@ -73,7 +74,7 @@
 
 <a type="button" class="btn btn-primary btn-block" ng-click="vm.editAnswer()" style="display:{{(vm.answer.hasOwner == false || vm.userIsOwner == true) ? 'inline':'none'}}">
             Edit {{vm.numEdits > 0? "("+vm.numEdits+")" : ""}}
-        </a>
+        </a>      
 <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
     <h3 class="sub-header">Endorsements</h3>
 </div>

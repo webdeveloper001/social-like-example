@@ -136,6 +136,7 @@
                     case "owner": data.owner = val[i]; break;
                     case "phone": data.phone = val[i]; break;
                     case "website": data.website = val[i]; break;
+                    case "strhours": data.strhours = val[i]; break;
                 }
             }
             //console.log("data", data);
@@ -159,6 +160,7 @@
                     case "owner": $rootScope.canswers[idx].owner = val[i]; break;
                     case "phone": $rootScope.canswers[idx].phone = val[i]; break;
                     case "website": $rootScope.canswers[idx].website = val[i]; break;
+                    case "strhours": $rootScope.canswers[idx].strhours = val[i]; break;
                 }
             }                        
             

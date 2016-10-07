@@ -6,10 +6,10 @@
         .controller('editAnswer', editAnswer);
 
     editAnswer.$inject = ['dialog', '$stateParams', '$state', 'answers', '$rootScope', 
-    '$modal', 'edit', 'editvote', 'answer', 'image','getgps'];
+    '$modal', 'edit', 'editvote', 'answer', 'image','getgps','$window'];
 
     function editAnswer(dialog, $stateParams, $state, answers, $rootScope, 
-    $modal, edit, editvote, answer, image, getgps) {
+    $modal, edit, editvote, answer, image, getgps, $window) {
         /* jshint validthis:true */
         var vm = this;
 
@@ -30,6 +30,9 @@
         vm.closeRank = closeRank;
         vm.editDisagree = editDisagree;
         vm.answerDetail = answerDetail;
+        vm.hoursChanged = hoursChanged;
+        vm.updateHours = updateHours;
+        
         vm.ranking = $rootScope.title;
         vm.userIsOwner = $rootScope.userIsOwner;
 
@@ -56,6 +59,7 @@
         var attNum = 3;
         vm.imagefunctions = 'none';
         vm.emptyarray=[];
+        vm.updateHoursEn = 'disabled';
         
         vm.neighborhoods = $rootScope.neighborhoods.concat($rootScope.districts);
                 
@@ -76,9 +80,13 @@
         });
         
            $rootScope.$on('answerGPSready', function () {
-            editAnswerGPS();
+            if ($state.current.name == 'editAnswer') editAnswerGPS();
         });
-            
+        
+        //Adjust picture size for very small displays
+        if ($window.innerWidth < 512) {vm.sm = true; vm.nsm=false;}
+        else {vm.sm = false; vm.nsm = true;}
+                    
         activate();
 
         function activate() {
@@ -86,6 +94,7 @@
             //country.loadCountries();
             //vm.countries = $rootScope.cCountries;
             loadAnswerData();
+            if (vm.userIsOwner) loadHoursData();
             getEdits(vm.answer.id);
 
             console.log("Edit Answer Activated!");
@@ -101,6 +110,8 @@
                     case "cityarea": { publicfield_obj.cval = vm.answer.cityarea; break; }
                     case "location": { publicfield_obj.cval = vm.answer.location; break; }
                     case "addinfo": { publicfield_obj.cval = vm.answer.addinfo; break; }
+                    case "phone": { publicfield_obj.cval = vm.answer.phone; break; }
+                    case "website": { publicfield_obj.cval = vm.answer.website; break; }
                 }
                 publicfield_obj.val = '';
                 publicfield_obj.label = $rootScope.fields[i].label;
@@ -114,8 +125,6 @@
             for (var i = 0; i < vm.fields.length; i++){
                 vm.fields[i].val = vm.fields[i].cval; 
             }
-            
-            console.log("fields  ",vm.fields);
             
         }
 
@@ -568,6 +577,52 @@
           function closeRank() {
                // $rootScope.$emit('closeRank');
                answerDetail();                              
+        }
+        
+        function loadHoursData(){
+            vm.timeDD = ["7:00 AM", "7:30 AM", "8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM",
+                "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM",
+                "8:00 PM", "8:30 PM", "9:00 PM", "9:30 PM", "10:00 PM", "10:30 PM", "11:00 PM", "11:30 PM", "12:00 AM", "12:30 AM", "1:00 AM", "1:30 AM",
+                "2:00 AM", "2:30 AM", "3:00 AM", "3:30 AM", "4:00 AM", "4:30 AM", "5:00 AM", "5:30 AM", "6:00 AM", "6:30 AM"];
+                
+            vm.openOptions = ["OPEN", "CLOSED"];
+            
+            if (vm.answer.strhours == undefined || vm.answer.strhours == null || vm.answer.strhours.length == 0){
+            var myStr = '[{"day":"MON","opn":"OPEN","st":"8:00 AM","ct":"5:00 PM"},{"day":"TUE","opn":"OPEN","st":"8:00 AM","ct":"5:00 PM"},'+
+            '{"day":"WED","opn":"OPEN","st":"8:00 AM","ct":"5:00 PM"},{"day":"THU","opn":"OPEN","st":"8:00 AM","ct":"5:00 PM"},'+
+            '{"day":"FRI","opn":"OPEN","st":"8:00 AM","ct":"5:00 PM"},{"day":"SAT","opn":"OPEN","st":"8:00 AM","ct":"5:00 PM"},'+
+            '{"day":"SUN","opn":"OPEN","st":"8:00 AM","ct":"5:00 PM"}]';
+             vm.openhours = JSON.parse(myStr);
+            }
+            else {
+              vm.openhours = JSON.parse(vm.answer.strhours);  
+            }
+             
+        }
+        
+        function hoursChanged(){
+            vm.updateHoursEn = '';
+        }
+        
+        function updateHours(){
+            
+            var openhoursx = [];
+            var obj = {};
+            for (var i=0; i<vm.openhours.length; i++){
+                obj = {};
+                obj.day = vm.openhours[i].day;
+                obj.opn = vm.openhours[i].opn;
+                obj.st = vm.openhours[i].st;
+                obj.ct = vm.openhours[i].ct;
+                openhoursx.push(obj);
+            }
+            
+            var strhours = JSON.stringify(openhoursx);
+            
+            //delete strhours.$$hashKey;
+            //console.log('@updateHours - ', strhours);
+            answer.updateAnswer(vm.answer.id, ['strhours'], [strhours]);
+            vm.updateHoursEn = 'disabled';
         }
 
     }

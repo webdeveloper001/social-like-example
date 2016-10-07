@@ -5,9 +5,9 @@
         .module('app')
         .controller('editRanking', editRanking);
 
-    editRanking.$inject = ['$location', '$rootScope', '$state','$stateParams', 'table','dialog'];
+    editRanking.$inject = ['$location', '$rootScope', '$state','$stateParams', 'table','dialog','catans'];
 
-    function editRanking(location, $rootScope, $state, $stateParams, table, dialog) {
+    function editRanking(location, $rootScope, $state, $stateParams, table, dialog, catans) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'editRanking';
@@ -112,6 +112,7 @@
         
         function confirmDelete(){
             table.deleteTable($rootScope.cCategory.id);
+            catans.deletebyCategory($rootScope.cCategory.id);
         }      
     }
 })();
