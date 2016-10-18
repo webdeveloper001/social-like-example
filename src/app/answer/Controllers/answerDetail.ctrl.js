@@ -67,8 +67,8 @@
         //Adjust picture size for very small displays
         if ($window.innerWidth < 512) {
             vm.mxheight = '250px';
-            vm.sp1 = 'width:5%';
-            vm.sp2 = 'width:25%;max-height:50px;';
+            vm.sp1 = 'width:5%;padding:0px;';
+            vm.sp2 = 'width:25%;max-height:50px';
             vm.sp3 = 'width:20%';
             vm.sm = true; vm.nsm = false;
             //console.log('screen is small');
