@@ -16,6 +16,7 @@
         var service = {
             getAllvrows: getAllvrows,
             postRec: postRec,
+            postRec2: postRec2,
             deleteVrowByAnswer: deleteVrowByAnswer,
             deleteVrow: deleteVrow,
             updateRec: updateRec,
@@ -34,12 +35,21 @@
             //Get all vrows records
             var url0 = baseURI + '?offset=' + 0 * 1000;
             var url1 = baseURI + '?offset=' + 1 * 1000;
-
+            var url2 = baseURI + '?offset=' + 2 * 1000;
+            var url3 = baseURI + '?offset=' + 3 * 1000;
+            var url4 = baseURI + '?offset=' + 4 * 1000;
+            var url5 = baseURI + '?offset=' + 5 * 1000;
+            
             var p0 = $http.get(url0);
             var p1 = $http.get(url1);
+            var p2 = $http.get(url2);
+            var p3 = $http.get(url3);
+            var p4 = $http.get(url4);
+            var p5 = $http.get(url5);
 
-            return $q.all([p0, p1]).then(function (d){
-                _allvrows = d[0].data.resource.concat(d[1].data.resource);
+            return $q.all([p0, p1, p2, p3, p4, p5]).then(function (d){
+                _allvrows = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource, 
+                d[4].data.resource, d[5].data.resource);
                 console.log("No. Vrows: ", _allvrows.length);
                 return _allvrows;            
             }, _queryFailed);  
@@ -75,7 +85,40 @@
                 _allvrows.push(newVRow);
                 //$rootScope.cvrows.push(newVRow);
 
-                console.log("Adding new Vrow succesful", result);
+                return result.data;
+               
+            }
+        }
+        
+        function postRec2(x) {
+           
+            var obj = {};
+            obj.resource = [];
+
+            obj.resource.push(x);
+            
+             obj.resource.push(x);
+            
+            //update local copy
+            _allvrows.push.apply(_allvrows, x);
+            
+            var url = baseURI;
+
+            return $http.post(url, x, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                body: obj
+            }).then(querySucceeded, _queryFailed);
+            function querySucceeded(result) {
+                
+                //update local copy
+                var eidx = _allvrows.length - 1;
+                for (var n=result.data.resource.length-1; n>=0; n--){
+                    _allvrows[eidx].id = result.data.resource[n].id;
+                    eidx--; 
+                }
+                
                 return result.data;
                
             }
@@ -103,11 +146,12 @@
          function deleteVrowByGroup(gnum) {
             
             //delete records from local copy
-            for (var i=0; i<_allvrows.length;i++){
+            for (var i=_allvrows.length-1; i>=0; i--){
                 if (_allvrows[i].gnum == gnum){
                     _allvrows.splice(i,1);
                 } 
             }
+            console.log("_allvrows - ", _allvrows);
             
            var url = baseURI + '?filter=gnum=' + gnum; 
             

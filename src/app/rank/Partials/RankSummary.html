@@ -11,7 +11,17 @@
 </div>
 -->
 <div class="container">
-    <div class="well-sm">
+    <div class="well-rank" ng-if="vm.nsm">
+        <h2 class="sub-header">{{vm.ranking}}
+            <span class="nomargin">
+                    <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
+                    ng-click="vm.closeRank()">
+                    <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
+            </button>
+            </span>
+        </h2>
+    </div>
+    <div class="well-rank" ng-if="vm.sm">
         <h3 class="sub-header">{{vm.ranking}}
             <span class="nomargin">
                     <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
@@ -77,11 +87,12 @@
 <div class="row ">
 
     <div class="btn-group col-sm-6 col-md-6">
-        <div ng-show="{{vm.type == 'Establishment' || vm.type == 'Activity'}}">
+        <div>
             <p>Sort by: <span>        
         <button class="btn btn-default {{vm.selRank}} " ng-click="vm.sortByRank()">Rank</button>
         <button class="btn btn-default {{vm.selUpV}} " ng-click="vm.sortByUpV()">UpVotes</button>
-        <button class="btn btn-default {{vm.selDistance}} " ng-click="vm.sortByDistance()">Distance</button>        
+        <button class="btn btn-default {{vm.selDistance}} " ng-click="vm.sortByDistance()"
+            ng-show="{{vm.type == 'Establishment'}}">Distance</button>        
         <!--  <button type="button " class="btn btn-primary ">{{"rankSummary.Filtered " | translate}}</button> -->
         </span></p>
         </div>
@@ -149,13 +160,13 @@
 <div style="display:{{vm.commLoaded ? 'inline':'none'}}">
     <div ng-repeat="x in vm.comments">
         <div class="row">
-            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1" style="background-color:{{x.bc}};color:{{x.fc}};padding:5px;" align="middle">
+            <div class="usericon col-xs-2 col-sm-2 col-md-1 col-lg-1" style="background-color:{{x.bc}};color:{{x.fc}};" align="middle">
                 {{x.initials}}
             </div>
             <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11">
                 {{x.body}}
                 <br>
-                <small>{{x.username}} - {{x.date}}</small>
+                <small style="color:#bfbfbf">{{x.username}} - {{x.date}}</small>
             </div>
         </div>
         <br>
@@ -174,13 +185,17 @@
     </div>
     <div style="display:{{(vm.isLoggedIn && vm.commentAllowed) ? 'inline':'none'}}">
         <div class="row">
-            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1" style="background-color:{{vm.bc}};color:{{vm.fc}};padding:5px;" align="middle">
+            <div class="usericon col-xs-2 col-sm-2 col-md-1 col-lg-1" style="background-color:{{vm.bc}};color:{{vm.fc}};" align="middle">
                 {{vm.initials}}
             </div>
             <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11">
-                <input type="text" class="form-control" ng-model="vm.comment" placeholder="Leave a comment">
+                <!--
+                <input type="text" class="form-control" ng-model="vm.comment" placeholder="Leave a comment" 
+                style="margin-left:0px;margin-right:0px;">-->
+                <textarea class="form-control" ng-model="vm.comment" placeholder="Leave a comment"  
+                   style="margin-left:0px;margin-right:0px;"></textarea>
             </div>            
-        </div>
+        </div> 
         <div class="text-right">
                 <button ng-click="vm.postComment()" class="btn btn-primary">Post</button>
         </div>

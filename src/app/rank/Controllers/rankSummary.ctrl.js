@@ -5,14 +5,15 @@
         .module('app')
         .controller('rankSummary', rankSummary);
 
-    rankSummary.$inject = ['dialog', '$stateParams', '$state', 'answers', 'datetime'
-        , 'answer', 'mrecs', 'rank', 'catansrecs', '$filter', 'table', 'vrowvotes', '$window'
-        , '$rootScope', '$modal', 'edits', 'editvote', 'votes', 'useractivities', 'catans', 'comment'];
+    rankSummary.$inject = ['dialog', '$stateParams', '$state', 'datetime', 'catans'
+        , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows'
+        , '$rootScope', '$modal', 'editvote', 'votes', 'comment'];
 
-    function rankSummary(dialog, $stateParams, $state, answers, datetime
-        , answer, mrecs, rank, catansrecs, $filter, table, vrowvotes, $window
-        , $rootScope, $modal, edits, editvote, votes, useractivities, catans, comment) {
+    function rankSummary(dialog, $stateParams, $state, datetime, catans
+        , answer, rank, $filter, table, vrowvotes, $window, vrows
+        , $rootScope, $modal, editvote, votes, comment) {
         /* jshint validthis:true */
+        
         var vm = this;
         vm.title = 'rankSummary';
         vm.addAnswerDisabled = '';
@@ -45,6 +46,13 @@
         $rootScope.cvotes = [];
         $rootScope.ceditvotes = [];
         $rootScope.cmrecs_user = [];
+        
+        //For readability
+        var answers = $rootScope.answers;
+        var catansrecs = $rootScope.catansrecs;
+        var edits = $rootScope.edits;
+        var useractivities = $rootScope.alluseractivity;
+        var mrecs = $rootScope.mrecs;
 
         var answersFull = false;
         var updateExec = false;
@@ -73,8 +81,8 @@
         });
         
         //Adjust picture size for very small displays
-        if ($window.innerWidth < 512) vm.sm = true;
-        else vm.sm = false;
+        if ($window.innerWidth < 512) {vm.sm = true; vm.nsm = false; }
+        else {vm.sm = false; vm.nsm = true; }
 
         //Execute this view only if rankWindow is open
         //if ($rootScope.showR) 
@@ -117,6 +125,7 @@
             //Check and update if necessary ranking and Num of items per rank, only for atomic ranks
             if ($rootScope.cCategory.isatomic == true) {
                 for (var i = 0; i < vm.answers.length; i++) {
+                    //console.log("vm.answers[i].Rank, vm.answers[i].catansrank -", vm.answers[i].Rank, vm.answers[i].catansrank);
                     if (vm.answers[i].Rank != vm.answers[i].catansrank) {
                         //console.log("Updated Catans Rank", vm.answers[i].catans);
                         if (vm.answers[i].catans != undefined) {
@@ -218,6 +227,7 @@
             //TODO update answers in DB
             console.log("Rank Summary Loaded!");
             //console.log("$rootScope.user", $rootScope.user);
+            //createVrows();
 
         }
 
@@ -228,20 +238,17 @@
             if (true) {    
                 for (var i = 0; i < $rootScope.cvotes.length; i++) {
                     if ($rootScope.cvotes[i].vote == 1) {
-                        for (var j = 0; j < $rootScope.ccatans.length; j++) {
-                            if ($rootScope.cvotes[i].catans == $rootScope.ccatans[j].id) {
-                                //console.log("$rootScope.cvotes[i] - ",$rootScope.cvotes[i]);
-                                for (var k = 0; k < $rootScope.canswers.length; k++) {
-                                    if ($rootScope.ccatans[j].answer == $rootScope.canswers[k].id) {
+                        for (var k = 0; k < $rootScope.canswers.length; k++) {
+                                    if ($rootScope.cvotes[i].answer == $rootScope.canswers[k].id) {
                                         $rootScope.canswers4rank.push($rootScope.canswers[k]);
                                         //break;
                                     }
                                 }
                             }
                         }
-                    }
-                }
             }
+                
+            
             else {
                 $rootScope.canswers4rank = $rootScope.canswers;
             }
@@ -269,8 +276,7 @@
 
             if ($rootScope.isLoggedIn) {
 
-                updateVoteTable();
-                
+                updateVoteTable();                
                 
                 //Load edit votes for answers in this category
                 for (var i = 0; i < $rootScope.editvotes.length; i++) {
@@ -293,7 +299,7 @@
                 for (var i = 0; i < $rootScope.cuseractivity.length; i++) {
                     if ($rootScope.cuseractivity[i].user == $rootScope.user.id) {
                         $rootScope.userHasRank = true;
-                        $rootScope.userActRecId = $rootScope.cuseractivity[i].id;
+                        $rootScope.userActRec = $rootScope.cuseractivity[i];
                         break;
                     }
                 }
@@ -392,11 +398,12 @@
             $rootScope.NhImplied = false;
             $rootScope.NhValue = '';
             if ($rootScope.cCategory.type == 'Establishment') {
-                //Determine if title already contains neighboorhood            
-                for (var i = 0; i < $rootScope.neighborhoods.length; i++) {
-                    if ($rootScope.cCategory.title.includes($rootScope.neighborhoods[i])) {
+                //Determine if title already contains neighboorhood
+                var nhs = $rootScope.neighborhoods.concat($rootScope.districts);            
+                for (var i = 0; i < nhs.length; i++) {
+                    if ($rootScope.cCategory.title.includes(nhs[i])) {
                         $rootScope.NhImplied = true;
-                        $rootScope.NhValue = $rootScope.neighborhoods[i];
+                        $rootScope.NhValue = nhs[i];
                         break;
                     }
                 }
@@ -573,13 +580,10 @@
             $rootScope.cuseractivity = [];
             for (var i = 0; i < useractivities.length; i++) {
                 if (useractivities[i].category == $rootScope.cCategory.id) {
-                    var activityitem = useractivities[i];
-                    $rootScope.cuseractivity.push(activityitem);
+                    $rootScope.cuseractivity.push(useractivities[i]);
                 }
             }
             vm.numContributors = $rootScope.cuseractivity.length;
-
-
         }
 
 
@@ -651,6 +655,7 @@
         }
 
         function loadComments() {
+            
             if (!vm.commLoaded) {
                 vm.commLoaded = true;
                 if ($rootScope.isLoggedIn){
@@ -665,13 +670,19 @@
                     vm.comments = comments;
                     for (var i = 0; i < vm.comments.length; i++) {
                         vm.comments[i].initials = vm.comments[i].username.replace(/[^A-Z]/g, '');
-                        datetime.formatdatetime(vm.comments[i]);
-                        vm.comments[i].date = vm.comments[i].timestmp;
+                        
+                        var datenow = new Date();
+                        var tz = datenow.getTimezoneOffset();
+                        
+                        var cdate = new Date(vm.comments[i].timestmp);
+                        cdate.setMinutes( cdate.getMinutes() - tz);
+                        
+                        vm.comments[i].date = cdate.toLocaleDateString() + ' '+ cdate.toLocaleTimeString(); 
                         getIconColors(vm.comments[i].user);
                         vm.comments[i].bc = bc;
                         vm.comments[i].fc = fc;
                     }
-                    console.log("vm.commLoaded, vm.comments.length, vm.isLoggedIn, vm.commentAllowed ---", vm.commLoaded, vm.comments.length, vm.isLoggedIn, vm.commentAllowed);
+                    //console.log("vm.commLoaded, vm.comments.length, vm.isLoggedIn, vm.commentAllowed ---", vm.commLoaded, vm.comments.length, vm.isLoggedIn, vm.commentAllowed);
                 });
             }
         }
@@ -729,6 +740,78 @@
         function callGetLocation() {
             $rootScope.$emit('getLocation');
         }
-
+        
+        //TODO: Remove!!!! - TEMP function to create vrows for all answers
+        function createVrows(){
+            var evrows = [];
+            var titles = [];
+            var obj = {};
+            var vrowsobjs = [];
+            if ($rootScope.cCategory.tags.includes('food') || $rootScope.cCategory.tags.includes('services') ||
+                $rootScope.cCategory.tags.includes('health') || $rootScope.cCategory.tags.includes('beauty') ||
+                $rootScope.cCategory.tags.includes('food') || $rootScope.cCategory.title.includes('food') ||
+                $rootScope.cCategory.title.includes('restaurants') ||
+                $rootScope.cCategory.title.includes('Bars') || $rootScope.cCategory.title.includes('bars') ||
+                $rootScope.cCategory.title.includes('pubs') ||
+                $rootScope.cCategory.title.includes('Yoga') || $rootScope.cCategory.title.includes('Pilates') ||
+                $rootScope.cCategory.title.includes('yoga') || $rootScope.cCategory.title.includes('pilates') ||
+                $rootScope.cCategory.title.includes('schools') ||
+                $rootScope.cCategory.title.includes('Gyms') || $rootScope.cCategory.title.includes('gyms') ||
+                $rootScope.cCategory.title.includes('Nightclubs')){
+                for (var i=0; i<$rootScope.canswers.length; i++){
+                    //Check that there are no vrows already
+                    evrows = [];
+                    vrowsobjs = [];
+                    for (var k=0; k<$rootScope.cvrows.length; k++){
+                        if ($rootScope.cvrows[k].answer == $rootScope.canswers[i].id){
+                            evrows.push($rootScope.cvrows[k]);
+                        }
+                    }
+                    
+                    //if there are no vrows
+                    if (evrows.length == 0){
+                        
+                        titles = ['Quality of Service','Friendliness of Staff','Promptness of Service','Value for the Money'];
+                        
+                        if ($rootScope.cCategory.tags.includes('food') || $rootScope.cCategory.title.includes('food') ||
+                            $rootScope.cCategory.title.includes('restaurants')){
+                            titles = ['Quality of Food and Drinks','Friendliness of Staff','Promptness of Service','Value for the Money'];
+                        }
+                        if ($rootScope.cCategory.title.includes('Bars') || $rootScope.cCategory.title.includes('bars') ||
+                            $rootScope.cCategory.title.includes('pubs')){
+                            titles = ['Quality of Drinks','Friendliness of Staff','Promptness of Service','Value for the Money'];
+                        }
+                        
+                        if ($rootScope.cCategory.title.includes('Yoga') || $rootScope.cCategory.title.includes('Pilates') ||
+                            $rootScope.cCategory.title.includes('yoga') || $rootScope.cCategory.title.includes('pilates') ||  
+                            $rootScope.cCategory.title.includes('schools')) {
+                            titles = ['Quality of Instructors','Friendliness of Staff','Class Environment','Value for the Money'];
+                        }
+                        if ($rootScope.cCategory.title.includes('Gyms') || $rootScope.cCategory.title.includes('gyms') ){
+                            titles = ['Equipment & Facilities','Friendliness of Staff','Environment','Value for the Money'];
+                        }
+                        if ($rootScope.cCategory.title.includes('Nightclubs')){
+                            titles = [' Quality of Music','Environment','Friendliness of Staff','Value for the Money'];
+                        }
+                        //else if ($rootScope.cCategory.tags.includes('services')){
+                            
+                        //}
+                        for (var n=0; n<titles.length; n++){
+                            obj = {};
+                            obj.gnum = 1;
+                            obj.gtitle = 'General';
+                            obj.title = titles[n];
+                            obj.upV = 0;
+                            obj.downV = 0;
+                            obj.timestmp = Date.now();
+                            obj.answer = $rootScope.canswers[i].id;
+                            vrowsobjs.push(obj);
+                            //vrows.postRec(obj);                           
+                        }
+                        vrows.postRec2(vrowsobjs);
+                    }
+                }
+            }
+        }
     }
 })();

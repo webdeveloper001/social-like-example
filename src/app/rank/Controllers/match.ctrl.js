@@ -51,8 +51,8 @@
                     if (from.name == 'match') {
                         if (mrecs_session.length > 0) {
                             matchrec.postRec(mrecs_session);
-                            if ($rootScope.userHasRank) useractivity.patchRec($rootScope.userActRecId);
-                            else useractivity.postRec();
+                            //if ($rootScope.userHasRank) useractivity.patchRec($rootScope.userActRecId);
+                            //else useractivity.postRec();
                             mrecs_session = [];
                         }
                     }
@@ -112,13 +112,14 @@
             answers = $rootScope.canswers4rank;
             N = answers.length;
             M = N * (N - 1) / 2;
-            console.log("$rootScope.canswers4rank --- ", $rootScope.canswers4rank, N, M);
+            //console.log("$rootScope.canswers4rank --- ", $rootScope.canswers4rank, N, M);
             
         }
         
         function getAnswers() {         
 
             vm.GP = $rootScope.cmrecs_user.length;
+            console.log("vm.GP - ", vm.GP);
             vm.Tot = M;            
             
             //if already played all matches

@@ -16,6 +16,7 @@
         var service = {
             getAllcatans: getAllcatans,
             postRec: postRec,
+            postRec2: postRec2,
             deleteRec: deleteRec,
             deleteAnswer: deleteAnswer,
             updateRec: updateRec,
@@ -82,6 +83,42 @@
                 return result.data;
             }
         }
+        
+        function postRec2(answer,category) {
+           
+            //form match record
+            var data = {};
+            data.answer = answer;
+            data.category = category;
+            data.upV = 0;
+            data.downV = 0;
+            data.timestmp = Date.now();
+             
+            var obj = {};
+            obj.resource = [];
+
+            obj.resource.push(data);
+            
+            _allcatans.push(data);
+            var url = baseURI;
+
+            return $http.post(url, obj, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                body: obj
+            }).then(querySucceeded, _queryFailed);
+            function querySucceeded(result) {
+                
+                //update local copies
+                //var id = result.data.resource[0].id; 
+                //_allcatans[_allcatans.length-1].id = id;
+                
+                console.log("creating catans record was succesful");
+                return result.data;
+            }
+        }
+        
          function deleteAnswer(answer_id) {
             
             //delete records from local copy

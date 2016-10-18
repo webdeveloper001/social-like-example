@@ -6,10 +6,14 @@
 
         <form ng-submit="vm.submit()" ng-if="!vm.isProgressing">
             <div class="form-group text-center">
+                   
                 <button type="button" class="btn btn-primary form-control" ng-click="vm.redirectForFacebook()">
                     <i class="fa fa-facebook"></i>
                     Login
                 </button>
+                <br><br>
+                <button type="button" class="btn btn-default form-control" style="vertical-align:middle;" 
+                    ng-click="vm.goBack()">Cancel</button>
             </div>
             <br>
             <p class="hiw" ng-click="vm.whyFacebookDialog()"><u>why Facebook?</u></p>

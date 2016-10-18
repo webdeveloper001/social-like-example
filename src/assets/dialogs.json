@@ -14,7 +14,7 @@
     "dialog.rankComplete.title": "Rank Complete",
     "dialog.rankComplete.text": "You have already completed this ranking.",
     "dialog.goodJobRankComplete.title": "Rank Complete",
-    "dialog.goodJobRankComplete.text": "Great job! You have played all matches for this ranking.",
+    "dialog.goodJobRankComplete.text": "Good job. You have played all matches for this ranking.",
     "dialog.noPersonalRank.title": "No Personal Rank",
     "dialog.noPersonalRank.text": "You have no personal rank. Play rank and contribute to the ranking.",    
     "dialog.answerFlagged.title": "Answer was flagged",

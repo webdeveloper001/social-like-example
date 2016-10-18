@@ -75,9 +75,13 @@
                 message = 'You want to change the image of <strong><em>' + edit.name + '</em></strong> to this one: </br>' +
                 '<img src=' + edit.imageURL + ' class="thumbnail" style="width:60%; max-height:150px">';
             }
-            if (type == 'field') {
+            if (type == 'field' && edit.field != 'addinfo') {
                 message = 'You want to change the <strong class="capitalize"><em>' + edit.field +
                 '</em></strong> of <strong><em>' + edit.name + '</em></strong> to <strong><em>' + edit.nval + '</em></strong>.';
+            }
+            if (type == 'field' && edit.field == 'addinfo') {
+                message = 'You want to change the information of ' +
+                '<strong><em>' + edit.name + '</em></strong> to: <br><br>' + edit.nval + '</br>.';
             }
 
             BootstrapDialog.confirm({
@@ -185,13 +189,22 @@
             var title = '';
             var message = '';
 
-            if (type == 'approve') {
+            if (type == 'approve' && edit.field != 'addinfo') {
 
                 title = 'Changed Approved';
                 message = 'Congrats! With your vote, the change of <strong>' + edit.field + '</strong> of <strong>' +
                 edit.name + '</strong> to <strong>' + edit.nval + '</strong> gets approved.';
 
             }
+            
+            if (type == 'approve' && edit.field == 'addinfo') {
+
+                title = 'Changed Approved';
+                message = 'Congrats! With your vote, the information of <strong>' +
+                edit.name + '</strong> to <br><br>' + edit.nval + '</br> gets approved.';
+
+            }
+            
             if (type == 'reject') {
 
                 title = 'Changed Rejected';

@@ -5,12 +5,12 @@
         .module('app')
         .controller('cwrapper', cwrapper);
 
-    cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope', 'headlines', 'cblocks',
-        'answers', 'rankings', 'catansrecs', 'query', 'table', 'specials', 'fileupload', 'allvrows',
+    cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
+        'query', 'fileupload',
         'votes', 'editvote', 'vrowvotes'];
 
-    function cwrapper($rootScope, $state, $http, $stateParams, $scope, headlines, cblocks,
-        answers, rankings, catansrecs, query, table, specials, fileupload, allvrows,
+    function cwrapper($rootScope, $state, $http, $stateParams, $scope, 
+        query, fileupload,
         votes, editvote, vrowvotes) {
         /* jshint validthis:true */
         var vm = this;
@@ -26,6 +26,7 @@
         vm.applyRule = applyRule;
         vm.selnh = selnh;
         vm.uploadFile = uploadFile;
+        vm.goHome = goHome;
         
         //vm.isAdmin = true;
         $rootScope.editMode = false;
@@ -33,8 +34,8 @@
         
         vm.content = [];
         vm.emptyspace = '';
-
-
+        vm.fbm = $rootScope.fbmode ? true:false;
+        
         $rootScope.searchActive = false;
         vm.searchActive = $rootScope.searchActive;
 
@@ -46,7 +47,7 @@
             vm.isNh = $rootScope.isNh;
             vm.isCity = $rootScope.isCity;
             vm.isNhRdy = $rootScope.isNhRdy;
-            vm.nhs = $rootScope.neighborhoods;
+            vm.nhs = $rootScope.neighborhoods.concat($rootScope.districts);
             vm.searchActive = $rootScope.searchActive;
             vm.cnh = $rootScope.cnh;
             vm.isAdmin = $rootScope.isAdmin;
@@ -55,7 +56,7 @@
             vm.selViewRank = $rootScope.editMode ? 'none' : 'active';
             
             $rootScope.includeNearMe = false;
-
+            
         }
         function init() {
 
@@ -81,7 +82,7 @@
             //******************************
 
             //Load current category
-            $rootScope.content = {};
+            //$rootScope.content = {};
             //vm.isBasic = $rootScope.isBasic;
             switchScope(1); //Default view is basic query view
             vm.cnh = 'Select Neighborhood';
@@ -89,7 +90,7 @@
             vm.isNhRdy = false;
             $rootScope.isNhRdy = false; 
             //vm.viewNum = 0;
-
+/*
             $rootScope.content = rankings; //response
             $rootScope.specials = specials;
             $rootScope.answers = answers;
@@ -97,23 +98,12 @@
             $rootScope.cvrows = allvrows;
             $rootScope.headlines = headlines;
             $rootScope.cblocks = cblocks;
-
+*/
+            
             loadcontent();
             getEstablishmentAnswers();
 
             //});
-            
-            $http.get('../../../assets/fields.json').success(function (response) {
-                $rootScope.typeSchema = response;
-                console.log("Fields Loaded!");
-
-            });
-
-            $http.get('../../../assets/dialogs.json').success(function (response) {
-                $rootScope.dialogs = response;
-                console.log("Dialogs Loaded!");
-
-            });
 
             $rootScope.cwrapperLoaded = true;
         }
@@ -177,17 +167,7 @@
             $rootScope.cityranks = ['city', 'lifestyle', 'food', 'politics', 'services', 'social', 'beauty', 'sports', 'personalities', 'technology', 'dating', 'health'];
             $rootScope.nhranks = ['neighborhood', 'lifestyle', 'food', 'services', 'social', 'beauty', 'health'];
 
-            $rootScope.neighborhoods = [
-                "Downtown", "La Jolla", "Pacific Beach", "Hillcrest", "University Heights", "Old Town", "Del Mar",
-                "Ocean Beach", "North Park", "Mission Hills", "Barrio Logan", "City Heights", "Clairemont", "La Mesa", "Point Loma",
-                "South Park", "Scripps Ranch", "Mission Beach", "Kensington", "Cardiff by the Sea", "Coronado",
-                "Leucadia", "Oceanside", "National City", "Rancho Santa Fe", "Solana Beach", "Poway", "El Cajon",
-                "Escondido", "Carlsbad", "San Ysidro", "Otay Mesa", "Linda Vista", "Chula Vista", "Encinitas", "Golden Hills", "Spring Valley", "Rancho San Diego"];
-            $rootScope.districts = [
-                "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
-                "Marina", "Seaport Village"];
-
-            vm.nhs = $rootScope.neighborhoods;
+            vm.nhs = $rootScope.neighborhoods.concat($rootScope.districts);
 
             if ($rootScope.isLoggedIn) {
                 //load answer votes
@@ -205,7 +185,6 @@
                 });
 
             }
-
         }
 
         function getEstablishmentAnswers() {
@@ -213,14 +192,14 @@
             $rootScope.estNames = [];
             $rootScope.pplAnswers = [];
             $rootScope.pplNames = [];
-            for (var i = 0; i < answers.length; i++) {
-                if (answers[i].type == 'Establishment') {
-                    $rootScope.estNames.push(answers[i].name);
-                    $rootScope.estAnswers.push(answers[i]);
+            for (var i = 0; i < $rootScope.answers.length; i++) {
+                if ($rootScope.answers[i].type == 'Establishment') {
+                    $rootScope.estNames.push($rootScope.answers[i].name);
+                    $rootScope.estAnswers.push($rootScope.answers[i]);
                 }
-                if (answers[i].type == 'Person') {
-                    $rootScope.pplNames.push(answers[i].name);
-                    $rootScope.pplAnswers.push(answers[i]);
+                if ($rootScope.answers[i].type == 'Person') {
+                    $rootScope.pplNames.push($rootScope.answers[i].name);
+                    $rootScope.pplAnswers.push($rootScope.answers[i]);
                 }
             }
         }
@@ -287,7 +266,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-            //  $rootScope.$emit('applyRule');
+              $rootScope.$emit('applyRule');
         }
            
         //Upload Image
@@ -299,6 +278,12 @@
                 fileupload.uploadFileToUrl(vm.myFile);
             }
 
+        }
+        
+        function goHome(){
+            //$rootScope.$emit('quitFeedbackMode');
+            $rootScope.fbmode = false;
+            vm.fbm = $rootScope.fbmode;
         }
         //***********End Admin Functions********************
     }

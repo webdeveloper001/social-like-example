@@ -5,9 +5,9 @@
         .module('app')
         .controller('addAnswer', addAnswer);
 
-    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'image', 'catans', 'getgps'];
+    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'image', 'catans', 'getgps', '$timeout','getwiki','$window'];
 
-    function addAnswer(dialog, $state, answer, $rootScope, $modal, image, catans, getgps) {
+    function addAnswer(dialog, $state, answer, $rootScope, $modal, image, catans, getgps, $timeout, getwiki, $window) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'addAnswer';
@@ -20,6 +20,8 @@
         var publicfield_obj = {};
         var loadImageDataOk = false;
         var addAnswerDataOk = false;
+        var addAnswerExec = false;
+        var addAnswerGPSexec = false;
         var answers = $rootScope.answers;
         
         //load public fields
@@ -42,6 +44,14 @@
         var duplicateExists = false;
         var duplicateSameCategory = false;
         
+        //search for equivalent ranks
+        var inDistrict = false;
+        var inDistrictName = '';
+        var inDowntown = false;
+        var inCity = false;
+        var eqRankIdx = 0;
+        var eqFound = false;
+        
         // Members
         var myAnswer = {};
         var extAnswer = {};
@@ -53,6 +63,7 @@
         vm.viewNext = viewNext;
         vm.viewPrev = viewPrev;
         vm.closeRank = closeRank;
+        vm.getWiki = getWiki;
         vm.showHowItWorksDialog = showHowItWorksDialog;
 
         vm.imageURL = '../../../assets/images/noimage.jpg';
@@ -62,13 +73,37 @@
         $rootScope.$on('answerGPSready', function () {
             if ($state.current.name == 'addAnswer') addAnswerGPS();
         });
+        
+        $rootScope.$on('wikiReady', function (event,wikiRes) {
+            if ($state.current.name == 'addAnswer') loadWiki(wikiRes);
+        });
+        
+        //Adjust picture size for very small displays
+        if ($window.innerWidth < 512) {vm.sm = true; vm.nsm = false; }
+        else {vm.sm = false; vm.nsm = true; }
 
         activate();
 
         function activate() {
             loadPublicFields();
+            determineScope();
             console.log("Add Answer Activated!");
 
+        }
+
+        function determineScope() {
+            if ($rootScope.cCategory.title.includes('San Diego')) {
+                inCity = true;
+            }
+            if ($rootScope.cCategory.title.includes('Downtown')) {
+                inDowntown = true;
+            }
+            for (var j = 0; j < $rootScope.districts.length; j++) {
+                if ($rootScope.cCategory.title.includes($rootScope.districts[j])) {
+                    inDistrict = true;
+                    inDistrictName = $rootScope.districts[j];
+                }
+            }
         }
 
         function loadPublicFields() {
@@ -80,7 +115,7 @@
 
             vm.establishmentNames = $rootScope.estNames;
             vm.peopleNames = $rootScope.pplNames;
-            
+
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
                        
@@ -122,18 +157,26 @@
 
         function addAnswer() {
 
-            myAnswer.imageurl = imageLinks[vm.linkIdx];
-            if ($rootScope.cCategory.type == 'Short-Phrase') myAnswer.imageurl = 'none';
+            if (!addAnswerExec) {
+                myAnswer.imageurl = imageLinks[vm.linkIdx];
+                if ($rootScope.cCategory.type == 'Short-Phrase') myAnswer.imageurl = 'none';
 
-            myAnswer.upV = 0;
-            myAnswer.downV = 0;
-            myAnswer.type = vm.type;
-            myAnswer.userid = $rootScope.user.id;
-            myAnswer.views = 0;
+                myAnswer.upV = 0;
+                myAnswer.downV = 0;
+                myAnswer.type = vm.type;
+                myAnswer.userid = $rootScope.user.id;
+                myAnswer.views = 0;
 
-            if (duplicateExists) dialog.checkSameAnswer(myAnswer, extAnswer, addAnswerConfirmed, answerIsSame);
-            else dialog.addAnswer(myAnswer, vm.imageURL, addAnswerConfirmed);
+                if (duplicateExists) dialog.checkSameAnswer(myAnswer, extAnswer, addAnswerConfirmed, answerIsSame);
+                else dialog.addAnswer(myAnswer, vm.imageURL, addAnswerConfirmed);
 
+                addAnswerExec = true;
+                
+                //This is to prevent double pulses and have two answers get submitted by hardware glitch
+                $timeout(function () {
+                    addAnswerExec = false;
+                }, 1000)
+            }
         }
 
         function loadFormData() {
@@ -174,6 +217,7 @@
         }
 
         function callSearchImage() {
+
             var pFields = [];
 
             loadFormData();
@@ -258,6 +302,7 @@
 
         function addAnswerConfirmed(myAnswer) {
             //Add new answer, also add new post to catans (inside addAnser)
+            
             console.log("No, different! @addAnswerConfirmed");
             if (myAnswer.type == 'Establishment' && (myAnswer.location != undefined && myAnswer.location != "" && myAnswer.location != null)) {
                 var promise = getgps.getLocationGPS(myAnswer);
@@ -267,21 +312,73 @@
                 });
             }
             else {
-                answer.addAnswer(myAnswer).then(rankSummary);
+                eqRanks();
+                //create 2 catans records one for downtown and then district
+                if (eqFound && !inCity) answer.addAnswer2(myAnswer, [$rootScope.cCategory.id, eqRankIdx]).then(rankSummary);
+                else if (eqFound && inCity) answer.addAnswer2(myAnswer, [eqRankIdx]).then(rankSummary);
+                else answer.addAnswer(myAnswer).then(rankSummary); 
             }
         }
 
         function addAnswerGPS() {
-            answer.addAnswer(myAnswer).then(rankSummary);
+            if (!addAnswerGPSexec) {
+                addAnswerGPSexec = true;
+                eqRanks();
+                //create 2 catans records one for downtown and then district
+                if (eqFound && !inCity) answer.addAnswer2(myAnswer, [$rootScope.cCategory.id, eqRankIdx]).then(rankSummary);
+                else if (eqFound && inCity) answer.addAnswer2(myAnswer, [eqRankIdx]).then(rankSummary);
+                else answer.addAnswer(myAnswer).then(rankSummary);                
+            }
         }
-
-        function answerIsSame() {
+        
+         function answerIsSame() {
             console.log("Yeah Same, @answerIsSame");
             //Answer already exist in this category, do not add
             if (duplicateSameCategory) dialog.getDialog('answerDuplicated');
             //Answer already exist, just post new category-answer record            
-            else catans.postRec(extAnswer.id);
-            rankSummary();
+            else {
+                eqRanks();
+                //create 2 catans records one for downtown and then district
+                if (eqFound && !inCity) {
+                    catans.postRec2(extAnswer.id, eqRankIdx);
+                    catans.postRec2(extAnswer.id, $rootScope.cCategory.id).then(rankSummary);
+                }
+                else if (eqFound && inCity) catans.postRec2(extAnswer.id, eqRankIdx).then(rankSummary);
+                else catans.postRec(extAnswer.id).then(rankSummary);                
+            }
+         }
+
+        function eqRanks() {
+            var lookRank = '';
+            if (inDowntown || inDistrict || inCity) {
+                if (inDowntown && myAnswer.cityarea != 'Downtown') {
+                    lookRank = $rootScope.cCategory.title.replace('Downtown', myAnswer.cityarea);
+                    for (var n = 0; n < $rootScope.content.length; n++) {
+                        if ($rootScope.content[n].title == lookRank) {
+                            eqFound = true;
+                            eqRankIdx = $rootScope.content[n].id;
+                        }
+                    }
+                }
+                if (inDistrict) {
+                    lookRank = $rootScope.cCategory.title.replace(inDistrictName, 'Downtown');
+                    for (var n = 0; n < $rootScope.content.length; n++) {
+                        if ($rootScope.content[n].title == lookRank) {
+                            eqFound = true;
+                            eqRankIdx = $rootScope.content[n].id;
+                        }
+                    }
+                }               
+                if (inCity){
+                    lookRank = $rootScope.cCategory.title.replace('San Diego', myAnswer.cityarea);
+                    for (var n = 0; n < $rootScope.content.length; n++) {
+                        if ($rootScope.content[n].title == lookRank) {
+                            eqFound = true;
+                            eqRankIdx = $rootScope.content[n].id;
+                        }
+                    }
+                }
+            }
         }
 
         function showHowItWorksDialog() {
@@ -352,6 +449,30 @@
                 }
             }
             //console.log("duplicateExists: ", duplicateExists, " duplicateSameCategory: ", duplicateSameCategory);
+        }
+        
+        function getWiki(){
+            var wikiSearchStr = '';
+            for (var n=0; n < vm.fields.length; n++){
+                if (vm.fields[n].name == 'name') {
+                    wikiSearchStr = vm.fields[n].val;
+                    break;
+                }
+            }
+            
+            if (wikiSearchStr.length > 0){
+                getwiki.getWiki(wikiSearchStr);
+            }
+            return;
+        }
+        
+        function loadWiki(x){
+            for (var n=0; n < vm.fields.length; n++){
+                if (vm.fields[n].name == 'addinfo') {
+                    vm.fields[n].val = x;
+                    break;
+                }
+            }          
         }
 
         function closeRank() {

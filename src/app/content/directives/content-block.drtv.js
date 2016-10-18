@@ -10,7 +10,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             isRoW: '=rankofweek',
             updateView: '&updateView'
         },
-        controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', function contentCtrl($scope, query, $http, answer, table, catans) {
+        controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 
+        function contentCtrl($scope, query, $http, answer, table, catans, $timeout) {
             var vm = $scope;
             vm.title = 'mycontent';
 
@@ -19,7 +20,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             //Methods
             vm.loadContent = loadContent;
 
-            if (vm.modType == 'query') vm.maxRes = 20;
+            if (vm.modType == 'query') vm.maxRes = 100;
             else vm.maxRes = 6;
 
             vm.btext = 'see more';
@@ -41,7 +42,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             $rootScope.$on('applyRule', function (e) {
                 applyRule();
             });
-
+            
             //Filter content based on user input
             function getRanks() {
                 vm.hideme = false;
@@ -91,31 +92,31 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                     if ($rootScope.content[j].title.includes('Rancho San Diego') == false) {
 
                                         vm.results.push(rankObj);
-                                    }                                
+                                    }
+                                }
+                                else vm.results.push($rootScope.content[j]);
                             }
-                            else vm.results.push($rootScope.content[j]);
                         }
-                    }
                         
-                    //resLT6 is used to hide the <<see more>> choice
-                    if (vm.results.length < 6) vm.resLT6 = true;
-                    else vm.resLT6 = false;
+                        //resLT6 is used to hide the <<see more>> choice
+                        if (vm.results.length < 6) vm.resLT6 = true;
+                        else vm.resLT6 = false;
 
-                    if (inputVal.length >= strlen_o) userIsTyping = true;
-                    else userIsTyping = false;
-                    //if less than 5 results, write 'query record
-                    if (vm.results.length <= 5 && (inputVal.length % 5 == 0) && userIsTyping) {
-                        query.postQuery(inputVal, vm.results.length)
-                        //console.log("query!")
+                        if (inputVal.length >= strlen_o) userIsTyping = true;
+                        else userIsTyping = false;
+                        //if less than 5 results, write 'query record
+                        if (vm.results.length <= 5 && (inputVal.length % 5 == 0) && userIsTyping) {
+                            query.postQuery(inputVal, vm.results.length)
+                            //console.log("query!")
+                        }
+                        strlen_o = inputVal.length;
                     }
-                    strlen_o = inputVal.length;
-                }
-                else {
-                    vm.results = [];
-                }
+                    else {
+                        vm.results = [];
+                    }
 
+                }
             }
-        }
 
             //load content based on mode
             function loadContent() {
@@ -159,6 +160,16 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         bFound = true;
                         break;
                     }
+                    else if ($rootScope.cblocks[i].scope == 'rx' && $rootScope.cblocks[i].type == vm.modType &&
+                        $rootScope.cblocks[i].scopename == 'RankX') {
+                        catstr = $rootScope.cblocks[i].catstr;
+                        idxs = catstr.split(':');
+                        for (var j = 0; j < idxs.length; j++) {
+                            vm.results.push($rootScope.content[idxs[j]]);
+                        }
+                        bFound = true;
+                        break;
+                    }                    
                 }
                 
                 //resLT6 is used to hide the <<see more>> choice
@@ -179,232 +190,317 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 }
 
             }
-            var applyRuleDone = false;
-        function applyRule() {
-        console.log("apply Rule");
-        // $rootScope.$emit('getLocation');   
             
-        /*//  1.Use this code to get GPS location for alls answers starting at index $rootScope.answeridxgp
-             
-          var fa='';
-          var lat=0;
-          var lng=0;
-          
-          var API_KEY = 'AIzaSyC2gAzj80m1XpaagvunSDPgEvOCleNNe5A';
-          var APP_API_KEY = '7e9a54a80a6ae850bc38ff768d75e143e75c273d1f7e2f265648020bf8c42a3b';
-          var cAnswer = {};
-          var url = '';
-          var myLoc = '';
-          
-          delete $http.defaults.headers.common['X-Dreamfactory-API-Key'];
-          
-          cAnswer = $rootScope.answers[$rootScope.answeridxgps];
-          
-          //console.log("cAnswer",cAnswer);
-          
-          if (cAnswer.type == 'Establishment' && (cAnswer.location != undefined && cAnswer.location != "" && cAnswer.location != null)){
-              //if ($rootScope.answers[i].id == 190){
-                  //cAnswer = $rootScope.answers[i];
-                  console.log("answer: ",$rootScope.answeridxgps, " location: ", cAnswer.location);
-                  if (cAnswer.location.includes('San Diego') == false) {
-                      myLoc = cAnswer.location + ' San Diego, CA';
+            //var applyRuleDone = false;
+            //var midx = 0;
+            function applyRule() {
+                console.log("apply Rule");
+                // $rootScope.$emit('getLocation');   
+            
+                /*//  1.Use this code to get GPS location for alls answers starting at index $rootScope.answeridxgp
+                     
+                  var fa='';
+                  var lat=0;
+                  var lng=0;
+                  
+                  var API_KEY = 'AIzaSyC2gAzj80m1XpaagvunSDPgEvOCleNNe5A';
+                  var APP_API_KEY = '7e9a54a80a6ae850bc38ff768d75e143e75c273d1f7e2f265648020bf8c42a3b';
+                  var cAnswer = {};
+                  var url = '';
+                  var myLoc = '';
+                  
+                  delete $http.defaults.headers.common['X-Dreamfactory-API-Key'];
+                  
+                  cAnswer = $rootScope.answers[$rootScope.answeridxgps];
+                  
+                  //console.log("cAnswer",cAnswer);
+                  
+                  if (cAnswer.type == 'Establishment' && (cAnswer.location != undefined && cAnswer.location != "" && cAnswer.location != null)){
+                      //if ($rootScope.answers[i].id == 190){
+                          //cAnswer = $rootScope.answers[i];
+                          console.log("answer: ",$rootScope.answeridxgps, " location: ", cAnswer.location);
+                          if (cAnswer.location.includes('San Diego') == false) {
+                              myLoc = cAnswer.location + ' San Diego, CA';
+                          }
+                          else myLoc = cAnswer.location;
+                          
+                          url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+ myLoc +'&key='+API_KEY;
+                          
+                          $http.get(url,{},{
+                          headers: {
+                              'Content-Type': 'multipart/form-data'
+                              //'Access-Control-Allow-Headers': 'x-dreamfactory-api-key'
+                           }
+                      }).then(function(result){
+                          //console.log("google response:---", result);
+                          fa = result.data.results[0].formatted_address;
+                          lat = result.data.results[0].geometry.location.lat;
+                          lng = result.data.results[0].geometry.location.lng;
+                          console.log("fa - lat - lon", fa, lat, lng);
+                          
+                          $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
+                          answer.updateAnswer(cAnswer.id,['lat','lng','location'],[lat,lng,fa]);
+                          
+                          if ($rootScope.answeridxgps < ($rootScope.answers.length-1)){
+                                  $rootScope.answeridxgps = $rootScope.answeridxgps + 1; 
+                                  $rootScope.$emit('applyRule');
+                              }
+                          
+                      });    
                   }
-                  else myLoc = cAnswer.location;
-                  
-                  url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+ myLoc +'&key='+API_KEY;
-                  
-                  $http.get(url,{},{
-                  headers: {
-                      'Content-Type': 'multipart/form-data'
-                      //'Access-Control-Allow-Headers': 'x-dreamfactory-api-key'
-                   }
-              }).then(function(result){
-                  //console.log("google response:---", result);
-                  fa = result.data.results[0].formatted_address;
-                  lat = result.data.results[0].geometry.location.lat;
-                  lng = result.data.results[0].geometry.location.lng;
-                  console.log("fa - lat - lon", fa, lat, lng);
-                  
-                  $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
-                  answer.updateAnswer(cAnswer.id,['lat','lng','location'],[lat,lng,fa]);
-                  
-                  if ($rootScope.answeridxgps < ($rootScope.answers.length-1)){
+                  else{
+                      if ($rootScope.answeridxgps < ($rootScope.answers.length-2)){
                           $rootScope.answeridxgps = $rootScope.answeridxgps + 1; 
                           $rootScope.$emit('applyRule');
                       }
-                  
-              });    
-          }
-          else{
-              if ($rootScope.answeridxgps < ($rootScope.answers.length-2)){
-                  $rootScope.answeridxgps = $rootScope.answeridxgps + 1; 
-                  $rootScope.$emit('applyRule');
-              }
-          }    
-          *///End of 1    
+                  }    
+                  *///End of 1    
         
         
-        /*//  2. Use this to add/remove a tag from a rank 
-        for (var i=0; i < vm.resultsT.length; i++){
-            if (vm.resultsT[i].title.includes("Public opinions of the Police")){
-                var tags = vm.resultsT[i].tags + ' neighborhood';
-                //var tags = vm.resultsT[i].tags.replace('italian','');
-                table.update(vm.resultsT[i].id, ['tags'],[tags]);    
-            }            
-        } 
-        *///End of 2
+                /*//  2. Use this to add/remove a tag from a rank 
+                for (var i=0; i < vm.resultsT.length; i++){
+                    if (vm.resultsT[i].title.includes("Public opinions of the Police")){
+                        var tags = vm.resultsT[i].tags + ' neighborhood';
+                        //var tags = vm.resultsT[i].tags.replace('italian','');
+                        table.update(vm.resultsT[i].id, ['tags'],[tags]);    
+                    }            
+                } 
+                *///End of 2
         
-        /*//  3.Use this to correct the title of a group of ranks
-        for (var i=0; i < vm.results.length; i++){
-            var titlex = vm.results[i].title.replace("Gaslamp Quater","Gaslamp Quarter");
-            //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
-            //console.log("tags ", tags);
-            table.update(vm.results[i].id, ['title'],[titlex]);
-        } 
-         *///End of 3
+                /*//  3.Use this to correct the title of a group of ranks
+                for (var i=0; i < vm.results.length; i++){
+                    var titlex = vm.results[i].title.replace("restaurant","restaurants");
+                    //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
+                    //console.log("tags ", tags);
+                    table.update(vm.results[i].id, ['title'],[titlex]);
+                } 
+                */ //End of 3
             
-        /*//  4.Use this to add a neighborhood
-        var nhs = ["Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
-                "Marina", "Seaport Village"];
-        var logi = 1;
-        var basetitle = '';
-        if (applyRuleDone == false){
-        for (var i=0; i < vm.results.length; i++){
-            
-            basetitle = vm.results[i].title;
-            //Copy object without reference
-            var tablex = JSON.parse(JSON.stringify(vm.results[i]));
-            tablex.id = undefined;
-            tablex.views = 0;
-            tablex.answers = 0;
-            tablex.answertags = '';
-            var newtitle = '';
-            
-            if (tablex.title.includes("in Hillcrest")){
-                //for (var j=0; j<nhs.length; j++){
-                    newtitle = basetitle.replace("Hillcrest", nhs[8]);
-                    tablex.title = newtitle;                            
-                    table.addTable(tablex);
-                    //console.log(logi,tablex.id, tablex.title);
-                    console.log("log idx: ",logi++);
-                //}
-            }
-        }
-        applyRuleDone = true;
-        }
-        else console.log("Rule already executed!!");
-        *///End 4
+                /*//  4.Use this to add a neighborhood
+                var nhs = ["Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
+                        "Marina", "Seaport Village"];
+                var logi = 1;
+                var basetitle = '';
+                if (applyRuleDone == false){
+                for (var i=0; i < vm.results.length; i++){
+                    
+                    basetitle = vm.results[i].title;
+                    //Copy object without reference
+                    var tablex = JSON.parse(JSON.stringify(vm.results[i]));
+                    tablex.id = undefined;
+                    tablex.views = 0;
+                    tablex.answers = 0;
+                    tablex.answertags = '';
+                    var newtitle = '';
+                    
+                    if (tablex.title.includes("in Hillcrest")){
+                        //for (var j=0; j<nhs.length; j++){
+                            newtitle = basetitle.replace("Hillcrest", nhs[8]);
+                            tablex.title = newtitle;                            
+                            table.addTable(tablex);
+                            //console.log(logi,tablex.id, tablex.title);
+                            console.log("log idx: ",logi++);
+                        //}
+                    }
+                }
+                applyRuleDone = true;
+                }
+                else console.log("Rule already executed!!");
+                *///End 4
         
-        /*//  5.Use this for batch DELETE
-        for (var i=0; i < vm.results.length; i++){
- //           if (vm.results[i].title.includes("in Core")){
-                 //for (var j=0; j<$rootScope.catansrecs.length; j++){
-                     //if ($rootScope.catansrecs[j].category == vm.resultsT[i].id){
-                       //  catans.deleteRec($rootScope.catansrecs[j].answer,$rootScope.catansrecs[j].category);
-                     //}
-                 //}
-                 table.deleteTable(vm.results[i].id);      
- //           }                   
-       }
-     */  //End 5
+                /*//  5.Use this for batch DELETE
+                for (var i=0; i < vm.results.length; i++){
+         //           if (vm.results[i].title.includes("in Core")){
+                         //for (var j=0; j<$rootScope.catansrecs.length; j++){
+                             //if ($rootScope.catansrecs[j].category == vm.resultsT[i].id){
+                               //  catans.deleteRec($rootScope.catansrecs[j].answer,$rootScope.catansrecs[j].category);
+                             //}
+                         //}
+                         table.deleteTable(vm.results[i].id);      
+         //           }                   
+               }
+             */  //End 5
+      
+                /*//6. Use this to add a ranking to all neighborhood 
+                 for (var i=0; i < vm.resultsT.length; i++){            
+                     //Copy object without reference
+                     var tablex = JSON.parse(JSON.stringify(vm.resultsT[i]));
+                     tablex.id = undefined;
+                     var newtitle = tablex.title.replace("Best steaks in", "Best art galleries in");
+                     tablex.title = newtitle;
+                     //var newtags = tablex.tags.replace("meat food", "beer pb bars");
+                     var newtags = "paintings culture";
+                     tablex.tags = newtags;
+                     tablex.answertags = '';
+                     //console.log("tags ", tags);
+                     table.addTable(tablex);
+                 }
+                 *///End 6
+        
+                /*//7. Add 'isMP' to all non-neighborhood ranks
                         
-               
-        
-        /*//6. Use this to add a ranking to all neighborhood 
-         for (var i=0; i < vm.resultsT.length; i++){            
-             //Copy object without reference
-             var tablex = JSON.parse(JSON.stringify(vm.resultsT[i]));
-             tablex.id = undefined;
-             var newtitle = tablex.title.replace("Best steaks in", "Best art galleries in");
-             tablex.title = newtitle;
-             //var newtags = tablex.tags.replace("meat food", "beer pb bars");
-             var newtags = "paintings culture";
-             tablex.tags = newtags;
-             tablex.answertags = '';
-             //console.log("tags ", tags);
-             table.addTable(tablex);
-         }
-         *///End 6
-        
-        /*//7. Add 'isMP' to all non-neighborhood ranks
+                        var isMain = true;
+                        for (var i=50; i<$rootScope.content.length; i++){
+                            isMain = true;    
+                            for (var j=0; j<$rootScope.neighborhoods.length; j++){
+                                if ($rootScope.content[i].title.includes($rootScope.neighborhoods[j])){
+                                    isMain = false; break;
+                                }
+                            }
+                            if (isMain){
+                                    var tags = $rootScope.content[i].tags + ' isMP';
+                                    table.update($rootScope.content[i].id, ['tags'],[tags]);                         
+                            }
+                        } 
+                 *///End 7
+         
+         
                 
-                var isMain = true;
-                for (var i=50; i<$rootScope.content.length; i++){
-                    isMain = true;    
-                    for (var j=0; j<$rootScope.neighborhoods.length; j++){
-                        if ($rootScope.content[i].title.includes($rootScope.neighborhoods[j])){
-                            isMain = false; break;
+                /*//8. Generate Category Strings for non neighborhood ranks            
+                   for (var i=0; i<vm.results.length; i++){
+                       if (vm.results[i].title.includes("Hillcrest")){
+                           var catstr = '';
+                           var fcatstr = '';
+                           var genRank = vm.results[i].title.replace("Hillcrest", "San Diego");
+                           for (var j=0; j<$rootScope.content.length; j++){
+                               if (genRank == $rootScope.content[j].title){
+                                   if ($rootScope.content[j].catstr == null || 
+                                   $rootScope.content[j].catstr == undefined || 
+                                   $rootScope.content[j].catstr.length == 0){
+                                    console.log("Found gen rank --- ", $rootScope.content[j].title);
+                                    var srchStr = $rootScope.content[j].title.replace("San Diego","");
+                                       for (var k=0; k<$rootScope.content.length; k++){
+                                           if ($rootScope.content[k].title.includes(srchStr) && k!=j ){
+                                               console.log("Found sub rank --- ", $rootScope.content[k].title);
+                                               catstr = catstr + ':' + $rootScope.content[k].id;
+                                           }
+                                       }
+                                       fcatstr = catstr.substring(1); //remove leading ':'
+                                       console.log("final catstr ---", fcatstr)
+                                       table.update($rootScope.content[j].id, ['isatomic','catstr'],[false, fcatstr]);
+                                   } 
+                               break;
+                               }
+                           }                                              
+                       }
+                   }
+                  */ //End 8
+               
+                /*//  9. Clear answer string for all non-atomic ranks 
+                for (var i=0; i < $rootScope.content.length; i++){
+                    if ($rootScope.content[i].isatomic == false){                
+                        var answertags = '';
+                        table.update($rootScope.content[i].id, ['answertags'],[answertags]);    
+                    }            
+                } 
+                *///End of 9
+                // "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
+                //      "Marina", "Seaport Village"];
+                /*// 10. downtwon districts - create catans
+                if (applyRuleDone) return;
+                var srank = '';
+                var res = [];
+                var item ={};
+                var district = '';
+                for (var m = 0; m < $rootScope.districts.length; m++) {
+                    district = $rootScope.districts[m];
+                    console.log('@ district : ', district);
+                    for (var i = 0; i < $rootScope.answers.length; i++) {
+                        if ($rootScope.answers[i].cityarea == district) {
+                            //console.log("found answer - ", $rootScope.answers[i]);
+
+                            for (var j = 0; j < $rootScope.catansrecs.length; j++) {
+                                if ($rootScope.catansrecs[j].answer == $rootScope.answers[i].id) {
+                                    //console.log("found catans - ", $rootScope.catansrecs[j]);
+                                    for (var k = 0; k < $rootScope.content.length; k++) {
+                                        if ($rootScope.content[k].id == $rootScope.catansrecs[j].category) {
+                                            //console.log("found category - ",$rootScope.content[k]); 
+                                            srank = $rootScope.content[k].title.replace('Downtown', district);
+                                            //console.log("srank - ", srank); 
+                                            //break; 
+                                            for (var n = 0; n < $rootScope.content.length; n++) {
+                                                if ($rootScope.content[n].title == srank) {
+                                                    //console.log("Found rank - ", $rootScope.content[n]);
+                                                    console.log("add ", $rootScope.answers[i].name, ' to ', $rootScope.content[n].title);
+                                                    item = {};
+                                                    item.answer = $rootScope.answers[i].id;
+                                                    item.category = $rootScope.content[n].id;
+                                                    res.push(item);
+                                                    //catans.postRec2($rootScope.answers[i].id,$rootScope.content[n].id);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //break;
+                                }
+                            }
                         }
                     }
-                    if (isMain){
-                            var tags = $rootScope.content[i].tags + ' isMP';
-                            table.update($rootScope.content[i].id, ['tags'],[tags]);                         
-                    }
-                } 
-         *///End 7
-         
-         
+                }
+                //console.log("res -- ", res);
+                for (var p=0; p<res.length; p++){
+                    catans.postRec2(res[p].answer,res[p].category);
+                }
+                    applyRuleDone = true;
+                //}
+                *///
+                /*//11. Open all contents to refresh number of answers
+                $timeout(function () {
+                    $state.go('rankSummary', { index: $rootScope.content[midx].id });
+                    midx++;
+                    $rootScope.$emit('applyRule');
+                }, 500)
+                */
                 
-        /*//8. Generate Category Strings for non neighborhood ranks            
-           for (var i=0; i<vm.resultsT.length; i++){
-               if (vm.resultsT[i].title.includes("Hillcrest")){
-                   var catstr = '';
-                   var fcatstr = '';
-                   var genRank = vm.resultsT[i].title.replace("Hillcrest", "San Diego");
-                   for (var j=0; j<$rootScope.content.length; j++){
-                       if (genRank == $rootScope.content[j].title){
-                           console.log("Found gen rank --- ", $rootScope.content[j].title);
-                           var srchStr = $rootScope.content[j].title.replace("San Diego?","");
-                               for (var k=0; k<$rootScope.content.length; k++){
-                                   if ($rootScope.content[k].title.includes(srchStr) && k!=j ){
-                                       console.log("Found sub rank --- ", $rootScope.content[k].title);
-                                       catstr = catstr + ':' + $rootScope.content[k].id;
-                                   }
-                               }
-                               fcatstr = catstr.substring(1);
-                               console.log("final catstr ---", fcatstr)
-                               table.update($rootScope.content[j].id, ['isatomic','catstr'],[false, fcatstr]);
-                       break;
-                       }
-                   }                                              
-               }
-           }
-          */ //End 8
-               
-        /*//  9. Clear answer string for all non-atomic ranks 
-        for (var i=0; i < $rootScope.content.length; i++){
-            if ($rootScope.content[i].isatomic == false){                
-                var answertags = '';
-                table.update($rootScope.content[i].id, ['answertags'],[answertags]);    
-            }            
-        } 
-        *///End of 9                  
-    }
-}], //end controller
-    link: function (scope) {
-        scope.rankSel = function (x, index) {
-            $rootScope.title = x.title;
-            if ($rootScope.editMode) $state.go('editRanking', { index: x.id });
-            else {
-                $state.go('rankSummary', { index: x.id });
+                /*//12. Add 'pb' tag to all Pacific Beach
+                var tagstr = '';
+                for (var i=0; i<$rootScope.content.length; i++){
+                    if ($rootScope.content[i].title.includes('Ocean Beach')){
+                        if ($rootScope.content[i].tags.includes('ob') == false){
+                            tagstr = $rootScope.content[i].tags + ' ob';
+                            //console.log("tagstr - ", tagstr, $rootScope.content[i].title);
+                            table.update($rootScope.content[i].id,['tags'],[tagstr]);
+                        }
+                    }
+                }
+                *///
+                /*//13. Open all contents to refresh number of answers, add vrows
+                $timeout(function () {
+                    $state.go('rankSummary', { index: $rootScope.content[midx].id });
+                    //$state.go('rankSummary', { index: 74 });
+                    midx++;
+                    console.log("midx - ", midx);
+                    $rootScope.$emit('applyRule');
+                }, 1500);
+                *///
+                
+                                                               
             }
-        };
-        scope.seeMore = function (maxRes, btext) {
-            if (scope.maxRes == 6) {
-                scope.btext = 'see less';
-                scope.maxRes = 100;
+        }], //end controller
+        link: function (scope) {
+            scope.rankSel = function (x, index) {
+                $rootScope.title = x.title;
+                if ($rootScope.editMode) $state.go('editRanking', { index: x.id });
+                else {
+                    $state.go('rankSummary', { index: x.id });
+                }
+            };
+            scope.seeMore = function (maxRes, btext) {
+                if (scope.maxRes == 6) {
+                    scope.btext = 'see less';
+                    scope.maxRes = 100;
+                }
+                else {
+                    scope.btext = 'see more';
+                    scope.maxRes = 6;
+                }
+                // scope.loadContent();
             }
-            else {
-                scope.btext = 'see more';
-                scope.maxRes = 6;
+            scope.updateView = function (bFound) {
+                if (bFound) scope.hideme = false;
+                else scope.hideme = true;
             }
-            // scope.loadContent();
-        }
-        scope.updateView = function (bFound) {
-            if (bFound) scope.hideme = false;
-            else scope.hideme = true;
-        }
-    },
+        },
     }
 }
     /*angular.module('app').directive('contentBlock', function() {

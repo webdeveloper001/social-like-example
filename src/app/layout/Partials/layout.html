@@ -11,20 +11,6 @@
     <div class="container-fluid" ng-hide="vm.isLoading">
         <br>
         <div class="row">
-            <!--
-            <div class="col-sm-9 col-md-3 sidebar">
-                <ul class="nav nav-sidebar">
-                    <li><a href="#/content/1">Olympics</a></li>
-                    <li><a href="#/content/2">US Elections</a></li>
-                    <li><a href="#/content/3">Sports</a></li>
-                    <li><a href="#/content/4">Entertainment</a></li>
-                    <li><a href="#/content/5">Politics</a></li>
-                    <li><a href="#/content/6">Places</a></li>
-                    <li><a href="#/content/7">Dating and Relationships</a></li>
-                    <li><a href="#/content/8">Philosophy</a></li>
-                </ul>
-            </div>
-            -->
             <div class="col-sm-0 col-md-1 col-lg-1">
                 </div>
                 <!-- Category Menu  -->
@@ -40,7 +26,7 @@
                     placeholder="Search Ranking">-->
                 <!-- Main View-->
                 <br>               
-                <div ui-view></div>
+                <div ui-view ng-if="!vm.isLoading"></div>
                 <br>
     </div>
 

@@ -29,13 +29,12 @@
                 //console.log("myLoc, GOOGLE_API_KEY --- ", myLoc, GOOGLE_API_KEY);
                 var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + myLoc + '&key=' + GOOGLE_API_KEY;
                 //console.log("url --- ", url);
-                return $http.get(url, {}, {
+                return $http.get(url, {}, {   
                     headers: {
                         'Content-Type': 'multipart/form-data'
                         //'Access-Control-Allow-Headers': 'x-dreamfactory-api-key'
                     }
                 }).then(function (result) {
-                    //console.log("google response:---", result);
                     answer.location = result.data.results[0].formatted_address;
                     answer.lat = result.data.results[0].geometry.location.lat;
                     answer.lng = result.data.results[0].geometry.location.lng;

@@ -6,10 +6,10 @@
         .controller('editAnswer', editAnswer);
 
     editAnswer.$inject = ['dialog', '$stateParams', '$state', 'answers', '$rootScope', 
-    '$modal', 'edit', 'editvote', 'answer', 'image','getgps','$window'];
+    '$modal', 'edit', 'editvote', 'answer', 'image','getgps','$window','getwiki'];
 
     function editAnswer(dialog, $stateParams, $state, answers, $rootScope, 
-    $modal, edit, editvote, answer, image, getgps, $window) {
+    $modal, edit, editvote, answer, image, getgps, $window, getwiki) {
         /* jshint validthis:true */
         var vm = this;
 
@@ -32,6 +32,7 @@
         vm.answerDetail = answerDetail;
         vm.hoursChanged = hoursChanged;
         vm.updateHours = updateHours;
+        vm.getWiki = getWiki;
         
         vm.ranking = $rootScope.title;
         vm.userIsOwner = $rootScope.userIsOwner;
@@ -76,11 +77,15 @@
 
         $rootScope.$on('fileUploaded', function (event, data){
             vm.imageURL = data;
-            selectImage();
+            if ($state.current.name == 'editAnswer') selectImage();
         });
         
-           $rootScope.$on('answerGPSready', function () {
+        $rootScope.$on('answerGPSready', function () {
             if ($state.current.name == 'editAnswer') editAnswerGPS();
+        });
+        
+        $rootScope.$on('wikiReady', function (event,wikiRes) {
+            if ($state.current.name == 'editAnswer') loadWiki(wikiRes);
         });
         
         //Adjust picture size for very small displays
@@ -623,6 +628,30 @@
             //console.log('@updateHours - ', strhours);
             answer.updateAnswer(vm.answer.id, ['strhours'], [strhours]);
             vm.updateHoursEn = 'disabled';
+        }
+        
+        function getWiki(){
+            var wikiSearchStr = '';
+            for (var n=0; n<vm.fields.length; n++){
+                if (vm.fields[n].field == 'name'){
+                    wikiSearchStr = vm.fields[n].val;
+                }
+            }
+            
+            if (wikiSearchStr.length > 0){
+                getwiki.getWiki(wikiSearchStr);
+            }
+            return;
+        }
+        
+        function loadWiki(x){
+            console.log("Load Wiki!!", x);
+            for (var n=0; n<vm.fields.length; n++){
+                if (vm.fields[n].field == 'addinfo'){
+                    vm.fields[n].val = x;
+                }
+            }
+            //vm.answer.addinfo = x;       
         }
 
     }

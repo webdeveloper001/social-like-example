@@ -7,7 +7,7 @@
 
     votes.$inject = ['$http', '$q', '$rootScope'];
 
-    function votes($http, $q, $rootScope) {
+    function votes($http, $q, $rootScope, useractivity) {
 
         // Members
         var _votes = [];
@@ -17,7 +17,8 @@
             loadVotesTable: loadVotesTable,
             patchRec: patchRec,
 			postRec: postRec,
-            deleteVotesbyCatans: deleteVotesbyCatans
+            deleteVotesbyCatans: deleteVotesbyCatans,
+            deleteRec: deleteRec
 			
             //    addTable: addTable
         };
@@ -44,7 +45,7 @@
                  
         }
 		
-        function postRec(catans_id, vote) {
+        function postRec(catans_id, answer_id, category_id, vote) {
             
             //form match record
             var obj = {};
@@ -53,6 +54,7 @@
             var data={};
             data.user = $rootScope.user.id;
             data.catans = catans_id;
+            data.answer = answer_id;
             data.vote = vote;
             data.timestmp = Date.now(); 
             
@@ -128,8 +130,27 @@
             return $http.delete(url).then(querySucceeded, _queryFailed);
             
             function querySucceeded(result) {
-
-                console.log("Deleting vote records was succesful");
+                
+                console.log("Deleting vote records by Catans was succesful");
+                return result.data;
+            }
+        }
+        
+        function deleteRec(rec_id) {
+            
+            //delete records from local copy
+            for (var i=0; i<_votes.length;i++){
+                if (_votes[i].id == rec_id){
+                    _votes.splice(i,1);
+                } 
+            }
+            
+           var url = baseURI + '/' + rec_id; 
+            
+            return $http.delete(url).then(querySucceeded, _queryFailed);
+            
+            function querySucceeded(result) {
+                console.log("Deleting vote record was succesful");
                 return result.data;
             }
         }

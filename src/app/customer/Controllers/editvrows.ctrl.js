@@ -55,7 +55,6 @@
                 }
             }
             
-            console.log("vm.vrows --- ", vm.vrows);
         }
 
         function closeRank() {
@@ -197,6 +196,7 @@
             var promise = vrows.deleteVrowByGroup(x.gnum);
 
             promise.then(function () {
+                console.log("$rootScope.cvrows - ", $rootScope.cvrows);
                 getVRows($rootScope.canswer.id);
                 //displayVRows();
             });

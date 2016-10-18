@@ -10,7 +10,7 @@
 
 
         // For any unmatched url
-        $urlRouterProvider.otherwise('/cwrapper');
+        $urlRouterProvider.otherwise('/');
 
         var states = [
             {
@@ -38,7 +38,8 @@
                         templateUrl: 'app/layout/Partials/cwrapper.html',
                         controller: 'cwrapper as vm'
                     }
-                },
+                }
+                /*
                 resolve: {
 
                     answers: ['answer', function (answer) {
@@ -111,6 +112,7 @@
                         });
                     }]                   
                 }
+                */
             },
 
             {
@@ -118,8 +120,8 @@
                 parent: 'layout',
                 url: '/rankSummary/:index',
                 templateUrl: 'app/rank/Partials/RankSummary.html',
-                controller: 'rankSummary as vm',
-
+                controller: 'rankSummary as vm'
+/*
                 resolve: {
                      
                     answers: ['answer', function (answer) {
@@ -186,7 +188,7 @@
                         };
                     }]*/
 
-                }
+//                }
             },
             {
                 name: 'editRanking',
@@ -252,6 +254,7 @@
                 url: '/answerDetail/:index',
                 templateUrl: 'app/answer/Partials/answerDetail.html',
                 controller: 'answerDetail as vm',
+                /*
                 resolve: {
 
                     answers: ['answer', function (answer) {
@@ -268,7 +271,7 @@
                         };
                     }]*/
 
-                }
+                //}
             },
             {
                 name: 'editvrows',
@@ -302,20 +305,6 @@
                         controller: 'about as vm'
                     },
                     "navbar@about": {
-                        templateUrl: 'app/layout/Partials/navbar.html',
-                        controller: 'navbar as vm'
-                    }
-                }
-            },
-             {
-                name: 'fileuploadtest',
-                url: '/fileuploadtest',
-                views: {
-                    "@": {
-                        templateUrl: 'app/layout/Partials/fileuploadtest.html',
-                        controller: 'fileuploadtest'
-                    },
-                    "navbar@fileuploadtest": {
                         templateUrl: 'app/layout/Partials/navbar.html',
                         controller: 'navbar as vm'
                     }

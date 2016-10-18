@@ -23,6 +23,7 @@
         vm.register = register;
         vm.redirectForFacebook = redirectForFacebook;
         vm.whyFacebookDialog = whyFacebookDialog;
+        vm.goBack = goBack;
 
         activate();
 
@@ -141,8 +142,11 @@
         }
 
         function register() {
-
             $location.path('/register');
+        }
+        
+        function goBack(){
+            $state.go('cwrapper');
         }
 
         function whyFacebookDialog(){

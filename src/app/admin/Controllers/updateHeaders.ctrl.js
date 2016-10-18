@@ -15,6 +15,7 @@
         vm.refresh = refresh;
         vm.createCBlocksRecsCity = createCBlocksRecsCity;
         vm.createCBlocksRecsNh = createCBlocksRecsNh;
+        vm.createCBlocksRecsRankX = createCBlocksRecsRankX;
         vm.deleteCBlocks = deleteCBlocks;
         activate();
 
@@ -45,25 +46,32 @@
                             //add 'isMP' tag to filter
                             tagstr = $rootScope.headlines[n].filter + ' isMP';
                         }
-                        else { 
+                        if ($rootScope.cblocks[i].scope == "rx"){
+                            //add 'isMP' tag to filter
+                            tagstr = $rootScope.headlines[n].filter;
+                        }
+                        if ($rootScope.cblocks[i].scope == "nh"){  
                             //add neighborhood to filter
                             tagstr = $rootScope.headlines[n].filter + ' ' + $rootScope.cblocks[i].scopename; 
                         }                        
                         valTags = tagstr.split(" ");
-                        break;
+                        break;                    
                     }
                 }
                 //console.log("valTags -- ", valTags);
+                var searchStr = '';
                 for (var j = 0; j < $rootScope.content.length; j++) {
+                    searchStr = $rootScope.content[j].tags + " " + $rootScope.content[j].title;
                     r = true;
                     //check that all tags exist
                     for (var k = 0; k < valTags.length; k++) {
                         var tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
                         var tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
-                        r = r && ($rootScope.searchStr[j].includes(valTags[k]) ||
-                            $rootScope.searchStr[j].includes(valTags[k].toUpperCase()) ||
-                            $rootScope.searchStr[j].includes(tagCapitalized) ||
-                            $rootScope.searchStr[j].includes(tagFirstLowered));
+                        r = r && (searchStr.includes(valTags[k]) ||
+                            searchStr.includes(valTags[k].toUpperCase()) ||
+                            searchStr.includes(tagCapitalized) ||
+                            searchStr.includes(tagFirstLowered));
+                            //AM: Changed searchStr to tags searchStr[j]
                     }
                     if (r) {
                         arrIdxs.push(j);
@@ -103,8 +111,9 @@
 
             return array;
         }
-        
+        var exe1 = false;
         function createCBlocksRecsCity(){
+            if (exe1) return;
             var cityArr = ['rankofweek','city','lifestyle','food','politics','services','social','beauty','sports','personalities','technology','dating','health'];
             var cbObj = {};
             for (var i=0; i< cityArr.length; i++){
@@ -115,23 +124,44 @@
                 cbObj.type = cityArr[i];        
                 cblock.addcblock(cbObj);
             }
+            exe1 = true;
                    
         }
-        
+        var nhs = $rootScope.neighborhoods.concat($rootScope.districts);
+        var exe2 = false;
         function createCBlocksRecsNh(){
+            if (exe2) return;
             var nhArr = ['rankofweeknh','neighborhood','lifestyle','food','services','social','beauty','health'];
             var cbObj = {};
-            for (var n=0; n<$rootScope.neighborhoods.length; n++){
+            for (var n=0; n<nhs.length; n++){
                 for (var i=0; i< nhArr.length; i++){
                 cbObj = {};
                 cbObj.scope = 'nh';
-                cbObj.scopename = $rootScope.neighborhoods[n];
+                cbObj.scopename = nhs[n];
                 cbObj.catstr = '0';
                 cbObj.type = nhArr[i];
                 
                 cblock.addcblock(cbObj);
-            }   
+                }   
             }
+            exe2 = true;
+            //console.log("nhArr",nhArr);
+        }
+        
+        var exe3 = false;
+        function createCBlocksRecsRankX(){
+            if (exe3) return;
+            var rxArr = ['rxfeedback','rxsuggestion'];
+            var cbObj = {};
+            for (var i=0; i< rxArr.length; i++){
+                cbObj = {};
+                cbObj.scope = 'rx';
+                cbObj.scopename = 'RankX';
+                cbObj.catstr = '0';
+                cbObj.type = rxArr[i];        
+                cblock.addcblock(cbObj);
+            }   
+            exe3 = true;
             //console.log("nhArr",nhArr);
         }
         

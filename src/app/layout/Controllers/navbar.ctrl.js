@@ -20,6 +20,8 @@
         vm.logout = logout;
         vm.goToLogin = goToLogin;
         vm.gotoAbout = gotoAbout;
+        vm.gotoFeedback = gotoFeedback;
+        vm.gotoHome = gotoHome;
         vm.gotoAdmin = gotoAdmin;
         vm.gotoFileUpload = gotoFileUpload;
         vm.gotoCustomer = gotoCustomer;
@@ -49,6 +51,16 @@
             //$stateProvider.state('app');
             $state.go('admin');
         }
+        
+        function gotoFeedback() {
+            $rootScope.fbmode = true;
+            $state.go('cwrapper', {}, {reload: true});
+        }
+        function gotoHome() {
+            $rootScope.fbmode = false;
+            $state.go('cwrapper', {}, {reload: true});
+        }
+        
 
         function gotoCustomer() {
             //$stateProvider.state('app');

@@ -18,11 +18,11 @@
             getAnswers: getAnswers,
             getAnswer: getAnswer,
             addAnswer: addAnswer,
+            addAnswer2: addAnswer2,
             updateAnswer: updateAnswer,
             deleteAnswer: deleteAnswer,
             flagAnswer: flagAnswer,
-            getAnswerbyCustomer:  getAnswerbyCustomer
-            
+            getAnswerbyCustomer:  getAnswerbyCustomer           
         };
 
         return service;
@@ -108,6 +108,38 @@
                                 
                 catans.postRec(answerx.id);
                 console.log("created catans for a new answer");
+                console.log("result", result);
+                return result.data;
+            }
+
+        }
+        
+        function addAnswer2(answer, category) {
+
+            var url = baseURI;
+            var resource = [];
+
+            resource.push(answer);
+
+            return $http.post(url, resource, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                body: resource
+            }).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+
+                //update local copy
+                var answerx = answer;
+                answerx.id = result.data.resource[0].id; 
+                _answers.push(answerx);
+                                
+                for (var n=0; n<category.length; n++){
+                    catans.postRec2(answerx.id, category[n]);    
+                }
+                
+                console.log('created '+ category.length + 'catans records for the new answer');
                 console.log("result", result);
                 return result.data;
             }
