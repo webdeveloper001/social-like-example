@@ -25,14 +25,14 @@
             var imageQuery = imageSearch(fields, attNum, type);            
             return imageQuery.then(querySucceeded, queryFailed);
             function querySucceeded(result) {
-                console.log('query succeded');
+                if ($rootScope.DEBUG_MODE) console.log('query succeded');
                 _searchResults = result; 
                 return filterImageResults(_searchResults); 
 
             }
             function queryFailed(result) {
 
-                console.log('image query failed');
+                if ($rootScope.DEBUG_MODE) console.log('image query failed');
             }
         }
 

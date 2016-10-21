@@ -15,10 +15,10 @@
 
         .controller('layout', layout);
 
-    layout.$inject = ['$location', '$rootScope','$window','$q', '$http','pvisits',
+    layout.$inject = ['$location', '$rootScope','$window','$q', '$http','pvisits', 'DEBUG_MODE',
     'answer', 'table','special', 'matchrec', 'edit','useractivity','vrows','headline','cblock', 'catans'];
 
-    function layout($location, $rootScope, $window, $q, $http, pvisits,
+    function layout($location, $rootScope, $window, $q, $http, pvisits, DEBUG_MODE,
     answer, table, special, matchrec, edit, useractivity, vrows, headline, cblock, catans) {
         /* jshint validthis:true */
         var vm = this;
@@ -36,10 +36,12 @@
         else vm.logoimage = "../../../assets/images/rankxlogosd.png";;
 
         function activate() {
+            
+            $rootScope.DEBUG_MODE = DEBUG_MODE;
 
             //$timeout(loadingDone, 1000);
             loadData();
-            console.log("Layout Loaded!");
+            if ($rootScope.DEBUG_MODE) console.log("Layout Loaded!");
 
         }
         
@@ -48,7 +50,7 @@
             $rootScope.neighborhoods = [
                 "Downtown", "La Jolla", "Pacific Beach", "Hillcrest", "University Heights", "Old Town", "Del Mar",
                 "Ocean Beach", "North Park", "Mission Hills", "Barrio Logan", "City Heights", "Clairemont", "La Mesa", "Point Loma",
-                "South Park", "Scripps Ranch", "Mission Beach", "Kensington", "Cardiff by the Sea", "Coronado",
+                "South Park", "Scripps Ranch", "Mission Beach", "Mission Valley","Kensington", "Cardiff by the Sea", "Coronado",
                 "Leucadia", "Oceanside", "National City", "Rancho Santa Fe", "Solana Beach", "Poway", "El Cajon",
                 "Escondido", "Carlsbad", "San Ysidro", "Otay Mesa", "Linda Vista", "Chula Vista", "Encinitas", "Golden Hills", "Spring Valley", "Rancho San Diego"];
             
@@ -58,14 +60,12 @@
             
              $http.get('../../../assets/fields.json').success(function (response) {
                 $rootScope.typeSchema = response;
-                console.log("Fields Loaded!");
-
+                
             });
 
             $http.get('../../../assets/dialogs.json').success(function (response) {
                 $rootScope.dialogs = response;
-                console.log("Dialogs Loaded!");
-
+                
             });
             //answers
             var p0 = answer.getAnswers();

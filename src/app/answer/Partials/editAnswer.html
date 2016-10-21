@@ -47,9 +47,9 @@
     <form class="form-horizontal col-sm-12 col-md-6" role="form" name="answerForm" ng-repeat="x in vm.fields">
         <!--  <div class="form-group" ng-repeat="x in vm.fields"> -->
         <!--   <div ng-repeat="x in vm.fields">  -->
-        <label class="control-label capitalize">{{x.label}}:</label>
+        <label class="control-label capitalize" ng-hide="{{x.onlybyowner && !vm.userIsOwner}}">{{x.label}}:</label>
         <!--<div class="col-sm-8 col-md-8">-->
-        <div style="display:{{x.field!='addinfo' ? 'inline':'none'}}">
+        <div style="display:{{x.field!='addinfo' ? 'inline':'none'}}" ng-hide="{{x.onlybyowner && !vm.userIsOwner}}">
             <div class="input-group">
                 <!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
                 <input type="text" class="form-control" ng-model="x.val" bs-options="{{x.opts}}" bs-typeahead placeholder="{{x.cval}}">
@@ -58,11 +58,11 @@
                     </span>
             </div>
         </div>        
-        <div class="input-group" style="display:{{x.field=='addinfo' ? 'inline':'none'}}">
+        <div class="input-group" style="display:{{x.field=='addinfo' ? 'inline':'none'}}" ng-hide="{{x.onlybyowner && !vm.userIsOwner}}">
             <textarea class="form-control" ng-model="x.val" placeholder="{{x.cval}}" rows="5"></textarea>
             <br><br>
             <span class="input-group-btn text-right">
-                <button ng-click="vm.getWiki()" class="btn btn-primary" style="background-color:#595959;border-color:gray;margin-right:10px">
+                <button ng-click="vm.getWiki()" class="btn btn-primary" style="background-color:#595959;border-color:gray;margin-right:10px" ng-if="vm.type == 'Person'">
                     Get from Wikipedia
                 </button>
                 <button class="btn btn-primary" type="button" ng-click="vm.editField(x)">Edit</button>

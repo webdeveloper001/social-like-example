@@ -112,7 +112,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("Updating vote record was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Updating vote record was succesful");
                 return result.data;
             }
         }
@@ -131,7 +131,7 @@
             
             function querySucceeded(result) {
                 
-                console.log("Deleting vote records by Catans was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting vote records by Catans was succesful");
                 return result.data;
             }
         }
@@ -150,7 +150,7 @@
             return $http.delete(url).then(querySucceeded, _queryFailed);
             
             function querySucceeded(result) {
-                console.log("Deleting vote record was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting vote record was succesful");
                 return result.data;
             }
         }

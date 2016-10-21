@@ -2,70 +2,80 @@
  {
    "type":"Place",
    "fields": [
-     {"name":"name","isrequired":true,"label":"Name of Place"},
-	   {"name":"location","isrequired":false,"label":"Location"},
-	   {"name":"cityarea","isrequired":true,"label":"Neighborhood"},
-     {"name":"addinfo","isrequired":false,"label":"Additional Info"}   
+     {"name":"name","isrequired":true,"onlybyowner":false,"label":"Name of Place"},
+	   {"name":"location","isrequired":false,"onlybyowner":false,"label":"Location"},
+	   {"name":"cityarea","isrequired":true,"onlybyowner":false,"label":"Neighborhood"},
+     {"name":"addinfo","isrequired":false,"onlybyowner":false,"label":"Additional Info"}   
    ]   
  },
  {
    "type":"Person",
    "fields": [
-	   {"name":"name","isrequired":true,"label":"Name"},
-	   {"name":"addinfo","isrequired":false,"label":"Additional Info"}
+	   {"name":"name","isrequired":true,"onlybyowner":false,"label":"Name"},
+	   {"name":"addinfo","isrequired":false,"onlybyowner":false,"label":"Additional Info"}
    ]   
  },
  {
    "type":"Event",
    "fields": [
-	   {"name":"name","isrequired":true,"label":"Name of Event"},
-	   {"name":"cityarea","isrequired":true,"label":"Neighborhood"},
-     {"name":"phone","isrequired":false, "label":"Phone Number"},
-     {"name":"website","isrequired":false, "label":"Website"},
-	   {"name":"addinfo","isrequired":false,"label":"Additional Info"}
+	   {"name":"name","isrequired":true,"onlybyowner":false,"label":"Name of Event"},
+	   {"name":"cityarea","isrequired":true,"onlybyowner":false,"label":"Neighborhood"},
+     {"name":"phone","isrequired":false,"onlybyowner":false,"label":"Phone Number"},
+     {"name":"website","isrequired":false,"onlybyowner":false,"label":"Website"},
+	   {"name":"addinfo","isrequired":false,"onlybyowner":false,"label":"Additional Info"}
    ]   
  },
  {
    "type":"Organization",
    "fields": [
-	   {"name":"name","isrequired":true,"label":"Name"},
-	   {"name":"addinfo","isrequired":false,"label":"Additional Info"}
+	   {"name":"name","isrequired":true,"onlybyowner":false,"label":"Name"},
+	   {"name":"addinfo","isrequired":false,"onlybyowner":false,"label":"Additional Info"}
    ]   
  },
  {
    "type":"Short-Phrase",
    "fields": [
-	   {"name":"name","isrequired":true,"label":"Title"},
-	   {"name":"addinfo","isrequired":false,"label":"Details"}
+	   {"name":"name","isrequired":true,"onlybyowner":false,"label":"Title"},
+	   {"name":"addinfo","isrequired":false,"onlybyowner":false,"label":"Details"}
    ]   
  },
  {
    "type":"Activity",
    "fields": [
-     {"name":"name","isrequired":true, "label":"Activity"},
-	   {"name":"cityarea","isrequired":true, "label":"Neighborhood"},
-     {"name":"location","isrequired":false, "label":"Location"},
-     {"name":"phone","isrequired":false, "label":"Phone Number"},
-     {"name":"website","isrequired":false, "label":"Website"},
-	   {"name":"addinfo","isrequired":false,"label":"Additional Info"}
+     {"name":"name","isrequired":true,"onlybyowner":false, "label":"Activity"},
+	   {"name":"cityarea","isrequired":true,"onlybyowner":false, "label":"Neighborhood"},
+     {"name":"location","isrequired":false,"onlybyowner":false, "label":"Location"},
+     {"name":"phone","isrequired":false,"onlybyowner":false, "label":"Phone Number"},
+     {"name":"website","isrequired":false,"onlybyowner":false, "label":"Website"},
+	   {"name":"addinfo","isrequired":false,"onlybyowner":false,"label":"Additional Info"}
    ]   
  },
  {
    "type":"Establishment",
    "fields": [
-     {"name":"name","isrequired":true, "label":"Name"},
-     {"name":"cityarea","isrequired":true, "label":"Neighborhood"},
-	   {"name":"location","isrequired":false, "label":"Address"},
-     {"name":"phone","isrequired":false, "label":"Phone Number"},
-     {"name":"website","isrequired":false, "label":"Website"},
-	   {"name":"addinfo","isrequired":false, "label":"Additional Info"}
+     {"name":"name","isrequired":true, "onlybyowner":false,"label":"Name"},
+     {"name":"cityarea","isrequired":true, "onlybyowner":false,"label":"Neighborhood"},
+	   {"name":"location","isrequired":false, "onlybyowner":false,"label":"Address"},
+     {"name":"phone","isrequired":false, "onlybyowner":false,"label":"Phone Number"},
+     {"name":"website","isrequired":false, "onlybyowner":false,"label":"Website"},
+	   {"name":"addinfo","isrequired":false, "onlybyowner":false,"label":"Additional Info"}
    ]   
  },
  {
    "type":"Thing",
    "fields": [
-	   {"name":"name","isrequired":true,"label":"Name"},
-	   {"name":"addinfo","isrequired":false,"label":"Details"}
+	   {"name":"name","isrequired":true,"onlybyowner":false,"label":"Name"},
+	   {"name":"addinfo","isrequired":false,"onlybyowner":false,"label":"Details"}
+   ]   
+ },
+ {
+   "type":"PersonCust",
+   "fields": [
+	   {"name":"name","isrequired":true,"onlybyowner":false,"label":"Name"},
+	   {"name":"email","isrequired":true,"onlybyowner":false,"label":"Email"},
+     {"name":"phone","isrequired":false, "onlybyowner":true,"label":"Phone Number"},
+     {"name":"website","isrequired":false, "onlybyowner":true,"label":"Website"},
+	   {"name":"addinfo","isrequired":false, "onlybyowner":true,"label":"Additional Info"}
    ]   
  }
 ]

@@ -45,7 +45,7 @@
 
             return $q.all([p0, p1, p2, p3, p4]).then(function (d){
                 _tables = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource,  d[4].data.resource);
-                console.log("tables length: ", _tables.length);
+                if ($rootScope.DEBUG_MODE) console.log("tables length: ", _tables.length);
                 return _tables;            
             }, _queryFailed);  
             //return $http.get(url).then(querySucceeded, _queryFailed);
@@ -81,7 +81,7 @@
                 tablex.id = result.data.resource[0].id;
                 _tables.push(tablex);
 
-                console.log("result", result);
+                if ($rootScope.DEBUG_MODE) console.log("result", result);
                 return result.data;
             }
 
@@ -112,7 +112,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("Deleting table was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting table was succesful");
                 return result.data;
             }
         }
@@ -185,7 +185,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("updating ranking record succesful");
+                if ($rootScope.DEBUG_MODE) console.log("updating ranking record succesful");
                 return result.data;
             }
         }

@@ -73,7 +73,7 @@
                 var id = result.data.resource[0].id; 
                 _alluseractivity[_alluseractivity.length-1].id = id;
 
-                console.log("creating useractivity record was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("creating useractivity record was succesful");
                 return result.data;
             }
         }
@@ -102,7 +102,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("Updating useractivity record was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Updating useractivity record was succesful");
                 return result.data;
             }
         }
@@ -121,7 +121,7 @@
             return $http.delete(url).then(querySucceeded, _queryFailed);
             
             function querySucceeded(result) {
-                console.log("Deleting user activity record was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting user activity record was succesful");
                 return result.data;
             }
         }

@@ -5,9 +5,9 @@
         .module('app')
         .factory('answer', answer);
 
-    answer.$inject = ['$http', '$q', '$rootScope','catans'];
+    answer.$inject = ['$http', '$q', '$rootScope','catans','vrows'];
 
-    function answer($http, $q, $rootScope,catans) {
+    function answer($http, $q, $rootScope,catans, vrows) {
 
         //Members
         var _answers = [];
@@ -45,7 +45,7 @@
 
             return $q.all([p0, p1]).then(function (d){
                 _answers = d[0].data.resource.concat(d[1].data.resource);
-                console.log("No. Answers: ", _answers.length);
+                if ($rootScope.DEBUG_MODE) console.log("No. Answers: ", _answers.length);
                 return _answers;            
             }, _queryFailed);  
 
@@ -107,8 +107,9 @@
                 _answers.push(answerx);
                                 
                 catans.postRec(answerx.id);
-                console.log("created catans for a new answer");
-                console.log("result", result);
+                vrows.postVrows4Answer(answerx);
+                if ($rootScope.DEBUG_MODE) console.log("created catans for a new answer");
+                if ($rootScope.DEBUG_MODE) console.log("result", result);
                 return result.data;
             }
 
@@ -138,9 +139,10 @@
                 for (var n=0; n<category.length; n++){
                     catans.postRec2(answerx.id, category[n]);    
                 }
+                vrows.postVrows4Answer(answerx);
                 
-                console.log('created '+ category.length + 'catans records for the new answer');
-                console.log("result", result);
+                if ($rootScope.DEBUG_MODE) console.log('created '+ category.length + 'catans records for the new answer');
+                if ($rootScope.DEBUG_MODE) console.log("result", result);
                 return result.data;
             }
 
@@ -168,6 +170,7 @@
                     case "owner": data.owner = val[i]; break;
                     case "phone": data.phone = val[i]; break;
                     case "website": data.website = val[i]; break;
+                    case "email": data.email = val[i]; break;
                     case "strhours": data.strhours = val[i]; break;
                 }
             }
@@ -178,21 +181,23 @@
             
             //update local copy
             //var idx = _answers.map(function(x) {return x.id; }).indexOf(answer_id);
-            var idx = $rootScope.A.indexOf(+answer_id);
+            //var idx = $rootScope.A.indexOf(+answer_id);
+            var idx = _answers.map(function(x) {return x.id; }).indexOf(answer_id);  
             for (var i=0; i<field.length; i++){
                 switch (field[i]){
-                    case "name": $rootScope.canswers[idx].name = val[i]; break;
-                    case "addinfo": $rootScope.canswers[idx].addinfo = val[i]; break;
-                    case "cityarea": $rootScope.canswers[idx].cityarea = val[i]; break;
-                    case "location": $rootScope.canswers[idx].location = val[i]; break;
-                    case "image": $rootScope.canswers[idx].imageurl = val[i]; break;
-                    case "views": $rootScope.canswers[idx].views = val[i]; break;
-                    case "lat": $rootScope.canswers[idx].lat = val[i]; break;
-                    case "lng": $rootScope.canswers[idx].lng = val[i]; break;
-                    case "owner": $rootScope.canswers[idx].owner = val[i]; break;
-                    case "phone": $rootScope.canswers[idx].phone = val[i]; break;
-                    case "website": $rootScope.canswers[idx].website = val[i]; break;
-                    case "strhours": $rootScope.canswers[idx].strhours = val[i]; break;
+                    case "name": $rootScope.answers[idx].name = val[i]; break;
+                    case "addinfo": $rootScope.answers[idx].addinfo = val[i]; break;
+                    case "cityarea": $rootScope.answers[idx].cityarea = val[i]; break;
+                    case "location": $rootScope.answers[idx].location = val[i]; break;
+                    case "image": $rootScope.answers[idx].imageurl = val[i]; break;
+                    case "views": $rootScope.answers[idx].views = val[i]; break;
+                    case "lat": $rootScope.answers[idx].lat = val[i]; break;
+                    case "lng": $rootScope.answers[idx].lng = val[i]; break;
+                    case "owner": $rootScope.answers[idx].owner = val[i]; break;
+                    case "phone": $rootScope.answers[idx].phone = val[i]; break;
+                    case "website": $rootScope.answers[idx].website = val[i]; break;
+                    case "email": $rootScope.answers[idx].email = val[i]; break;
+                    case "strhours": $rootScope.answers[idx].strhours = val[i]; break;
                 }
             }                        
             
@@ -204,7 +209,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("updating answer succesful");
+                if ($rootScope.DEBUG_MODE) console.log("updating answer succesful");
                 return result.data;
             }
         }
@@ -232,7 +237,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log(" answer flagged succesful");
+                if ($rootScope.DEBUG_MODE) console.log(" answer flagged succesful");
                 return result.data;
             }
         }
@@ -263,7 +268,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("Deleting answer was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting answer was succesful");
                 return result.data;
             }
         }

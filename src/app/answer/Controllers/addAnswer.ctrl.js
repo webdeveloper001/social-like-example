@@ -31,7 +31,7 @@
         var imageLinks = [];
         vm.linkIdx = 0;
         vm.numLinks = 0;
-        vm.imageCommand = 'Load images';
+        vm.imageCommand = 'Get images';
         vm.searchDisabled = '';
         var attNum = 1;
         vm.imagefunctions = 'none';
@@ -64,6 +64,7 @@
         vm.viewPrev = viewPrev;
         vm.closeRank = closeRank;
         vm.getWiki = getWiki;
+        vm.onNoGoodImages = onNoGoodImages;
         vm.showHowItWorksDialog = showHowItWorksDialog;
 
         vm.imageURL = '../../../assets/images/noimage.jpg';
@@ -158,7 +159,7 @@
         function addAnswer() {
 
             if (!addAnswerExec) {
-                myAnswer.imageurl = imageLinks[vm.linkIdx];
+                myAnswer.imageurl = vm.imageURL;
                 if ($rootScope.cCategory.type == 'Short-Phrase') myAnswer.imageurl = 'none';
 
                 myAnswer.upV = 0;
@@ -190,6 +191,7 @@
                     case "cityarea": { myAnswer.cityarea = vm.fields[i].val; break; }
                     case "phone": { myAnswer.phone = vm.fields[i].val; break; }
                     case "website": { myAnswer.website = vm.fields[i].val; break; }
+                    case "email": { myAnswer.email = vm.fields[i].val; break; }
 
                 }
             }
@@ -206,8 +208,8 @@
             }
             
             //loadImageDataOk = loadImageDataOk && countryIsValid;
-            if ($rootScope.cCategory.type == 'Short-Phrase') addAnswerDataOk = loadImageDataOk;
-            else addAnswerDataOk = (loadImageDataOk && vm.numLinks > 0);
+            if ($rootScope.cCategory.type == 'Short-Phrase' || $rootScope.cCategory.type == 'PersonCust' ) addAnswerDataOk = loadImageDataOk;
+            else addAnswerDataOk = (loadImageDataOk && (vm.numLinks > 0 || vm.ngi));
 
         }
 
@@ -275,7 +277,7 @@
             vm.numLinks = imageLinks.length;
             attNum++;
             if (vm.numLinks > 10 || attNum >= 4) vm.searchDisabled = 'disabled';
-            if (attNum > 1) vm.imageCommand = 'More images';
+            if (attNum > 1) vm.imageCommand = 'Get more images';
             vm.linkIdx = 0;
 
             vm.imageURL = imageLinks[vm.linkIdx];
@@ -322,6 +324,7 @@
 
         function addAnswerGPS() {
             if (!addAnswerGPSexec) {
+                console.log("@exec-addAnswerGPS");
                 addAnswerGPSexec = true;
                 eqRanks();
                 //create 2 catans records one for downtown and then district
@@ -473,6 +476,15 @@
                     break;
                 }
             }          
+        }
+        
+        function onNoGoodImages(x){
+            if (x){
+                vm.imageURL = '../../../assets/images/noimage.jpg';
+            }
+            else{
+                vm.imageURL = imageLinks[vm.linkIdx];
+            }
         }
 
         function closeRank() {

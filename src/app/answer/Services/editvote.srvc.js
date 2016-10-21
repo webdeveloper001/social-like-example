@@ -72,7 +72,7 @@
                     $rootScope.ceditvotes.push(itemx);
                 }
 
-                console.log("Creating new voting record for edit was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Creating new voting record for edit was succesful");
                 return result.data;
             }
         }
@@ -106,7 +106,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("Updating vote record for edit was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Updating vote record for edit was succesful");
                 return result.data;
             }
         }
@@ -125,7 +125,7 @@
             
             function querySucceeded(result) {
 
-                console.log("Deleting edit vote records for answer was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting edit vote records for answer was succesful");
                 return result.data;
             }
         }
@@ -145,7 +145,7 @@
 
             function querySucceeded(result) {
 
-                console.log("Deleting edit vote records for answer was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting edit vote records for answer was succesful");
                 return result.data;
             }
         }

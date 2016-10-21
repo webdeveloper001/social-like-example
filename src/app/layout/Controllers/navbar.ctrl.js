@@ -32,7 +32,7 @@
 
         function activate() {
 
-            console.log("Navbar Loaded!");
+            if ($rootScope.DEBUG_MODE) console.log("Navbar Loaded!");
             //console.log("isLoggedIn", !$rootScope.isLoggedIn)
             //console.log("user", $rootScope.user);
         }
@@ -121,7 +121,7 @@
                 }, function(error){
                 }, {maximumAge:60000, timeout:5000, enableHighAccuracy:true});
             }else{
-                console.log('Geo location not supported.');
+                if ($rootScope.DEBUG_MODE) console.log('Geo location not supported.');
             }
 
         };
@@ -154,10 +154,10 @@
             {
                 $rootScope.user.latitude = $rootScope.currentUserLatitude;
                 $rootScope.user.longitude = $rootScope.currentUserLongitude;
-                console.log("Geo Location is set for logged in user.");
+                if ($rootScope.DEBUG_MODE) console.log("Geo Location is set for logged in user.");
             }
 
-            console.log("Geo Location is set for user.");
+            if ($rootScope.DEBUG_MODE) console.log("Geo Location is set for user.");
             if ($state.current.name == 'rankSummary'){
                 $state.reload();
             }

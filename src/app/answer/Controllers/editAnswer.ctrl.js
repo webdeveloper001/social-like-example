@@ -102,7 +102,7 @@
             if (vm.userIsOwner) loadHoursData();
             getEdits(vm.answer.id);
 
-            console.log("Edit Answer Activated!");
+            if ($rootScope.DEBUG_MODE) console.log("Edit Answer Activated!");
         }
 
         function loadAnswerData() {
@@ -110,6 +110,7 @@
             for (var i = 0; i < $rootScope.fields.length; i++) {
                 publicfield_obj = {};
                 publicfield_obj.field = $rootScope.fields[i].name;
+                publicfield_obj.onlybyowner = $rootScope.fields[i].onlybyowner;
                 switch ($rootScope.fields[i].name) {
                     case "name": { publicfield_obj.cval = vm.answer.name; break; }
                     case "cityarea": { publicfield_obj.cval = vm.answer.cityarea; break; }
@@ -117,6 +118,7 @@
                     case "addinfo": { publicfield_obj.cval = vm.answer.addinfo; break; }
                     case "phone": { publicfield_obj.cval = vm.answer.phone; break; }
                     case "website": { publicfield_obj.cval = vm.answer.website; break; }
+                    case "email": { publicfield_obj.cval = vm.answer.email; break; }
                 }
                 publicfield_obj.val = '';
                 publicfield_obj.label = $rootScope.fields[i].label;

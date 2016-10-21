@@ -25,7 +25,6 @@
         vm.editRank = editRank;
         vm.applyRule = applyRule;
         vm.selnh = selnh;
-        vm.uploadFile = uploadFile;
         vm.goHome = goHome;
         
         //vm.isAdmin = true;
@@ -43,13 +42,19 @@
         else init();
 
         function activate() {
-            console.log("activate cwrapper!");
+            if ($rootScope.DEBUG_MODE) console.log("activate cwrapper!");
             vm.isNh = $rootScope.isNh;
-            vm.isCity = $rootScope.isCity;
+            
             vm.isNhRdy = $rootScope.isNhRdy;
+            vm.cnh = $rootScope.cnh;
+            
+            if (vm.isNh) vm.searchScope = vm.isNhRdy ? $rootScope.cnh : 'Neighborhood';
+            vm.isCity = $rootScope.isCity;
+            
+            if (vm.isCity) vm.searchScope = 'all San Diego';
+            
             vm.nhs = $rootScope.neighborhoods.concat($rootScope.districts);
             vm.searchActive = $rootScope.searchActive;
-            vm.cnh = $rootScope.cnh;
             vm.isAdmin = $rootScope.isAdmin;
 
             vm.selEditRank = $rootScope.editMode ? 'active' : 'none';
@@ -60,7 +65,7 @@
         }
         function init() {
 
-            console.log("init cwrapper!");
+            if ($rootScope.DEBUG_MODE) console.log("init cwrapper!");
                 
             //****SUPER TEMP*****************
             $rootScope.isAdmin = false;
@@ -269,7 +274,7 @@
               $rootScope.$emit('applyRule');
         }
            
-        //Upload Image
+        /*//Upload Image
         function uploadFile() {
             console.log('file is ');
             console.log(vm.myFile);
@@ -279,7 +284,7 @@
             }
 
         }
-        
+        */
         function goHome(){
             //$rootScope.$emit('quitFeedbackMode');
             $rootScope.fbmode = false;

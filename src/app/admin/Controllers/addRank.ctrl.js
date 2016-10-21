@@ -19,7 +19,7 @@
             
         vm.addRanking = addRanking;
         
-        vm.typeList = ["Person", "Establishment", "Place", "Activity", "Short-Phrase", "Organization", "Event", "Thing"];
+        vm.typeList = ["Person", "Establishment", "Place", "Activity", "Short-Phrase", "Organization", "Event", "Thing","PersonCust"];
 
         activate();
 
@@ -42,7 +42,8 @@
             if (item.title == null || item.title == undefined || item.title.length < 10) rankTitleOk = false;
             if (item.question == null || item.question == undefined || item.question.length < 10) rankQuestionOk = false;
             if (!(item.type == 'Person' || item.type == 'Establishment' || item.type == 'Short-Phrase' || item.type == 'Event'
-                || item.type == 'Organization' || item.type == 'Place' || item.type == 'Activity' || item.type == 'Thing')) rankTypeOk = false;      
+                || item.type == 'Organization' || item.type == 'Place' || item.type == 'Activity' || item.type == 'Thing'
+                || item.type == 'PersonCust')) rankTypeOk = false;      
            
         }
 

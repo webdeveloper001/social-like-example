@@ -43,7 +43,7 @@
 
             return $q.all([p0, p1, p2]).then(function (d){
                 _allcatans = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource);
-                console.log("No. Cat-Ans: ", _allcatans.length);
+                if ($rootScope.DEBUG_MODE) console.log("No. Cat-Ans: ", _allcatans.length);
                 return _allcatans;            
             }, _queryFailed);  
             
@@ -57,6 +57,7 @@
             data.category = $rootScope.cCategory.id;
             data.upV = 0;
             data.downV = 0;
+            data.user = $rootScope.user.id;
             data.timestmp = Date.now();
              
             var obj = {};
@@ -79,7 +80,7 @@
                 var id = result.data.resource[0].id; 
                 _allcatans[_allcatans.length-1].id = id;
                 
-                console.log("creating catans record was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("creating catans record was succesful");
                 return result.data;
             }
         }
@@ -92,6 +93,7 @@
             data.category = category;
             data.upV = 0;
             data.downV = 0;
+            data.user = $rootScope.user.id;
             data.timestmp = Date.now();
              
             var obj = {};
@@ -114,7 +116,7 @@
                 //var id = result.data.resource[0].id; 
                 //_allcatans[_allcatans.length-1].id = id;
                 
-                console.log("creating catans record was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("creating catans record was succesful");
                 return result.data;
             }
         }
@@ -138,7 +140,7 @@
                 for (var i=0; i<result.data.resource.length; i++){
                     votes.deleteVotesbyCatans(result.data.resource[i].id);
                 }
-                console.log("Deleting catans records was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting catans records was succesful");
                 return result.data;
             }
         }
@@ -163,7 +165,7 @@
                     votes.deleteVotesbyCatans(result.data.resource[i].id);
                 }
                 
-                console.log("Deleting catans records by answer and category was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting catans records by answer and category was succesful");
                 return result.data;
             }
         }
@@ -187,7 +189,7 @@
                 for (var i=0; i<result.data.resource.length; i++){
                     votes.deleteVotesbyCatans(result.data.resource[i].id);
                 }
-                console.log("Deleting catans records by category was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting catans records by category was succesful");
                 return result.data;
             }
         }
@@ -234,7 +236,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("updating catans record succesful");
+                if ($rootScope.DEBUG_MODE) console.log("updating catans record succesful");
                 return result.data;
             }
         }

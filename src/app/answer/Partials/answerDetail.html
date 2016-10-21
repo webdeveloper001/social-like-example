@@ -36,8 +36,9 @@
         <div class="text-right">
             <small class="text-muted">&nbsp;&nbsp;&nbsp{{vm.answer.views}}&nbspviews</small>
             <br>
-            <div ng-show="{{vm.type == 'Establishment'}}">
-                <p style="display:{{vm.answer.hasOwner ? 'none':'inline'}}" class="hiw text-right" ng-click="vm.bizRegDialog()"><u>I represent this business</u></p>
+            <div ng-show="{{vm.type == 'Establishment' || vm.type == 'PersonCust' }}">
+                <p style="display:{{vm.answer.hasOwner ? 'none':'inline'}}" class="hiw text-right" ng-click="vm.bizRegDialog()">
+                    <u>{{vm.type == 'PersonCust' ? 'I am this person':'I represent this business'}}</u></p>
                 <!--<br style="display:{{vm.answer.hasOwner ? 'inline':'none'}}">-->
                 <span class="glyphicon glyphicon-star-empty" style="display:{{vm.answer.hasOwner ? 'inline':'none'}}"></span>
             </div>
@@ -70,6 +71,8 @@
         <a ng-if="vm.answer.website.indexOf('http') >=0" href="{{vm.answer.website}}" target="_blank">{{vm.answer.website}}</a>
         <a ng-if="vm.answer.website.indexOf('http') == -1" href="http://{{vm.answer.website}}" target="_blank">{{vm.answer.website}}</a>
         <br ng-if="vm.answer.website">
+        <strong>{{(vm.answer.email) ? 'Email:' : ""}}</strong> {{(vm.answer.email) ? vm.answer.email : ""}}
+        <br style="display:{{(vm.answer.email) ? 'inline' : 'none'}}">
     </div>
     <div class="col-sm-4 answer_info_buttons">
         <!--
@@ -77,14 +80,14 @@
             <i class="fa fa-map-marker"></i></a>
         <a ng-if="vm.isMobile && vm.answer.phone" href="tel:{{vm.answer.phone}}"><i class="fa fa-phone"></i></a>
         -->
-        <button type="button" class="btn btn-default" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;"
+        <a type="button" class="btn btn-default" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;"
             ng-if="vm.isMobile && vm.answer.phone" href="tel:{{vm.answer.phone}}" target="_blank"> 
             Call&nbsp&nbsp<span class="fa fa-phone"></span>
-        </button>
-        <button type="button" class="btn btn-default" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;"
+        </a>
+        <a type="button" class="btn btn-default" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;"
             ng-if="vm.answer.lat && vm.answer.lng" href="http://maps.apple.com/maps?q={{vm.answer.lat}}, {{vm.answer.lng}}" target="_blank"> 
             Directions&nbsp&nbsp<span class="fa fa-map-marker"></span>
-        </button>                            
+        </a>                            
     </div>
 </div>
 <div ng-if="vm.type != 'Short-Phrase'">
@@ -224,7 +227,7 @@
     </div>
 </div>
 <div class="col-xs-12">
-    <div ng-show="{{vm.type == 'Establishment'}}">
+    <div ng-show="{{vm.type == 'Establishment' || vm.type == 'PersonCust' }}">
         <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
             <h3 class="sub-header">How do we do?</h3>
         </div>
@@ -279,7 +282,7 @@
 </div>
 <div class="col-xs-12">
 
-    <div ng-show="{{vm.type != 'Establishment'}}">
+    <div ng-show="{{vm.type != 'Establishment' && vm.type != 'PersonCust' }}">
         <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
             <h3 class="sub-header">Versus Table</h3>
         </div>

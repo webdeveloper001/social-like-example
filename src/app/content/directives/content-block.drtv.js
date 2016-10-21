@@ -191,7 +191,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
             }
             
-            //var applyRuleDone = false;
+            var applyRuleDone = false;
             //var midx = 0;
             function applyRule() {
                 console.log("apply Rule");
@@ -277,8 +277,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 */ //End of 3
             
                 /*//  4.Use this to add a neighborhood
-                var nhs = ["Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
-                        "Marina", "Seaport Village"];
+                //var nhs = ["Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
+                //        "Marina", "Seaport Village"];
                 var logi = 1;
                 var basetitle = '';
                 if (applyRuleDone == false){
@@ -295,7 +295,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     
                     if (tablex.title.includes("in Hillcrest")){
                         //for (var j=0; j<nhs.length; j++){
-                            newtitle = basetitle.replace("Hillcrest", nhs[8]);
+                            newtitle = basetitle.replace("Hillcrest", "Mission Valley");
                             tablex.title = newtitle;                            
                             table.addTable(tablex);
                             //console.log(logi,tablex.id, tablex.title);
@@ -319,7 +319,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                          table.deleteTable(vm.results[i].id);      
          //           }                   
                }
-             */  //End 5
+                *///End 5
       
                 /*//6. Use this to add a ranking to all neighborhood 
                  for (var i=0; i < vm.resultsT.length; i++){            
@@ -355,18 +355,20 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                  *///End 7
          
          
-                
-                /*//8. Generate Category Strings for non neighborhood ranks            
+                //console.log("1");
+                //8. Generate Category Strings for non neighborhood ranks            
                    for (var i=0; i<vm.results.length; i++){
+                       //console.log("2");
                        if (vm.results[i].title.includes("Hillcrest")){
+                           //console.log("2");
                            var catstr = '';
                            var fcatstr = '';
                            var genRank = vm.results[i].title.replace("Hillcrest", "San Diego");
                            for (var j=0; j<$rootScope.content.length; j++){
                                if (genRank == $rootScope.content[j].title){
-                                   if ($rootScope.content[j].catstr == null || 
-                                   $rootScope.content[j].catstr == undefined || 
-                                   $rootScope.content[j].catstr.length == 0){
+                                   //if ($rootScope.content[j].catstr == null || 
+                                   //$rootScope.content[j].catstr == undefined || 
+                                   //$rootScope.content[j].catstr.length == 0){
                                     console.log("Found gen rank --- ", $rootScope.content[j].title);
                                     var srchStr = $rootScope.content[j].title.replace("San Diego","");
                                        for (var k=0; k<$rootScope.content.length; k++){
@@ -378,13 +380,13 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                        fcatstr = catstr.substring(1); //remove leading ':'
                                        console.log("final catstr ---", fcatstr)
                                        table.update($rootScope.content[j].id, ['isatomic','catstr'],[false, fcatstr]);
-                                   } 
+                                  // } 
                                break;
                                }
                            }                                              
                        }
                    }
-                  */ //End 8
+                  //End 8
                
                 /*//  9. Clear answer string for all non-atomic ranks 
                 for (var i=0; i < $rootScope.content.length; i++){

@@ -159,14 +159,38 @@
         }
         
         function findPhoneWebsite(){
-            var regex_pn = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
-            var regex_url = /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm;
+            
+            //console.log("Executing findingPhones");
+            //var regex_pn = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
+            //var regex_pn = /\(([0-9]{3})\)([ .-]?)([0-9]{3})\2([0-9]{4})|([0-9]{3})([ .-]?)([0-9]{3})\5([0-9]{4})/;
+            //var regex_pn
+            //var regex_pn = /^[\.-)( ]*([0-9]{3})[\.-)( ]*([0-9]{3})[\.-)( ]*([0-9]{4})$/;
+            //var regex_pn = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
+            //var regex_pn = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
+            var regex_pn = /(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})\s*$/
+            //var regex_url = /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm;
             var phoneNum = '';
-            var url = '';
+            //var url = '';
             var idx = 1;
             var obj = {};
+            var newaddinfo = '';
+            /*
+            for (var i = 0; i < $rootScope.answers.length; i++) {
+                if ($rootScope.answers[i].addinfo != null && $rootScope.answers[i].addinfo != undefined) {
+                    if ($rootScope.answers[i].addinfo.length > 0) {
+                        if ($rootScope.answers[i].addinfo.includes('(') == true && $rootScope.answers[i].addinfo.includes(')') == false) {
+                            //newaddinfo = $rootScope.answers[i].addinfo;
+                            //newaddinfo
+                            console.log("current, new - ", $rootScope.answers[i].addinfo, $rootScope.answers[i].addinfo.replace('(',''));
+                            //answer.updateAnswer($rootScope.answers[i].id,['phone'],[newphone]);
+                        }
+                    }
+                }
+            }*/
+           /*
             for (var i=0; i<$rootScope.answers.length; i++){
                 if ($rootScope.answers[i].addinfo.length > 0){
+                    //console.log("$rootScope.answers[i].addinfo",$rootScope.answers[i].addinfo);
                     var regRes = regex_pn.exec($rootScope.answers[i].addinfo);
                     //var regRes_url = regex_url.exec($rootScope.answers[i].addinfo);
                     //
@@ -179,15 +203,15 @@
                     if (phoneNum.length > 0){
                         obj = JSON.parse(JSON.stringify($rootScope.answers[i]));
                         var addinfox = obj.addinfo.replace(phoneNum, '');;
-                        answer.updateAnswer($rootScope.answers[i].id,['phone','addinfo'],[phoneNum, addinfox]);
+                        //answer.updateAnswer($rootScope.answers[i].id,['phone','addinfo'],[phoneNum, addinfox]);
                         //addinfox.
-                        //console.log(idx++, $rootScope.answers[i].name, " Phone Num: ", phoneNum);
+                        console.log("matched!!!!", idx++, $rootScope.answers[i].name, " Phone Num: ", phoneNum);
                         //console.log(idx++, $rootScope.answers[i].name, " url: ", url);
                         //console.log("add info: ", $rootScope.answers[i].addinfo, addinfox);
                         //console.log(regRes);
                     }
                 }
-            }
+            }*/
         }
         
         function findDuplicatedRanks(){

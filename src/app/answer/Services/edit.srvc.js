@@ -65,7 +65,7 @@
                 
                 $rootScope.cedits.push(newEditx);
 
-                console.log("Adding new Edit succesful", result);
+                if ($rootScope.DEBUG_MODE) console.log("Adding new Edit succesful", result);
                 return result.data;
             }
 
@@ -94,7 +94,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("updating edit vote counts succesful");
+                if ($rootScope.DEBUG_MODE) console.log("updating edit vote counts succesful");
                 return result.data;
             }
         }
@@ -125,7 +125,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("Deleting edit was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting edit was succesful");
                 return result.data;
             }
         }
@@ -145,7 +145,7 @@
             
             function querySucceeded(result) {
 
-                console.log("Deleting edits for answer was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting edits for answer was succesful");
                 return result.data;
             }
         }

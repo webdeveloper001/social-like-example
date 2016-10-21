@@ -65,7 +65,7 @@
                 
                 //$rootScope.ccomments.push(newcommentx);
 
-                console.log("Adding new comment succesful", result);
+                if ($rootScope.DEBUG_MODE) console.log("Adding new comment succesful", result);
                 return result.data;
             }
 
@@ -94,7 +94,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("updating comment vote counts succesful");
+                if ($rootScope.DEBUG_MODE) console.log("updating comment vote counts succesful");
                 return result.data;
             }
         }
@@ -125,7 +125,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("Deleting comment was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting comment was succesful");
                 return result.data;
             }
         }
@@ -145,7 +145,7 @@
             
             function querySucceeded(result) {
 
-                console.log("Deleting comments for answer was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting comments for answer was succesful");
                 return result.data;
             }
         }

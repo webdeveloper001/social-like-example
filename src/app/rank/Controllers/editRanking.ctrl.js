@@ -17,7 +17,7 @@
         vm.goEdit = goEdit;
         vm.goDelete = goDelete;
         
-        vm.typeList = ["Person", "Establishment", "Place", "Activity", "Short-Phrase", "Organization", "Event","Thing"];
+        vm.typeList = ["Person", "Establishment", "Place", "Activity", "Short-Phrase", "Organization", "Event","Thing","PersonCust"];
 
         activate();
 

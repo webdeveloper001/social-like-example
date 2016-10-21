@@ -6,10 +6,10 @@
         .controller('answerDetail', answerDetail);
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity',
-        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime', '$location', 'vrows', 'vrowvotes']; //AM:added user service
+        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime', '$location', 'vrows', 'vrowvotes','imagelist']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,
-        votes, matchrec, edit, editvote, catans, datetime, $location, vrows, vrowvotes) { //AM:added user service
+        votes, matchrec, edit, editvote, catans, datetime, $location, vrows, vrowvotes, imagelist) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
@@ -112,12 +112,13 @@
                 if ($rootScope.user.id == vm.answer.owner) {
                     vm.userIsOwner = true;
                 }
+                else vm.userIsOwner = false;
             }
-            else vm.userIsOwner = false;
+            else vm.userIsOwner = false;            
 
             $rootScope.userIsOwner = vm.userIsOwner;
-            console.log("Answer details loaded");
-
+            if ($rootScope.DEBUG_MODE) console.log("Answer details loaded");
+            
         }
 
         function getHeader() {
@@ -127,11 +128,12 @@
             }
             else vm.answer.hasOwner = true;
             
-            vm.answer.addinfo_teaser = vm.answer.addinfo.slice(0,300);
-            //console.log("addinfo_teaser - ", vm.answer.addinfo_teaser);
-            vm.answer.addinfo_complete = vm.answer.addinfo.slice(300);
-            //console.log("addinfo_complete - ", vm.answer.addinfo_complete);
-            
+            if (vm.answer.addinfo != undefined){
+                vm.answer.addinfo_teaser = vm.answer.addinfo.slice(0,300);
+                //console.log("addinfo_teaser - ", vm.answer.addinfo_teaser);
+                vm.answer.addinfo_complete = vm.answer.addinfo.slice(300);
+                //console.log("addinfo_complete - ", vm.answer.addinfo_complete);
+            }
             vm.moretext = ' more ';
             vm.completeinfo = false;
         }
@@ -427,7 +429,7 @@
                 }
 
                 displayVote(x);
-                console.log("UpVote");
+                if ($rootScope.DEBUG_MODE) console.log("UpVote");
             }
             else {
                 dialog.getDialog('notLoggedIn');
@@ -447,7 +449,7 @@
                 }
 
                 displayVote(x);
-                console.log("DownVote");
+                if ($rootScope.DEBUG_MODE) console.log("DownVote");
             }
             else {
                 dialog.getDialog('notLoggedIn');
@@ -458,7 +460,7 @@
 
         function goBack() {
 
-            console.log("goBack");       
+            if ($rootScope.DEBUG_MODE) console.log("goBack");       
             
             //update Up and Down votes, and counter
             if (!recordsUpdated) updateRecords();
@@ -509,6 +511,8 @@
                 editvote.deleteEditVotesbyAnswer(vm.answer.id);
                 //delete catans for this answer
                 catans.deleteAnswer(vm.answer.id);
+                //delete vrows for this answer
+                vrows.deleteVrowByAnswer(vm.answer.id);
                 $state.go("rankSummary", { index: $rootScope.cCategory.id });
             });
 
@@ -516,7 +520,7 @@
 
         function flagAnswer(x) {
             if ($rootScope.isLoggedIn) {
-                console.log("answer flagged!!!");
+                if ($rootScope.DEBUG_MODE) console.log("answer flagged!!!");
                 flag.flagAnswer(vm.catans.id, x);
                 dialog.getDialog('answerFlagged');
                 return;
@@ -666,7 +670,11 @@
 
         function bindAccount() {
             console.log("Bind business to user account");
-            answer.updateAnswer(vm.answer.id, ['owner'], [$rootScope.user.id]);
+            answer.updateAnswer(vm.answer.id, ['owner'], [$rootScope.user.id]).then(reloadAnswer);
+        }
+        
+        function reloadAnswer(){
+            $state.go("answerDetail", { index: vm.answer.id },{reload:true});
         }
 
         function openSpecials() {          
@@ -721,7 +729,8 @@
         }
 
         function showImages() {
-            vm.showImageGallery = true;
+            imagelist.getImageList();
+            //vm.showImageGallery = true;
         }
         
         function gotoRank(x){
@@ -741,7 +750,7 @@
                 }
 
                 displayVRowVote(x);
-                console.log("VRow UpVote");
+                if ($rootScope.DEBUG_MODE) console.log("VRow UpVote");
             }
             else {
                 dialog.getDialog('notLoggedIn');
@@ -761,7 +770,7 @@
                 }
 
                 displayVRowVote(x);
-                console.log("DownVote");
+                if ($rootScope.DEBUG_MODE) console.log("DownVote");
             }
             else {
                 dialog.getDialog('notLoggedIn');

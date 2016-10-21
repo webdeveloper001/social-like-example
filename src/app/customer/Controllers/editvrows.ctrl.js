@@ -14,7 +14,7 @@
 
         var tidx = 99999;
 
-        vm.header = 'Edit Vote Rows'
+        vm.header = 'Edit Vote Rows for ' + $rootScope.canswer.name;
         vm.editvrowsList = [];
         vm.vrows = [];
         

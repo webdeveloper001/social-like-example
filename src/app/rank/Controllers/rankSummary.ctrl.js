@@ -225,7 +225,7 @@
             }
          
             //TODO update answers in DB
-            console.log("Rank Summary Loaded!");
+            if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
             //console.log("$rootScope.user", $rootScope.user);
             //createVrows();
 
@@ -388,6 +388,7 @@
                 case "Activity": { fidx = 5; break; }
                 case "Establishment": { fidx = 6; break; }
                 case "Thing": { fidx = 7; break; }
+                case "PersonCust": { fidx = 8; break; }
             }
 
             fields = $rootScope.typeSchema[fidx].fields;
@@ -740,78 +741,6 @@
         function callGetLocation() {
             $rootScope.$emit('getLocation');
         }
-        
-        //TODO: Remove!!!! - TEMP function to create vrows for all answers
-        function createVrows(){
-            var evrows = [];
-            var titles = [];
-            var obj = {};
-            var vrowsobjs = [];
-            if ($rootScope.cCategory.tags.includes('food') || $rootScope.cCategory.tags.includes('services') ||
-                $rootScope.cCategory.tags.includes('health') || $rootScope.cCategory.tags.includes('beauty') ||
-                $rootScope.cCategory.tags.includes('food') || $rootScope.cCategory.title.includes('food') ||
-                $rootScope.cCategory.title.includes('restaurants') ||
-                $rootScope.cCategory.title.includes('Bars') || $rootScope.cCategory.title.includes('bars') ||
-                $rootScope.cCategory.title.includes('pubs') ||
-                $rootScope.cCategory.title.includes('Yoga') || $rootScope.cCategory.title.includes('Pilates') ||
-                $rootScope.cCategory.title.includes('yoga') || $rootScope.cCategory.title.includes('pilates') ||
-                $rootScope.cCategory.title.includes('schools') ||
-                $rootScope.cCategory.title.includes('Gyms') || $rootScope.cCategory.title.includes('gyms') ||
-                $rootScope.cCategory.title.includes('Nightclubs')){
-                for (var i=0; i<$rootScope.canswers.length; i++){
-                    //Check that there are no vrows already
-                    evrows = [];
-                    vrowsobjs = [];
-                    for (var k=0; k<$rootScope.cvrows.length; k++){
-                        if ($rootScope.cvrows[k].answer == $rootScope.canswers[i].id){
-                            evrows.push($rootScope.cvrows[k]);
-                        }
-                    }
-                    
-                    //if there are no vrows
-                    if (evrows.length == 0){
-                        
-                        titles = ['Quality of Service','Friendliness of Staff','Promptness of Service','Value for the Money'];
-                        
-                        if ($rootScope.cCategory.tags.includes('food') || $rootScope.cCategory.title.includes('food') ||
-                            $rootScope.cCategory.title.includes('restaurants')){
-                            titles = ['Quality of Food and Drinks','Friendliness of Staff','Promptness of Service','Value for the Money'];
-                        }
-                        if ($rootScope.cCategory.title.includes('Bars') || $rootScope.cCategory.title.includes('bars') ||
-                            $rootScope.cCategory.title.includes('pubs')){
-                            titles = ['Quality of Drinks','Friendliness of Staff','Promptness of Service','Value for the Money'];
-                        }
-                        
-                        if ($rootScope.cCategory.title.includes('Yoga') || $rootScope.cCategory.title.includes('Pilates') ||
-                            $rootScope.cCategory.title.includes('yoga') || $rootScope.cCategory.title.includes('pilates') ||  
-                            $rootScope.cCategory.title.includes('schools')) {
-                            titles = ['Quality of Instructors','Friendliness of Staff','Class Environment','Value for the Money'];
-                        }
-                        if ($rootScope.cCategory.title.includes('Gyms') || $rootScope.cCategory.title.includes('gyms') ){
-                            titles = ['Equipment & Facilities','Friendliness of Staff','Environment','Value for the Money'];
-                        }
-                        if ($rootScope.cCategory.title.includes('Nightclubs')){
-                            titles = [' Quality of Music','Environment','Friendliness of Staff','Value for the Money'];
-                        }
-                        //else if ($rootScope.cCategory.tags.includes('services')){
-                            
-                        //}
-                        for (var n=0; n<titles.length; n++){
-                            obj = {};
-                            obj.gnum = 1;
-                            obj.gtitle = 'General';
-                            obj.title = titles[n];
-                            obj.upV = 0;
-                            obj.downV = 0;
-                            obj.timestmp = Date.now();
-                            obj.answer = $rootScope.canswers[i].id;
-                            vrowsobjs.push(obj);
-                            //vrows.postRec(obj);                           
-                        }
-                        vrows.postRec2(vrowsobjs);
-                    }
-                }
-            }
-        }
+               
     }
 })();

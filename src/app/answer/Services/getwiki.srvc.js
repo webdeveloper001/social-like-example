@@ -47,7 +47,7 @@
                     wikiRes = wikiRes.replace(/.\\n/g,'.');
                     wikiRes = wikiRes.replace(/<(?:.|\n)*?>/gm, '');
 
-                    console.log("1. wiki results res - ", wikiRes);
+                    if ($rootScope.DEBUG_MODE) console.log("1. wiki results res - ", wikiRes);
                     //answer.location = result.data.results[0].formatted_address;
                     //answer.lat = result.data.results[0].geometry.location.lat;
                     //answer.lng = result.data.results[0].geometry.location.lng;

@@ -141,6 +141,11 @@
                         else newline = '<strong>' + 'Website' + '</strong>: ' + '' + '</br>';
                         break;
                     }
+                    case "email": {
+                        if (answer.email) newline = '<strong class="capitalize">' + 'Email' + '</strong>: ' + answer.email + '</br>';
+                        else newline = '<strong>' + 'Email' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
                 }
                 answerhtml = answerhtml + newline;
             }
@@ -159,7 +164,7 @@
             title = 'Please Confirm';
             btnCancelLabel = 'Cancel';
             btnOkLabel = 'Confirm';
-            message = 'You want to add the following answer to <strong>' + $rootScope.header + '</strong>. </br></br>' +
+            message = 'You want to add the following answer to <strong>' + $rootScope.cCategory.title + '</strong>. </br></br>' +
             answerhtml + '</br>' +
             'With the following image:' +
             '<img src=' + imageurl + ' class="thumbnail" style="width:60%; max-height:150px">';
@@ -245,8 +250,8 @@
             if (type == 'addAnswer') {
                 title = 'Add an Answer';
                 message = '1. Fill out the form. The fields marked with * are required. All other fields are not required but recommended. <br/>' +
-                '<br/>2. Click the \'Load Images\' button. <br/>' +
-                '<br/>3. Use \'>>\' and \'<<\' buttons to browse through the images. You can \'Load More\' images.<br/>' +
+                '<br/>2. Click the \'Get Images\' button. <br/>' +
+                '<br/>3. Use \'>>\' and \'<<\' buttons to browse through the images. You can \'Get More Images\' button to load more images.<br/>' +
                 '<br/>4. When you find the image you like \'Add\' your answer to the ranking.<br/>' +
                 '<br/>' +
                 '<br/>NOTE: Not all images will correspond to your answer. Entering all fields will help with the image results.';
@@ -333,6 +338,13 @@
                         else newline2 = '<strong>' + 'Website' + '</strong>: ' + '' + '</br>';
                         break;
                     }
+                    case "email": {
+                        if (answer1.email) newline = '<strong class="capitalize">' + 'Email' + 'b</strong>: ' + answer1.email + '</br>';
+                        else newline = '<strong>' + 'Email' + '</strong>: ' + '' + '</br>';
+                        if (answer2.email) newline2 = '<strong class="capitalize">' + 'Email' + 'b</strong>: ' + answer2.email + '</br>';
+                        else newline2 = '<strong>' + 'Email' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
                 }
                 answerhtml = answerhtml + newline;
                 answerhtml2 = answerhtml2 + newline2;
@@ -389,7 +401,7 @@
             var btnOkLabel = '';
 
             title = 'Scope of Delete';
-            btnCancelLabel = 'Just this category';
+            btnCancelLabel = 'Just in the category: '+$rootScope.cCategory.title;
             btnOkLabel = 'Everywhere';
             message = 'Choose scope to delete:';
 

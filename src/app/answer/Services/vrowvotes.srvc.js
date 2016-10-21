@@ -73,7 +73,7 @@
                 
                 $rootScope.cvrowvotes.push(datax);
                 
-                console.log("Creating new vrowvoting record was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Creating new vrowvoting record was succesful");
                 return result.data;
             }
         }
@@ -107,7 +107,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("Updating vrow vote record was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Updating vrow vote record was succesful");
                 return result.data;
             }
         }
@@ -126,7 +126,7 @@
             
             function querySucceeded(result) {
 
-                console.log("Deleting vrow votes records was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting vrow votes records was succesful");
                 return result.data;
             }
         }
