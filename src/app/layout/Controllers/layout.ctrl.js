@@ -15,10 +15,10 @@
 
         .controller('layout', layout);
 
-    layout.$inject = ['$location', '$rootScope','$window','$q', '$http','pvisits', 'DEBUG_MODE',
+    layout.$inject = ['$location', '$rootScope','$window','$q', '$http','pvisits', 'DEBUG_MODE', 'rankofday',
     'answer', 'table','special', 'matchrec', 'edit','useractivity','vrows','headline','cblock', 'catans'];
 
-    function layout($location, $rootScope, $window, $q, $http, pvisits, DEBUG_MODE,
+    function layout($location, $rootScope, $window, $q, $http, pvisits, DEBUG_MODE, rankofday,
     answer, table, special, matchrec, edit, useractivity, vrows, headline, cblock, catans) {
         /* jshint validthis:true */
         var vm = this;
@@ -41,6 +41,7 @@
 
             //$timeout(loadingDone, 1000);
             loadData();
+            
             if ($rootScope.DEBUG_MODE) console.log("Layout Loaded!");
 
         }
@@ -79,8 +80,9 @@
             var p8 = headline.getheadlines();
             var p9 = cblock.getcblocks();
             var p10 = pvisits.getpvisits();
+            var p11 = rankofday.getrankofday();
 
-            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10]).then(function (d){
+            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11]).then(function (d){
                 $rootScope.answers = d[0];
                 $rootScope.content = d[1];
                 $rootScope.specials = d[2];
@@ -92,6 +94,7 @@
                 $rootScope.headlines = d[8];
                 $rootScope.cblocks = d[9];
                 $rootScope.pvisits = d[10];
+                $rootScope.rankofday = d[11];
                 
                 updatePageVisits();
                 loadingDone();

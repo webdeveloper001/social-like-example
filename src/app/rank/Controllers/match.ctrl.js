@@ -123,7 +123,6 @@
             vm.Tot = M;            
             
             //if already played all matches
-            console.log("cmrecs_length, M", $rootScope.cmrecs_user.length, M);
             if ($rootScope.cmrecs_user.length >= M) {
                 if (rankInProgress) dialog.getDialog('goodJobRankComplete');
                 else dialog.getDialog('rankComplete');

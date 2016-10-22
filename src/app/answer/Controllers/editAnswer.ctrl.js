@@ -39,6 +39,7 @@
 
         var A = $rootScope.A;
         if ($stateParams.index) vm.answer = $rootScope.canswers[A.indexOf(+$stateParams.index)];
+        vm.type = vm.answer.type;
         vm.imageURL = vm.answer.imageurl;
         vm.fields = [];
         var publicfield_obj = {};

@@ -307,22 +307,6 @@
             else return;
         }
 
-        function getAnswers() {
-
-            answer.getAnswers().then(success, fail);
-
-            function success(results) {
-
-                vm.answers = results;
-
-            }
-
-            function fail(error) {
-
-                console.log("error", error);
-            }
-        }
-
         function answerDetail(index) {
             $state.go("answerDetail", { index: index });
         }
@@ -459,7 +443,7 @@
                     for (var n = 0; n < catArr.length; n++) {
                         if (catansrecs[i].category == catArr[n]) {
                             for (var k = 0; k < answers.length; k++) {
-                                if (catansrecs[i].answer == answers[k].id) {
+                                if (catansrecs[i].answer == answers[k].id && catansrecs[i].isdup != true ) {
                                     obj = {};
                                     obj = answers[k];
                                     obj.catans = catansrecs[i].id;

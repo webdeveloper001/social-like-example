@@ -27,7 +27,7 @@
             $rootScope.objNumAct = $rootScope.objNum;
             
             loadData();
-            console.log("editRanking page Loaded!");
+            if ($rootScope.DEBUG_MODE) console.log("editRanking page Loaded!");
 
         }
 

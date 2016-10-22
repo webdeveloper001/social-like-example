@@ -49,7 +49,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("creating match record was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("creating match record was succesful");
                 return result.data;
             }
         }
@@ -86,7 +86,7 @@
            return $http.delete(url).then(querySuccess, _queryFailed);
            
            function querySuccess(result){
-               console.log("deleting match records succesful");
+               if ($rootScope.DEBUG_MODE) console.log("deleting match records succesful");
                return;
            }
             
@@ -128,7 +128,7 @@
                return;
            }
            function querySuccess2(result){
-               console.log("deleting match records category-ls pair succesful");
+               if ($rootScope.DEBUG_MODE) console.log("deleting match records category-ls pair succesful");
                return;
            } 
         }

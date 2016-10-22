@@ -93,7 +93,8 @@
                 if ($rootScope.cCategory.title.includes('Gyms') || $rootScope.cCategory.title.includes('gyms')) {
                     titles = ['Equipment & Facilities', 'Friendliness of Staff', 'Environment', 'Value for the Money'];
                 }
-                if ($rootScope.cCategory.title.includes('Nightclubs')) {
+                if ($rootScope.cCategory.title.includes('Nightclubs') || $rootScope.cCategory.title.includes('music') || 
+                    $rootScope.cCategory.title.includes('dancing')) {
                     titles = [' Quality of Music', 'Environment', 'Friendliness of Staff', 'Value for the Money'];
                 }
                 if (answer.type == 'PersonCust') {

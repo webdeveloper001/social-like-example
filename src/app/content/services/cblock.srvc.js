@@ -93,7 +93,7 @@
             var idx = _cblocks.map(function(x) {return x.id; }).indexOf(id);  
             for (var i = 0; i < field.length; i++) {
                 switch (field[i]) {
-                    case "catstr": $rootScope.content[idx].catstr = val[i]; break;                                    
+                    case "catstr": _cblocks[idx].catstr = val[i]; break;                                    
                 }
             }
 

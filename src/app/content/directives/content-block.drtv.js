@@ -10,8 +10,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             isRoW: '=rankofweek',
             updateView: '&updateView'
         },
-        controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 
-        function contentCtrl($scope, query, $http, answer, table, catans, $timeout) {
+        controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout','vrows', 
+        function contentCtrl($scope, query, $http, answer, table, catans, $timeout,vrows) {
             var vm = $scope;
             vm.title = 'mycontent';
 
@@ -27,7 +27,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             var strlen_o = 0;
 
             if (!vm.isDynamic) {
-                loadContent();
+                if (vm.modType == 'rankofweek') getRankofDay();
+                else loadContent();
             }
 
             $rootScope.$on('refreshRanks', function (e) {
@@ -36,7 +37,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             });
 
             $rootScope.$on('loadNh', function (e) {
-                loadContent();
+                if (vm.modType == 'rankofweek') getRankofDay();
+                else loadContent();
             });
 
             $rootScope.$on('applyRule', function (e) {
@@ -117,6 +119,53 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
                 }
             }
+            
+            function getRankofDay(){
+                    
+                    var searchVal = '';
+                    
+                    if ($rootScope.isCity) searchVal = $rootScope.rankofday[0].main;                  
+                    if ($rootScope.isNh) searchVal = $rootScope.rankofday[0].nh + ' ' + $rootScope.cnh;
+                    
+                    vm.results = [];
+                   
+                        //vm.content = $rootScope.content;
+                        var valTags = searchVal.split(" ");
+                        for (var j = 0; j < $rootScope.content.length; j++) {
+                            //for (var j = 50; j < 60; j++) {
+                            var r = true;
+                            //check that all tags exist
+                            for (var k = 0; k < valTags.length; k++) {
+                                var tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
+                                var tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
+                                r = r && ($rootScope.content[j].title.includes(valTags[k]) ||
+                                    $rootScope.content[j].title.includes(valTags[k].toUpperCase()) ||
+                                    $rootScope.content[j].title.includes(tagCapitalized) ||
+                                    $rootScope.content[j].title.includes(tagFirstLowered));
+                            }
+                            if (r) {
+                                vm.results.push($rootScope.content[j]);
+                                break;
+                            }
+                        }
+           
+                    //Check if photos exist for Rank of Week
+                    if (vm.results.length > 0 && vm.results[0] != undefined) {
+                        if (vm.results[0].image1url != undefined) vm.image1 = vm.results[0].image1url;
+                        if (vm.results[0].image2url != undefined) vm.image2 = vm.results[0].image2url;
+                        if (vm.results[0].image3url != undefined) vm.image3 = vm.results[0].image3url;
+                    }
+                    
+                    //resLT6 is used to hide the <<see more>> choice
+                if (vm.results.length <= 6) vm.resLT6 = true;
+                else vm.resLT6 = false;
+
+                var resGT0 = (vm.results[0] != undefined);
+                vm.updateView(resGT0);
+
+                if (resGT0) vm.hideme = false;
+                else vm.hideme = true;    
+            }
 
             //load content based on mode
             function loadContent() {
@@ -182,13 +231,6 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 if (bFound && resGT0) vm.hideme = false;
                 else vm.hideme = true;
                 
-                //Check if photos exist for Rank of Week
-                if ((vm.modType == 'rankofweek' || vm.modType == 'rankofweeknh') && vm.results.length > 0 && vm.results[0] != undefined) {
-                    if (vm.results[0].image1url != undefined) vm.image1 = vm.results[0].image1url;
-                    if (vm.results[0].image2url != undefined) vm.image2 = vm.results[0].image2url;
-                    if (vm.results[0].image3url != undefined) vm.image3 = vm.results[0].image3url;
-                }
-
             }
             
             var applyRuleDone = false;
@@ -356,7 +398,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
          
          
                 //console.log("1");
-                //8. Generate Category Strings for non neighborhood ranks            
+                /*//8. Generate Category Strings for non neighborhood ranks            
                    for (var i=0; i<vm.results.length; i++){
                        //console.log("2");
                        if (vm.results[i].title.includes("Hillcrest")){
@@ -386,7 +428,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                            }                                              
                        }
                    }
-                  //End 8
+                  *///End 8
                
                 /*//  9. Clear answer string for all non-atomic ranks 
                 for (var i=0; i < $rootScope.content.length; i++){
@@ -395,7 +437,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         table.update($rootScope.content[i].id, ['answertags'],[answertags]);    
                     }            
                 } 
-                *///End of 9
+                */ //End of 9
                 // "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
                 //      "Marina", "Seaport Village"];
                 /*// 10. downtwon districts - create catans
@@ -475,7 +517,101 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     $rootScope.$emit('applyRule');
                 }, 1500);
                 *///
-                
+                /*//14. Validate all catans entries, checking category and answer values are valid.
+                var catans1 = {};
+                var cat1 = {};
+                var cidx1 = 0;
+                var cidx2 = 0;
+                for (var i=0; i<$rootScope.catansrecs.length; i++){
+                    catans1 = $rootScope.catansrecs[i];
+                        cidx1 = $rootScope.content.map(function(x) {return x.id; }).indexOf(catans1.category);
+                        cidx2 = $rootScope.answers.map(function(x) {return x.id; }).indexOf(catans1.answer);
+                        cat1 = $rootScope.content[cidx1];
+                        cat2 = $rootScope.answers[cidx2];
+                        if (cat1 == undefined) {
+                            //console.log("undefined catgory- ", catans1.category);
+                            catans.deletebyCategory(catans1.category);
+                            
+                        }
+                        if (cat2 == undefined) {
+                            //console.log("undefined answer - ", catans1.answer);
+                            catans.deleteAnswer(catans1.answer);
+                        }
+                }    
+                *///End 14
+                 
+                /*//15. Add isdup to catans for the ones in Downtown to avoid duplicates in rankings
+                var catans1 = {};
+                var catans2 = {};
+                var cat1 = {};
+                var cat2 = {};
+                var cidx1 = 0;
+                var cidx2 = 0;
+                var str = '';
+                var isDt1 = false;
+                var isDt2 = false;
+                for (var i=0; i<$rootScope.catansrecs.length; i++){
+                    catans1 = $rootScope.catansrecs[i];
+                      
+                    for (var j=0; j<$rootScope.catansrecs.length; j++){
+                        catans2 = $rootScope.catansrecs[j];
+                            if(catans1.answer == catans2.answer && i!=j){
+                                //console.log("catans - ",catans1,catans2);
+                                cidx1 = $rootScope.content.map(function(x) {return x.id; }).indexOf(catans1.category); 
+                                cidx2 = $rootScope.content.map(function(x) {return x.id; }).indexOf(catans2.category);
+                                
+                                cat1 = $rootScope.content[cidx1];
+                                cat2 = $rootScope.content[cidx2];
+                                
+                                isDt1 = cat1.title.includes('Downtown');
+                                isDt2 = cat2.title.includes('Downtown');
+                             
+                                if (isDt1 && isDt2) {
+                                    break;
+                                }
+                                
+                                if (isDt1) {
+                                    str = cat1.title.replace('Downtown','');
+                                    if (cat2.title.includes(str)){
+                                        //console.log(cat1.title, "  -  ", cat2.title);
+                                        //console.log(catans1.isdup, "  -  ", catans2.isdup);
+                                        catans.updateRec(catans1.id,['isdup'],[true]);
+                                        break;
+                                    } 
+                                }
+                                if (isDt2) {
+                                    str = cat2.title.replace('Downtown','');
+                                    if (cat1.title.includes(str)){
+                                        //console.log(cat1.title, "  -  ", cat2.title);
+                                        //console.log(catans1.isdup, "  -  ", catans2.isdup);
+                                        catans.updateRec(catans2.id,['isdup'],[true]);
+                                        break;
+                                    } 
+                                }     
+                            }
+                     }
+                }    
+                *///End 15
+                /*//16. Run through all answers if they dont have vrows
+                var answer = {};
+                var hasvr = false;
+                for (var i=0; i<$rootScope.answers.length; i++){
+                    answer = $rootScope.answers[i];
+                    if (answer.type == 'Establishment' || answer.type =='PersonCust'){
+                        hasvr = false;
+                        for (var j=0; j<$rootScope.cvrows.length; j++){
+                            if ($rootScope.cvrows[j].answer == answer.id){
+                                hasvr = true;
+                                break;
+                            }
+                        }
+                        if (hasvr == false) {
+                            //vrows.postVrows4Answer(answer);
+                            console.log(answer.name);
+                        }
+                    }
+                }
+                *///End 16
                                                                
             }
         }], //end controller
