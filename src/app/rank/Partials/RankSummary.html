@@ -106,7 +106,7 @@
 </div>
 <div ng-show="{{vm.type == 'Establishment'}}">
     <div class="text-right" style="display:{{vm.haveLocation ? 'none':'inline'}}">
-        <p class="hiw text-right" ng-click="vm.whyNoDistance()"><u>why I cant see distances?</u></p>
+        <p class="hiw text-right" ng-click="vm.whyNoDistance()"><u>why cant I see distances?</u></p>
     </div>
 </div>
 <br>
@@ -117,7 +117,7 @@
             <tr>
                 <th>{{vm.showR ? 'Rank' : 'upV'}}</th>
                 <th ng-show="{{vm.sm == false}}">UpV</th>
-                <th class="capitalize " ng-repeat="h in vm.fields | filter:(h.isrequired=true)">{{h.label}}</th>
+                <th class="capitalize " ng-repeat="h in vm.fields | filter:{isrequired:true}">{{h.label}}</th>
                 <th ng-show="{{vm.type == 'Establishment'}}">Distance (mi)</th>
                 <th ng-show="{{vm.type == 'Establishment'}}">Specials</th>
                 <!-- ng-show="{{vm.type == 'Establishment'}}" -->
@@ -130,7 +130,7 @@
                 <td ng-show="{{vm.sm == false}}">{{x.upV}}</td>
                 <!--<td>{{x.Rank}}</td>-->
                 <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
-                <td ng-repeat="h in vm.fields | filter:(h.isrequired=true)">{{ x[h.name]}}</td>
+                <td ng-repeat="h in vm.fields | filter:{isrequired:true}">{{ x[h.name]}}</td>
                 <td ng-show="{{vm.type == 'Establishment'}}">{{x.dist}}</td>
                 <td ng-show="{{vm.type == 'Establishment'}}" style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">
                     {{x.sp_title}}</td>

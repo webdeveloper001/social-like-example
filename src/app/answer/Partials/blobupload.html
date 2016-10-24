@@ -1,5 +1,8 @@
 <button type="file" ngf-select="uploadFiles($file, $invalidFiles)"
-          accept="image/*" ngf-max-height="1000" ngf-max-size="1MB" class="btn btn-primary text-center" role="button" ngf-model-invalid="invalidFiles">
+          accept="image/*" ngf-max-size="1MB" class="btn btn-primary text-center" 
+          ngf-resize="{width: 100, height: 100, quality: .1, type: 'image/jpeg', 
+               ratio: '19:11', centerCrop: true, pattern='.jpg', restoreExif: false}" 
+          role="button" ngf-validate-after-resize="boolean"  ngf-model-invalid="invalidFiles">
       Upload New Image</button>
   <br><br>
   <div style="font:smaller">

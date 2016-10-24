@@ -121,6 +121,21 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             }
             
             function getRankofDay(){
+                
+                //Clear images:
+                vm.image1 = '../../../assets/images/noimage.jpg';
+                vm.image2 = '../../../assets/images/noimage.jpg';
+                vm.image3 = '../../../assets/images/noimage.jpg';
+                
+                //load colors and headline
+                for (var i = 0; i < $rootScope.headlines.length; i++) {
+                    if ($rootScope.headlines[i].type == vm.modType) {
+                        vm.bgc = $rootScope.headlines[i].bc;
+                        vm.fc = $rootScope.headlines[i].fc;
+                        vm.headline = $rootScope.headlines[i].title;
+                        break;
+                    }
+                }
                     
                     var searchVal = '';
                     

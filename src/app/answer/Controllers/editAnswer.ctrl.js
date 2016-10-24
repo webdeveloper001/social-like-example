@@ -423,7 +423,7 @@
 
         function updateRecords() {
 
-            console.log('updateRecords @ editAnswer');
+            if ($rootScope.DEBUG_MODE) console.log('updateRecords @ editAnswer');
             var voterecexists = false;
             var session_votes = [];
             var item = {};
@@ -479,7 +479,7 @@
 
         function approveEdit(index) {
             //update answer, delete edit record, and delete edit votes
-            console.log("Edit has been approved");
+            if ($rootScope.DEBUG_MODE) console.log("Edit has been approved");
             if (vm.edits[index].field == "image") {
                 answer.updateAnswer(vm.edits[index].answer, [vm.edits[index].field], [vm.edits[index].imageURL]);
             }
