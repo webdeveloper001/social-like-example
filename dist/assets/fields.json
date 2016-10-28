@@ -18,9 +18,9 @@
  {
    "type":"Event",
    "fields": [
-	   {"name":"name","isrequired":true,"onlybyowner":false,"label":"Name of Event"},
-	   {"name":"cityarea","isrequired":true,"onlybyowner":false,"label":"Neighborhood"},
-     {"name":"phone","isrequired":false,"onlybyowner":false,"label":"Phone Number"},
+	   {"name":"name","isrequired":true,"onlybyowner":false,"label":"Event"},
+     {"name":"cityarea","isrequired":false,"onlybyowner":false,"label":"Neighborhood"},
+     {"name":"location","isrequired":false,"onlybyowner":false,"label":"Location"},     
      {"name":"website","isrequired":false,"onlybyowner":false,"label":"Website"},
 	   {"name":"addinfo","isrequired":false,"onlybyowner":false,"label":"Additional Info"}
    ]   
