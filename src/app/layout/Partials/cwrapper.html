@@ -52,7 +52,14 @@
 <div style="display:{{((vm.isNhRdy || vm.isCity) && (vm.searchActive == false)) ? 'inline':'none'}}" ng-if="!vm.fbm">
 	<content-block type='rankofweek' dynamic=false rankofweek=true></content-block>
 	<!--<content-block type='rankofweeknh' dynamic=false rankofweek=true></content-block>-->
-
+	<div class="row">
+		<div class="col-lg-6">
+			<content-block type="lifestyle" dynamic=false></content-block>
+		</div>
+		<div class="col-lg-6">
+			<content-block type='social' dynamic=false></content-block>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-lg-6">
 			<content-block type="politics" dynamic=false></content-block>
@@ -63,13 +70,12 @@
 	</div>
 	<div class="row">
 		<div class="col-lg-6">
-			<content-block type="lifestyle" dynamic=false></content-block>
+			<content-block type='food' dynamic=false></content-block>
 		</div>
 		<div class="col-lg-6">
-			<content-block type='social' dynamic=false></content-block>
+			<content-block type='health' dynamic=false></content-block>
 		</div>
 	</div>
-
 	<div class="row">
 		<div class="col-lg-6">
 			<content-block type='city' dynamic=false></content-block>
@@ -78,15 +84,7 @@
 			<content-block type='personalities' dynamic=false></content-block>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-lg-6">
-			<content-block type='food' dynamic=false></content-block>
-		</div>
-		<div class="col-lg-6">
-			<content-block type='health' dynamic=false></content-block>
-		</div>
-	</div>
-
+	
 	<div class="row">
 		<div class="col-lg-6">
 			<content-block type='beauty' dynamic=false></content-block>

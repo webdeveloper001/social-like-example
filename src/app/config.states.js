@@ -213,6 +213,13 @@
                 controller: 'addAnswer as vm'
             },
             {
+                name: 'addEvent',
+                parent: 'layout',
+                url: '/addEvent',
+                templateUrl: 'app/answer/Partials/addEvent.html',
+                controller: 'addEvent as vm'
+            },
+            {
                 name: 'editAnswer',
                 parent: 'layout',
                 url: '/editAnswer/:index',

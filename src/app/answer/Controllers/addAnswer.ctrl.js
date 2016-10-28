@@ -87,7 +87,7 @@
 
         function activate() {
             loadPublicFields();
-            determineScope();
+            determineScope(); 
             console.log("Add Answer Activated!");
 
         }

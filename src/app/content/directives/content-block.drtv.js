@@ -315,11 +315,12 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
         
         
                 /*//  2. Use this to add/remove a tag from a rank 
-                for (var i=0; i < vm.resultsT.length; i++){
-                    if (vm.resultsT[i].title.includes("Public opinions of the Police")){
-                        var tags = vm.resultsT[i].tags + ' neighborhood';
-                        //var tags = vm.resultsT[i].tags.replace('italian','');
-                        table.update(vm.resultsT[i].id, ['tags'],[tags]);    
+                for (var i=0; i < vm.results.length; i++){
+                    if (vm.results[i].title.includes("Festivals and events in")){
+                        //var tags = vm.results[i].tags + ' volunteering give back community';
+                        //var tags = vm.results[i].tags.replace(' isMP','');
+                        //var newtype = 'Event';
+                        table.update(vm.results[i].id, ['type'],['Event']);    
                     }            
                 } 
                 *///End of 2
@@ -423,9 +424,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                            var genRank = vm.results[i].title.replace("Hillcrest", "San Diego");
                            for (var j=0; j<$rootScope.content.length; j++){
                                if (genRank == $rootScope.content[j].title){
-                                   //if ($rootScope.content[j].catstr == null || 
-                                   //$rootScope.content[j].catstr == undefined || 
-                                   //$rootScope.content[j].catstr.length == 0){
+                                   if ($rootScope.content[j].catstr == null || //comment these 3
+                                   $rootScope.content[j].catstr == undefined || //if want to redo everythign
+                                   $rootScope.content[j].catstr.length == 0){  //categories
                                     console.log("Found gen rank --- ", $rootScope.content[j].title);
                                     var srchStr = $rootScope.content[j].title.replace("San Diego","");
                                        for (var k=0; k<$rootScope.content.length; k++){
@@ -437,13 +438,13 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                        fcatstr = catstr.substring(1); //remove leading ':'
                                        console.log("final catstr ---", fcatstr)
                                        table.update($rootScope.content[j].id, ['isatomic','catstr'],[false, fcatstr]);
-                                  // } 
+                                   } //this is bracket
                                break;
                                }
                            }                                              
                        }
                    }
-                  *///End 8
+                *///End 8
                
                 /*//  9. Clear answer string for all non-atomic ranks 
                 for (var i=0; i < $rootScope.content.length; i++){
@@ -514,9 +515,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 /*//12. Add 'pb' tag to all Pacific Beach
                 var tagstr = '';
                 for (var i=0; i<$rootScope.content.length; i++){
-                    if ($rootScope.content[i].title.includes('Ocean Beach')){
-                        if ($rootScope.content[i].tags.includes('ob') == false){
-                            tagstr = $rootScope.content[i].tags + ' ob';
+                    if ($rootScope.content[i].title.includes('Pacific Beach')){
+                        if ($rootScope.content[i].tags.includes('pb') == false){
+                            tagstr = $rootScope.content[i].tags + ' pb';
                             //console.log("tagstr - ", tagstr, $rootScope.content[i].title);
                             table.update($rootScope.content[i].id,['tags'],[tagstr]);
                         }

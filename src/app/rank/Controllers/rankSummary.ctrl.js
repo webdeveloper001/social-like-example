@@ -31,6 +31,7 @@
         vm.sortByRank = sortByRank;
         vm.sortByDistance = sortByDistance;
         vm.sortByUpV = sortByUpV;
+        vm.sortByDate = sortByDate;
         vm.loadComments = loadComments;
         vm.postComment = postComment;
 
@@ -247,8 +248,7 @@
                             }
                         }
             }
-                
-            
+                           
             else {
                 $rootScope.canswers4rank = $rootScope.canswers;
             }
@@ -333,7 +333,8 @@
                     return;
                 }
                 else {
-                    $state.go("addAnswer");
+                    if (vm.type == 'Event') $state.go("addEvent");    
+                    else $state.go("addAnswer");
                 }
             }
             else {
@@ -379,10 +380,13 @@
             $rootScope.fields = fields;
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
+            
+            if (vm.type == 'Event') vm.isE = true;
+            else vm.isE = false;
 
             $rootScope.NhImplied = false;
             $rootScope.NhValue = '';
-            if ($rootScope.cCategory.type == 'Establishment') {
+            if ($rootScope.cCategory.type == 'Establishment' || $rootScope.cCategory.type == 'Event') {
                 //Determine if title already contains neighboorhood
                 var nhs = $rootScope.neighborhoods.concat($rootScope.districts);            
                 for (var i = 0; i < nhs.length; i++) {
@@ -405,6 +409,10 @@
                         vm.fields[i].isrequired = false;
                         //break;
                     }
+                    if (vm.fields[i].name == 'email') {
+                        vm.fields[i].isrequired = false;
+                        //break;
+                    }
                 }
             }
             
@@ -413,6 +421,7 @@
             $rootScope.canswers = [];
             $rootScope.ccatans = [];
             $rootScope.B = [];
+            var eventObj = {};
 
             var obj = {};
             for (var i = 0; i < catansrecs.length; i++) {
@@ -426,9 +435,17 @@
                                 obj.catans = catansrecs[i].id;
                                 obj.catansrank = catansrecs[i].rank;
                                 obj.upV = catansrecs[i].upV;
+                                
+                                if (vm.type == 'Event'){
+                                        eventObj = JSON.parse(answers[k].eventstr);
+                                        
+                                        Object.assign(answers[k], eventObj);
+                                        obj.date = answers[k].sdate.slice(4);
+                                }
+                                
                                 $rootScope.canswers.push(obj);
                                 $rootScope.ccatans.push(catansrecs[i]);
-                            
+                                
                                 //Collect array of 'current' catans records ids
                                 $rootScope.B.push(catansrecs[i].id);
                                 break;
@@ -449,6 +466,14 @@
                                     obj.catans = catansrecs[i].id;
                                     obj.catansrank = catansrecs[i].rank;
                                     obj.upV = catansrecs[i].upV;
+                                    
+                                    if (vm.type == 'Event'){
+                                        eventObj = JSON.parse(answers[k].eventstr);
+                                        
+                                        Object.assign(answers[k], eventObj);
+                                        obj.date = answers[k].sdate.slice(4);
+                                    }
+                                    
                                     $rootScope.canswers.push(obj);
                                     $rootScope.ccatans.push(catansrecs[i]);
                             
@@ -610,6 +635,7 @@
             vm.selRank = 'active';
             vm.selDistance = '';
             vm.selUpV = '';
+            vm.selDate = '';
 
             vm.showR = true || (!vm.sm);
         }
@@ -623,6 +649,7 @@
             vm.selRank = '';
             vm.selDistance = 'active';
             vm.selUpV = '';
+            vm.selDate = '';
         }
 
         function sortByUpV() {
@@ -634,6 +661,34 @@
             vm.selRank = '';
             vm.selDistance = '';
             vm.selUpV = 'active';
+            vm.selDate = '';
+
+            vm.showR = false || (!vm.sm);
+
+        }
+        
+        function sortByDate() {
+            function compare(a, b) {
+                
+               var d1 = new Date(a.date);
+               var d1s = d1.getFullYear().toString() + 
+                         (d1.getMonth()+1 < 10 ? ('0'+ (d1.getMonth()+1).toString()) : (d1.getMonth()+1).toString()) + 
+                         (d1.getDate() < 10 ? ('0'+ d1.getDate().toString()) : d1.getDate().toString());
+               
+               var d2 = new Date(b.date);
+               var d2s = d2.getFullYear().toString() + 
+                         (d2.getMonth()+1 < 10 ? ('0'+ (d2.getMonth()+1).toString()) : (d2.getMonth()+1).toString()) + 
+                         (d2.getDate() < 10 ? ('0'+ d2.getDate().toString()) : d2.getDate().toString());
+                         
+               return Number(d1s) - Number(d2s);
+            }
+            
+            vm.answers = vm.answers.sort(compare);
+            //vm.answers = $filter('orderBy')(vm.answers, 'dist');
+            vm.selRank = '';
+            vm.selDistance = '';
+            vm.selUpV = '';
+            vm.selDate = 'active';
 
             vm.showR = false || (!vm.sm);
 

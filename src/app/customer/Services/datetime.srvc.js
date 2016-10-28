@@ -16,7 +16,8 @@
         var service = {
 
             formatdatetime: formatdatetime,
-            formatTime: formatTime
+            formatTime: formatTime,
+            getDate: getDate
         };
 
         return service;
@@ -77,6 +78,11 @@
                 case "etime2": sp.etime2 = date; break;
             }
 
+        }
+        
+        //Get date in number from date in string
+        function getDate(datestr){            
+            //var date = Date(datestr);  
         }
 
     }

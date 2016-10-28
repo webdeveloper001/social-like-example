@@ -92,7 +92,9 @@
         <button class="btn btn-default {{vm.selRank}} " ng-click="vm.sortByRank()">Rank</button>
         <button class="btn btn-default {{vm.selUpV}} " ng-click="vm.sortByUpV()">UpVotes</button>
         <button class="btn btn-default {{vm.selDistance}} " ng-click="vm.sortByDistance()"
-            ng-show="{{vm.type == 'Establishment'}}">Distance</button>        
+            ng-show="{{vm.type == 'Establishment'}}">Distance</button>
+        <button class="btn btn-default {{vm.selDate}} " ng-click="vm.sortByDate()"
+            ng-show="{{vm.type == 'Event'}}">Date</button>               
         <!--  <button type="button " class="btn btn-primary ">{{"rankSummary.Filtered " | translate}}</button> -->
         </span></p>
         </div>
@@ -119,6 +121,7 @@
                 <th ng-show="{{vm.sm == false}}">UpV</th>
                 <th class="capitalize " ng-repeat="h in vm.fields | filter:{isrequired:true}">{{h.label}}</th>
                 <th ng-show="{{vm.type == 'Establishment'}}">Distance (mi)</th>
+                <th ng-show="{{vm.type == 'Event'}}">Date</th>
                 <th ng-show="{{vm.type == 'Establishment'}}">Specials</th>
                 <!-- ng-show="{{vm.type == 'Establishment'}}" -->
             </tr>
@@ -130,8 +133,11 @@
                 <td ng-show="{{vm.sm == false}}">{{x.upV}}</td>
                 <!--<td>{{x.Rank}}</td>-->
                 <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
-                <td ng-repeat="h in vm.fields | filter:{isrequired:true}">{{ x[h.name]}}</td>
+                <td ng-repeat="h in vm.fields | filter:{isrequired:true}" 
+                style="background-color:{{x.bc}};color:{{x.fc}}">{{ x[h.name]}}</td>
                 <td ng-show="{{vm.type == 'Establishment'}}">{{x.dist}}</td>
+                <td ng-show="{{vm.type == 'Event'}}"
+                style="background-color:{{x.bc}};color:{{x.fc}}">{{x.date}}</td>
                 <td ng-show="{{vm.type == 'Establishment'}}" style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">
                     {{x.sp_title}}</td>
             </tr>

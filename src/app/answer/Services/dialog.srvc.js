@@ -30,7 +30,9 @@
             deleteVRow: deleteVRow,
             addVRowGroup: addVRowGroup,
             editVRowGroup: editVRowGroup,
-            deleteVRowGroup: deleteVRowGroup
+            deleteVRowGroup: deleteVRowGroup,
+            showAddEvent: showAddEvent,
+            createEventPreview: createEventPreview
         };
 
         return service;
@@ -813,6 +815,121 @@
                     if (result) callback(x);
                 }
             });
+        }
+        
+        function createEventPreview(event, callback){
+           
+            var answerhtml = '';
+            var newline = '';
+            //var header = "table" + $rootScope.cCategory.id + ".header";
+            for (var i = 0; i < $rootScope.fields.length; i++) {
+                switch ($rootScope.fields[i].name) {
+                    case "name": {
+                        newline = '<strong class="capitalize">' + 'Name' + '</strong>: ' + event.name + '</br>';
+                        break;
+                    }
+                    case "location": {
+                        if (event.location) newline = '<strong class="capitalize">' + 'Location' + '</strong>: ' + event.location + '</br>';
+                        else newline = '<strong>' + 'Location' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
+                    case "cityarea": {
+                        newline = '<strong class="capitalize">' + 'City Area' + '</strong>: ' + event.cityarea + '</br>';
+                        break;
+                    }
+                    case "addinfo": {
+                        if (event.addinfo) newline = '<strong class="capitalize">' + 'Additional Info' + '</strong>: ' + event.addinfo + '</br>';
+                        else newline = '<strong>' + 'Additional Info' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
+                    case "website": {
+                        if (event.website) newline = '<strong class="capitalize">' + 'Website' + '</strong>: ' + event.website + '</br>';
+                        else newline = '<strong>' + 'Website' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
+                    case "date": {
+                        if (event.date) newline = '<strong class="capitalize">' + 'Date' + '</strong>: ' + event.sdate + '</br>';
+                        else newline = '<strong>' + 'Date' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
+                    
+                }
+                answerhtml = answerhtml + newline;                
+            }
+            
+            var addinfomessage = '';
+            var sch_str = '';
+
+            if (event.freq == 'weekly') {
+                sch_str = 'Every: ' +
+                (event.mon ? ' - Monday' : '') +
+                (event.tue ? ' - Tuesday' : '') +
+                (event.wed ? ' - Wednesday' : '') +
+                (event.thu ? ' - Thursday' : '') +
+                (event.fri ? ' - Friday' : '') +
+                (event.sat ? ' - Saturday' : '') +
+                (event.sun ? ' - Sunday' : '') +
+                '<br>From: ' + event.stime2 + ' to ' + event.etime2;
+            }
+            if (event.freq == 'onetime') {
+                var sameday = (event.sdate == event.edate);
+                if (sameday) {
+                    sch_str = event.sdate + ' from ' + event.stime + ' to ' + event.etime;
+                }
+                else {
+                    sch_str = (event.edate == undefined ? '':'Starts: ') + event.sdate + ' at ' + event.stime +  
+                              (event.edate == undefined ? '':('<br>Ends: ' + event.edate + ' at ' + event.etime)); 
+                }
+            }
+
+            addinfomessage = '<div style="background-color:' + event.bc + ';color:' + event.fc + ';">' +
+            '<p><strong>' + event.name + 
+            (event.location != undefined ? (' @ ' + event.location):('')) + '</strong></p>' + 
+            (event.cityarea != undefined ? ('<p>in ' + event.cityarea+'</p>'):'') +
+            '<p>' + sch_str + '</p>' + 
+            (event.addinfo != undefined ? ('<p>' + event.addinfo + '</p>'):(''))+
+            (event.website != undefined ? ('<p>For more information: <a href="' + event.website + '">'+event.website+'</a></p>'):(''))+
+            '</div>';
+
+            showAddEvent(event, answerhtml, addinfomessage, event.imageurl, callback);
+            //console.log("headline ", categoryhtml)
+       
+        }
+        function showAddEvent(event, answerhtml, addinfomessage,imageurl, callback) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Please Confirm';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Confirm';
+            message = 'You want to add the following event to <strong>' + $rootScope.cCategory.title + '</strong>. </br><p></p>' +
+            addinfomessage + '</br>'+ 
+            'With the following image:' +
+            '<img src=' + imageurl + ' class="thumbnail" style="width:60%; max-height:150px">';
+
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-primary',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) callback(event);
+                    //dialogRef.close();
+                }
+            });
+        
+            
         }
 
     }

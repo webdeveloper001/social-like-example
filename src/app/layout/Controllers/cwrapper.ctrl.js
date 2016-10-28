@@ -6,11 +6,11 @@
         .controller('cwrapper', cwrapper);
 
     cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
-        'query', 'fileupload',
+        'query', 'table',
         'votes', 'editvote', 'vrowvotes'];
 
     function cwrapper($rootScope, $state, $http, $stateParams, $scope, 
-        query, fileupload,
+        query, table,
         votes, editvote, vrowvotes) {
         /* jshint validthis:true */
         var vm = this;
@@ -162,13 +162,18 @@
             }
             
             //temp
+            /*
             for (var i = 0; i < $rootScope.content.length; i++) {
-                $rootScope.content[i].title = $rootScope.content[i].title.replace('Best ', '');
-                $rootScope.content[i].title = $rootScope.content[i].title.replace('Top ', '');
-                $rootScope.content[i].title = $rootScope.content[i].title.replace('Most ', '');
-                $rootScope.content[i].title = $rootScope.content[i].title.replace('?', '');
-                $rootScope.content[i].title = $rootScope.content[i].title.charAt(0).toUpperCase() + $rootScope.content[i].title.slice(1);
+                //$rootScope.content[i].title = $rootScope.content[i].title.replace('Best ', '');
+                //$rootScope.content[i].title = $rootScope.content[i].title.replace('Top ', '');
+                //$rootScope.content[i].title = $rootScope.content[i].title.replace('Most ', '');
+                if ($rootScope.content[i].title.includes('Top ')){
+                    $rootScope.content[i].title = $rootScope.content[i].title.replace('Top ', '');
+                    $rootScope.content[i].title = $rootScope.content[i].title.charAt(0).toUpperCase() + $rootScope.content[i].title.slice(1);
+                    table.update($rootScope.content[i].id,['title'],[$rootScope.content[i].title]);
+                }
             }
+            */
             $rootScope.cityranks = ['city', 'lifestyle', 'food', 'politics', 'services', 'social', 'beauty', 'sports', 'personalities', 'technology', 'dating', 'health'];
             $rootScope.nhranks = ['neighborhood', 'lifestyle', 'food', 'services', 'social', 'beauty', 'health'];
 

@@ -5,10 +5,10 @@
         .module('app')
         .controller('answerDetail', answerDetail);
 
-    answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity',
+    answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
         'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime', '$location', 'vrows', 'vrowvotes','imagelist']; //AM:added user service
 
-    function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,
+    function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
         votes, matchrec, edit, editvote, catans, datetime, $location, vrows, vrowvotes, imagelist) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
@@ -101,12 +101,19 @@
     //        getCatAnsId(vm.answer.id);
             getEdits(vm.answer.id);
             deleteButtonAccess();
-            getHours();
-            makeRelativeTable(vm.answer.id);
-            getSpecials(vm.answer.id);
-            getVRows(vm.answer.id);
+            if (vm.type == 'Establishment') getHours();
+            if (vm.type != 'Establishment' && vm.type != 'Event' ) makeRelativeTable(vm.answer.id);
+            if (vm.type == 'Establishment') getSpecials(vm.answer.id);
+            if (vm.type == 'Establishment') getVRows(vm.answer.id);
             getAnswerRanks();
             getAnswerVotes();
+            
+            if (vm.type == 'Event'){
+                var eventObj = JSON.parse(vm.answer.eventstr);
+                Object.assign(vm.answer, eventObj);
+                vm.ehtml = htmlops.eventHtml(vm.answer,vm.sm);
+                vm.estyle = 'background-color:' + vm.answer.bc + ';color:' + vm.answer.fc + ';'+'white-space:pre;';
+            }
 
             if ($rootScope.isLoggedIn){
                 if ($rootScope.user.id == vm.answer.owner) {
@@ -303,19 +310,21 @@
                     catans.updateRec(vm.answerRanks[i].catans, ["upV", "downV"], [vm.answerRanks[i].upV, vm.answerRanks[i].downV]);
                 }
             }
-            
-            for (var i=0; i<vm.vrows.length; i++){
-                var voteRecExists = vm.vrows[i].voteExists;
-                if (voteRecExists && vm.vrows[i].dVi != vm.vrows[i].dV) {
-                    $rootScope.cvrowvotes[vm.vrows[i].vidx].val = vm.vrows[i].dV;
-                    vrowvotes.patchRec(vm.vrows[i].voteid, vm.vrows[i].dV);
-                }
-                if (!voteRecExists && vm.vrows[i].dV != 0) {
-                    vrowvotes.postRec(vm.vrows[i].id, vm.vrows[i].dV);
-                }
-            
-                if ((vm.vrows[i].upV != vm.vrows[i].upVi) || (vm.vrows[i].downV != vm.vrows[i].downVi)) {
-                    vrows.updateRec(vm.vrows[i].id, ["upV", "downV"], [vm.vrows[i].upV, vm.vrows[i].downV]);
+           
+            if (vm.type == 'Establishment') {
+                for (var i = 0; i < vm.vrows.length; i++) {
+                    var voteRecExists = vm.vrows[i].voteExists;
+                    if (voteRecExists && vm.vrows[i].dVi != vm.vrows[i].dV) {
+                        $rootScope.cvrowvotes[vm.vrows[i].vidx].val = vm.vrows[i].dV;
+                        vrowvotes.patchRec(vm.vrows[i].voteid, vm.vrows[i].dV);
+                    }
+                    if (!voteRecExists && vm.vrows[i].dV != 0) {
+                        vrowvotes.postRec(vm.vrows[i].id, vm.vrows[i].dV);
+                    }
+
+                    if ((vm.vrows[i].upV != vm.vrows[i].upVi) || (vm.vrows[i].downV != vm.vrows[i].downVi)) {
+                        vrows.updateRec(vm.vrows[i].id, ["upV", "downV"], [vm.vrows[i].upV, vm.vrows[i].downV]);
+                    }
                 }
             }
             recordsUpdated = true;
@@ -564,7 +573,7 @@
                     datetime.formatdatetime($rootScope.specials[i]);
                     $rootScope.specials[i].name = vm.answer.name;
 
-                    var htmlmsg = specialHtml($rootScope.specials[i],vm.sm);
+                    var htmlmsg = htmlops.specialHtml($rootScope.specials[i],vm.sm);
                     $rootScope.specials[i].html = htmlmsg;
                     //Separate style (not working with ng-bind-html)
                     var spStyle = 'background-color:' + $rootScope.specials[i].bc + ';color:' + $rootScope.specials[i].fc + ';' +
@@ -685,49 +694,6 @@
             $state.go('editvrows');
         }
 
-        function specialHtml(x, sm) {
-            var htmlmsg = '';
-            var sch_str = '';
-            if (x.freq == 'weekly') {
-                var days_str = 'Every: ' +
-                (x.mon ? ' - Monday' : '') +
-                (x.tue ? ' - Tuesday' : '') +
-                (x.wed ? ' - Wednesday' : '') +
-                (x.thu ? ' - Thursday' : '') +
-                (x.fri ? ' - Friday' : '') +
-                (x.sat ? ' - Saturday' : '') +
-                (x.sun ? ' - Sunday' : '');
-                sch_str = days_str + '<br>From: ' + x.stime2 + ' to ' + x.etime2;
-                
-                if (sm && days_str.length > 45){
-                    
-                    var lp = 0;
-                    var newstr = '';
-                    for (var n=0; n<sch_str.length; n++){
-                        if (sch_str[n] == '-' && n < 45) lp=n;
-                        if (sch_str[n] == '-' && n > 45) {
-                            newstr = sch_str.substring(0,lp) + '<br>' + sch_str.substring(lp);
-                            break; 
-                        }                             
-                    }
-                    sch_str = newstr;
-                }
-            }
-            if (x.freq == 'onetime') {
-                var sameday = (x.sdate == x.edate);
-                if (sameday) {
-                    sch_str = x.sdate + ' from ' + x.stime + ' to ' + x.etime;
-                }
-                else {
-                    sch_str = 'Starts: ' + x.sdate + ' at ' + x.stime + '<br>Ends: ' + x.edate + ' at ' + x.etime;
-                }
-            }
-
-            htmlmsg = '<div class="text-center">' + '<h3>' + x.stitle +
-            '</h3><p>' + sch_str + '</p><p>' + x.details + '</p></div>';
-            return htmlmsg;
-        }
-
         function showImages() {
             imagelist.getImageList();
             //vm.showImageGallery = true;
@@ -757,8 +723,7 @@
                 return;
             }
             //console.log("vm.answerRanks ---", vm.answerRanks);
-        }
-        
+        }        
         //AM:DownVote
         function vrowVoteDown(x) {
 

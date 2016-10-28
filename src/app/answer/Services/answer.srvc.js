@@ -91,7 +91,7 @@
             var resource = [];
 
             resource.push(answer);
-
+            
             return $http.post(url, resource, {
                 headers: {
                     "Content-Type": "multipart/form-data"
@@ -172,6 +172,7 @@
                     case "website": data.website = val[i]; break;
                     case "email": data.email = val[i]; break;
                     case "strhours": data.strhours = val[i]; break;
+                    case "eventstr": data.eventstr = val[i]; break;
                 }
             }
             //console.log("data", data);
@@ -198,6 +199,7 @@
                     case "website": $rootScope.answers[idx].website = val[i]; break;
                     case "email": $rootScope.answers[idx].email = val[i]; break;
                     case "strhours": $rootScope.answers[idx].strhours = val[i]; break;
+                    case "eventstr": $rootScope.answers[idx].eventstr = val[i]; break;
                 }
             }                        
             
