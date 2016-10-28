@@ -55,22 +55,22 @@
                 }
             }
 
+            var cc = 0; //char count
+            var newstr2 = '';
             if (sm && x.details.length > 45) {
-                var cc = 0; //char count
-                var newstr = '';
-                for (n = 0; n < x.details.length; n++) {
-
-                    if (cc > 42 && x.details[n] == ' ') {
-                        newstr = newstr + '<br>';
+                for (var n = 0; n < x.details.length; n++) {
+                     if (cc > 42 && x.details[n] == ' ') {
+                        newstr2 = newstr2 + '<br>';
                         cc = 0;
-                    }
-                    newstr = newstr + x.details[n];
-                    cc++;
+                     }
+                        newstr2 = newstr2 + x.details[n];
+                        cc++;
                 }
             }
+            else newstr2 = x.details;
 
             htmlmsg = '<div class="text-center">' + '<h3>' + x.stitle +
-            '</h3><p>' + sch_str + '</p><p>' + x.details + '</p></div>';
+            '</h3><p>' + sch_str + '</p><p>' + newstr2 + '</p></div>';
             return htmlmsg;
         }
         
@@ -99,12 +99,27 @@
                               (x.edate == undefined ? '':('<br>Ends: ' + x.edate + ' at ' + x.etime)); 
                 }
             }
+            
+            var cc = 0; //char count
+            var newstr = '';
+            if (sm && x.addinfo.length > 45) {
+                for (var n = 0; n < x.addinfo.length; n++) {
+
+                    if (cc > 42 && x.addinfo[n] == ' ') {
+                        newstr = newstr + '<br>';
+                        cc = 0;
+                    }
+                    newstr = newstr + x.addinfo[n];
+                    cc++;
+                }
+            }
+            
 
             htmlmessage = '<p><strong>' + x.name + 
             (x.location != undefined ? (' @ ' + x.location):('')) + '</strong></p>' + 
             (x.cityarea != undefined ? ('<p>in ' + x.cityarea+'</p>'):'') +
             '<p>' + sch_str + '</p>' + 
-            (x.addinfo != undefined ? ('<p>' + x.addinfo + '</p>'):(''))+
+            (x.addinfo != undefined ? ('<p>' + newstr + '</p>'):(''))+
             (x.website != undefined ? ('<p>For more information: <a href="' + x.website + '">'+ x.website +'</a></p>'):(''))+
             '</div>';
             
