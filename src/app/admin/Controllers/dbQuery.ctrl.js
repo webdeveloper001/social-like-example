@@ -14,6 +14,7 @@
         
         vm.queryAnswer = queryAnswer;
         vm.delCatans = delCatans;
+        vm.delAnswer = delAnswer;
     
         activate();
 
@@ -52,6 +53,10 @@
         
         function delCatans(y){
             catans.deleteRec(y.answer, y.category);
+        }
+        
+        function delAnswer(x){
+            answer.deleteAnswer(x.id);
         }
  
     }

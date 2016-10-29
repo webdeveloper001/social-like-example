@@ -333,8 +333,12 @@
             ansObj.userid = $rootScope.user.id
             if(vm.bind) ansObj.owner = $rootScope.user.id;
             
+            eqRanks();
+            if (eqFound && !inCity) answer.addAnswer2(ansObj, [$rootScope.cCategory.id, eqRankIdx]).then(rankSummary);
+            else if (eqFound && inCity) answer.addAnswer2(ansObj, [eqRankIdx]).then(rankSummary);
+            else answer.addAnswer(ansObj).then(rankSummary); 
             
-            answer.addAnswer(ansObj).then(rankSummary); 
+            //answer.addAnswer(ansObj).then(rankSummary); 
             //console.log("adding myEvent", eventStr);
             //console.log("adding answer", ansObj);
         }
@@ -423,6 +427,39 @@
             }
             else event.updateEvent(myEvent);
             $state.go('specials');
+        }
+        
+        function eqRanks() {
+            var lookRank = '';
+            if (inDowntown || inDistrict || inCity) {
+                if (inDowntown && myAnswer.cityarea != 'Downtown') {
+                    lookRank = $rootScope.cCategory.title.replace('Downtown', vm.ev.cityarea);
+                    for (var n = 0; n < $rootScope.content.length; n++) {
+                        if ($rootScope.content[n].title == lookRank) {
+                            eqFound = true;
+                            eqRankIdx = $rootScope.content[n].id;
+                        }
+                    }
+                }
+                if (inDistrict) {
+                    lookRank = $rootScope.cCategory.title.replace(inDistrictName, 'Downtown');
+                    for (var n = 0; n < $rootScope.content.length; n++) {
+                        if ($rootScope.content[n].title == lookRank) {
+                            eqFound = true;
+                            eqRankIdx = $rootScope.content[n].id;
+                        }
+                    }
+                }               
+                if (inCity){
+                    lookRank = $rootScope.cCategory.title.replace('San Diego', vm.ev.cityarea);
+                    for (var n = 0; n < $rootScope.content.length; n++) {
+                        if ($rootScope.content[n].title == lookRank) {
+                            eqFound = true;
+                            eqRankIdx = $rootScope.content[n].id;
+                        }
+                    }
+                }
+            }
         }
         
        function deleteSpecial() {
