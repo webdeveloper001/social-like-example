@@ -57,6 +57,7 @@
 
             var cc = 0; //char count
             var newstr2 = '';
+            if (x.details == undefined) x.details = '';
             if (sm && x.details.length > 45) {
                 for (var n = 0; n < x.details.length; n++) {
                      if (cc > 42 && x.details[n] == ' ') {
@@ -102,6 +103,7 @@
             
             var cc = 0; //char count
             var newstr = '';
+            if (x.addinfo == undefined) x.addinfo = '';
             if (sm && x.addinfo.length > 45) {
                 for (var n = 0; n < x.addinfo.length; n++) {
 

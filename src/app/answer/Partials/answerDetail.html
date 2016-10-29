@@ -226,10 +226,15 @@
             <div ng-bind-html="x.html" style="{{x.style}}">
                 <br>
             </div>
+            <p ng-if="x.hasimage" style="background-color:lightgray" ng-click="vm.showsimage(x)">Show Image</p>
+            <div class="text-middle" ng-if="x.showimage">
+                <img class="displayed" src="{{x.image}}" style="height:{{vm.mxheight}};width:auto;max-width:96%;margin-left:auto;margin-right:auto;">
+                <br>
+            </div> 
         </div>
 
         <div class="text-right">
-            <a type="button" class="btn btn-primary btn-block" ng-click="vm.openSpecials()" style="display:{{vm.userIsOwner == true ? 'inline':'none'}}">
+            <a type="button" class="btn btn-primary btn-block" ng-click="vm.openSpecials()" style="display:{{vm.access ? 'inline':'none'}}">
             Edit Specials </a>
         </div>
     </div>

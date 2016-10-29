@@ -24,7 +24,7 @@
     <div class="col-sm-12 col-md-6">
         <div class="">
             <img class="displayed-uc" src="{{vm.imageURL}}" alt="{{image.errorLoading}}" style="width:100%; max-height:300px" ng-show="{{vm.type != 'Short-Phrase'}}">
-            <img src="../../../assets/images/powered_by_google_on_white.png">
+            <img src="../../../assets/images/powered_by_google_on_white.png" ng-if="vm.type!='PersonCust' && !vm.userIsOwner">
         </div>
         <div class="container-answer" style="width:100%; max-height:300px;" ng-show="{{vm.type == 'Short-Phrase'}}">
             <br>
@@ -33,10 +33,10 @@
             <h4 style="text-align:center">{{vm.answer.addinfo}}</h4>
         </div>
         <br>
-        <div ng-if="vm.userIsOwner" style="display:{{vm.userIsOwner ? 'inline':'none'}}">
+        <div ng-if="vm.userIsOwner" style="display:{{vm.access ? 'inline':'none'}}">
             <blob-upload>
         </div>
-        <div style="display:{{vm.userIsOwner ? 'none':'inline'}}">
+        <div style="display:{{vm.userIsOwner ? 'none':'inline'}}" ng-if="vm.type!='PersonCust'">
             <button type="submit" class="btn btn-primary" ng-click="vm.editImage()">{{vm.imageCommand}}</button>
             <button type="submit" class="btn btn-primary" ng-click="vm.viewPrev()" style="display:{{vm.imagefunctions}}">&laquo</button>
             <button type="submit" class="btn btn-primary" ng-click="vm.viewNext()" style="display:{{vm.imagefunctions}}">&raquo</button>
@@ -48,9 +48,10 @@
     <form class="form-horizontal col-sm-12 col-md-6" role="form" name="answerForm" ng-repeat="x in vm.fields">
         <!--  <div class="form-group" ng-repeat="x in vm.fields"> -->
         <!--   <div ng-repeat="x in vm.fields">  -->
-        <label class="control-label capitalize" ng-hide="{{x.onlybyowner && !vm.userIsOwner}}">{{x.label}}:</label>
+       
         <!--<div class="col-sm-8 col-md-8">-->
         <div style="display:{{x.field!='addinfo' ? 'inline':'none'}}" ng-hide="{{x.onlybyowner && !vm.userIsOwner}}">
+            <label class="control-label capitalize">{{x.label}}:</label>
             <div class="input-group">
                 <!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
                 <input type="text" class="form-control" ng-model="x.val" bs-options="{{x.opts}}" bs-typeahead placeholder="{{x.cval}}">
@@ -60,7 +61,8 @@
             </div>
         </div>        
         <div class="input-group" style="display:{{x.field=='addinfo' ? 'inline':'none'}}" 
-        ng-hide="{{x.onlybyowner && !vm.userIsOwner && (vm.type == 'PersonCust')}}">
+        ng-hide="{{!vm.access && (vm.type == 'PersonCust')}}">
+        <label class="control-label capitalize">{{x.label}}:</label>
             <textarea class="form-control" ng-model="x.val" placeholder="{{x.cval}}" rows="5"></textarea>
             <br><br>
             <span class="input-group-btn text-right">
@@ -97,7 +99,7 @@
         </div>
     </div>
 </div>
-<div ng-if="vm.sm && vm.userIsOwner ">
+<div ng-if="vm.sm && vm.userIsOwner && vm.type == 'Establishment'">
 <div class="text-center ">
 <label>Service Hours</label>
 </div>
@@ -130,7 +132,7 @@
     <br>
 </div>
 </div>
-<div ng-if="vm.nsm && vm.userIsOwner ">
+<div ng-if="vm.nsm && vm.userIsOwner && vm.type == 'Establishment'">
 <div class="container " style="background-color:#e6e6e6;padding-right:50px;padding-left:10px;padding-top:10px;padding-bottom:0px; ">
 <div class="text-center ">
 <label>Service Hours</label>
@@ -162,7 +164,7 @@
 </div>
 </div>
 </div>
-<div class="text-right" ng-if="vm.userIsOwner">
+<div class="text-right" ng-if="vm.userIsOwner && vm.type == 'Establishment'">
 <a ng-click="vm.updateHours() " class="btn btn-primary {{vm.updateHoursEn}} ">Update Hours</a>
 </div>
 <br>

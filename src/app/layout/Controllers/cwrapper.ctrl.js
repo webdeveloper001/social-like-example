@@ -167,13 +167,13 @@
                 //$rootScope.content[i].title = $rootScope.content[i].title.replace('Best ', '');
                 //$rootScope.content[i].title = $rootScope.content[i].title.replace('Top ', '');
                 //$rootScope.content[i].title = $rootScope.content[i].title.replace('Most ', '');
-                if ($rootScope.content[i].title.includes('Top ')){
-                    $rootScope.content[i].title = $rootScope.content[i].title.replace('Top ', '');
+                if ($rootScope.content[i].title.includes('Most ')){
+                    $rootScope.content[i].title = $rootScope.content[i].title.replace('Most ', '');
                     $rootScope.content[i].title = $rootScope.content[i].title.charAt(0).toUpperCase() + $rootScope.content[i].title.slice(1);
                     table.update($rootScope.content[i].id,['title'],[$rootScope.content[i].title]);
                 }
-            }
-            */
+            }*/
+            
             $rootScope.cityranks = ['city', 'lifestyle', 'food', 'politics', 'services', 'social', 'beauty', 'sports', 'personalities', 'technology', 'dating', 'health'];
             $rootScope.nhranks = ['neighborhood', 'lifestyle', 'food', 'services', 'social', 'beauty', 'health'];
 

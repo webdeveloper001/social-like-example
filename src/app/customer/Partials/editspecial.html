@@ -176,6 +176,20 @@
 		<div class="col-sm-0 col-md-3 col-lg-3"></div>
 		<br>
 	</div>
+<div class="row">
+	<div class="col-sm-0 col-md-3 col-lg-3"></div>
+	<div class="container col-sm-12 col-md-6 col-lg-6">
+		<div class="">
+			<p> Event Image </p>
+			<img src="{{vm.imageURL}}" alt="{{image.errorLoading}}" style="width:100%; max-height:300px">
+			 <div ng-if="vm.userIsOwner" style="display:{{vm.userIsOwner ? 'inline':'none'}}">
+            		<blob-upload>
+        	</div>
+		</div>
+	</div>
+	<div class="col-sm-0 col-md-3 col-lg-3"></div>
+	<br>
+</div>
 	<br>
 	<div class="form-group text-center">
 		<button type="button" class="btn btn-success" ng-click="vm.goBack()">Back</button>

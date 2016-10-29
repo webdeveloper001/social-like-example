@@ -466,8 +466,10 @@
             '</tr></thead><tbody><tr><td>1</td><td>' + x.name + '</td><td>1.5</td>' +
             '<td style="background-color:' + x.bc + ';color:' + x.fc + ';">' + x.stitle + '<td></tr></tbody></table><br>' +
             'Inside your business profile:<br><br><div style="background-color:' + x.bc + ';color:' + x.fc + ';">' +
-            '<p><strong>' + x.stitle + ' @ ' + x.name + '</strong></p><p>' + sch_str + '</p><p>' + x.details + '</p></div>';
-
+            '<p><strong>' + x.stitle + ' @ ' + x.name + '</strong></p><p>' + sch_str + '</p><p>' + x.details + '</p></div>'+
+            '</br>'+ 
+            'With the following image:' +
+            '<img src=' + x.image + ' class="thumbnail" style="width:70%; max-height:150px">';
 
             BootstrapDialog.confirm({
                 type: BootstrapDialog.TYPE_PRIMARY,

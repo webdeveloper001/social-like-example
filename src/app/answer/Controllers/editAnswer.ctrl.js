@@ -76,9 +76,11 @@
                 }
             });
 
-        $rootScope.$on('fileUploaded', function (event, data){
-            vm.imageURL = data;
-            if ($state.current.name == 'editAnswer') selectImage();
+        $rootScope.$on('fileUploaded', function (event, data){            
+            if ($state.current.name == 'editAnswer') {
+                vm.imageURL = data;
+                selectImage();
+            }
         });
         
         $rootScope.$on('answerGPSready', function () {
@@ -100,7 +102,10 @@
             //country.loadCountries();
             //vm.countries = $rootScope.cCountries;
             loadAnswerData();
-            if (vm.userIsOwner) loadHoursData();
+            if (vm.userIsOwner && vm.type == 'Establishment') loadHoursData();
+            
+            vm.access = vm.userIsOwner && vm.answer.isactive;
+            
             getEdits(vm.answer.id);
 
             if ($rootScope.DEBUG_MODE) console.log("Edit Answer Activated!");

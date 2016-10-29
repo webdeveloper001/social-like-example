@@ -24,6 +24,16 @@
         vm.header = $rootScope.canswer.name;
 
         vm.isEdit = false;
+        vm.userIsOwner = $rootScope.userIsOwner;
+        
+         $rootScope.$on('fileUploaded', function (event, data){            
+            console.log("Received fileUploaded", data);
+            console.log('$state.current.name - ',$state.current.name);
+            if ($state.current.name == 'editspecial') {
+                console.log("loaded date to vm.imageURL");
+                vm.imageURL = data;
+            }
+        });
 
         activate();
 
@@ -40,7 +50,9 @@
                 if (vm.sp.freq == 'weekly') frequencySel(2);
                 vm.sp.bc = vm.sp.bc;
                 vm.sp.fc = vm.sp.fc;
-
+                if (vm.sp.image != undefined) vm.imageURL = vm.sp.image;
+                else vm.imageURL = '../../../assets/images/noimage.jpg'; 
+                
             }
 
             if ($rootScope.specialmode == 'add') {
@@ -49,6 +61,7 @@
                 vm.sp.fc = "hsl(0, 100%, 0%)"; //black
                 vm.sp.bc = "hsl(0, 0%, 100%)"; //white
                 frequencySel(1);
+                vm.imageURL = '../../../assets/images/noimage.jpg';
             }
 
             createTimeDropdown();
@@ -76,8 +89,9 @@
 
         function showPreview() {
             item = vm.sp;
-            item.name = 'Your business';
+            item.name = $rootScope.canswer.name;
             item.answer = $rootScope.canswer.id;
+            item.image = vm.imageURL;
             item.freq = (vm.onetime ? 'onetime' : 'weekly');
 
             dialog.createSpecialPreview(item, addSpecial);
