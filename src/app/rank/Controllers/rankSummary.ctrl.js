@@ -86,7 +86,10 @@
         else {vm.sm = false; vm.nsm = true; }
 
         //Execute this view only if rankWindow is open
-        //if ($rootScope.showR) 
+        //if ($rootScope.showR)
+        if (document.getElementById("SearchInput") != null && document.getElementById("SearchInput") != undefined){
+         document.getElementById("SearchInput").blur();
+        }
         activate();
 
         function activate() {

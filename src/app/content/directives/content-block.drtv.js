@@ -115,8 +115,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     }
                     else {
                         vm.results = [];
-                    }
-
+                    }                    
                 }
             }
             
