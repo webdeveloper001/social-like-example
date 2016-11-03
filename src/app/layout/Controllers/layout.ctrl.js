@@ -53,7 +53,12 @@
                 "Ocean Beach", "North Park", "Mission Hills", "Barrio Logan", "City Heights", "Clairemont", "La Mesa", "Point Loma",
                 "South Park", "Scripps Ranch", "Mission Beach", "Mission Valley","Kensington", "Cardiff by the Sea", "Coronado",
                 "Leucadia", "Oceanside", "National City", "Rancho Santa Fe", "Solana Beach", "Poway", "El Cajon",
-                "Escondido", "Carlsbad", "San Ysidro", "Otay Mesa", "Linda Vista", "Chula Vista", "Encinitas", "Golden Hills", "Spring Valley", "Rancho San Diego"];
+                "Escondido", "Carlsbad", "San Ysidro", "Otay Mesa", "Linda Vista", "Chula Vista", "Encinitas", "Golden Hills", 
+                "Spring Valley", "Rancho San Diego", "Mira Mesa",
+                "Torrey Pines", "Carmel Valley", "Miramar","Kearny Mesa","Bankers HIll","Rancho Penasquitos",
+                "Sorrento Valley","Tierra Santa","Logan Heights","Serra Mesa","Normal Heights","Talmadge",
+                "Bird Rock","South San Diego","North City","San Carlos","Del Cerro"
+                ];
             
             $rootScope.districts = [
                 "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",

@@ -118,10 +118,12 @@
             }
             
            var url = baseURI + '?filter=(category=' + category_id+') AND (hs=' + answer_id+')'; 
-           return $http.delete(url).then(querySuccess1, _queryFailed);
+           $http.delete(url).then(querySuccess1, _queryFailed);
            
            var url2 = baseURI + '?filter=(category=' + category_id+') AND (ls=' + answer_id+')'; 
-           return $http.delete(url2).then(querySuccess2, _queryFailed);
+           $http.delete(url2).then(querySuccess2, _queryFailed);
+           
+           return;
            
            function querySuccess1(result){
                console.log("deleting match records category-hs pair succesful");

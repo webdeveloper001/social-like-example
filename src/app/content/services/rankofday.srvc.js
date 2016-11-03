@@ -30,7 +30,12 @@
             var datenow = new Date();
             var tz = datenow.getTimezoneOffset();
             datenow.setMinutes( datenow.getMinutes() - tz);
-            var dateStr = datenow.toLocaleDateString();
+            //var dateStr = datenow.toLocaleDateString();
+            //var dateobj = new Date();
+            //function pad(n) {return n < 10 ? "0"+n : n;}
+            function pad(n) {return n < 10 ? n : n;}
+            var dateStr = pad(datenow.getMonth()+1)+"/"+pad(datenow.getDate())+"/"+datenow.getFullYear();
+            
             
             var url = baseURI + '/?filter=date='+ dateStr;
 

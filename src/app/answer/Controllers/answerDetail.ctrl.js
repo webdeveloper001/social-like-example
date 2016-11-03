@@ -144,6 +144,14 @@
                 vm.answer.addinfo_complete = vm.answer.addinfo.slice(300);
                 //console.log("addinfo_complete - ", vm.answer.addinfo_complete);
             }
+            
+            vm.bindtxt = '';
+            if (vm.type == 'Establishment') vm.bindtxt = 'I represent this business';
+            if (vm.type == 'PersonCust') vm.bindtxt = 'I am this person';
+            if (vm.type == 'Event') vm.bindtxt = 'I organize this event';
+            console.log("vm.bindtxt - ",vm.bindtxt);
+            
+            
             vm.moretext = ' more ';
             vm.completeinfo = false;
         }

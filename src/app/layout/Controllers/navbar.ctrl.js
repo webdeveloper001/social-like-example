@@ -59,6 +59,7 @@
         function gotoHome() {
             $rootScope.fbmode = false;
             $state.go('cwrapper', {}, {reload: true});
+            $rootScope.$emit('mainView');
         }
         
 

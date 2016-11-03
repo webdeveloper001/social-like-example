@@ -20,7 +20,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             //Methods
             vm.loadContent = loadContent;
 
-            if (vm.modType == 'query') vm.maxRes = 100;
+            if (vm.modType == 'query') vm.maxRes = 4000;
             else vm.maxRes = 6;
 
             vm.btext = 'see more';
@@ -194,7 +194,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         vm.bgc = $rootScope.headlines[i].bc;
                         vm.fc = $rootScope.headlines[i].fc;
                         vm.headline = $rootScope.headlines[i].title;
-                        if ($rootScope.isNh) vm.headline = vm.headline + ' - ' + $rootScope.cnh;
+                        if ($rootScope.isNh && 
+                        $rootScope.headlines[i].type != 'rxfeedback' && 
+                        $rootScope.headlines[i].type != 'rxsuggestion' ) vm.headline = vm.headline + ' - ' + $rootScope.cnh;
                         break;
                     }
                 }
@@ -248,7 +250,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             }
             
             var applyRuleDone = false;
-            //var midx = 0;
+            var midx = 0;
             function applyRule() {
                 console.log("apply Rule");
                 // $rootScope.$emit('getLocation');   
@@ -313,57 +315,86 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                   *///End of 1    
         
         
-                /*//  2. Use this to add/remove a tag from a rank 
+                /* //  2. Use this to add/remove a tag from a rank 
                 for (var i=0; i < vm.results.length; i++){
-                    if (vm.results[i].title.includes("Festivals and events in")){
-                        //var tags = vm.results[i].tags + ' volunteering give back community';
-                        //var tags = vm.results[i].tags.replace(' isMP','');
+                    if (vm.results[i].title.includes("Grocery stores")){
+                        //var tags = vm.results[i].tags + ' places services';
+                        var tags = vm.results[i].tags.replace('isMP','');
                         //var newtype = 'Event';
-                        table.update(vm.results[i].id, ['type'],['Event']);    
+                        table.update(vm.results[i].id, ['tags'],[tags]);    
                     }            
                 } 
-                *///End of 2
+                */ //End of 2
         
                 /*//  3.Use this to correct the title of a group of ranks
                 for (var i=0; i < vm.results.length; i++){
-                    var titlex = vm.results[i].title.replace("restaurant","restaurants");
-                    //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
-                    //console.log("tags ", tags);
-                    table.update(vm.results[i].id, ['title'],[titlex]);
+                    if (vm.results[i].title.includes('Things about living in') && 
+                    vm.results[i].title.includes('Worst things about living in')==false){
+                        var titlex = vm.results[i].title.replace("Things","Favorite things");
+                        //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
+                        //console.log("tags ", tags);
+                        table.update(vm.results[i].id, ['title'],[titlex]);
+                    }
                 } 
-                */ //End of 3
+                */  //End of 3
             
                 /*//  4.Use this to add a neighborhood
                 //var nhs = ["Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
-                //        "Marina", "Seaport Village"];
+                  //      "Marina", "Seaport Village"];
+                var nhs = ["Torrey Pines", "Carmel Valley", "Miramar",
+                "Kearny Mesa","Bankers HIll","Rancho Penasquitos",
+                        "Sorrento Valley","Tierra Santa","Logan Heights","Serra Mesa","Normal Heights","Talmadge",
+                        "Bird Rock","South San Diego","North City","San Carlos","Del Cerro"];
+                
                 var logi = 1;
                 var basetitle = '';
                 if (applyRuleDone == false){
-                for (var i=0; i < vm.results.length; i++){
+                //for (var i=0; i < vm.results.length; i++){
                     
-                    basetitle = vm.results[i].title;
+                for (var i=0; i < $rootScope.content.length; i++){
+                      
+                      if ($rootScope.content[i].title.includes('in ' + nhs[midx])){
+                          
+                    //      basetitle = $rootScope.content[i].title;
+                    //basetitle = vm.results[i].title;
                     //Copy object without reference
-                    var tablex = JSON.parse(JSON.stringify(vm.results[i]));
+                    //var tablex = JSON.parse(JSON.stringify(vm.results[i]));
+                    
+                    var tablex = JSON.parse(JSON.stringify($rootScope.content[i]));
                     tablex.id = undefined;
                     tablex.views = 0;
                     tablex.answers = 0;
                     tablex.answertags = '';
+                    tablex.image1url = '';
+                    tablex.image2url = '';
+                    tablex.image3url = '';
                     var newtitle = '';
                     
-                    if (tablex.title.includes("in Hillcrest")){
+                    //if (tablex.title.includes("in Hillcrest")){
                         //for (var j=0; j<nhs.length; j++){
-                            newtitle = basetitle.replace("Hillcrest", "Mission Valley");
-                            tablex.title = newtitle;                            
-                            table.addTable(tablex);
-                            //console.log(logi,tablex.id, tablex.title);
-                            console.log("log idx: ",logi++);
+                            //newtitle = basetitle.replace("Hillcrest", nhs[midx]);
+                            //tablex.title = newtitle;                            
+                            //table.addTable(tablex);
+                            //console.log(midx, " - ", $rootScope.content[i].title);
+                            //console.log("log idx: ",logi++);
+                            table.update($rootScope.content[i].id,['image1url','image2url','image3url'],
+                            ['','','']);
                         //}
                     }
                 }
-                applyRuleDone = true;
+                    
+                $timeout(function () {
+                    //$state.go('rankSummary', { index: $rootScope.content[midx].id });
+                    //$state.go('rankSummary', { index: 74 });
+                    midx++;
+                    //console.log("midx - ", midx);
+                    $rootScope.$emit('applyRule');
+                }, 5000);
+                if (midx >= nhs.length-1) applyRuleDone = true;
+                //applyRuleDone = true;
                 }
                 else console.log("Rule already executed!!");
-                *///End 4
+                */  //End 4
         
                 /*//  5.Use this for batch DELETE
                 for (var i=0; i < vm.results.length; i++){
@@ -413,7 +444,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
          
          
                 //console.log("1");
-                /*//8. Generate Category Strings for non neighborhood ranks            
+                /* //8. Generate Category Strings for non neighborhood ranks            
                    for (var i=0; i<vm.results.length; i++){
                        //console.log("2");
                        if (vm.results[i].title.includes("Hillcrest")){
@@ -443,7 +474,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                            }                                              
                        }
                    }
-                *///End 8
+                */ //End 8
                
                 /*//  9. Clear answer string for all non-atomic ranks 
                 for (var i=0; i < $rootScope.content.length; i++){
@@ -514,15 +545,15 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 /*//12. Add 'pb' tag to all Pacific Beach
                 var tagstr = '';
                 for (var i=0; i<$rootScope.content.length; i++){
-                    if ($rootScope.content[i].title.includes('Pacific Beach')){
-                        if ($rootScope.content[i].tags.includes('pb') == false){
-                            tagstr = $rootScope.content[i].tags + ' pb';
+                    if ($rootScope.content[i].title.includes('Ocean Beach')){
+                        if ($rootScope.content[i].tags.includes('ob') == false){
+                            tagstr = $rootScope.content[i].tags + ' ob';
                             //console.log("tagstr - ", tagstr, $rootScope.content[i].title);
                             table.update($rootScope.content[i].id,['tags'],[tagstr]);
                         }
                     }
                 }
-                *///
+                */ // End of 12
                 /*//13. Open all contents to refresh number of answers, add vrows
                 $timeout(function () {
                     $state.go('rankSummary', { index: $rootScope.content[midx].id });

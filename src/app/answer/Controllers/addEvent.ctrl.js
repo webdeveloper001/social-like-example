@@ -468,7 +468,8 @@
         }
 
         function goBack() {
-            $state.go('specials');
+            //$state.go('specials');
+            $state.go("rankSummary", { index: $rootScope.cCategory.id });
         }
 
         function createTimeDropdown() {

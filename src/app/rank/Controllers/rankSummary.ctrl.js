@@ -85,11 +85,12 @@
         if ($window.innerWidth < 512) {vm.sm = true; vm.nsm = false; }
         else {vm.sm = false; vm.nsm = true; }
 
-        //Execute this view only if rankWindow is open
-        //if ($rootScope.showR)
+        //Blur main input field -- This was done to prevent keyboard from popping out constantly in
+        //Safari browsers
         if (document.getElementById("SearchInput") != null && document.getElementById("SearchInput") != undefined){
          document.getElementById("SearchInput").blur();
         }
+        
         activate();
 
         function activate() {
@@ -169,7 +170,11 @@
                 }
                 else {
                     vm.isShortPhrase = false;
-                    vm.image1 = vm.answers[0].imageurl;
+                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null ){
+                        vm.image1 = vm.answers[0].imageurl;
+                        vm.image1ok = true;
+                    }
+                    else vm.image1ok = false;
                 }
 
                 table.update($rootScope.cCategory.id,
@@ -191,8 +196,16 @@
                 }
                 else {
                     vm.isShortPhrase = false;
-                    vm.image1 = vm.answers[0].imageurl;
-                    vm.image2 = vm.answers[1].imageurl;
+                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null ){
+                        vm.image1 = vm.answers[0].imageurl;
+                        vm.image1ok = true;
+                    }
+                    else vm.image1ok = false;
+                    if (vm.answers[1].imageurl != undefined && vm.answers[1].imageurl != null ){
+                        vm.image2 = vm.answers[1].imageurl;
+                        vm.image2ok = true;
+                    }
+                    else vm.image2ok = false;
                 }
                 table.update($rootScope.cCategory.id,
                     ['views', 'answers', 'image1url', 'image2url'],
@@ -217,9 +230,21 @@
                 }
                 else {
                     vm.isShortPhrase = false;
-                    vm.image1 = vm.answers[0].imageurl;
-                    vm.image2 = vm.answers[1].imageurl;
-                    vm.image3 = vm.answers[2].imageurl;
+                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null ){
+                        vm.image1 = vm.answers[0].imageurl;
+                        vm.image1ok = true;
+                    }
+                    else vm.image1ok = false;
+                    if (vm.answers[1].imageurl != undefined && vm.answers[1].imageurl != null ){
+                        vm.image2 = vm.answers[1].imageurl;
+                        vm.image2ok = true;
+                    }
+                    else vm.image2ok = false;
+                    if (vm.answers[2].imageurl != undefined && vm.answers[2].imageurl != null ){
+                        vm.image3 = vm.answers[2].imageurl;
+                        vm.image3ok = true;
+                    }
+                    else vm.image3ok = false;
                 }
 
                 table.update($rootScope.cCategory.id,
@@ -232,6 +257,7 @@
             if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
             //console.log("$rootScope.user", $rootScope.user);
             //createVrows();
+            console.log("$rootScope.cCategory - ",$rootScope.cCategory);
 
         }
 

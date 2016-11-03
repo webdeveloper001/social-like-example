@@ -37,7 +37,12 @@
         
         $rootScope.searchActive = false;
         vm.searchActive = $rootScope.searchActive;
-
+        
+        //Receive from navbar, if 'Home' go to Main View
+        $rootScope.$on('mainView', function (event) {
+            if ($state.current.name == 'cwrapper') switchScope(1);
+        });
+        
         if ($rootScope.cwrapperLoaded) activate();
         else init();
 
@@ -276,7 +281,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-           //   $rootScope.$emit('applyRule');
+              $rootScope.$emit('applyRule');
         }
            
         /*//Upload Image

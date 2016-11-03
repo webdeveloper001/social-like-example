@@ -41,7 +41,12 @@
 
                     $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
                     $http.defaults.headers.common['X-DreamFactory-Session-Token'] = $cookies.session_token;
-                    $rootScope.$emit('answerGPSready');
+                    
+                    if (answer.location != undefined && answer.location != null &&
+                        answer.lat != undefined && answer.lat != null &&
+                        answer.lng != undefined && answer.lng != null){
+                            $rootScope.$emit('answerGPSready');
+                        }
                     //answer.updateAnswer(cAnswer.id,['lat','lng','location'],[lat,lng,fa]);
                 });
 

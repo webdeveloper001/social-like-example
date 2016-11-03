@@ -36,9 +36,10 @@
         <div class="text-right">
             <small class="text-muted">&nbsp;&nbsp;&nbsp{{vm.answer.views}}&nbspviews</small>
             <br>
-            <div ng-show="{{vm.type == 'Establishment' || vm.type == 'PersonCust' }}">
+            <div ng-show="{{vm.type == 'Establishment' || vm.type == 'PersonCust' || vm.type == 'Event' }}">
                 <p style="display:{{vm.answer.hasOwner ? 'none':'inline'}}" class="hiw text-right" ng-click="vm.bizRegDialog()">
-                    <u>{{vm.type == 'PersonCust' ? 'I am this person':'I represent this business'}}</u></p>
+                    <u>{{vm.bindtxt}}</u>
+                </p>
                 <!--<br style="display:{{vm.answer.hasOwner ? 'inline':'none'}}">-->
                 <span class="glyphicon glyphicon-star-empty" style="display:{{vm.answer.hasOwner ? 'inline':'none'}}"></span>
             </div>
