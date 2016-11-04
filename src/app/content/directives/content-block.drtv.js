@@ -141,28 +141,28 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     }
                 }
                 
-                console.log("#3 - rankofday - ", $rootScope.rankofday[0]);
+                console.log("#4 - rankofday - ", $rootScope.rankofday[0]);
                     
                     var searchVal = '';
+                    var rt = '';
                     
                     if ($rootScope.isCity) searchVal = $rootScope.rankofday[0].main;                  
                     if ($rootScope.isNh) searchVal = $rootScope.rankofday[0].nh + ' ' + $rootScope.cnh;
                     
                     vm.results = [];
-                   
+                        
                         //vm.content = $rootScope.content;
                         var valTags = searchVal.split(" ");
+                        console.log("#4 - valTags _ ", valTags);
                         for (var j = 0; j < $rootScope.content.length; j++) {
                             //for (var j = 50; j < 60; j++) {
                             var r = true;
+                            rt = $rootScope.content[j].title;
                             //check that all tags exist
                             for (var k = 0; k < valTags.length; k++) {
                                 var tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
                                 var tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
-                                r = r && ($rootScope.content[j].title.includes(valTags[k]) ||
-                                    $rootScope.content[j].title.includes(valTags[k].toUpperCase()) ||
-                                    $rootScope.content[j].title.includes(tagCapitalized) ||
-                                    $rootScope.content[j].title.includes(tagFirstLowered));
+                                r = r && (rt.includes(valTags[k]) || rt.includes(valTags[k].toUpperCase()) || rt.includes(tagCapitalized) || rt.includes(tagFirstLowered));
                             }
                             if (r) {
                                 vm.results.push($rootScope.content[j]);
