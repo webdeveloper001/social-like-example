@@ -156,7 +156,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     }
                 }
                 
-                console.log("#8 - rankofday - ", $rootScope.rankofday[0]);
+                console.log("#9 - rankofday - ", $rootScope.rankofday[0]);
                     
                     var searchVal = '';
                     var rt = '';
@@ -168,7 +168,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         
                         //vm.content = $rootScope.content;
                         var valTags = searchVal.split(" ");
-                        console.log("#8 - valTags _ ", valTags);
+                        console.log("#9 - valTags _ ", valTags);
                         for (var j = 0; j < $rootScope.content.length; j++) {
                             //for (var j = 50; j < 60; j++) {
                             var r = true;
