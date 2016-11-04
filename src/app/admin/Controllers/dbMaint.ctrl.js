@@ -202,7 +202,7 @@
                     
                     if (phoneNum.length > 0){
                         obj = JSON.parse(JSON.stringify($rootScope.answers[i]));
-                        var addinfox = obj.addinfo.replace(phoneNum, '');;
+                        var addinfox = obj.addinfo.replace(phoneNum, '');
                         //answer.updateAnswer($rootScope.answers[i].id,['phone','addinfo'],[phoneNum, addinfox]);
                         //addinfox.
                         console.log("matched!!!!", idx++, $rootScope.answers[i].name, " Phone Num: ", phoneNum);

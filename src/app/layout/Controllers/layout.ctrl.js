@@ -33,7 +33,7 @@
         activate();
         
         if ($window.innerWidth < 512) vm.logoimage = "../../../assets/images/rankxlogosd_sm.png";
-        else vm.logoimage = "../../../assets/images/rankxlogosd.png";;
+        else vm.logoimage = "../../../assets/images/rankxlogosd.png";
 
         function activate() {
             
