@@ -37,9 +37,10 @@
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a> to improve your experience.</p>
 <![endif]-->
-
+<p id="demo"></p>
+<!--
 <div ui-view></div>
-
+-->
 <!-- build:js(src) scripts/vendor.js -->
 <!-- bower:js -->
 <!-- run `gulp inject` to automatically populate bower script dependencies -->
@@ -61,6 +62,22 @@
 <script src="//maps.googleapis.com/maps/api/js?sensor=true&key=AIzaSyBr143lDEROCrUWdKvqPQmhQ5BoFo13oSE"
         async defer></script>
 
+<script>
+var x = document.getElementById("demo");
+function getLocation() {
+    x.innerHTML = "Inside getLocation!";
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+         x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+function showPosition(position) {
+    x.innerHTML = "Latitude: " + position.coords.latitude +
+    "<br>Longitude: " + position.coords.longitude;
+}
+getLocation();
+</script>
 <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-strap/v2.3.8/angular-strap.min.js"></script>-->
 <!--<script src="https://mgcrea.github.io/angular-strap/dist/angular-strap.tpl.js" data-semver="v2.3.4"></script>
 <!--<script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/v2.3.8/angular-strap.tpl.min.js"></script>-->
