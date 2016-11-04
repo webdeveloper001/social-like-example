@@ -175,6 +175,8 @@
          */
         function autoDetectCity() {
             
+            console.log("@autoDetectCity");
+            
             var geocoder;
             geocoder = new google.maps.Geocoder();
 
@@ -189,6 +191,8 @@
             }
 
             function showPosition(position) {
+                
+                console.log("@showPosition - position -", position);
 
                 var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
