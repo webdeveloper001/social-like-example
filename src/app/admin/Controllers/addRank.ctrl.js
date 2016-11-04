@@ -65,7 +65,7 @@
             else {
                 if (rankTitleOk && rankTypeOk && rankQuestionOk) {
                     for (var i = 0; i < $rootScope.content.length; i++) {
-                        if ($rootScope.content[i].title.includes('Yoga studios in')) {
+                        if ($rootScope.content[i].title.indexOf('Yoga studios in') > -1) {
                             //Copy object without reference
                             var tablex = JSON.parse(JSON.stringify($rootScope.content[i]));
                             tablex.id = undefined;

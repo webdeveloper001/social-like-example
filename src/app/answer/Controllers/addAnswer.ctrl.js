@@ -93,14 +93,14 @@
         }
 
         function determineScope() {
-            if ($rootScope.cCategory.title.includes('San Diego')) {
+            if ($rootScope.cCategory.title.indexOf('San Diego') > -1) {
                 inCity = true;
             }
-            if ($rootScope.cCategory.title.includes('Downtown')) {
+            if ($rootScope.cCategory.title.indexOf('Downtown') > -1) {
                 inDowntown = true;
             }
             for (var j = 0; j < $rootScope.districts.length; j++) {
-                if ($rootScope.cCategory.title.includes($rootScope.districts[j])) {
+                if ($rootScope.cCategory.title.indexOf($rootScope.districts[j]) > -1) {
                     inDistrict = true;
                     inDistrictName = $rootScope.districts[j];
                 }

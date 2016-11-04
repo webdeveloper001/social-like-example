@@ -22,7 +22,7 @@
             delete $http.defaults.headers.common['X-DreamFactory-Session-Token'];
             
             var myLoc = '';
-                if (answer.location.includes('San Diego') == false) {
+                if (answer.location.indexOf('San Diego') < 0) {
                     myLoc = answer.location + ' San Diego, CA';
                 }
                 else myLoc = answer.location;

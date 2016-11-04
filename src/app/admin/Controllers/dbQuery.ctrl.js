@@ -30,7 +30,7 @@
             var ansId = 0;
             var catansobj ={};
             for (var i=0; i < $rootScope.answers.length; i++){
-                if ($rootScope.answers[i].name.includes(vm.val)){
+                if ($rootScope.answers[i].name.indexOf(vm.val) > -1){
                     vm.ansRes.push($rootScope.answers[i]);
                 }
             }

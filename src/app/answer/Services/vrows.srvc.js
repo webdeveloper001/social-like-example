@@ -61,40 +61,40 @@
             var titles = [];
             var obj = {};
             var vrowsobjs = [];
-            if ($rootScope.cCategory.tags.includes('food') || $rootScope.cCategory.tags.includes('services') ||
-                $rootScope.cCategory.tags.includes('health') || $rootScope.cCategory.tags.includes('beauty') ||
-                $rootScope.cCategory.tags.includes('food') || $rootScope.cCategory.title.includes('food') ||
-                $rootScope.cCategory.title.includes('restaurants') ||
-                $rootScope.cCategory.title.includes('Bars') || $rootScope.cCategory.title.includes('bars') ||
-                $rootScope.cCategory.title.includes('pubs') ||
-                $rootScope.cCategory.title.includes('Yoga') || $rootScope.cCategory.title.includes('Pilates') ||
-                $rootScope.cCategory.title.includes('yoga') || $rootScope.cCategory.title.includes('pilates') ||
-                $rootScope.cCategory.title.includes('schools') ||
-                $rootScope.cCategory.title.includes('Gyms') || $rootScope.cCategory.title.includes('gyms') ||
-                $rootScope.cCategory.title.includes('Nightclubs') || answer.type == 'PersonCust' ||
+            if ($rootScope.cCategory.tags.indexOf('food') > -1 || $rootScope.cCategory.tags.indexOf('services') > -1 ||
+                $rootScope.cCategory.tags.indexOf('health') > -1 || $rootScope.cCategory.tags.indexOf('beauty') > -1 ||
+                $rootScope.cCategory.tags.indexOf('food') > -1 || $rootScope.cCategory.title.indexOf('food') > -1 ||
+                $rootScope.cCategory.title.indexOf('restaurants') > -1 ||
+                $rootScope.cCategory.title.indexOf('Bars') > -1 || $rootScope.cCategory.title.indexOf('bars') > -1 ||
+                $rootScope.cCategory.title.indexOf('pubs') > -1 ||
+                $rootScope.cCategory.title.indexOf('Yoga') > -1 || $rootScope.cCategory.title.indexOf('Pilates') > -1 ||
+                $rootScope.cCategory.title.indexOf('yoga') > -1 || $rootScope.cCategory.title.indexOf('pilates') > -1||
+                $rootScope.cCategory.title.indexOf('schools') > -1 ||
+                $rootScope.cCategory.title.indexOf('Gyms') > -1 || $rootScope.cCategory.title.indexOf('gyms') > -1 ||
+                $rootScope.cCategory.title.indexOf('Nightclubs') > -1 || answer.type == 'PersonCust' ||
                 answer.type == 'Establishment') {
 
                 titles = ['Quality of Service', 'Friendliness of Staff', 'Promptness of Service', 'Value for the Money'];
 
-                if ($rootScope.cCategory.tags.includes('food') || $rootScope.cCategory.title.includes('food') ||
-                    $rootScope.cCategory.title.includes('restaurants')) {
+                if ($rootScope.cCategory.tags.indexOf('food') > -1 || $rootScope.cCategory.title.indexOf('food') > -1 ||
+                    $rootScope.cCategory.title.indexOf('restaurants') > -1) {
                     titles = ['Quality of Food and Drinks', 'Friendliness of Staff', 'Promptness of Service', 'Value for the Money'];
                 }
-                if ($rootScope.cCategory.title.includes('Bars') || $rootScope.cCategory.title.includes('bars') ||
-                    $rootScope.cCategory.title.includes('pubs')) {
+                if ($rootScope.cCategory.title.indexOf('Bars') > -1 || $rootScope.cCategory.title.indexOf('bars') > -1 ||
+                    $rootScope.cCategory.title.indexOf('pubs') > -1) {
                     titles = ['Quality of Drinks', 'Friendliness of Staff', 'Promptness of Service', 'Value for the Money'];
                 }
 
-                if ($rootScope.cCategory.title.includes('Yoga') || $rootScope.cCategory.title.includes('Pilates') ||
-                    $rootScope.cCategory.title.includes('yoga') || $rootScope.cCategory.title.includes('pilates') ||
-                    $rootScope.cCategory.title.includes('schools')) {
+                if ($rootScope.cCategory.title.indexOf('Yoga') > -1 || $rootScope.cCategory.title.indexOf('Pilates') > -1 ||
+                    $rootScope.cCategory.title.indexOf('yoga') > -1 || $rootScope.cCategory.title.indexOf('pilates') > -1 ||
+                    $rootScope.cCategory.title.indexOf('schools') > -1) {
                     titles = ['Quality of Instructors', 'Friendliness of Staff', 'Class Environment', 'Value for the Money'];
                 }
-                if ($rootScope.cCategory.title.includes('Gyms') || $rootScope.cCategory.title.includes('gyms')) {
+                if ($rootScope.cCategory.title.indexOf('Gyms') > -1 || $rootScope.cCategory.title.indexOf('gyms') > -1) {
                     titles = ['Equipment & Facilities', 'Friendliness of Staff', 'Environment', 'Value for the Money'];
                 }
-                if ($rootScope.cCategory.title.includes('Nightclubs') || $rootScope.cCategory.title.includes('music') || 
-                    $rootScope.cCategory.title.includes('dancing')) {
+                if ($rootScope.cCategory.title.indexOf('Nightclubs') > -1 || $rootScope.cCategory.title.indexOf('music') > -1 || 
+                    $rootScope.cCategory.title.indexOf('dancing') > -1) {
                     titles = [' Quality of Music', 'Environment', 'Friendliness of Staff', 'Value for the Money'];
                 }
                 if (answer.type == 'PersonCust') {

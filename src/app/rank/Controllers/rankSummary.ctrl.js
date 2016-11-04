@@ -419,7 +419,7 @@
                 //Determine if title already contains neighboorhood
                 var nhs = $rootScope.neighborhoods.concat($rootScope.districts);            
                 for (var i = 0; i < nhs.length; i++) {
-                    if ($rootScope.cCategory.title.includes(nhs[i])) {
+                    if ($rootScope.cCategory.title.indexOf(nhs[i]) > -1) {
                         $rootScope.NhImplied = true;
                         $rootScope.NhValue = nhs[i];
                         break;

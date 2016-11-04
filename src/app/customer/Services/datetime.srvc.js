@@ -55,7 +55,7 @@
             }
             
             //Format time, remove seconds
-            if (date != null && date != undefined && (date.includes('00:00') || date.includes('30:00'))) {
+            if (date != null && date != undefined && (date.indexOf('00:00') > -1 || date.indexOf('30:00') > -1)) {
                 date = date.replace('00:00', '00');
                 date = date.replace('30:00', '30');
                 var itsAM = parseInt(date.substring(0, 2)) < 12;

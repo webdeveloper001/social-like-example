@@ -67,10 +67,11 @@
                     for (var k = 0; k < valTags.length; k++) {
                         var tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
                         var tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
-                        r = r && (searchStr.includes(valTags[k]) ||
-                            searchStr.includes(valTags[k].toUpperCase()) ||
-                            searchStr.includes(tagCapitalized) ||
-                            searchStr.includes(tagFirstLowered));
+                        r = r && 
+                            (searchStr.indexOf(valTags[k]) > -1 ||
+                            searchStr.indexOf(valTags[k].toUpperCase()) > -1 ||
+                            searchStr.indexOf(tagCapitalized) > -1 ||
+                            searchStr.indexOf(tagFirstLowered) > -1);
                             //AM: Changed searchStr to tags searchStr[j]
                     }
                     if (r) {
