@@ -132,7 +132,12 @@
          * @param position
          */
         function setUserLatitudeLongitude(position) {
-
+            
+            console.log("@setUserLatitudeLongitude");
+            
+            console.log("position - ", position);
+            console.log("position.coords.latitude - ", position.coords.latitude);
+            console.log("position.coords.longitude - ", position.coords.longitude);
             /**
              * Set Latitude and Longitude from navigator to rootScope
              */
