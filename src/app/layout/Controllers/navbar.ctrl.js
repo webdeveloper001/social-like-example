@@ -182,7 +182,9 @@
 
             if (navigator.geolocation) {
                 if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(showPosition);
+                    navigator.geolocation.getCurrentPosition(showPosition, function(){
+                        console.log("Error getting geolocation");
+                    });
                 } else {
                     selectCity();
                 }
