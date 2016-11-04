@@ -122,9 +122,14 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             function getRankofDay(){
                 
                 //Clear images:
+                /*
                 vm.image1 = "../../../assets/images/noimage.jpg";
                 vm.image2 = "../../../assets/images/noimage.jpg";
                 vm.image3 = "../../../assets/images/noimage.jpg";
+                */
+                vm.image1 = "/assets/images/noimage.jpg";
+                vm.image2 = "/assets/images/noimage.jpg";
+                vm.image3 = "/assets/images/noimage.jpg";
                 
                 //load colors and headline
                 for (var i = 0; i < $rootScope.headlines.length; i++) {
@@ -136,7 +141,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     }
                 }
                 
-                console.log("rankofday - ", $rootScope.rankofday[0]);
+                console.log("#3 - rankofday - ", $rootScope.rankofday[0]);
                     
                     var searchVal = '';
                     
