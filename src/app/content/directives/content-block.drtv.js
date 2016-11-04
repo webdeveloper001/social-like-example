@@ -164,14 +164,14 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                 break;
                             }
                         }
-           
+           /*
                     //Check if photos exist for Rank of Week
                     if (vm.results.length > 0 && vm.results[0] != undefined) {
                         if (vm.results[0].image1url != undefined) vm.image1 = vm.results[0].image1url;
                         if (vm.results[0].image2url != undefined) vm.image2 = vm.results[0].image2url;
                         if (vm.results[0].image3url != undefined) vm.image3 = vm.results[0].image3url;
                     }
-                    
+             */       
                     //resLT6 is used to hide the <<see more>> choice
                 if (vm.results.length <= 6) vm.resLT6 = true;
                 else vm.resLT6 = false;
