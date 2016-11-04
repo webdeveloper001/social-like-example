@@ -141,7 +141,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     }
                 }
                 
-                console.log("#4 - rankofday - ", $rootScope.rankofday[0]);
+                console.log("#5 - rankofday - ", $rootScope.rankofday[0]);
                     
                     var searchVal = '';
                     var rt = '';
@@ -153,7 +153,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         
                         //vm.content = $rootScope.content;
                         var valTags = searchVal.split(" ");
-                        console.log("#4 - valTags _ ", valTags);
+                        console.log("#5 - valTags _ ", valTags);
                         for (var j = 0; j < $rootScope.content.length; j++) {
                             //for (var j = 50; j < 60; j++) {
                             var r = true;
@@ -162,7 +162,12 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             for (var k = 0; k < valTags.length; k++) {
                                 var tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
                                 var tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
+                                /*
                                 r = r && (rt.includes(valTags[k]) || rt.includes(valTags[k].toUpperCase()) || rt.includes(tagCapitalized) || rt.includes(tagFirstLowered));
+                                */
+                                r = r && ((rt.indexOf(valTags[k]) > -1) || (rt.indexOf(valTags[k].toUpperCase()) > -1) ||
+                                (rt.indexOf(tagCapitalized) > -1) || (rt.indexOf(tagFirstLowered) > -1)); 
+                                
                             }
                             if (r) {
                                 vm.results.push($rootScope.content[j]);
