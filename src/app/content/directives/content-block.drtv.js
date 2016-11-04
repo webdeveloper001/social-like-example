@@ -53,8 +53,17 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     var inputVal = $rootScope.inputVal;
                     
                     //check if search includes 'near me' or 'close to me' tags
-                    if (inputVal.includes('near me') || inputVal.includes('near') ||
-                        inputVal.includes('close') || inputVal.includes('close to') || inputVal.includes('close to me')) {
+                    /*
+                    if (inputVal.includes('near me') || 
+                        inputVal.includes('near') ||
+                        inputVal.includes('close') || 
+                        inputVal.includes('close to') || 
+                        inputVal.includes('close to me')) {*/
+                    if (inputVal.indexOf('near me') > -1 || 
+                        inputVal.indexOf('near') > -1 ||
+                        inputVal.indexOf('close') > -1 || 
+                        inputVal.indexOf('close to') > -1 || 
+                        inputVal.indexOf('close to me') > -1) {    
                         $rootScope.includeNearMe = true;
                         inputVal = inputVal.replace('near me', 'in San Diego');
                         inputVal = inputVal.replace('near', 'in San Diego');
@@ -80,10 +89,16 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             for (var k = 0; k < valTags.length; k++) {
                                 var tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
                                 var tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
-                                r = r && ($rootScope.searchStr[j].includes(valTags[k]) ||
+                                r = r && 
+                                    /*
+                                    ($rootScope.searchStr[j].includes(valTags[k]) ||
                                     $rootScope.searchStr[j].includes(valTags[k].toUpperCase()) ||
                                     $rootScope.searchStr[j].includes(tagCapitalized) ||
-                                    $rootScope.searchStr[j].includes(tagFirstLowered));
+                                    $rootScope.searchStr[j].includes(tagFirstLowered)); */
+                                    ($rootScope.searchStr[j].indexOf(valTags[k]) > -1 ||
+                                    $rootScope.searchStr[j].indexOf(valTags[k].toUpperCase()) > -1 ||
+                                    $rootScope.searchStr[j].indexOf(tagCapitalized) > -1 ||
+                                    $rootScope.searchStr[j].indexOf(tagFirstLowered) > -1); 
                             }
                             if (r) {
                                 //console.log("push to vm.results array");
