@@ -36,8 +36,8 @@
             if ($rootScope.DEBUG_MODE) console.log("Navbar Loaded!");
             //console.log("isLoggedIn", !$rootScope.isLoggedIn)
             //console.log("user", $rootScope.user);
-            //getCities();
-            detectLocation2();
+            getCities();
+            //detectLocation2();
         }
 
         function gotoAbout() {
