@@ -5,9 +5,9 @@
         .module('app')
         .controller('navbar', navbar);
 
-    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state', 'city','$cookieStore','$http'];
+    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state', 'city','$cookieStore','$http','GOOGLE_API_KEY'];
 
-    function navbar($location, $translate, $rootScope, login, $state, city,$cookieStore,$http) {
+    function navbar($location, $translate, $rootScope, login, $state, city,$cookieStore,$http, GOOGLE_API_KEY) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'navbar';
@@ -36,7 +36,7 @@
             //console.log("isLoggedIn", !$rootScope.isLoggedIn)
             //console.log("user", $rootScope.user);
             //getCities();
-            detectLocation();
+            detectLocation2();
         }
 
         function gotoAbout() {
@@ -272,6 +272,20 @@
                     $rootScope.currentUserLatitude = loc[0];
                     $rootScope.currentUserLongitude = loc[1];                    
                 });         
+        }
+        
+        function detectLocation2(){
+            var url = 'https://www.googleapis.com/geolocation/v1/geolocate?key='+'AIzaSyDtDvBsex9Ytz1aWl5uET8MwjlmvEMTF70';
+             return $http.post(url, {}, {   
+                    headers: {}
+                }).then(function (result) {
+                    console.log("Result from google geolocate - ", result);
+                    
+                    //var loc = result.data.loc.split(",");
+                    //console.log("loc - ", loc);
+                    $rootScope.currentUserLatitude = result.data.location.lat;
+                    $rootScope.currentUserLongitude = result.data.location.lng;                    
+                });      
         }
     }
 })();
