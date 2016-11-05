@@ -5,9 +5,9 @@
         .module('app')
         .controller('navbar', navbar);
 
-    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state', 'city','$cookieStore'];
+    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state', 'city','$cookieStore','$http'];
 
-    function navbar($location, $translate, $rootScope, login, $state, city,$cookieStore) {
+    function navbar($location, $translate, $rootScope, login, $state, city,$cookieStore,$http) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'navbar';
@@ -28,13 +28,15 @@
         vm.openCitySelection = openCitySelection;
 
         activate();
-        getCities();
+        
 
         function activate() {
 
             if ($rootScope.DEBUG_MODE) console.log("Navbar Loaded!");
             //console.log("isLoggedIn", !$rootScope.isLoggedIn)
             //console.log("user", $rootScope.user);
+            //getCities();
+            detectLocation();
         }
 
         function gotoAbout() {
@@ -257,6 +259,19 @@
                     $rootScope.$digest();
                 }
             }
+        }
+        
+        function detectLocation(){
+           var url = 'https://ipinfo.io/json';
+           return $http.get(url, {}, {   
+                    headers: {}
+                }).then(function (result) {
+                    console.log("Result from ipinfo - ", result);
+                    var loc = result.data.loc.split(",");
+                    console.log("loc - ", loc);
+                    $rootScope.currentUserLatitude = loc[0];
+                    $rootScope.currentUserLongitude = loc[1];                    
+                });         
         }
     }
 })();
