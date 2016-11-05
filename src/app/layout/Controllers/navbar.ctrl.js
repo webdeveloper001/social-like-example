@@ -29,6 +29,7 @@
 
         activate();
         
+        
 
         function activate() {
 
@@ -275,9 +276,16 @@
         }
         
         function detectLocation2(){
+            var geobody = {};
+            
+            geobody.homeMobileCountryCode = 310;
+            geobody.homeMobileNetworkCode = 38;
+            geobody.considerIp = true;
+  
             var url = 'https://www.googleapis.com/geolocation/v1/geolocate?key='+'AIzaSyDtDvBsex9Ytz1aWl5uET8MwjlmvEMTF70';
              return $http.post(url, {}, {   
-                    headers: {}
+                    headers: {},
+                    body: geobody
                 }).then(function (result) {
                     console.log("Result from google geolocate - ", result);
                     
