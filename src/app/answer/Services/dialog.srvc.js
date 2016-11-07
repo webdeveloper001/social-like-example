@@ -32,7 +32,8 @@
             editVRowGroup: editVRowGroup,
             deleteVRowGroup: deleteVRowGroup,
             showAddEvent: showAddEvent,
-            createEventPreview: createEventPreview
+            createEventPreview: createEventPreview,
+            askPermissionToLocate: askPermissionToLocate
         };
 
         return service;
@@ -767,8 +768,8 @@
                     },
                 },
                     {
-                        label: 'Edit',
-                        action: function (dialogRef, result) {
+                     label: 'Edit',
+                     action: function (dialogRef, result) {
                             //console.log("dialogRef---", dialogRef);
                             var vrowgroupname = dialogRef.getModalBody().find('input').val();
                             if (result) callback(x, vrowgroupname);
@@ -930,8 +931,58 @@
                     //dialogRef.close();
                 }
             });
+                   
+        }
         
+        function askPermissionToLocate() {
+
+            var title = '';
+            var message = ''
+            var message2 = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Please Confirm';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Confirm';
+            message = 'Is it ok if we locate your position?'+
+            '<br><br>'+
+            '<div class="row">'+
+             '<div class="container col-xs-6">'+
+             '<br><br>'+
+            '<div class="text-center"><button class="btn btn-danger">No, I don\'t approve</button></div>'+
+            '</div>'+
+            '<div class="container col-xs-6">'+
+            '<div class="text-center"><button class="btn btn-success">Yes, use GPS</button></div><br>'+
+            '<p>---OR---</p><p>Use this address as reference</p>' +
+            '<div class="input-group">'+
+            '<input type="text" class="form-control" ng-model="" placeholder="Address">'+
+                '<span class="input-group-btn text-right">'+
+                        '<button class="btn btn-success" type="button" ng-click="">GO</button>'+
+                    '</span>'+
+            '</div>'+
+            '</div>'+
+            '</div>';
             
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                //btnCancelLabel: btnCancelLabel,
+                //btnOKLabel: btnOkLabel,
+                //btnOKClass: 'btn-primary',
+                //btnCancelAction: function (dialogRef) {
+                //    dialogRef.close();
+                //},
+                //callback: function (dialogRef, result) {
+                //callback: function (result) {
+                 //   if (result) callback(event);
+                    //dialogRef.close();
+                //}
+            });
+                   
         }
 
     }

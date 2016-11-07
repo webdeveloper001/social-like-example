@@ -673,12 +673,19 @@
             function compare(a, b) {
                 return a.dist - b.dist;
             }
-            vm.answers = vm.answers.sort(compare);
-            //vm.answers = $filter('orderBy')(vm.answers, 'dist');
-            vm.selRank = '';
-            vm.selDistance = 'active';
-            vm.selUpV = '';
-            vm.selDate = '';
+            
+            //if (vm.haveLocation) {
+                vm.answers = vm.answers.sort(compare);
+                //vm.answers = $filter('orderBy')(vm.answers, 'dist');
+                vm.selRank = '';
+                vm.selDistance = 'active';
+                vm.selUpV = '';
+                vm.selDate = '';
+            //}
+            //else{
+            //    dialog.askPermissionToLocate();
+                //dialog.askPermissionToLocate();
+            //}
         }
 
         function sortByUpV() {

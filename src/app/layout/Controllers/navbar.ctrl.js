@@ -280,7 +280,7 @@
             
             geobody.homeMobileCountryCode = 310;
             geobody.homeMobileNetworkCode = 38;
-            geobody.considerIp = true;
+            geobody.considerIp = false;
   
             var url = 'https://www.googleapis.com/geolocation/v1/geolocate?key='+'AIzaSyDtDvBsex9Ytz1aWl5uET8MwjlmvEMTF70';
              return $http.post(url, {}, {   
