@@ -36,8 +36,14 @@
         if ($window.innerWidth < 512) vm.logoimage = "../../../assets/images/rankxlogosd_sm.png";
         else vm.logoimage = "../../../assets/images/rankxlogosd.png";
         */
-        if ($window.innerWidth < 512) vm.logoimage = "/assets/images/rankxlogosd_sm.png";
-        else vm.logoimage = "/assets/images/rankxlogosd.png";
+        if ($window.innerWidth < 512) {
+            vm.logoimage = "/assets/images/rankxlogosd_sm.png";
+            $rootScope.sm = true;
+        }
+        else {
+            vm.logoimage = "/assets/images/rankxlogosd.png";
+            $rootScope.sm = false;
+        }
         
         
         function activate() {

@@ -938,51 +938,46 @@
 
             var title = '';
             var message = ''
-            var message2 = '';
-            var btnCancelLabel = '';
-            var btnOkLabel = '';
+            var btnCancelLabel = 'No, I don\'t approve';
+            var btnOkLabel = 'Yes, use GeoLocation';
 
             title = 'Please Confirm';
-            btnCancelLabel = 'Cancel';
-            btnOkLabel = 'Confirm';
-            message = 'Is it ok if we locate your position?'+
+            message = 'Is it ok if we locate your position?'; //+
+            /*
             '<br><br>'+
             '<div class="row">'+
-             '<div class="container col-xs-6">'+
-             '<br><br>'+
-            '<div class="text-center"><button class="btn btn-danger">No, I don\'t approve</button></div>'+
-            '</div>'+
-            '<div class="container col-xs-6">'+
-            '<div class="text-center"><button class="btn btn-success">Yes, use GPS</button></div><br>'+
+            ($rootScope.sm ? '<div class="container col-xs-12">':'<div class="container col-xs-6">') +
+            '<div class="text-center" style="border:2px"><button class="btn btn-success" ng-click="useGeo">Yes, use geolocation</button></div><br>'+
             '<p>---OR---</p><p>Use this address as reference</p>' +
             '<div class="input-group">'+
-            '<input type="text" class="form-control" ng-model="" placeholder="Address">'+
+            '<input type="text" class="form-control" ng-model="" placeholder="Enter address">'+
                 '<span class="input-group-btn text-right">'+
-                        '<button class="btn btn-success" type="button" ng-click="">GO</button>'+
+                        '<button class="btn btn-success" type="button" ng-click="useAdd">GO</button>'+
                     '</span>'+
+            '</div><br><br>'+     
             '</div>'+
+            ($rootScope.sm ? '<div class="container col-xs-12">':'<div class="container col-xs-6">') +
+            '<div class="text-center" style="border:2px"><button class="btn btn-danger" ng-click="noApp">No, I don\'t approve</button></div>'+
             '</div>'+
             '</div>';
-            
-            BootstrapDialog.show({
+            */
+            BootstrapDialog.confirm({
                 type: BootstrapDialog.TYPE_PRIMARY,
                 title: title,
                 message: message,
                 closable: true, // <-- Default value is false
                 draggable: true, // <-- Default value is false
-                //btnCancelLabel: btnCancelLabel,
-                //btnOKLabel: btnOkLabel,
-                //btnOKClass: 'btn-primary',
-                //btnCancelAction: function (dialogRef) {
-                //    dialogRef.close();
-                //},
-                //callback: function (dialogRef, result) {
-                //callback: function (result) {
-                 //   if (result) callback(event);
-                    //dialogRef.close();
-                //}
-            });
-                   
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-success',
+                btnCancelClass: 'btn-warning',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                 callback: function (result) {
+                    if (result) $rootScope.$emit('getLocation');
+                }                          
+              });
         }
 
     }

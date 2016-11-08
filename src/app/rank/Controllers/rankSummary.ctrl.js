@@ -257,8 +257,7 @@
             if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
             //console.log("$rootScope.user", $rootScope.user);
             //createVrows();
-            console.log("$rootScope.cCategory - ",$rootScope.cCategory);
-
+            
         }
 
         function getRankAnswers() {
@@ -660,6 +659,7 @@
                 return a.Rank - b.Rank;
             }
             vm.answers = vm.answers.sort(compare);
+            $rootScope.canswers = vm.answers;
             //vm.answers = $filter('orderBy')(vm.answers, 'Rank');
             vm.selRank = 'active';
             vm.selDistance = '';
@@ -674,18 +674,18 @@
                 return a.dist - b.dist;
             }
             
-            //if (vm.haveLocation) {
+            if (vm.haveLocation) {
                 vm.answers = vm.answers.sort(compare);
+                $rootScope.canswers = vm.answers;
                 //vm.answers = $filter('orderBy')(vm.answers, 'dist');
                 vm.selRank = '';
                 vm.selDistance = 'active';
                 vm.selUpV = '';
                 vm.selDate = '';
-            //}
-            //else{
-            //    dialog.askPermissionToLocate();
-                //dialog.askPermissionToLocate();
-            //}
+            }
+            else{
+                dialog.askPermissionToLocate();
+            }
         }
 
         function sortByUpV() {
@@ -693,6 +693,7 @@
                 return b.upV - a.upV;
             }
             vm.answers = vm.answers.sort(compare);
+            $rootScope.canswers = vm.answers;
             //vm.answers = $filter('orderBy')(vm.answers, 'dist');
             vm.selRank = '';
             vm.selDistance = '';
@@ -720,6 +721,7 @@
             }
             
             vm.answers = vm.answers.sort(compare);
+            $rootScope.canswers = vm.answers;
             //vm.answers = $filter('orderBy')(vm.answers, 'dist');
             vm.selRank = '';
             vm.selDistance = '';

@@ -51,8 +51,23 @@
 
 <div style="display:{{((vm.isNhRdy || vm.isCity) && (vm.searchActive == false)) ? 'inline':'none'}}" ng-if="!vm.fbm">
 	<content-block type='rankofweek' dynamic=false rankofweek=true></content-block>
-	<!--<content-block type='rankofweeknh' dynamic=false rankofweek=true></content-block>-->
 	
+	<!-- <content-block type='quickLinks' dynamic=false ></content-block> -->
+	<!--<content-block type='rankofweeknh' dynamic=false rankofweek=true></content-block>-->
+	<!--
+	<div class="row">
+		<div class="col-xs-4">
+			<button class="btn btn-default" style="width:100%">Food Near Me</button>
+		</div>
+		<div class="col-xs-4">
+			<button class="btn btn-default" style="width:100%">Events</button>
+		</div>
+		<div class="col-xs-4">
+			<button class="btn btn-default" style="width:100%">Wisdom of Today</button>
+		</div>
+	</div>
+	-->
+	<br>
 	<div class="row">
 		<div class="col-lg-6">
 			<content-block type="lifestyle" dynamic=false></content-block>
@@ -63,18 +78,18 @@
 	</div>
 	<div class="row">
 		<div class="col-lg-6">
-			<content-block type="politics" dynamic=false></content-block>
-		</div>
-		<div class="col-lg-6">
-			<content-block type='sports' dynamic=false></content-block>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-lg-6">
 			<content-block type='food' dynamic=false></content-block>
 		</div>
 		<div class="col-lg-6">
 			<content-block type='health' dynamic=false></content-block>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-6">
+			<content-block type="politics" dynamic=false></content-block>
+		</div>
+		<div class="col-lg-6">
+			<content-block type='sports' dynamic=false></content-block>
 		</div>
 	</div>
 	<div class="row">

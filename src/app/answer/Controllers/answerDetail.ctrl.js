@@ -34,6 +34,8 @@
         vm.DownVote = DownVote;
         vm.refresh = refresh;
         vm.goBack = goBack;
+        vm.goPrev = goPrev;
+        vm.goNext = goNext;
         vm.editAnswer = editAnswer;
         vm.deleteAnswer = deleteAnswer;
         vm.flagAnswer = flagAnswer;
@@ -53,11 +55,14 @@
         
         vm.fields = $rootScope.fields;
         vm.type = $rootScope.cCategory.type;
+        vm.title = $rootScope.cCategory.title;
         vm.isLoggedIn = $rootScope.isLoggedIn;
         //vm.userIsOwner = $rootScope.userIsOwner;
 
         if ($stateParams.index) vm.answer = answers[A.indexOf(+$stateParams.index)];
         $rootScope.canswer = vm.answer;
+        
+        vm.idx = answers.map(function(x) {return x.id; }).indexOf(vm.answer.id)+1;
         
         vm.isMobile = false; 
         // device detection
@@ -722,6 +727,22 @@
             var nViews = vm.answer.views + 1;
             answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
             $state.go('rankSummary', { index: x.id });
+        }
+        
+        function goPrev(){
+            var L = answers.length;
+            var i = answers.map(function(x) {return x.id; }).indexOf(vm.answer.id);
+            var ni = i-1; //next index
+            if (ni < 0) ni = L-1; //if less than zero wrap to last
+            $state.go('answerDetail', { index: answers[ni].id });
+        }
+        
+        function goNext(){
+            var L = answers.length;
+            var i = answers.map(function(x) {return x.id; }).indexOf(vm.answer.id);
+            var ni = i+1; //next index
+            if (ni > L-1) ni = 0; //if less than zero wrap to last
+            $state.go('answerDetail', { index: answers[ni].id });
         }
         
         function vrowVoteUp(x) {

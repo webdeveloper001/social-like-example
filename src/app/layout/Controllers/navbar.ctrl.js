@@ -29,14 +29,12 @@
 
         activate();
         
-        
-
         function activate() {
 
             if ($rootScope.DEBUG_MODE) console.log("Navbar Loaded!");
             //console.log("isLoggedIn", !$rootScope.isLoggedIn)
             //console.log("user", $rootScope.user);
-            getCities();
+            //getCities();
             //detectLocation2();
         }
 
@@ -136,11 +134,8 @@
          */
         function setUserLatitudeLongitude(position) {
             
-            console.log("@setUserLatitudeLongitude");
-            
-            console.log("position - ", position);
-            console.log("position.coords.latitude - ", position.coords.latitude);
-            console.log("position.coords.longitude - ", position.coords.longitude);
+            if ($rootScope.DEBUG_MODE) console.log("position.coords.latitude - ", position.coords.latitude);
+            if ($rootScope.DEBUG_MODE) console.log("position.coords.longitude - ", position.coords.longitude);
             /**
              * Set Latitude and Longitude from navigator to rootScope
              */
@@ -178,7 +173,7 @@
          */
         function autoDetectCity() {
             
-            console.log("@autoDetectCity");
+            if ($rootScope.DEBUG_MODE) console.log("@autoDetectCity");
             
             var geocoder;
             geocoder = new google.maps.Geocoder();
@@ -197,7 +192,7 @@
 
             function showPosition(position) {
                 
-                console.log("@showPosition - position -", position);
+                if ($rootScope.DEBUG_MODE) console.log("@showPosition - position -", position);
 
                 var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
@@ -267,9 +262,9 @@
            return $http.get(url, {}, {   
                     headers: {}
                 }).then(function (result) {
-                    console.log("Result from ipinfo - ", result);
+                    if ($rootScope.DEBUG_MODE) console.log("Result from ipinfo - ", result);
                     var loc = result.data.loc.split(",");
-                    console.log("loc - ", loc);
+                    if ($rootScope.DEBUG_MODE) console.log("loc - ", loc);
                     $rootScope.currentUserLatitude = loc[0];
                     $rootScope.currentUserLongitude = loc[1];                    
                 });         
@@ -287,7 +282,7 @@
                     headers: {},
                     body: geobody
                 }).then(function (result) {
-                    console.log("Result from google geolocate - ", result);
+                    if ($rootScope.DEBUG_MODE) console.log("Result from google geolocate - ", result);
                     
                     //var loc = result.data.loc.split(",");
                     //console.log("loc - ", loc);
