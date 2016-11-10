@@ -12,7 +12,7 @@
 		<!--</div>-->
 	<!--	</div>-->
 	<!--	<div class="table">  -->
-		
+	<br ng-if="isDynamic">	
 	<table class="table" style="border-style:none" ng-if="isRoW">
 		<tbody>
 			<thead>
@@ -38,10 +38,10 @@
 			</div>
 		</div>
 	</div>
-
+	<br ng-if="isRoW">
 	<table class="table">
 		<tbody>
-			<thead ng-if="!isRoW"> 
+			<thead ng-if="!isRoW" style="border-style:none;"> 
 				<tr>
 					<th style="background-color:{{bgc}};color:{{fc}};width:50%;">
 						{{headline}}</th>

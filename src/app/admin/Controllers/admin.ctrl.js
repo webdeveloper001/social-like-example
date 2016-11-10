@@ -25,6 +25,7 @@
         vm.dbMaint = dbMaint;
         vm.dbQuery = dbQuery;
         vm.update = update;
+        vm.foodranks = foodranks;
 
         activate();
 
@@ -41,6 +42,7 @@
             vm.selDbMaint = '';
             vm.selQuery = '';
             vm.selUpdate = '';
+            vm.selFoodRanks = '';
 
             $state.go('queries');
 
@@ -53,6 +55,7 @@
             vm.selDbMaint = '';
             vm.selQuery = '';
             vm.selUpdate = '';
+            vm.selFoodRanks = '';
 
             $state.go('views');
 
@@ -65,6 +68,7 @@
             vm.selDbMaint = '';
             vm.selQuery = '';
             vm.selUpdate = '';
+            vm.selFoodRanks = '';
 
             $state.go('flags');
 
@@ -78,6 +82,7 @@
             vm.selDbMaint = '';
             vm.selQuery = '';
             vm.selUpdate = '';
+            vm.selFoodRanks = '';
 
             $state.go('addRank');
 
@@ -91,6 +96,7 @@
             vm.selDbMaint = 'active';
             vm.selQuery = '';
             vm.selUpdate = '';
+            vm.selFoodRanks = '';
             
             $state.go('dbMaint');
         }
@@ -103,6 +109,7 @@
             vm.selDbMaint = '';
             vm.selQuery = 'active';
             vm.selUpdate = '';
+            vm.selFoodRanks = '';
             
             $state.go('dbQuery');
         }
@@ -115,8 +122,23 @@
             vm.selDbMaint = '';
             vm.selQuery = '';
             vm.selUpdate = 'active';
+            vm.selFoodRanks = '';
             
             $state.go('updateHeaders');
+        }
+        
+        function foodranks(){
+            vm.selKeywords = '';
+            vm.selViews = '';
+            vm.selFlags = '';
+            vm.selRankings = '';
+            vm.selDbMaint = '';
+            vm.selQuery = '';
+            vm.selUpdate = '';
+            vm.selFoodRanks = 'active';
+            
+            $state.go('foodRanks');
+            
         }
 
 

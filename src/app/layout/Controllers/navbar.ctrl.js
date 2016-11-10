@@ -26,6 +26,9 @@
         vm.gotoFileUpload = gotoFileUpload;
         vm.gotoCustomer = gotoCustomer;
         vm.openCitySelection = openCitySelection;
+        
+        $rootScope.coordsRdy = false;
+        $rootScope.loadFbnWhenCoordsRdy = false;
 
         activate();
         
@@ -34,7 +37,7 @@
             if ($rootScope.DEBUG_MODE) console.log("Navbar Loaded!");
             //console.log("isLoggedIn", !$rootScope.isLoggedIn)
             //console.log("user", $rootScope.user);
-            getCities();
+            //getCities();
             //detectLocation2();
         }
 
@@ -141,6 +144,8 @@
              */
             $rootScope.currentUserLatitude = position.coords.latitude;
             $rootScope.currentUserLongitude = position.coords.longitude;
+            
+            
 
             //console.log("$rootScope.currentUserLatitude", $rootScope.currentUserLatitude);
             //console.log("$rootScope.currentUserLongitude", $rootScope.currentUserLongitude);
@@ -150,6 +155,10 @@
              */
             $cookieStore.put('currentUserLatitude', $rootScope.currentUserLatitude);
             $cookieStore.put('currentUserLongitude', $rootScope.currentUserLongitude);
+            
+            $rootScope.coordsRdy = true;
+            
+            if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 9521 });
 
             /**
              * If user is logged in, then set latitude and longitude to user's object

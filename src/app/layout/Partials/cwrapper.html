@@ -54,19 +54,24 @@
 	
 	<!-- <content-block type='quickLinks' dynamic=false ></content-block> -->
 	<!--<content-block type='rankofweeknh' dynamic=false rankofweek=true></content-block>-->
-	<!--
-	<div class="row">
-		<div class="col-xs-4">
-			<button class="btn btn-default" style="width:100%">Food Near Me</button>
-		</div>
-		<div class="col-xs-4">
-			<button class="btn btn-default" style="width:100%">Events</button>
-		</div>
-		<div class="col-xs-4">
-			<button class="btn btn-default" style="width:100%">Wisdom of Today</button>
-		</div>
+	
+	<table class="table" style="border-style:none" ng-if="vm.isCity">
+		<tbody>
+			<thead>
+				<tr>
+					<th style="background-color:#595959;color:#f8f8ff;width:50%;border-style:none">
+						Quick Links</th>
+				</tr>
+			</thead>
+		</tbody>
+	</table>
+	
+	<div class="text-center" ng-if="vm.isCity">
+			<button class="btn btn-danger" ng-click="vm.foodNearMe()">Food Near Me</button>
+			<button class="btn btn-primary" ng-click="vm.events()">Events</button>
+			<button class="btn btn-success" ng-click="vm.selfimprove()">Introspection</button>
 	</div>
-	-->
+	
 	<br>
 	<div class="row">
 		<div class="col-lg-6">

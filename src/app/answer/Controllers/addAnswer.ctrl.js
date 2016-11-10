@@ -446,7 +446,8 @@
             //Check if answer about to be added exists already among establishments
             if (vm.type == 'Establishment') {
                 for (var i = 0; i < $rootScope.estAnswers.length; i++) {
-                    if (answer.name == $rootScope.estAnswers[i].name) {
+                    if (answer.name == $rootScope.estAnswers[i].name &&
+                        answer.cityarea == $rootScope.estAnswers[i].cityarea) {
 
                         duplicateExists = true;
                         extAnswer = $rootScope.estAnswers[i];

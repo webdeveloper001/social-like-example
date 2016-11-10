@@ -66,7 +66,7 @@
                 "Leucadia", "Oceanside", "National City", "Rancho Santa Fe", "Solana Beach", "Poway", "El Cajon",
                 "Escondido", "Carlsbad", "San Ysidro", "Otay Mesa", "Linda Vista", "Chula Vista", "Encinitas", "Golden Hills", 
                 "Spring Valley", "Rancho San Diego", "Mira Mesa",
-                "Torrey Pines", "Carmel Valley", "Miramar","Kearny Mesa","Bankers HIll","Rancho Penasquitos",
+                "Torrey Pines", "Carmel Valley", "Miramar","Kearny Mesa","Bankers Hill","Rancho Penasquitos",
                 "Sorrento Valley","Tierra Santa","Logan Heights","Serra Mesa","Normal Heights","Talmadge",
                 "Bird Rock","South San Diego","North City","San Carlos","Del Cerro"
                 ];
@@ -76,14 +76,17 @@
                 "Marina", "Seaport Village"];
             
              $http.get('../../../assets/fields.json').success(function (response) {
-                $rootScope.typeSchema = response;
-                
+                $rootScope.typeSchema = response;                
             });
 
             $http.get('../../../assets/dialogs.json').success(function (response) {
-                $rootScope.dialogs = response;
-                
+                $rootScope.dialogs = response;                
             });
+            
+            $http.get('../../../assets/foodranks.json').success(function (response) {
+                $rootScope.foodranks = response;                
+            });
+            
             //answers
             var p0 = answer.getAnswers();
             var p1 = table.getTables();

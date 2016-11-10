@@ -58,8 +58,10 @@
         vm.title = $rootScope.cCategory.title;
         vm.isLoggedIn = $rootScope.isLoggedIn;
         //vm.userIsOwner = $rootScope.userIsOwner;
-
-        if ($stateParams.index) vm.answer = answers[A.indexOf(+$stateParams.index)];
+        if ($stateParams.index) {
+            var i =  answers.map(function(x) {return x.id; }).indexOf(+$stateParams.index);
+            vm.answer = answers[i];
+        }
         $rootScope.canswer = vm.answer;
         
         vm.idx = answers.map(function(x) {return x.id; }).indexOf(vm.answer.id)+1;
@@ -154,8 +156,6 @@
             if (vm.type == 'Establishment') vm.bindtxt = 'I represent this business';
             if (vm.type == 'PersonCust') vm.bindtxt = 'I am this person';
             if (vm.type == 'Event') vm.bindtxt = 'I organize this event';
-            console.log("vm.bindtxt - ",vm.bindtxt);
-            
             
             vm.moretext = ' more ';
             vm.completeinfo = false;

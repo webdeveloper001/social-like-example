@@ -92,7 +92,7 @@
     <div class="btn-group col-sm-6 col-md-6">
         <div>
             <p>Sort by: <span>        
-        <button class="btn btn-default {{vm.selRank}} " ng-click="vm.sortByRank()">Rank</button>
+        <button class="btn btn-default {{vm.selRank}} " ng-click="vm.sortByRank()" ng-if="vm.type != 'Event' && !vm.fnm">Rank</button>
         <button class="btn btn-default {{vm.selUpV}} " ng-click="vm.sortByUpV()">Popular</button>
         <button class="btn btn-default {{vm.selDistance}} " ng-click="vm.sortByDistance()"
             ng-show="{{vm.type == 'Establishment'}}">Distance</button>
@@ -121,7 +121,7 @@
         <thead>
             <tr>
                 <th>{{vm.showR ? 'Rank' : 'Votes'}}</th>
-                <th ng-show="{{vm.sm == false}}">UpV</th>
+                <th ng-show="{{!vm.sm && !vm.fnm && !vm.isE}}">Votes</th>
                 <th class="capitalize " ng-repeat="h in vm.fields | filter:{isrequired:true}">{{h.label}}</th>
                 <th ng-show="{{vm.type == 'Establishment' && vm.haveLocation}}">Distance (mi)</th>
                 <th ng-show="{{vm.type == 'Event'}}">Date</th>
@@ -131,16 +131,16 @@
         </thead>
         <tbody>
             <!--| orderBy: '-Rank' -->
-            <tr ng-repeat="x in vm.answers track by $index" ng-click="vm.answerDetail(x.id) ">
+            <tr ng-repeat="x in vm.answers track by $index" ng-click="vm.answerDetail(x)">
                 <td>{{vm.showR ? x.Rank : x.upV}}</td>
-                <td ng-show="{{vm.sm == false}}">{{x.upV}}</td>
+                <td ng-show="{{!vm.sm && !vm.fnm && !vm.isE}}">{{x.upV}}</td>
                 <!--<td>{{x.Rank}}</td>-->
                 <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
-                <td ng-repeat="h in vm.fields | filter:{isrequired:true}" 
-                style="background-color:{{x.bc}};color:{{x.fc}}">{{ x[h.name]}}</td>
+                <td ng-repeat="h in vm.fields | filter:{isrequired:true}">{{ x[h.name]}}</td> 
+                <!-- style="background-color:{{x.bc}};color:{{x.fc}}"> -->
                 <td ng-show="{{vm.type == 'Establishment' && vm.haveLocation}}">{{x.dist}}</td>
-                <td ng-show="{{vm.type == 'Event'}}"
-                style="background-color:{{x.bc}};color:{{x.fc}}">{{x.date}}</td>
+                <td ng-show="{{vm.type == 'Event'}}">{{x.date}}</td>
+                <!-- style="background-color:{{x.bc}};color:{{x.fc}}" -->
                 <td ng-show="{{vm.type == 'Establishment'}}" style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">
                     {{x.sp_title}}</td>
             </tr>

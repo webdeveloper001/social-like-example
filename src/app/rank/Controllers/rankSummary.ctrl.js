@@ -13,7 +13,7 @@
         , answer, rank, $filter, table, vrowvotes, $window, vrows
         , $rootScope, $modal, editvote, votes, comment) {
         /* jshint validthis:true */
-        
+
         var vm = this;
         vm.title = 'rankSummary';
         vm.addAnswerDisabled = '';
@@ -57,13 +57,15 @@
 
         var answersFull = false;
         var updateExec = false;
+        var foodNearMe = false;
+        vm.fnm = false;
         
         //Comments related variables
         var bc = 0;
         var fc = 0;
         var cobj = {};
         vm.isLoggedIn = $rootScope.isLoggedIn == undefined ? false : $rootScope.isLoggedIn;
-        
+
         $rootScope.userHasRank = false;
         $rootScope.userActRecId = 0;
 
@@ -82,18 +84,20 @@
         });
         
         //Adjust picture size for very small displays
-        if ($window.innerWidth < 512) {vm.sm = true; vm.nsm = false; }
-        else {vm.sm = false; vm.nsm = true; }
+        if ($window.innerWidth < 512) { vm.sm = true; vm.nsm = false; }
+        else { vm.sm = false; vm.nsm = true; }
 
         //Blur main input field -- This was done to prevent keyboard from popping out constantly in
         //Safari browsers
-        if (document.getElementById("SearchInput") != null && document.getElementById("SearchInput") != undefined){
-         document.getElementById("SearchInput").blur();
+        if (document.getElementById("SearchInput") != null && document.getElementById("SearchInput") != undefined) {
+            document.getElementById("SearchInput").blur();
         }
-        
+
         activate();
 
         function activate() {
+
+            $window.scrollTo(0, 0);
 
             $rootScope.rankIsActive = true;
             $rootScope.objNumAct = $rootScope.objNum;
@@ -105,7 +109,8 @@
             createAnswerStatus(); //enables/disables 'Create Answer' button
             
             //Sort first by upV
-            sortByUpV();
+            if (foodNearMe) sortByDistance();
+            else sortByUpV();
 
             rank.computeRanking($rootScope.canswers, $rootScope.cmrecs);
 
@@ -117,7 +122,7 @@
                 vm.answers[i].Rank = i + 1;
             }
             vm.answers = $filter('orderBy')(vm.answers, 'Rank');
-            vm.showR = true || (!vm.sm);
+            if (!foodNearMe && !vm.isE) vm.showR = true || (!vm.sm);
 
             if ($rootScope.includeNearMe) {
                 sortByDistance();
@@ -128,7 +133,7 @@
             else vm.numcom = $rootScope.cCategory.numcom;
             
             //Check and update if necessary ranking and Num of items per rank, only for atomic ranks
-            if ($rootScope.cCategory.isatomic == true) {
+            if ($rootScope.cCategory.isatomic == true && !foodNearMe) {
                 for (var i = 0; i < vm.answers.length; i++) {
                     //console.log("vm.answers[i].Rank, vm.answers[i].catansrank -", vm.answers[i].Rank, vm.answers[i].catansrank);
                     if (vm.answers[i].Rank != vm.answers[i].catansrank) {
@@ -142,7 +147,7 @@
                         
             //check that number of answer is same as store in content object
             //if different, compute answertags and update table - only if rank is atomic
-            if ($rootScope.cCategory.isatomic == true) {
+            if ($rootScope.cCategory.isatomic == true && !foodNearMe) {
                 if (vm.answers.length != $rootScope.cCategory.answers && vm.answers.length > 0) {
                     var answertags = vm.answers[0].name;
                     for (var n = 1; n < vm.answers.length; n++) {
@@ -155,10 +160,12 @@
             //Check number of answers for this ranking
             if (vm.answers.length == 0) {
                 vm.numAns = 0;
+                
+                if (!foodNearMe){
                 table.update($rootScope.cCategory.id,
                     ['views', 'answers'],
                     [$rootScope.cCategory.views + 1, $rootScope.canswers.length]);
-
+                }        
             }
             if (vm.answers.length == 1) {
                 vm.numAns = 1;
@@ -170,17 +177,18 @@
                 }
                 else {
                     vm.isShortPhrase = false;
-                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null ){
+                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null) {
                         vm.image1 = vm.answers[0].imageurl;
                         vm.image1ok = true;
                     }
                     else vm.image1ok = false;
                 }
-
+                if (!foodNearMe){
                 table.update($rootScope.cCategory.id,
                     ['views', 'answers', 'image1url'],
                     [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
                         vm.image1]);
+                }        
             }
             if (vm.answers.length == 2) {
                 vm.numAns = 2;
@@ -196,21 +204,23 @@
                 }
                 else {
                     vm.isShortPhrase = false;
-                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null ){
+                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null) {
                         vm.image1 = vm.answers[0].imageurl;
                         vm.image1ok = true;
                     }
                     else vm.image1ok = false;
-                    if (vm.answers[1].imageurl != undefined && vm.answers[1].imageurl != null ){
+                    if (vm.answers[1].imageurl != undefined && vm.answers[1].imageurl != null) {
                         vm.image2 = vm.answers[1].imageurl;
                         vm.image2ok = true;
                     }
                     else vm.image2ok = false;
                 }
+                if (!foodNearMe){
                 table.update($rootScope.cCategory.id,
                     ['views', 'answers', 'image1url', 'image2url'],
                     [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
                         vm.image1, vm.image2]);
+                }
             }
 
             if (vm.answers.length > 2) {
@@ -230,27 +240,28 @@
                 }
                 else {
                     vm.isShortPhrase = false;
-                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null ){
+                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null) {
                         vm.image1 = vm.answers[0].imageurl;
                         vm.image1ok = true;
                     }
                     else vm.image1ok = false;
-                    if (vm.answers[1].imageurl != undefined && vm.answers[1].imageurl != null ){
+                    if (vm.answers[1].imageurl != undefined && vm.answers[1].imageurl != null) {
                         vm.image2 = vm.answers[1].imageurl;
                         vm.image2ok = true;
                     }
                     else vm.image2ok = false;
-                    if (vm.answers[2].imageurl != undefined && vm.answers[2].imageurl != null ){
+                    if (vm.answers[2].imageurl != undefined && vm.answers[2].imageurl != null) {
                         vm.image3 = vm.answers[2].imageurl;
                         vm.image3ok = true;
                     }
                     else vm.image3ok = false;
                 }
-
+                if (!foodNearMe){
                 table.update($rootScope.cCategory.id,
                     ['views', 'answers', 'image1url', 'image2url', 'image3url'],
                     [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
                         vm.image1, vm.image2, vm.image3]);
+                }
             }
          
             //TODO update answers in DB
@@ -264,26 +275,26 @@
             $rootScope.canswers4rank = [];
             //get answers that current user has voted Up
             //if ($rootScope.cCategory == 'Establishment') {
-            if (true) {    
+            if (true) {
                 for (var i = 0; i < $rootScope.cvotes.length; i++) {
                     if ($rootScope.cvotes[i].vote == 1) {
                         for (var k = 0; k < $rootScope.canswers.length; k++) {
-                                    if ($rootScope.cvotes[i].answer == $rootScope.canswers[k].id) {
-                                        $rootScope.canswers4rank.push($rootScope.canswers[k]);
-                                        //break;
-                                    }
-                                }
+                            if ($rootScope.cvotes[i].answer == $rootScope.canswers[k].id) {
+                                $rootScope.canswers4rank.push($rootScope.canswers[k]);
+                                //break;
                             }
                         }
+                    }
+                }
             }
-                           
+
             else {
                 $rootScope.canswers4rank = $rootScope.canswers;
             }
 
             if ($rootScope.canswers4rank.length > 1) vm.rankDisabled = '';
             else vm.rankDisabled = 'disabled';
-            
+
             if ($rootScope.canswers4rank.length > 0) vm.commentAllowed = true;
             else vm.commentAllowed = false;
             
@@ -335,8 +346,8 @@
             else return;
         }
 
-        function answerDetail(index) {
-            $state.go("answerDetail", { index: index });
+        function answerDetail(x) {
+            $state.go("answerDetail", { index: x.id });
         }
 
         function goRank() {
@@ -361,7 +372,7 @@
                     return;
                 }
                 else {
-                    if (vm.type == 'Event') $state.go("addEvent");    
+                    if (vm.type == 'Event') $state.go("addEvent");
                     else $state.go("addAnswer");
                 }
             }
@@ -381,9 +392,15 @@
                     break;
                 }
             }
-
+            
             vm.ranking = $rootScope.cCategory.title;
-                        
+            
+            if ($rootScope.cCategory.id ==  9521) {
+                foodNearMe = true;
+                vm.fnm = true;
+                vm.showR = false;
+            }               
+                
             //vm.url = 'http://rankdev.azurewebsites.net/#/rankSummary/' + $rootScope.cCategory.id;
             //vm.header = "table" + $rootScope.cCategory.id + ".header";
             //vm.body = 'table' + $rootScope.cCategory.id + '.body';
@@ -408,7 +425,7 @@
             $rootScope.fields = fields;
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
-            
+
             if (vm.type == 'Event') vm.isE = true;
             else vm.isE = false;
 
@@ -416,7 +433,7 @@
             $rootScope.NhValue = '';
             if ($rootScope.cCategory.type == 'Establishment' || $rootScope.cCategory.type == 'Event') {
                 //Determine if title already contains neighboorhood
-                var nhs = $rootScope.neighborhoods.concat($rootScope.districts);            
+                var nhs = $rootScope.neighborhoods.concat($rootScope.districts);
                 for (var i = 0; i < nhs.length; i++) {
                     if ($rootScope.cCategory.title.indexOf(nhs[i]) > -1) {
                         $rootScope.NhImplied = true;
@@ -447,64 +464,34 @@
             //Load current answers
             $rootScope.answers = answers;
             $rootScope.canswers = [];
+            var fanswers = [];
             $rootScope.ccatans = [];
             $rootScope.B = [];
             var eventObj = {};
-
             var obj = {};
             for (var i = 0; i < catansrecs.length; i++) {
-                //if rank is atomic 
-                if ($rootScope.cCategory.isatomic) {
-                    if (catansrecs[i].category == $rootScope.cCategory.id) {
-                        for (var k = 0; k < answers.length; k++) {
-                            if (catansrecs[i].answer == answers[k].id) {
-                                obj = {};
-                                obj = answers[k];
-                                obj.catans = catansrecs[i].id;
-                                obj.catansrank = catansrecs[i].rank;
-                                obj.upV = catansrecs[i].upV;
-                                
-                                if (vm.type == 'Event'){
-                                        eventObj = JSON.parse(answers[k].eventstr);
-                                        
-                                        Object.assign(answers[k], eventObj);
-                                        obj.date = answers[k].sdate.slice(4);
-                                }
-                                
-                                $rootScope.canswers.push(obj);
-                                $rootScope.ccatans.push(catansrecs[i]);
-                                
-                                //Collect array of 'current' catans records ids
-                                $rootScope.B.push(catansrecs[i].id);
-                                break;
-                            }
-                        }
-                    }
-                }
-                //if not atomic
-                else {
-                    //Puts numbers into array. Pretty sweet!
-                    var catArr = $rootScope.cCategory.catstr.split(':').map(Number);
-                    for (var n = 0; n < catArr.length; n++) {
-                        if (catansrecs[i].category == catArr[n]) {
+                if (!foodNearMe) {
+                    //if rank is atomic 
+                    if ($rootScope.cCategory.isatomic) {
+                        if (catansrecs[i].category == $rootScope.cCategory.id) {
                             for (var k = 0; k < answers.length; k++) {
-                                if (catansrecs[i].answer == answers[k].id && catansrecs[i].isdup != true ) {
+                                if (catansrecs[i].answer == answers[k].id) {
                                     obj = {};
                                     obj = answers[k];
                                     obj.catans = catansrecs[i].id;
                                     obj.catansrank = catansrecs[i].rank;
                                     obj.upV = catansrecs[i].upV;
-                                    
-                                    if (vm.type == 'Event'){
+
+                                    if (vm.type == 'Event') {
                                         eventObj = JSON.parse(answers[k].eventstr);
-                                        
+
                                         Object.assign(answers[k], eventObj);
                                         obj.date = answers[k].sdate.slice(4);
                                     }
-                                    
+
                                     $rootScope.canswers.push(obj);
                                     $rootScope.ccatans.push(catansrecs[i]);
-                            
+                                
                                     //Collect array of 'current' catans records ids
                                     $rootScope.B.push(catansrecs[i].id);
                                     break;
@@ -512,8 +499,88 @@
                             }
                         }
                     }
+                    //if not atomic
+                    else {
+                        //Puts numbers into array. Pretty sweet!
+                        var catArr = $rootScope.cCategory.catstr.split(':').map(Number);
+                        for (var n = 0; n < catArr.length; n++) {
+                            if (catansrecs[i].category == catArr[n]) {
+                                for (var k = 0; k < answers.length; k++) {
+                                    if (catansrecs[i].answer == answers[k].id && catansrecs[i].isdup != true) {
+                                        obj = {};
+                                        obj = answers[k];
+                                        obj.catans = catansrecs[i].id;
+                                        obj.catansrank = catansrecs[i].rank;
+                                        obj.upV = catansrecs[i].upV;
+
+                                        if (vm.type == 'Event') {
+                                            eventObj = JSON.parse(answers[k].eventstr);
+
+                                            Object.assign(answers[k], eventObj);
+                                            obj.date = answers[k].sdate.slice(4);
+                                        }
+
+                                        $rootScope.canswers.push(obj);
+                                        $rootScope.ccatans.push(catansrecs[i]);
+                            
+                                        //Collect array of 'current' catans records ids
+                                        $rootScope.B.push(catansrecs[i].id);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                //Food Near Me Rank
+                else {
+                    var catansrec = catansrecs[i];
+                    var answerid = 0;
+                    var idx = 0;
+                    var isDup = false;
+                    var ansObj = {};
+                    var nidx = 0;
+               
+                    var catArr2 = $rootScope.foodranks.cats.split(':').map(Number);
+                    
+                    for (var j=0; j< catArr2.length; j++){
+                        if (catansrec.category == catArr2[j]){
+                            answerid = catansrec.answer;
+                            //foodAnswersMap = [];
+                            //if (foodAnswers.length > 0) {
+                            //foodAnswersMap = foodAnswers.map(function(x) {return x.id;});
+                            //}
+                            idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(answerid);
+                            if (idx < 0) {
+                                console.log("idx - ", answerid, "catansrec - ", catansrec.id, catansrec.answer, catansrec.category);
+                                catans.deleteRec(catansrec.answer, catansrec.category);  
+                            }
+                            //only add if its not already added
+                            isDup = false;
+                            if (fanswers.length > 0 && idx > 0){
+                                for (var n=0; n < fanswers.length; n++){
+                                    if (fanswers[n].id == $rootScope.answers[idx].id) {
+                                        isDup = true;
+                                        nidx = n;
+                                        break;
+                                    }
+                                }
+                            }
+                            //if not duplicated, add to answer array. upV is init to first catans record
+                            if (!isDup) {
+                                ansObj = $rootScope.answers[idx];
+                                ansObj.upV = catansrec.upV;
+                                fanswers.push(ansObj);
+                            }
+                            //if duplicated, add upV from new catan
+                            if (isDup) {
+                                fanswers[nidx].upV = fanswers[nidx].upV + catansrec.upV;  
+                            }                         
+                    }
+                } 
                 }
             }
+            if (foodNearMe) $rootScope.canswers = fanswers; 
             vm.answers = $rootScope.canswers;
             
             //Calculate distances to user
@@ -673,7 +740,7 @@
             function compare(a, b) {
                 return a.dist - b.dist;
             }
-            
+
             if (vm.haveLocation) {
                 vm.answers = vm.answers.sort(compare);
                 $rootScope.canswers = vm.answers;
@@ -682,8 +749,10 @@
                 vm.selDistance = 'active';
                 vm.selUpV = '';
                 vm.selDate = '';
+                
+                if (foodNearMe) vm.answers = vm.answers.slice(0,99);
             }
-            else{
+            else {
                 dialog.askPermissionToLocate();
             }
         }
@@ -700,26 +769,26 @@
             vm.selUpV = 'active';
             vm.selDate = '';
 
-            vm.showR = false || (!vm.sm);
+            if (!foodNearMe && !vm.isE) vm.showR = false || (!vm.sm);
 
         }
-        
+
         function sortByDate() {
             function compare(a, b) {
-                
-               var d1 = new Date(a.date);
-               var d1s = d1.getFullYear().toString() + 
-                         (d1.getMonth()+1 < 10 ? ('0'+ (d1.getMonth()+1).toString()) : (d1.getMonth()+1).toString()) + 
-                         (d1.getDate() < 10 ? ('0'+ d1.getDate().toString()) : d1.getDate().toString());
-               
-               var d2 = new Date(b.date);
-               var d2s = d2.getFullYear().toString() + 
-                         (d2.getMonth()+1 < 10 ? ('0'+ (d2.getMonth()+1).toString()) : (d2.getMonth()+1).toString()) + 
-                         (d2.getDate() < 10 ? ('0'+ d2.getDate().toString()) : d2.getDate().toString());
-                         
-               return Number(d1s) - Number(d2s);
+
+                var d1 = new Date(a.date);
+                var d1s = d1.getFullYear().toString() +
+                    (d1.getMonth() + 1 < 10 ? ('0' + (d1.getMonth() + 1).toString()) : (d1.getMonth() + 1).toString()) +
+                    (d1.getDate() < 10 ? ('0' + d1.getDate().toString()) : d1.getDate().toString());
+
+                var d2 = new Date(b.date);
+                var d2s = d2.getFullYear().toString() +
+                    (d2.getMonth() + 1 < 10 ? ('0' + (d2.getMonth() + 1).toString()) : (d2.getMonth() + 1).toString()) +
+                    (d2.getDate() < 10 ? ('0' + d2.getDate().toString()) : d2.getDate().toString());
+
+                return Number(d1s) - Number(d2s);
             }
-            
+
             vm.answers = vm.answers.sort(compare);
             $rootScope.canswers = vm.answers;
             //vm.answers = $filter('orderBy')(vm.answers, 'dist');
@@ -728,34 +797,34 @@
             vm.selUpV = '';
             vm.selDate = 'active';
 
-            vm.showR = false || (!vm.sm);
+            //if (!vm.isE) vm.showR = false || (!vm.sm);
 
         }
 
         function loadComments() {
-            
+
             if (!vm.commLoaded) {
                 vm.commLoaded = true;
-                if ($rootScope.isLoggedIn){
+                if ($rootScope.isLoggedIn) {
                     vm.initials = $rootScope.user.name.replace(/[^A-Z]/g, '');
                     getIconColors($rootScope.user.id);
                     vm.bc = bc;
                     vm.fc = fc;
                 }
                 $rootScope.comments = [];
-                
+
                 comment.getcomments().then(function (comments) {
                     vm.comments = comments;
                     for (var i = 0; i < vm.comments.length; i++) {
                         vm.comments[i].initials = vm.comments[i].username.replace(/[^A-Z]/g, '');
-                        
+
                         var datenow = new Date();
                         var tz = datenow.getTimezoneOffset();
-                        
+
                         var cdate = new Date(vm.comments[i].timestmp);
-                        cdate.setMinutes( cdate.getMinutes() - tz);
-                        
-                        vm.comments[i].date = cdate.toLocaleDateString() + ' '+ cdate.toLocaleTimeString(); 
+                        cdate.setMinutes(cdate.getMinutes() - tz);
+
+                        vm.comments[i].date = cdate.toLocaleDateString() + ' ' + cdate.toLocaleTimeString();
                         getIconColors(vm.comments[i].user);
                         vm.comments[i].bc = bc;
                         vm.comments[i].fc = fc;
@@ -765,7 +834,7 @@
             }
         }
         function postComment() {
-            
+
             cobj = {};
             cobj.category = $rootScope.cCategory.id;
             cobj.body = vm.comment;
@@ -773,8 +842,8 @@
             cobj.user = $rootScope.user.id;
             cobj.timestmp = Date.now();
             vm.comment = '';
-            
-            comment.addcomment(cobj).then (function (){
+
+            comment.addcomment(cobj).then(function () {
                 cobj.initials = $rootScope.user.name.replace(/[^A-Z]/g, '');
                 getIconColors($rootScope.user.id);
                 //datetime.formatdatetime(cobj);
@@ -782,24 +851,24 @@
                 cobj.bc = bc;
                 cobj.date = 'Just now';
                 vm.comments.push(cobj);
-                table.update($rootScope.cCategory.id,['numcom'],[vm.comments.length]);
-                console.log("vm.comments - ",vm.comments);
+                table.update($rootScope.cCategory.id, ['numcom'], [vm.comments.length]);
+                console.log("vm.comments - ", vm.comments);
             });
         }
-        
-        function getIconColors(x){
-               switch (x % 10) {
-                   case 0: {bc = '#b3b3b3'; fc = 'black'; break; }
-                   case 1: {bc = '#666666'; fc = 'white'; break; }
-                   case 2: {bc = '#006bb3'; fc = 'white'; break; }
-                   case 3: {bc = '#009933'; fc = 'white'; break; }
-                   case 4: {bc = '#cc0000'; fc = 'white'; break; }
-                   case 5: {bc = '#538cc6'; fc = 'black'; break; }
-                   case 6: {bc = '#b36b00'; fc = 'white'; break; }
-                   case 7: {bc = '#999966'; fc = 'black'; break; }
-                   case 8: {bc = '#4d0099'; fc = 'white'; break; }
-                   case 9: {bc = '#009999'; fc = 'black'; break; }
-               } 
+
+        function getIconColors(x) {
+            switch (x % 10) {
+                case 0: { bc = '#b3b3b3'; fc = 'black'; break; }
+                case 1: { bc = '#666666'; fc = 'white'; break; }
+                case 2: { bc = '#006bb3'; fc = 'white'; break; }
+                case 3: { bc = '#009933'; fc = 'white'; break; }
+                case 4: { bc = '#cc0000'; fc = 'white'; break; }
+                case 5: { bc = '#538cc6'; fc = 'black'; break; }
+                case 6: { bc = '#b36b00'; fc = 'white'; break; }
+                case 7: { bc = '#999966'; fc = 'black'; break; }
+                case 8: { bc = '#4d0099'; fc = 'white'; break; }
+                case 9: { bc = '#009999'; fc = 'black'; break; }
+            }
         }
 
         function closeRank() {
@@ -818,6 +887,6 @@
         function callGetLocation() {
             $rootScope.$emit('getLocation');
         }
-               
+
     }
 })();

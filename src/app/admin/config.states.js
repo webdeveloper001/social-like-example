@@ -71,6 +71,13 @@
                 url: '/updateHeaders',
                 templateUrl: 'app/admin/Partials/updateHeaders.html',
                 controller: 'updateHeaders as vm'               
+            },
+             {
+                name: 'foodRanks',
+                parent: 'admin',
+                url: '/foodRanks',
+                templateUrl: 'app/admin/Partials/foodRanks.html',
+                controller: 'foodRanks as vm'               
             }
         ];
 

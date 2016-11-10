@@ -6,11 +6,11 @@
         .controller('cwrapper', cwrapper);
 
     cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
-        'query', 'table',
+        'query', 'table', 'dialog',
         'votes', 'editvote', 'vrowvotes'];
 
     function cwrapper($rootScope, $state, $http, $stateParams, $scope, 
-        query, table,
+        query, table, dialog,
         votes, editvote, vrowvotes) {
         /* jshint validthis:true */
         var vm = this;
@@ -26,6 +26,11 @@
         vm.applyRule = applyRule;
         vm.selnh = selnh;
         vm.goHome = goHome;
+        
+        //Quick Links 
+        vm.foodNearMe = foodNearMe;
+        vm.events = events;
+        vm.selfimprove = selfimprove;
         
         //vm.isAdmin = true;
         $rootScope.editMode = false;
@@ -75,7 +80,7 @@
             //****SUPER TEMP*****************
             $rootScope.isAdmin = false;
             vm.isAdmin = false;
-                /*
+               /*
             $rootScope.isLoggedIn = true;
             $rootScope.user = {};
             $rootScope.user.name = "Andres Moctezuma";
@@ -266,6 +271,22 @@
             $rootScope.inputVal = '';
         }
         
+        //Quick Links
+        function foodNearMe(){
+            if ($rootScope.coordsRdy) $state.go('rankSummary', { index: 9521 });
+            else {
+                $rootScope.loadFbnWhenCoordsRdy = true;
+                dialog.askPermissionToLocate();
+            }            
+        }
+        
+        function events(){
+            $state.go('rankSummary', { index: 6949 });
+        }
+        
+        function selfimprove(){
+             $state.go('rankSummary', { index: 1730 });
+        }
         //*****************Admin Functions************
         function editRank() {
             $rootScope.editMode = true;

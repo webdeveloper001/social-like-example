@@ -42,6 +42,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 });
 
                 $rootScope.$on('applyRule', function (e) {
+                    console.log("somebody called applyRule!")
                     applyRule();
                 });
             
@@ -132,17 +133,16 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                             vm.nm = true;
                                         }
                                     }
-/*
-                                    if (rt.indexOf(' in ') > -1 &&    //if search didnt type 'in' do not include nhs
-                                        rt.indexOf(' in San Diego') < 0 &&
-                                        inputVal.indexOf(' in ') < 0) {
-                                        sc = true;
-                                    }
-*/
+                                    /*
+                                                                        if (rt.indexOf(' in ') > -1 &&    //if search didnt type 'in' do not include nhs
+                                                                            rt.indexOf(' in San Diego') < 0 &&
+                                                                            inputVal.indexOf(' in ') < 0) {
+                                                                            sc = true;
+                                                                        }
+                                    */
                                     if (!sc) vm.results.push($rootScope.content[j]);
                                 }
                             }
-                            console.log("vm.result_nm - ", vm.result_nm);
                             //resLT6 is used to hide the <<see more>> choice
                             if (vm.results.length < 6) vm.resLT6 = true;
                             else vm.resLT6 = false;
@@ -383,11 +383,10 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     } 
                     */ //End of 2
         
-                    /*//  3.Use this to correct the title of a group of ranks
+                    /* //  3.Use this to correct the title of a group of ranks
                     for (var i=0; i < vm.results.length; i++){
-                        if (vm.results[i].title.includes('Things about living in') && 
-                        vm.results[i].title.includes('Worst things about living in')==false){
-                            var titlex = vm.results[i].title.replace("Things","Favorite things");
+                        if (vm.results[i].title.includes('Bankers HIll')) {
+                            var titlex = vm.results[i].title.replace("HIll","Hill");
                             //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
                             //console.log("tags ", tags);
                             table.update(vm.results[i].id, ['title'],[titlex]);
@@ -695,26 +694,40 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                          }
                     }    
                     *///End 15
-                    /*//16. Run through all answers if they dont have vrows
+                   /* //16. Run through all answers if they dont have vrows
                     var answer = {};
                     var hasvr = false;
-                    for (var i=0; i<$rootScope.answers.length; i++){
-                        answer = $rootScope.answers[i];
-                        if (answer.type == 'Establishment' || answer.type =='PersonCust'){
-                            hasvr = false;
-                            for (var j=0; j<$rootScope.cvrows.length; j++){
-                                if ($rootScope.cvrows[j].answer == answer.id){
-                                    hasvr = true;
-                                    break;
+                    if (!applyRuleDone) {
+                        applyRuleDone = true;
+                        for (var i = 0; i < $rootScope.answers.length; i++) {
+                            answer = $rootScope.answers[i];
+                            if (answer.type == 'Establishment' || answer.type == 'PersonCust') {
+                                hasvr = false;
+
+                                for (var n = 0; n < $rootScope.catansrecs.length; n++) {
+                                    if ($rootScope.catansrecs[n].answer == answer.id) {
+                                        var idx = $rootScope.content.map(function (x) { return x.id; }).indexOf($rootScope.catansrecs[n].category);
+                                        $rootScope.cCategory = $rootScope.content[idx];
+                                        break;
+                                    }
                                 }
-                            }
-                            if (hasvr == false) {
-                                //vrows.postVrows4Answer(answer);
-                                console.log(answer.name);
+
+                                for (var j = 0; j < $rootScope.cvrows.length; j++) {
+                                    if ($rootScope.cvrows[j].answer == answer.id) {
+                                        hasvr = true;
+                                        break;
+                                    }
+                                }
+                                if (hasvr == false) {
+                                    //vrows.postVrows4Answer(answer);
+                                    //console.log(answer.name);
+                                    //console.log($rootScope.cCategory.title);
+                                    console.log(midx++);
+                                }
                             }
                         }
                     }
-                    *///End 16
+                   */ //End 16
                                                                
                 }
             }], //end controller
