@@ -280,12 +280,19 @@
             }            
         }
         
-        function events(){
-            $state.go('rankSummary', { index: 6949 });
+        function selfimprove(){
+            var introsRank = 0;
+            for (var i=0; i<$rootScope.content.length; i++){
+                if ($rootScope.content[i].title.indexOf($rootScope.rankofday[0].intros) > -1){
+                    introsRank = $rootScope.content[i].id;
+                    break;
+                }
+            }
+            $state.go('rankSummary', { index: introsRank });
         }
         
-        function selfimprove(){
-             $state.go('rankSummary', { index: 1730 });
+        function events(){
+             $state.go('rankSummary', { index: 6949 });
         }
         //*****************Admin Functions************
         function editRank() {
@@ -302,7 +309,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-              $rootScope.$emit('applyRule');
+             // $rootScope.$emit('applyRule');
         }
            
         /*//Upload Image

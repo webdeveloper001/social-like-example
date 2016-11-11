@@ -16,7 +16,7 @@
         vm.searchDisabled = 'disabled';
         vm.modalEnable = true;
         vm.publicfields = [];
-        vm.ranking = $rootScope.title;
+        vm.ranking = $rootScope.cCategory.title;
         var publicfield_obj = {};
         var loadImageDataOk = false;
         var addEventDataOk = false;
@@ -94,7 +94,7 @@
 
             if ($rootScope.eventmode == 'add') {
 
-                vm.char = 25;
+                vm.char = 45;
                 vm.ev.fc = "hsl(0, 100%, 0%)"; //black
                 vm.ev.bc = "hsl(0, 0%, 100%)"; //white
                 frequencySel(1);
@@ -387,7 +387,7 @@
         }
         
         function displayCharLength() {
-            vm.char = 25 - vm.ev.name.length;
+            vm.char = 45 - vm.ev.name.length;
         }
 
         function frequencySel(x) {

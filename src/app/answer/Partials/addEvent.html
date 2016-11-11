@@ -22,29 +22,30 @@
 </div>
 
 
-    <div class="row">
-        <!-- <h4>{{"addAnswer.EnterNewAnswer" | translate}}<b style="color:blue;"><i>  Best Goalies</i></b></h4> -->
-        <h4>{{ vm.isEdit ? 'Edit Event':'Add Event'}}</h4>
-    </div>
-    <div class="text-right">
-        <p class="hiw" ng-click="vm.showHowItWorksDialog()"><u>How it works?</u></p>
-    </div>
-    </br>
+<div class="row">
+    <!-- <h4>{{"addAnswer.EnterNewAnswer" | translate}}<b style="color:blue;"><i>  Best Goalies</i></b></h4> -->
+    <h4>{{ vm.isEdit ? 'Edit Event':'Add Event'}}</h4>
+</div>
+<div class="text-right">
+    <p class="hiw" ng-click="vm.showHowItWorksDialog()"><u>How it works?</u></p>
+</div>
+</br>
 
-    <div class="row">
-        <div class="col-xs-6 col-sm-4 col-md-4">
-            <p class="text-right">** Event Title:</p>
-        </div>
-        <div class="col-xs-12 col-sm-4 col-md-4">
-            <input class="form-control" ng-model="vm.ev.name" type="text" placeholder="Special Banner" ng-change="vm.displayCharLength()"
-            maxlength="25" style="background-color:{{vm.ev.bc}};color:{{vm.ev.fc}}">
-        </div>
-        <div class="col-xs-8 hidden-sm hidden-md hidden-lg hidden-xl"> </div>
-        <div class="col-xs-6 col-sm-4 col-md-4">
-            <p class="text-left">{{vm.char}} chars left</p>
-        </div>
+<div class="row">
+    <div class="col-xs-6 col-sm-4 col-md-4">
+        <p class="text-right">** Event Title:</p>
     </div>
-    <br>
+    <div class="col-xs-12 col-sm-4 col-md-4">
+        <input class="form-control" ng-model="vm.ev.name" type="text" placeholder="Event Title" ng-change="vm.displayCharLength()"
+        maxlength="45" style="background-color:{{vm.ev.bc}};color:{{vm.ev.fc}}">
+    </div>
+    <div class="col-xs-8 hidden-sm hidden-md hidden-lg hidden-xl"> </div>
+    <div class="col-xs-6 col-sm-4 col-md-4">
+        <p class="text-left">{{vm.char}} chars left</p>
+    </div>
+</div>
+<br ng-if="!vm.sm">
+<div ng-if="!vm.sm">
     <div class="row">
         <div class="hidden-xs col-sm-2 col-md-2 col-lg-2"> </div>
         <div class=" col-xs-6 col-sm-2 col-md-2 col-lg-2">
@@ -65,186 +66,185 @@
         </div>
         <div class="hidden-xs col-sm-2 col-md-2 col-lg-2"> </div>
     </div>
-    <br>
-    <br>
-    <p class="text-left">Frequency</p>
-    <div class="btn-group col-sm-6 col-md-6 ">
-        <button class="btn btn-primary {{vm.ev.freq == 'onetime'? 'active':''}} " ng-click="vm.frequencySel(1)">One-Time</button>
-        <button class="btn btn-primary {{vm.ev.freq == 'weekly'? 'active':''}} " ng-click="vm.frequencySel(2)">Weekly</button>
-        <!--  <button type="button " class="btn btn-primary ">{{"rankSummary.Filtered " | translate}}</button> -->
-    </div>
-    <br>
-    <br>
-    <div class="row" ng-if="vm.onetime">
-        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-            <div style="display:{{vm.onetime ? 'inline':'none'}}">
-                <p class="text-right">Start date:</p>
-            </div>
-        </div>
-
-        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-            <div style="display:{{vm.onetime ? 'inline':'none'}}">
-                <datepicker date-format="EEE MMM d y" date-year-title="selected title------">
-                    <input ng-model="vm.ev.sdate" type="text" />
-                </datepicker>
-            </div>
+</div>
+<br ng-if="!vm.sm">
+<br>
+<p class="text-left">Frequency</p>
+<div class="btn-group col-sm-6 col-md-6 ">
+    <button class="btn btn-primary {{vm.ev.freq == 'onetime'? 'active':''}} " ng-click="vm.frequencySel(1)">One-Time</button>
+    <button class="btn btn-primary {{vm.ev.freq == 'weekly'? 'active':''}} " ng-click="vm.frequencySel(2)">Weekly</button>
+    <!--  <button type="button " class="btn btn-primary ">{{"rankSummary.Filtered " | translate}}</button> -->
+</div>
+<br>
+<br>
+<div class="row" ng-if="vm.onetime">
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div style="display:{{vm.onetime ? 'inline':'none'}}">
+            <p class="{{vm.sm ? 'text-left':'text-right'}}">Start date:</p>
         </div>
     </div>
-    <div class="row" ng-if="vm.onetime">
-        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-            <div style="display:{{vm.onetime ? 'inline':'none'}}">
-                <p class="text-right">Start time:</p>
-            </div>
-        </div>
 
-        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-            <div style="display:{{vm.onetime ? 'inline':'none'}}">
-                <select ng-model="vm.ev.stime" ng-options="x for x in vm.timeDD">
-                    <option value="">{{vm.sp.stime}}</option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="row" ng-if="vm.onetime">
-        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-            <div style="display:{{vm.onetime ? 'inline':'none'}}">
-                <p class="text-right">End date:</p>
-            </div>
-        </div>
-
-        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3" style="display:{{vm.onetime ? 'inline':'none'}}">
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div style="display:{{vm.onetime ? 'inline':'none'}}">
             <datepicker date-format="EEE MMM d y" date-year-title="selected title------">
-                <input ng-model="vm.ev.edate" type="text" />
+                <input ng-model="vm.ev.sdate" type="text" />
             </datepicker>
         </div>
     </div>
-    <div class="row" ng-if="vm.onetime">
-        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3" style="display:{{vm.onetime ? 'inline':'none'}}">
-            <p class="text-right">End time:</p>
+</div>
+<div class="row" ng-if="vm.onetime">
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div style="display:{{vm.onetime ? 'inline':'none'}}">
+            <p class="{{vm.sm ? 'text-left':'text-right'}}">Start time:</p>
         </div>
+    </div>
 
-        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3" style="display:{{vm.onetime ? 'inline':'none'}}">
-            <select ng-model="vm.ev.etime" ng-options="x for x in vm.timeDD">
-                <option value="">{{vm.sp.etime}}</option>
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div style="display:{{vm.onetime ? 'inline':'none'}}">
+            <select ng-model="vm.ev.stime" ng-options="x for x in vm.timeDD">
+                <option value="">{{vm.sp.stime}}</option>
             </select>
         </div>
-
     </div>
-    <div class="row" ng-if="vm.weekly">
-        <div class="text-center">
-            <div class="col-xs-12 col-sm-12 col-md-12" style="display:{{vm.weekly ? 'inline':'none'}}">
-
-                <label class="checkbox-inline">
-                    <input type="checkbox" ng-model="vm.ev.mon" value="">Mon</label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" ng-model="vm.ev.tue" value="">Tue</label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" ng-model="vm.ev.wed" value="">Wed</label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" ng-model="vm.ev.thu" value="">Thu</label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" ng-model="vm.ev.fri" value="">Fri</label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" ng-model="vm.ev.sat" value="">Sat</label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" ng-model="vm.ev.sun" value="">Sun</label>
-            </div>
+</div>
+<div class="row" ng-if="vm.onetime">
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div style="display:{{vm.onetime ? 'inline':'none'}}">
+            <p class="{{vm.sm ? 'text-left':'text-right'}}">End date:</p>
         </div>
     </div>
-    <br>
-    <div class="row" ng-if="vm.weekly">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <div style="display:{{vm.weekly ? 'inline':'none'}}">
-                <p class="text-right">Start time:</p>
-            </div>
-        </div>
 
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <div style="display:{{vm.weekly ? 'inline':'none'}}">
-                <select ng-model="vm.ev.stime2" ng-options="x for x in vm.timeDD">
-                    <option value="">{{vm.ev.stime2}}</option>
-                </select>
-            </div>
-        </div>
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="display:{{vm.onetime ? 'inline':'none'}}">
+        <datepicker date-format="EEE MMM d y" date-year-title="selected title------">
+            <input ng-model="vm.ev.edate" type="text" />
+        </datepicker>
     </div>
-    <div class="row" ng-if="vm.weekly">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <div style="display:{{vm.weekly ? 'inline':'none'}}">
-                <p class="text-right">End time:</p>
-            </div>
-        </div>
+</div>
+<div class="row" ng-if="vm.onetime">
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="display:{{vm.onetime ? 'inline':'none'}}">
+        <p class="{{vm.sm ? 'text-left':'text-right'}}">End time:</p>
+    </div>
 
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <div style="display:{{vm.weekly ? 'inline':'none'}}">
-                <select ng-model="vm.ev.etime2" ng-options="x for x in vm.timeDD">
-                    <option value="">{{vm.ev.etime2}}</option>
-                </select>
-            </div>
-        </div>
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="display:{{vm.onetime ? 'inline':'none'}}">
+        <select ng-model="vm.ev.etime" ng-options="x for x in vm.timeDD">
+            <option value="">{{vm.sp.etime}}</option>
+        </select>
     </div>
-    
-    <div class="row">
-        <form class="form-horizontal col-xs-12 col-md-6" role="form" name="answerForm">
-            <div class="form-group">
-                <br>
-                <label class="col-sm-4 col-md-4 control-label capitalize">Neighborhood:</label>
-                <div class="col-sm-8 col-md-8">
-                    <input class="form-control" ng-model="vm.ev.cityarea" bs-options="c for c in vm.neighborhoods" bs-typeahead type="text" placeholder="{{vm.ev.cityarea}}">
-                </div>
-                <br>
-                <br ng-if="vm.nsm">
-                <label class="col-sm-4 col-md-4 control-label capitalize">Location:</label>
-                <div class="col-sm-8 col-md-8">
-                    <input class="form-control" ng-model="vm.ev.location" type="text" placeholder="{{vm.ev.location}}">
-                </div>
-                <br>
-                <br ng-if="vm.nsm">
-                <label class="col-sm-4 col-md-4 control-label capitalize">Website:</label>
-                <div class="col-sm-8 col-md-8">
-                    <input class="form-control" ng-model="vm.ev.website" type="text" placeholder="{{vm.ev.website}}">
-                </div>
-                <br>
-                <br ng-if="vm.nsm">
-                <label class="col-sm-4 col-md-4 control-label capitalize">Additional Info:</label>
-                <div class="col-sm-8 col-md-8">
-                    <textarea class="form-control" ng-model="vm.ev.addinfo" placeholder="{{vm.ev.addinfo}}" rows="4" style="background-color:{{vm.ev.bc}};color:{{vm.ev.fc}};width:100%"></textarea>
-                </div>
-            </div>
-        </form>
-        <div class="col-sm-12 col-md-6">
-            <div class="" ng-show="{{vm.type != 'Short-Phrase'}}">
-                <!--   <a href="{{vm.imageURL}}" class="thumbnail"> -->
-                <img src="{{vm.imageURL}}" alt="{{image.errorLoading}}" style="width:100%; max-height:300px">
-                <img src="../../../assets/images/powered_by_google_on_white.png">
-                <!--   </a> -->
-            </div>
-            <div class="form-group text-right">
-                <!--    <button type="submit" class="btn btn-primary" ng-click="vm.searchImage()" ng-disabled="answerForm.$invalid">{{vm.imageCommand}}</button>-->
-                <button type="submit" class="btn btn-primary {{vm.searchDisabled}}" ng-click="vm.callSearchImage()" ng-show="{{vm.type != 'Short-Phrase'}}">{{vm.imageCommand}}</button>
-                <button type="submit" class="btn btn-primary" ng-click="vm.viewPrev()" ng-disabled="vm.numLinks === 0" style="display:{{vm.imagefunctions}}">&laquo</button>
-                <button type="submit" class="btn btn-primary" ng-click="vm.viewNext()" ng-disabled="vm.numLinks === 0" style="display:{{vm.imagefunctions}}">&raquo</button>
-                <a style="display:{{vm.imagefunctions}}">{{vm.linkIdx+1}} of {{vm.numLinks}}</a>
-            </div>
+
+</div>
+<div class="row" ng-if="vm.weekly">
+    <div class="text-center">
+        <div class="col-xs-12 col-sm-12 col-md-12" style="display:{{vm.weekly ? 'inline':'none'}}">
+
             <label class="checkbox-inline">
-                <input type="checkbox" ng-change='vm.onNoGoodImages(vm.ngi)' ng-model="vm.ngi" ng-show="{{vm.type != 'Short-Phrase'}}">No good images were found
-            </label>
+                <input type="checkbox" ng-model="vm.ev.mon" value="">Mon</label>
+            <label class="checkbox-inline">
+                <input type="checkbox" ng-model="vm.ev.tue" value="">Tue</label>
+            <label class="checkbox-inline">
+                <input type="checkbox" ng-model="vm.ev.wed" value="">Wed</label>
+            <label class="checkbox-inline">
+                <input type="checkbox" ng-model="vm.ev.thu" value="">Thu</label>
+            <label class="checkbox-inline">
+                <input type="checkbox" ng-model="vm.ev.fri" value="">Fri</label>
+            <label class="checkbox-inline">
+                <input type="checkbox" ng-model="vm.ev.sat" value="">Sat</label>
+            <label class="checkbox-inline">
+                <input type="checkbox" ng-model="vm.ev.sun" value="">Sun</label>
         </div>
     </div>
-    <br>
-    <div class="radio">
-        <label><input type="radio" ng-model="vm.nobind" name="optradio" checked="true">Do not bind event to my account, let anyone make changes.</label>
-    </div>
-    <div class="radio">
-        <label><input type="radio" ng-model="vm.bind" name="optradio">Bind this event to my account, only I can make changes.</label>
-    </div>
-    <br>
-    <div class="row">
-        <div class="form-group text-center">
-            <button type="button" class="btn btn-success" ng-click="vm.goBack()">Back</button>
-            <button type="button" class="btn btn-primary" ng-click="vm.showPreview()">Preview</button>
-            <button type="button" class="btn btn-danger" ng-click="vm.deleteSpecial()" style="display:{{vm.isEdit ? 'inline':'none'}}">Delete</button>
+</div>
+<br>
+<div class="row" ng-if="vm.weekly">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <div style="display:{{vm.weekly ? 'inline':'none'}}">
+            <p class="text-right">Start time:</p>
         </div>
     </div>
+
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <div style="display:{{vm.weekly ? 'inline':'none'}}">
+            <select ng-model="vm.ev.stime2" ng-options="x for x in vm.timeDD">
+                <option value="">{{vm.ev.stime2}}</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="row" ng-if="vm.weekly">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <div style="display:{{vm.weekly ? 'inline':'none'}}">
+            <p class="text-right">End time:</p>
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <div style="display:{{vm.weekly ? 'inline':'none'}}">
+            <select ng-model="vm.ev.etime2" ng-options="x for x in vm.timeDD">
+                <option value="">{{vm.ev.etime2}}</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <form class="form-horizontal col-xs-12 col-sm-12 col-md-6" role="form" name="answerForm">
+        <div class="form-group" style="padding:10px">
+            <label class="control-label">Neighborhood:</label>
+            <input class="form-control" ng-model="vm.ev.cityarea" bs-typeahead bs-options="c for c in vm.neighborhoods" type="text" placeholder="{{vm.ev.cityarea}}">
+        </div>
+        <!-- <br ng-if="vm.nsm"> -->
+        <div class="form-group" style="padding:10px">
+            <label class="control-label">Location:</label>
+            <input class="form-control" ng-model="vm.ev.location" type="text" placeholder="{{vm.ev.location}}">
+        </div>
+        <!-- <br ng-if="vm.nsm"> -->
+        <div class="form-group" style="padding:10px">
+            <label class="control-label">Website:</label>
+            <input class="form-control" ng-model="vm.ev.website" type="text" placeholder="{{vm.ev.website}}">
+        </div>
+        <!-- <br ng-if="vm.nsm"> -->
+        <div class="form-group" style="padding:10px">
+            <label class="control-label">Additional Info:</label>
+            <textarea class="form-control" ng-model="vm.ev.addinfo" placeholder="{{vm.ev.addinfo}}" rows="4" style="background-color:{{vm.ev.bc}};color:{{vm.ev.fc}};width:100%"></textarea>
+        </div>
+    </form>
+
+
+    <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="" ng-show="{{vm.type != 'Short-Phrase'}}">
+            <!--   <a href="{{vm.imageURL}}" class="thumbnail"> -->
+            <img src="{{vm.imageURL}}" alt="{{image.errorLoading}}" style="width:100%; max-height:300px">
+            <img src="../../../assets/images/powered_by_google_on_white.png">
+            <!--   </a> -->
+        </div>
+        <div class="form-group text-right">
+            <!--    <button type="submit" class="btn btn-primary" ng-click="vm.searchImage()" ng-disabled="answerForm.$invalid">{{vm.imageCommand}}</button>-->
+            <button type="submit" class="btn btn-primary {{vm.searchDisabled}}" ng-click="vm.callSearchImage()" ng-show="{{vm.type != 'Short-Phrase'}}">{{vm.imageCommand}}</button>
+            <button type="submit" class="btn btn-primary" ng-click="vm.viewPrev()" ng-disabled="vm.numLinks === 0" style="display:{{vm.imagefunctions}}">&laquo</button>
+            <button type="submit" class="btn btn-primary" ng-click="vm.viewNext()" ng-disabled="vm.numLinks === 0" style="display:{{vm.imagefunctions}}">&raquo</button>
+            <a style="display:{{vm.imagefunctions}}">{{vm.linkIdx+1}} of {{vm.numLinks}}</a>
+        </div>
+        <label class="checkbox-inline">
+            <input type="checkbox" ng-change='vm.onNoGoodImages(vm.ngi)' ng-model="vm.ngi" ng-show="{{vm.type != 'Short-Phrase'}}">No good images were found
+        </label>
+    </div>
+</div>
+<br>
+<div class="radio">
+    <label>
+        <input type="radio" ng-model="vm.nobind" name="optradio" checked="true">Do not bind event to my account, let anyone make changes.</label>
+</div>
+<div class="radio">
+    <label>
+        <input type="radio" ng-model="vm.bind" name="optradio">Bind this event to my account, only I can make changes.</label>
+</div>
+<br>
+<div class="row">
+    <div class="form-group text-center">
+        <button type="button" class="btn btn-success" ng-click="vm.goBack()">Back</button>
+        <button type="button" class="btn btn-primary" ng-click="vm.showPreview()">Preview</button>
+        <button type="button" class="btn btn-danger" ng-click="vm.deleteSpecial()" style="display:{{vm.isEdit ? 'inline':'none'}}">Delete</button>
+    </div>
+</div>
 
 
 <!--

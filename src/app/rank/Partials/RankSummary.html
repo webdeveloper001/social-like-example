@@ -109,11 +109,13 @@
 <div class="text-center">
     <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">Rank</button>
 </div>
+<!--
 <div ng-show="{{vm.type == 'Establishment'}}">
     <div class="text-right" style="display:{{vm.haveLocation ? 'none':'inline'}}">
         <p class="hiw text-right" ng-click="vm.whyNoDistance()"><u>why cant I see distances?</u></p>
     </div>
 </div>
+-->
 <br>
 </div>
 <table class="table table-hover cursor ">
@@ -166,8 +168,8 @@
     <button ng-click="vm.loadComments()" class="btn btn-default" style="background-color:#e6e6e6;width:100%">COMMENTS ({{vm.numcom}})</button>
 </div>
 <br>
-<div style="display:{{vm.commLoaded ? 'inline':'none'}}">
-    <div ng-repeat="x in vm.comments">
+<div style="display:{{vm.cm.commLoaded ? 'inline':'none'}}">
+    <div ng-repeat="x in vm.cm.comments">
         <div class="row">
             <div class="usericon col-xs-2 col-sm-2 col-md-1 col-lg-1" style="background-color:{{x.bc}};color:{{x.fc}};" align="middle">
                 {{x.initials}}
@@ -180,28 +182,28 @@
         </div>
         <br>
     </div>
-    <div style="display:{{(vm.commLoaded && vm.comments.length == 0 && !vm.isLoggedIn) ? 'inline':'none'}}">
+    <div style="display:{{(vm.cm.commLoaded && vm.cm.comments.length == 0 && !vm.isLoggedIn) ? 'inline':'none'}}">
         <br>
         <p><small> Nobody has commented yet. Be the first. Log in, endorse answers and leave a comment. </small></p>
     </div>
-    <div style="display:{{(vm.commLoaded && vm.comments.length > 0 && !vm.isLoggedIn) ? 'inline':'none'}}">
+    <div style="display:{{(vm.cm.commLoaded && vm.cm.comments.length > 0 && !vm.isLoggedIn) ? 'inline':'none'}}">
         <br>
         <p><small> You must log in and endorse one or more answers to leave a comment. </small></p>
     </div>
-    <div style="display:{{(vm.commLoaded && vm.isLoggedIn && !vm.commentAllowed) ? 'inline':'none'}}">
+    <div style="display:{{(vm.cm.commLoaded && vm.isLoggedIn && !vm.commentAllowed) ? 'inline':'none'}}">
         <br>
         <p><small> Endorse one or more answers to leave a comment. </small></p>
     </div>
     <div style="display:{{(vm.isLoggedIn && vm.commentAllowed) ? 'inline':'none'}}">
         <div class="row">
-            <div class="usericon col-xs-2 col-sm-2 col-md-1 col-lg-1" style="background-color:{{vm.bc}};color:{{vm.fc}};" align="middle">
-                {{vm.initials}}
+            <div class="usericon col-xs-2 col-sm-2 col-md-1 col-lg-1" style="background-color:{{vm.cm.bc}};color:{{vm.cm.fc}};" align="middle">
+                {{vm.cm.initials}}
             </div>
             <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11">
                 <!--
                 <input type="text" class="form-control" ng-model="vm.comment" placeholder="Leave a comment" 
                 style="margin-left:0px;margin-right:0px;">-->
-                <textarea class="form-control" ng-model="vm.comment" placeholder="Leave a comment"  
+                <textarea class="form-control" ng-model="vm.cm.newComment" placeholder="Leave a comment"  
                    style="margin-left:0px;margin-right:0px;"></textarea>
             </div>            
         </div> 

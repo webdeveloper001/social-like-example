@@ -16,7 +16,7 @@
         vm.searchDisabled = 'disabled';
         vm.modalEnable = true;
         vm.publicfields = [];
-        vm.ranking = $rootScope.title;
+        vm.ranking = $rootScope.cCategory.title;
         var publicfield_obj = {};
         var loadImageDataOk = false;
         var addAnswerDataOk = false;

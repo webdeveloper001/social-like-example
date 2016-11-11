@@ -128,7 +128,7 @@
             }else{
                 if ($rootScope.DEBUG_MODE) console.log('Geo location not supported.');
             }
-
+            
         };
 
         /**

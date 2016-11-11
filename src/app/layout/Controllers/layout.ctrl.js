@@ -16,20 +16,22 @@
         .controller('layout', layout);
 
     layout.$inject = ['$location', '$rootScope','$window','$q', '$http','pvisits', 'DEBUG_MODE', 'rankofday',
-    'answer', 'table','special', 'matchrec', 'edit','useractivity','vrows','headline','cblock', 'catans'];
+    'answer', 'table','special', 'matchrec', 'edit','useractivity','vrows','headline','cblock', 'catans','$state'];
 
     function layout($location, $rootScope, $window, $q, $http, pvisits, DEBUG_MODE, rankofday,
-    answer, table, special, matchrec, edit, useractivity, vrows, headline, cblock, catans) {
+    answer, table, special, matchrec, edit, useractivity, vrows, headline, cblock, catans, $state) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'layout';
         vm.header = '';
-        vm.searchRank = searchRank;
+        //vm.searchRank = searchRank;
 
-        if ($rootScope.answers) vm.isLoading = false;
-        else vm.isLoading = true;
+        //if ($rootScope.answers) vm.isLoading = false;
+        //else 
+        vm.isLoading = true;
+        vm.veilMsg = 'Loading San Diego\'s best...';
         // Members
-
+       
         activate();
         
         /*
@@ -39,10 +41,12 @@
         if ($window.innerWidth < 512) {
             vm.logoimage = "/assets/images/rankxlogosd_sm.png";
             $rootScope.sm = true;
+            vm.sm = true;
         }
         else {
             vm.logoimage = "/assets/images/rankxlogosd.png";
             $rootScope.sm = false;
+            vm.sm = false;
         }
         
         
@@ -145,12 +149,13 @@
             if (newDate) pvisits.postRec(dateStr);
             else pvisits.patchRec(pvisitrec.id, pvisitrec.nvisits+1);                        
         }
-
+        
+        /*
         function searchRank() {
             $rootScope.sval = vm.val;
             $rootScope.$emit('searchRank');
         }
-
+        */
         /**
          * Set selected city
          * Now you can use $rootScope.selectCity variable anywhere to load city specific data.

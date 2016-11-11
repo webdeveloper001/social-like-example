@@ -117,8 +117,8 @@
             }
             
 
-            htmlmessage = '<p><strong>' + x.name + 
-            (x.location != undefined ? (' @ ' + x.location):('')) + '</strong></p>' + 
+            htmlmessage = '<p><strong>' + x.name + '</strong></p>' + 
+            '<p><strong>' + (x.location != undefined ? (' @ ' + x.location):('')) + '</strong></p>' + 
             (x.cityarea != undefined ? ('<p>in ' + x.cityarea+'</p>'):'') +
             '<p>' + sch_str + '</p>' + 
             (x.addinfo != undefined ? ('<p>' + newstr + '</p>'):(''))+

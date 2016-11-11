@@ -6,10 +6,12 @@
         .controller('answerDetail', answerDetail);
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
-        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime', '$location', 'vrows', 'vrowvotes','imagelist']; //AM:added user service
+        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 
+        '$location', 'vrows', 'vrowvotes','imagelist']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
-        votes, matchrec, edit, editvote, catans, datetime, $location, vrows, vrowvotes, imagelist) { //AM:added user service
+        votes, matchrec, edit, editvote, catans, datetime, commentops, 
+        $location, vrows, vrowvotes, imagelist) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
@@ -52,11 +54,25 @@
         vm.showcomplete = showcomplete;
         vm.vrowVoteUp = vrowVoteUp;
         vm.vrowVoteDown = vrowVoteDown;
+        vm.loadComments = loadComments;
+        vm.postComment = postComment;
         
         vm.fields = $rootScope.fields;
         vm.type = $rootScope.cCategory.type;
         vm.title = $rootScope.cCategory.title;
         vm.isLoggedIn = $rootScope.isLoggedIn;
+        
+        //Comments related variables
+        var cObj = {};
+        cObj.commLoaded = false;
+        cObj.initials = '';
+        cObj.bc = '';
+        cObj.fc = '';
+        cObj.comments = [];
+        cObj.newComment = '';
+        vm.cm = cObj;
+        vm.commentAllowed = true;
+        
         //vm.userIsOwner = $rootScope.userIsOwner;
         if ($stateParams.index) {
             var i =  answers.map(function(x) {return x.id; }).indexOf(+$stateParams.index);
@@ -799,6 +815,13 @@
                 x.upImage = "thumbs_up_gray_table.png";
                 x.downImage = "thumbs_down_blue_table.png";
             }
+        }
+        
+         function loadComments(){
+            commentops.loadComments('answer', cObj);
+        }
+        function postComment(){
+            commentops.postComment('answer', cObj);
         }
  
     }

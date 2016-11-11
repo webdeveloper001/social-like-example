@@ -5,13 +5,13 @@
         .module('app')
         .controller('rankSummary', rankSummary);
 
-    rankSummary.$inject = ['dialog', '$stateParams', '$state', 'datetime', 'catans'
+    rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows'
-        , '$rootScope', '$modal', 'editvote', 'votes', 'comment'];
+        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops'];
 
-    function rankSummary(dialog, $stateParams, $state, datetime, catans
+    function rankSummary(dialog, $stateParams, $state, catans
         , answer, rank, $filter, table, vrowvotes, $window, vrows
-        , $rootScope, $modal, editvote, votes, comment) {
+        , $rootScope, $modal, editvote, votes, commentops) {
         /* jshint validthis:true */
 
         var vm = this;
@@ -61,9 +61,15 @@
         vm.fnm = false;
         
         //Comments related variables
-        var bc = 0;
-        var fc = 0;
-        var cobj = {};
+        var cObj = {};
+        cObj.commLoaded = false;
+        cObj.initials = '';
+        cObj.bc = '';
+        cObj.fc = '';
+        cObj.comments = [];
+        cObj.newComment = '';
+        vm.cm = cObj;
+        
         vm.isLoggedIn = $rootScope.isLoggedIn == undefined ? false : $rootScope.isLoggedIn;
 
         $rootScope.userHasRank = false;
@@ -109,7 +115,7 @@
             createAnswerStatus(); //enables/disables 'Create Answer' button
             
             //Sort first by upV
-            if (foodNearMe) sortByDistance();
+            if (foodNearMe || $rootScope.cCategory.title.indexOf('close to me') > -1) sortByDistance();
             else sortByUpV();
 
             rank.computeRanking($rootScope.canswers, $rootScope.cmrecs);
@@ -580,7 +586,9 @@
                 } 
                 }
             }
-            if (foodNearMe) $rootScope.canswers = fanswers; 
+            if (foodNearMe) {
+                $rootScope.canswers = fanswers;
+            } 
             vm.answers = $rootScope.canswers;
             
             //Calculate distances to user
@@ -800,7 +808,13 @@
             //if (!vm.isE) vm.showR = false || (!vm.sm);
 
         }
-
+        function loadComments(){
+            commentops.loadComments('category', cObj);
+        }
+        function postComment(){
+            commentops.postComment('category', cObj);
+        }
+/*
         function loadComments() {
 
             if (!vm.commLoaded) {
@@ -870,7 +884,7 @@
                 case 9: { bc = '#009999'; fc = 'black'; break; }
             }
         }
-
+*/
         function closeRank() {
             $state.go('cwrapper');
         }

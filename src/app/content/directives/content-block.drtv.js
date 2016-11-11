@@ -42,7 +42,6 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 });
 
                 $rootScope.$on('applyRule', function (e) {
-                    console.log("somebody called applyRule!")
                     applyRule();
                 });
             

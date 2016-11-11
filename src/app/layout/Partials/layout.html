@@ -6,7 +6,12 @@
 <div class="container">
 
     <div id="veil" ng-show="vm.isLoading"></div>
-    <div id="feedLoading" ng-show="vm.isLoading">Loading...</div>
+    <div id="feedLoading" ng-show="vm.isLoading">
+        <div style="text-align: center" ng-if="vm.isLoading">
+            <div class="loading-pulse"></div>
+            <p style="font-size:large">{{vm.veilMsg}}</p>
+        </div>     
+    </div>
 
     <div class="container-fluid" ng-hide="vm.isLoading">
         <br>
@@ -26,7 +31,7 @@
                  <input class="form-control" ng-model="vm.val" bs-options="{{vm.opts}}" bs-typeahead type="text"
                     placeholder="Search Ranking">-->
                 <!-- Main View-->
-                <br>               
+                <br ng-if="vm.sm">               
                 <div ui-view ng-if="!vm.isLoading"></div>
                 <br>
     </div>

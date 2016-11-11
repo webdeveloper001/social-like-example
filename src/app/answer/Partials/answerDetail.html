@@ -70,7 +70,8 @@
     <br>
     <h4 style="text-align:center">{{vm.answer.addinfo}}</h4>
 </div>
-<div class="row" ng-if="vm.type != 'Establishment'">
+<!-- <div class="row" ng-if="vm.type != 'Establishment'"> -->
+<div class="row">
     <div class="text-left col-xs-6">
         <button class="btn-success" ng-click="vm.goPrev()">&lt;&lt</button>
     </div>
@@ -132,7 +133,7 @@
 <a type="button" class="btn btn-primary btn-block" ng-click="vm.editAnswer()" style="display:{{(vm.answer.hasOwner == false || vm.userIsOwner == true) ? 'inline':'none'}}">
             Edit {{vm.numEdits > 0? "("+vm.numEdits+")" : ""}}
         </a>
-<div class="col-xs-12">
+<div class="col-xs-12" ng-if="vm.type != 'Event'">
     <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
         <h3 class="sub-header">Endorsements</h3>
     </div>
@@ -175,7 +176,7 @@
         <p class="hiw text-right" ng-click="vm.gotoRank(r)">&lt;&lt;See full ranking&gt;&gt;</p>
     </div>
 </div>
-<div class="col-xs-12">
+<div class="col-xs-12" ng-if="false">
     <div class="row" ng-if="vm.type != 'Short-Phrase'">
         <div class="col-xs-12">
             <div class="well-sm" style="background-color:#666666;color:#f8f8ff;">
@@ -342,6 +343,55 @@
                 </tbody>
         </table>
     </div>
+</div>
+<br>
+<div class="text-center">
+    <button ng-click="vm.loadComments()" class="btn btn-default" style="background-color:#e6e6e6;width:100%">COMMENTS ({{vm.numcom}})</button>
+</div>
+<br>
+<div style="display:{{vm.cm.commLoaded ? 'inline':'none'}}">
+    <div ng-repeat="x in vm.cm.comments">
+        <div class="row">
+            <div class="usericon col-xs-2 col-sm-2 col-md-1 col-lg-1" style="background-color:{{x.bc}};color:{{x.fc}};" align="middle">
+                {{x.initials}}
+            </div>
+            <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11">
+                {{x.body}}
+                <br>
+                <small style="color:#bfbfbf">{{x.username}} - {{x.date}}</small>
+            </div>
+        </div>
+        <br>
+    </div>
+    <div style="display:{{(vm.cm.commLoaded && vm.cm.comments.length == 0 && !vm.isLoggedIn) ? 'inline':'none'}}">
+        <br>
+        <p><small> Nobody has commented yet. Be the first. Log in, endorse answers and leave a comment. </small></p>
+    </div>
+    <div style="display:{{(vm.cm.commLoaded && vm.cm.comments.length > 0 && !vm.isLoggedIn) ? 'inline':'none'}}">
+        <br>
+        <p><small> You must log in and endorse one or more answers to leave a comment. </small></p>
+    </div>
+    <div style="display:{{(vm.cm.commLoaded && vm.isLoggedIn && !vm.commentAllowed) ? 'inline':'none'}}">
+        <br>
+        <p><small> Endorse one or more answers to leave a comment. </small></p>
+    </div>
+    <div style="display:{{(vm.isLoggedIn && vm.commentAllowed) ? 'inline':'none'}}">
+        <div class="row">
+            <div class="usericon col-xs-2 col-sm-2 col-md-1 col-lg-1" style="background-color:{{vm.cm.bc}};color:{{vm.cm.fc}};" align="middle">
+                {{vm.cm.initials}}
+            </div>
+            <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11">
+                <!--
+                <input type="text" class="form-control" ng-model="vm.comment" placeholder="Leave a comment" 
+                style="margin-left:0px;margin-right:0px;">-->
+                <textarea class="form-control" ng-model="vm.cm.newComment" placeholder="Leave a comment"  
+                   style="margin-left:0px;margin-right:0px;"></textarea>
+            </div>            
+        </div> 
+        <div class="text-right">
+                <button ng-click="vm.postComment()" class="btn btn-primary">Post</button>
+        </div>
+    </div> 
 </div>
 <br>
 <a ng-click="vm.goBack() " class="btn btn-default ">Back</a>

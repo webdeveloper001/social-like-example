@@ -21,7 +21,7 @@
 	</div>
 	<br class="hidden-lg">
 	<div class="col-sm-12 col-md-8" style="display:{{(vm.isNhRdy || vm.isCity) ? 'inline':'none'}}">
-		<div class="input-group">
+		<div class="input-group" style="padding:10px">
 			<input type="text" class="form-control" placeholder="Search in {{vm.searchScope}}" ng-model="vm.val" ng-change="vm.refreshRanks(vm.val)" id="SearchInput">
 			<div class="input-group-btn">
 				<button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
@@ -67,9 +67,9 @@
 	</table>
 	
 	<div class="text-center" ng-if="vm.isCity">
-			<button class="btn btn-danger" ng-click="vm.foodNearMe()">Food Near Me</button>
+			<button class="btn btn-danger" ng-click="vm.foodNearMe()">Food near me</button>
 			<button class="btn btn-primary" ng-click="vm.events()">Events</button>
-			<button class="btn btn-success" ng-click="vm.selfimprove()">Introspection</button>
+			<button class="btn btn-success" ng-click="vm.selfimprove()">I feel lucky</button>
 	</div>
 	
 	<br>
