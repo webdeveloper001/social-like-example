@@ -84,6 +84,7 @@
             $rootScope.isLoggedIn = true;
             $rootScope.user = {};
             $rootScope.user.name = "Andres Moctezuma";
+            $rootScope.user.first_name = 'Andres';
             $rootScope.user.id = 12;
             $rootScope.answeridxgps = 1258; //starting indx for gps conversion
                        

@@ -975,9 +975,7 @@
                     dialogRef.close();
                 },
                  callback: function (result) {
-                    if (result) {
-                        $rootScope.$emit('getLocation');
-                    }
+                    if (result) $rootScope.$emit('getLocation');                    
                 }                          
               });
         }

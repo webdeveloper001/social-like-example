@@ -19,7 +19,7 @@
 			<button class="btn btn-default {{vm.isNh ? 'active':''}}" ng-click="vm.switchScope(2)">Neighborhood</button>
 		</div>
 	</div>
-	<br class="hidden-lg">
+	<!-- <br class="hidden-lg"> -->
 	<div class="col-sm-12 col-md-8" style="display:{{(vm.isNhRdy || vm.isCity) ? 'inline':'none'}}">
 		<div class="input-group" style="padding:10px">
 			<input type="text" class="form-control" placeholder="Search in {{vm.searchScope}}" ng-model="vm.val" ng-change="vm.refreshRanks(vm.val)" id="SearchInput">
@@ -47,7 +47,7 @@
 <div style="display:{{vm.searchActive ? 'inline':'none'}}" ng-if="!vm.fbm">
 	<content-block type='query' dynamic=true></content-block>
 </div>
-</br>
+ <br ng-if="vm.isNh">
 
 <div style="display:{{((vm.isNhRdy || vm.isCity) && (vm.searchActive == false)) ? 'inline':'none'}}" ng-if="!vm.fbm">
 	<content-block type='rankofweek' dynamic=false rankofweek=true></content-block>

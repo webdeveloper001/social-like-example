@@ -150,6 +150,11 @@
             else vm.userIsOwner = false;            
 
             $rootScope.userIsOwner = vm.userIsOwner;
+            
+            //Determine number of user comments
+            if (vm.answer.numcom == undefined) vm.numcom = 0;
+            else vm.numcom = vm.answer.numcom;
+            
             if ($rootScope.DEBUG_MODE) console.log("Answer details loaded");
             
         }

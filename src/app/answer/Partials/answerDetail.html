@@ -365,11 +365,11 @@
     </div>
     <div style="display:{{(vm.cm.commLoaded && vm.cm.comments.length == 0 && !vm.isLoggedIn) ? 'inline':'none'}}">
         <br>
-        <p><small> Nobody has commented yet. Be the first. Log in, endorse answers and leave a comment. </small></p>
+        <p><small> Nobody has commented yet. Be the first. Log in and leave a comment. </small></p>
     </div>
     <div style="display:{{(vm.cm.commLoaded && vm.cm.comments.length > 0 && !vm.isLoggedIn) ? 'inline':'none'}}">
         <br>
-        <p><small> You must log in and endorse one or more answers to leave a comment. </small></p>
+        <p><small> You must log in to leave a comment. </small></p>
     </div>
     <div style="display:{{(vm.cm.commLoaded && vm.isLoggedIn && !vm.commentAllowed) ? 'inline':'none'}}">
         <br>
