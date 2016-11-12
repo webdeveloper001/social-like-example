@@ -69,7 +69,7 @@
         cObj.comments = [];
         cObj.newComment = '';
         vm.cm = cObj;
-        
+
         vm.isLoggedIn = $rootScope.isLoggedIn == undefined ? false : $rootScope.isLoggedIn;
 
         $rootScope.userHasRank = false;
@@ -114,10 +114,8 @@
             getUserData(); //if user is logged in, get user data (vote record, etc)
             createAnswerStatus(); //enables/disables 'Create Answer' button
             
-            //Sort first by upV
-            if (foodNearMe || $rootScope.cCategory.title.indexOf('close to me') > -1) sortByDistance();
-            else sortByUpV();
-
+            //Sort first by upV, then execute ranking algorithm
+            sortByUpV();
             rank.computeRanking($rootScope.canswers, $rootScope.cmrecs);
 
             //Sort by rank here (this is to grab images of top 3 results)
@@ -127,12 +125,8 @@
             for (var i = 0; i < vm.answers.length; i++) {
                 vm.answers[i].Rank = i + 1;
             }
+            
             vm.answers = $filter('orderBy')(vm.answers, 'Rank');
-            if (!foodNearMe && !vm.isE) vm.showR = true || (!vm.sm);
-
-            if ($rootScope.includeNearMe) {
-                sortByDistance();
-            }
             
             //Determine number of user comments
             if ($rootScope.cCategory.numcom == undefined) vm.numcom = 0;
@@ -166,12 +160,12 @@
             //Check number of answers for this ranking
             if (vm.answers.length == 0) {
                 vm.numAns = 0;
-                
-                if (!foodNearMe){
-                table.update($rootScope.cCategory.id,
-                    ['views', 'answers'],
-                    [$rootScope.cCategory.views + 1, $rootScope.canswers.length]);
-                }        
+
+                if (!foodNearMe) {
+                    table.update($rootScope.cCategory.id,
+                        ['views', 'answers'],
+                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length]);
+                }
             }
             if (vm.answers.length == 1) {
                 vm.numAns = 1;
@@ -189,12 +183,12 @@
                     }
                     else vm.image1ok = false;
                 }
-                if (!foodNearMe){
-                table.update($rootScope.cCategory.id,
-                    ['views', 'answers', 'image1url'],
-                    [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
-                        vm.image1]);
-                }        
+                if (!foodNearMe) {
+                    table.update($rootScope.cCategory.id,
+                        ['views', 'answers', 'image1url'],
+                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                            vm.image1]);
+                }
             }
             if (vm.answers.length == 2) {
                 vm.numAns = 2;
@@ -221,11 +215,11 @@
                     }
                     else vm.image2ok = false;
                 }
-                if (!foodNearMe){
-                table.update($rootScope.cCategory.id,
-                    ['views', 'answers', 'image1url', 'image2url'],
-                    [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
-                        vm.image1, vm.image2]);
+                if (!foodNearMe) {
+                    table.update($rootScope.cCategory.id,
+                        ['views', 'answers', 'image1url', 'image2url'],
+                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                            vm.image1, vm.image2]);
                 }
             }
 
@@ -262,19 +256,23 @@
                     }
                     else vm.image3ok = false;
                 }
-                if (!foodNearMe){
-                table.update($rootScope.cCategory.id,
-                    ['views', 'answers', 'image1url', 'image2url', 'image3url'],
-                    [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
-                        vm.image1, vm.image2, vm.image3]);
+                if (!foodNearMe) {
+                    table.update($rootScope.cCategory.id,
+                        ['views', 'answers', 'image1url', 'image2url', 'image3url'],
+                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                            vm.image1, vm.image2, vm.image3]);
                 }
             }
-         
+  
+            //Sorting rules
+            if (foodNearMe || $rootScope.includeNearMe) sortByDistance();
+            if (vm.isE) sortByDate();            
+            if (!foodNearMe && !vm.isE) vm.showR = true || (!vm.sm);
+
             //TODO update answers in DB
             if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
             //console.log("$rootScope.user", $rootScope.user);
-            //createVrows();
-            
+            //createVrows();            
         }
 
         function getRankAnswers() {
@@ -398,10 +396,10 @@
                     break;
                 }
             }
-            
+
             vm.ranking = $rootScope.cCategory.title;
-            
-            if ($rootScope.cCategory.id ==  9521) {
+
+            if ($rootScope.cCategory.id == 9521) {
                 foodNearMe = true;
                 vm.fnm = true;
                 vm.showR = false;
@@ -475,9 +473,62 @@
             $rootScope.B = [];
             var eventObj = {};
             var obj = {};
-            for (var i = 0; i < catansrecs.length; i++) {
-                if (!foodNearMe) {
-                    //if rank is atomic 
+            
+            //Rank is 'Food Near Me' - first time only
+            if (foodNearMe && $rootScope.fanswers == undefined) {
+                for (var i = 0; i < catansrecs.length; i++) {
+                    var catansrec = catansrecs[i];
+                    var answerid = 0;
+                    var idx = 0;
+                    var isDup = false;
+                    var ansObj = {};
+                    var nidx = 0;
+
+                    var catArr2 = $rootScope.foodranks.cats.split(':').map(Number);
+
+                    for (var j = 0; j < catArr2.length; j++) {
+                        if (catansrec.category == catArr2[j]) {
+                            answerid = catansrec.answer;
+                            //foodAnswersMap = [];
+                            //if (foodAnswers.length > 0) {
+                            //foodAnswersMap = foodAnswers.map(function(x) {return x.id;});
+                            //}
+                            idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf(answerid);
+                            if (idx < 0) {
+                                console.log("idx - ", answerid, "catansrec - ", catansrec.id, catansrec.answer, catansrec.category);
+                                catans.deleteRec(catansrec.answer, catansrec.category);
+                            }
+                            //only add if its not already added
+                            isDup = false;
+                            if (fanswers.length > 0 && idx > 0) {
+                                for (var n = 0; n < fanswers.length; n++) {
+                                    if (fanswers[n].id == $rootScope.answers[idx].id) {
+                                        isDup = true;
+                                        nidx = n;
+                                        break;
+                                    }
+                                }
+                            }
+                            //if not duplicated, add to answer array. upV is init to first catans record
+                            if (!isDup) {
+                                ansObj = $rootScope.answers[idx];
+                                ansObj.upV = catansrec.upV;
+                                fanswers.push(ansObj);
+                            }
+                            //if duplicated, add upV from new catan
+                            if (isDup) {
+                                fanswers[nidx].upV = fanswers[nidx].upV + catansrec.upV;
+                            }
+                        }
+                    }
+                }
+                $rootScope.canswers = fanswers;
+                $rootScope.fanswers = fanswers;
+            }
+            //all other ranks
+            if(!foodNearMe) {
+                for (var i = 0; i < catansrecs.length; i++) {
+                   //if rank is atomic 
                     if ($rootScope.cCategory.isatomic) {
                         if (catansrecs[i].category == $rootScope.cCategory.id) {
                             for (var k = 0; k < answers.length; k++) {
@@ -505,7 +556,7 @@
                             }
                         }
                     }
-                    //if not atomic
+                    //if rank is not atomic
                     else {
                         //Puts numbers into array. Pretty sweet!
                         var catArr = $rootScope.cCategory.catstr.split(':').map(Number);
@@ -537,58 +588,13 @@
                             }
                         }
                     }
-                }
-                //Food Near Me Rank
-                else {
-                    var catansrec = catansrecs[i];
-                    var answerid = 0;
-                    var idx = 0;
-                    var isDup = false;
-                    var ansObj = {};
-                    var nidx = 0;
-               
-                    var catArr2 = $rootScope.foodranks.cats.split(':').map(Number);
-                    
-                    for (var j=0; j< catArr2.length; j++){
-                        if (catansrec.category == catArr2[j]){
-                            answerid = catansrec.answer;
-                            //foodAnswersMap = [];
-                            //if (foodAnswers.length > 0) {
-                            //foodAnswersMap = foodAnswers.map(function(x) {return x.id;});
-                            //}
-                            idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(answerid);
-                            if (idx < 0) {
-                                console.log("idx - ", answerid, "catansrec - ", catansrec.id, catansrec.answer, catansrec.category);
-                                catans.deleteRec(catansrec.answer, catansrec.category);  
-                            }
-                            //only add if its not already added
-                            isDup = false;
-                            if (fanswers.length > 0 && idx > 0){
-                                for (var n=0; n < fanswers.length; n++){
-                                    if (fanswers[n].id == $rootScope.answers[idx].id) {
-                                        isDup = true;
-                                        nidx = n;
-                                        break;
-                                    }
-                                }
-                            }
-                            //if not duplicated, add to answer array. upV is init to first catans record
-                            if (!isDup) {
-                                ansObj = $rootScope.answers[idx];
-                                ansObj.upV = catansrec.upV;
-                                fanswers.push(ansObj);
-                            }
-                            //if duplicated, add upV from new catan
-                            if (isDup) {
-                                fanswers[nidx].upV = fanswers[nidx].upV + catansrec.upV;  
-                            }                         
-                    }
-                } 
+
                 }
             }
-            if (foodNearMe) {
-                $rootScope.canswers = fanswers;
-            } 
+            //if already loaded all near by places
+            if (foodNearMe && $rootScope.fanswers) {
+                $rootScope.canswers = $rootScope.fanswers;
+            }
             vm.answers = $rootScope.canswers;
             
             //Calculate distances to user
@@ -734,6 +740,11 @@
                 return a.Rank - b.Rank;
             }
             vm.answers = vm.answers.sort(compare);
+            
+            vm.image1 = vm.answers[0].imageurl;
+            vm.image2 = vm.answers[1].imageurl;
+            vm.image3 = vm.answers[2].imageurl;
+            
             $rootScope.canswers = vm.answers;
             //vm.answers = $filter('orderBy')(vm.answers, 'Rank');
             vm.selRank = 'active';
@@ -751,14 +762,19 @@
 
             if (vm.haveLocation) {
                 vm.answers = vm.answers.sort(compare);
+                
+                vm.image1 = vm.answers[0].imageurl;
+                vm.image2 = vm.answers[1].imageurl;
+                vm.image3 = vm.answers[2].imageurl;
+            
                 $rootScope.canswers = vm.answers;
                 //vm.answers = $filter('orderBy')(vm.answers, 'dist');
                 vm.selRank = '';
                 vm.selDistance = 'active';
                 vm.selUpV = '';
                 vm.selDate = '';
-                
-                if (foodNearMe) vm.answers = vm.answers.slice(0,99);
+
+                if (foodNearMe) vm.answers = vm.answers.slice(0, 99);
             }
             else {
                 dialog.askPermissionToLocate();
@@ -770,6 +786,11 @@
                 return b.upV - a.upV;
             }
             vm.answers = vm.answers.sort(compare);
+            
+            vm.image1 = vm.answers[0].imageurl;
+            vm.image2 = vm.answers[1].imageurl;
+            vm.image3 = vm.answers[2].imageurl;
+                
             $rootScope.canswers = vm.answers;
             //vm.answers = $filter('orderBy')(vm.answers, 'dist');
             vm.selRank = '';
@@ -798,6 +819,11 @@
             }
 
             vm.answers = vm.answers.sort(compare);
+            
+            vm.image1 = vm.answers[0].imageurl;
+            vm.image2 = vm.answers[1].imageurl;
+            vm.image3 = vm.answers[2].imageurl;
+            
             $rootScope.canswers = vm.answers;
             //vm.answers = $filter('orderBy')(vm.answers, 'dist');
             vm.selRank = '';
@@ -808,83 +834,83 @@
             //if (!vm.isE) vm.showR = false || (!vm.sm);
 
         }
-        function loadComments(){
+        function loadComments() {
             commentops.loadComments('category', cObj);
         }
-        function postComment(){
+        function postComment() {
             commentops.postComment('category', cObj);
         }
-/*
-        function loadComments() {
-
-            if (!vm.commLoaded) {
-                vm.commLoaded = true;
-                if ($rootScope.isLoggedIn) {
-                    vm.initials = $rootScope.user.name.replace(/[^A-Z]/g, '');
-                    getIconColors($rootScope.user.id);
-                    vm.bc = bc;
-                    vm.fc = fc;
-                }
-                $rootScope.comments = [];
-
-                comment.getcomments().then(function (comments) {
-                    vm.comments = comments;
-                    for (var i = 0; i < vm.comments.length; i++) {
-                        vm.comments[i].initials = vm.comments[i].username.replace(/[^A-Z]/g, '');
-
-                        var datenow = new Date();
-                        var tz = datenow.getTimezoneOffset();
-
-                        var cdate = new Date(vm.comments[i].timestmp);
-                        cdate.setMinutes(cdate.getMinutes() - tz);
-
-                        vm.comments[i].date = cdate.toLocaleDateString() + ' ' + cdate.toLocaleTimeString();
-                        getIconColors(vm.comments[i].user);
-                        vm.comments[i].bc = bc;
-                        vm.comments[i].fc = fc;
+        /*
+                function loadComments() {
+        
+                    if (!vm.commLoaded) {
+                        vm.commLoaded = true;
+                        if ($rootScope.isLoggedIn) {
+                            vm.initials = $rootScope.user.name.replace(/[^A-Z]/g, '');
+                            getIconColors($rootScope.user.id);
+                            vm.bc = bc;
+                            vm.fc = fc;
+                        }
+                        $rootScope.comments = [];
+        
+                        comment.getcomments().then(function (comments) {
+                            vm.comments = comments;
+                            for (var i = 0; i < vm.comments.length; i++) {
+                                vm.comments[i].initials = vm.comments[i].username.replace(/[^A-Z]/g, '');
+        
+                                var datenow = new Date();
+                                var tz = datenow.getTimezoneOffset();
+        
+                                var cdate = new Date(vm.comments[i].timestmp);
+                                cdate.setMinutes(cdate.getMinutes() - tz);
+        
+                                vm.comments[i].date = cdate.toLocaleDateString() + ' ' + cdate.toLocaleTimeString();
+                                getIconColors(vm.comments[i].user);
+                                vm.comments[i].bc = bc;
+                                vm.comments[i].fc = fc;
+                            }
+                            //console.log("vm.commLoaded, vm.comments.length, vm.isLoggedIn, vm.commentAllowed ---", vm.commLoaded, vm.comments.length, vm.isLoggedIn, vm.commentAllowed);
+                        });
                     }
-                    //console.log("vm.commLoaded, vm.comments.length, vm.isLoggedIn, vm.commentAllowed ---", vm.commLoaded, vm.comments.length, vm.isLoggedIn, vm.commentAllowed);
-                });
-            }
-        }
-        function postComment() {
-
-            cobj = {};
-            cobj.category = $rootScope.cCategory.id;
-            cobj.body = vm.comment;
-            cobj.username = $rootScope.user.name;
-            cobj.user = $rootScope.user.id;
-            cobj.timestmp = Date.now();
-            vm.comment = '';
-
-            comment.addcomment(cobj).then(function () {
-                cobj.initials = $rootScope.user.name.replace(/[^A-Z]/g, '');
-                getIconColors($rootScope.user.id);
-                //datetime.formatdatetime(cobj);
-                cobj.fc = fc;
-                cobj.bc = bc;
-                cobj.date = 'Just now';
-                vm.comments.push(cobj);
-                table.update($rootScope.cCategory.id, ['numcom'], [vm.comments.length]);
-                console.log("vm.comments - ", vm.comments);
-            });
-        }
-
-        function getIconColors(x) {
-            switch (x % 10) {
-                case 0: { bc = '#b3b3b3'; fc = 'black'; break; }
-                case 1: { bc = '#666666'; fc = 'white'; break; }
-                case 2: { bc = '#006bb3'; fc = 'white'; break; }
-                case 3: { bc = '#009933'; fc = 'white'; break; }
-                case 4: { bc = '#cc0000'; fc = 'white'; break; }
-                case 5: { bc = '#538cc6'; fc = 'black'; break; }
-                case 6: { bc = '#b36b00'; fc = 'white'; break; }
-                case 7: { bc = '#999966'; fc = 'black'; break; }
-                case 8: { bc = '#4d0099'; fc = 'white'; break; }
-                case 9: { bc = '#009999'; fc = 'black'; break; }
-            }
-        }
-*/
+                }
+                function postComment() {
+        
+                    cobj = {};
+                    cobj.category = $rootScope.cCategory.id;
+                    cobj.body = vm.comment;
+                    cobj.username = $rootScope.user.name;
+                    cobj.user = $rootScope.user.id;
+                    cobj.timestmp = Date.now();
+                    vm.comment = '';
+        
+                    comment.addcomment(cobj).then(function () {
+                        cobj.initials = $rootScope.user.name.replace(/[^A-Z]/g, '');
+                        getIconColors($rootScope.user.id);
+                        //datetime.formatdatetime(cobj);
+                        cobj.fc = fc;
+                        cobj.bc = bc;
+                        cobj.date = 'Just now';
+                        vm.comments.push(cobj);
+                        table.update($rootScope.cCategory.id, ['numcom'], [vm.comments.length]);
+                        console.log("vm.comments - ", vm.comments);
+                    });
+                }
+        
+                function getIconColors(x) {
+                    switch (x % 10) {
+                        case 0: { bc = '#b3b3b3'; fc = 'black'; break; }
+                        case 1: { bc = '#666666'; fc = 'white'; break; }
+                        case 2: { bc = '#006bb3'; fc = 'white'; break; }
+                        case 3: { bc = '#009933'; fc = 'white'; break; }
+                        case 4: { bc = '#cc0000'; fc = 'white'; break; }
+                        case 5: { bc = '#538cc6'; fc = 'black'; break; }
+                        case 6: { bc = '#b36b00'; fc = 'white'; break; }
+                        case 7: { bc = '#999966'; fc = 'black'; break; }
+                        case 8: { bc = '#4d0099'; fc = 'white'; break; }
+                        case 9: { bc = '#009999'; fc = 'black'; break; }
+                    }
+                }
+        */
         function closeRank() {
             $state.go('cwrapper');
         }

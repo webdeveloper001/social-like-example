@@ -939,7 +939,7 @@
             var title = '';
             var message = ''
             var btnCancelLabel = 'No, I don\'t approve';
-            var btnOkLabel = 'Yes, use GeoLocation';
+            var btnOkLabel = 'Yes, locate me';
 
             title = 'Please Confirm';
             message = 'Is it ok if we locate your position?'; //+
