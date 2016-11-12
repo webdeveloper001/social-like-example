@@ -28,7 +28,6 @@
 
         //if ($rootScope.answers) vm.isLoading = false;
         //else 
-        vm.isLoading = true;
         vm.veilMsg = 'Loading San Diego\'s best...';
         // Members
        
@@ -55,7 +54,10 @@
             $rootScope.DEBUG_MODE = DEBUG_MODE;
 
             //$timeout(loadingDone, 1000);
-            loadData();
+            if ($rootScope.dataIsLoaded == undefined) {
+                vm.isLoading = true;
+                loadData();
+            }
             
             if ($rootScope.DEBUG_MODE) console.log("Layout Loaded!");
 
@@ -79,7 +81,7 @@
                 "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
                 "Marina", "Seaport Village"];
             
-             $http.get('../../../assets/fields.json').success(function (response) {
+            $http.get('../../../assets/fields.json').success(function (response) {
                 $rootScope.typeSchema = response;                
             });
 
@@ -127,6 +129,7 @@
 
         function loadingDone() {
             vm.isLoading = false;
+            $rootScope.dataIsLoaded = true;
         }
         
         function updatePageVisits(){

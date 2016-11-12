@@ -27,7 +27,7 @@
         vm.gotoCustomer = gotoCustomer;
         vm.openCitySelection = openCitySelection;
         
-        $rootScope.coordsRdy = false;
+        if ($rootScope.coordsRdy == undefined) $rootScope.coordsRdy = false;
         $rootScope.loadFbnWhenCoordsRdy = false;
 
         activate();

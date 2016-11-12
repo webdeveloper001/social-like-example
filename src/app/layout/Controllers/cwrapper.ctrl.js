@@ -274,6 +274,7 @@
         
         //Quick Links
         function foodNearMe(){
+            //console.log("$rootScope.coordsRdy - ", $rootScope.coordsRdy);
             if ($rootScope.coordsRdy) $state.go('rankSummary', { index: 9521 });
             else {
                 $rootScope.loadFbnWhenCoordsRdy = true;

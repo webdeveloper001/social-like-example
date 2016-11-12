@@ -740,10 +740,7 @@
                 return a.Rank - b.Rank;
             }
             vm.answers = vm.answers.sort(compare);
-            
-            vm.image1 = vm.answers[0].imageurl;
-            vm.image2 = vm.answers[1].imageurl;
-            vm.image3 = vm.answers[2].imageurl;
+            getDisplayImages();
             
             $rootScope.canswers = vm.answers;
             //vm.answers = $filter('orderBy')(vm.answers, 'Rank');
@@ -762,11 +759,7 @@
 
             if (vm.haveLocation) {
                 vm.answers = vm.answers.sort(compare);
-                
-                vm.image1 = vm.answers[0].imageurl;
-                vm.image2 = vm.answers[1].imageurl;
-                vm.image3 = vm.answers[2].imageurl;
-            
+                getDisplayImages();
                 $rootScope.canswers = vm.answers;
                 //vm.answers = $filter('orderBy')(vm.answers, 'dist');
                 vm.selRank = '';
@@ -786,10 +779,7 @@
                 return b.upV - a.upV;
             }
             vm.answers = vm.answers.sort(compare);
-            
-            vm.image1 = vm.answers[0].imageurl;
-            vm.image2 = vm.answers[1].imageurl;
-            vm.image3 = vm.answers[2].imageurl;
+            getDisplayImages();
                 
             $rootScope.canswers = vm.answers;
             //vm.answers = $filter('orderBy')(vm.answers, 'dist');
@@ -819,10 +809,7 @@
             }
 
             vm.answers = vm.answers.sort(compare);
-            
-            vm.image1 = vm.answers[0].imageurl;
-            vm.image2 = vm.answers[1].imageurl;
-            vm.image3 = vm.answers[2].imageurl;
+            getDisplayImages();
             
             $rootScope.canswers = vm.answers;
             //vm.answers = $filter('orderBy')(vm.answers, 'dist');
@@ -911,6 +898,16 @@
                     }
                 }
         */
+        
+        function getDisplayImages(){
+            vm.image1 = "/assets/images/noimage.jpg";
+            vm.image2 = "/assets/images/noimage.jpg";
+            vm.image3 = "/assets/images/noimage.jpg";
+                
+            if (vm.answers[0]) vm.image1 = vm.answers[0].imageurl;
+            if (vm.answers[1]) vm.image2 = vm.answers[1].imageurl;
+            if (vm.answers[2]) vm.image3 = vm.answers[2].imageurl;
+        }
         function closeRank() {
             $state.go('cwrapper');
         }
