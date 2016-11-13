@@ -5,9 +5,9 @@
         .module('app')
         .controller('navbar', navbar);
 
-    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state', 'city','$cookieStore','$http','GOOGLE_API_KEY'];
+    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state', 'city','$cookieStore','$http','GOOGLE_API_KEY','dialog'];
 
-    function navbar($location, $translate, $rootScope, login, $state, city,$cookieStore,$http, GOOGLE_API_KEY) {
+    function navbar($location, $translate, $rootScope, login, $state, city,$cookieStore,$http, GOOGLE_API_KEY, dialog) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'navbar';
@@ -127,6 +127,7 @@
                 }, {maximumAge:60000, timeout:5000, enableHighAccuracy:true});
             }else{
                 if ($rootScope.DEBUG_MODE) console.log('Geo location not supported.');
+                dialog.getDialog('browserDoesntSupportGeolocation');
             }
             
         };
@@ -191,6 +192,7 @@
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(showPosition, function(){
                         console.log("Error getting geolocation");
+                        dialog.getDialog('errorGettingGeolocation');
                     });
                 } else {
                     selectCity();

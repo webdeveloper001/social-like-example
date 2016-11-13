@@ -34,7 +34,10 @@
     "dialog.whyUserData.title": "Why you want my birth date and my gender?",
     "dialog.whyUserData.text": "We ask for your birth date and gender to create meaningful and insightful rankings. Some rankings will be gender specific, while some others will be age specific. Having this information will help us differentiate between our users.",
     "dialog.notLoggedInBiz.title": "Not Logged In",
-    "dialog.notLoggedInBiz.text": "Before you can bind to this business account, you must be logged in."
-    
+    "dialog.notLoggedInBiz.text": "Before you can bind to this business account, you must be logged in.",
+    "dialog.browserDoesntSupportGeolocation.title": "Error",
+    "dialog.browserDoesntSupportGeolocation.text": "This browser does not support geolocation.",
+    "dialog.errorGettingGeolocation.title": "Error",
+    "dialog.errorGettingGeolocation.text": "There was an error getting geolocation."   
 }
 
