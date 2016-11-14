@@ -190,8 +190,8 @@
 
             if (navigator.geolocation) {
                 if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(showPosition, function(){
-                        console.log("Error getting geolocation");
+                    navigator.geolocation.getCurrentPosition(showPosition, function(err){
+                        console.log('Error getting geolocation - ERROR(' + err.code + '): ' + err.message);
                         dialog.getDialog('errorGettingGeolocation');
                     });
                 } else {
