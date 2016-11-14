@@ -124,7 +124,7 @@
                 navigator.geolocation.getCurrentPosition(function(position){
                     setUserLatitudeLongitude(position);
                 }, function(error){
-                }, {maximumAge:60000, timeout:5000, enableHighAccuracy:true});
+                }, {maximumAge:60000, timeout:10000, enableHighAccuracy:true});
             }else{
                 if ($rootScope.DEBUG_MODE) console.log('Geo location not supported.');
                 dialog.getDialog('browserDoesntSupportGeolocation');
