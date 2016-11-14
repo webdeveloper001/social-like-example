@@ -5,9 +5,11 @@
         .module('app')
         .controller('navbar', navbar);
 
-    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state', 'city','$cookieStore','$http','GOOGLE_API_KEY','dialog'];
+    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state', 
+    'city','$cookieStore','$http','GOOGLE_API_KEY','dialog'];
 
-    function navbar($location, $translate, $rootScope, login, $state, city,$cookieStore,$http, GOOGLE_API_KEY, dialog) {
+    function navbar($location, $translate, $rootScope, login, $state, 
+    city,$cookieStore,$http, GOOGLE_API_KEY, dialog) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'navbar';
@@ -29,7 +31,24 @@
         
         if ($rootScope.coordsRdy == undefined) $rootScope.coordsRdy = false;
         $rootScope.loadFbnWhenCoordsRdy = false;
-
+        
+        geolocator.config({
+        language: "en",
+        google: {
+            version: "3",
+            key: "AIzaSyBr143lDEROCrUWdKvqPQmhQ5BoFo13oSE"
+        }
+        });
+        
+        var options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumWait: 10000,     // max wait time for desired accuracy
+            maximumAge: 0,          // disable cache
+            desiredAccuracy: 30,    // meters
+            fallbackToIP: true,     // fallback to IP if Geolocation fails or rejected
+        };
+        
         activate();
         
         function activate() {
@@ -120,6 +139,13 @@
          */
         $rootScope.getCurrentPositionOfUser = function() {
             
+            
+            geolocator.locate(options, function (err, location) {
+            if (err) return console.log(err);
+            console.log("new geolocator V2 - ", location);
+            });
+            
+            /*
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position){
                     setUserLatitudeLongitude(position);
@@ -129,7 +155,7 @@
                 if ($rootScope.DEBUG_MODE) console.log('Geo location not supported.');
                 dialog.getDialog('browserDoesntSupportGeolocation');
             }
-            
+            */
         };
 
         /**
@@ -185,6 +211,12 @@
             
             if ($rootScope.DEBUG_MODE) console.log("@autoDetectCity");
             
+            geolocator.locate(options, function (err, location) {
+            if (err) return console.log(err);
+            console.log("new geolocator V2 - ", location);
+            });
+            
+            /*
             var geocoder;
             geocoder = new google.maps.Geocoder();
 
@@ -232,7 +264,7 @@
                         }
                     }
                 );
-            }
+            }*/
 
         }
 
