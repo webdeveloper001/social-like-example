@@ -29,8 +29,8 @@
         //if ($rootScope.answers) vm.isLoading = false;
         //else 
         vm.veilMsg = 'Loading San Diego\'s best...';
+        
         // Members
-       
         activate();
         
         /*

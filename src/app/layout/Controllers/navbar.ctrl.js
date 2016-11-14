@@ -5,11 +5,11 @@
         .module('app')
         .controller('navbar', navbar);
 
-    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state', 
-    'city','$cookieStore','$http','GOOGLE_API_KEY','dialog'];
+    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state',
+        'city', '$cookieStore', '$http', 'GOOGLE_API_KEY', 'dialog'];
 
-    function navbar($location, $translate, $rootScope, login, $state, 
-    city,$cookieStore,$http, GOOGLE_API_KEY, dialog) {
+    function navbar($location, $translate, $rootScope, login, $state,
+        city, $cookieStore, $http, GOOGLE_API_KEY, dialog) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'navbar';
@@ -28,30 +28,17 @@
         vm.gotoFileUpload = gotoFileUpload;
         vm.gotoCustomer = gotoCustomer;
         vm.openCitySelection = openCitySelection;
-        
+
         if ($rootScope.coordsRdy == undefined) $rootScope.coordsRdy = false;
         $rootScope.loadFbnWhenCoordsRdy = false;
         
-        geolocator.config({
-        language: "en",
-        google: {
-            version: "3",
-            key: "AIzaSyBr143lDEROCrUWdKvqPQmhQ5BoFo13oSE"
-        }
-        });
-        
-        var options = {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumWait: 10000,     // max wait time for desired accuracy
-            maximumAge: 0,          // disable cache
-            desiredAccuracy: 30,    // meters
-            fallbackToIP: true,     // fallback to IP if Geolocation fails or rejected
-        };
-        
+        //Geolocation options
+        var geoOptions = {};
         activate();
-        
+
         function activate() {
+
+            configGeolocation();
 
             if ($rootScope.DEBUG_MODE) console.log("Navbar Loaded!");
             //console.log("isLoggedIn", !$rootScope.isLoggedIn)
@@ -64,7 +51,7 @@
             //$stateProvider.state('app');
             $state.go('about');
         }
-        
+
         function gotoFileUpload() {
             //$stateProvider.state('app');
             $state.go('fileuploadtest');
@@ -74,17 +61,17 @@
             //$stateProvider.state('app');
             $state.go('admin');
         }
-        
+
         function gotoFeedback() {
             $rootScope.fbmode = true;
-            $state.go('cwrapper', {}, {reload: true});
+            $state.go('cwrapper', {}, { reload: true });
         }
         function gotoHome() {
             $rootScope.fbmode = false;
-            $state.go('cwrapper', {}, {reload: true});
+            $state.go('cwrapper', {}, { reload: true });
             $rootScope.$emit('mainView');
         }
-        
+
 
         function gotoCustomer() {
             //$stateProvider.state('app');
@@ -104,7 +91,7 @@
                 vm.isLoggedIn = false;
 
                 //$location.path('/');
-                $state.go('cwrapper', {}, {location: 'replace'});
+                $state.go('cwrapper', {}, { location: 'replace' });
             });
         }
 
@@ -129,20 +116,26 @@
             }
 
         }
-        
+
         $rootScope.$on('getLocation', function (e) {
-                autoDetectCity();
-            });
+            autoDetectCity();
+        });
 
         /**
          * Function to get current location of User based on navigator
          */
-        $rootScope.getCurrentPositionOfUser = function() {
-            
-            
-            geolocator.locate(options, function (err, location) {
-            if (err) return console.log(err);
-            console.log("new geolocator V2 - ", location);
+        $rootScope.getCurrentPositionOfUser = function () {
+
+
+            geolocator.locate(geoOptions, function (err, location) {
+                if (err) {
+                    if ($rootScope.DEBUG_MODE) console.log('Error getting geolocation - ERROR(' + err.code + '): ' + err.message);
+                    dialog.getDialog('errorGettingGeolocation');
+                }
+                else {
+                    if ($rootScope.DEBUG_MODE) console.log(location);
+                    setUserLatitudeLongitude(location);
+                }
             });
             
             /*
@@ -162,43 +155,37 @@
          * Function to set latitude and longitude to $rootScope and Cookie
          * @param position
          */
-        function setUserLatitudeLongitude(position) {
-            
-            if ($rootScope.DEBUG_MODE) console.log("position.coords.latitude - ", position.coords.latitude);
-            if ($rootScope.DEBUG_MODE) console.log("position.coords.longitude - ", position.coords.longitude);
+        function setUserLatitudeLongitude(location) {
+
+            if ($rootScope.DEBUG_MODE) console.log("position.coords.latitude - ", location.coords.latitude);
+            if ($rootScope.DEBUG_MODE) console.log("position.coords.longitude - ", location.coords.longitude);
             /**
              * Set Latitude and Longitude from navigator to rootScope
              */
-            $rootScope.currentUserLatitude = position.coords.latitude;
-            $rootScope.currentUserLongitude = position.coords.longitude;
-            
-            
-
-            //console.log("$rootScope.currentUserLatitude", $rootScope.currentUserLatitude);
-            //console.log("$rootScope.currentUserLongitude", $rootScope.currentUserLongitude);
-
+            $rootScope.currentUserLatitude = location.coords.latitude;
+            $rootScope.currentUserLongitude = location.coords.longitude;
+        
             /**
              * Set Latitude and Longitude to cookie
              */
             $cookieStore.put('currentUserLatitude', $rootScope.currentUserLatitude);
             $cookieStore.put('currentUserLongitude', $rootScope.currentUserLongitude);
-            
+
             $rootScope.coordsRdy = true;
-            
+
             if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 9521 });
 
             /**
              * If user is logged in, then set latitude and longitude to user's object
              */
-            if($rootScope.isLoggedIn)
-            {
+            if ($rootScope.isLoggedIn) {
                 $rootScope.user.latitude = $rootScope.currentUserLatitude;
                 $rootScope.user.longitude = $rootScope.currentUserLongitude;
                 if ($rootScope.DEBUG_MODE) console.log("Geo Location is set for logged in user.");
             }
 
             if ($rootScope.DEBUG_MODE) console.log("Geo Location is set for user.");
-            if ($state.current.name == 'rankSummary'){
+            if ($state.current.name == 'rankSummary') {
                 $state.reload();
             }
         }
@@ -208,12 +195,24 @@
          * Geo location works only on secure origins in Google Chrome
          */
         function autoDetectCity() {
-            
+
             if ($rootScope.DEBUG_MODE) console.log("@autoDetectCity");
+
+            geolocator.locate(geoOptions, function (err, location) {
+                if (err) {
+                    if ($rootScope.DEBUG_MODE) console.log('Error getting geolocation - ERROR(' + err.code + '): ' + err.message);
+                    dialog.getDialog('errorGettingGeolocation');
+                    }
+                else {
+                    if ($rootScope.DEBUG_MODE) console.log(location);
+                    setUserLatitudeLongitude(location);
+                }
+            });
             
-            geolocator.locate(options, function (err, location) {
-            if (err) return console.log(err);
-            console.log("new geolocator V2 - ", location);
+            /*
+            geolocator.locate(options, setUserLatitudeLongitude(location),function (err) {
+             console.log('Error getting geolocation - ERROR(' + err.code + '): ' + err.message);
+             dialog.getDialog('errorGettingGeolocation');
             });
             
             /*
@@ -276,8 +275,8 @@
         function selectCity(detectedCity) {
 
             if ($rootScope.selectedCity) {
-                
-            }else {
+
+            } else {
                 var isCityInList = false;
                 var cityObject = {};
 
@@ -299,39 +298,59 @@
                 }
             }
         }
-        
-        function detectLocation(){
-           var url = 'https://ipinfo.io/json';
-           return $http.get(url, {}, {   
-                    headers: {}
-                }).then(function (result) {
-                    if ($rootScope.DEBUG_MODE) console.log("Result from ipinfo - ", result);
-                    var loc = result.data.loc.split(",");
-                    if ($rootScope.DEBUG_MODE) console.log("loc - ", loc);
-                    $rootScope.currentUserLatitude = loc[0];
-                    $rootScope.currentUserLongitude = loc[1];                    
-                });         
-        }
-        
-        function detectLocation2(){
-            var geobody = {};
+
+        function configGeolocation() {
             
+            geolocator.config({
+                language: "en",
+                google: {
+                    version: "3",
+                    key: GOOGLE_API_KEY
+                }
+            });
+
+            geoOptions = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumWait: 10000,     // max wait time for desired accuracy
+                maximumAge: 0,          // disable cache
+                desiredAccuracy: 30,    // meters
+                fallbackToIP: true,     // fallback to IP if Geolocation fails or rejected
+            };
+        }
+
+        function detectLocation() {
+            var url = 'https://ipinfo.io/json';
+            return $http.get(url, {}, {
+                headers: {}
+            }).then(function (result) {
+                if ($rootScope.DEBUG_MODE) console.log("Result from ipinfo - ", result);
+                var loc = result.data.loc.split(",");
+                if ($rootScope.DEBUG_MODE) console.log("loc - ", loc);
+                $rootScope.currentUserLatitude = loc[0];
+                $rootScope.currentUserLongitude = loc[1];
+            });
+        }
+
+        function detectLocation2() {
+            var geobody = {};
+
             geobody.homeMobileCountryCode = 310;
             geobody.homeMobileNetworkCode = 38;
             geobody.considerIp = false;
-  
-            var url = 'https://www.googleapis.com/geolocation/v1/geolocate?key='+'AIzaSyDtDvBsex9Ytz1aWl5uET8MwjlmvEMTF70';
-             return $http.post(url, {}, {   
-                    headers: {},
-                    body: geobody
-                }).then(function (result) {
-                    if ($rootScope.DEBUG_MODE) console.log("Result from google geolocate - ", result);
+
+            var url = 'https://www.googleapis.com/geolocation/v1/geolocate?key=' + 'AIzaSyDtDvBsex9Ytz1aWl5uET8MwjlmvEMTF70';
+            return $http.post(url, {}, {
+                headers: {},
+                body: geobody
+            }).then(function (result) {
+                if ($rootScope.DEBUG_MODE) console.log("Result from google geolocate - ", result);
                     
-                    //var loc = result.data.loc.split(",");
-                    //console.log("loc - ", loc);
-                    $rootScope.currentUserLatitude = result.data.location.lat;
-                    $rootScope.currentUserLongitude = result.data.location.lng;                    
-                });      
+                //var loc = result.data.loc.split(",");
+                //console.log("loc - ", loc);
+                $rootScope.currentUserLatitude = result.data.location.lat;
+                $rootScope.currentUserLongitude = result.data.location.lng;
+            });
         }
     }
 })();

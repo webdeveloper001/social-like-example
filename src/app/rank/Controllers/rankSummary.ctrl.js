@@ -523,7 +523,7 @@
                     }
                 }
                 $rootScope.canswers = fanswers;
-                $rootScope.fanswers = fanswers;
+                $rootScope.fanswers = fanswers;               
             }
             //all other ranks
             if(!foodNearMe) {
@@ -703,7 +703,7 @@
                 }
             }
             vm.numContributors = $rootScope.cuseractivity.length;
-        }
+           }
 
 
         function createAnswerStatus() {
@@ -827,78 +827,7 @@
         function postComment() {
             commentops.postComment('category', cObj);
         }
-        /*
-                function loadComments() {
-        
-                    if (!vm.commLoaded) {
-                        vm.commLoaded = true;
-                        if ($rootScope.isLoggedIn) {
-                            vm.initials = $rootScope.user.name.replace(/[^A-Z]/g, '');
-                            getIconColors($rootScope.user.id);
-                            vm.bc = bc;
-                            vm.fc = fc;
-                        }
-                        $rootScope.comments = [];
-        
-                        comment.getcomments().then(function (comments) {
-                            vm.comments = comments;
-                            for (var i = 0; i < vm.comments.length; i++) {
-                                vm.comments[i].initials = vm.comments[i].username.replace(/[^A-Z]/g, '');
-        
-                                var datenow = new Date();
-                                var tz = datenow.getTimezoneOffset();
-        
-                                var cdate = new Date(vm.comments[i].timestmp);
-                                cdate.setMinutes(cdate.getMinutes() - tz);
-        
-                                vm.comments[i].date = cdate.toLocaleDateString() + ' ' + cdate.toLocaleTimeString();
-                                getIconColors(vm.comments[i].user);
-                                vm.comments[i].bc = bc;
-                                vm.comments[i].fc = fc;
-                            }
-                            //console.log("vm.commLoaded, vm.comments.length, vm.isLoggedIn, vm.commentAllowed ---", vm.commLoaded, vm.comments.length, vm.isLoggedIn, vm.commentAllowed);
-                        });
-                    }
-                }
-                function postComment() {
-        
-                    cobj = {};
-                    cobj.category = $rootScope.cCategory.id;
-                    cobj.body = vm.comment;
-                    cobj.username = $rootScope.user.name;
-                    cobj.user = $rootScope.user.id;
-                    cobj.timestmp = Date.now();
-                    vm.comment = '';
-        
-                    comment.addcomment(cobj).then(function () {
-                        cobj.initials = $rootScope.user.name.replace(/[^A-Z]/g, '');
-                        getIconColors($rootScope.user.id);
-                        //datetime.formatdatetime(cobj);
-                        cobj.fc = fc;
-                        cobj.bc = bc;
-                        cobj.date = 'Just now';
-                        vm.comments.push(cobj);
-                        table.update($rootScope.cCategory.id, ['numcom'], [vm.comments.length]);
-                        console.log("vm.comments - ", vm.comments);
-                    });
-                }
-        
-                function getIconColors(x) {
-                    switch (x % 10) {
-                        case 0: { bc = '#b3b3b3'; fc = 'black'; break; }
-                        case 1: { bc = '#666666'; fc = 'white'; break; }
-                        case 2: { bc = '#006bb3'; fc = 'white'; break; }
-                        case 3: { bc = '#009933'; fc = 'white'; break; }
-                        case 4: { bc = '#cc0000'; fc = 'white'; break; }
-                        case 5: { bc = '#538cc6'; fc = 'black'; break; }
-                        case 6: { bc = '#b36b00'; fc = 'white'; break; }
-                        case 7: { bc = '#999966'; fc = 'black'; break; }
-                        case 8: { bc = '#4d0099'; fc = 'white'; break; }
-                        case 9: { bc = '#009999'; fc = 'black'; break; }
-                    }
-                }
-        */
-        
+ 
         function getDisplayImages(){
             vm.image1 = "/assets/images/noimage.jpg";
             vm.image2 = "/assets/images/noimage.jpg";
