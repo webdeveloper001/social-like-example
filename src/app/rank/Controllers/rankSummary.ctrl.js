@@ -542,7 +542,8 @@
                                     if (vm.type == 'Event') {
                                         eventObj = JSON.parse(answers[k].eventstr);
 
-                                        Object.assign(answers[k], eventObj);
+                                        //Object.assign(answers[k], eventObj);
+                                        mergeObject(answers[k],eventObj);
                                         obj.date = answers[k].sdate.slice(4);
                                     }
 
@@ -573,7 +574,8 @@
                                         if (vm.type == 'Event') {
                                             eventObj = JSON.parse(answers[k].eventstr);
 
-                                            Object.assign(answers[k], eventObj);
+                                            //Object.assign(answers[k], eventObj);
+                                            mergeObject(answers[k],eventObj);
                                             obj.date = answers[k].sdate.slice(4);
                                         }
 
@@ -852,6 +854,25 @@
 
         function callGetLocation() {
             $rootScope.$emit('getLocation');
+        }
+        
+        function mergeObject(x,y) {
+            x.bc = y.bc;
+            x.fc = y.fc;
+            x.freq = y.freq;
+            x.edate = y.edate;
+            x.sdate = y.sdate;
+            x.etime = y.etime;
+            x.etime2 = y.etime2;
+            x.stime = y.stime;
+            x.stime2 = y.stime2;
+            x.mon = y.mon;
+            x.tue = y.tue;
+            x.wed = y.wed;
+            x.thu = y.thu;
+            x.fri = y.fri;
+            x.sat = y.sat;
+            x.sun = y.sun;      
         }
 
     }

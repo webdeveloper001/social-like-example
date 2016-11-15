@@ -134,7 +134,8 @@
             
             if (vm.type == 'Event'){
                 var eventObj = JSON.parse(vm.answer.eventstr);
-                Object.assign(vm.answer, eventObj);
+                //Object.assign(vm.answer, eventObj);
+                mergeObject(vm.answer,eventObj);
                 vm.ehtml = htmlops.eventHtml(vm.answer,vm.sm);
                 vm.estyle = 'background-color:' + vm.answer.bc + ';color:' + vm.answer.fc + ';'+'white-space:pre;';
             }
@@ -827,6 +828,25 @@
         }
         function postComment(){
             commentops.postComment('answer', cObj);
+        }
+        
+        function mergeObject(x,y) {
+            x.bc = y.bc;
+            x.fc = y.fc;
+            x.freq = y.freq;
+            x.edate = y.edate;
+            x.sdate = y.sdate;
+            x.etime = y.etime;
+            x.etime2 = y.etime2;
+            x.stime = y.stime;
+            x.stime2 = y.stime2;
+            x.mon = y.mon;
+            x.tue = y.tue;
+            x.wed = y.wed;
+            x.thu = y.thu;
+            x.fri = y.fri;
+            x.sat = y.sat;
+            x.sun = y.sun;      
         }
  
     }

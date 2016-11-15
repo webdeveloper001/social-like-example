@@ -5,17 +5,25 @@
         .module('app')
         .controller('about', about);
 
-    about.$inject = ['$location', '$rootScope', '$state'];
+    about.$inject = ['$location', '$rootScope', '$state','$window'];
 
-    function about(location, $rootScope, $state) {
+    function about(location, $rootScope, $state, $window) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'about';
-        
 
         vm.goBack = goBack;
-
-       activate();
+        
+        if ($window.innerWidth < 512) {
+            vm.logoimage = "/assets/images/logogray.png";
+            vm.sm = true;
+        }
+        else {
+            vm.logoimage = "/assets/images/logogray.png";
+            vm.sm = false;
+        }
+      
+        activate();
 
         function activate() {            
 
