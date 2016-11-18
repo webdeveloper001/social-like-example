@@ -49,8 +49,8 @@
         var downVi = [];
         var editvotes = [];
         var recordsUpdated = false;
-        var numVotes2accept = 1;
-        var numVotes2discard = 1;
+        var numVotes2accept = 3;
+        var numVotes2discard = 3;
         // Methods
      
         //google search

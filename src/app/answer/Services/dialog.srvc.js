@@ -246,13 +246,13 @@
                 title = 'Information Edits';
                 message = 'Use edits to correct, add or update information in a profile. ' +
                 'All edits need to be accepted by other users before they are approved. </br></br>' +
-                'An edit or change becomes approved when the number of people that agree exceeds the number of people that disagree by 5. ' +
-                '</br></br>An edit or change gets rejected when the number of people that disagree exceeds those that agree by 5. ' +
+                'An edit or change becomes approved when the number of people that agree exceeds the number of people that disagree by 3. ' +
+                '</br></br>An edit or change gets rejected when the number of people that disagree exceeds those that agree by 3. ' +
                 '</br></br> Only one edit per field at a time is allowed. Make sure you vote on the edits you agree or disagree.';
             }
             if (type == 'addAnswer') {
                 title = 'Add an Answer';
-                message = '1. Fill out the form. The fields marked with * are required. All other fields are not required but recommended. <br/>' +
+                message = '1. Fill out the form. The fields marked with ** are required. All other fields are not required but recommended. <br/>' +
                 '<br/>2. Click the \'Get Images\' button. <br/>' +
                 '<br/>3. Use \'>>\' and \'<<\' buttons to browse through the images. You can \'Get More Images\' button to load more images.<br/>' +
                 '<br/>4. When you find the image you like \'Add\' your answer to the ranking.<br/>' +
