@@ -133,7 +133,7 @@
             getEdits(vm.answer.id);
             deleteButtonAccess();
             if (vm.type == 'Establishment') getHours();
-            if (vm.type != 'Establishment' && vm.type != 'Event' ) makeRelativeTable(vm.answer.id);
+            if (vm.type != 'Establishment' && vm.type != 'Event' && false) makeRelativeTable(vm.answer.id);
             if (vm.type == 'Establishment') getSpecials(vm.answer.id);
             if (vm.type == 'Establishment' || vm.type == 'PersonCust') getVRows(vm.answer.id);
             getAnswerRanks();
