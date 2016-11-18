@@ -187,13 +187,15 @@
         function deleteVRowGroup(x){
             
             //delete votes for all vrow in group that is deleted
+            /*No need for this, delete votes automatically deleted from call within vrow service
             for (var i=0; i < vm.vrows.length; i++){
                 if (vm.vrows[i].gnum == x.gnum){
                     vrowvotes.deleteVrowVotesbyVrow(vm.vrows[i].id);
                 }
-            }
+            }*/
+            
             //delete all vrows in that group
-            var promise = vrows.deleteVrowByGroup(x.gnum);
+            var promise = vrows.deleteVrowByGroup(x.gnum, x.answer);
 
             promise.then(function () {
                 console.log("$rootScope.cvrows - ", $rootScope.cvrows);

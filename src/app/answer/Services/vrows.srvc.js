@@ -89,14 +89,16 @@
                     titles = ['Quality of Drinks', 'Friendliness of Staff', 'Promptness of Service', 'Value for the Money'];
                 }
 
-                if ($rootScope.cCategory.title.indexOf('Yoga') > -1 || $rootScope.cCategory.title.indexOf('Pilates') > -1 ||
-                    $rootScope.cCategory.title.indexOf('yoga') > -1 || $rootScope.cCategory.title.indexOf('pilates') > -1 ||
-                    $rootScope.cCategory.title.indexOf('schools') > -1) {
-                    titles = ['Quality of Instructors', 'Friendliness of Staff', 'Class Environment', 'Value for the Money'];
-                }
                 if ($rootScope.cCategory.title.indexOf('Gyms') > -1 || $rootScope.cCategory.title.indexOf('gyms') > -1) {
                     titles = ['Equipment & Facilities', 'Friendliness of Staff', 'Environment', 'Value for the Money'];
                 }
+                
+                if ($rootScope.cCategory.title.indexOf('Yoga') > -1 || $rootScope.cCategory.title.indexOf('Pilates') > -1 ||
+                    $rootScope.cCategory.title.indexOf('yoga') > -1 || $rootScope.cCategory.title.indexOf('pilates') > -1 ||
+                    $rootScope.cCategory.title.indexOf('schools') > -1 || $rootScope.cCategory.title.indexOf('MMA') > -1) {
+                    titles = ['Quality of Instructors', 'Friendliness of Staff', 'Class Environment', 'Value for the Money'];
+                }
+                
                 if ($rootScope.cCategory.title.indexOf('Apartments') > -1 || $rootScope.cCategory.title.indexOf('apartments') > -1) {
                     titles = ['Location', 'Floor Layout', 'Facilities', 'Value for the Money'];
                 }
@@ -220,7 +222,7 @@
             }
         }
 
-        function deleteVrowByGroup(gnum) {
+        function deleteVrowByGroup(gnum,answer) {
             
             //delete records from local copy
             for (var i = _allvrows.length - 1; i >= 0; i--) {
@@ -228,8 +230,7 @@
                     _allvrows.splice(i, 1);
                 }
             }
-
-            var url = baseURI + '?filter=gnum=' + gnum;
+            var url = baseURI + '?filter=(gnum=' + gnum+') AND (answer='+ answer+')';
 
             return $http.delete(url).then(querySucceeded, _queryFailed);
 

@@ -5,9 +5,9 @@
         .module('app')
         .factory('comment2', comment2);
 
-    comment2.$inject = ['$http', '$q', '$rootScope'];
+    comment2.$inject = ['$http', '$q', '$rootScope','uaf'];
 
-    function comment2($http, $q, $rootScope) {
+    function comment2($http, $q, $rootScope, uaf) {
 
         //Members
         var _comments = [];
@@ -63,6 +63,7 @@
                 newcommentx.id = result.data.resource[0].id; 
                 //_comments.push(newcommentx);
                 
+                uaf.post('commentA',['answer'],[newcomment.answer]); //user activity feed 
                 //$rootScope.ccomments.push(newcommentx);
 
                 if ($rootScope.DEBUG_MODE) console.log("Adding new comment succesful", result);

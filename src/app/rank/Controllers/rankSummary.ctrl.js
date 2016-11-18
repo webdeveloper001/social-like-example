@@ -5,11 +5,11 @@
         .module('app')
         .controller('rankSummary', rankSummary);
 
-    rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans'
+    rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows'
         , '$rootScope', '$modal', 'editvote', 'votes', 'commentops'];
 
-    function rankSummary(dialog, $stateParams, $state, catans
+    function rankSummary(dialog, $stateParams, $state, catans, datetime
         , answer, rank, $filter, table, vrowvotes, $window, vrows
         , $rootScope, $modal, editvote, votes, commentops) {
         /* jshint validthis:true */
@@ -51,7 +51,7 @@
         //For readability
         var answers = $rootScope.answers;
         var catansrecs = $rootScope.catansrecs;
-        var edits = $rootScope.edits;
+        //var edits = $rootScope.edits;
         var useractivities = $rootScope.alluseractivity;
         var mrecs = $rootScope.mrecs;
 
@@ -125,7 +125,7 @@
             for (var i = 0; i < vm.answers.length; i++) {
                 vm.answers[i].Rank = i + 1;
             }
-            
+
             vm.answers = $filter('orderBy')(vm.answers, 'Rank');
             
             //Determine number of user comments
@@ -266,7 +266,7 @@
   
             //Sorting rules
             if (foodNearMe || $rootScope.includeNearMe) sortByDistance();
-            if (vm.isE) sortByDate();            
+            if (vm.isE) sortByDate();
             if (!foodNearMe && !vm.isE) vm.showR = true || (!vm.sm);
 
             //TODO update answers in DB
@@ -473,6 +473,7 @@
             $rootScope.B = [];
             var eventObj = {};
             var obj = {};
+            var eventIsCurrent = true;
             
             //Rank is 'Food Near Me' - first time only
             if (foodNearMe && $rootScope.fanswers == undefined) {
@@ -523,12 +524,12 @@
                     }
                 }
                 $rootScope.canswers = fanswers;
-                $rootScope.fanswers = fanswers;               
+                $rootScope.fanswers = fanswers;
             }
             //all other ranks
-            if(!foodNearMe) {
+            if (!foodNearMe) {
                 for (var i = 0; i < catansrecs.length; i++) {
-                   //if rank is atomic 
+                    //if rank is atomic 
                     if ($rootScope.cCategory.isatomic) {
                         if (catansrecs[i].category == $rootScope.cCategory.id) {
                             for (var k = 0; k < answers.length; k++) {
@@ -540,19 +541,33 @@
                                     obj.upV = catansrecs[i].upV;
 
                                     if (vm.type == 'Event') {
+
                                         eventObj = JSON.parse(answers[k].eventstr);
 
                                         //Object.assign(answers[k], eventObj);
-                                        mergeObject(answers[k],eventObj);
+                                        mergeObject(answers[k], eventObj);
                                         obj.date = answers[k].sdate.slice(4);
-                                    }
+                                        eventIsCurrent = datetime.dateIsCurrent(obj.date);
 
-                                    $rootScope.canswers.push(obj);
-                                    $rootScope.ccatans.push(catansrecs[i]);
+                                        if (eventIsCurrent) {
+                                            $rootScope.canswers.push(obj);
+                                            $rootScope.ccatans.push(catansrecs[i]);
                                 
-                                    //Collect array of 'current' catans records ids
-                                    $rootScope.B.push(catansrecs[i].id);
-                                    break;
+                                            //Collect array of 'current' catans records ids
+                                            $rootScope.B.push(catansrecs[i].id);
+                                            break;
+                                        }
+                                        else break;
+                                    }
+                                    else {
+
+                                        $rootScope.canswers.push(obj);
+                                        $rootScope.ccatans.push(catansrecs[i]);
+                                
+                                        //Collect array of 'current' catans records ids
+                                        $rootScope.B.push(catansrecs[i].id);
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -572,19 +587,33 @@
                                         obj.upV = catansrecs[i].upV;
 
                                         if (vm.type == 'Event') {
+
                                             eventObj = JSON.parse(answers[k].eventstr);
 
                                             //Object.assign(answers[k], eventObj);
-                                            mergeObject(answers[k],eventObj);
+                                            mergeObject(answers[k], eventObj);
                                             obj.date = answers[k].sdate.slice(4);
-                                        }
+                                            eventIsCurrent = datetime.dateIsCurrent(obj.date);
 
-                                        $rootScope.canswers.push(obj);
-                                        $rootScope.ccatans.push(catansrecs[i]);
-                            
-                                        //Collect array of 'current' catans records ids
-                                        $rootScope.B.push(catansrecs[i].id);
-                                        break;
+                                            if (eventIsCurrent) {
+                                                $rootScope.canswers.push(obj);
+                                                $rootScope.ccatans.push(catansrecs[i]);
+                                
+                                                //Collect array of 'current' catans records ids
+                                                $rootScope.B.push(catansrecs[i].id);
+                                                break;
+                                            }
+                                            else break;
+                                        }
+                                        else {
+
+                                            $rootScope.canswers.push(obj);
+                                            $rootScope.ccatans.push(catansrecs[i]);
+                                
+                                            //Collect array of 'current' catans records ids
+                                            $rootScope.B.push(catansrecs[i].id);
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -687,7 +716,7 @@
                     $rootScope.cmrecs.push(mrecs[i]);
                 }
             }
-                        
+            /*            
             //Load edits for answers in this category
             $rootScope.cedits = [];
             for (var i = 0; i < edits.length; i++) {
@@ -696,7 +725,7 @@
                     $rootScope.cedits.push(edititem);
                 }
             }
-            
+            */
             //Load UserActivity data
             $rootScope.cuseractivity = [];
             for (var i = 0; i < useractivities.length; i++) {
@@ -705,7 +734,10 @@
                 }
             }
             vm.numContributors = $rootScope.cuseractivity.length;
-           }
+            
+            //data loading completed
+            vm.isLoading = false;
+        }
 
 
         function createAnswerStatus() {
@@ -743,7 +775,7 @@
             }
             vm.answers = vm.answers.sort(compare);
             getDisplayImages();
-            
+
             $rootScope.canswers = vm.answers;
             //vm.answers = $filter('orderBy')(vm.answers, 'Rank');
             vm.selRank = 'active';
@@ -782,7 +814,7 @@
             }
             vm.answers = vm.answers.sort(compare);
             getDisplayImages();
-                
+
             $rootScope.canswers = vm.answers;
             //vm.answers = $filter('orderBy')(vm.answers, 'dist');
             vm.selRank = '';
@@ -797,22 +829,15 @@
         function sortByDate() {
             function compare(a, b) {
 
-                var d1 = new Date(a.date);
-                var d1s = d1.getFullYear().toString() +
-                    (d1.getMonth() + 1 < 10 ? ('0' + (d1.getMonth() + 1).toString()) : (d1.getMonth() + 1).toString()) +
-                    (d1.getDate() < 10 ? ('0' + d1.getDate().toString()) : d1.getDate().toString());
-
-                var d2 = new Date(b.date);
-                var d2s = d2.getFullYear().toString() +
-                    (d2.getMonth() + 1 < 10 ? ('0' + (d2.getMonth() + 1).toString()) : (d2.getMonth() + 1).toString()) +
-                    (d2.getDate() < 10 ? ('0' + d2.getDate().toString()) : d2.getDate().toString());
-
-                return Number(d1s) - Number(d2s);
+               var d1 = datetime.date2number(a.date);
+               var d2 = datetime.date2number(b.date);
+             
+               return d1 - d2;
             }
 
             vm.answers = vm.answers.sort(compare);
             getDisplayImages();
-            
+
             $rootScope.canswers = vm.answers;
             //vm.answers = $filter('orderBy')(vm.answers, 'dist');
             vm.selRank = '';
@@ -821,7 +846,6 @@
             vm.selDate = 'active';
 
             //if (!vm.isE) vm.showR = false || (!vm.sm);
-
         }
         function loadComments() {
             commentops.loadComments('category', cObj);
@@ -829,12 +853,12 @@
         function postComment() {
             commentops.postComment('category', cObj);
         }
- 
-        function getDisplayImages(){
+
+        function getDisplayImages() {
             vm.image1 = "/assets/images/noimage.jpg";
             vm.image2 = "/assets/images/noimage.jpg";
             vm.image3 = "/assets/images/noimage.jpg";
-                
+
             if (vm.answers[0]) vm.image1 = vm.answers[0].imageurl;
             if (vm.answers[1]) vm.image2 = vm.answers[1].imageurl;
             if (vm.answers[2]) vm.image3 = vm.answers[2].imageurl;
@@ -855,8 +879,8 @@
         function callGetLocation() {
             $rootScope.$emit('getLocation');
         }
-        
-        function mergeObject(x,y) {
+
+        function mergeObject(x, y) {
             x.bc = y.bc;
             x.fc = y.fc;
             x.freq = y.freq;
@@ -872,7 +896,7 @@
             x.thu = y.thu;
             x.fri = y.fri;
             x.sat = y.sat;
-            x.sun = y.sun;      
+            x.sun = y.sun;
         }
 
     }

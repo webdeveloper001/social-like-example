@@ -693,7 +693,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                          }
                     }    
                     *///End 15
-                   /* //16. Run through all answers if they dont have vrows
+                    /*//16. Run through all answers if they dont have vrows
                     var answer = {};
                     var hasvr = false;
                     if (!applyRuleDone) {
@@ -717,17 +717,46 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                         break;
                                     }
                                 }
+                                
                                 if (hasvr == false) {
-                                    //vrows.postVrows4Answer(answer);
+                                    vrows.postVrows4Answer(answer);
                                     //console.log(answer.name);
                                     //console.log($rootScope.cCategory.title);
-                                    console.log(midx++);
+                                    //console.log(midx++);
                                 }
+                                //if (hasvr) vrows.deleteVrowByAnswer(answer.id);
                             }
                         }
                     }
-                   */ //End 16
-                                                               
+                    *///End 16
+                    /* //17. Remove all binds;
+                    var answerx = {};
+                    for (var i = 0; i < $rootScope.answers.length; i++) {
+                            answerx = $rootScope.answers[i];
+                            if (answerx.owner != undefined && answerx.owner != 0) {
+                                //console.log("answer name - ", answer.name, answer.id);
+                                answer.updateAnswer(answerx.id, ['owner'], [0]);
+                            }
+                        }
+                      /*  
+                        var special = {};
+                    for (var k = 0; k < $rootScope.specials.length; k++) {
+                            special = $rootScope.specials[k];
+                            //if (answer.owner != undefined && answer.owner != 0) {
+                                console.log("special - ", special.answer);
+                                 var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(special.answer);
+                                 console.log("answer with special - ", $rootScope.answers[idx].name);  
+                            //}
+                        }
+                        */    
+                    //End 17
+                   /* //18. Reset views
+                    for (var i=0; i < $rootScope.answers.length; i++){
+                        if ($rootScope.answers[i].numcom != 0){
+                            answer.updateAnswer($rootScope.answers[i].id, ['numcom'], [0]); 
+                        }
+                    }
+                   */ //End 18                                                                   
                 }
             }], //end controller
         link: function (scope) {

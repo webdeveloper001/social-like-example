@@ -5,9 +5,9 @@
         .module('app')
         .factory('vrowvotes', vrowvotes);
 
-    vrowvotes.$inject = ['$http', '$q', '$rootScope'];
+    vrowvotes.$inject = ['$http', '$q', '$rootScope','uaf'];
 
-    function vrowvotes($http, $q, $rootScope) {
+    function vrowvotes($http, $q, $rootScope, uaf) {
 
         // Members
         var _vrowvotes = [];
@@ -72,6 +72,10 @@
                 _vrowvotes.push(datax);
                 
                 $rootScope.cvrowvotes.push(datax);
+               
+               //user activity feed 
+               if (data.val == 1) uaf.post('upVotedVrow',['answer','vrow'],[data.answer, datax.vrow]); 
+               if (data.val == -1) uaf.post('downVotedVrow',['answer','vrow'],[data.answer, datax.vrow]);  
                 
                 if ($rootScope.DEBUG_MODE) console.log("Creating new vrowvoting record was succesful");
                 return result.data;

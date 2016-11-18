@@ -15,11 +15,13 @@
 
         .controller('layout', layout);
 
-    layout.$inject = ['$location', '$rootScope','$window','$q', '$http','pvisits', 'DEBUG_MODE', 'rankofday',
-    'answer', 'table','special', 'matchrec', 'edit','useractivity','vrows','headline','cblock', 'catans','$state'];
+    layout.$inject = ['$location', '$rootScope','$window','$q', '$http','pvisits', 
+    'DEBUG_MODE', 'rankofday', 'answer', 'table','special', 'datetime','uaf',
+    'matchrec', 'edit','useractivity','vrows','headline','cblock', 'catans','$state'];
 
-    function layout($location, $rootScope, $window, $q, $http, pvisits, DEBUG_MODE, rankofday,
-    answer, table, special, matchrec, edit, useractivity, vrows, headline, cblock, catans, $state) {
+    function layout($location, $rootScope, $window, $q, $http, pvisits, 
+    DEBUG_MODE, rankofday, answer, table, special, datetime, uaf, 
+    matchrec, edit, useractivity, vrows, headline, cblock, catans, $state) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'layout';
@@ -58,7 +60,7 @@
                 vm.isLoading = true;
                 loadData();
             }
-            
+             
             if ($rootScope.DEBUG_MODE) console.log("Layout Loaded!");
 
         }
@@ -106,8 +108,9 @@
             var p9 = cblock.getcblocks();
             var p10 = pvisits.getpvisits();
             var p11 = rankofday.getrankofday();
+            var p12 = uaf.getactions();
 
-            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11]).then(function (d){
+            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11,p12]).then(function (d){
                 $rootScope.answers = d[0];
                 $rootScope.content = d[1];
                 $rootScope.specials = d[2];
@@ -120,6 +123,7 @@
                 $rootScope.cblocks = d[9];
                 $rootScope.pvisits = d[10];
                 $rootScope.rankofday = d[11];
+                $rootScope.uafs = d[12];
                 
                 updatePageVisits();
                 loadingDone();
@@ -150,7 +154,10 @@
                 }
             }
             if (newDate) pvisits.postRec(dateStr);
-            else pvisits.patchRec(pvisitrec.id, pvisitrec.nvisits+1);                        
+            else pvisits.patchRec(pvisitrec.id, pvisitrec.nvisits+1);
+            
+            $rootScope.dateToday = dateStr;
+            $rootScope.dateTodayNum = datetime.date2number(dateStr);                        
         }
         
         /*

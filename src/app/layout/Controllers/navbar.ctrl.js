@@ -125,8 +125,8 @@
          * Function to get current location of User based on navigator
          */
         $rootScope.getCurrentPositionOfUser = function () {
-
-
+            
+            
             geolocator.locate(geoOptions, function (err, location) {
                 if (err) {
                     if ($rootScope.DEBUG_MODE) console.log('Error getting geolocation - ERROR(' + err.code + '): ' + err.message);

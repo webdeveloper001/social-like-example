@@ -58,8 +58,6 @@
         vm.postComment = postComment;
         
         vm.fields = $rootScope.fields;
-        vm.type = $rootScope.cCategory.type;
-        vm.title = $rootScope.cCategory.title;
         vm.isLoggedIn = $rootScope.isLoggedIn;
         
         //Comments related variables
@@ -75,10 +73,19 @@
         
         //vm.userIsOwner = $rootScope.userIsOwner;
         if ($stateParams.index) {
-            var i =  answers.map(function(x) {return x.id; }).indexOf(+$stateParams.index);
-            vm.answer = answers[i];
+            var i =  $rootScope.answers.map(function(x) {return x.id; }).indexOf(+$stateParams.index);
+            vm.answer = $rootScope.answers[i];
         }
         $rootScope.canswer = vm.answer;
+        vm.type = vm.answer.type;
+        
+        if ($rootScope.cCategory) {
+            vm.title = $rootScope.cCategory.title;
+        }
+        else {
+            vm.title = '';
+            answers = [vm.answer];    
+        }
         
         vm.idx = answers.map(function(x) {return x.id; }).indexOf(vm.answer.id)+1;
         
@@ -130,7 +137,13 @@
             if (vm.type == 'Establishment') getSpecials(vm.answer.id);
             if (vm.type == 'Establishment' || vm.type == 'PersonCust') getVRows(vm.answer.id);
             getAnswerRanks();
-            getAnswerVotes();
+            //if user votes are available - do my thing at getAnswerVotes
+            //else fetch user votes
+            if ($rootScope.cvotes) getAnswerVotes();
+            else {
+                 $rootScope.cvotes = [];
+                 $rootScope.ceditvotes = [];
+            }
             
             if (vm.type == 'Event'){
                 var eventObj = JSON.parse(vm.answer.eventstr);
@@ -156,13 +169,15 @@
             if (vm.answer.numcom == undefined) vm.numcom = 0;
             else vm.numcom = vm.answer.numcom;
             
+            $window.scrollTo(0,0);
+            
             if ($rootScope.DEBUG_MODE) console.log("Answer details loaded");
             
         }
 
         function getHeader() {
-            vm.public = $rootScope.canswers.public;
-            if (vm.answer.owner == undefined || vm.answer.owner == null) {
+            //vm.public = $rootScope.canswers.public;
+            if (vm.answer.owner == undefined || vm.answer.owner == null || vm.answer.owner == 0) {
                 vm.answer.hasOwner = false;
             }
             else vm.answer.hasOwner = true;
@@ -195,30 +210,7 @@
                 return;
             }         
         }
-
-        function getAnswer() {
-
-            if ($stateParams.index) {
-                answer.getAnswer($stateParams.index).then(success, fail);
-            }
-
-            function success(result) {
-
-                vm.answer = result;
-                //console.log(vm.answer.Name);
-            }
-
-            function fail(error) {
-
-                console.log("an error has occurred", error);
-            }
-
-        }
-
-        function getAnswerImage() {
-
-        }
-        
+     
         function getHours(){
             vm.hrset = false;
             if (vm.answer.strhours != undefined && vm.answer.strhours != null){
@@ -316,35 +308,45 @@
                 //if vote is changed to non-zero
                 if (voteRecordExists && vm.answerRanks[i].uservote.vote != vm.answerRanks[i].dV && vm.answerRanks[i].dV != 0 ) {
                     //update vote
+                    if ($rootScope.DEBUG_MODE) console.log("UR-1");
                     votes.patchRec(vm.answerRanks[i].uservote.id, vm.answerRanks[i].dV);
                 }
                 //if vote is changed to zero
                 if (voteRecordExists && vm.answerRanks[i].uservote.vote != vm.answerRanks[i].dV && vm.answerRanks[i].dV == 0 ) {
                     //Delete vote
+                    if ($rootScope.DEBUG_MODE) console.log("UR-2");
                     votes.deleteRec(vm.answerRanks[i].uservote.id);
                     //Decrease vote counter from user activity. If counter is 1, also delete user activiy record (since there is no more votes
                     //from this user)
                     if ($rootScope.userActRec.votes < 2) {
+                        if ($rootScope.DEBUG_MODE) console.log("UR-3");
                         useractivity.deleteRec($rootScope.userActRec.id);                        
                     }
                     else {
+                        if ($rootScope.DEBUG_MODE) console.log("UR-4");
                         useractivity.patchRec($rootScope.userActRec.id, $rootScope.userActRec.votes-1);
                         $rootScope.userActRec.votes--;
                     }                    
                 }
                 if (!voteRecordExists && vm.answerRanks[i].dV != 0) {
                     //Post a new vote and create useractivity record
+                    if ($rootScope.DEBUG_MODE) console.log("UR-5");
                     votes.postRec(vm.answerRanks[i].catans, vm.answer.id, vm.answerRanks[i].id, vm.answerRanks[i].dV);
                     if ($rootScope.userHasRank) {
+                        if ($rootScope.DEBUG_MODE) console.log("UR-6");
                         useractivity.patchRec($rootScope.userActRec.id, $rootScope.userActRec.votes+1);
                         $rootScope.userActRec.votes++;
                     }    
-                    else useractivity.postRec(vm.answerRanks[i].id);
+                    else {
+                        if ($rootScope.DEBUG_MODE) console.log("UR-7");
+                        useractivity.postRec(vm.answerRanks[i].id);
+                    }
                 }
             
                 //update answer record (vote count) if necessary
                 //TODO Need to pass table id
                 if ((vm.answerRanks[i].upV != vm.answerRanks[i].upVi) || (vm.answerRanks[i].downV != vm.answerRanks[i].downVi)) {
+                    if ($rootScope.DEBUG_MODE) console.log("UR-8");
                     catans.updateRec(vm.answerRanks[i].catans, ["upV", "downV"], [vm.answerRanks[i].upV, vm.answerRanks[i].downV]);
                 }
             }
@@ -440,13 +442,13 @@
         //See if there are edits for this answer
         function getEdits(id) {
             vm.numEdits = 0;
-            for (var i = 0; i < $rootScope.cedits.length; i++) {
-                if ($rootScope.cedits[i].answer == id) {
+            for (var i = 0; i < $rootScope.edits.length; i++) {
+                if ($rootScope.edits[i].answer == id) {
                     vm.numEdits++;
                 }
             }
         }
-
+        
         function displayVote(x) {
             
             if (x.dV == 1) {
@@ -510,7 +512,7 @@
             if ($rootScope.DEBUG_MODE) console.log("goBack");       
             
             //update Up and Down votes, and counter
-            if (!recordsUpdated) updateRecords();
+            if (!recordsUpdated && $rootScope.isLoggedIn) updateRecords();
 
             if ($rootScope.previousState == 'match') {
                 $state.go('match');
@@ -518,7 +520,8 @@
             else {
                 var nViews = vm.answer.views + 1;
                 answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
-                $state.go('rankSummary', { index: $rootScope.cCategory.id });
+                if ($rootScope.cCategory) $state.go('rankSummary', { index: $rootScope.cCategory.id });
+                else $state.go('cwrapper');
             }
         }
 

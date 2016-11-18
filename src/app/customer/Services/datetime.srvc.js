@@ -17,7 +17,8 @@
 
             formatdatetime: formatdatetime,
             formatTime: formatTime,
-            getDate: getDate
+            date2number: date2number,
+            dateIsCurrent: dateIsCurrent
         };
 
         return service;
@@ -81,8 +82,18 @@
         }
         
         //Get date in number from date in string
-        function getDate(datestr){            
-            //var date = Date(datestr);  
+        function date2number(datestr){
+             var d1 = new Date(datestr);
+             var d1s = d1.getFullYear().toString() +
+                (d1.getMonth() + 1 < 10 ? ('0' + (d1.getMonth() + 1).toString()) : (d1.getMonth() + 1).toString()) +
+                (d1.getDate() < 10 ? ('0' + d1.getDate().toString()) : d1.getDate().toString());
+             return Number(d1s);  
+        }
+        
+        //return true if date is today or in the future
+        function dateIsCurrent(datestr){
+            var date = date2number(datestr);
+            return date - $rootScope.dateTodayNum >= 0;
         }
 
     }

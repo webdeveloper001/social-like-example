@@ -5,9 +5,9 @@
         .module('app')
         .factory('editvote', editvote);
 
-    editvote.$inject = ['$http', '$q', '$rootScope'];
+    editvote.$inject = ['$http', '$q', '$rootScope','uaf'];
 
-    function editvote($http, $q, $rootScope) {
+    function editvote($http, $q, $rootScope,uaf) {
 
         // Members
         var _editvotes = [];
@@ -70,6 +70,8 @@
                     _editvotes.push(itemx);
 
                     $rootScope.ceditvotes.push(itemx);
+                    if (itemx.vote == 1) uaf.post('upVotedEdit',['answer', 'edit'],[itemx.answer, itemx.edit]); //user activity feed
+                    if (itemx.vote == -1) uaf.post('downVotedEdit',['answer', 'edit'],[itemx.answer, itemx.edit]); //user activity feed
                 }
 
                 if ($rootScope.DEBUG_MODE) console.log("Creating new voting record for edit was succesful");

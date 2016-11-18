@@ -5,9 +5,9 @@
         .module('app')
         .factory('edit', edit);
 
-    edit.$inject = ['$http', '$q', '$rootScope'];
+    edit.$inject = ['$http', '$q', '$rootScope','uaf'];
 
-    function edit($http, $q, $rootScope) {
+    function edit($http, $q, $rootScope,uaf) {
 
         //Members
         var _edits = [];
@@ -64,6 +64,7 @@
                 _edits.push(newEditx);
                 
                 $rootScope.cedits.push(newEditx);
+                uaf.post('editA',['answer', 'edit'],[newEditx.answer, newEditx.id]); //user activity feed 
 
                 if ($rootScope.DEBUG_MODE) console.log("Adding new Edit succesful", result);
                 return result.data;

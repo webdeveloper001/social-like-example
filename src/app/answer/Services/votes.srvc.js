@@ -5,9 +5,9 @@
         .module('app')
         .factory('votes', votes);
 
-    votes.$inject = ['$http', '$q', '$rootScope'];
+    votes.$inject = ['$http', '$q', '$rootScope','uaf'];
 
-    function votes($http, $q, $rootScope, useractivity) {
+    function votes($http, $q, $rootScope, uaf) {
 
         // Members
         var _votes = [];
@@ -75,6 +75,8 @@
                 datax.id = result.data.resource[0].id; 
                 _votes.push(datax);
                 
+               if (data.vote == 1) uaf.post('upVoted',['answer','category'],[answer_id, category_id]); //user activity feed
+               if (data.vote == -1) uaf.post('downVoted',['answer','category'],[answer_id, category_id]); //user activity feed 
                 //$rootScope.cvotes.push(datax);
                 $rootScope.$emit('updateVoteTable');
                 

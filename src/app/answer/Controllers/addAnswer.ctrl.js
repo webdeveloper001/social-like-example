@@ -5,9 +5,11 @@
         .module('app')
         .controller('addAnswer', addAnswer);
 
-    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'image', 'catans', 'getgps', '$timeout','getwiki','$window'];
+    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 
+    'image', 'catans', 'getgps', '$timeout','getwiki','$window'];
 
-    function addAnswer(dialog, $state, answer, $rootScope, $modal, image, catans, getgps, $timeout, getwiki, $window) {
+    function addAnswer(dialog, $state, answer, $rootScope, $modal,
+    image, catans, getgps, $timeout, getwiki, $window) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'addAnswer';
@@ -318,7 +320,7 @@
                 //create 2 catans records one for downtown and then district
                 if (eqFound && !inCity) {
                     if ($rootScope.DEBUG_MODE) console.log("P1 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx);
-                    answer.addAnswer2(myAnswer, [$rootScope.cCategory.id, eqRankIdx]).then(rankSummary);
+                    answer.addAnswer2(myAnswer, [$rootScope.cCategory.id, eqRankIdx]).then(rankSummary);                    
                 }
                 else if (eqFound && inCity) {
                     if ($rootScope.DEBUG_MODE) console.log("P2 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx);

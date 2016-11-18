@@ -5,9 +5,9 @@
         .module('app')
         .factory('answer', answer);
 
-    answer.$inject = ['$http', '$q', '$rootScope','catans','vrows'];
+    answer.$inject = ['$http', '$q', '$rootScope','catans','vrows','uaf'];
 
-    function answer($http, $q, $rootScope,catans, vrows) {
+    function answer($http, $q, $rootScope,catans, vrows, uaf) {
 
         //Members
         var _answers = [];
@@ -108,6 +108,9 @@
                                 
                 catans.postRec(answerx.id);
                 vrows.postVrows4Answer(answerx);
+                
+                uaf.post('addedAnswer',['answer','category'],[answerx.id, $rootScope.cCategory.id]); //user activity feed
+                
                 if ($rootScope.DEBUG_MODE) console.log("created catans for a new answer");
                 if ($rootScope.DEBUG_MODE) console.log("result", result);
                 return result.data;
@@ -135,6 +138,8 @@
                 var answerx = answer;
                 answerx.id = result.data.resource[0].id; 
                 _answers.push(answerx);
+                
+                uaf.post('addedAnswer',['answer','category'],[answerx.id, category]); //user activity feed
                                 
                 for (var n=0; n<category.length; n++){
                     catans.postRec2(answerx.id, category[n]);    
@@ -212,6 +217,8 @@
                 body: obj
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
+                
+                if (field[0] == 'owner') uaf.post('binded',['answer'],[answer_id]); //user activity feed 
 
                 if ($rootScope.DEBUG_MODE) console.log("updating answer succesful");
                 return result.data;

@@ -6,11 +6,11 @@
         .controller('cwrapper', cwrapper);
 
     cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
-        'query', 'table', 'dialog',
+        'query', 'table', 'dialog', 'uaf',
         'votes', 'editvote', 'vrowvotes'];
 
     function cwrapper($rootScope, $state, $http, $stateParams, $scope, 
-        query, table, dialog,
+        query, table, dialog, uaf,
         votes, editvote, vrowvotes) {
         /* jshint validthis:true */
         var vm = this;
@@ -24,13 +24,19 @@
         vm.viewRank = viewRank;
         vm.editRank = editRank;
         vm.applyRule = applyRule;
-        vm.selnh = selnh;
-        vm.goHome = goHome;
-        
+          
         //Quick Links 
         vm.foodNearMe = foodNearMe;
         vm.events = events;
         vm.selfimprove = selfimprove;
+        vm.refreshFeed = refreshFeed;
+        
+        //Methods
+        vm.selnh = selnh;
+        vm.goHome = goHome;
+        vm.seeMoreFeed = seeMoreFeed;
+        vm.fres = 6;
+        vm.ftext = 'see more';
         
         //vm.isAdmin = true;
         $rootScope.editMode = false;
@@ -52,6 +58,8 @@
         else init();
 
         function activate() {
+            
+            getFeed();
             if ($rootScope.DEBUG_MODE) console.log("activate cwrapper!");
             vm.isNh = $rootScope.isNh;
             
@@ -118,6 +126,7 @@
             
             loadcontent();
             getEstablishmentAnswers();
+            getFeed();
 
             //});
 
@@ -311,20 +320,32 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-             // $rootScope.$emit('applyRule');
+           //   $rootScope.$emit('applyRule');
         }
            
-        /*//Upload Image
-        function uploadFile() {
-            console.log('file is ');
-            console.log(vm.myFile);
-
-            if (vm.myFile) {
-                fileupload.uploadFileToUrl(vm.myFile);
-            }
-
+        function getFeed(){
+            vm.feeds = $rootScope.uafs;
+            vm.fres = 6;
+            vm.ftext = 'see more';
+            //console.log("vm.feeds - ", vm.feeds);
         }
-        */
+        
+        function seeMoreFeed(){
+            if (vm.fres == 6){
+                vm.fres = 20;
+                vm.ftext = 'see less';
+                return;
+            }
+            if (vm.fres == 20){
+                vm.fres = 6;
+                vm.ftext = 'see more';
+                return;
+            }            
+        }
+        
+        function refreshFeed(){
+            uaf.getactions().then(getFeed);
+        }
         function goHome(){
             //$rootScope.$emit('quitFeedbackMode');
             $rootScope.fbmode = false;

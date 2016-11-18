@@ -54,7 +54,7 @@
 	
 	<!-- <content-block type='quickLinks' dynamic=false ></content-block> -->
 	<!--<content-block type='rankofweeknh' dynamic=false rankofweek=true></content-block>-->
-	
+		
 	<table class="table" style="border-style:none" ng-if="vm.isCity">
 		<tbody>
 			<thead>
@@ -71,8 +71,65 @@
 			<button class="btn btn-primary" ng-click="vm.events()">Events</button>
 			<button class="btn btn-success" ng-click="vm.selfimprove()">I feel lucky</button>
 	</div>
-	
 	<br>
+	
+	<table class="table" style="border-style:none" ng-if="vm.isCity">
+		<tbody>
+			<thead>
+				<tr>
+					<th style="background-color:#595959;color:#f8f8ff;width:50%">
+						Feed
+						 <span class="nomargin">
+                    		<button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
+                    		ng-click="vm.refreshFeed()">
+                    		<span class="glyphicon glyphicon-refresh" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
+                    		</button>
+                		</span>
+					</th>
+				</tr>
+			</thead>
+		</tbody>
+	</table>
+	
+<div ng-repeat="x in vm.feeds | orderBy:'-id' | limitTo:vm.fres" ng-if="vm.isCity">
+	<div class="row" style="margin:4px">
+		<div class="usericon col-xs-2 col-sm-2 col-md-1 col-lg-1" style="background-color:{{x.bc}};color:{{x.fc}};" align="middle">
+			{{x.initials}}
+		</div>
+		<div class="col-xs-10 col-sm-10 col-md-11 col-lg-11">
+			<div ng-if="x.action == 'addedAnswer'">
+				added <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a> to
+				<a href="#/rankSummary/{{x.category}}">{{x.text2}}</a>.
+			</div>
+			<div ng-if="x.action == 'upVoted'">
+				endorsed <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a> in
+				<a href="#/rankSummary/{{x.category}}">{{x.text2}}</a>.
+			</div>
+			<div ng-if="x.action == 'downVoted'">
+				voted down <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a> in
+				<a href="#/rankSummary/{{x.category}}">{{x.text2}}</a>.
+			</div>
+			<div ng-if="x.action == 'commentR'">
+				posted a comment in	<a href="#/rankSummary/{{x.category}}">{{x.text2}}</a>.
+			</div>
+			<div ng-if="x.action == 'commentA'">
+				posted a comment for <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a>.
+			</div>
+			<div ng-if="x.action == 'editA'">
+				edited the information of <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a>.
+			</div>
+			<div ng-if="x.action == 'upVotedVrow'">
+				endorsed the <em>{{x.text2}}</em> of <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a>.
+			</div>
+			<div ng-if="x.action == 'downVotedVrow'">
+				voted down the <em>{{x.text2}}</em> of <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a>.
+			</div>
+		</div>
+	</div>
+</div>
+<p class="text-right" style="color:blue;" ng-click="vm.seeMoreFeed()">&lt;&lt;{{vm.ftext}}&gt;&gt;</p>
+	<br>
+	
 	<div class="row">
 		<div class="col-lg-6">
 			<content-block type="lifestyle" dynamic=false></content-block>
@@ -157,5 +214,3 @@
 			<button class="btn btn-default" ng-click="vm.goHome()">Home</button>
 	</div>
 </div>
-
-	
