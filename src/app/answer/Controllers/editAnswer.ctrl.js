@@ -146,9 +146,9 @@
             upVi = [];
             downVi = [];
             var edit_obj = {}
-            for (var i = 0; i < $rootScope.cedits.length; i++) {
-                if ($rootScope.cedits[i].answer == answer_id) {
-                    edit_obj = $rootScope.cedits[i];
+            for (var i = 0; i < $rootScope.edits.length; i++) {
+                if ($rootScope.edits[i].answer == answer_id) {
+                    edit_obj = $rootScope.edits[i];
                     edit_obj.vote = 0;
                     edit_obj.idx = i;  //this is index within cedits
                     edit_obj.agree = '';
@@ -163,8 +163,8 @@
                     vm.edits.push(edit_obj);
                     
                     //store initial counters 
-                    upVi.push($rootScope.cedits[i].upV);
-                    downVi.push($rootScope.cedits[i].downV);
+                    upVi.push($rootScope.edits[i].upV);
+                    downVi.push($rootScope.edits[i].downV);
 
                 }
             }
@@ -505,7 +505,7 @@
             edit.deleteEdit(vm.edits[index].id);
             editvote.deleteEditVotes(vm.edits[index].id);
             //remove from current edits
-            $rootScope.cedits.splice(vm.edits[index].idx, 1);
+            $rootScope.edits.splice(vm.edits[index].idx, 1);
             vm.edits.splice(index, 1);
 
         }
@@ -520,7 +520,7 @@
             edit.deleteEdit(vm.edits[index].id);
             editvote.deleteEditVotes(vm.edits[index].id);
             //remove from current edits
-            $rootScope.cedits.splice(vm.edits[index].idx, 1);
+            $rootScope.edits.splice(vm.edits[index].idx, 1);
             vm.edits.splice(index, 1);
 
         }

@@ -105,6 +105,10 @@
                 if ($rootScope.cCategory.title.indexOf('shop') > -1 || $rootScope.cCategory.title.indexOf('store') > -1) {
                     titles = ['Assortment of Products', 'Friendliness of Staff','Value for the Money'];
                 }
+                if ($rootScope.cCategory.title.indexOf('Tattoo') > -1 || $rootScope.cCategory.title.indexOf('tattoo') > -1) {
+                    titles = ['Quality of Service', 'Friendliness of Staff', 'Promptness of Service', 'Value for the Money'];
+                }
+                
                 if ($rootScope.cCategory.title.indexOf('Nightclubs') > -1 || $rootScope.cCategory.title.indexOf('music') > -1 || 
                     $rootScope.cCategory.title.indexOf('dancing') > -1) {
                     titles = [' Quality of Music', 'Environment', 'Friendliness of Staff', 'Value for the Money'];

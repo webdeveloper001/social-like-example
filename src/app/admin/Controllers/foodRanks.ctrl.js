@@ -5,9 +5,9 @@
         .module('app')
         .controller('foodRanks', foodRanks);
 
-    foodRanks.$inject = ['$location', '$rootScope', '$state','catans'];
+    foodRanks.$inject = ['$location', '$rootScope', '$state','catans','$http'];
 
-    function foodRanks(location, $rootScope, $state, catans) {
+    function foodRanks(location, $rootScope, $state, catans, $http) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'foodRanks';
@@ -23,6 +23,7 @@
         }
         
         function getRanks(){
+            console.log("getRanks");
             
             var str = '';
             for (var i=0; i<$rootScope.content.length; i++){
@@ -37,7 +38,7 @@
             var catArr = fstr.split(':').map(Number);
             
             var catansrec = {};
-            var answerid = {};
+            var answerid = 0;
             var idx = 0;
             var foodAnswers = [];
             var foodAnswersMap = [];
@@ -72,12 +73,12 @@
                     }
                 } 
             }
-            /*
-            console.log("foodAnswers - ", foodAnswers.length);
-            //console.log("Food ranks: - ", fstr);
-            console.log("Food ranks length: - ", fstr.length);
-            console.log("Food answers length: - ", foodAnswers.length);
-            */
+            
+            //console.log("foodAnswers - ", foodAnswers.length);
+            console.log("Food ranks: - ", fstr);
+            console.log("Food ranks length: - ", catArr.length);
+            //console.log("Food answers length: - ", foodAnswers.length);
+           
         }
     }
 })();

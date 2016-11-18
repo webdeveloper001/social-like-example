@@ -139,7 +139,7 @@
                 answerx.id = result.data.resource[0].id; 
                 _answers.push(answerx);
                 
-                uaf.post('addedAnswer',['answer','category'],[answerx.id, category]); //user activity feed
+                uaf.post('addedAnswer',['answer','category'],[answerx.id, category[0]]); //user activity feed
                                 
                 for (var n=0; n<category.length; n++){
                     catans.postRec2(answerx.id, category[n]);    

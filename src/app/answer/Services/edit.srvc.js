@@ -63,7 +63,7 @@
                 newEditx.id = result.data.resource[0].id; 
                 _edits.push(newEditx);
                 
-                $rootScope.cedits.push(newEditx);
+                //$rootScope.edits.push(newEditx);
                 uaf.post('editA',['answer', 'edit'],[newEditx.answer, newEditx.id]); //user activity feed 
 
                 if ($rootScope.DEBUG_MODE) console.log("Adding new Edit succesful", result);

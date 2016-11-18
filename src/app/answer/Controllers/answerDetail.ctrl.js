@@ -112,12 +112,8 @@
             vm.sm = false; vm.nsm = true;
             //console.log('screen is big');
         }
-        activate();
         
-        function activate() {
-
-            vm.showImageGallery = false;
-            //TODO: Would like to add this abstract template, but dont know how               
+        //TODO: Would like to add this abstract template, but dont know how               
             $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
                 $rootScope.previousState = from.name;
             });
@@ -128,6 +124,15 @@
                     }
                 });
 
+        
+        activate();
+        
+        function activate() {
+            
+            if ($rootScope.previousState != 'answerDetail') $window.scrollTo(0,0);
+
+            vm.showImageGallery = false;
+            
             getHeader();
     //        getCatAnsId(vm.answer.id);
             getEdits(vm.answer.id);
@@ -168,8 +173,6 @@
             //Determine number of user comments
             if (vm.answer.numcom == undefined) vm.numcom = 0;
             else vm.numcom = vm.answer.numcom;
-            
-            $window.scrollTo(0,0);
             
             if ($rootScope.DEBUG_MODE) console.log("Answer details loaded");
             

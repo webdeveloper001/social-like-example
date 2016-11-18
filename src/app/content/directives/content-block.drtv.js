@@ -53,6 +53,12 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     var inm = false;
                     vm.nm = false;
                     var rank = {};
+                    
+                    function compare(a, b) {
+                         return a.isatomic - b.isatomic;
+                    }
+                    
+                    
                     if ($rootScope.inputVal != undefined && vm.isDynamic) {
                         var userIsTyping = false;
                         var inputVal = $rootScope.inputVal;
@@ -104,6 +110,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                     if (inm) {
                                         var rankObj = JSON.parse(JSON.stringify(rank));
                                         rankObj.title = rankObj.title.replace('in San Diego', 'close to me');
+                                        //rankObj.isatomic = false; //<<---------
                                         //SPECIAL CASE
                                         //if (rt.indexOf('Rancho San Diego') > 0) {
                                         vm.results.push(rankObj);
@@ -127,6 +134,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                         }
                                         if (nm && !inm) {
                                             rankObj = JSON.parse(JSON.stringify(rank));
+                                            //rankObj.isatomic = false; //<<---------
                                             rankObj.title = rankObj.title.replace('in San Diego', 'close to me');
                                             vm.result_nm = rankObj;
                                             vm.nm = true;
@@ -142,6 +150,10 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                     if (!sc) vm.results.push($rootScope.content[j]);
                                 }
                             }
+                            
+                            //show first non-atomic ranks -- for better user experience
+                            vm.answers = vm.results.sort(compare);
+                            
                             //resLT6 is used to hide the <<see more>> choice
                             if (vm.results.length < 6) vm.resLT6 = true;
                             else vm.resLT6 = false;
@@ -218,7 +230,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             break;
                         }
                     }
-           
+                       
                     //Check if photos exist for Rank of Week
                     if (vm.results.length > 0 && vm.results[0] != undefined) {
                         if (vm.results[0].image1url != undefined) vm.image1 = vm.results[0].image1url;
@@ -529,7 +541,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                }                                              
                            }
                        }
-                    */ //End 8
+                    *///End 8
                
                     /*//  9. Clear answer string for all non-atomic ranks 
                     for (var i=0; i < $rootScope.content.length; i++){
@@ -720,7 +732,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                 
                                 if (hasvr == false) {
                                     vrows.postVrows4Answer(answer);
-                                    //console.log(answer.name);
+                                    console.log(answer.name);
                                     //console.log($rootScope.cCategory.title);
                                     //console.log(midx++);
                                 }
@@ -750,13 +762,13 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         }
                         */    
                     //End 17
-                   /* //18. Reset views
-                    for (var i=0; i < $rootScope.answers.length; i++){
-                        if ($rootScope.answers[i].numcom != 0){
-                            answer.updateAnswer($rootScope.answers[i].id, ['numcom'], [0]); 
-                        }
-                    }
-                   */ //End 18                                                                   
+                    /* //18. Reset views
+                     for (var i=0; i < $rootScope.answers.length; i++){
+                         if ($rootScope.answers[i].numcom != 0){
+                             answer.updateAnswer($rootScope.answers[i].id, ['numcom'], [0]); 
+                         }
+                     }
+                    */ //End 18                                                                   
                 }
             }], //end controller
         link: function (scope) {

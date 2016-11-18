@@ -320,7 +320,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-           //   $rootScope.$emit('applyRule');
+              $rootScope.$emit('applyRule');
         }
            
         function getFeed(){
@@ -344,7 +344,11 @@
         }
         
         function refreshFeed(){
-            uaf.getactions().then(getFeed);
+            console.log("refreshFeed");
+            uaf.getactions().then(function(response){
+                $rootScope.uafs = response;
+                getFeed();
+            });
         }
         function goHome(){
             //$rootScope.$emit('quitFeedbackMode');
