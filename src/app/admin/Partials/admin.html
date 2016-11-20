@@ -2,7 +2,7 @@
 <div ui-view="navbar"></div>
 <br>
 
-<div class="text-center">
+<div class="text-center" ng-if="vm.isAdmin">
     <div class="btn-group col-sm-6 col-md-6">
         <button class="btn btn-default {{vm.selKeywords}} " ng-click="vm.keywords() ">Searched-Keyword</button>
         <button class="btn btn-default {{vm.selViews}} " ng-click="vm.views() ">Ranking-Answers Views</button>

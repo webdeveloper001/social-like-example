@@ -26,6 +26,8 @@
         vm.dbQuery = dbQuery;
         vm.update = update;
         vm.foodranks = foodranks;
+        
+        vm.isAdmin = $rootScope.isAdmin;
 
         activate();
 

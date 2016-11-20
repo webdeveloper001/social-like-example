@@ -1,26 +1,28 @@
-<h1> Queries </h1>
-<br>
-<a ng-click="vm.clearDb()" class="btn btn-danger">Clear Database</a>
-<br>
-<div class="row">
-	<div class="col-sm-2"></div>
-	<div class="col-sm-8">
-		<table class="table table-hover cursor">
-			<tbody>
-				<thead>
-					<tr>
-						<th>User Input</th>
-						<th>Num. Results</th>
-					</tr>
-				</thead>
+<div class="container" ng-if="vm.isAdmin">
+	<h1> Queries </h1>
+	<br>
+	<a ng-click="vm.clearDb()" class="btn btn-danger">Clear Database</a>
+	<br>
+	<div class="row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-8">
+			<table class="table table-hover cursor">
 				<tbody>
-					<!--<tr ng-repeat="x in vm.relativetable | orderBy:'-Rank'" ng-click="vm.refresh(x.id)">-->
-					<tr ng-repeat="x in vm.queries | orderBy: '-results' ">
-						<td>{{x.query}}</td>
-						<td>{{x.results}}</td>
-					</tr>
-				</tbody>
-		</table>
+					<thead>
+						<tr>
+							<th>User Input</th>
+							<th>Num. Results</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!--<tr ng-repeat="x in vm.relativetable | orderBy:'-Rank'" ng-click="vm.refresh(x.id)">-->
+						<tr ng-repeat="x in vm.queries | orderBy: '-results' ">
+							<td>{{x.query}}</td>
+							<td>{{x.results}}</td>
+						</tr>
+					</tbody>
+			</table>
+		</div>
+		<div class="col-sm-2"></div>
 	</div>
-	<div class="col-sm-2"></div>
 </div>

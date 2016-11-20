@@ -21,6 +21,8 @@
         
         vm.typeList = ["Person", "Establishment", "Place", "Activity", "Short-Phrase", "Organization", "Event", "Thing","PersonCust"];
 
+        vm.isAdmin = $rootScope.isAdmin;
+        
         activate();
 
         function activate() {

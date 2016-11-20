@@ -142,7 +142,11 @@
             var tz = datenow.getTimezoneOffset();
             
             datenow.setMinutes( datenow.getMinutes() - tz);
-            var dateStr = datenow.toLocaleDateString();
+            
+            //var dateStr = datenow.toLocaleDateString();
+            function pad(n) {return n < 10 ? n : n;}
+            var dateStr = pad(datenow.getMonth()+1)+"/"+pad(datenow.getDate())+"/"+datenow.getFullYear();
+            
             //console.log('Date Str: ', dateStr);
             var newDate = true;
             var pvisitrec = {};

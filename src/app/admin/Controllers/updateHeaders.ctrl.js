@@ -17,6 +17,9 @@
         vm.createCBlocksRecsNh = createCBlocksRecsNh;
         vm.createCBlocksRecsRankX = createCBlocksRecsRankX;
         vm.deleteCBlocks = deleteCBlocks;
+        
+        vm.isAdmin = $rootScope.isAdmin;
+        
         activate();
 
         function activate() {

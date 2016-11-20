@@ -16,6 +16,8 @@
         vm.delCatans = delCatans;
         vm.delAnswer = delAnswer;
     
+        vm.isAdmin = $rootScope.isAdmin;
+        
         activate();
 
         function activate() {

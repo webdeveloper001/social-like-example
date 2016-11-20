@@ -13,6 +13,7 @@
         vm.title = 'queries';
 
         vm.clearDb = clearDb;
+        vm.isAdmin = $rootScope.isAdmin;
 
         activate();
 

@@ -22,6 +22,8 @@
         vm.findDuplicatedRanks = findDuplicatedRanks;
         vm.clearAllCatansVotes = clearAllCatansVotes;
     
+        vm.isAdmin = $rootScope.isAdmin;
+        
         activate();
 
         function activate() {
