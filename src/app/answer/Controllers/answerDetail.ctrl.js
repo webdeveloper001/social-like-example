@@ -48,7 +48,7 @@
         vm.bizRegDialog = bizRegDialog;
         vm.openSpecials = openSpecials;
         vm.editVRows = editVRows;
-        vm.showImages = showImages;
+        vm.getImages = getImages;
         vm.showsimage = showsimage;
         vm.gotoRank = gotoRank;
         vm.showcomplete = showcomplete;
@@ -746,9 +746,13 @@
             $state.go('editvrows');
         }
 
-        function showImages() {
-            imagelist.getImageList();
-            //vm.showImageGallery = true;
+        function getImages() {
+            imagelist.getImageList().then(showImages);
+            vm.showImageGallery = true;
+        }
+        function showImages(){
+            vm.images = $rootScope.blobs;
+            console.log("vm.images = ", vm.images);
         }
         
         function gotoRank(x){

@@ -185,50 +185,16 @@
         </div>
     </div>
     <div class="text-right" ng-if="vm.type != 'Short-Phrase'">
-        <a type="button" class="btn btn-success btn-block" ng-click="vm.showImages()" style="display:{{vm.showImageGallery == false ? 'inline':'none'}}">
+        <a type="button" class="btn btn-success btn-block" ng-click="vm.getImages()" style="display:{{vm.showImageGallery == false ? 'inline':'none'}}">
             Show Images </a>
     </div>
     <div style="display:{{vm.showImageGallery == true ? 'inline':'none'}}">
-        <!--
-        <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2">
-                <a href="pulpitrock.jpg" class="thumbnail">
-                    <p>Pulpit Rock: A famous tourist attraction in Forsand, Ryfylke, Norway.</p>
-                    <img src="pulpitrock.jpg" alt="Pulpit Rock" style="width:150px;max-height:150px">
+        
+            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2" ng-repeat="x in vm.images">
+                <a href="https://rankx.blob.core.windows.net/sandiego/{{x.Name}}" class="thumbnail">
+                    <img src="https://rankx.blob.core.windows.net/sandiego/{{x.Name}}" style="width:150px;max-height:150px">
                 </a>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2">
-                <a href="moustiers-sainte-marie.jpg" class="thumbnail">
-                    <p>Moustiers-Sainte-Marie: Considered as one of the "most beautiful villages of France".</p>
-                    <img src="moustiers-sainte-marie.jpg" alt="Moustiers Sainte Marie" style="width:150px;max-height:150px">
-                </a>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2">
-                <a href="cinqueterre.jpg" class="thumbnail">
-                    <p>The Cinque Terre: A rugged portion of coast in the Liguria region of Italy.</p>
-                    <img src="cinqueterre.jpg" alt="Cinque Terre" style="width:150px;max-height:150px">
-                </a>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2">
-                <a href="pulpitrock.jpg" class="thumbnail">
-                    <p>Pulpit Rock: A famous tourist attraction in Forsand, Ryfylke, Norway.</p>
-                    <img src="pulpitrock.jpg" alt="Pulpit Rock" style="width:150px;max-height:150px">
-                </a>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2">
-                <a href="moustiers-sainte-marie.jpg" class="thumbnail">
-                    <p>Moustiers-Sainte-Marie: Considered as one of the "most beautiful villages of France".</p>
-                    <img src="moustiers-sainte-marie.jpg" alt="Moustiers Sainte Marie" style="width:150px;max-height:150px">
-                </a>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2">
-                <a href="cinqueterre.jpg" class="thumbnail">
-                    <p>The Cinque Terre: A rugged portion of coast in the Liguria region of Italy.</p>
-                    <img src="cinqueterre.jpg" alt="Cinque Terre" style="width:150px;max-height:150px">
-                </a>
-            </div>
-        </div>
-        -->
+            </div>       
     </div>
 
     <div class="text-right" ng-if="vm.type != 'Short-Phrase'">
