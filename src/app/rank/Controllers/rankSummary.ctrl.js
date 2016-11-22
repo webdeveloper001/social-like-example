@@ -104,6 +104,7 @@
         function activate() {
 
             $window.scrollTo(0, 0);
+            $rootScope.$emit('showLogo');
 
             $rootScope.rankIsActive = true;
             $rootScope.objNumAct = $rootScope.objNum;

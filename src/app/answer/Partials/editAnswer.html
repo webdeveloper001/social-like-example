@@ -33,7 +33,7 @@
             <h4 style="text-align:center">{{vm.answer.addinfo}}</h4>
         </div>
         <br>
-        <div ng-if="vm.userIsOwner" style="display:{{vm.access ? 'inline':'none'}}">
+        <div ng-if="vm.userIsOwner" style="display:{{vm.userIsOwner ? 'inline':'none'}}">
             <blob-upload>
         </div>
         <div style="display:{{vm.userIsOwner ? 'none':'inline'}}" ng-if="vm.type!='PersonCust'">

@@ -106,6 +106,7 @@
             
             vm.access = vm.userIsOwner && vm.answer.isactive;
             
+            
             getEdits(vm.answer.id);
 
             if ($rootScope.DEBUG_MODE) console.log("Edit Answer Activated!");

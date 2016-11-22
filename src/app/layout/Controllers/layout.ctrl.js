@@ -17,10 +17,12 @@
 
     layout.$inject = ['$location', '$rootScope','$window','$q', '$http','pvisits', 
     'DEBUG_MODE', 'rankofday', 'answer', 'table','special', 'datetime','uaf',
+    'votes','editvote','vrowvotes',
     'matchrec', 'edit','useractivity','vrows','headline','cblock', 'catans','$state'];
 
     function layout($location, $rootScope, $window, $q, $http, pvisits, 
-    DEBUG_MODE, rankofday, answer, table, special, datetime, uaf, 
+    DEBUG_MODE, rankofday, answer, table, special, datetime, uaf,
+    votes, editvote, vrowvotes, 
     matchrec, edit, useractivity, vrows, headline, cblock, catans, $state) {
         /* jshint validthis:true */
         var vm = this;
@@ -31,6 +33,18 @@
         //if ($rootScope.answers) vm.isLoading = false;
         //else 
         vm.veilMsg = 'Loading San Diego\'s best...';
+        vm.hidelogo = false;
+        
+        $rootScope.$on('refreshRanks', function () {
+            if ($state.current.name == 'cwrapper') {
+                vm.hidelogo = $rootScope.hidelogo;
+            }
+        });
+        $rootScope.$on('showLogo', function () {
+            if ($state.current.name == 'rankSummary' || $state.current.name == 'answerDetail') {
+                vm.hidelogo = false;
+            }
+        });
         
         // Members
         activate();
@@ -129,6 +143,23 @@
                 loadingDone();
                       
             });
+            
+             if ($rootScope.isLoggedIn) {
+                //load answer votes
+                votes.loadVotesTable().then(function (votetable) {
+                    $rootScope.cvotes = votetable;
+                });
+            
+                //load edit votes
+                editvote.loadEditVotesTable().then(function (editvotes) {
+                    $rootScope.editvotes = editvotes;
+                });
+                //Vrow Votes for this user
+                vrowvotes.loadVrowVotes().then(function (vrowvotes) {
+                    $rootScope.cvrowvotes = vrowvotes;
+                });
+
+            }
         }
 
         function loadingDone() {

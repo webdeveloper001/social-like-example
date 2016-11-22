@@ -121,7 +121,6 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             //vm.answers = vm.results.sort(compare);
                             
                             if (inm) {
-                                console.log("inm");
                                 for (var k = 0; k < vm.results.length; k++) {
                                     if (vm.results[k].title.indexOf('in San Diego') > -1) {
                                         rt = vm.results[k].title.replace('in San Diego', 'close to me');
@@ -132,7 +131,6 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                 //if a result includes San Diego, also add a results as 'Near Me'
                             }
                             else {
-                                console.log("not inm");
                                 for (var k = 0; k < vm.results.length; k++) {
                                     rt = vm.results[k].title; //Rank title
                                     if (rt.indexOf('in San Diego') > -1 && vm.results[k].isatomic == false) {
@@ -385,7 +383,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     } 
                     */ //End of 2
         
-                     //  3.Use this to correct the title of a group of ranks
+                     /*//  3.Use this to correct the title of a group of ranks
                     for (var i=0; i < vm.results.length; i++){
                         if (vm.results[i].title.includes('Places for frozen yogurt')) {
                             var titlex = vm.results[i].title.replace("Places for frozen yogurt","Frozen yogurt");
@@ -394,7 +392,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             table.update(vm.results[i].id, ['title'],[titlex]);
                         }
                     } 
-                      //End of 3
+                    */  //End of 3
             
                     /*//  4.Use this to add a neighborhood
                     //var nhs = ["Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",

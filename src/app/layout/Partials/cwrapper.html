@@ -13,7 +13,7 @@
 </div>
 
 <div class="row" ng-if="!vm.fbm">
-	<div class="text-center col-sm-12 col-md-4">
+	<div class="text-center col-sm-12 col-md-4" ng-if="!vm.hidelogo">
 		<div class="btn-group">
 			<button class="btn btn-default {{vm.isCity ? 'active':''}}" ng-click="vm.switchScope(1)">San Diego</button>
 			<button class="btn btn-default {{vm.isNh ? 'active':''}}" ng-click="vm.switchScope(2)">Neighborhood</button>
@@ -123,6 +123,9 @@
 			</div>
 			<div ng-if="x.action == 'downVotedVrow'">
 				voted down the <em>{{x.text2}}</em> of <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a>.
+			</div>
+			<div ng-if="x.action == 'binded'">
+				binded account to <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a>.
 			</div>
 		</div>
 	</div>

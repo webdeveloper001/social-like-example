@@ -6,12 +6,10 @@
         .controller('cwrapper', cwrapper);
 
     cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
-        'query', 'table', 'dialog', 'uaf',
-        'votes', 'editvote', 'vrowvotes'];
+        'query', 'table', 'dialog', 'uaf','$window'];
 
     function cwrapper($rootScope, $state, $http, $stateParams, $scope, 
-        query, table, dialog, uaf,
-        votes, editvote, vrowvotes) {
+        query, table, dialog, uaf, $window) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'cwrapper';
@@ -79,7 +77,7 @@
             vm.selViewRank = $rootScope.editMode ? 'none' : 'active';
             
             $rootScope.includeNearMe = false;
-            
+            $rootScope.cCategory = undefined;
         }
         function init() {
 
@@ -123,14 +121,14 @@
             $rootScope.headlines = headlines;
             $rootScope.cblocks = cblocks;
 */
-            
             loadcontent();
             getEstablishmentAnswers();
             getFeed();
 
             //});
-
             $rootScope.cwrapperLoaded = true;
+            $rootScope.cCategory = undefined;
+            
         }
 
         function loadcontent() {
@@ -199,22 +197,6 @@
 
             vm.nhs = $rootScope.neighborhoods.concat($rootScope.districts);
 
-            if ($rootScope.isLoggedIn) {
-                //load answer votes
-                votes.loadVotesTable().then(function (votetable) {
-                    $rootScope.cvotes = votetable;
-                });
-            
-                //load edit votes
-                editvote.loadEditVotesTable().then(function (editvotes) {
-                    $rootScope.editvotes = editvotes;
-                });
-                //Vrow Votes for this user
-                vrowvotes.loadVrowVotes().then(function (vrowvotes) {
-                    $rootScope.cvrowvotes = vrowvotes;
-                });
-
-            }
         }
 
         function getEstablishmentAnswers() {
@@ -236,9 +218,18 @@
 
         function refreshRanks(val) {
             $rootScope.inputVal = val;
-            if ($rootScope.inputVal.length > 0) $rootScope.searchActive = true;
-            else $rootScope.searchActive = false;
+            if ($rootScope.inputVal.length > 0) {
+                $rootScope.searchActive = true;
+                vm.hidelogo = true;
+                $rootScope.hidelogo = true;
+            }
+            else {
+                $rootScope.searchActive = false;
+                vm.hidelogo = false;
+                $rootScope.hidelogo = false;
+            }
             vm.searchActive = $rootScope.searchActive;
+           //$window.scroll(0,200);
             $rootScope.$emit('refreshRanks');
         }
 

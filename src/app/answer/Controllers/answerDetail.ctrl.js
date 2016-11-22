@@ -58,6 +58,8 @@
         vm.postComment = postComment;
         
         vm.fields = $rootScope.fields;
+        
+        $rootScope.isLoggedIn = $rootScope.isLoggedIn ? $rootScope.isLoggedIn:false;
         vm.isLoggedIn = $rootScope.isLoggedIn;
         
         //Comments related variables
@@ -79,14 +81,12 @@
         $rootScope.canswer = vm.answer;
         vm.type = vm.answer.type;
         
-        if ($rootScope.cCategory) {
-            vm.title = $rootScope.cCategory.title;
-        }
+        if ($rootScope.cCategory) vm.title = $rootScope.cCategory.title;
         else {
             vm.title = '';
-            answers = [vm.answer];    
+            answers = [vm.answer];
         }
-        
+ 
         vm.idx = answers.map(function(x) {return x.id; }).indexOf(vm.answer.id)+1;
         
         vm.isMobile = false; 
@@ -120,7 +120,7 @@
             $rootScope.$on('$stateChangeStart',
                 function (ev, to, toParams, from, fromParams) {
                     if (from.name == 'answerDetail') {
-                        if (!recordsUpdated) updateRecords();
+                         if (!recordsUpdated && $rootScope.isLoggedIn) updateRecords();
                     }
                 });
 
@@ -132,6 +132,7 @@
             if ($rootScope.previousState != 'answerDetail') $window.scrollTo(0,0);
 
             vm.showImageGallery = false;
+            $rootScope.$emit('showLogo');
             
             getHeader();
     //        getCatAnsId(vm.answer.id);
