@@ -50,7 +50,10 @@
             var f4 = '';
             var f5 = '';
             var f6 = '';
-            var keywords = $rootScope.cCategory.keywords;
+            
+            var keywords = '';
+            if ($rootScope.cCategory) keywords = $rootScope.cCategory.keywords;
+            //else keywords = $rootScope.cCategory.keywords;
             
             var data = [];
             

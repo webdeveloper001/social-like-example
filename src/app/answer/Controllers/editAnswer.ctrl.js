@@ -14,8 +14,8 @@
         var vm = this;
 
         vm.title = 'editAnswer';
-        vm.header = "table" + $rootScope.cCategory.id + ".header";
-        vm.body = 'table' + $rootScope.cCategory.id + '.body';
+        //vm.header = "table" + $rootScope.cCategory.id + ".header";
+        //vm.body = 'table' + $rootScope.cCategory.id + '.body';
         
         // Members
         vm.answer = {};
@@ -36,9 +36,13 @@
         
         vm.ranking = $rootScope.title;
         vm.userIsOwner = $rootScope.userIsOwner;
-
-        var A = $rootScope.A;
-        if ($stateParams.index) vm.answer = $rootScope.canswers[A.indexOf(+$stateParams.index)];
+        
+        //var A = $rootScope.A;
+        //if ($stateParams.index) vm.answer = $rootScope.canswers[A.indexOf(+$stateParams.index)];
+        if ($stateParams.index) {
+            var i =  $rootScope.answers.map(function(x) {return x.id; }).indexOf(+$stateParams.index);
+            vm.answer = $rootScope.answers[i];
+        }
         vm.type = vm.answer.type;
         vm.imageURL = vm.answer.imageurl;
         vm.fields = [];
@@ -49,8 +53,8 @@
         var downVi = [];
         var editvotes = [];
         var recordsUpdated = false;
-        var numVotes2accept = 3;
-        var numVotes2discard = 3;
+        var numVotes2accept = 1;
+        var numVotes2discard = 1;
         // Methods
      
         //google search
@@ -61,8 +65,8 @@
         var attNum = 3;
         vm.imagefunctions = 'none';
         vm.emptyarray=[];
-        vm.updateHoursEn = 'disabled';
-        
+        vm.updateHoursEn = 'disabled'
+                
         vm.neighborhoods = $rootScope.neighborhoods.concat($rootScope.districts);
                 
         //TODO: Would like to add this abstract template, but dont know how               
@@ -76,10 +80,13 @@
                 }
             });
 
-        $rootScope.$on('fileUploaded', function (event, data){            
-            if ($state.current.name == 'editAnswer') {
-                vm.imageURL = data;
+        $rootScope.$on('fileUploaded', function (event, data){
+                $rootScope.cmd1exe = $rootScope.cmd1exe ? $rootScope.cmd1exe : false;        
+            if ($state.current.name == 'editAnswer' && !$rootScope.cmd1exe) {
+                $rootScope.cmd1exe = true;
+                $rootScope.blobimage = data;
                 selectImage();
+                
             }
         });
         
@@ -224,8 +231,11 @@
                 newEdit.username = $rootScope.user.name;
                 newEdit.category = $rootScope.cCategory.id;
                 newEdit.timestmp = Date.now();
-
-                dialog.editConfirm(newEdit, 'field', createEdit);
+                
+                //if user is owner - execute userIsOwnerEditDirectly function
+                if ($rootScope.userIsOwner) dialog.editConfirm(newEdit, 'field', userIsOwnerEditDirectly); 
+                //else create edit for image
+                else dialog.editConfirm(newEdit, 'field', createEdit);
             }
             else {
                 dialog.getDialog('notLoggedIn');
@@ -235,7 +245,7 @@
         }
 
         function editImage() {
-
+            console.log("@editImate");
             if ($rootScope.isLoggedIn) {
                 //check that there isnt an edit for that field already
                 var editExists = false;
@@ -261,11 +271,13 @@
         }
 
         function selectImage() {
+            if ($rootScope.DEBUG_MODE) console.log("@selectImage");
             var newEdit = {};
             newEdit.field = "image";
             newEdit.cval = vm.answer.imageurl;
             newEdit.nval = "";
-            newEdit.imageURL = vm.imageURL;
+            if ($rootScope.userIsOwner) newEdit.imageURL = $rootScope.blobimage;
+            else newEdit.imageURL = vm.imageURL;
             newEdit.display = 'inline'
             newEdit.answer = vm.answer.id;
             newEdit.upV = 0;
@@ -278,10 +290,14 @@
 
             newEdit.user = $rootScope.user.id;
             newEdit.username = $rootScope.user.name;
-            newEdit.category = $rootScope.cCategory.id;
+            //newEdit.category = $rootScope.cCategory.id;
             newEdit.timestmp = Date.now();
-
-            dialog.editConfirm(newEdit, 'image', createImageEdit);
+            
+            //if user is owner - execute userIsOwnerEditDirectly function
+            if ($rootScope.userIsOwner) dialog.editConfirm(newEdit, 'image', userIsOwnerEditDirectly); 
+            //else create edit for image
+            else dialog.editConfirm(newEdit, 'image', createImageEdit);
+            console.log("$rootScope.userIsOwner - ", $rootScope.userIsOwner);
         }
 
         //Get the votes for the edits in this answer
@@ -289,9 +305,9 @@
 
             var editvote_obj = {};
 
-            for (var i = 0; i < $rootScope.ceditvotes.length; i++) {
-                if ($rootScope.ceditvotes[i].answer == x) {
-                    editvote_obj = $rootScope.ceditvotes[i];
+            for (var i = 0; i < $rootScope.editvotes.length; i++) {
+                if ($rootScope.editvotes[i].answer == x) {
+                    editvote_obj = $rootScope.editvotes[i];
                     editvotes.push(editvote_obj);
                 }
             }
@@ -512,12 +528,12 @@
         }
         
         function editAnswerGPS(){
-            console.log("@editAnswer ---> location, lat, lng --- ",vm.answer.location, vm.answer.lat, vm.answer.lng);       
+            if ($rootScope.DEBUG_MODE) console.log("@editAnswer ---> location, lat, lng --- ",vm.answer.location, vm.answer.lat, vm.answer.lng);       
             answer.updateAnswer(vm.answer.id,['location','lat','lng'],[vm.answer.location, vm.answer.lat, vm.answer.lng]).then(answerDetail);
         }
 
         function discardEdit(index) {
-            console.log("Edit has been discarded");
+            if ($rootScope.DEBUG_MODE) console.log("Edit has been discarded");
             edit.deleteEdit(vm.edits[index].id);
             editvote.deleteEditVotes(vm.edits[index].id);
             //remove from current edits
@@ -533,7 +549,7 @@
             updateRecords();
             recordsUpdated = false;
             var promise = edit.addEdit(newEdit);
-            console.log("creating edit");
+            if ($rootScope.DEBUG_MODE) console.log("creating edit");
 
             promise.then(function () {
                 getEdits(vm.answer.id);
@@ -575,7 +591,7 @@
         }
 
         function imageQueryFailed() {
-            console.log('query failed, dont give up');
+            if ($rootScope.DEBUG_MODE) console.log('query failed, dont give up');
         }
 
         function viewNext() {
@@ -662,6 +678,38 @@
             }
             //vm.answer.addinfo = x;       
         }
-
+        
+        function userIsOwnerEditDirectly(x){
+            if ($rootScope.DEBUG_MODE) console.log("Direct Edit Executed");
+            if ($rootScope.DEBUG_MODE) console.log("edit - ", x);
+            if (x.field == "image") {
+                if ($rootScope.DEBUG_MODE) console.log("R1");
+                vm.imageURL = $rootScope.blobimage;
+                //console.log("vm.imageURL - ", vm.imageURL);
+                answer.updateAnswer(x.answer, ['image'], [x.imageURL]);
+                //$state.go("editAnswer", { reload: true });
+                $state.go('editAnswer', {}, { reload: true });
+                //refreshImage();                
+            }
+            else if (x.field == "location"){
+                     if ($rootScope.DEBUG_MODE) console.log("R2");
+                     if (x.nval != undefined && x.nval != "" && x.nval != null) {
+                         //var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(vm.edits[index].answer);
+                        vm.answer.location = x.nval;
+                        var promise = getgps.getLocationGPS(vm.answer);
+                        promise.then(function () {
+                        //console.log("myAnswer --- ", myAnswer);
+                        //answer.addAnswer(myAnswer).then(rankSummary);
+                        });
+                     }
+            }
+            else {
+                if ($rootScope.DEBUG_MODE) console.log("R3");
+                answer.updateAnswer(x.answer, [x.field], [x.nval]);
+            }
+            
+            $rootScope.cmd1exe = false;
+        }
+        
     }
 })();

@@ -6,11 +6,11 @@
         .controller('answerDetail', answerDetail);
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
-        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 
+        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata',
         '$location', 'vrows', 'vrowvotes','imagelist']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
-        votes, matchrec, edit, editvote, catans, datetime, commentops, 
+        votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,
         $location, vrows, vrowvotes, imagelist) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
@@ -129,6 +129,7 @@
         
         function activate() {
             
+            getFields();
             if ($rootScope.previousState != 'answerDetail') $window.scrollTo(0,0);
 
             vm.showImageGallery = false;
@@ -170,12 +171,36 @@
             else vm.userIsOwner = false;            
 
             $rootScope.userIsOwner = vm.userIsOwner;
+            console.log("@ answerDetail - $rootScope.userIsOwner - ",$rootScope.userIsOwner);
             
             //Determine number of user comments
             if (vm.answer.numcom == undefined) vm.numcom = 0;
             else vm.numcom = vm.answer.numcom;
             
             if ($rootScope.DEBUG_MODE) console.log("Answer details loaded");
+            
+        }
+        
+        function getFields(){
+            
+            if ($rootScope.fields) return;
+            else {
+                var fidx = 0;
+                switch (vm.answer.type) {
+                    case "Place": { fidx = 0; break; }
+                    case "Person": { fidx = 1; break; }
+                    case "Event": { fidx = 2; break; }
+                    case "Organization": { fidx = 3; break; }
+                    case "Short-Phrase": { fidx = 4; break; }
+                    case "Activity": { fidx = 5; break; }
+                    case "Establishment": { fidx = 6; break; }
+                    case "Thing": { fidx = 7; break; }
+                    case "PersonCust": { fidx = 8; break; }
+                }
+
+                var fields = $rootScope.typeSchema[fidx].fields;
+                $rootScope.fields = fields;
+            }
             
         }
 

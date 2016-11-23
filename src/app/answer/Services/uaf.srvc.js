@@ -78,7 +78,7 @@
                     case "edit": {
                         data.edit = val[i];
                         n = $rootScope.edits.map(function(x) {return x.id; }).indexOf(data.edit);
-                        data.text2 = $rootScope.edit[n].field;  
+                        data.text2 = $rootScope.edits[n].field;  
                         break;
                     }
                     case "vrow": {

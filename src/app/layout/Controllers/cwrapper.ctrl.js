@@ -6,10 +6,10 @@
         .controller('cwrapper', cwrapper);
 
     cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
-        'query', 'table', 'dialog', 'uaf','$window'];
+        'query', 'table', 'dialog', 'uaf','$window','userdata'];
 
     function cwrapper($rootScope, $state, $http, $stateParams, $scope, 
-        query, table, dialog, uaf, $window) {
+        query, table, dialog, uaf, $window, userdata) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'cwrapper';
@@ -92,7 +92,7 @@
             $rootScope.user.name = "Andres Moctezuma";
             $rootScope.user.first_name = 'Andres';
             $rootScope.user.id = 12;
-            $rootScope.answeridxgps = 1258; //starting indx for gps conversion
+            //$rootScope.answeridxgps = 1258; //starting indx for gps conversion
                        
             if ($rootScope.isLoggedIn && $rootScope.user.name == "Andres Moctezuma" && $rootScope.user.id == 12) {
                 $rootScope.isAdmin = true;
@@ -128,6 +128,8 @@
             //});
             $rootScope.cwrapperLoaded = true;
             $rootScope.cCategory = undefined;
+            
+            userdata.loadVotes();
             
         }
 
@@ -196,6 +198,8 @@
             $rootScope.nhranks = ['neighborhood', 'lifestyle', 'food', 'services', 'social', 'beauty', 'health'];
 
             vm.nhs = $rootScope.neighborhoods.concat($rootScope.districts);
+            
+            userdata.loadVotes();
 
         }
 
@@ -229,7 +233,7 @@
                 $rootScope.hidelogo = false;
             }
             vm.searchActive = $rootScope.searchActive;
-           //$window.scroll(0,200);
+            $window.scroll(0,0);
             $rootScope.$emit('refreshRanks');
         }
 

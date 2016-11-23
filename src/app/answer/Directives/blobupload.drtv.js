@@ -55,6 +55,7 @@ angular.module('app').directive('blobUpload', ['$rootScope', '$state', function 
                             if (response.status > 0)
                                 $scope.errorMsg = response.status + ': ' + response.data;
                                 var imageurl = 'https://rankx.blob.core.windows.net/sandiego/'+$rootScope.canswer.id+'/' + file.name;
+                                console.log('emitted fileUploaded!!');
                                 $rootScope.$emit('fileUploaded', imageurl);
                         }, null, function (evt) {
                             file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));

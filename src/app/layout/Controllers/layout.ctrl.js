@@ -16,13 +16,11 @@
         .controller('layout', layout);
 
     layout.$inject = ['$location', '$rootScope','$window','$q', '$http','pvisits', 
-    'DEBUG_MODE', 'rankofday', 'answer', 'table','special', 'datetime','uaf',
-    'votes','editvote','vrowvotes',
+    'DEBUG_MODE', 'rankofday', 'answer', 'table','special', 'datetime','uaf','userdata',
     'matchrec', 'edit','useractivity','vrows','headline','cblock', 'catans','$state'];
 
     function layout($location, $rootScope, $window, $q, $http, pvisits, 
-    DEBUG_MODE, rankofday, answer, table, special, datetime, uaf,
-    votes, editvote, vrowvotes, 
+    DEBUG_MODE, rankofday, answer, table, special, datetime, uaf, userdata,
     matchrec, edit, useractivity, vrows, headline, cblock, catans, $state) {
         /* jshint validthis:true */
         var vm = this;
@@ -98,7 +96,7 @@
                 "Marina", "Seaport Village"];
             
             $http.get('../../../assets/fields.json').success(function (response) {
-                $rootScope.typeSchema = response;                
+                $rootScope.typeSchema = response;
             });
 
             $http.get('../../../assets/dialogs.json').success(function (response) {
@@ -144,22 +142,8 @@
                       
             });
             
-             if ($rootScope.isLoggedIn) {
-                //load answer votes
-                votes.loadVotesTable().then(function (votetable) {
-                    $rootScope.cvotes = votetable;
-                });
+            userdata.loadVotes();
             
-                //load edit votes
-                editvote.loadEditVotesTable().then(function (editvotes) {
-                    $rootScope.editvotes = editvotes;
-                });
-                //Vrow Votes for this user
-                vrowvotes.loadVrowVotes().then(function (vrowvotes) {
-                    $rootScope.cvrowvotes = vrowvotes;
-                });
-
-            }
         }
 
         function loadingDone() {
