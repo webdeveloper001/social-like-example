@@ -5,9 +5,9 @@
         .module('login')
         .controller('login', login);
 
-    login.$inject = ['$location', '$window', '$rootScope', 'login', 'dialog', 'userDetail','$state'];
+    login.$inject = ['$location', '$window', '$rootScope', 'login', 'dialog', '$state'];
 
-    function login($location, $window, $rootScope, login, dialog, userDetail,$state) {
+    function login($location, $window, $rootScope, login, dialog, $state) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'login';
