@@ -98,7 +98,7 @@
         if (document.getElementById("SearchInput") != null && document.getElementById("SearchInput") != undefined) {
             document.getElementById("SearchInput").blur();
         }
-
+        
         activate();
 
         function activate() {
@@ -117,10 +117,10 @@
             
             //Sort first by upV, then execute ranking algorithm
             sortByUpV();
-            //rank.computeRanking($rootScope.canswers, $rootScope.cmrecs);
+            rank.computeRanking($rootScope.canswers, $rootScope.cmrecs);
             
             //Sort by rank here (this is to grab images of top 3 results)
-            vm.answers = $filter('orderBy')(vm.answers, '-Rank');
+            //vm.answers = $filter('orderBy')(vm.answers, '-Rank');
             
             //Instead of rank points just show index in array
             for (var i = 0; i < vm.answers.length; i++) {
