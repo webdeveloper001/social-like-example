@@ -53,6 +53,7 @@
                          * if user detail is not available open modal for asking user details
                          * if user detail is available assign it to $rootScope.user and change local storage object for logged in user
                          */
+                        /*
                         userDetail.getUserDetail().then(function (result) {
 
                             if (Object.keys(result).length == 0) {
@@ -69,7 +70,7 @@
                                 } catch (e) { }
                             }
 
-                        });
+                        });*/
 
                         console.log("isLoggedIn", $rootScope.isLoggedIn);
 
