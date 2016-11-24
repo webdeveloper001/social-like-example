@@ -117,8 +117,8 @@
             
             //Sort first by upV, then execute ranking algorithm
             sortByUpV();
-            rank.computeRanking($rootScope.canswers, $rootScope.cmrecs);
-
+            //rank.computeRanking($rootScope.canswers, $rootScope.cmrecs);
+            
             //Sort by rank here (this is to grab images of top 3 results)
             vm.answers = $filter('orderBy')(vm.answers, '-Rank');
             

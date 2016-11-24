@@ -21,7 +21,6 @@
         var dV = 0;
         var upVi = 0;  //upVotes initial value
         var downVi = 0; //downVotes initial value
-        var A = $rootScope.A;
         var answers = $rootScope.canswers;
         var recordsUpdated = false;
         vm.numEdits = 0;
