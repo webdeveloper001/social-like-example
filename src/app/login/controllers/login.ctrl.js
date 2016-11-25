@@ -74,9 +74,9 @@
 
                         console.log("isLoggedIn", $rootScope.isLoggedIn);
 
-                        //$location.path('/');
-                        //$state.go('cwrapper', {}, {location: 'replace'});
-                        $state.go('cwrapper');
+                        $location.path('/');
+                        $state.go('cwrapper', {}, {location: 'replace'});
+                        //$state.go('cwrapper');
                         
 
                     },function () {
