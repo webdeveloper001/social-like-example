@@ -107,8 +107,8 @@
 
             login.loginWithFacebook()
                 .then(function (result) {
-
-                    //$window.location = result.url;
+                    console.log("result @loginWithFacebook - ", result);
+                    $window.location = result.url;
                 });
         }
 
