@@ -18,11 +18,12 @@
 
         function loadVotes() {
             
-            if ($rootScope.isLoggedIn) {
-                console.log("loading userdata!")
+            var dataLoaded = $rootScope.dataLoaded ? $rootScope.dataLoaded : false;
+            
+            if ($rootScope.isLoggedIn && !dataLoaded) {
                 //load answer votes
                 if ($rootScope.cvotes == undefined) {
-                    votes.loadVotesTable().then(function (votetable) {
+                    votes.loadVotesByUser().then(function (votetable) {
                         $rootScope.cvotes = votetable;
                     });
                 }
@@ -38,6 +39,8 @@
                         $rootScope.cvrowvotes = vrowvotes;
                     });
                 }
+                
+                $rootScope.dataLoaded = true;
             }
         }
 

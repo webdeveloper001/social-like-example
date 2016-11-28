@@ -5,9 +5,11 @@
         .module('app')
         .controller('addEvent', addEvent);
 
-    addEvent.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'image', 'catans', 'getgps', '$timeout','getwiki','$window'];
+    addEvent.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'datetime',
+     'image', 'catans', 'getgps', '$timeout','getwiki','$window'];
 
-    function addEvent(dialog, $state, answer, $rootScope, $modal, image, catans, getgps, $timeout, getwiki, $window) {
+    function addEvent(dialog, $state, answer, $rootScope, $modal, datetime,
+    image, catans, getgps, $timeout, getwiki, $window) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'addEvent';
@@ -77,18 +79,20 @@
         function activate() {
             loadPublicFields();
             determineScope();
-            $rootScope.eventmode = 'add';
+            //$rootScope.eventmode = 'add';
              if ($rootScope.eventmode == 'edit') {
                 
                 //Copy object without reference
-                vm.sp = JSON.parse(JSON.stringify($rootScope.cspecial));
-                datetime.formatdatetime(vm.sp);
+                vm.ev = JSON.parse(JSON.stringify($rootScope.canswer));
+                datetime.formatdatetime(vm.ev);
                 
                 vm.isEdit = true;
-                if (vm.sp.freq == 'onetime') frequencySel(1);
-                if (vm.sp.freq == 'weekly') frequencySel(2);
-                vm.ev.bc = vm.sp.bc;
-                vm.ev.fc = vm.sp.fc;
+                if (vm.ev.freq == 'onetime') frequencySel(1);
+                if (vm.ev.freq == 'weekly') frequencySel(2);
+                //vm.ev.bc = vm.sp.bc;
+                //vm.ev.fc = vm.sp.fc;
+                console.log("vm.ev --- ", vm.ev);
+                vm.imageURL = vm.ev.imageurl;
 
             }
 
@@ -342,7 +346,46 @@
             //console.log("adding myEvent", eventStr);
             //console.log("adding answer", ansObj);
         }
-
+        
+        function updateEventConfirmed(){
+            
+            var eventObj = {};
+            eventObj.bc = myEvent.bc;
+            eventObj.fc = myEvent.fc;
+            eventObj.freq = myEvent.freq;
+            eventObj.edate = myEvent.edate;
+            eventObj.sdate = myEvent.sdate;
+            eventObj.etime = myEvent.etime;
+            eventObj.etime2 = myEvent.etime2;
+            eventObj.stime = myEvent.stime;
+            eventObj.stime2 = myEvent.stime2;
+            eventObj.mon = myEvent.mon;
+            eventObj.tue = myEvent.tue;
+            eventObj.wed = myEvent.wed;
+            eventObj.thu = myEvent.thu;
+            eventObj.fri = myEvent.fri;
+            eventObj.sat = myEvent.sat;
+            eventObj.sun = myEvent.sun;
+            
+            var eventstrNew = JSON.stringify(eventObj);
+            
+            var fields = [];
+            var vals = []; 
+            
+            if($rootScope.canswer.name != vm.ev.name) {fields.push('name'); vals.push(vm.ev.name);}
+            if($rootScope.canswer.addinfo != vm.ev.addinfo) {fields.push('addinfo'); vals.push(vm.ev.addinfo);}
+            if($rootScope.canswer.cityarea != vm.ev.cityarea) {fields.push('cityarea'); vals.push(vm.ev.cityarea);}
+            if($rootScope.canswer.location != vm.ev.location) {fields.push('location'); vals.push(vm.ev.location);}
+            if($rootScope.canswer.website != vm.ev.website) {fields.push('website'); vals.push(vm.ev.website);}
+            if($rootScope.canswer.imageurl != vm.imageURL) {fields.push('imageurl'); vals.push(vm.imageURL);}
+            if($rootScope.canswer.eventstr != eventstrNew) {fields.push('eventstr'); vals.push(eventstrNew);}
+            if($rootScope.canswer.owner != vm.ev.owner) {fields.push('owner'); vals.push(vm.ev.owner);}
+            
+            console.log("fields - ", fields);
+            console.log("vals - ", vals);
+            
+            answer.updateAnswer(vm.ev.id, fields, vals);
+        }
         
         function showHowItWorksDialog() {
             dialog.howItWorks('addEvent');
@@ -409,7 +452,8 @@
             myEvent.date = myEvent.sdate;
             
             //myEvent.freq = (vm.onetime ? 'onetime' : 'weekly');
-            dialog.createEventPreview(myEvent, addEventConfirmed);
+            if ($rootScope.eventmode == 'add') dialog.createEventPreview(myEvent, addEventConfirmed);
+            else dialog.createEventPreview(myEvent, updateEventConfirmed);
         }
         
          function addSpecial() {

@@ -170,7 +170,6 @@
             else vm.userIsOwner = false;            
 
             $rootScope.userIsOwner = vm.userIsOwner;
-            console.log("@ answerDetail - $rootScope.userIsOwner - ",$rootScope.userIsOwner);
             
             //Determine number of user comments
             if (vm.answer.numcom == undefined) vm.numcom = 0;
@@ -562,7 +561,11 @@
 
         function editAnswer() {
             if ($rootScope.isLoggedIn) {
-                $state.go("editAnswer", { index: vm.answer.id });
+                if (vm.answer.type == 'Event') {
+                    $rootScope.eventmode = 'edit';
+                    $state.go("addEvent", { index: vm.answer.id });
+                }
+                else $state.go("editAnswer", { index: vm.answer.id });
             }
             else dialog.getDialog('notLoggedIn');           
         }

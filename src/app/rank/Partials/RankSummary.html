@@ -156,7 +156,15 @@
         <div class="alert alert-warning" style="padding-top: 5px;padding-bottom: 5px;">
             <a class="close" data-dismiss="alert" aria-label="close" ng-click="vm.closeAddInfoMsg()">&times;</a>
             <span class="glyphicon glyphicon-arrow-left"></span><strong>&nbsp;&nbsp;Are we missing one?</strong>&nbsp;&nbsp;Use
-            the '+' button to add a new answer.
+            the '+' button to add a new 
+            <span ng-if="vm.type == 'Establishment'">Establishment to this list.</span>
+            <span ng-if="vm.type == 'Organization'">Organization or Company to this list.</span>
+            <span ng-if="vm.type == 'Person'">Person to this list.</span>
+            <span ng-if="vm.type == 'PersonCust'">Professional to this list.</span>
+            <span ng-if="vm.type == 'Place'">Place to this list.</span>
+            <span ng-if="vm.type == 'Short-Phrase'">Answer to this list.</span>
+            <span ng-if="vm.type == 'Thing'">Item to this list.</span>
+            <span ng-if="vm.type == 'Event'">Event to this list.</span>
         </div>
     </div>
 </div>

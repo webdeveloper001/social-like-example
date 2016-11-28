@@ -5,9 +5,9 @@
         .module('app')
         .service('getgps', getgps);
 
-    getgps.$inject = ['$rootScope', '$http', 'APP_API_KEY', 'GOOGLE_API_KEY','$cookies'];
+    getgps.$inject = ['$rootScope', '$http', 'APP_API_KEY', 'GOOGLE_API_KEY','$cookies','$state'];
 
-    function getgps($rootScope, $http, APP_API_KEY, GOOGLE_API_KEY, $cookies) {
+    function getgps($rootScope, $http, APP_API_KEY, GOOGLE_API_KEY, $cookies, $state) {
 
         var service = {
 
@@ -42,11 +42,21 @@
                     $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
                     $http.defaults.headers.common['X-DreamFactory-Session-Token'] = $cookies.session_token;
                     
-                    if (answer.location != undefined && answer.location != null &&
+                    var isValid = (answer.location != undefined && answer.location != null &&
                         answer.lat != undefined && answer.lat != null &&
-                        answer.lng != undefined && answer.lng != null){
-                            $rootScope.$emit('answerGPSready');
+                        answer.lng != undefined && answer.lng != null) ;
+                            
+                    
+                    if (isValid) {
+                        if ($rootScope.coordForUSer){
+                            $rootScope.currentUserLatitude = answer.lat;
+                            $rootScope.currentUserLongitude = answer.lng;
+                            $rootScope.coordForUSer = false;
+                            $rootScope.coordsRdy = true;
+                            if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 9521 });
                         }
+                        else $rootScope.$emit('answerGPSready');
+                    }
                     //answer.updateAnswer(cAnswer.id,['lat','lng','location'],[lat,lng,fa]);
                 });
 

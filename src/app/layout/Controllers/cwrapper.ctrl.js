@@ -274,6 +274,8 @@
             vm.searchScope = x;
             vm.val = '';
             $rootScope.inputVal = '';
+            //force close the dropdown neighborhood menu            
+            $("#nhdropdown").dropdown("toggle");
         }
         
         //Quick Links

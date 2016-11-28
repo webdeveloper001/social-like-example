@@ -6,10 +6,10 @@
         .controller('navbar', navbar);
 
     navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state',
-        'city', '$cookieStore', '$http', 'GOOGLE_API_KEY', 'dialog'];
+        'city', '$cookieStore', '$http', 'GOOGLE_API_KEY', 'dialog','getgps'];
 
     function navbar($location, $translate, $rootScope, login, $state,
-        city, $cookieStore, $http, GOOGLE_API_KEY, dialog) {
+        city, $cookieStore, $http, GOOGLE_API_KEY, dialog, getgps) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'navbar';
@@ -119,6 +119,15 @@
 
         $rootScope.$on('getLocation', function (e) {
             autoDetectCity();
+        });
+        
+        $rootScope.$on('useAddress', function (e, address) {
+            var obj = {};
+            obj.location = address.address;
+            obj.lat = 0;
+            obj.lng = 0;
+            $rootScope.coordForUSer = true;
+            getgps.getLocationGPS(obj);
         });
 
         /**

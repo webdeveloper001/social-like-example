@@ -5,9 +5,9 @@
         .module('app')
         .controller('dbMaint', dbMaint);
 
-    dbMaint.$inject = ['$location', '$rootScope', '$state','$stateParams', 'table','dialog','answer','catans'];
+    dbMaint.$inject = ['$location', '$rootScope', '$state','$stateParams', 'table','dialog','answer','catans','votes'];
 
-    function dbMaint(location, $rootScope, $state, $stateParams, table, dialog, answer, catans) {
+    function dbMaint(location, $rootScope, $state, $stateParams, table, dialog, answer, catans, votes) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'dbMaint';
@@ -21,6 +21,8 @@
         vm.findPhoneWebsite = findPhoneWebsite;
         vm.findDuplicatedRanks = findDuplicatedRanks;
         vm.clearAllCatansVotes = clearAllCatansVotes;
+        vm.syncUserVotes = syncUserVotes;
+        vm.updatecatans = updatecatans;
     
         vm.isAdmin = $rootScope.isAdmin;
         
@@ -236,6 +238,74 @@
                     catans.updateRec($rootScope.catansrecs[i].id,['upV','downV'],[0,0]);
                 }
             }
+        }
+        
+        function syncUserVotes(){
+            
+            console.log("syncUSerVotes");
+            
+            votes.loadAllVotes().then(function (result) {
+                        $rootScope.allvotes = result;
+                        syncVotes();
+                    });
+                    
+        }
+        
+        function syncVotes(){
+            
+            console.log("syncVotes");
+            var ca = {};
+            var v = {};
+            var nUpV = [];
+            var nDownV = [];
+            var idx = 0;
+            var idx2 = 0;
+            vm.syncp = [];
+            var obj = {};
+            for (var i=0; i<$rootScope.catansrecs.length; i++){
+                ca = $rootScope.catansrecs[i];
+                nUpV = [];
+                nDownV = [];
+                v = {};
+                for (var j=0; j<$rootScope.allvotes.length; j++){
+                    v = $rootScope.allvotes[j];
+                    if (v.catans == ca.id){   //if vote correspond to current catans
+                    //console.log("vote id - ", v.id);
+                        if (v.vote == 1) {
+                            //console.log("upV catans -", ca.id, v.id);
+                            nUpV.push(v);
+                        }
+                        if (v.vote == -1) {
+                            //console.log("downV catans -", ca.id, v.id);
+                            nDownV.push(v);
+                        }
+                    }
+                }
+                if (nUpV.length != ca.upV || nDownV.length != ca.downV) {
+                    
+                    obj = {};
+                    
+                    idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(ca.answer);
+                    idx2 = $rootScope.content.map(function(x) {return x.id; }).indexOf(ca.category);
+                    
+                    obj.answername = $rootScope.answers[idx].name;
+                    obj.categorytitle = $rootScope.content[idx2].title;
+                    obj.answer = $rootScope.answers[idx].id;
+                    obj.catans = ca.id;
+                    obj.category = $rootScope.content[idx2].id;
+                    obj.caUpV = ca.upV;
+                    obj.caDownV = ca.downV;
+                    obj.nUpVlen = nUpV.length;
+                    obj.nDownVlen = nDownV.length;
+                    
+                    vm.syncp.push(obj);
+                    //console.log("syn problem upV @ catans - ", $rootScope.answers[idx].name, $rootScope.content[idx2].title, ca.upV, nUpV);
+                }
+            }
+        }
+        
+        function updatecatans(x){
+            catans.updateRec(x.catans, ['upV','downV'], [x.nUpVlen, x.nDownVlen]);
         }
                      
     }

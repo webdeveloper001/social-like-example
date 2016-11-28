@@ -18,7 +18,8 @@
             formatdatetime: formatdatetime,
             formatTime: formatTime,
             date2number: date2number,
-            dateIsCurrent: dateIsCurrent
+            dateIsCurrent: dateIsCurrent,
+            eventIsCurrent: eventIsCurrent
         };
 
         return service;
@@ -94,6 +95,53 @@
         function dateIsCurrent(datestr){
             var date = date2number(datestr);
             return date - $rootScope.dateTodayNum >= 0;
+        }
+        
+        //return true if an event is current or in the future
+        function eventIsCurrent(obj, answer){
+            var edate = 0;
+            var edateValid = false;
+            var sdate = 0;
+            var eIsCurrent = false;
+            if (answer.edate != undefined && answer.edate != ''){
+                edate = date2number(answer.edate.slice(4));
+                edateValid = true;   
+            }
+             
+            sdate =  date2number(answer.sdate.slice(4));
+            
+           // ----x------|----------------|------------
+            if (edateValid){
+                if (edate >= $rootScope.dateTodayNum) {
+                    eIsCurrent = true;
+                    if (sdate >= $rootScope.dateTodayNum) {
+                        obj.date = answer.sdate.slice(4);
+                    }
+                    else {
+                        //Format todays date
+                        var d = new Date($rootScope.dateToday);
+                        var s = d.toString();
+                        obj.date = s.substring(0, 15).slice(4);
+                    }
+                }
+                else {
+                    eIsCurrent = false;
+                    obj.date = answer.edate.slice(4);
+                }
+            }
+            //-----------------|--------------------
+            else {
+                if (sdate >= $rootScope.dateTodayNum) {
+                    eIsCurrent = true;
+                    obj.date = answer.sdate.slice(4);
+                }
+                else {
+                    eIsCurrent = false;
+                    obj.date = answer.sdate.slice(4);
+                }
+            }
+            
+            return eIsCurrent;
         }
 
     }

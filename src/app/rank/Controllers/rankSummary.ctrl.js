@@ -308,7 +308,7 @@
 
         function updateVoteTable() {
             //load content of vote table filtered by user
-            votes.loadVotesTable().then(function (votetable) {
+            votes.loadVotesByUser().then(function (votetable) {
                 $rootScope.cvotes = votetable;
                 getRankAnswers();
             });
@@ -377,7 +377,10 @@
                     return;
                 }
                 else {
-                    if (vm.type == 'Event') $state.go("addEvent");
+                    if (vm.type == 'Event') {
+                        $rootScope.eventmode = 'add';
+                        $state.go("addEvent");
+                    }
                     else $state.go("addAnswer");
                 }
             }
@@ -547,9 +550,12 @@
 
                                         //Object.assign(answers[k], eventObj);
                                         mergeObject(answers[k], eventObj);
-                                        obj.date = answers[k].sdate.slice(4);
-                                        eventIsCurrent = datetime.dateIsCurrent(obj.date);
-
+                                        
+                                        //To determine if event is current look at end date if exist if not use start date
+                                        //if (eventObj.edate != undefined && eventObj.edate != '') obj.date = answers[k].edate.slice(4);
+                                        //else obj.date = answers[k].sdate.slice(4);
+                                        eventIsCurrent = datetime.eventIsCurrent(obj, answers[k]);
+                                        
                                         if (eventIsCurrent) {
                                             $rootScope.canswers.push(obj);
                                             $rootScope.ccatans.push(catansrecs[i]);
@@ -593,8 +599,12 @@
 
                                             //Object.assign(answers[k], eventObj);
                                             mergeObject(answers[k], eventObj);
-                                            obj.date = answers[k].sdate.slice(4);
-                                            eventIsCurrent = datetime.dateIsCurrent(obj.date);
+                                            
+                                            //To determine if event is current look at end date if exist if not use start date
+                                            //if (eventObj.edate != undefined && eventObj.edate != '') obj.date = answers[k].edate.slice(4);
+                                            //else obj.date = answers[k].sdate.slice(4);
+                                        
+                                            eventIsCurrent = datetime.eventIsCurrent(obj, answers[k]);
 
                                             if (eventIsCurrent) {
                                                 $rootScope.canswers.push(obj);

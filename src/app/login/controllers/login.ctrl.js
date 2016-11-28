@@ -25,7 +25,8 @@
         vm.whyFacebookDialog = whyFacebookDialog;
         vm.goBack = goBack;
 
-        activate();
+        if ($rootScope.isLoggedIn) $state.go('cwrapper');
+        else activate();
 
         function activate() {
 

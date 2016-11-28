@@ -176,7 +176,7 @@
             else pvisits.patchRec(pvisitrec.id, pvisitrec.nvisits+1);
             
             $rootScope.dateToday = dateStr;
-            $rootScope.dateTodayNum = datetime.date2number(dateStr);                        
+            $rootScope.dateTodayNum = datetime.date2number(dateStr);
         }
         
         /*

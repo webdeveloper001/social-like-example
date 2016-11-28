@@ -14,7 +14,8 @@
         var baseURI = '/api/v2/mysql/_table/votetable';
 
         var service = {
-            loadVotesTable: loadVotesTable,
+            loadVotesByUser: loadVotesByUser,
+            loadAllVotes: loadAllVotes,
             patchRec: patchRec,
 			postRec: postRec,
             deleteVotesbyCatans: deleteVotesbyCatans,
@@ -26,7 +27,7 @@
         return service;
 
 
-        function loadVotesTable(forceRefresh) {
+        function loadVotesByUser(forceRefresh) {
       
              if (_isVotesLoaded() && !forceRefresh) {
 
@@ -35,6 +36,20 @@
             
            //Get all vote records for current user
             var url = baseURI + '/?filter=user='+ $rootScope.user.id;
+             
+            return $http.get(url).then(querySucceeded, _queryFailed);
+            
+            function querySucceeded(result) {
+
+                return _votes = result.data.resource;
+            }
+                 
+        }
+        
+        function loadAllVotes(forceRefresh) {
+      
+           //Get all vote records for current user
+            var url = baseURI;
              
             return $http.get(url).then(querySucceeded, _queryFailed);
             
