@@ -76,7 +76,7 @@
             vm.selEditRank = $rootScope.editMode ? 'active' : 'none';
             vm.selViewRank = $rootScope.editMode ? 'none' : 'active';
             
-            $rootScope.includeNearMe = false;
+            //$rootScope.includeNearMe = false;
             $rootScope.cCategory = undefined;
         }
         function init() {
@@ -220,8 +220,8 @@
             }
         }
 
-        function refreshRanks(val) {
-            $rootScope.inputVal = val;
+        function refreshRanks() {
+            $rootScope.inputVal = vm.val;
             if ($rootScope.inputVal.length > 0) {
                 $rootScope.searchActive = true;
                 vm.hidelogo = true;
@@ -234,7 +234,13 @@
             }
             vm.searchActive = $rootScope.searchActive;
             $window.scroll(0,0);
+            
             $rootScope.$emit('refreshRanks');
+            
+             //This is to prevent double pulses and have two answers get submitted by hardware glitch
+             //$timeout(function () {
+             //       if ($rootScope.inputVal == vm.val) $rootScope.$emit('refreshRanks');
+             //}, 300);
         }
 
         function switchScope(x) {

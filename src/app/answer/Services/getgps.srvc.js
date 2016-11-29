@@ -54,6 +54,7 @@
                             $rootScope.coordForUSer = false;
                             $rootScope.coordsRdy = true;
                             if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 9521 });
+                            if ($rootScope.loadRankWhenCoordsRdy) $state.reload();
                         }
                         else $rootScope.$emit('answerGPSready');
                     }

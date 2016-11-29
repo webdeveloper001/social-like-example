@@ -48,13 +48,13 @@
 				</tr>
 			</thead>
 			<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
-			<tr ng-repeat="x in results_nm" ng-click="rankSel(x)" style="cursor:pointer;" ng-if="nm">
+			<tr ng-repeat="x in results_nm" ng-click="rankSel(x,true)" style="cursor:pointer;" ng-if="nm">
 				<td style="width:50%;">
 					{{x.title}}
 					<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;{{x.answers}}&nbspanswers-{{x.views}}&nbspviews</small>
 				</td>
 			</tr>
-			<tr ng-repeat="x in results | limitTo:maxRes" ng-click="rankSel(x, $index)" style="cursor:pointer;">
+			<tr ng-repeat="x in results | limitTo:maxRes" ng-click="rankSel(x,false)" style="cursor:pointer;">
 				<td style="width:50%;">
 					{{x.title}}
 					<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;{{x.answers}}&nbspanswers-{{x.views}}&nbspviews</small>

@@ -48,6 +48,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             
                 //Filter content based on user input
                 function getRanks() {
+                    
                     vm.hideme = false;
                     var rt = '';
                     var ss = '';
@@ -57,11 +58,11 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     var tagCapitalized = '';
                     var tagFirstLowered = '';
                     var rankObj = {};
-
+                    /*
                     function compare(a, b) {
                         return a.isatomic - b.isatomic;
                     }
-
+                    */
 
                     if ($rootScope.inputVal != undefined && vm.isDynamic) {
                         var userIsTyping = false;
@@ -83,7 +84,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         else {
                             inm = false;
                         }
-
+                        
                         if ($rootScope.isNh) inputVal = inputVal + ' ' + $rootScope.cnh;
                         //vm.showR = false;
                         //$rootScope.showR = false;
@@ -119,9 +120,10 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             }
                             //show first non-atomic ranks -- for better user experience
                             //vm.answers = vm.results.sort(compare);
-                            
+                            /*
                             if (inm) {
                                 for (var k = 0; k < vm.results.length; k++) {
+                                    console.log("results- ",vm.results[k].title);
                                     if (vm.results[k].title.indexOf('in San Diego') > -1) {
                                         rt = vm.results[k].title.replace('in San Diego', 'close to me');
                                         vm.results[k].title = rt;
@@ -130,7 +132,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                 }
                                 //if a result includes San Diego, also add a results as 'Near Me'
                             }
-                            else {
+                            else {*/
                                 for (var k = 0; k < vm.results.length; k++) {
                                     rt = vm.results[k].title; //Rank title
                                     if (rt.indexOf('in San Diego') > -1 && vm.results[k].isatomic == false) {
@@ -141,7 +143,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                     }
                                 }
                                 //console.log("vm.results_nm - ", vm.results_nm);
-                            }
+                            //}
                             
                             //resLT6 is used to hide the <<see more>> choice
                             if (vm.results.length < 6) vm.resLT6 = true;
@@ -150,6 +152,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             if (inputVal.length >= strlen_o) userIsTyping = true;
                             else userIsTyping = false;
                             //if less than 5 results, write 'query record
+                            
                             if (vm.results.length <= 5 && (inputVal.length % 5 == 0) && userIsTyping) {
                                 query.postQuery(inputVal, vm.results.length)
                                 //console.log("query!")
@@ -761,8 +764,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 }
             }], //end controller
         link: function (scope) {
-            scope.rankSel = function (x) {
-                $rootScope.title = x.title;
+            scope.rankSel = function (x,nm) {
+                if (nm) $rootScope.rankIsNearMe = true;
+                else $rootScope.rankIsNearMe = false;
                 if ($rootScope.editMode) $state.go('editRanking', { index: x.id });
                 else {
                     $state.go('rankSummary', { index: x.id });

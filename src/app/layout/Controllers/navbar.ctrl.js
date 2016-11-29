@@ -28,12 +28,15 @@
         vm.gotoFileUpload = gotoFileUpload;
         vm.gotoCustomer = gotoCustomer;
         vm.openCitySelection = openCitySelection;
+        vm.goWarning = goWarning;
 
         if ($rootScope.coordsRdy == undefined) $rootScope.coordsRdy = false;
         $rootScope.loadFbnWhenCoordsRdy = false;
         
         //Geolocation options
         var geoOptions = {};
+        
+        vm.warning = false;
         activate();
 
         function activate() {
@@ -120,6 +123,16 @@
         $rootScope.$on('getLocation', function (e) {
             autoDetectCity();
         });
+        
+        $rootScope.$on('showWarning', function (e) {
+            console.log("rx showWarning");
+            showWarningsIcon();
+        });
+        $rootScope.$on('hideWarning', function (e) {
+            console.log("rx clearWarning");
+            hideWarningsIcon();
+        });
+        
         
         $rootScope.$on('useAddress', function (e, address) {
             var obj = {};
@@ -360,6 +373,17 @@
                 $rootScope.currentUserLatitude = result.data.location.lat;
                 $rootScope.currentUserLongitude = result.data.location.lng;
             });
+        }
+        
+        function showWarningsIcon(){
+            vm.warning = true;
+        }
+        function hideWarningsIcon(){
+            vm.warning = false;
+        }
+        
+        function goWarning(){
+            dialog.askEmail();
         }
     }
 })();

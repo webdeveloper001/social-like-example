@@ -5,9 +5,9 @@
         .module('app')
         .factory('dialog', dialog);
 
-    dialog.$inject = ['$q', '$rootScope'];
+    dialog.$inject = ['$q', '$rootScope','useraccnt'];
 
-    function dialog($q, $rootScope) {
+    function dialog($q, $rootScope,useraccnt) {
 
         var service = {
             editConfirm: editConfirm,
@@ -33,7 +33,8 @@
             deleteVRowGroup: deleteVRowGroup,
             showAddEvent: showAddEvent,
             createEventPreview: createEventPreview,
-            askPermissionToLocate: askPermissionToLocate
+            askPermissionToLocate: askPermissionToLocate,
+            askEmail: askEmail,
         };
 
         return service;
@@ -933,7 +934,7 @@
             });
                    
         }
-        
+        /*
         function askPermissionToLocate() {
 
             var title = '';
@@ -942,27 +943,7 @@
             var btnOkLabel = 'Yes, locate me';
 
             title = 'Please Confirm';
-            message = 'Is it ok if we locate your position?'; // +
-            /*
-            '<br><br>'+
-            '<div class="row">'+
-            ($rootScope.sm ? '<div class="container col-xs-12">':'<div class="container col-xs-6">') +
-            '<div class="text-left" style="color:blue">Option 1</div>'+
-            '<div class="text-center" style="border:2px"><button class="btn btn-success" ng-click="useGeo">Yes, locate me with my IP</button></div><br>'+
-            '<div class="text-left" style="color:blue">Option 2 <small>(recommended)</small></div>'+
-            '<p>Use this address as reference</p>' +
-            '<div class="input-group">'+
-            '<input type="text" class="form-control" ng-model="" placeholder="Enter address">'+
-                '<span class="input-group-btn text-right">'+
-                        '<button class="btn btn-success" type="button" ng-click="useAdd">Go</button>'+
-                    '</span>'+
-            '</div><br><br>'+     
-            '</div>'+
-            ($rootScope.sm ? '<div class="container col-xs-12">':'<div class="container col-xs-6">') +
-            '<div class="text-center" style="border:2px"><button class="btn btn-default" ng-click="noApp">No, I don\'t approve</button></div>'+
-            '</div>'+
-            '</div>';
-            */
+            message = 'Is it ok if we locate your position?';
             BootstrapDialog.confirm({
                 type: BootstrapDialog.TYPE_PRIMARY,
                 title: title,
@@ -980,7 +961,7 @@
                     if (result) $rootScope.$emit('getLocation');                                     
                 }                          
               });
-        } 
+        }*/ 
         
         function askPermissionToLocate() {
 
@@ -1046,12 +1027,55 @@
                 btnCancelClass: 'btn-warning',
                 btnCancelAction: function (dialogRef) {
                     dialogRef.close();
-                },
-                 callback: function (result) {
-                    if (result) $rootScope.$emit('getLocation');                                     
                 }                          
               });
-        } 
-         
+        }
+        
+        function askEmail() {
+
+            var title = '';
+            var messagehtml = ''
+            var btnCancelLabel = 'No, I don\'t approve';
+            var btnOkLabel = 'Yes, locate me';
+
+            title = 'Lets stay in touch';
+            
+             messagehtml = '<div class="text-left">Please provide us an email address so we can '+
+            'keep you updated on everything related to your account.</div>' +
+            '<br>'+
+            '<div class="input-group">'+
+            '<input id="email" type="text" class="form-control" placeholder="Enter email address">'+
+                '<span class="input-group-btn text-right">'+
+                        '<button class="btn btn-primary" type="button" id="gobutton">Submit</button>'+
+                '</span>'+
+            '</div><br>';
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: function(dialogRef) {
+                var $content = $(messagehtml);
+            
+                $content.find('#gobutton').click({}, function() {
+                    var address = $content.find('input').val();
+                    var x = dialogRef;
+                    useraccnt.updateuseraccnt($rootScope.useraccnts[0].id, ['email'], [address]);
+                    x.close();
+                    $rootScope.$emit('hideWarning');
+                });
+                
+                return $content;
+                },
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-success',
+                btnCancelClass: 'btn-warning',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                }                          
+              });
+        }
     }
 })();

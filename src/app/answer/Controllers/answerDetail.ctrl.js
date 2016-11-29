@@ -6,11 +6,11 @@
         .controller('answerDetail', answerDetail);
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
-        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata',
+        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt',
         '$location', 'vrows', 'vrowvotes','imagelist']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
-        votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,
+        votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt,
         $location, vrows, vrowvotes, imagelist) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
@@ -758,8 +758,16 @@
         }
 
         function bindAccount() {
-            console.log("Bind business to user account");
+            if ($rootScope.DEBUG_MODE) console.log("Bind business to user account");
             answer.updateAnswer(vm.answer.id, ['owner'], [$rootScope.user.id]).then(reloadAnswer);
+            useraccnt.adduseraccnt().then(function(){
+                   //Check if user account has email - if not set warning in navbar
+                   var hasEmail = false;
+                   for(var i=0; i<$rootScope.useraccnts.length; i++){
+                       if ($rootScope.useraccnts[i].email != '') hasEmail = true; 
+                   }
+                   if (!hasEmail) $rootScope.$emit('showWarning');
+                });                     
         }
         
         function reloadAnswer(){

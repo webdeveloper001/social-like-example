@@ -5,11 +5,11 @@
         .module('app')
         .factory('useraccnt', useraccnt);
 
-    useraccnt.$inject = ['$http', '$q','$rootScope'];
+    useraccnt.$inject = ['$http','$q','$rootScope'];
 
     function useraccnt($http, $q, $rootScope) {
 
-        var _useraccnt = [];
+        var _useraccnts = [];
         var baseURI = '/api/v2/mysql/_table/useraccnts';
 
         var service = {
@@ -29,7 +29,7 @@
 
             if (_isuseraccntLoaded() && !forceRefresh) {
 
-                return $q.when(_useraccnt);
+                return $q.when(_useraccnts);
             }
 
             var url = baseURI + '' + '?filter=(user='+$rootScope.user.id+')';
@@ -38,7 +38,7 @@
 
             function querySucceeded(result) {
 
-                return _useraccnt = result.data.resource;
+                return _useraccnts = result.data.resource;
             }
 
         }
@@ -64,9 +64,6 @@
 
             obj.resource.push(data);
 
-            //update local copy
-            _useraccnt.push(data);
-
             var url = baseURI;
 
             return $http.post(url, obj, {
@@ -77,6 +74,11 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
+                //update local copy
+                var datax = data;
+                datax.id = result.data.resource[0].id; 
+                _useraccnts.push(datax);
+                
                 console.log("User account successfully added.");
                 return result.data;
             }
@@ -87,14 +89,15 @@
         * Function to update user detail in user_detail table
         *
         */
-        function updateuseraccnt(rec_id, field, val) {
+        function updateuseraccnt(recid, field, val) {
            
             //form match record
             var obj = {};
             obj.resource = [];
 
             var data = {};
-            data.id = rec_id;
+            data.id = recid;
+            //data.id = user;
             
             for (var i=0; i<field.length; i++){
                 switch (field[i]){
@@ -106,17 +109,18 @@
             }
             //console.log("data", data);
             obj.resource.push(data);
+            //console.log("obj.resource - ", obj);
 
             var url = baseURI;
             
             //update local copy
-            var idx = _useraccnt.map(function(x) {return x.id; }).indexOf(rec_id);  
+            var idx = _useraccnts.map(function(x) {return x.id; }).indexOf(recid);  
             for (var i=0; i<field.length; i++){
                 switch (field[i]){
-                    case "bizcat": _useraccnt[idx].bizcat = val[i]; break;
-                    case "email": _useraccnt[idx].email = val[i]; break;
-                    case "status": _useraccnt[idx].status = val[i]; break;
-                    case "stripeid": _useraccnt[idx].stripeid = val[i]; break;
+                    case "bizcat": _useraccnts[idx].bizcat = val[i]; break;
+                    case "email": _useraccnts[idx].email = val[i]; break;
+                    case "status": _useraccnts[idx].status = val[i]; break;
+                    case "stripeid": _useraccnts[idx].stripeid = val[i]; break;
                 }
             }                        
 
@@ -129,13 +133,14 @@
             function querySucceeded(result) {
 
                 console.log("User account successfully updated.");
+                $rootScope.$emit('clear-notification-warning');
                 return result.data;
             }
         }
 
         function _isuseraccntLoaded() {
 
-            return _useraccnt.length > 0;
+            return _useraccnts.length > 0;
         }
 
         function _queryFailed(error) {

@@ -5,9 +5,9 @@
         .module('app')
         .service('userdata', userdata);
 
-    userdata.$inject = ['$rootScope', 'votes','editvote','vrowvotes',];
+    userdata.$inject = ['$rootScope','votes','editvote','vrowvotes','useraccnt'];
 
-    function userdata($rootScope, votes,editvote,vrowvotes) {
+    function userdata($rootScope,votes,editvote,vrowvotes,useraccnt) {
 
         var service = {
 
@@ -39,9 +39,21 @@
                         $rootScope.cvrowvotes = vrowvotes;
                     });
                 }
+ 
+                useraccnt.getuseraccnt().then(function (useraccnt){
+                    $rootScope.useraccnts = useraccnt;
+                    if ($rootScope.useraccnts.length>0){
+                        var missingEmail = true;
+                        for (var i=0; i<$rootScope.useraccnts.length; i++){
+                            if ($rootScope.useraccnts[i].email != '') missingEmail = false;
+                        }
+                        if (missingEmail) $rootScope.$emit('showWarning');
+                    }
+                });
                 
                 $rootScope.dataLoaded = true;
             }
+            //console.log("$rootScope.dataLoaded",$rootScope.dataLoaded);
         }
 
     }

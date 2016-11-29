@@ -58,6 +58,7 @@
         var answersFull = false;
         var updateExec = false;
         var foodNearMe = false;
+        var rankIsNearMe = false;
         vm.fnm = false;
         
         //Comments related variables
@@ -266,7 +267,7 @@
             }
   
             //Sorting rules
-            if (foodNearMe || $rootScope.includeNearMe) sortByDistance();
+            if (foodNearMe || rankIsNearMe) sortByDistance();
             if (vm.isE) sortByDate();
             if (!foodNearMe && !vm.isE) vm.showR = true || (!vm.sm);
 
@@ -402,6 +403,7 @@
             }
 
             vm.ranking = $rootScope.cCategory.title;
+            if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego','close to me');
 
             if ($rootScope.cCategory.id == 9521) {
                 foodNearMe = true;
@@ -815,6 +817,7 @@
                 if (foodNearMe) vm.answers = vm.answers.slice(0, 99);
             }
             else {
+                $rootScope.loadRankWhenCoordsRdy = true;
                 dialog.askPermissionToLocate();
             }
         }

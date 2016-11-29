@@ -11,6 +11,8 @@
             </button>
             <a class="navbar-brand" ng-click="vm.gotoHome()" style="cursor:pointer">Home</a>
             <a class="navbar-brand" ng-show="vm.user"><i class="fa fa-user"></i> Welcome {{vm.user.first_name}}</a>
+            <a class="navbar-brand" ng-if="vm.warning" style="background-color:#33cccc;color:black;margin:2px" 
+            ng-click="vm.goWarning()"><i class="fa fa-warning"></i></a>
             
             <!-- <a class="navbar-brand" href="#">RANK-X</a> -->
             <!--<ul class="nav navbar-nav navbar-right" ng-show="vm.user">-->
