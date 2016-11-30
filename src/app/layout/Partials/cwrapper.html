@@ -72,7 +72,7 @@
 			<button class="btn btn-primary" ng-click="vm.events()">Events</button>
 			<button class="btn btn-success" ng-click="vm.selfimprove()">I feel lucky</button>
 	</div>
-	<br>
+	<br ng-if="vm.isCity">
 	
 	<table class="table" style="border-style:none" ng-if="vm.isCity">
 		<tbody>
@@ -131,7 +131,7 @@
 		</div>
 	</div>
 </div>
-<p class="text-right" style="color:blue;" ng-click="vm.seeMoreFeed()">&lt;&lt;{{vm.ftext}}&gt;&gt;</p>
+<p class="text-right" style="color:blue;" ng-click="vm.seeMoreFeed()" ng-if="vm.isCity">&lt;&lt;{{vm.ftext}}&gt;&gt;</p>
 	<br>
 	
 	<div class="row">

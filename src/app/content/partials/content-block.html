@@ -63,5 +63,5 @@
 		</tbody>
 	</table>
 
-	<p class="text-right" style="color:blue;" ng-click="seeMore(maxRes, btext)" ng-hide="{{modType == 'rankofweek' || resLT6}}">&lt;&lt;{{btext}}&gt;&gt;</p>
+	<p class="text-right" style="color:blue;" ng-click="seeMore(maxRes, btext)" ng-if="!resLT6 && modType!='rankofweek'">&lt;&lt;{{btext}}&gt;&gt;</p>
 </div>

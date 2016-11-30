@@ -252,13 +252,25 @@
                 '</br></br> Only one edit per field at a time is allowed. Make sure you vote on the edits you agree or disagree.';
             }
             if (type == 'addAnswer') {
-                title = 'Add an Answer';
+                title = 'Add a new answer';
                 message = '1. Fill out the form. The fields marked with ** are required. All other fields are not required but recommended. <br/>' +
                 '<br/>2. Click the \'Get Images\' button. <br/>' +
                 '<br/>3. Use \'>>\' and \'<<\' buttons to browse through the images. You can \'Get More Images\' button to load more images.<br/>' +
-                '<br/>4. When you find the image you like \'Add\' your answer to the ranking.<br/>' +
-                '<br/>' +
+                '<br/>4. When the image you want shows in the image box, click the button \'Add\' to add the new answer'+
+                ' to the list.<br/>' +
                 '<br/>NOTE: Not all images will correspond to your answer. Entering all fields will help with the image results.';
+            }
+            if (type == 'shortPhrase') {
+                title = 'Add an Answer';
+                message = 'Fill out the form. The fields marked with ** are required. <br/>' +
+                '<br/> - The <strong>Title</strong> is the main idea of your answer. <br/>'+
+                '<br/> - In the <strong>Details</strong> box, write additional details about your answer.'+
+                ' You can also write arguments on why it should be included in this list.<br/>'+
+                '<br/>For example: <br/>'+
+                '<br/>In the rank <strong><em>Reasons why dogs are awesome</em></strong> you can add following answer: <br/>'+
+                '<br/><strong>Title:</strong> They enjoy the simple things in life <br/>'+
+                '<br/><strong>Details:</strong> Dogs dont need much to be happy, they are happy with simple things '+
+                'like a belly rub, a walk around the block, playing in the snow or going for a drive.';
             }
 
             BootstrapDialog.show({

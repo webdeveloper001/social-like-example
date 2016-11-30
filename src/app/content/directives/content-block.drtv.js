@@ -400,10 +400,11 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     /*//  4.Use this to add a neighborhood
                     //var nhs = ["Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
                       //      "Marina", "Seaport Village"];
-                    var nhs = ["Torrey Pines", "Carmel Valley", "Miramar",
-                    "Kearny Mesa","Bankers HIll","Rancho Penasquitos",
-                            "Sorrento Valley","Tierra Santa","Logan Heights","Serra Mesa","Normal Heights","Talmadge",
-                            "Bird Rock","South San Diego","North City","San Carlos","Del Cerro"];
+                    //var nhs = ["Torrey Pines", "Carmel Valley", "Miramar",
+                    //"Kearny Mesa","Bankers HIll","Rancho Penasquitos",
+                    //        "Sorrento Valley","Tierra Santa","Logan Heights","Serra Mesa","Normal Heights","Talmadge",
+                    //        "Bird Rock","South San Diego","North City","San Carlos","Del Cerro"];
+                    var nhs = ["Grantville"];
                     
                     var logi = 1;
                     var basetitle = '';
@@ -412,9 +413,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         
                     for (var i=0; i < $rootScope.content.length; i++){
                           
-                          if ($rootScope.content[i].title.includes('in ' + nhs[midx])){
+                          if ($rootScope.content[i].title.includes('Hillcrest')){
                               
-                        //      basetitle = $rootScope.content[i].title;
+                          basetitle = $rootScope.content[i].title;
                         //basetitle = vm.results[i].title;
                         //Copy object without reference
                         //var tablex = JSON.parse(JSON.stringify(vm.results[i]));
@@ -431,15 +432,15 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         
                         //if (tablex.title.includes("in Hillcrest")){
                             //for (var j=0; j<nhs.length; j++){
-                                //newtitle = basetitle.replace("Hillcrest", nhs[midx]);
-                                //tablex.title = newtitle;                            
-                                //table.addTable(tablex);
-                                //console.log(midx, " - ", $rootScope.content[i].title);
+                                newtitle = basetitle.replace("Hillcrest", nhs[midx]);
+                                tablex.title = newtitle;                            
+                                table.addTable(tablex);
+                                //console.log(midx, " - ", tablex.title);
                                 //console.log("log idx: ",logi++);
-                                table.update($rootScope.content[i].id,['image1url','image2url','image3url'],
-                                ['','','']);
-                            //}
-                        }
+                                //table.update($rootScope.content[i].id,['image1url','image2url','image3url'],
+                                //['','','']);
+                            }
+                        //}
                     }
                         
                     $timeout(function () {
@@ -513,9 +514,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                var genRank = vm.results[i].title.replace("Hillcrest", "San Diego");
                                for (var j=0; j<$rootScope.content.length; j++){
                                    if (genRank == $rootScope.content[j].title){
-                                       if ($rootScope.content[j].catstr == null || //comment these 3
-                                       $rootScope.content[j].catstr == undefined || //if want to redo everythign
-                                       $rootScope.content[j].catstr.length == 0){  //categories
+                                      // if ($rootScope.content[j].catstr == null || //comment these 3
+                                      // $rootScope.content[j].catstr == undefined || //if want to redo everythign
+                                      // $rootScope.content[j].catstr.length == 0){  //categories
                                         console.log("Found gen rank --- ", $rootScope.content[j].title);
                                         var srchStr = $rootScope.content[j].title.replace("San Diego","");
                                            for (var k=0; k<$rootScope.content.length; k++){
@@ -527,7 +528,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                            fcatstr = catstr.substring(1); //remove leading ':'
                                            console.log("final catstr ---", fcatstr)
                                            table.update($rootScope.content[j].id, ['isatomic','catstr'],[false, fcatstr]);
-                                       } //this is bracket
+                                     //  } //this is bracket
                                    break;
                                    }
                                }                                              

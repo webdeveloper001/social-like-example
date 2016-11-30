@@ -88,7 +88,7 @@
                 "Spring Valley", "Rancho San Diego", "Mira Mesa",
                 "Torrey Pines", "Carmel Valley", "Miramar","Kearny Mesa","Bankers Hill","Rancho Penasquitos",
                 "Sorrento Valley","Tierra Santa","Logan Heights","Serra Mesa","Normal Heights","Talmadge",
-                "Bird Rock","South San Diego","North City","San Carlos","Del Cerro"
+                "Bird Rock","South San Diego","North City","San Carlos","Del Cerro","Grantville"
                 ];
             
             $rootScope.districts = [

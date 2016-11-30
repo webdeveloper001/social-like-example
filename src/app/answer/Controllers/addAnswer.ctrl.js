@@ -412,7 +412,8 @@
         }
 
         function showHowItWorksDialog() {
-            dialog.howItWorks('addAnswer');
+            if ($rootScope.cCategory.type == 'Short-Phrase') dialog.howItWorks('shortPhrase');
+            else dialog.howItWorks('addAnswer');
         }
 
         function testImageUrl(url, callback, timeout) {

@@ -214,7 +214,7 @@
             <div ng-bind-html="x.html" style="{{x.style}}">
                 <br>
             </div>
-            <p ng-if="x.hasimage" style="background-color:lightgray" ng-click="vm.showsimage(x)">Show Image</p>
+            <p ng-if="x.hasimage" style="background-color:lightgray;cursor:pointer" ng-click="vm.showsimage(x)">Show Flyer</p>
             <div class="text-middle" ng-if="x.showimage">
                 <img class="displayed" src="{{x.image}}" style="height:{{vm.mxheight}};width:auto;max-width:96%;margin-left:auto;margin-right:auto;">
                 <br>
