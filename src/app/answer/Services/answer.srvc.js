@@ -105,6 +105,16 @@
                 var answerx = answer;
                 answerx.id = result.data.resource[0].id; 
                 _answers.push(answerx);
+                
+                //Update current establishment and person names for typeahead
+                if (answerx.type == 'Establishment') {
+                    $rootScope.estNames.push(answerx.name);
+                    $rootScope.estAnswers.push(answerx);
+                }
+                if (answerx.type == 'Person') {
+                    $rootScope.pplNames.push(answerx.name);
+                    $rootScope.pplAnswers.push(answerx);
+                }
                                 
                 catans.postRec(answerx.id);
                 vrows.postVrows4Answer(answerx);
@@ -138,6 +148,16 @@
                 var answerx = answer;
                 answerx.id = result.data.resource[0].id; 
                 _answers.push(answerx);
+                
+                //Update current establishment and person names for typeahead
+                if (answerx.type == 'Establishment') {
+                    $rootScope.estNames.push(answerx.name);
+                    $rootScope.estAnswers.push(answerx);
+                }
+                if (answerx.type == 'Person') {
+                    $rootScope.pplNames.push(answerx.name);
+                    $rootScope.pplAnswers.push(answerx);
+                }
                 
                 uaf.post('addedAnswer',['answer','category'],[answerx.id, category[0]]); //user activity feed
                                 

@@ -375,16 +375,16 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                       *///End of 1    
         
         
-                    /* //  2. Use this to add/remove a tag from a rank 
+                    /*//  2. Use this to add/remove a tag from a rank 
                     for (var i=0; i < vm.results.length; i++){
-                        if (vm.results[i].title.includes("Grocery stores")){
-                            //var tags = vm.results[i].tags + ' places services';
-                            var tags = vm.results[i].tags.replace('isMP','');
+                        if (vm.results[i].title.includes("Smoothies")){
+                            var tags = vm.results[i].tags + ' acai bowls';
+                            //var tags = vm.results[i].tags.replace('isMP','');
                             //var newtype = 'Event';
                             table.update(vm.results[i].id, ['tags'],[tags]);    
                         }            
                     } 
-                    */ //End of 2
+                    *///End of 2
         
                      /*//  3.Use this to correct the title of a group of ranks
                     for (var i=0; i < vm.results.length; i++){
@@ -504,7 +504,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
          
          
                     //console.log("1");
-                    /* //8. Generate Category Strings for non neighborhood ranks            
+                    /*//8. Generate Category Strings for non neighborhood ranks            
                        for (var i=0; i<vm.results.length; i++){
                            //console.log("2");
                            if (vm.results[i].title.includes("Hillcrest")){
@@ -514,9 +514,11 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                var genRank = vm.results[i].title.replace("Hillcrest", "San Diego");
                                for (var j=0; j<$rootScope.content.length; j++){
                                    if (genRank == $rootScope.content[j].title){
-                                      // if ($rootScope.content[j].catstr == null || //comment these 3
-                                      // $rootScope.content[j].catstr == undefined || //if want to redo everythign
-                                      // $rootScope.content[j].catstr.length == 0){  //categories
+                                       if ($rootScope.content[j].catstr == null || //comment these 3
+                                       $rootScope.content[j].catstr == undefined || //if want to redo everythign
+                                       $rootScope.content[j].catstr.length == 0){  //categories
+                                      // TODO ---- 6949 --- events need to add 6969
+                                      // TODO ---- 473 -- law san diego --- ignore, isatomic=true, catstr='';
                                         console.log("Found gen rank --- ", $rootScope.content[j].title);
                                         var srchStr = $rootScope.content[j].title.replace("San Diego","");
                                            for (var k=0; k<$rootScope.content.length; k++){
@@ -526,14 +528,24 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                                }
                                            }
                                            fcatstr = catstr.substring(1); //remove leading ':'
-                                           console.log("final catstr ---", fcatstr)
+                                           //console.log("final catstr ---", fcatstr)
                                            table.update($rootScope.content[j].id, ['isatomic','catstr'],[false, fcatstr]);
-                                     //  } //this is bracket
+                                       } //this is bracket
                                    break;
                                    }
                                }                                              
                            }
                        }
+                       //SPECIAL CASES
+                       for (var n=0; n<$rootScope.content.length; n++){
+                           if ($rootScope.content[n].id == 473){
+                               table.update(473, ['isatomic','catstr'],[true, '']);
+                           }
+                           //if ($rootScope.content[n].id == 6949){
+                           //    table.update(6949, ['isatomic','catstr'],[false, '6949:'+$rootScope.content[n].catstr]);
+                           //}
+                       }
+                       
                     *///End 8
                
                     /*//  9. Clear answer string for all non-atomic ranks 

@@ -350,7 +350,7 @@
                 else {
                     if ($rootScope.DEBUG_MODE) console.log("P6");
                     answer.addAnswer(myAnswer).then(rankSummary);
-                }                
+                }                                 
             }
         }
         

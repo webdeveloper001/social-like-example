@@ -79,6 +79,7 @@
                             tablex.answers = 0;
                             tablex.views = 0;
                             tablex.answertags = '';
+                            tablex.catstr = '';
                             //console.log("tags ", tags);
                             table.addTable(tablex);
                         }

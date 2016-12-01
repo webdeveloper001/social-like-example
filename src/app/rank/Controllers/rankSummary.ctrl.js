@@ -416,8 +416,6 @@
             //vm.body = 'table' + $rootScope.cCategory.id + '.body';
             //Grab list of fields for the current table
             
-            var fields = [];
-
             var fidx = 0;
             switch ($rootScope.cCategory.type) {
                 case "Place": { fidx = 0; break; }
@@ -431,7 +429,7 @@
                 case "PersonCust": { fidx = 8; break; }
             }
 
-            fields = $rootScope.typeSchema[fidx].fields;
+            var fields = $rootScope.typeSchema[fidx].fields;
             $rootScope.fields = fields;
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
@@ -605,7 +603,7 @@
                                             //To determine if event is current look at end date if exist if not use start date
                                             //if (eventObj.edate != undefined && eventObj.edate != '') obj.date = answers[k].edate.slice(4);
                                             //else obj.date = answers[k].sdate.slice(4);
-                                        
+                                            
                                             eventIsCurrent = datetime.eventIsCurrent(obj, answers[k]);
 
                                             if (eventIsCurrent) {

@@ -66,7 +66,7 @@
 
 
         function editConfirm(edit, type, callback) {
-
+            
             var title = '';
             var message = '';
             var btnCancelLabel = '';

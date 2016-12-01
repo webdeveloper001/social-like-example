@@ -194,34 +194,16 @@
                     dialog.getDialog('editFieldExists');
                     return;
                 }
-
+                
                 var newEdit = {};
                 newEdit.field = x.field;
-                switch (x.field) {
-                    case "name": {
-                        newEdit.cval = vm.answer.name;
-                        break;
-                    }
-                    case "nickname": {
-                        newEdit.cval = vm.answer.nickname;
-                        break;
-                    }
-                    case "club": {
-                        newEdit.cval = vm.answer.club;
-                        break;
-                    }
-                    case "country": {
-                        newEdit.cval = vm.answer.country;
-                        break;
-                    }
-                }
                 newEdit.nval = x.val;
                 if (!newEdit.cval) newEdit.cval = ''; //So it doesnt display 'undefined'
                 newEdit.answer = vm.answer.id;
                 newEdit.upV = 0;
                 newEdit.downV = 0;
                 newEdit.imageURL = '';
-                newEdit.display = 'none'
+                newEdit.display = 'none';
                 switch ($rootScope.fields[0].name) {
                     case "name": { newEdit.name = vm.answer.name; break; }
                     //case "country": { newEdit.name = vm.answer.country; break; }
@@ -229,11 +211,9 @@
                 }
                 newEdit.user = $rootScope.user.id;
                 newEdit.username = $rootScope.user.name;
-                newEdit.category = $rootScope.cCategory.id;
                 newEdit.timestmp = Date.now();
-                
                 //if user is owner - execute userIsOwnerEditDirectly function
-                if ($rootScope.userIsOwner) dialog.editConfirm(newEdit, 'field', userIsOwnerEditDirectly); 
+                if ($rootScope.userIsOwner) dialog.editConfirm(newEdit, 'field', userIsOwnerEditDirectly);
                 //else create edit for image
                 else dialog.editConfirm(newEdit, 'field', createEdit);
             }

@@ -107,7 +107,7 @@
                 edate = date2number(answer.edate.slice(4));
                 edateValid = true;   
             }
-             
+            
             sdate =  date2number(answer.sdate.slice(4));
             
            // ----x------|----------------|------------
