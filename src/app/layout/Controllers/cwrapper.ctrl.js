@@ -93,7 +93,7 @@
             $rootScope.user.first_name = 'Andres';
             $rootScope.user.id = 12;
             //$rootScope.answeridxgps = 1258; //starting indx for gps conversion
-                       
+               /*        
             if ($rootScope.isLoggedIn && $rootScope.user.name == "Andres Moctezuma" && $rootScope.user.id == 12) {
                 $rootScope.isAdmin = true;
                 vm.isAdmin = true;
