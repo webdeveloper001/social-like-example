@@ -523,8 +523,8 @@
         }
         
         function focusText(){
-            if (document.getElementById("textarea1") != null && document.getElementById("textarea1") != undefined) {
-                 document.getElementById("textarea1").focus();
+            if (document.getElementById("textarea2") != null && document.getElementById("textarea2") != undefined) {
+                 document.getElementById("textarea2").focus();
              }
         }
         
