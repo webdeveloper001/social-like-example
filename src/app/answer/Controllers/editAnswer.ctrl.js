@@ -33,7 +33,6 @@
         vm.hoursChanged = hoursChanged;
         vm.updateHours = updateHours;
         vm.getWiki = getWiki;
-        vm.focusText = focusText;
         
         vm.ranking = $rootScope.title;
         vm.userIsOwner = $rootScope.userIsOwner;
@@ -659,11 +658,7 @@
             }
             //vm.answer.addinfo = x;       
         }
-        
-        function focusText(){
-             document.getElementById("textarea1").focus();
-        }
-        
+    
         function userIsOwnerEditDirectly(x){
             if ($rootScope.DEBUG_MODE) console.log("Direct Edit Executed");
             if ($rootScope.DEBUG_MODE) console.log("edit - ", x);

@@ -69,8 +69,7 @@
         vm.getWiki = getWiki;
         vm.onNoGoodImages = onNoGoodImages;
         vm.showHowItWorksDialog = showHowItWorksDialog;
-        vm.focusText = focusText;
-
+        
         vm.imageURL = '../../../assets/images/noimage.jpg';
         vm.header = $rootScope.header;
         
@@ -522,10 +521,6 @@
             $state.go('cwrapper');
         }
         
-        function focusText(){
-             document.getElementById("textarea2").focus();
-        }
-
     }
 
 })();
