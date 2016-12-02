@@ -75,6 +75,8 @@
 
 
     </div>
+    
+    <br ng-if="vm.sm">
 
     <form class="form-horizontal col-sm-12 col-md-7" role="form" name="answerForm">
 
@@ -85,7 +87,7 @@
             <input class="form-control" ng-model="x.val" bs-options="{{x.opts}}" bs-typeahead type="{{x.textstyle}}" bs-typeahead-on-select="vm.onSelect(x.val)"
                 placeholder="{{x.label}}" ng-hide="{{x.name=='addinfo'}}" ng-if="!x.onlybyowner" style="width:94%;margin-left:10px;margin-right:10px;">
             
-            <textarea class="form-control" ng-model="x.val" placeholder="{{x.label}}"
+            <textarea class="form-control" ng-model="x.val" placeholder="{{x.label}}" ng-click="vm.focusText()"
                 ng-show="{{x.name=='addinfo'}}" rows="3" ng-if="!x.onlybyowner" id="textarea2" style="width:94%;margin-left:10px;margin-right:10px;"></textarea>
         </div>
         <div class="text-right" ng-if="vm.type == 'Person'">

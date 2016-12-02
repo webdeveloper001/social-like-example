@@ -67,6 +67,7 @@
         vm.viewPrev = viewPrev;
         vm.closeRank = closeRank;
         vm.getWiki = getWiki;
+        vm.focusText = focusText;
         vm.onNoGoodImages = onNoGoodImages;
         vm.showHowItWorksDialog = showHowItWorksDialog;
         
@@ -519,6 +520,12 @@
 
         function closeRank() {
             $state.go('cwrapper');
+        }
+        
+        function focusText(){
+            if (document.getElementById("textarea1") != null && document.getElementById("textarea1") != undefined) {
+                 document.getElementById("textarea1").focus();
+             }
         }
         
     }
