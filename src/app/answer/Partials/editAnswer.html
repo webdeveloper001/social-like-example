@@ -63,7 +63,7 @@
         <div class="input-group" style="display:{{x.field=='addinfo' ? 'inline':'none'}}" 
         ng-hide="{{!vm.access && (vm.type == 'PersonCust')}}">
         <label class="control-label capitalize">{{x.label}}:</label>
-            <textarea id="textarea1" class="form-control" ng-model="x.val" ng-model-options='{ debounce: 5000 }' 
+            <textarea id="textarea1" class="form-control" ng-model="x.val" ng-model-options='{ debounce: 2000 }' 
             placeholder="{{x.cval}}" rows="5"></textarea>
             <br><br>
             <span class="input-group-btn text-right">

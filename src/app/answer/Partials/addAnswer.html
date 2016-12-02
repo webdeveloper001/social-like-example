@@ -87,7 +87,7 @@
         <div class="form-group" ng-repeat="x in vm.fields">
             <label class="control-label capitalize" ng-if="!x.onlybyowner" ng-show="{{x.name=='addinfo'}}">
                 {{x.isrequired ? '**':''}}{{x.label}}:</label>
-            <textarea class="form-control" ng-model="x.val" placeholder="{{x.label}}" ng-model-options='{ debounce: 5000 }'
+            <textarea class="form-control" ng-model="x.val" placeholder="{{x.label}}" ng-model-options='{ debounce: 2000 }'
                 ng-show="{{x.name=='addinfo'}}" rows="3" ng-if="!x.onlybyowner" id="textarea2"></textarea>
         </div>
         <div class="text-right" ng-if="vm.type == 'Person'">
