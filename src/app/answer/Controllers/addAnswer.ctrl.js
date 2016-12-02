@@ -26,6 +26,7 @@
         var addAnswerGPSexec = false;
         var answers = $rootScope.answers;
         
+        
         //load public fields
         var fieldreq = [];
                 
@@ -68,13 +69,14 @@
         vm.getWiki = getWiki;
         vm.onNoGoodImages = onNoGoodImages;
         vm.showHowItWorksDialog = showHowItWorksDialog;
+        vm.focusText = focusText;
 
         vm.imageURL = '../../../assets/images/noimage.jpg';
         vm.header = $rootScope.header;
         
         //TODO: Would like to add this abstract template, but dont know how         
         $rootScope.$on('answerGPSready', function () {
-            if ($state.current.name == 'addAnswer') addAnswerGPS();
+            if ($state.current.name == 'addAnswer' && !addAnswerGPSexec) addAnswerGPS();
         });
         
         $rootScope.$on('wikiReady', function (event,wikiRes) {
@@ -518,6 +520,10 @@
 
         function closeRank() {
             $state.go('cwrapper');
+        }
+        
+        function focusText(){
+             document.getElementById("textarea2").focus();
         }
 
     }

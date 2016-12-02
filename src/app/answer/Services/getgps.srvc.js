@@ -44,7 +44,7 @@
                     
                     var isValid = (answer.location != undefined && answer.location != null &&
                         answer.lat != undefined && answer.lat != null &&
-                        answer.lng != undefined && answer.lng != null) ;
+                        answer.lng != undefined && answer.lng != null);
                             
                     
                     if (isValid) {

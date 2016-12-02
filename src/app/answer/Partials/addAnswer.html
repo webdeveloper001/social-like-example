@@ -89,7 +89,8 @@
                 <!--<input class="form-control" ng-model="x.val" type="{{x.textstyle}}" placeholder="{{x.label}}" 
                 data-typeahead="{{x.opts}}" ng-hide="{{x.name=='addinfo'}}"/>-->
 
-                <textarea class="form-control" ng-model="x.val" placeholder="{{x.label}}" ng-show="{{x.name=='addinfo'}}" rows="3" ng-if="!x.onlybyowner"></textarea>
+                <textarea class="form-control" ng-model="x.val" placeholder="{{x.label}}" ng-model-options='{ debounce: 500 }' 
+                ng-change="vm.focusText()" ng-show="{{x.name=='addinfo'}}" rows="3" ng-if="!x.onlybyowner" id="textarea2"></textarea>
             </div>
         </div>
         <div class="text-right" ng-if="vm.type == 'Person'">
