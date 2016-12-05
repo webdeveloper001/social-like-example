@@ -128,7 +128,8 @@
                 vm.answers[i].Rank = i + 1;
             }
 
-            vm.answers = $filter('orderBy')(vm.answers, 'Rank');
+            //vm.answers = $filter('orderBy')(vm.answers, 'Rank');
+            sortByRank();
             
             //Determine number of user comments
             if ($rootScope.cCategory.numcom == undefined) vm.numcom = 0;
@@ -269,6 +270,7 @@
             //Sorting rules
             if (foodNearMe || rankIsNearMe) sortByDistance();
             if (vm.isE) sortByDate();
+            if (foodNearMe) vm.showR = false;
             if (!foodNearMe && !vm.isE) vm.showR = true || (!vm.sm);
 
             //TODO update answers in DB

@@ -10,7 +10,8 @@
     function imagelist($http, $rootScope) {
 
         var service = {
-            getImageList: getImageList
+            getImageList: getImageList,
+            deleteBlob: deleteBlob
         };
 
         return service;
@@ -37,6 +38,23 @@
             }
 
 
+        }
+        
+        function deleteBlob(blobName) {
+            
+            var url = "https://rankx.blob.core.windows.net/sandiego/" + blobName + 
+            "?sv=2015-04-05&ss=bfqt&srt=sco&sp=rwdlacup&se=2018-08-30T01:15:12Z&st=2016-08-29T17:15:12Z&spr=https,http&sig=PpyWE0X%2Fpz9SuRje5GtHh44WaWIii0GBU9PbIcDIka8%3D";
+            
+            return $http.delete(url).then(querySucceeded, queryFailed);
+        
+            function querySucceeded(result) {
+                $rootScope.$emit('refreshImages');
+                if ($rootScope.DEBUG_MODE) console.log('Blob image deleted succesfully');
+
+            }
+            function queryFailed(result) {
+                if ($rootScope.DEBUG_MODE) console.log('Blob image delete failed');
+            }            
         }
 
         function XML2jsobj(node) {

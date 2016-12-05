@@ -55,6 +55,7 @@
         vm.vrowVoteDown = vrowVoteDown;
         vm.loadComments = loadComments;
         vm.postComment = postComment;
+        vm.selectPhoto = selectPhoto;
         
         vm.fields = $rootScope.fields;
         
@@ -123,6 +124,9 @@
                     }
                 });
 
+            $rootScope.$on('refreshImages', function () {
+                if ($state.current.name == 'answerDetail') getImages();
+            });
         
         activate();
         
@@ -174,6 +178,9 @@
             //Determine number of user comments
             if (vm.answer.numcom == undefined) vm.numcom = 0;
             else vm.numcom = vm.answer.numcom;
+            
+            if (answers.length > 1) vm.showNextnPrev = true;
+            else vm.showNextnPrev = false;
             
             if ($rootScope.DEBUG_MODE) console.log("Answer details loaded");
             
@@ -802,6 +809,8 @@
             var i = answers.map(function(x) {return x.id; }).indexOf(vm.answer.id);
             var ni = i-1; //next index
             if (ni < 0) ni = L-1; //if less than zero wrap to last
+            var nViews = vm.answer.views + 1;
+            answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
             $state.go('answerDetail', { index: answers[ni].id });
         }
         
@@ -810,6 +819,8 @@
             var i = answers.map(function(x) {return x.id; }).indexOf(vm.answer.id);
             var ni = i+1; //next index
             if (ni > L-1) ni = 0; //if less than zero wrap to last
+            var nViews = vm.answer.views + 1;
+            answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
             $state.go('answerDetail', { index: answers[ni].id });
         }
         
@@ -893,6 +904,10 @@
             x.fri = y.fri;
             x.sat = y.sat;
             x.sun = y.sun;      
+        }
+        
+        function selectPhoto(x){
+            dialog.seePhotos(vm.images,x,vm.answer,vm.userIsOwner);            
         }
  
     }

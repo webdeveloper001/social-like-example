@@ -42,12 +42,17 @@
  
                 useraccnt.getuseraccnt().then(function (useraccnt){
                     $rootScope.useraccnts = useraccnt;
+                    $rootScope.showWarning = false;
                     if ($rootScope.useraccnts.length>0){
                         var missingEmail = true;
                         for (var i=0; i<$rootScope.useraccnts.length; i++){
                             if ($rootScope.useraccnts[i].email != '') missingEmail = false;
                         }
-                        if (missingEmail) $rootScope.$emit('showWarning');
+                        if (missingEmail) {
+                            $rootScope.showWarning = true;
+                            $rootScope.$emit('showWarning');
+                        }
+                        else $rootScope.showWarning = false;
                     }
                 });
                 

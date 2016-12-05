@@ -71,7 +71,7 @@
     <h4 style="text-align:center">{{vm.answer.addinfo}}</h4>
 </div>
 <!-- <div class="row" ng-if="vm.type != 'Establishment'"> -->
-<div class="row">
+<div class="row" ng-if="vm.showNextnPrev">
     <div class="text-left col-xs-6">
         <button class="btn-success" ng-click="vm.goPrev()">&lt;&lt</button>
     </div>
@@ -131,7 +131,7 @@
 </div>
 <br>
 <a type="button" class="btn btn-primary btn-block" ng-click="vm.editAnswer()" style="display:{{(vm.answer.hasOwner == false || vm.userIsOwner == true) ? 'inline':'none'}}">
-            Edit {{vm.numEdits > 0? "("+vm.numEdits+")" : ""}}
+            Edit Info / Change Image {{vm.numEdits > 0? "("+vm.numEdits+")" : ""}}
         </a>
 <div class="col-xs-12">
     <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
@@ -176,7 +176,7 @@
         <p class="hiw text-right" ng-click="vm.gotoRank(r)">&lt;&lt;See full ranking&gt;&gt;</p>
     </div>
 </div>
-<div class="col-xs-12" ng-if="false">
+<div class="col-xs-12" ng-if="true">
     <div class="row" ng-if="vm.type != 'Short-Phrase'">
         <div class="col-xs-12">
             <div class="well-sm" style="background-color:#666666;color:#f8f8ff;">
@@ -191,9 +191,9 @@
     <div style="display:{{vm.showImageGallery == true ? 'inline':'none'}}">
         
             <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2" ng-repeat="x in vm.images">
-                <a href="https://rankx.blob.core.windows.net/sandiego/{{x.Name}}" class="thumbnail">
-                    <img src="https://rankx.blob.core.windows.net/sandiego/{{x.Name}}" style="width:150px;max-height:150px">
-                </a>
+                <a ng-click="vm.selectPhoto($index)" class="thumbnail"> 
+                    <img src="https://rankx.blob.core.windows.net/sandiego/{{x.Name}}" style="width:90%;height:120px">
+                </a> 
             </div>       
     </div>
 

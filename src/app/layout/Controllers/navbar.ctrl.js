@@ -35,14 +35,15 @@
         
         //Geolocation options
         var geoOptions = {};
-        
+ 
         vm.warning = false;
         activate();
 
         function activate() {
 
+            if ($rootScope.showWarning) showWarningsIcon();
             configGeolocation();
-
+                        
             if ($rootScope.DEBUG_MODE) console.log("Navbar Loaded!");
             //console.log("isLoggedIn", !$rootScope.isLoggedIn)
             //console.log("user", $rootScope.user);
@@ -383,7 +384,21 @@
         }
         
         function goWarning(){
-            dialog.askEmail();
+            /*
+            var accntname = '';
+            var answerid = 0;
+            var idx = 0;
+            for (var i=0; i < $rootScope.useraccnts.length; i++){
+                if ($rootScope.useraccnts[i].email != '') {
+                       answerid = $rootScope.useraccnts[i].answer
+                       break;
+                }
+             }
+            idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(answerid); 
+            console.log("$rootScope.useraccnts - ", $rootScope.useraccnts);
+            console.log("idx - answerid - $rootScope.answers[idx].name -",idx,answerid);*/
+           var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf($rootScope.useraccnts[0].answer);
+           dialog.askEmail($rootScope.answers[idx].name);
         }
     }
 })();

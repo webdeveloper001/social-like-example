@@ -5,9 +5,9 @@
         .module('app')
         .factory('dialog', dialog);
 
-    dialog.$inject = ['$q', '$rootScope','useraccnt'];
+    dialog.$inject = ['$q', '$rootScope', 'useraccnt','imagelist','answer'];
 
-    function dialog($q, $rootScope,useraccnt) {
+    function dialog($q, $rootScope, useraccnt, imagelist,answer) {
 
         var service = {
             editConfirm: editConfirm,
@@ -35,6 +35,7 @@
             createEventPreview: createEventPreview,
             askPermissionToLocate: askPermissionToLocate,
             askEmail: askEmail,
+            seePhotos: seePhotos
         };
 
         return service;
@@ -66,7 +67,7 @@
 
 
         function editConfirm(edit, type, callback) {
-            
+
             var title = '';
             var message = '';
             var btnCancelLabel = '';
@@ -205,7 +206,7 @@
                 edit.name + '</strong> to <strong>' + edit.nval + '</strong> gets approved.';
 
             }
-            
+
             if (type == 'approve' && edit.field == 'addinfo') {
 
                 title = 'Changed Approved';
@@ -213,7 +214,7 @@
                 edit.name + '</strong> to <br><br>' + edit.nval + '</br> gets approved.';
 
             }
-            
+
             if (type == 'reject') {
 
                 title = 'Changed Rejected';
@@ -256,20 +257,20 @@
                 message = '1. Fill out the form. The fields marked with ** are required. All other fields are not required but recommended. <br/>' +
                 '<br/>2. Click the \'Get Images\' button. <br/>' +
                 '<br/>3. Use \'>>\' and \'<<\' buttons to browse through the images. You can \'Get More Images\' button to load more images.<br/>' +
-                '<br/>4. When the image you want shows in the image box, click the button \'Add\' to add the new answer'+
+                '<br/>4. When the image you want shows in the image box, click the button \'Add\' to add the new answer' +
                 ' to the list.<br/>' +
                 '<br/>NOTE: Not all images will correspond to your answer. Entering all fields will help with the image results.';
             }
             if (type == 'shortPhrase') {
                 title = 'Add an Answer';
                 message = 'Fill out the form. The fields marked with ** are required. <br/>' +
-                '<br/> - The <strong>Title</strong> is the main idea of your answer. <br/>'+
-                '<br/> - In the <strong>Details</strong> box, write additional details about your answer.'+
-                ' You can also write arguments on why it should be included in this list.<br/>'+
-                '<br/>For example: <br/>'+
-                '<br/>In the rank <strong><em>Reasons why dogs are awesome</em></strong> you can add following answer: <br/>'+
-                '<br/><strong>Title:</strong> They enjoy the simple things in life <br/>'+
-                '<br/><strong>Details:</strong> Dogs dont need much to be happy, they are happy with simple things '+
+                '<br/> - The <strong>Title</strong> is the main idea of your answer. <br/>' +
+                '<br/> - In the <strong>Details</strong> box, write additional details about your answer.' +
+                ' You can also write arguments on why it should be included in this list.<br/>' +
+                '<br/>For example: <br/>' +
+                '<br/>In the rank <strong><em>Reasons why dogs are awesome</em></strong> you can add following answer: <br/>' +
+                '<br/><strong>Title:</strong> They enjoy the simple things in life <br/>' +
+                '<br/><strong>Details:</strong> Dogs dont need much to be happy, they are happy with simple things ' +
                 'like a belly rub, a walk around the block, playing in the snow or going for a drive.';
             }
 
@@ -380,7 +381,7 @@
             title = 'Just checking';
             btnCancelLabel = 'No, they are different';
             btnOkLabel = 'Yeah, same';
-            message = 'Are these the same '+ $rootScope.cCategory.type +'? </br></br><div class="row">' +
+            message = 'Are these the same ' + $rootScope.cCategory.type + '? </br></br><div class="row">' +
             '<div class="col-sm-6">' + answerhtml + '</br>' +
             '<img src=' + answer1.imageurl + ' class="thumbnail" style="width:60%; max-height:150px"></div>' +
 
@@ -417,7 +418,7 @@
             var btnOkLabel = '';
 
             title = 'Scope of Delete';
-            btnCancelLabel = 'Just in the category: '+$rootScope.cCategory.title;
+            btnCancelLabel = 'Just in the category: ' + $rootScope.cCategory.title;
             btnOkLabel = 'Everywhere';
             message = 'Choose scope to delete:';
 
@@ -480,8 +481,8 @@
             '</tr></thead><tbody><tr><td>1</td><td>' + x.name + '</td><td>1.5</td>' +
             '<td style="background-color:' + x.bc + ';color:' + x.fc + ';">' + x.stitle + '<td></tr></tbody></table><br>' +
             'Inside your business profile:<br><br><div style="background-color:' + x.bc + ';color:' + x.fc + ';">' +
-            '<p><strong>' + x.stitle + ' @ ' + x.name + '</strong></p><p>' + sch_str + '</p><p>' + x.details + '</p></div>'+
-            '</br>'+ 
+            '<p><strong>' + x.stitle + ' @ ' + x.name + '</strong></p><p>' + sch_str + '</p><p>' + x.details + '</p></div>' +
+            '</br>' +
             'With the following image:' +
             '<img src=' + x.image + ' class="thumbnail" style="width:70%; max-height:150px">';
 
@@ -751,7 +752,7 @@
                     }]
             });
         }
-        
+
         function editVRowGroup(x, callback, callback2) {
 
             var title = '';
@@ -764,7 +765,7 @@
             btnOkLabel = 'Edit';
             message = '<br>Enter new name of Vote Group: ' +
             '<br><br>Group Name:' +
-            '<input class="form-control" type="text" placeholder="'+ x.gtitle + '">' +
+            '<input class="form-control" type="text" placeholder="' + x.gtitle + '">' +
             '<br><br>';
             BootstrapDialog.show({
                 type: BootstrapDialog.TYPE_PRIMARY,
@@ -781,8 +782,8 @@
                     },
                 },
                     {
-                     label: 'Edit',
-                     action: function (dialogRef, result) {
+                        label: 'Edit',
+                        action: function (dialogRef, result) {
                             //console.log("dialogRef---", dialogRef);
                             var vrowgroupname = dialogRef.getModalBody().find('input').val();
                             if (result) callback(x, vrowgroupname);
@@ -790,17 +791,17 @@
                         },
                     },
                     {
-                    label: 'Delete',
+                        label: 'Delete',
                         action: function (dialogRef, result) {
                             //console.log("dialogRef---", dialogRef);
                             if (result) callback2(x);
                             dialogRef.close();
                         },
                     }
-                    ]
+                ]
             });
         }
-  
+
         function deleteVRowGroup(x, callback) {
 
             var title = '';
@@ -832,9 +833,9 @@
                 }
             });
         }
-        
-        function createEventPreview(event, callback){
-           
+
+        function createEventPreview(event, callback) {
+
             var answerhtml = '';
             var newline = '';
             //var header = "table" + $rootScope.cCategory.id + ".header";
@@ -868,11 +869,11 @@
                         else newline = '<strong>' + 'Date' + '</strong>: ' + '' + '</br>';
                         break;
                     }
-                    
+
                 }
-                answerhtml = answerhtml + newline;                
+                answerhtml = answerhtml + newline;
             }
-            
+
             var addinfomessage = '';
             var sch_str = '';
 
@@ -893,25 +894,25 @@
                     sch_str = event.sdate + ' from ' + event.stime + ' to ' + event.etime;
                 }
                 else {
-                    sch_str = (event.edate == undefined ? '':'Starts: ') + event.sdate + ' at ' + event.stime +  
-                              (event.edate == undefined ? '':('<br>Ends: ' + event.edate + ' at ' + event.etime)); 
+                    sch_str = (event.edate == undefined ? '' : 'Starts: ') + event.sdate + ' at ' + event.stime +
+                    (event.edate == undefined ? '' : ('<br>Ends: ' + event.edate + ' at ' + event.etime));
                 }
             }
 
             addinfomessage = '<div style="background-color:' + event.bc + ';color:' + event.fc + ';">' +
-            '<p><strong>' + event.name + 
-            (event.location != undefined ? (' @ ' + event.location):('')) + '</strong></p>' + 
-            (event.cityarea != undefined ? ('<p>in ' + event.cityarea+'</p>'):'') +
-            '<p>' + sch_str + '</p>' + 
-            (event.addinfo != undefined ? ('<p>' + event.addinfo + '</p>'):(''))+
-            (event.website != undefined ? ('<p>For more information: <a href="' + event.website + '">'+event.website+'</a></p>'):(''))+
+            '<p><strong>' + event.name +
+            (event.location != undefined ? (' @ ' + event.location) : ('')) + '</strong></p>' +
+            (event.cityarea != undefined ? ('<p>in ' + event.cityarea + '</p>') : '') +
+            '<p>' + sch_str + '</p>' +
+            (event.addinfo != undefined ? ('<p>' + event.addinfo + '</p>') : ('')) +
+            (event.website != undefined ? ('<p>For more information: <a href="' + event.website + '">' + event.website + '</a></p>') : ('')) +
             '</div>';
 
             showAddEvent(event, answerhtml, addinfomessage, event.imageurl, callback);
             //console.log("headline ", categoryhtml)
        
         }
-        function showAddEvent(event, answerhtml, addinfomessage,imageurl, callback) {
+        function showAddEvent(event, answerhtml, addinfomessage, imageurl, callback) {
 
             var title = '';
             var message = '';
@@ -922,7 +923,7 @@
             btnCancelLabel = 'Cancel';
             btnOkLabel = 'Confirm';
             message = 'You want to add the following event to <strong>' + $rootScope.cCategory.title + '</strong>. </br><p></p>' +
-            addinfomessage + '</br>'+ 
+            addinfomessage + '</br>' +
             'With the following image:' +
             '<img src=' + imageurl + ' class="thumbnail" style="width:60%; max-height:150px">';
 
@@ -944,7 +945,7 @@
                     //dialogRef.close();
                 }
             });
-                   
+
         }
         /*
         function askPermissionToLocate() {
@@ -973,8 +974,8 @@
                     if (result) $rootScope.$emit('getLocation');                                     
                 }                          
               });
-        }*/ 
-        
+        }*/
+
         function askPermissionToLocate() {
 
             var title = '';
@@ -983,53 +984,53 @@
             var btnOkLabel = 'Yes, locate me';
 
             title = 'Please Confirm';
-            
-            
+
+
             messagehtml = '<div class="text-left">Is it ok if we locate your position?</div>' +
-            '<br>'+
-            '<div class="row">'+
+            '<br>' +
+            '<div class="row">' +
             //($rootScope.sm ? '<div class="container col-xs-12">':'<div class="container col-xs-6">') +
-            '<div class="container col-xs-12">'+
-            '<div class="text-left" style="color:blue">Option 1</div>'+
-            '<div class="text-center" style="border:2px"><button class="btn btn-success" id="useGeo">Yes, locate me with my IP</button></div><br>'+
-            '<div class="text-left" style="color:blue">Option 2 <small>(recommended for accuracy)</small></div><br>'+
+            '<div class="container col-xs-12">' +
+            '<div class="text-left" style="color:blue">Option 1</div>' +
+            '<div class="text-center" style="border:2px"><button class="btn btn-success" id="useGeo">Yes, locate me with my IP</button></div><br>' +
+            '<div class="text-left" style="color:blue">Option 2 <small>(recommended for accuracy)</small></div><br>' +
             '<p>Yes, use this address as my current location</p>' +
-            '<div class="input-group">'+
-            '<input id="address" type="text" class="form-control" placeholder="Enter address">'+
-                '<span class="input-group-btn text-right">'+
-                        '<button class="btn btn-success" type="button" id="gobutton">Go</button>'+
-                    '</span>'+
-            '</div><br><br>'+     
-            '</div>'+
+            '<div class="input-group">' +
+            '<input id="address" type="text" class="form-control" placeholder="Enter address">' +
+            '<span class="input-group-btn text-right">' +
+            '<button class="btn btn-success" type="button" id="gobutton">Go</button>' +
+            '</span>' +
+            '</div><br><br>' +
+            '</div>' +
             //($rootScope.sm ? '<div class="container col-xs-12">':'<div class="container col-xs-6">') +
-            '<div class="container col-xs-12">'+
-            '<div class="text-center" style="border:2px"><button class="btn btn-default" id="noapprove">No, I don\'t approve</button></div>'+
-            '</div>'+
+            '<div class="container col-xs-12">' +
+            '<div class="text-center" style="border:2px"><button class="btn btn-default" id="noapprove">No, I don\'t approve</button></div>' +
+            '</div>' +
             '</div>';
-            
+
             BootstrapDialog.show({
                 type: BootstrapDialog.TYPE_PRIMARY,
                 title: title,
-                message: function(dialogRef) {
-                var $content = $(messagehtml);
-                
-                $content.find('#useGeo').click({}, function() {
-                    var x = dialogRef;
-                    $rootScope.$emit('getLocation');
-                    x.close();
-                });
-                $content.find('#gobutton').click({}, function() {
-                    var address = $content.find('input').val();
-                    var x = dialogRef;
-                    $rootScope.$emit('useAddress',{address:address});
-                    x.close();
-                });
-                $content.find('#noapprove').click({}, function() {
-                    var x = dialogRef;
-                    x.close();
-                });
-                
-                return $content;
+                message: function (dialogRef) {
+                    var $content = $(messagehtml);
+
+                    $content.find('#useGeo').click({}, function () {
+                        var x = dialogRef;
+                        $rootScope.$emit('getLocation');
+                        x.close();
+                    });
+                    $content.find('#gobutton').click({}, function () {
+                        var address = $content.find('input').val();
+                        var x = dialogRef;
+                        $rootScope.$emit('useAddress', { address: address });
+                        x.close();
+                    });
+                    $content.find('#noapprove').click({}, function () {
+                        var x = dialogRef;
+                        x.close();
+                    });
+
+                    return $content;
                 },
                 closable: true, // <-- Default value is false
                 draggable: true, // <-- Default value is false
@@ -1039,44 +1040,46 @@
                 btnCancelClass: 'btn-warning',
                 btnCancelAction: function (dialogRef) {
                     dialogRef.close();
-                }                          
-              });
+                }
+            });
         }
-        
-        function askEmail() {
+
+        function askEmail(accntname) {
 
             var title = '';
             var messagehtml = ''
             var btnCancelLabel = 'No, I don\'t approve';
             var btnOkLabel = 'Yes, locate me';
 
-            title = 'Lets stay in touch';
-            
-             messagehtml = '<div class="text-left">Please provide us an email address so we can '+
-            'keep you updated on everything related to your account.</div>' +
-            '<br>'+
-            '<div class="input-group">'+
-            '<input id="email" type="text" class="form-control" placeholder="Enter email address">'+
-                '<span class="input-group-btn text-right">'+
-                        '<button class="btn btn-primary" type="button" id="gobutton">Submit</button>'+
-                '</span>'+
+            title = 'Missing info';
+
+            messagehtml = '<div class="text-left">Let\'s stay in touch.'+
+            ' Please provide us an email address where we can ' +
+            'keep you updated on everything related to the <strong>' + accntname + '</strong> account.</div>' +
+            '<br>' +
+            '<div class="input-group">' +
+            '<input id="email" type="text" class="form-control" placeholder="Enter email address">' +
+            '<span class="input-group-btn text-right">' +
+            '<button class="btn btn-primary" type="button" id="gobutton">Submit</button>' +
+            '</span>' +
             '</div><br>';
-            
+
             BootstrapDialog.show({
                 type: BootstrapDialog.TYPE_PRIMARY,
                 title: title,
-                message: function(dialogRef) {
-                var $content = $(messagehtml);
-            
-                $content.find('#gobutton').click({}, function() {
-                    var address = $content.find('input').val();
-                    var x = dialogRef;
-                    useraccnt.updateuseraccnt($rootScope.useraccnts[0].id, ['email'], [address]);
-                    x.close();
-                    $rootScope.$emit('hideWarning');
-                });
-                
-                return $content;
+                message: function (dialogRef) {
+                    var $content = $(messagehtml);
+
+                    $content.find('#gobutton').click({}, function () {
+                        var address = $content.find('input').val();
+                        var x = dialogRef;
+                        $rootScope.showWarning = false;
+                        useraccnt.updateuseraccnt($rootScope.useraccnts[0].id, ['email'], [address]);
+                        x.close();
+                        $rootScope.$emit('hideWarning');
+                    });
+
+                    return $content;
                 },
                 closable: true, // <-- Default value is false
                 draggable: true, // <-- Default value is false
@@ -1086,8 +1089,198 @@
                 btnCancelClass: 'btn-warning',
                 btnCancelAction: function (dialogRef) {
                     dialogRef.close();
-                }                          
-              });
+                }
+            });
         }
+
+        function seePhotos(blobList, idx, answer, isOwner) {
+
+            var title = '';
+            var messagehtml = ''
+            var btnCancelLabel = 'No, I don\'t approve';
+            var btnOkLabel = 'Yes, locate me';
+            var n = idx;
+            var L = blobList.length;
+            var img_style = '';
+            
+            if ($rootScope.sm) {
+                img_style = 'width:100%;height:auto';
+            }
+            else {
+                img_style = 'width:100%;height:auto';
+            }
+
+            title = 'Photos - ' + answer.name;
+
+            var m1 = '';
+            var m2 = '';
+            var m3 = '';
+            var m4 = '';
+            
+            if (isOwner){
+            m1 =
+            '<div class="row">'+
+                    '<div class="text-left col-xs-3 col-md-4">' +
+                        '<button class="btn btn-default pull-left" id="prevbutton">&lt;&lt</button>' +
+                    '</div>'+ 
+                    '<div class="text-middle col-xs-5 col-md-4">' +
+                        '<button class="btn btn-default" id="makeprimary">Make Main Photo</button>' +
+                    '</div>'+
+                    '<div class="text-right col-xs-4 col-md-4">' +
+                        '<button class="btn btn-default pull-right" id="nextbutton">&gt;&gt</button>' +
+                    '</div>' +
+            '</div>';
+            m4 =    
+                '<div class="text-right">' +
+                    '<button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" id="trashbutton">'+
+                   		'<span class="glyphicon glyphicon-trash" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true">'+
+                        '</span>'+
+                    '</button>' +
+                '</div><br/>';
+            
+            }
+            else {
+            m1 =  '<div class="row">'+
+                    '<div class="text-left col-xs-6">' +
+                        '<button class="btn btn-default pull-left" id="prevbutton">&lt;&lt</button>' +
+                    '</div>'+ 
+                    '<div class="text-right col-xs-6">' +
+                        '<button class="btn btn-default pull-right" id="nextbutton">&gt;&gt</button>' +
+                    '</div>' +
+            '</div>';
+            m4 = '<br/><br/>';
+            }
+            m2 = '<br>' +
+            '<div class="text-center">' +
+                '<img id="image" class="displayed" src="https://rankx.blob.core.windows.net/sandiego/';
+
+            m3 =
+            '" style="' + img_style + '">' +
+                '</div>'+
+                '<br/>';
+            
+            messagehtml = m1 + m2 + blobList[n].Name + m3 + m4;
+            // function myMessage(dialogRef, messagehtml){
+            //console.log("@myMessage - x - ",x);
+        
+            //}
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: function (dialogRef) {
+                    var $content = $(messagehtml);
+                    var x = dialogRef;
+                    $content.find('#prevbutton').click({}, function () {
+                        n = n - 1;
+                        if (n < 0) n = L - 1;
+                        console.log("prev");
+                        $content.find('#image').attr('src','https://rankx.blob.core.windows.net/sandiego/' + blobList[n].Name);
+                    });
+
+                    $content.find('#nextbutton').click({}, function () {
+                        n = n + 1;
+                        if (n >= L) n = 0;
+                        $content.find('#image').attr('src','https://rankx.blob.core.windows.net/sandiego/' + blobList[n].Name);
+                    });
+                    
+                    $content.find('#trashbutton').click({}, function () {
+                        confirmPhotoDelete(blobList,n);
+                        x.close();
+                    });
+                    
+                    $content.find('#makeprimary').click({}, function () {
+                        confirmMakePrimary(blobList,n,answer);
+                        x.close();
+                    });
+                    return $content;
+                },
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-success',
+                btnCancelClass: 'btn-warning',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+
+            });
+
+        }
+        
+        function confirmPhotoDelete(blobList, n) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Please Confirm';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Yes, Delete';
+            message = '<br>Please confirm, you want to delete this photo: '+
+            '<br/><img id="image" class="displayed" src="https://rankx.blob.core.windows.net/sandiego/'+
+            blobList[n].Name + 
+             '" style="width:100%;height:auto">' +
+            '<br><br>';
+
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_DANGER,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-default',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                callback: function (result) {
+                    if (result) {
+                        imagelist.deleteBlob(blobList[n].Name);
+                    }
+                }
+            });
+        }
+        
+        function confirmMakePrimary(blobList, n, myanswer) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Please Confirm';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Yes, make primary';
+            message = '<br>Please confirm, you want to make this the primary photo: '+
+            '<br/><img id="image" class="displayed" src="https://rankx.blob.core.windows.net/sandiego/'+
+            blobList[n].Name + 
+             '" style="width:100%;height:auto">' +
+            '<br><br>';
+
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-default',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                callback: function (result) {
+                    if (result) {
+                        var imageurl = 'https://rankx.blob.core.windows.net/sandiego/'+ blobList[n].Name;
+                        answer.updateAnswer(myanswer.id,["image"],[imageurl]);
+                    }
+                }
+            });
+        }
+        
     }
 })();
