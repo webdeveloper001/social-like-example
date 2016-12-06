@@ -24,11 +24,13 @@
         
             //return imageQuery.then(querySucceeded, queryFailed);
             function querySucceeded(result) {
-
-                var parser = new DOMParser();
-                var xmlDoc = parser.parseFromString(result.data,"text/xml");
-                var myJSON = XML2jsobj(xmlDoc.activeElement);
-                $rootScope.blobs = myJSON.Blobs.Blob;
+                
+                //var parser = new DOMParser();
+                //var xmlDoc = parser.parseFromString(result.data,"text/xml");
+                var x2js = new X2JS();
+                var myJSON = x2js.xml_str2json(result.data);
+                
+                $rootScope.blobs = myJSON.EnumerationResults.Blobs.Blob;
                 
                 if ($rootScope.DEBUG_MODE) console.log('query succeded');
 
@@ -95,7 +97,6 @@
             }
 
             return data;
-
         }
     }
 })();
