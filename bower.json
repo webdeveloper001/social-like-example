@@ -12,6 +12,7 @@
     "angular-touch": "~1.4.0",
     "angular-sanitize": "~1.4.0",
     "jquery": "~2.1.4",
+    "abdmob/x2js": "x2js#^1.2.0",
     "angular-ui-router": "~0.2.15",
     "moment": "~2.14.1",
     "angular-bootstrap": "~0.13.0",
@@ -29,8 +30,7 @@
     "angular-messages": "^1.5.2",
     "angularjs-datepicker": "^2.1.6",
     "bootstrap3-dialog": "bootstrap-dialog#^1.35.1",
-    "font-awesome": "^4.6.1",
-    "abdmob/x2js": "x2js#^1.2.0"
+    "font-awesome": "^4.6.1"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.0"
