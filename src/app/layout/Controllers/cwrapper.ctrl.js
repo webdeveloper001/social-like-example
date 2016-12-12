@@ -61,6 +61,9 @@
             if ($rootScope.DEBUG_MODE) console.log("activate cwrapper!");
             vm.isNh = $rootScope.isNh;
             
+            if (vm.isNh) vm.querybc = '#428bca';
+            else vm.querybc = '#f9f9f9';
+            
             vm.isNhRdy = $rootScope.isNhRdy;
             vm.cnh = $rootScope.cnh;
             
@@ -255,6 +258,7 @@
                 $rootScope.$emit('loadNh');
                 vm.searchScope = 'all San Diego';
                 vm.ranks = $rootScope.cityranks;
+                vm.querybc = '#f9f9f9';
             }
             if (x == 2) {
                 vm.isNh = true; //Neighborhood View
@@ -267,6 +271,7 @@
                 if ($rootScope.isNhRdy) $rootScope.$emit('loadNh');
                 vm.searchScope = 'Neighborhood';
                 vm.ranks = $rootScope.nhranks;
+                vm.querybc = '#428bca';
             }
             vm.searchActive = $rootScope.searchActive;
         }
@@ -323,7 +328,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-            //  $rootScope.$emit('applyRule');
+              $rootScope.$emit('applyRule');
         }
            
         function getFeed(){

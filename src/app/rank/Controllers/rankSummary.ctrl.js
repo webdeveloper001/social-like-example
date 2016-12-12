@@ -142,6 +142,7 @@
                     if (vm.answers[i].Rank != vm.answers[i].catansrank) {
                         //console.log("Updated Catans Rank", vm.answers[i].catans);
                         if (vm.answers[i].catans != undefined) {
+                            if ($rootScope.DEBUG_MODE) console.log("RS-1");
                             catans.updateRec(vm.answers[i].catans, ['rank'], [vm.answers[i].Rank]);
                         }
                     }

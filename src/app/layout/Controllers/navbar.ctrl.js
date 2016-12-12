@@ -29,6 +29,7 @@
         vm.gotoCustomer = gotoCustomer;
         vm.openCitySelection = openCitySelection;
         vm.goWarning = goWarning;
+        vm.goCoords = goCoords;
 
         if ($rootScope.coordsRdy == undefined) $rootScope.coordsRdy = false;
         $rootScope.loadFbnWhenCoordsRdy = false;
@@ -43,6 +44,8 @@
 
             if ($rootScope.showWarning) showWarningsIcon();
             configGeolocation();
+            
+            vm.coordsRdy = $rootScope.coordsRdy;
                         
             if ($rootScope.DEBUG_MODE) console.log("Navbar Loaded!");
             //console.log("isLoggedIn", !$rootScope.isLoggedIn)
@@ -125,6 +128,10 @@
             autoDetectCity();
         });
         
+        $rootScope.$on('coordsRdy', function (e) {
+            showCoordsIcon();
+        });
+        
         $rootScope.$on('showWarning', function (e) {
             console.log("rx showWarning");
             showWarningsIcon();
@@ -195,6 +202,7 @@
             $cookieStore.put('currentUserLongitude', $rootScope.currentUserLongitude);
 
             $rootScope.coordsRdy = true;
+            showCoordsIcon();
 
             if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 9521 });
 
@@ -334,7 +342,7 @@
 
             geoOptions = {
                 enableHighAccuracy: true,
-                timeout: 5000,
+                timeout: 10000,
                 maximumWait: 10000,     // max wait time for desired accuracy
                 maximumAge: 0,          // disable cache
                 desiredAccuracy: 30,    // meters
@@ -382,6 +390,9 @@
         function hideWarningsIcon(){
             vm.warning = false;
         }
+        function showCoordsIcon(){
+            vm.coordsRdy = true;
+        }
         
         function goWarning(){
             /*
@@ -399,6 +410,10 @@
             console.log("idx - answerid - $rootScope.answers[idx].name -",idx,answerid);*/
            var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf($rootScope.useraccnts[0].answer);
            dialog.askEmail($rootScope.answers[idx].name);
+        }
+        
+        function goCoords(){
+           dialog.askPermissionToLocate();
         }
     }
 })();

@@ -980,6 +980,7 @@
 
             var title = '';
             var messagehtml = ''
+            var messageLoading = '';
             var btnCancelLabel = 'No, I don\'t approve';
             var btnOkLabel = 'Yes, locate me';
 
@@ -1007,6 +1008,9 @@
             '<div class="text-center" style="border:2px"><button class="btn btn-default" id="noapprove">No, I don\'t approve</button></div>' +
             '</div>' +
             '</div>';
+            
+            messageLoading = '<div class="loading-pulse"></div>'+
+            '<p>Just a moment, finding your location...</p>';
 
             BootstrapDialog.show({
                 type: BootstrapDialog.TYPE_PRIMARY,
@@ -1017,7 +1021,14 @@
                     $content.find('#useGeo').click({}, function () {
                         var x = dialogRef;
                         $rootScope.$emit('getLocation');
-                        x.close();
+                        x.enableButtons(false);
+                        x.setClosable(false);
+                        x.getModalBody().html(messageLoading);
+                        x.setTitle('Please wait');
+                        setTimeout(function(){
+                            x.close();
+                        }, 10000);
+                        //x.close();
                     });
                     $content.find('#gobutton').click({}, function () {
                         var address = $content.find('input').val();
@@ -1281,6 +1292,6 @@
                 }
             });
         }
-        
+               
     }
 })();

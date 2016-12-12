@@ -56,6 +56,8 @@
         vm.loadComments = loadComments;
         vm.postComment = postComment;
         vm.selectPhoto = selectPhoto;
+        //vm.initMap = initMap;
+        vm.toggleimgmode = toggleimgmode;
         
         vm.fields = $rootScope.fields;
         
@@ -97,19 +99,21 @@
     
         //Adjust picture size for very small displays
         if ($window.innerWidth < 512) {
-            vm.mxheight = '250px';
+            vm.mxheight = '250';
             vm.sp1 = 'width:5%;padding:0px;';
             vm.sp2 = 'width:25%;max-height:50px';
             vm.sp3 = 'width:20%';
             vm.sm = true; vm.nsm = false;
+            vm.width = Math.round($window.innerWidth*0.9);
             //console.log('screen is small');
         }
         else {
-            vm.mxheight = '300px';
+            vm.mxheight = '300';
             vm.sp1 = 'width:15%';
             vm.sp2 = 'width:22.5%;max-height:50px;';
             vm.sp3 = 'width:20%';
             vm.sm = false; vm.nsm = true;
+            vm.width = Math.round($window.innerWidth*0.9);
             //console.log('screen is big');
         }
         
@@ -119,7 +123,7 @@
             });
             $rootScope.$on('$stateChangeStart',
                 function (ev, to, toParams, from, fromParams) {
-                    if (from.name == 'answerDetail') {
+                    if (from.name == 'answerDetail' && to.name != 'answerDetail' ) {
                          if (!recordsUpdated && $rootScope.isLoggedIn) updateRecords();
                     }
                 });
@@ -133,6 +137,12 @@
         function activate() {
             
             getFields();
+            
+            //Set Image Mode -- Map or Photo
+            vm.modeIsImage = $rootScope.modeIsImage == undefined ? true : $rootScope.modeIsImage;
+            if (vm.modeIsImage) setImage();
+            else setMap();
+                
             if ($rootScope.previousState != 'answerDetail') $window.scrollTo(0,0);
 
             vm.showImageGallery = false;
@@ -182,8 +192,12 @@
             if (answers.length > 1) vm.showNextnPrev = true;
             else vm.showNextnPrev = false;
             
-            if ($rootScope.DEBUG_MODE) console.log("Answer details loaded");
+            //Update number of views
+            var nViews = vm.answer.views + 1;
+            answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
             
+            if ($rootScope.DEBUG_MODE) console.log("Answer details loaded");
+          
         }
         
         function getFields(){
@@ -314,10 +328,12 @@
         
         //AM: Refresh display when new answer is selected from relative table
         function refresh(x) {
-            $window.scrollTo(0,0);
+            //$window.scrollTo(0,0);
             updateRecords();
             recordsUpdated = false;
             voteRecordExists = false;
+            
+            
             vm.answer = answers[A.indexOf(+x)];
             $rootScope.canswer = vm.answer;
             getEdits(vm.answer.id);
@@ -334,7 +350,10 @@
         
         //Update Records
         function updateRecords() {
+            
             //update vote record if necessary
+              if ($rootScope.DEBUG_MODE) console.log("UpdateRecords @answerDetail");
+            
             //TODO Need to pass table id
             for (var i=0; i<vm.answerRanks.length; i++){
                 
@@ -385,18 +404,21 @@
                 }
             }
            
-            if (vm.type == 'Establishment') {
+            if (vm.type == 'Establishment' || vm.type == 'PersonCust' ) {
                 for (var i = 0; i < vm.vrows.length; i++) {
                     var voteRecExists = vm.vrows[i].voteExists;
                     if (voteRecExists && vm.vrows[i].dVi != vm.vrows[i].dV) {
+                         if ($rootScope.DEBUG_MODE) console.log("UR-9");
                         $rootScope.cvrowvotes[vm.vrows[i].vidx].val = vm.vrows[i].dV;
                         vrowvotes.patchRec(vm.vrows[i].voteid, vm.vrows[i].dV);
                     }
                     if (!voteRecExists && vm.vrows[i].dV != 0) {
+                         if ($rootScope.DEBUG_MODE) console.log("UR-10");
                         vrowvotes.postRec(vm.vrows[i].id, vm.vrows[i].dV);
                     }
 
                     if ((vm.vrows[i].upV != vm.vrows[i].upVi) || (vm.vrows[i].downV != vm.vrows[i].downVi)) {
+                        if ($rootScope.DEBUG_MODE) console.log("UR-11");
                         vrows.updateRec(vm.vrows[i].id, ["upV", "downV"], [vm.vrows[i].upV, vm.vrows[i].downV]);
                     }
                 }
@@ -546,14 +568,14 @@
             if ($rootScope.DEBUG_MODE) console.log("goBack");       
             
             //update Up and Down votes, and counter
-            if (!recordsUpdated && $rootScope.isLoggedIn) updateRecords();
+            //if (!recordsUpdated && $rootScope.isLoggedIn) updateRecords();
 
             if ($rootScope.previousState == 'match') {
                 $state.go('match');
             }
             else {
-                var nViews = vm.answer.views + 1;
-                answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
+                //var nViews = vm.answer.views + 1;
+                //answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
                 if ($rootScope.cCategory) $state.go('rankSummary', { index: $rootScope.cCategory.id });
                 else $state.go('cwrapper');
             }
@@ -797,10 +819,25 @@
             vm.images = $rootScope.blobs;
             console.log("vm.images = ", vm.images);
         }
+        /*
+        function showMap(){
+          google.maps.event.addDomListener(window, "load", initMap);
+
+        }
+        var map = {};
+        function initMap(){
+            var latlng = new google.maps.LatLng(-34.397, 150.644);
+            var myOptions = {
+                zoom: 8,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById("map-canvas"),myOptions);
+        }*/
         
         function gotoRank(x){
-            var nViews = vm.answer.views + 1;
-            answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
+            //var nViews = vm.answer.views + 1;
+            //answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
             $state.go('rankSummary', { index: x.id });
         }
         
@@ -809,8 +846,8 @@
             var i = answers.map(function(x) {return x.id; }).indexOf(vm.answer.id);
             var ni = i-1; //next index
             if (ni < 0) ni = L-1; //if less than zero wrap to last
-            var nViews = vm.answer.views + 1;
-            answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
+            //var nViews = vm.answer.views + 1;
+            //answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
             $state.go('answerDetail', { index: answers[ni].id });
         }
         
@@ -819,8 +856,8 @@
             var i = answers.map(function(x) {return x.id; }).indexOf(vm.answer.id);
             var ni = i+1; //next index
             if (ni > L-1) ni = 0; //if less than zero wrap to last
-            var nViews = vm.answer.views + 1;
-            answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
+            //var nViews = vm.answer.views + 1;
+            //answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
             $state.go('answerDetail', { index: answers[ni].id });
         }
         
@@ -908,6 +945,25 @@
         
         function selectPhoto(x){
             dialog.seePhotos(vm.images,x,vm.answer,vm.userIsOwner);            
+        }
+        
+        function toggleimgmode(){
+            if (vm.modeIsImage) setMap();
+            else setImage();
+        }
+        
+        function setImage(){
+            vm.imgmode = 'Show Map';
+            vm.imgmodeicon = 'fa fa-globe'; 
+            vm.modeIsImage = true;
+            $rootScope.modeIsImage = true;
+        }
+        
+        function setMap(){
+            vm.imgmode = 'Show Image';
+            vm.imgmodeicon = 'fa fa-picture-o';
+            vm.modeIsImage = false;
+            $rootScope.modeIsImage = false;
         }
  
     }

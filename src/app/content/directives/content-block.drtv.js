@@ -152,11 +152,11 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             if (inputVal.length >= strlen_o) userIsTyping = true;
                             else userIsTyping = false;
                             //if less than 5 results, write 'query record
-                            
+                            /*
                             if (vm.results.length <= 5 && (inputVal.length % 5 == 0) && userIsTyping) {
                                 query.postQuery(inputVal, vm.results.length)
                                 //console.log("query!")
-                            }
+                            }*/
                             strlen_o = inputVal.length;
                         }
                         else {
@@ -377,25 +377,25 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
         
                     /*//  2. Use this to add/remove a tag from a rank 
                     for (var i=0; i < vm.results.length; i++){
-                        if (vm.results[i].title.includes("Smoothies")){
-                            var tags = vm.results[i].tags + ' acai bowls';
-                            //var tags = vm.results[i].tags.replace('isMP','');
+                        if (vm.results[i].title.includes("Pacific Beach")){
+                            //var tags = vm.results[i].tags + ' acai bowls';
+                            var tags = vm.results[i].tags.replace('mission','');
                             //var newtype = 'Event';
                             table.update(vm.results[i].id, ['tags'],[tags]);    
                         }            
                     } 
                     *///End of 2
         
-                     /*//  3.Use this to correct the title of a group of ranks
+                    /* //  3.Use this to correct the title of a group of ranks
                     for (var i=0; i < vm.results.length; i++){
-                        if (vm.results[i].title.includes('Places for frozen yogurt')) {
-                            var titlex = vm.results[i].title.replace("Places for frozen yogurt","Frozen yogurt");
+                        if (vm.results[i].title.includes('Pool halls in')) {
+                            var titlex = vm.results[i].title.replace("Pool halls in","Places to play pool in");
                             //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
                             //console.log("tags ", tags);
                             table.update(vm.results[i].id, ['title'],[titlex]);
                         }
                     } 
-                    */  //End of 3
+                    *///End of 3
             
                     /*//  4.Use this to add a neighborhood
                     //var nhs = ["Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
@@ -404,7 +404,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     //"Kearny Mesa","Bankers HIll","Rancho Penasquitos",
                     //        "Sorrento Valley","Tierra Santa","Logan Heights","Serra Mesa","Normal Heights","Talmadge",
                     //        "Bird Rock","South San Diego","North City","San Carlos","Del Cerro"];
-                    var nhs = ["Grantville"];
+                    var nhs = ["Mission Beach"];
                     
                     var logi = 1;
                     var basetitle = '';
@@ -454,7 +454,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     //applyRuleDone = true;
                     }
                     else console.log("Rule already executed!!");
-                    */  //End 4
+                    *///End 4
         
                     /*//  5.Use this for batch DELETE
                     for (var i=0; i < vm.results.length; i++){
@@ -543,6 +543,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                            }
                            //if ($rootScope.content[n].id == 6949){
                            //    table.update(6949, ['isatomic','catstr'],[false, '6949:'+$rootScope.content[n].catstr]);
+                           //}
+                           //if ($rootScope.content[n].id == 7675){
+                           //    table.update(7675, ['isatomic','catstr'],[false, '7675:'+$rootScope.content[n].catstr]);
                            //}
                        }
                        

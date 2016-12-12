@@ -53,6 +53,7 @@
                             $rootScope.currentUserLongitude = answer.lng;
                             $rootScope.coordForUSer = false;
                             $rootScope.coordsRdy = true;
+                            $rootScope.$emit('coordsRdy');
                             if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 9521 });
                             if ($rootScope.loadRankWhenCoordsRdy) $state.reload();
                         }

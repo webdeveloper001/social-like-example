@@ -14,7 +14,7 @@
         
         vm.showUrefAns = showUrefAns;
         vm.deleteAnswers = deleteAnswers;
-        vm.showDuplicated = showDuplicated;
+        vm.showPossibleDuplicated = showPossibleDuplicated;
         vm.syncToFirst = syncToFirst;
         vm.syncToSecond = syncToSecond;
         vm.showDuplicatedOnlyName = showDuplicatedOnlyName;
@@ -65,17 +65,25 @@
             }
         }
         
-        function showDuplicated(){
+        function showPossibleDuplicated(){
           // Find answers that are duplicated
-            
+          console.log("@ Show Possible Duplicated")
+          console.log("answers length", $rootScope.answers.length);  
           var canswer = {};
           var obj = {};
           vm.dupAnswers = [];
           var idx = 0;
-          for (var i=0; i<$rootScope.answers.length; i++){
+          var n75 = 0;
+          var canswer75 = '';
+          for (var i=0; i < $rootScope.answers.length; i++){
+              n75 = $rootScope.answers[i].name.length * 0.75;
               canswer = $rootScope.answers[i];
-                for (var j=0; j < $rootScope.answers.length; j++){
-                    if (canswer.name == $rootScope.answers[j].name && canswer.location == $rootScope.answers[j].location && i != j){
+              canswer75 = $rootScope.answers[i].name.slice(0,n75);
+              
+              if ($rootScope.answers[i].type == 'Establishment' && canswer75.length > 8){
+              
+               for (var j=0; j < $rootScope.answers.length; j++){
+                    if ($rootScope.answers[j].name.indexOf(canswer75) > -1 && i != j){
                         //console.log("Duplicated answer: ", canswer.name);
                         obj = {};
                         obj.id = idx;
@@ -97,7 +105,9 @@
                         idx++;                        
                     }
                 }
-          }                 
+              }
+          }
+          console.log("finished")                 
         } 
         
         function syncToFirst(x){
@@ -111,7 +121,7 @@
             }
             //delete answer 2
             answer.deleteAnswer(x.id2);
-            showDuplicated();            
+            showPossibleDuplicated();            
         }
         
         function syncToSecond(x){
@@ -125,7 +135,7 @@
             }
             //delete answer 2
             answer.deleteAnswer(x.id1);
-            showDuplicated();
+            showPossibleDuplicated();
         }    
          function showDuplicatedOnlyName(){
           // Find answers that are duplicated

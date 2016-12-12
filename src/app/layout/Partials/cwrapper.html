@@ -21,7 +21,7 @@
 	</div>
 	<!-- <br class="hidden-lg"> -->
 	<div class="col-sm-12 col-md-8" style="display:{{(vm.isNhRdy || vm.isCity) ? 'inline':'none'}}">
-		<div class="input-group" style="padding:10px">
+		<div class="input-group" style="padding:10px;background-color:{{vm.querybc}}">
 			<input type="text" class="form-control" placeholder="Search in {{vm.searchScope}}" 
 			ng-model="vm.val" ng-change="vm.refreshRanks()" id="SearchInput">
 			<div class="input-group-btn">
@@ -49,7 +49,7 @@
 	<content-block type='query' dynamic=true></content-block>
 </div>
  <br ng-if="vm.isNh">
- 
+
 <div style="display:{{((vm.isNhRdy || vm.isCity) && (vm.searchActive == false)) ? 'inline':'none'}}" ng-if="!vm.fbm">
 	<content-block type='rankofweek' dynamic=false rankofweek=true></content-block>
 	

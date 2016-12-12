@@ -34,9 +34,11 @@
         </div>
         <br>
         <div ng-if="vm.userIsOwner" style="display:{{vm.userIsOwner ? 'inline':'none'}}">
+        <!-- <div> -->    
             <blob-upload>
         </div>
-        <div style="display:{{vm.userIsOwner ? 'none':'inline'}}" ng-if="vm.type!='PersonCust'">
+        <div style="display:{{vm.userIsOwner ? 'none':'inline'}}" ng-if="vm.type!='PersonCust'"> 
+        <!-- <div ng-if="vm.type!='PersonCust'"> -->    
             <button type="submit" class="btn btn-primary" ng-click="vm.editImage()">{{vm.imageCommand}}</button>
             <button type="submit" class="btn btn-primary" ng-click="vm.viewPrev()" style="display:{{vm.imagefunctions}}">&laquo</button>
             <button type="submit" class="btn btn-primary" ng-click="vm.viewNext()" style="display:{{vm.imagefunctions}}">&raquo</button>
