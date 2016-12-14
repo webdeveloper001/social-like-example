@@ -7,11 +7,11 @@
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows'
-        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops'];
+        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime
         , answer, rank, $filter, table, vrowvotes, $window, vrows
-        , $rootScope, $modal, editvote, votes, commentops) {
+        , $rootScope, $modal, editvote, votes, commentops, flag) {
         /* jshint validthis:true */
 
         var vm = this;
@@ -34,6 +34,7 @@
         vm.sortByDate = sortByDate;
         vm.loadComments = loadComments;
         vm.postComment = postComment;
+        vm.cmFlag = cmFlag;
 
         vm.selOverall = 'active';
         vm.selPersonal = '';
@@ -339,16 +340,6 @@
                 for (var i = 0; i < $rootScope.cmrecs.length; i++) {
                     if ($rootScope.cmrecs[i].user == $rootScope.user.id) {
                         $rootScope.cmrecs_user.push($rootScope.cmrecs[i]);
-                    }
-                }
-                
-                //Load UserActivity data
-                $rootScope.cuseractivity_user = [];
-                for (var i = 0; i < $rootScope.cuseractivity.length; i++) {
-                    if ($rootScope.cuseractivity[i].user == $rootScope.user.id) {
-                        $rootScope.userHasRank = true;
-                        $rootScope.userActRec = $rootScope.cuseractivity[i];
-                        break;
                     }
                 }
             }
@@ -744,7 +735,7 @@
             $rootScope.cuseractivity = [];
             for (var i = 0; i < useractivities.length; i++) {
                 if (useractivities[i].category == $rootScope.cCategory.id) {
-                    $rootScope.cuseractivity.push(useractivities[i]);
+                    $rootScope.cuseractivity.push(useractivities[i]);                     
                 }
             }
             vm.numContributors = $rootScope.cuseractivity.length;
@@ -912,6 +903,16 @@
             x.fri = y.fri;
             x.sat = y.sat;
             x.sun = y.sun;
+        }
+        
+        function cmFlag(x){
+            if ($rootScope.isLoggedIn) {
+                if ($rootScope.DEBUG_MODE) console.log("Comment Flagged");
+                flag.flagAnswer('comment-rank',$rootScope.cCategory.id, x);
+                dialog.getDialog('commentFlagged');
+                return;
+            }
+            else dialog.getDialog('notLoggedIn'); 
         }
 
     }

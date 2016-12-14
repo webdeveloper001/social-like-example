@@ -30,6 +30,7 @@
    "type":"Organization",
    "fields": [
 	   {"name":"name","isrequired":true,"onlybyowner":false,"label":"Name"},
+     {"name":"website","isrequired":false,"onlybyowner":false,"label":"Website"},
 	   {"name":"addinfo","isrequired":false,"onlybyowner":false,"label":"Additional Info"}
    ]   
  },

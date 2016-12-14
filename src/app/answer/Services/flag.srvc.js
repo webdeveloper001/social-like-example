@@ -9,22 +9,27 @@
 
     function flag($http, $q, $rootScope) {
 
+        //Members
+        var _flags = [];
+        
         // Members
         var baseURI = '/api/v2/mysql/_table/flagtable';
 
         var service = {
-            flagAnswer: flagAnswer
+            flagAnswer: flagAnswer,
+            getFlags: getFlags
             
         };
 
         return service;
         
-        function flagAnswer(answer_id, flag) {
+        function flagAnswer(type, id, flag) {
            
             //form match record
             var data = {};
             data.user = $rootScope.user.id;
-            data.answer = answer_id;
+            data.number = id;
+            data.type = type;
 			data.flag = flag;
 			data.timestmp = Date.now();
              
@@ -48,7 +53,17 @@
             }
         }
         
-       
+        function getFlags() {
+            
+            var url = baseURI;
+            
+            return $http.get(url).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+
+                return _flags = result.data.resource;
+            }
+        }
 
         function _queryFailed(error) {
 

@@ -39,6 +39,18 @@
                         $rootScope.cvrowvotes = vrowvotes;
                     });
                 }
+                
+                //Load UserActivity data
+                $rootScope.thisuseractivity = [];
+                for (var i = 0; i < $rootScope.alluseractivity.length; i++) {
+                    if ($rootScope.alluseractivity[i].user == $rootScope.user.id) {
+                        $rootScope.thisuseractivity.push($rootScope.alluseractivity[i]);
+                        //$rootScope.userHasRank = true;
+                        //$rootScope.userActRec = $rootScope.cuseractivity[i];
+                        //break;
+                    }
+                }
+                
  
                 useraccnt.getuseraccnt().then(function (useraccnt){
                     $rootScope.useraccnts = useraccnt;

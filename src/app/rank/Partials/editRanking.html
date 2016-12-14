@@ -1,12 +1,22 @@
 <div class="container">
-    <div class="well-sm">
-        <h3 class="sub-header">{{vm.ranking}}
-                <span class="nomargin">
+    <div class="well-rank" ng-if="vm.nsm">
+        <h2 class="sub-header">{{vm.ranking}}
+            <span class="nomargin">
                     <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
                     ng-click="vm.closeRank()">
                     <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
-                    </button>
-                </span>
+            </button>
+            </span>
+        </h2>
+    </div>
+    <div class="well-rank" ng-if="vm.sm">
+        <h3 class="sub-header">{{vm.ranking}}
+            <span class="nomargin">
+                    <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
+                    ng-click="vm.closeRank()">
+                    <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
+            </button>
+            </span>
         </h3>
     </div>
 </div>

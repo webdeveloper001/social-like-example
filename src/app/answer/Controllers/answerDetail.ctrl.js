@@ -56,7 +56,7 @@
         vm.loadComments = loadComments;
         vm.postComment = postComment;
         vm.selectPhoto = selectPhoto;
-        //vm.initMap = initMap;
+        vm.cmFlag = cmFlag;
         vm.toggleimgmode = toggleimgmode;
         
         vm.fields = $rootScope.fields;
@@ -129,6 +129,9 @@
                 });
 
             $rootScope.$on('refreshImages', function () {
+                if ($state.current.name == 'answerDetail') getImages();
+            });
+            $rootScope.$on('fileUploaded', function () {
                 if ($state.current.name == 'answerDetail') getImages();
             });
         
@@ -352,12 +355,20 @@
         function updateRecords() {
             
             //update vote record if necessary
-              if ($rootScope.DEBUG_MODE) console.log("UpdateRecords @answerDetail");
+             if ($rootScope.DEBUG_MODE) console.log("UpdateRecords @answerDetail");
             
             //TODO Need to pass table id
             for (var i=0; i<vm.answerRanks.length; i++){
                 
                 var voteRecordExists = vm.answerRanks[i].voteRecordExists;
+                var userHasRank = false;
+                var useractivityrec = {};
+                var idx = $rootScope.thisuseractivity.map(function(x) {return x.category; }).indexOf(vm.answerRanks[i].id); 
+                if (idx >= 0) {
+                    userHasRank = true; 
+                    useractivityrec = $rootScope.thisuseractivity[idx];
+                }
+                else userHasRank = false;  
                 //if vote is changed to non-zero
                 if (voteRecordExists && vm.answerRanks[i].uservote.vote != vm.answerRanks[i].dV && vm.answerRanks[i].dV != 0 ) {
                     //update vote
@@ -371,28 +382,29 @@
                     votes.deleteRec(vm.answerRanks[i].uservote.id);
                     //Decrease vote counter from user activity. If counter is 1, also delete user activiy record (since there is no more votes
                     //from this user)
-                    if ($rootScope.userActRec.votes < 2) {
+                    if (useractivityrec.votes < 2) {
                         if ($rootScope.DEBUG_MODE) console.log("UR-3");
-                        useractivity.deleteRec($rootScope.userActRec.id);                        
+                        useractivity.deleteRec(useractivityrec.id);                        
                     }
                     else {
                         if ($rootScope.DEBUG_MODE) console.log("UR-4");
-                        useractivity.patchRec($rootScope.userActRec.id, $rootScope.userActRec.votes-1);
-                        $rootScope.userActRec.votes--;
+                        useractivity.patchRec(useractivityrec.id, useractivityrec.votes-1);
+                        //$rootScope.userActRec.votes--;
                     }                    
                 }
                 if (!voteRecordExists && vm.answerRanks[i].dV != 0) {
                     //Post a new vote and create useractivity record
                     if ($rootScope.DEBUG_MODE) console.log("UR-5");
                     votes.postRec(vm.answerRanks[i].catans, vm.answer.id, vm.answerRanks[i].id, vm.answerRanks[i].dV);
-                    if ($rootScope.userHasRank) {
+                    if (userHasRank) {
                         if ($rootScope.DEBUG_MODE) console.log("UR-6");
-                        useractivity.patchRec($rootScope.userActRec.id, $rootScope.userActRec.votes+1);
-                        $rootScope.userActRec.votes++;
+                        useractivity.patchRec(useractivityrec.id, useractivityrec.votes+1);
+                        //$rootScope.userActRec.votes++;
                     }    
                     else {
                         if ($rootScope.DEBUG_MODE) console.log("UR-7");
                         useractivity.postRec(vm.answerRanks[i].id);
+                        //$rootScope.thisuseractivity.push();
                     }
                 }
             
@@ -630,12 +642,22 @@
 
         function flagAnswer(x) {
             if ($rootScope.isLoggedIn) {
-                if ($rootScope.DEBUG_MODE) console.log("answer flagged!!!");
-                flag.flagAnswer(vm.catans.id, x);
+                if ($rootScope.DEBUG_MODE) console.log("Answer Flagged");
+                flag.flagAnswer('answer',vm.answer.id, x);
                 dialog.getDialog('answerFlagged');
                 return;
             }
             else dialog.getDialog('notLoggedIn');
+        }
+        
+        function cmFlag(x){
+            if ($rootScope.isLoggedIn) {
+                if ($rootScope.DEBUG_MODE) console.log("Answer Comment Flagged");
+                flag.flagAnswer('comment-answer',vm.answer.id, x);
+                dialog.getDialog('commentFlagged');
+                return;
+            }
+            else dialog.getDialog('notLoggedIn'); 
         }
 
         function getAnswerRanks() {
@@ -848,6 +870,7 @@
             if (ni < 0) ni = L-1; //if less than zero wrap to last
             //var nViews = vm.answer.views + 1;
             //answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
+            if ($rootScope.isLoggedIn) updateRecords();
             $state.go('answerDetail', { index: answers[ni].id });
         }
         
@@ -858,6 +881,7 @@
             if (ni > L-1) ni = 0; //if less than zero wrap to last
             //var nViews = vm.answer.views + 1;
             //answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
+            if ($rootScope.isLoggedIn) updateRecords();
             $state.go('answerDetail', { index: answers[ni].id });
         }
         

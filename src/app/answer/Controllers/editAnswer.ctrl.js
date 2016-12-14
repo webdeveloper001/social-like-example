@@ -6,10 +6,10 @@
         .controller('editAnswer', editAnswer);
 
     editAnswer.$inject = ['dialog', '$stateParams', '$state', 'answers', '$rootScope', 
-    '$modal', 'edit', 'editvote', 'answer', 'image','getgps','$window','getwiki'];
+    '$modal', 'edit', 'editvote', 'answer', 'image','getgps','$window','getwiki', '$http'];
 
     function editAnswer(dialog, $stateParams, $state, answers, $rootScope, 
-    $modal, edit, editvote, answer, image, getgps, $window, getwiki) {
+    $modal, edit, editvote, answer, image, getgps, $window, getwiki, $http) {
         /* jshint validthis:true */
         var vm = this;
 
@@ -55,6 +55,11 @@
         var recordsUpdated = false;
         var numVotes2accept = 1;
         var numVotes2discard = 1;
+        var needEditDelete = false;
+        var editDeleteIndex = 0;
+        var editIsLocation = false;
+        var editAnswerGPSexec = false;
+        
         // Methods
      
         //google search
@@ -91,7 +96,7 @@
         });
         
         $rootScope.$on('answerGPSready', function () {
-            if ($state.current.name == 'editAnswer') editAnswerGPS();
+            if ($state.current.name == 'editAnswer' && !editAnswerGPSexec) editAnswerGPS();
         });
         
         $rootScope.$on('wikiReady', function (event,wikiRes) {
@@ -472,7 +477,7 @@
         function editEffective(index, type) {
             if (type == 'approve') {
                 approveEdit(index);
-                answerDetail();
+                if (!editIsLocation) answerDetail();
             }
             if (type == 'reject') {
                 discardEdit(index);
@@ -483,11 +488,13 @@
             //update answer, delete edit record, and delete edit votes
             if ($rootScope.DEBUG_MODE) console.log("Edit has been approved");
             if (vm.edits[index].field == "image") {
+                if ($rootScope.DEBUG_MODE) console.log("EA-3");
                 answer.updateAnswer(vm.edits[index].answer, [vm.edits[index].field], [vm.edits[index].imageURL]);
             }
             else if (vm.edits[index].field == "location"){
                      if (vm.edits[index].nval != undefined && vm.edits[index].nval != "" && vm.edits[index].nval != null) {
                          //var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(vm.edits[index].answer);
+                        editIsLocation = true;
                         vm.answer.location = vm.edits[index].nval;
                         var promise = getgps.getLocationGPS(vm.answer);
                         promise.then(function () {
@@ -497,19 +504,26 @@
                      }
             }
             else {
+                if ($rootScope.DEBUG_MODE) console.log("EA-2");
                 answer.updateAnswer(vm.edits[index].answer, [vm.edits[index].field], [vm.edits[index].nval]);
             }
+            /*
             edit.deleteEdit(vm.edits[index].id);
             editvote.deleteEditVotes(vm.edits[index].id);
             //remove from current edits
             $rootScope.edits.splice(vm.edits[index].idx, 1);
             vm.edits.splice(index, 1);
-
+            */
+            needEditDelete = true;
+            editDeleteIndex = index;
         }
         
         function editAnswerGPS(){
-            if ($rootScope.DEBUG_MODE) console.log("@editAnswer ---> location, lat, lng --- ",vm.answer.location, vm.answer.lat, vm.answer.lng);       
-            answer.updateAnswer(vm.answer.id,['location','lat','lng'],[vm.answer.location, vm.answer.lat, vm.answer.lng]).then(answerDetail);
+            if (!editAnswerGPSexec) {
+                editAnswerGPSexec = true;
+                if ($rootScope.DEBUG_MODE) console.log("EA-1"); 
+                answer.updateAnswer(vm.answer.id,['location','lat','lng'],[vm.answer.location, vm.answer.lat, vm.answer.lng]).then(answerDetail);
+            }
         }
 
         function discardEdit(index) {
@@ -549,6 +563,15 @@
         }
 
         function answerDetail() {
+            
+            if (needEditDelete){
+                edit.deleteEdit(vm.edits[editDeleteIndex].id);
+                editvote.deleteEditVotes(vm.edits[editDeleteIndex].id);
+                //remove from current edits
+                $rootScope.edits.splice(vm.edits[editDeleteIndex].idx, 1);
+                vm.edits.splice(editDeleteIndex, 1);
+            }
+            
             $state.go("answerDetail", { index: vm.answer.id });
         }
 
@@ -631,6 +654,7 @@
             
             //delete strhours.$$hashKey;
             //console.log('@updateHours - ', strhours);
+            if ($rootScope.DEBUG_MODE) console.log("EA-4");
             answer.updateAnswer(vm.answer.id, ['strhours'], [strhours]);
             vm.updateHoursEn = 'disabled';
         }

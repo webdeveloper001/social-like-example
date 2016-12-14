@@ -5,23 +5,39 @@
         .module('app')
         .controller('editRanking', editRanking);
 
-    editRanking.$inject = ['$location', '$rootScope', '$state','$stateParams', 'table','dialog','catans'];
+    editRanking.$inject = ['$location', '$rootScope', '$state','$stateParams', '$window', 
+    'table','dialog','catans'];
 
-    function editRanking(location, $rootScope, $state, $stateParams, table, dialog, catans) {
+    function editRanking(location, $rootScope, $state, $stateParams, $window, 
+    table, dialog, catans) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'editRanking';
 
-        vm.ranking = $rootScope.title;
         vm.closeRank = closeRank;
         vm.goEdit = goEdit;
         vm.goDelete = goDelete;
         
         vm.typeList = ["Person", "Establishment", "Place", "Activity", "Short-Phrase", "Organization", "Event","Thing","PersonCust"];
 
+        //Adjust picture size for very small displays
+        if ($window.innerWidth < 512) { vm.sm = true; vm.nsm = false; }
+        else { vm.sm = false; vm.nsm = true; }
+        
         activate();
 
         function activate() {
+            
+            //Load current category
+            $rootScope.cCategory = {};
+            for (var i = 0; i < $rootScope.content.length; i++) {
+                if ($rootScope.content[i].id == $stateParams.index) {
+                    $rootScope.cCategory = $rootScope.content[i];
+                    break;
+                }
+            }
+            
+            vm.ranking = $rootScope.cCategory.title;
             
             $rootScope.rankIsActive = true;
             $rootScope.objNumAct = $rootScope.objNum;

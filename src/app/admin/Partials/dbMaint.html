@@ -14,6 +14,8 @@
 	<br>
 	<button class="btn btn-default" ng-click="vm.syncUserVotes()">Sync User Votes</button>
 	<br>
+	<button class="btn btn-default" ng-click="vm.estDistances()">Establishment Distances</button>
+	<br>
 	<br>
 	<p ng-repeat="x in vm.unrefans track by $index">{{x.name}} --- {{x.id}}</p>
 	<div ng-repeat="x in vm.dupAnswers track by $index">
@@ -36,5 +38,11 @@
 	<div ng-repeat="x in vm.syncp">
 	{{x.answername}} - {{x.categoryname}} - caUpV {{x.caUpV}} - nUpVotes {{x.nUpVlen}} - caDownV {{x.caDownV}} - nDownVotes {{x.nDownVlen}}
 	<button class="btn btn-primary" ng-click="vm.updatecatans(x)">Fix</button>
+	</div>
+	<div ng-repeat="x in vm.answerdist">
+		<div class="row">
+			{{x.name}} - {{x.location}} - {{x.dist}}
+			<button class="btn btn-default" ng-click="vm.gotoAnswer(x)">Go to Answer</button>
+		</div>
 	</div>
 </div>

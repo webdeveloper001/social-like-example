@@ -57,7 +57,7 @@
             obj.resource.push(data);
             
             //update local copy
-            _alluseractivity.push(data);
+            //_alluseractivity.push(data);
             
             var url = baseURI;
 
@@ -69,9 +69,13 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
                 
-                 //update local copies
-                var id = result.data.resource[0].id; 
-                _alluseractivity[_alluseractivity.length-1].id = id;
+                //update local copy
+                var datax = data;
+                datax.id = result.data.resource[0].id; 
+                _alluseractivity.push(datax);
+                
+                //update current user activity array
+                $rootScope.thisuseractivity.push(datax);                
 
                 if ($rootScope.DEBUG_MODE) console.log("creating useractivity record was succesful");
                 return result.data;
@@ -92,8 +96,11 @@
             
             obj.resource.push(data); 
             
-            var url = baseURI; 
-                        
+            var url = baseURI;
+            
+            var idx = _alluseractivity.map(function(x) {return x.id; }).indexOf(rec_id);   
+            _alluseractivity[idx].votes = votes;            
+            
             return $http.patch(url, obj, {
                 headers: {
                     "Content-Type": "multipart/form-data"
@@ -109,12 +116,9 @@
         
         function deleteRec(rec_id) {
             
-            //delete records from local copy
-            for (var i=0; i<_alluseractivity.length;i++){
-                if (_alluseractivity[i].id == rec_id){
-                    _alluseractivity.splice(i,1);
-                } 
-            }
+            //update (delete answer) local copy of alluseractivity
+            var i = _alluseractivity.map(function(x) {return x.id; }).indexOf(rec_id);
+            if (i > -1) _alluseractivity.splice(i,1);
             
            var url = baseURI + '/' + rec_id; 
             

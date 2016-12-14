@@ -1,35 +1,22 @@
 <h1> Flags </h1>
-<div class="row">
-	<div class="col-sm-2"></div>
-	<div class="col-sm-8">
-		<table class="table table-hover cursor">
-			<tbody>
-				<thead>
-					<tr>
-						<th>Category</th>
-						<th>Answer</th>						
-						<th>Flag</th>
-					</tr>
-				</thead>
-				<tbody>
-					<!--<tr ng-repeat="x in vm.relativetable | orderBy:'-Rank'" ng-click="vm.refresh(x.id)">-->
-					<tr>
-						<td>Which are best breweries in San Diego?</td>
-						<td>Brewery A</td>
-						<td>Duplicated</td>
-					</tr>
-					<tr>
-						<td>What is best thing to say to a woman?</td>
-						<td>You are fat</td>
-						<td>Offensive</td>
-					</tr>
-					<tr>
-						<td>Best beaches to go with the family</td>
-						<td>Pacific Beach</td>
-						<td>Duplicated</td>
-					</tr>
-				</tbody>
-		</table>
-	</div>
-	<div class="col-sm-2"></div>
-</div>
+<br>
+<button class="btn btn-danger" ng-click="vm.getFlags()">Get Flags</button>
+
+<table class="table table-hover cursor">
+	<tbody>
+		<thead>
+			<tr>
+				<th>Type</th>
+				<th>Flag</th>
+				<th>Go To</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!--<tr ng-repeat="x in vm.relativetable | orderBy:'-Rank'" ng-click="vm.refresh(x.id)">-->
+			<tr ng-repeat="x in vm.flags">
+				<td>{{x.type}}</td>
+				<td>{{x.desc}}</td>
+				<td>{{x.number}}</td>
+			</tr>
+		</tbody>
+</table>
