@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
     'use strict';
 
     angular
@@ -22,6 +22,7 @@
         vm.logout = logout;
         vm.goToLogin = goToLogin;
         vm.gotoAbout = gotoAbout;
+        vm.gotomybiz = gotomybiz;
         vm.gotoFeedback = gotoFeedback;
         vm.gotoHome = gotoHome;
         vm.gotoAdmin = gotoAdmin;
@@ -33,10 +34,10 @@
 
         if ($rootScope.coordsRdy == undefined) $rootScope.coordsRdy = false;
         $rootScope.loadFbnWhenCoordsRdy = false;
-        
+
         //Geolocation options
         var geoOptions = {};
- 
+
         vm.warning = false;
         activate();
 
@@ -44,14 +45,20 @@
 
             if ($rootScope.showWarning) showWarningsIcon();
             configGeolocation();
-            
+
             vm.coordsRdy = $rootScope.coordsRdy;
-                        
+
             if ($rootScope.DEBUG_MODE) console.log("Navbar Loaded!");
             //console.log("isLoggedIn", !$rootScope.isLoggedIn)
             //console.log("user", $rootScope.user);
             //getCities();
             //detectLocation2();
+        }
+
+        function gotomybiz() {
+            //$stateProvider.state('app');
+            // http://localhost:3006/#/mybiz
+            $state.go('mybiz');
         }
 
         function gotoAbout() {
@@ -103,7 +110,7 @@
         }
 
         /**
-         * Open model for city selection 
+         * Open model for city selection
          */
         function openCitySelection() {
             openModal("#selectCityModal");
@@ -127,11 +134,11 @@
         $rootScope.$on('getLocation', function (e) {
             autoDetectCity();
         });
-        
+
         $rootScope.$on('coordsRdy', function (e) {
             showCoordsIcon();
         });
-        
+
         $rootScope.$on('showWarning', function (e) {
             console.log("rx showWarning");
             showWarningsIcon();
@@ -140,8 +147,8 @@
             console.log("rx clearWarning");
             hideWarningsIcon();
         });
-        
-        
+
+
         $rootScope.$on('useAddress', function (e, address) {
             var obj = {};
             obj.location = address.address;
@@ -155,8 +162,8 @@
          * Function to get current location of User based on navigator
          */
         $rootScope.getCurrentPositionOfUser = function () {
-            
-            
+
+
             geolocator.locate(geoOptions, function (err, location) {
                 if (err) {
                     if ($rootScope.DEBUG_MODE) console.log('Error getting geolocation - ERROR(' + err.code + '): ' + err.message);
@@ -167,7 +174,7 @@
                     setUserLatitudeLongitude(location);
                 }
             });
-            
+
             /*
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position){
@@ -194,7 +201,7 @@
              */
             $rootScope.currentUserLatitude = location.coords.latitude;
             $rootScope.currentUserLongitude = location.coords.longitude;
-        
+
             /**
              * Set Latitude and Longitude to cookie
              */
@@ -239,13 +246,13 @@
                     setUserLatitudeLongitude(location);
                 }
             });
-            
+
             /*
             geolocator.locate(options, setUserLatitudeLongitude(location),function (err) {
              console.log('Error getting geolocation - ERROR(' + err.code + '): ' + err.message);
              dialog.getDialog('errorGettingGeolocation');
             });
-            
+
             /*
             var geocoder;
             geocoder = new google.maps.Geocoder();
@@ -264,7 +271,7 @@
             }
 
             function showPosition(position) {
-                
+
                 if ($rootScope.DEBUG_MODE) console.log("@showPosition - position -", position);
 
                 var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -331,7 +338,7 @@
         }
 
         function configGeolocation() {
-            
+
             geolocator.config({
                 language: "en",
                 google: {
@@ -376,14 +383,14 @@
                 body: geobody
             }).then(function (result) {
                 if ($rootScope.DEBUG_MODE) console.log("Result from google geolocate - ", result);
-                    
+
                 //var loc = result.data.loc.split(",");
                 //console.log("loc - ", loc);
                 $rootScope.currentUserLatitude = result.data.location.lat;
                 $rootScope.currentUserLongitude = result.data.location.lng;
             });
         }
-        
+
         function showWarningsIcon(){
             vm.warning = true;
         }
@@ -393,7 +400,7 @@
         function showCoordsIcon(){
             vm.coordsRdy = true;
         }
-        
+
         function goWarning(){
             /*
             var accntname = '';
@@ -405,13 +412,13 @@
                        break;
                 }
              }
-            idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(answerid); 
+            idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(answerid);
             console.log("$rootScope.useraccnts - ", $rootScope.useraccnts);
             console.log("idx - answerid - $rootScope.answers[idx].name -",idx,answerid);*/
            var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf($rootScope.useraccnts[0].answer);
            dialog.askEmail($rootScope.answers[idx].name);
         }
-        
+
         function goCoords(){
            dialog.askPermissionToLocate();
         }

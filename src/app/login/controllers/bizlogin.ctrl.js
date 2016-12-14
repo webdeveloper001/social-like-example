@@ -20,7 +20,7 @@
 
         // Methods
         vm.submit = submit;
-        
+
         activate();
 
         function activate() {

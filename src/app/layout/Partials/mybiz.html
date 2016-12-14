@@ -1,0 +1,53 @@
+<!-- Navigation Bar -->
+<div ui-view="navbar"></div>
+
+<div class="panel panel-primary signin-card">
+    <div class="panel-heading">
+        <h3 class="text-center">Grow your Customer Base with Rank-X</h3>
+        <h1 class="text-center">Business Registration</h1>
+    </div>
+    <div class="panel-body">
+
+
+      			<p>{{vm.user.name}}</p>
+      			<p>{{vm.user.email}}</p>
+
+
+      			<div class="form-group text-center">
+      				<button type="button" class="btn btn-primary" ng-click="showpremium=true;vm.setupFreeBillingAccount();">Learn More</button>
+
+      		    <div ng-show="showpremium">
+      					<h2>Grow Your Business</h2>
+      					<p>
+      					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      					</p>
+
+                <!-- FROM: https://stripe.com/docs/checkout/tutorial -->
+                <!-- test card numbers
+                https://stripe.com/docs/testing#cards -->
+      					<form action="http://localhost:3000/charge" method="POST">
+      					  <script
+      					    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+      					    data-key="pk_test_q9kbYzvzE6uMwZH9ZUjfK6Xq"
+      					    data-amount="999"
+      					    data-name="Rank-X"
+      					    data-description="Subscription Upgrade"
+                    data-email={{vm.user.email}}
+      					    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+      					    data-locale="auto"
+      					    data-zip-code="true">
+      					  </script>
+                  <input type="hidden" id="userEmail" name="userEmail" value={{vm.user.email}}></input>
+      					</form>
+      					</br>
+      					<a ng-click="showpremium=false">maybe later</a>
+
+      				</div>
+
+      		  </div>
+
+
+
+    </div>
+
+</div>

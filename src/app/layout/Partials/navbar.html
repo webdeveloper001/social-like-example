@@ -1,4 +1,4 @@
-﻿<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -11,10 +11,10 @@
             </button>
             <a class="navbar-brand" ng-click="vm.gotoHome()" style="cursor:pointer">Home</a>
             <a class="navbar-brand" ng-show="vm.user"><i class="fa fa-user"></i> Welcome {{vm.user.first_name}}</a>
-            <a class="navbar-brand" ng-if="vm.warning" style="background-color:#33cccc;color:black;margin:2px" 
+            <a class="navbar-brand" ng-if="vm.warning" style="background-color:#33cccc;color:black;margin:2px"
             ng-click="vm.goWarning()"><i class="fa fa-warning"></i></a>
             <a class="navbar-brand" ng-if="vm.coordsRdy" ng-click="vm.goCoords()"><i class="fa fa-location-arrow"></i></a>
-            
+
             <!-- <a class="navbar-brand" href="#">RANK-X</a> -->
             <!--<ul class="nav navbar-nav navbar-right" ng-show="vm.user">-->
             <!--
@@ -26,18 +26,19 @@
                     </a>
                 </li>
             </ul>
-            -->           
+            -->
         </div>
-        <div id="navbar" class="navbar-collapse collapse">      
+        <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li ng-show="!vm.isLoggedIn"><a href="#/login">Login</a></li>
+                <li ng-show="vm.isLoggedIn"><a href="" ng-click="vm.gotomybiz()">My Business</a></li>
                 <li ng-show="vm.isLoggedIn"><a href="" ng-click="vm.logout()">Logout</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <!-- <li><a href="" ng-click="vm.gotoHome()">Home</a></li> -->
                 <li><a href="" ng-click="vm.gotoAbout()">About</a></li>
                 <li><a href="" ng-click="vm.gotoFeedback()">Feedback</a></li>
-                <!-- <li><a href="" ng-click="vm.gotoAdmin()">Admin</a></li> -->         
+                <!-- <li><a href="" ng-click="vm.gotoAdmin()">Admin</a></li> -->
                 <!-- <li><a href="" ng-click="vm.openCitySelection()"><i style="color: #FFF;font-size: 20px"
                                                                              class="fa fa-map-marker"></i>
                     {{selectedCity.name || 'Select City'}}

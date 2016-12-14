@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
     'use strict';
 
     angular
@@ -24,6 +24,13 @@
         vm.redirectForFacebook = redirectForFacebook;
         vm.whyFacebookDialog = whyFacebookDialog;
         vm.goBack = goBack;
+
+        //Only use on localhost to fake a FB login
+        if (window.location.hostname = "localhost") {
+          console.log("server is: " + window.location.hostname)
+          console.log("let's fake your user as an FB login")
+          login.setFakeLocalUser();
+        }
 
         if ($rootScope.isLoggedIn) $state.go('cwrapper');
         else activate();
@@ -78,7 +85,7 @@
                         $location.path('/');
                         $state.go('cwrapper', {}, {location: 'replace'});
                         //$state.go('cwrapper');
-                        
+
 
                     },function () {
                         vm.isProgressing = false;
@@ -148,7 +155,7 @@
         function register() {
             $location.path('/register');
         }
-        
+
         function goBack(){
             $state.go('cwrapper');
         }
