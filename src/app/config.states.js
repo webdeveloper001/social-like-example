@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
     'use strict';
 
     var app = angular.module('app');
@@ -93,24 +93,24 @@
                     allvrows: ['vrows', function (vrows) {
 
                         return vrows.getAllvrows().then(function (result) {
-                            
+
                             return result;
                         });
                     }],
                     headlines: ['headline', function (headline) {
 
                         return headline.getheadlines().then(function (result) {
-                            
+
                             return result;
                         });
                     }],
                     cblocks: ['cblock', function (cblock) {
 
                         return cblock.getcblocks().then(function (result) {
-                            
+
                             return result;
                         });
-                    }]                   
+                    }]
                 }
                 */
             },
@@ -123,7 +123,7 @@
                 controller: 'rankSummary as vm'
 /*
                 resolve: {
-                     
+
                     answers: ['answer', function (answer) {
                         return answer.getAnswers().then(function (result) {
 
@@ -162,10 +162,10 @@
                     allvrows: ['vrows', function (vrows) {
 
                         return vrows.getAllvrows().then(function (result) {
-                            
+
                             return result;
                         });
-                    }]                  
+                    }]
                     /*
                     mrecs: ['matchrec', function () {
                         return function () {
@@ -246,14 +246,14 @@
                 parent: 'layout',
                 url: '/specials',
                 templateUrl: 'app/customer/Partials/specials.html',
-                controller: 'specials as vm'               
+                controller: 'specials as vm'
             },
             {
                 name: 'editspecial',
                 parent: 'layout',
                 url: '/editspecial',
                 templateUrl: 'app/customer/Partials/editspecial.html',
-                controller: 'editspecial as vm'               
+                controller: 'editspecial as vm'
             },
             {
                 name: 'answerDetail',
@@ -270,7 +270,7 @@
                             return result;
                         });
                     }]
-                    
+
                     /*
                     answers: ['answer', function () {
                         return function () {
@@ -285,7 +285,7 @@
                 parent: 'layout',
                 url: '/editvrows',
                 templateUrl: 'app/customer/Partials/editvrows.html',
-                controller: 'editvrows as vm'               
+                controller: 'editvrows as vm'
             },
             {
                 name: 'match',
@@ -316,7 +316,21 @@
                         controller: 'navbar as vm'
                     }
                 }
+            },
+            {
+              name: 'mybiz',
+              url: '/mybiz',
+              views: {
+                "@": {
+                  templateUrl: 'app/layout/Partials/mybiz.html',
+                  controller: 'mybiz as vm'
+                },
+                "navbar@mybiz": {
+                  templateUrl: 'app/layout/Partials/navbar.html',
+                  controller: 'navbar as vm'
+                }
             }
+          }
         ];
 
         $(states).each(function () {

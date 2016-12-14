@@ -5,9 +5,9 @@
         .module('app')
         .factory('useraccnt', useraccnt);
 
-    useraccnt.$inject = ['$http','$q','$rootScope'];
+    useraccnt.$inject = ['$http','$q','$rootScope', 'login'];
 
-    function useraccnt($http, $q, $rootScope) {
+    function useraccnt($http, $q, $rootScope, login) {
 
         var _useraccnts = [];
         var baseURI = '/api/v2/mysql/_table/useraccnts';
@@ -15,7 +15,8 @@
         var service = {
             getuseraccnt: getuseraccnt,
             adduseraccnt: adduseraccnt,
-            updateuseraccnt: updateuseraccnt
+            updateuseraccnt: updateuseraccnt,
+            setupFreeBillingAccount: setupFreeBillingAccount
         };
 
         return service;
@@ -49,15 +50,62 @@
          *
          */
         function adduseraccnt() {
+          console.log("START useraccnt.srvc.js:adduseraccnt")
+          //localhost testing
+          // $rootScope.user = login.setFakeLocalUser();
+          // $rootScope.user = JSON.parse(localStorage.getItem("user"));
+          // $rootScope.user = window.localStorage.user;
 
-            //form match record
-            var data = {};
-            data.user = $rootScope.user.id;
-            data.answer = $rootScope.canswer.id;
-            data.bizcat = 'REB'
-            data.status = 'Non-paying';
-            data.stripeid = '';
-            data.email = '';
+          // these are equivalent:
+          //   localStorage.getItem("user")
+          //   window.localStorage["user"]
+          //
+          // var currentUserLocalStorage = {};
+          //
+          // console.log("key-value pair testing:")
+          //
+          // JSON.parse(localStorage.getItem("user"), (key,value) => {
+          //   if(key=="email") {
+          //     currentUserLocalStorage.email = value;
+          //   }
+          //   if(key=="email") {
+          //     currentUserLocalStorage.email = value;
+          //   }
+          //   console.log(key); // log the current property name, the last is ""
+          //   console.log(value); // log the current property value
+          // });
+          // return currentUserLocalStorage; //user object
+
+
+          var userLocalStorage = login.getUserObjectFromLocalStorage();
+            // user.email
+            // user.first_name
+            // user.host
+            // user.id
+            // user.is_sys_admin
+            // user.last_login_date
+            // user.last_name
+            // user.name
+            // user.role
+            // user.role_id
+            // user.session_id
+            // user.session_token
+
+          //form match record
+          var data = {};
+          // data.user = window.localStorage.user.id;
+          // data.answer = $rootScope.canswer.id;
+          // data.bizcat = 'REB'
+          // data.status = 'Non-paying';
+          // data.stripeid = '';
+          // data.email = '';
+
+          data.user = userLocalStorage.id;
+          data.answer = "";
+          data.bizcat = 'REB'
+          data.status = 'Non-paying';
+          data.stripeid = 'dskjflskdjflskjd';
+          data.email = userLocalStorage.email;
 
             var obj = {};
             obj.resource = [];
@@ -76,9 +124,9 @@
 
                 //update local copy
                 var datax = data;
-                datax.id = result.data.resource[0].id; 
+                datax.id = result.data.resource[0].id;
                 _useraccnts.push(datax);
-                
+
                 console.log("User account successfully added.");
                 return result.data;
             }
@@ -90,7 +138,7 @@
         *
         */
         function updateuseraccnt(recid, field, val) {
-           
+
             //form match record
             var obj = {};
             obj.resource = [];
@@ -98,7 +146,7 @@
             var data = {};
             data.id = recid;
             //data.id = user;
-            
+
             for (var i=0; i<field.length; i++){
                 switch (field[i]){
                     case "bizcat": data.bizcat = val[i]; break;
@@ -112,9 +160,9 @@
             //console.log("obj.resource - ", obj);
 
             var url = baseURI;
-            
+
             //update local copy
-            var idx = _useraccnts.map(function(x) {return x.id; }).indexOf(recid);  
+            var idx = _useraccnts.map(function(x) {return x.id; }).indexOf(recid);
             for (var i=0; i<field.length; i++){
                 switch (field[i]){
                     case "bizcat": _useraccnts[idx].bizcat = val[i]; break;
@@ -122,7 +170,7 @@
                     case "status": _useraccnts[idx].status = val[i]; break;
                     case "stripeid": _useraccnts[idx].stripeid = val[i]; break;
                 }
-            }                        
+            }
 
             return $http.patch(url, obj, {
                 headers: {
@@ -136,6 +184,16 @@
                 $rootScope.$emit('clear-notification-warning');
                 return result.data;
             }
+        }
+
+
+        function setupFreeBillingAccount() {
+          // make the POST call to Stripe
+          // obtain the RESPONSE from Stripe
+          // create the "business user account" on main DB w/ Stripe ID
+
+          // localhost testing ...
+          adduseraccnt();
         }
 
         function _isuseraccntLoaded() {
