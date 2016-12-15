@@ -140,11 +140,11 @@
         });
 
         $rootScope.$on('showWarning', function (e) {
-            console.log("rx showWarning");
+            if ($rootScope.DEBUG_MODE) console.log("rx showWarning");
             showWarningsIcon();
         });
         $rootScope.$on('hideWarning', function (e) {
-            console.log("rx clearWarning");
+            if ($rootScope.DEBUG_MODE) console.log("rx clearWarning");
             hideWarningsIcon();
         });
 

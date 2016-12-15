@@ -119,7 +119,7 @@
         function getAnswers() {         
 
             vm.GP = $rootScope.cmrecs_user.length;
-            console.log("vm.GP - ", vm.GP);
+            if ($rootScope.DEBUG_MODE) console.log("vm.GP - ", vm.GP);
             vm.Tot = M;            
             
             //if already played all matches

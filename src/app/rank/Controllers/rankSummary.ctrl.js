@@ -290,7 +290,11 @@
                     if ($rootScope.cvotes[i].vote == 1) {
                         for (var k = 0; k < $rootScope.canswers.length; k++) {
                             if ($rootScope.cvotes[i].answer == $rootScope.canswers[k].id) {
-                                $rootScope.canswers4rank.push($rootScope.canswers[k]);
+                                //Check vote correspond to this category
+                                var idx = $rootScope.catansrecs.map(function(x) {return x.id; }).indexOf($rootScope.cvotes[i].catans);
+                                if ($rootScope.catansrecs[idx].category == $rootScope.cCategory.id){  
+                                    $rootScope.canswers4rank.push($rootScope.canswers[k]);
+                                }
                                 //break;
                             }
                         }

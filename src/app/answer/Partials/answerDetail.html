@@ -225,7 +225,8 @@
             <div ng-bind-html="x.html" style="{{x.style}}">
                 <br>
             </div>
-            <p ng-if="x.hasimage" style="background-color:lightgray;cursor:pointer" ng-click="vm.showsimage(x)">Show Flyer</p>
+            <p ng-if="x.hasimage" style="background-color:lightgray;cursor:pointer" ng-click="vm.showsimage(x)">
+                {{x.showimage ? 'Hide Flyer':'Show Flyer'}}</p>
             <div class="text-middle" ng-if="x.showimage">
                 <img class="displayed" src="{{x.image}}" style="height:{{vm.mxheight}};width:auto;max-width:96%;margin-left:auto;margin-right:auto;">
                 <br>
@@ -338,7 +339,7 @@
                 <small style="color:#bfbfbf">{{x.username}} - {{x.date}}&nbsp&nbsp                    
                         <span class="dropdown ">
                             <i type="button" class="fa fa-flag dropdown-toggle" data-toggle="dropdown"></i>
-                            <ul class="dropdown-menu dropdown-menu-left">
+                            <ul class="dropdown-menu dropdown-menu-right">
                                 <li><a ng-click="vm.cmFlag(1)">Off-Topic</a></li>
                                 <li><a ng-click="vm.cmFlag(2)">Offensive</a></li>
                                 <li><a ng-click="vm.cmFlag(3)">Spam</a></li>
@@ -383,7 +384,7 @@
     <button type="button" ng-click="vm.goBack()" class="btn btn-default">Back</button>
     <div class="btn-group" role="group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Flag</button>
-            <ul class="dropdown-menu " role="menu ">
+            <ul class="dropdown-menu dropdown-menu-left" role="menu">
                 <li><a ng-click="vm.flagAnswer(1)">Wrong Category</a></li>
                 <li><a ng-click="vm.flagAnswer(2)">Offensive</a></li>
                 <li><a ng-click="vm.flagAnswer(3)">Spam</a></li>

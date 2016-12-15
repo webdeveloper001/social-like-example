@@ -258,7 +258,8 @@
                 $rootScope.$emit('loadNh');
                 vm.searchScope = 'all San Diego';
                 vm.ranks = $rootScope.cityranks;
-                vm.querybc = '#f9f9f9';
+                //vm.querybc = '#f9f9f9';
+                vm.querybc = 'white';
             }
             if (x == 2) {
                 vm.isNh = true; //Neighborhood View

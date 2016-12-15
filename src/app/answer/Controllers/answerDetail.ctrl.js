@@ -713,7 +713,10 @@
         }
         
         function showsimage(x){
-            x.showimage = true;
+            if (!x.showimage){
+                x.showimage = true;
+            }
+            else x.showimage = false;
         }
 
         function getVRows(answerid) {

@@ -377,9 +377,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
         
                     /*//  2. Use this to add/remove a tag from a rank 
                     for (var i=0; i < vm.results.length; i++){
-                        if (vm.results[i].title.includes("Pacific Beach")){
-                            //var tags = vm.results[i].tags + ' acai bowls';
-                            var tags = vm.results[i].tags.replace('mission','');
+                        if (vm.results[i].title.includes("Tire shops")){
+                            var tags = vm.results[i].tags + ' tires';
+                            //var tags = vm.results[i].tags.replace('mission','');
                             //var newtype = 'Event';
                             table.update(vm.results[i].id, ['tags'],[tags]);    
                         }            
@@ -528,7 +528,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                                }
                                            }
                                            fcatstr = catstr.substring(1); //remove leading ':'
-                                           //console.log("final catstr ---", fcatstr)
+                                           console.log("final catstr ---", fcatstr)
                                            table.update($rootScope.content[j].id, ['isatomic','catstr'],[false, fcatstr]);
                                        } //this is bracket
                                    break;
@@ -541,12 +541,12 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                            if ($rootScope.content[n].id == 473){
                                table.update(473, ['isatomic','catstr'],[true, '']);
                            }
-                           //if ($rootScope.content[n].id == 6949){
-                           //    table.update(6949, ['isatomic','catstr'],[false, '6949:'+$rootScope.content[n].catstr]);
-                           //}
-                           //if ($rootScope.content[n].id == 7675){
-                           //    table.update(7675, ['isatomic','catstr'],[false, '7675:'+$rootScope.content[n].catstr]);
-                           //}
+                           if ($rootScope.content[n].id == 6949){
+                               //table.update(6949, ['isatomic','catstr'],[false, '6949:'+$rootScope.content[n].catstr]);
+                           }
+                           if ($rootScope.content[n].id == 7675){
+                               //table.update(7675, ['isatomic','catstr'],[false, '7675:'+$rootScope.content[n].catstr]);
+                           }
                        }
                        
                     *///End 8
@@ -620,15 +620,16 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     /*//12. Add 'pb' tag to all Pacific Beach
                     var tagstr = '';
                     for (var i=0; i<$rootScope.content.length; i++){
-                        if ($rootScope.content[i].title.includes('Ocean Beach')){
-                            if ($rootScope.content[i].tags.includes('ob') == false){
-                                tagstr = $rootScope.content[i].tags + ' ob';
+                        if ($rootScope.content[i].title.includes('Pacific Beach')){
+                            if ($rootScope.content[i].tags.includes('pb') == false){
+                                //console.log($rootScope.content[i].title);
+                                tagstr = $rootScope.content[i].tags + ' pb';
                                 //console.log("tagstr - ", tagstr, $rootScope.content[i].title);
                                 table.update($rootScope.content[i].id,['tags'],[tagstr]);
                             }
                         }
                     }
-                    */ // End of 12
+                    */// End of 12
                     /*//13. Open all contents to refresh number of answers, add vrows
                     $timeout(function () {
                         $state.go('rankSummary', { index: $rootScope.content[midx].id });
