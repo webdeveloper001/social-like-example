@@ -10,7 +10,7 @@
 
 
         // For any unmatched url
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/home');
 
         var states = [
             {
@@ -32,7 +32,7 @@
                 name: 'cwrapper',
                 parent: 'layout',
                 //abstract: true,
-                url: '', ///cwrapper',
+                url: '/home', ///cwrapper',
                 views: {
                     "@layout": {
                         templateUrl: 'app/layout/Partials/cwrapper.html',

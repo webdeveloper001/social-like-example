@@ -44,12 +44,15 @@
         vm.emptyspace = '';
         vm.fbm = $rootScope.fbmode ? true:false;
         
-        $rootScope.searchActive = false;
-        vm.searchActive = $rootScope.searchActive;
+        //$rootScope.searchActive = $rootScope.searchActive ? $rootScope.searchActive: false;
+        //vm.searchActive = $rootScope.searchActive;
         
         //Receive from navbar, if 'Home' go to Main View
         $rootScope.$on('mainView', function (event) {
-            if ($state.current.name == 'cwrapper') switchScope(1);
+            if ($state.current.name == 'cwrapper') {
+                $rootScope.inputVal = '';
+                switchScope(1);
+            }
         });
         
         if ($rootScope.cwrapperLoaded) activate();
@@ -62,7 +65,7 @@
             vm.isNh = $rootScope.isNh;
             
             if (vm.isNh) vm.querybc = '#428bca';
-            else vm.querybc = '#f9f9f9';
+            else vm.querybc = 'white'; //#f9f9f9
             
             vm.isNhRdy = $rootScope.isNhRdy;
             vm.cnh = $rootScope.cnh;
@@ -73,7 +76,7 @@
             if (vm.isCity) vm.searchScope = 'all San Diego';
             
             vm.nhs = $rootScope.neighborhoods.concat($rootScope.districts);
-            vm.searchActive = $rootScope.searchActive;
+            vm.searchActive = $rootScope.searchActive ? $rootScope.searchActive: false;
             vm.isAdmin = $rootScope.isAdmin;
 
             vm.selEditRank = $rootScope.editMode ? 'active' : 'none';
@@ -81,6 +84,9 @@
             
             //$rootScope.includeNearMe = false;
             $rootScope.cCategory = undefined;
+            
+            vm.val = $rootScope.inputVal; //remember user query
+            
         }
         function init() {
 
@@ -109,6 +115,9 @@
             //Load current category
             //$rootScope.content = {};
             //vm.isBasic = $rootScope.isBasic;
+            
+            $rootScope.inputVal = '';
+            
             switchScope(1); //Default view is basic query view
             vm.cnh = 'Select Neighborhood';
             $rootScope.cnh = vm.cnh;
@@ -131,6 +140,8 @@
             //});
             $rootScope.cwrapperLoaded = true;
             $rootScope.cCategory = undefined;
+            
+            vm.searchActive = $rootScope.searchActive ? $rootScope.searchActive: false;
             
             userdata.loadVotes();
             
@@ -237,7 +248,7 @@
             }
             vm.searchActive = $rootScope.searchActive;
             $window.scroll(0,0);
-            
+            console.log("@refreshRanks");
             $rootScope.$emit('refreshRanks');
             
              //This is to prevent double pulses and have two answers get submitted by hardware glitch
@@ -252,9 +263,9 @@
                 vm.isCity = true; //City Scope
                 $rootScope.isNh = false;
                 $rootScope.isCity = true;
-                vm.val = '';
-                $rootScope.inputVal = '';
-                $rootScope.searchActive = false;
+                //vm.val = '';
+                //$rootScope.inputVal = '';
+                //$rootScope.searchActive = false;
                 $rootScope.$emit('loadNh');
                 vm.searchScope = 'all San Diego';
                 vm.ranks = $rootScope.cityranks;
@@ -268,7 +279,7 @@
                 $rootScope.isCity = false;
                 vm.val = '';
                 $rootScope.inputVal = '';
-                $rootScope.searchActive = false;
+                //$rootScope.searchActive = false;
                 if ($rootScope.isNhRdy) $rootScope.$emit('loadNh');
                 vm.searchScope = 'Neighborhood';
                 vm.ranks = $rootScope.nhranks;

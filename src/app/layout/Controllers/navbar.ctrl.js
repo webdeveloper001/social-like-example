@@ -82,6 +82,8 @@
         }
         function gotoHome() {
             $rootScope.fbmode = false;
+            $rootScope.searchActive = false;
+            $rootScope.inputVal = '';
             $state.go('cwrapper', {}, { reload: true });
             $rootScope.$emit('mainView');
         }

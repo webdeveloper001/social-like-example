@@ -26,14 +26,17 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
                 vm.btext = 'see more';
                 var strlen_o = 0;
-
-                if (!vm.isDynamic) {
-                    if (vm.modType == 'rankofweek') getRankofDay();
-                    else loadContent();
-                }
+                
+                //if (!vm.isDynamic) {
+                  //  console.log("this is the spot");
+                if (vm.modType == 'rankofweek') getRankofDay();
+                else loadContent();
+                //}
+                if (vm.modType == 'query') getRanks(); 
+                //console.log("I am directive instance! ",vm.modType,vm.isDynamic,vm.isRoW);
 
                 $rootScope.$on('refreshRanks', function (e) {
-                    vm.input = $rootScope.inputVal;
+                    //vm.input = $rootScope.inputVal;
                     if (vm.modType == 'query') getRanks();
                 });
 
@@ -67,7 +70,6 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     if ($rootScope.inputVal != undefined && vm.isDynamic) {
                         var userIsTyping = false;
                         var inputVal = $rootScope.inputVal;
-                    
                         //Check if user typed 'near me' conditions
                         if (inputVal.indexOf('near me') > -1 ||
                             inputVal.indexOf('near') > -1 ||
@@ -540,6 +542,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                        for (var n=0; n<$rootScope.content.length; n++){
                            if ($rootScope.content[n].id == 473){
                                table.update(473, ['isatomic','catstr'],[true, '']);
+                           }
+                           if ($rootScope.content[n].id == 3125){
+                               table.update(3125, ['isatomic','catstr'],[true, '']);
                            }
                            if ($rootScope.content[n].id == 6949){
                                //table.update(6949, ['isatomic','catstr'],[false, '6949:'+$rootScope.content[n].catstr]);

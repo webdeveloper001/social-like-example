@@ -5,9 +5,11 @@
         .module('app')
         .controller('dbMaint', dbMaint);
 
-    dbMaint.$inject = ['$location', '$rootScope', '$state', '$stateParams', 'table', 'dialog', 'answer', 'catans', 'votes'];
+    dbMaint.$inject = ['$location', '$rootScope', '$state', '$stateParams', 'Upload', 
+    'table', 'dialog', 'answer', 'catans', 'votes', '$http'];
 
-    function dbMaint(location, $rootScope, $state, $stateParams, table, dialog, answer, catans, votes) {
+    function dbMaint(location, $rootScope, $state, $stateParams, Upload, 
+    table, dialog, answer, catans, votes, $http) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'dbMaint';
@@ -25,6 +27,8 @@
         vm.updatecatans = updatecatans;
         vm.estDistances = estDistances;
         vm.gotoAnswer = gotoAnswer;
+        vm.createImagesJSON = createImagesJSON;
+        vm.updateUrls = updateUrls;
         
         vm.isAdmin = $rootScope.isAdmin;
 
@@ -357,6 +361,42 @@
         function gotoAnswer(x){
             $state.go("answerDetail", { index: x.id });
         }
-
+        
+        function createImagesJSON(){
+            
+            //creates json of images that are non-secure
+            var images = [];
+            var imgObj = {};
+            var idx = 1256;
+            for (var i=0; i< $rootScope.answers.length; i++){
+                if ($rootScope.answers[i].imageurl.indexOf('http://') > -1){
+                    imgObj = {};
+                    imgObj.id = idx++;
+                    imgObj.answer = $rootScope.answers[i].id;
+                    imgObj.url = $rootScope.answers[i].imageurl;
+                    images.push(imgObj);
+                }
+            }
+            console.log(JSON.stringify(images));
+        }
+        
+        function updateUrls(){
+            
+            var images = [];
+            var fext = '';
+            $http.get('../../../assets/images.json').success(function (response) {
+                images = response;
+                //console.log("images length - ", images.length);
+                for (var i=0; i < images.length; i++){
+                    
+                    if (images[i].url.indexOf('jpg') > -1) fext = 'jpg';
+                    if (images[i].url.indexOf('png') > -1) fext = 'png';
+                    if (images[i].url.indexOf('jpeg') > -1) fext = 'jpeg';
+                    
+                    answer.updateAnswer(images[i].answer, ['image'], 
+                    ['https://rankx.blob.core.windows.net/sandiego/' + images[i].answer + '/' + images[i].id + '.' + fext]);
+                }                
+            });
+        }                
     }
 })();

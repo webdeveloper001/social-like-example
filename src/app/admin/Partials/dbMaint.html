@@ -16,6 +16,10 @@
 	<br>
 	<button class="btn btn-default" ng-click="vm.estDistances()">Establishment Distances</button>
 	<br>
+	<button class="btn btn-default" ng-click="vm.createImagesJSON()">createImagesJSON</button>
+	<br>
+	<button class="btn btn-default" ng-click="vm.updateUrls()">updateUrls</button>
+	<br>
 	<br>
 	<p ng-repeat="x in vm.unrefans track by $index">{{x.name}} --- {{x.id}}</p>
 	<div ng-repeat="x in vm.dupAnswers track by $index">

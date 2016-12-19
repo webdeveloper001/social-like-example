@@ -578,7 +578,20 @@
 
         function processImageResults(results) {
 
-            imageLinks = imageLinks.concat(results);
+            var n;
+            var linkExists = false;
+            //Check link results are not repeated.
+            for (var j = 0; j < results.length; j++) {
+                for (var i = 0; i < imageLinks.length; i++) {
+                    n = results[j].localeCompare(imageLinks[i]);
+                    if (n == 0) {
+                        linkExists = true;
+                        break;
+                    }
+                }
+                if (!linkExists) imageLinks.push(results[j]);
+            }     
+             
             vm.numLinks = imageLinks.length;
             attNum++;
             if (vm.numLinks > 10 || attNum > 4) vm.searchDisabled = 'disabled';
