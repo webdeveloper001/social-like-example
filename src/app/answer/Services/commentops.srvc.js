@@ -44,8 +44,17 @@
 
                             var cdate = new Date(x.comments[i].timestmp);
                             cdate.setMinutes(cdate.getMinutes() - tz);
-
-                            x.comments[i].date = cdate.toLocaleDateString() + ' ' + cdate.toLocaleTimeString();
+          
+                            //var dateStr = datenow.toLocaleDateString();
+                            function pad(n) {return n < 10 ? '0'+ n : n;}
+                            
+                            var dateStr = cdate.getMonth()+1+"/"+cdate.getDate()+"/"+cdate.getFullYear();
+                            
+                            var hrs = cdate.getHours();
+                            var timeStr = hrs > 12 ? hrs%12 + ':'+ pad(cdate.getMinutes()) + ' '+'PM' :
+                                                     hrs + ':'+ pad(cdate.getMinutes()) + ' '+'AM'; 
+                                          
+                            x.comments[i].date = dateStr + ' ' + timeStr;
                             getIconColors(x.comments[i].user, _colors);
                             x.comments[i].bc = _colors.bc;
                             x.comments[i].fc = _colors.fc;
@@ -65,8 +74,17 @@
 
                             var cdate = new Date(x.comments[i].timestmp);
                             cdate.setMinutes(cdate.getMinutes() - tz);
-
-                            x.comments[i].date = cdate.toLocaleDateString() + ' ' + cdate.toLocaleTimeString();
+                            
+                            //var dateStr = datenow.toLocaleDateString();
+                            function pad(n) {return n < 10 ? '0'+ n : n;}
+                            
+                            var dateStr = cdate.getMonth()+1+"/"+cdate.getDate()+"/"+cdate.getFullYear();
+                            
+                            var hrs = cdate.getHours();
+                            var timeStr = hrs > 12 ? hrs%12 + ':'+ pad(cdate.getMinutes()) + ' '+'PM' :
+                                                     hrs + ':'+ pad(cdate.getMinutes()) + ' '+'AM'; 
+                                          
+                            x.comments[i].date = dateStr + ' ' + timeStr;
                             getIconColors(x.comments[i].user, _colors);
                             x.comments[i].bc = _colors.bc;
                             x.comments[i].fc = _colors.fc;

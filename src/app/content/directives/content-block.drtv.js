@@ -379,8 +379,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
         
                     /*//  2. Use this to add/remove a tag from a rank 
                     for (var i=0; i < vm.results.length; i++){
-                        if (vm.results[i].title.includes("Tire shops")){
-                            var tags = vm.results[i].tags + ' tires';
+                        if (vm.results[i].title.includes("WiFi")){
+                            var tags = vm.results[i].tags + ' internet wifi wireless';
                             //var tags = vm.results[i].tags.replace('mission','');
                             //var newtype = 'Event';
                             table.update(vm.results[i].id, ['tags'],[tags]);    
@@ -390,8 +390,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
         
                     /* //  3.Use this to correct the title of a group of ranks
                     for (var i=0; i < vm.results.length; i++){
-                        if (vm.results[i].title.includes('Pool halls in')) {
-                            var titlex = vm.results[i].title.replace("Pool halls in","Places to play pool in");
+                        if (vm.results[i].title.includes('wifi')) {
+                            var titlex = vm.results[i].title.replace("wifi","WiFi");
                             //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
                             //console.log("tags ", tags);
                             table.update(vm.results[i].id, ['title'],[titlex]);
@@ -456,7 +456,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     //applyRuleDone = true;
                     }
                     else console.log("Rule already executed!!");
-                    *///End 4
+                    */ //End 4
         
                     /*//  5.Use this for batch DELETE
                     for (var i=0; i < vm.results.length; i++){
@@ -625,16 +625,16 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     /*//12. Add 'pb' tag to all Pacific Beach
                     var tagstr = '';
                     for (var i=0; i<$rootScope.content.length; i++){
-                        if ($rootScope.content[i].title.includes('Pacific Beach')){
-                            if ($rootScope.content[i].tags.includes('pb') == false){
+                        if ($rootScope.content[i].title.includes('Mission Beach')){
+                            if ($rootScope.content[i].tags.includes('mb') == false){
                                 //console.log($rootScope.content[i].title);
-                                tagstr = $rootScope.content[i].tags + ' pb';
+                                tagstr = $rootScope.content[i].tags + ' mb';
                                 //console.log("tagstr - ", tagstr, $rootScope.content[i].title);
                                 table.update($rootScope.content[i].id,['tags'],[tagstr]);
                             }
                         }
                     }
-                    */// End of 12
+                    */ // End of 12
                     /*//13. Open all contents to refresh number of answers, add vrows
                     $timeout(function () {
                         $state.go('rankSummary', { index: $rootScope.content[midx].id });

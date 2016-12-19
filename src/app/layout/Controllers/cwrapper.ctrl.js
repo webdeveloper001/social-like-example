@@ -279,7 +279,7 @@
                 $rootScope.isCity = false;
                 vm.val = '';
                 $rootScope.inputVal = '';
-                //$rootScope.searchActive = false;
+                $rootScope.searchActive = false;
                 if ($rootScope.isNhRdy) $rootScope.$emit('loadNh');
                 vm.searchScope = 'Neighborhood';
                 vm.ranks = $rootScope.nhranks;
