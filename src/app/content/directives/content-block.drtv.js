@@ -516,23 +516,23 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                var genRank = vm.results[i].title.replace("Hillcrest", "San Diego");
                                for (var j=0; j<$rootScope.content.length; j++){
                                    if (genRank == $rootScope.content[j].title){
-                                       if ($rootScope.content[j].catstr == null || //comment these 3
-                                       $rootScope.content[j].catstr == undefined || //if want to redo everythign
-                                       $rootScope.content[j].catstr.length == 0){  //categories
+                                       //if ($rootScope.content[j].catstr == null || //comment these 3
+                                       //$rootScope.content[j].catstr == undefined || //if want to redo everythign
+                                       //$rootScope.content[j].catstr.length == 0){  //categories
                                       // TODO ---- 6949 --- events need to add 6969
                                       // TODO ---- 473 -- law san diego --- ignore, isatomic=true, catstr='';
-                                        console.log("Found gen rank --- ", $rootScope.content[j].title);
+                                        //console.log("Found gen rank --- ", $rootScope.content[j].title);
                                         var srchStr = $rootScope.content[j].title.replace("San Diego","");
                                            for (var k=0; k<$rootScope.content.length; k++){
                                                if ($rootScope.content[k].title.includes(srchStr) && k!=j ){
-                                                   console.log("Found sub rank --- ", $rootScope.content[k].title);
+                                                   //console.log("Found sub rank --- ", $rootScope.content[k].title);
                                                    catstr = catstr + ':' + $rootScope.content[k].id;
                                                }
                                            }
                                            fcatstr = catstr.substring(1); //remove leading ':'
-                                           console.log("final catstr ---", fcatstr)
+                                           //console.log("final catstr ---", fcatstr)
                                            table.update($rootScope.content[j].id, ['isatomic','catstr'],[false, fcatstr]);
-                                       } //this is bracket
+                                       //} //this is bracket
                                    break;
                                    }
                                }                                              
@@ -547,10 +547,10 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                table.update(3125, ['isatomic','catstr'],[true, '']);
                            }
                            if ($rootScope.content[n].id == 6949){
-                               //table.update(6949, ['isatomic','catstr'],[false, '6949:'+$rootScope.content[n].catstr]);
+                               table.update(6949, ['isatomic','catstr'],[false, '6949:'+$rootScope.content[n].catstr]);
                            }
                            if ($rootScope.content[n].id == 7675){
-                               //table.update(7675, ['isatomic','catstr'],[false, '7675:'+$rootScope.content[n].catstr]);
+                               table.update(7675, ['isatomic','catstr'],[false, '7675:'+$rootScope.content[n].catstr]);
                            }
                        }
                        

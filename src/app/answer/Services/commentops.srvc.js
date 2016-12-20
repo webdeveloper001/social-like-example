@@ -42,10 +42,11 @@
                             var datenow = new Date();
                             var tz = datenow.getTimezoneOffset();
 
-                            var cdate = new Date(x.comments[i].timestmp);
+                            //Explicitly format the date -- iPhone has issues otherwise
+                            var t = x.comments[i].timestmp.split(/[- :]/);
+                            var cdate = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+                            
                             cdate.setMinutes(cdate.getMinutes() - tz);
-          
-                            //var dateStr = datenow.toLocaleDateString();
                             function pad(n) {return n < 10 ? '0'+ n : n;}
                             
                             var dateStr = cdate.getMonth()+1+"/"+cdate.getDate()+"/"+cdate.getFullYear();
@@ -72,10 +73,11 @@
                             var datenow = new Date();
                             var tz = datenow.getTimezoneOffset();
 
-                            var cdate = new Date(x.comments[i].timestmp);
-                            cdate.setMinutes(cdate.getMinutes() - tz);
+                            //Explicitly format the date -- iPhone has issues otherwise
+                            var t = x.comments[i].timestmp.split(/[- :]/);
+                            var cdate = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
                             
-                            //var dateStr = datenow.toLocaleDateString();
+                            cdate.setMinutes(cdate.getMinutes() - tz);
                             function pad(n) {return n < 10 ? '0'+ n : n;}
                             
                             var dateStr = cdate.getMonth()+1+"/"+cdate.getDate()+"/"+cdate.getFullYear();

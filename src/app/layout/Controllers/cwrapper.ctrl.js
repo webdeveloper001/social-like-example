@@ -340,7 +340,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-              $rootScope.$emit('applyRule');
+             // $rootScope.$emit('applyRule');
         }
            
         function getFeed(){

@@ -844,7 +844,6 @@
         }
         function showImages(){
             vm.images = $rootScope.blobs;
-            console.log("vm.images = ", vm.images);
         }
         /*
         function showMap(){

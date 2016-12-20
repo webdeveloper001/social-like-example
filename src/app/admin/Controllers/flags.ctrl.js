@@ -36,8 +36,9 @@
                     if (vm.flags[i].type == 'answer'){
                         switch (vm.flags[i].flag){
                             case 1: { vm.flags[i].desc = 'Wrong Category'; break; }
-                            case 2: { vm.flags[i].desc = 'Offensive'; break; }
-                            case 3: { vm.flags[i].desc = 'Spam'; break; }
+                            case 2: { vm.flags[i].desc = 'No longer active'; break; }
+                            case 3: { vm.flags[i].desc = 'Offensive'; break; }
+                            case 4: { vm.flags[i].desc = 'Spam'; break; }
                         }
                     }
                 }
