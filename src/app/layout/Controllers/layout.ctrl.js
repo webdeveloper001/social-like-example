@@ -73,6 +73,10 @@
                 loadData();
             }
              
+            //Determine if user is using Facebook browser
+            $rootScope.isFacebookApp = isFacebookApp();
+            $rootScope.isFacebookApp = true;
+             
             if ($rootScope.DEBUG_MODE) console.log("Layout Loaded!");
 
         }
@@ -177,6 +181,11 @@
             
             $rootScope.dateToday = dateStr;
             $rootScope.dateTodayNum = datetime.date2number(dateStr);
+        }
+        
+        function isFacebookApp() {
+            var ua = navigator.userAgent || navigator.vendor || window.opera;
+            return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
         }
         
         /*

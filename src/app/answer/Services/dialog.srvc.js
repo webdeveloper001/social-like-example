@@ -993,7 +993,7 @@
             //($rootScope.sm ? '<div class="container col-xs-12">':'<div class="container col-xs-6">') +
             '<div class="container col-xs-12">' +
             '<div class="text-left" style="color:blue">Option 1</div>' +
-            '<div class="text-center" style="border:2px"><button class="btn btn-success" id="useGeo">Yes, locate me with my IP</button></div><br>' +
+            '<div class="text-center" style="border:2px"><button class="btn btn-success" id="useGeo">Yes, locate me using geolocation</button></div><br>' +
             '<div class="text-left" style="color:blue">Option 2 <small>(recommended for accuracy)</small></div><br>' +
             '<p>Yes, use this address as my current location</p>' +
             '<div class="input-group">' +
@@ -1019,15 +1019,21 @@
                     var $content = $(messagehtml);
 
                     $content.find('#useGeo').click({}, function () {
-                        var x = dialogRef;
-                        $rootScope.$emit('getLocation');
-                        x.enableButtons(false);
-                        x.setClosable(false);
-                        x.getModalBody().html(messageLoading);
-                        x.setTitle('Please wait');
-                        setTimeout(function(){
-                            x.close();
-                        }, 10000);
+                        
+                        if ($rootScope.isFacebookApp){
+                            getDialog('FacebookAppNotSupported');
+                        }
+                        else {
+                            var x = dialogRef;
+                            $rootScope.$emit('getLocation');
+                            x.enableButtons(false);
+                            x.setClosable(false);
+                            x.getModalBody().html(messageLoading);
+                            x.setTitle('Please wait');
+                            setTimeout(function(){
+                                x.close();
+                            }, 10000);
+                        }
                         //x.close();
                     });
                     $content.find('#gobutton').click({}, function () {

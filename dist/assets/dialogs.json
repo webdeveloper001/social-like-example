@@ -40,6 +40,8 @@
     "dialog.browserDoesntSupportGeolocation.title": "Error",
     "dialog.browserDoesntSupportGeolocation.text": "This browser does not support geolocation.",
     "dialog.errorGettingGeolocation.title": "Error",
-    "dialog.errorGettingGeolocation.text": "There was an error getting geolocation."   
+    "dialog.errorGettingGeolocation.text": "There was an error getting geolocation.",
+    "dialog.FacebookAppNotSupported.title": "GeoLocation not Supported",
+    "dialog.FacebookAppNotSupported.text": "The Facebook browser does not allow geolocation. Use Option 2, providing an address, or open rank-x.com in an external browser (Safari, Chrome, Firefox, etc)."   
 }
 

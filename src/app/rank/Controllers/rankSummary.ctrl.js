@@ -276,6 +276,7 @@
             if (!foodNearMe && !vm.isE) vm.showR = true || (!vm.sm);
 
             //TODO update answers in DB
+            $rootScope.modeIsImage = true;
             if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
             //console.log("$rootScope.user", $rootScope.user);
             //createVrows();            
