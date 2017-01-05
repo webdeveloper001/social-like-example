@@ -143,7 +143,7 @@
             
             //Set Image Mode -- Map or Photo
             vm.modeIsImage = $rootScope.modeIsImage == undefined ? true : $rootScope.modeIsImage;
-            //if (vm.answer.location == undefined || vm.answer.type != 'Establishment') vm.modeIsImage = true; 
+            if (vm.answer.location == undefined) vm.modeIsImage = true; 
             
             if (vm.modeIsImage) setImage();
             else setMap();

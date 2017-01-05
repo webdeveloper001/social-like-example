@@ -75,7 +75,6 @@
              
             //Determine if user is using Facebook browser
             $rootScope.isFacebookApp = isFacebookApp();
-            $rootScope.isFacebookApp = true;
              
             if ($rootScope.DEBUG_MODE) console.log("Layout Loaded!");
 
@@ -185,6 +184,7 @@
         
         function isFacebookApp() {
             var ua = navigator.userAgent || navigator.vendor || window.opera;
+            //console.log("@isFacebook - ua - ", ua);
             return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
         }
         
