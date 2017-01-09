@@ -45,6 +45,10 @@
             <a style="display:{{vm.imagefunctions}}">{{vm.linkIdx+1}} of {{vm.numLinks}}</a>
             <button type="submit" class="btn btn-success" ng-click="vm.selectImage()" style="display:{{vm.imagefunctions}}">Select</button>
         </div>
+        </br>
+        <label class="checkbox-inline"  ng-show="{{vm.type != 'Short-Phrase'}}">
+                <input type="checkbox" ng-change='vm.onNoGoodImages(vm.ngi)' ng-model="vm.ngi">No good images were found
+        </label>
     </div>
 
     <form class="form-horizontal col-sm-12 col-md-6" role="form" name="answerForm" ng-repeat="x in vm.fields">

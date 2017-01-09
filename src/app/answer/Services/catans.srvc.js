@@ -85,7 +85,7 @@
             }
         }
         
-        function postRec2(answer,category) {
+        function postRec2(answer,category,isdup) {
            
             //form match record
             var data = {};
@@ -95,6 +95,7 @@
             data.downV = 0;
             data.user = $rootScope.user.id;
             data.timestmp = Date.now();
+            data.isdup = isdup;
              
             var obj = {};
             obj.resource = [];

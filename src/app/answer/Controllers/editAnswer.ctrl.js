@@ -32,6 +32,7 @@
         vm.answerDetail = answerDetail;
         vm.hoursChanged = hoursChanged;
         vm.updateHours = updateHours;
+        vm.onNoGoodImages = onNoGoodImages;
         vm.getWiki = getWiki;
         
         vm.ranking = $rootScope.title;
@@ -726,6 +727,16 @@
             }
             
             $rootScope.cmd1exe = false;
+        }
+        
+        function onNoGoodImages(x){
+            if (x){
+                vm.imageURL = '../../../assets/images/noimage.jpg';
+                selectImage();
+            }
+            else{
+                vm.imageURL = imageLinks[vm.linkIdx];
+            }
         }
         
     }

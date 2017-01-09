@@ -4,7 +4,7 @@
    "fields": [
      {"name":"name","isrequired":true,"onlybyowner":false,"label":"Name of Place"},
 	   {"name":"location","isrequired":false,"onlybyowner":false,"label":"Location"},
-	   {"name":"cityarea","isrequired":true,"onlybyowner":false,"label":"Neighborhood"},
+	   {"name":"cityarea","isrequired":false,"onlybyowner":false,"label":"Neighborhood"},
      {"name":"addinfo","isrequired":false,"onlybyowner":false,"label":"Additional Info"}   
    ]   
  },

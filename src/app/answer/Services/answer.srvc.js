@@ -117,6 +117,10 @@
                     $rootScope.pplNames.push(answerx.name);
                     $rootScope.pplAnswers.push(answerx);
                 }
+                if (answerx.type == 'Place') {
+                    $rootScope.plaNames.push(answerx.name);
+                    $rootScope.plaAnswers.push(answerx);
+                }
                                 
                 catans.postRec(answerx.id);
                 vrows.postVrows4Answer(answerx);
@@ -160,12 +164,18 @@
                     $rootScope.pplNames.push(answerx.name);
                     $rootScope.pplAnswers.push(answerx);
                 }
+                if (answerx.type == 'Place') {
+                    $rootScope.plaNames.push(answerx.name);
+                    $rootScope.plaAnswers.push(answerx);
+                }
                 
                 uaf.post('addedAnswer',['answer','category'],[answerx.id, category[0]]); //user activity feed
                                 
                 for (var n=0; n<category.length; n++){
-                    catans.postRec2(answerx.id, category[n]);    
+                    if (n == 0) catans.postRec2(answerx.id, category[n], false);
+                    else catans.postRec2(answerx.id, category[n], true);    
                 }
+                
                 vrows.postVrows4Answer(answerx);
                 
                 if ($rootScope.DEBUG_MODE) console.log('created '+ category.length + 'catans records for the new answer');

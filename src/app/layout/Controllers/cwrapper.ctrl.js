@@ -222,6 +222,8 @@
             $rootScope.estNames = [];
             $rootScope.pplAnswers = [];
             $rootScope.pplNames = [];
+            $rootScope.plaAnswers = [];
+            $rootScope.plaNames = [];
             for (var i = 0; i < $rootScope.answers.length; i++) {
                 if ($rootScope.answers[i].type == 'Establishment') {
                     $rootScope.estNames.push($rootScope.answers[i].name);
@@ -230,6 +232,10 @@
                 if ($rootScope.answers[i].type == 'Person') {
                     $rootScope.pplNames.push($rootScope.answers[i].name);
                     $rootScope.pplAnswers.push($rootScope.answers[i]);
+                }
+                if ($rootScope.answers[i].type == 'Place') {
+                    $rootScope.plaNames.push($rootScope.answers[i].name);
+                    $rootScope.plaAnswers.push($rootScope.answers[i]);
                 }
             }
         }
@@ -340,7 +346,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-             // $rootScope.$emit('applyRule');
+           //   $rootScope.$emit('applyRule');
         }
            
         function getFeed(){

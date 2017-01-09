@@ -390,8 +390,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
         
                     /* //  3.Use this to correct the title of a group of ranks
                     for (var i=0; i < vm.results.length; i++){
-                        if (vm.results[i].title.includes('wifi')) {
-                            var titlex = vm.results[i].title.replace("wifi","WiFi");
+                        if (vm.results[i].title.includes('Italian food')) {
+                            var titlex = vm.results[i].title.replace("restaurant","restaurants");
                             //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
                             //console.log("tags ", tags);
                             table.update(vm.results[i].id, ['title'],[titlex]);
@@ -552,6 +552,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                            if ($rootScope.content[n].id == 7675){
                                table.update(7675, ['isatomic','catstr'],[false, '7675:'+$rootScope.content[n].catstr]);
                            }
+                           if ($rootScope.content[n].id == 7424){
+                               table.update(7424, ['isatomic','catstr'],[false, '7424:'+$rootScope.content[n].catstr]);
+                           }
                        }
                        
                     *///End 8
@@ -609,11 +612,11 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     }
                     //console.log("res -- ", res);
                     for (var p=0; p<res.length; p++){
-                        catans.postRec2(res[p].answer,res[p].category);
+                        catans.postRec2(res[p].answer,res[p].category); //postRec2 changed verify!!!
                     }
                         applyRuleDone = true;
                     //}
-                    *///
+                    *///end of 10
                     /*//11. Open all contents to refresh number of answers
                     $timeout(function () {
                         $state.go('rankSummary', { index: $rootScope.content[midx].id });
@@ -718,7 +721,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                 }
                          }
                     }    
-                    *///End 15
+                    */ //End 15
                     /*//16. Run through all answers if they dont have vrows
                     var answer = {};
                     var hasvr = false;

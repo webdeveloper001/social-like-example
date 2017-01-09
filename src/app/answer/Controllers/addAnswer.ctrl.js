@@ -119,6 +119,7 @@
 
             vm.establishmentNames = $rootScope.estNames;
             vm.peopleNames = $rootScope.pplNames;
+            vm.placesNames = $rootScope.plaNames;
 
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
@@ -140,9 +141,14 @@
                     vm.fields[i].opts = "c for c in vm.establishmentNames";
                 }
                 
-                //Typeahead check for current establishments
+                //Typeahead check for current Persons
                 if (vm.fields[i].name == "name" && $rootScope.cCategory.type == 'Person') {
                     vm.fields[i].opts = "c for c in vm.peopleNames";
+                }
+                
+                //Typeahead check for current Persons
+                if (vm.fields[i].name == "name" && $rootScope.cCategory.type == 'Place') {
+                    vm.fields[i].opts = "c for c in vm.placesNames";
                 }
                 
                 //When neighborhood is implied put it in the input field right away
@@ -249,7 +255,7 @@
         function callAddAnswer() {
             loadFormData();
             validateData();
-            if (vm.type == 'Establishment' || vm.type == 'Person') checkAnswerExists(myAnswer);
+            if (vm.type == 'Establishment' || vm.type == 'Person' || vm.type == 'Place') checkAnswerExists(myAnswer);
 
             if (addAnswerDataOk) {
                 addAnswer();
@@ -365,12 +371,12 @@
                 //create 2 catans records one for downtown and then district
                 if (eqFound && !inCity) {
                     if ($rootScope.DEBUG_MODE) console.log("P7 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx);
-                    catans.postRec2(extAnswer.id, eqRankIdx);
-                    catans.postRec2(extAnswer.id, $rootScope.cCategory.id).then(rankSummary);
+                    catans.postRec2(extAnswer.id, eqRankIdx, false);
+                    catans.postRec2(extAnswer.id, $rootScope.cCategory.id, true).then(rankSummary);
                 }
                 else if (eqFound && inCity) {
                     if ($rootScope.DEBUG_MODE) console.log("P8 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx);
-                    catans.postRec2(extAnswer.id, eqRankIdx).then(rankSummary);
+                    catans.postRec2(extAnswer.id, eqRankIdx, false).then(rankSummary);
                 }
                 else {
                     if ($rootScope.DEBUG_MODE) console.log("P9");
@@ -473,7 +479,23 @@
                         extAnswer = $rootScope.pplAnswers[i];
 
                         for (var j = 0; j < $rootScope.catansrecs.length; j++) {
-                            if ($rootScope.catansrecs[j].answer == $rootScope.estAnswers[i].id &&
+                            if ($rootScope.catansrecs[j].answer == $rootScope.pplAnswers[i].id &&
+                                $rootScope.catansrecs[j].category == $rootScope.cCategory.id) {
+                                duplicateSameCategory = true;
+                            }
+                        }
+                    }
+                }
+            }
+            else if (vm.type == 'Place') {
+                for (var i = 0; i < $rootScope.plaAnswers.length; i++) {
+                    if (answer.name == $rootScope.plaAnswers[i].name) {
+
+                        duplicateExists = true;
+                        extAnswer = $rootScope.plaAnswers[i];
+
+                        for (var j = 0; j < $rootScope.catansrecs.length; j++) {
+                            if ($rootScope.catansrecs[j].answer == $rootScope.plaAnswers[i].id &&
                                 $rootScope.catansrecs[j].category == $rootScope.cCategory.id) {
                                 duplicateSameCategory = true;
                             }

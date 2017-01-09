@@ -42,6 +42,7 @@
             var url5 = baseURI + '?offset=' + 5 * 1000;
             var url6 = baseURI + '?offset=' + 6 * 1000;
             var url7 = baseURI + '?offset=' + 7 * 1000;
+            var url8 = baseURI + '?offset=' + 8 * 1000;
 
             var p0 = $http.get(url0);
             var p1 = $http.get(url1);
@@ -51,10 +52,11 @@
             var p5 = $http.get(url5);
             var p6 = $http.get(url6);
             var p7 = $http.get(url7);
+            var p8 = $http.get(url8);
 
-            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7]).then(function (d) {
+            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8]).then(function (d) {
                 _allvrows = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource,
-                    d[4].data.resource, d[5].data.resource, d[6].data.resource, d[7].data.resource);
+                    d[4].data.resource, d[5].data.resource, d[6].data.resource, d[7].data.resource, d[8].data.resource);
                 if ($rootScope.DEBUG_MODE) console.log("No. Vrows: ", _allvrows.length);
                 return _allvrows;
             }, _queryFailed);
@@ -81,7 +83,7 @@
                 titles = ['Quality of Service', 'Friendliness of Staff', 'Promptness of Service', 'Value for the Money'];
 
                 if ($rootScope.cCategory.tags.indexOf('food') > -1 || $rootScope.cCategory.title.indexOf('food') > -1 ||
-                    $rootScope.cCategory.title.indexOf('restaurants') > -1) {
+                    $rootScope.cCategory.title.indexOf('restaurants') > -1 || $rootScope.cCategory.title.indexOf('offee') > -1) {
                     titles = ['Quality of Food and Drinks', 'Friendliness of Staff', 'Promptness of Service', 'Value for the Money'];
                 }
                 if ($rootScope.cCategory.title.indexOf('Bars') > -1 || $rootScope.cCategory.title.indexOf('bars') > -1 ||
@@ -102,7 +104,10 @@
                 if ($rootScope.cCategory.title.indexOf('Apartments') > -1 || $rootScope.cCategory.title.indexOf('apartments') > -1) {
                     titles = ['Location', 'Floor Layout', 'Facilities', 'Value for the Money'];
                 }
-                if ($rootScope.cCategory.title.indexOf('shop') > -1 || $rootScope.cCategory.title.indexOf('store') > -1) {
+                //ranks of categories that include 'shops' or 'stores' but not 'barbershops' or 'coffee shops or repair shops'
+                if (($rootScope.cCategory.title.indexOf('shop') > -1 || $rootScope.cCategory.title.indexOf('store') > -1) 
+                    && ($rootScope.cCategory.title.indexOf('arber') < 0 && $rootScope.cCategory.title.indexOf('offee') < 0 &&
+                    $rootScope.cCategory.title.indexOf('repair') < 0)) {
                     titles = ['Assortment of Products', 'Friendliness of Staff','Value for the Money'];
                 }
                 if ($rootScope.cCategory.title.indexOf('Tattoo') > -1 || $rootScope.cCategory.title.indexOf('tattoo') > -1) {

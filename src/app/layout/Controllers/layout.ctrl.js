@@ -89,14 +89,14 @@
                 "Leucadia", "Oceanside", "National City", "Rancho Santa Fe", "Solana Beach", "Poway", "El Cajon",
                 "Escondido", "Carlsbad", "San Ysidro", "Otay Mesa", "Linda Vista", "Chula Vista", "Encinitas", "Golden Hills", 
                 "Spring Valley", "Rancho San Diego", "Mira Mesa",
-                "Torrey Pines", "Carmel Valley", "Miramar","Kearny Mesa","Bankers Hill","Rancho Penasquitos",
+                "Torrey Pines", "Carmel Valley", "Miramar","Kearny Mesa","Rancho Penasquitos",
                 "Sorrento Valley","Tierra Santa","Logan Heights","Serra Mesa","Normal Heights","Talmadge",
                 "Bird Rock","South San Diego","North City","San Carlos","Del Cerro","Grantville"
                 ];
             
             $rootScope.districts = [
                 "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
-                "Marina", "Seaport Village"];
+                "Marina", "Seaport Village", "Bankers Hill"];
             
             $http.get('../../../assets/fields.json').success(function (response) {
                 $rootScope.typeSchema = response;
