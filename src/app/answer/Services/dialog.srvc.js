@@ -1309,7 +1309,7 @@
             title = 'Login required';
             message = 'You must be logged in to add answers, endorse establishments and participate in the rankings.'+
             '</br></br>'+
-            'Do you want to login in?';
+            'Do you want to log in?';
 
             BootstrapDialog.show({
             title: title,
