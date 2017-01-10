@@ -32,8 +32,9 @@
             console.log("let's fake your user as an FB login")
             login.setFakeLocalUser();
         }*/
-
-        activate();
+        
+        if ($rootScope.isLoggedIn)  $state.go('cwrapper');
+        else activate();
 
         function activate() {
 
