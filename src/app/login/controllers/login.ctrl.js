@@ -35,11 +35,15 @@
 
         if ($rootScope.isLoggedIn) {
             console.log("isLoggedIn", $rootScope.isLoggedIn);
-            console.log("state and num - ", $cookies.statename, $cookies.statenum);
-
-            if ($cookies.statename != undefined) {
-                $location.path($cookies.statename + '/' + $cookies.statenum);
-                $state.go($cookies.statename, { index: $cookies.statenum });
+            
+            var statename = $cookies.get('statename');
+            var statenum = $cookies.get('statenum');
+            
+            console.log("state and num - ", statename, statenum);
+            
+            if (statename != undefined) {
+                $location.path(statename + '/' + statenum);
+                $state.go(statename, { index: statenum });
             }
             else {
                 $location.path('/');

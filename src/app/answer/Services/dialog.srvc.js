@@ -1327,12 +1327,13 @@
                     action: function(){
                         
                         //Store in cookies memory, current state 
-                        $cookies.statename = $state.current.name;
-                        if ($cookies.statename == 'rankSummary'){
-                            $cookies.statenum = $rootScope.cCategory.id;
+                        var statename = $state.current.name; 
+                        $cookies.put('statename', statename);
+                        if (statename == 'rankSummary'){
+                            $cookies.put('statenum', $rootScope.cCategory.id);
                         }
-                        if ($cookies.statename == 'answerDetail'){
-                            $cookies.statenum = $rootScope.canswer.id;
+                        if (statename == 'answerDetail'){
+                            $cookies.put('statenum', $rootScope.canswer.id);
                         }
                         
                         console.log("state and num - ", $cookies.statenum, $cookies.statenum);
