@@ -5,9 +5,9 @@
         .module('app')
         .factory('dialog', dialog);
 
-    dialog.$inject = ['$q', '$rootScope', 'useraccnt','imagelist','answer'];
+    dialog.$inject = ['$q', '$rootScope', 'useraccnt','imagelist','answer','login','$window','$state', '$cookies'];
 
-    function dialog($q, $rootScope, useraccnt, imagelist,answer) {
+    function dialog($q, $rootScope, useraccnt, imagelist, answer, login, $window, $state, $cookies) {
 
         var service = {
             editConfirm: editConfirm,
@@ -35,7 +35,8 @@
             createEventPreview: createEventPreview,
             askPermissionToLocate: askPermissionToLocate,
             askEmail: askEmail,
-            seePhotos: seePhotos
+            seePhotos: seePhotos,
+            loginFacebook: loginFacebook
         };
 
         return service;
@@ -1296,6 +1297,52 @@
                         answer.updateAnswer(myanswer.id,["image"],[imageurl]);
                     }
                 }
+            });
+        }
+        
+        function loginFacebook(){
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Login required';
+            message = 'You must be logged in to add answers, endorse establishments and participate in the rankings.'+
+            '</br></br>'+
+            'Do you want to login in?';
+
+            BootstrapDialog.show({
+            title: title,
+            message: message,
+            buttons: [{
+                 label: 'Not now',
+                 action: function(dialogItself){
+                      dialogItself.close();
+                 }
+                }, 
+                {
+                    icon: 'fa fa-facebook',
+                    label: 'Login',
+                    cssClass: 'btn-primary',
+                    action: function(){
+                        
+                        //Store in cookies memory, current state 
+                        $cookies.statename = $state.current.name;
+                        if ($cookies.statename == 'rankSummary'){
+                            $cookies.statenum = $rootScope.cCategory.id;
+                        }
+                        if ($cookies.statename == 'answerDetail'){
+                            $cookies.statenum = $rootScope.canswer.id;
+                        }
+                        
+                        console.log("state and num - ", $cookies.statenum, $cookies.statenum);
+                        
+                        login.loginWithFacebook()
+                            .then(function (result) {
+                                $window.location = result.url;
+                        });
+                    }
+                }]
             });
         }
                

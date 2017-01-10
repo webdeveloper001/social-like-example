@@ -385,7 +385,8 @@
                 }
             }
             else {
-                dialog.getDialog('notLoggedIn');
+                //dialog.getDialog('notLoggedIn');
+                dialog.loginFacebook();
                 return;
             }
         }

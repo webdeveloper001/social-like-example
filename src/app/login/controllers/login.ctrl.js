@@ -5,9 +5,9 @@
         .module('login')
         .controller('login', login);
 
-    login.$inject = ['$location', '$window', '$rootScope', 'login', 'dialog', '$state'];
+    login.$inject = ['$location', '$window', '$rootScope', 'login', 'dialog', '$state', '$cookies'];
 
-    function login($location, $window, $rootScope, login, dialog, $state) {
+    function login($location, $window, $rootScope, login, dialog, $state, $cookies) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'login';
@@ -26,12 +26,12 @@
         vm.goBack = goBack;
 
         //Only use on localhost to fake a FB login
-        /*
+        
         if (window.location.hostname == "localhost") {
           console.log("server is: " + window.location.hostname)
           console.log("let's fake your user as an FB login")
           login.setFakeLocalUser();
-        }*/
+        }
 
         if ($rootScope.isLoggedIn) $state.go('cwrapper');
         else activate();
@@ -82,11 +82,17 @@
                         });*/
 
                         console.log("isLoggedIn", $rootScope.isLoggedIn);
-
-                        $location.path('/');
-                        $state.go('cwrapper', {}, {location: 'replace'});
-                        //$state.go('cwrapper');
-
+                        console.log("state and num - ", $cookies.statename, $cookies.statenum);
+                        
+                        if ($cookies.statename != undefined){
+                            $location.path($cookies.statename + '/' + $cookies.statenum);
+                            $state.go($cookies.statename, {index: $cookies.statenum});
+                        }
+                        else {
+                            $location.path('/');
+                            $state.go('cwrapper', {}, {location: 'replace'});
+                            //$state.go('cwrapper');
+                        }
 
                     },function () {
                         vm.isProgressing = false;
