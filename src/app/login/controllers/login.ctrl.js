@@ -26,14 +26,28 @@
         vm.goBack = goBack;
 
         //Only use on localhost to fake a FB login
-        
+        /*
         if (window.location.hostname == "localhost") {
-          console.log("server is: " + window.location.hostname)
-          console.log("let's fake your user as an FB login")
-          login.setFakeLocalUser();
+            console.log("server is: " + window.location.hostname)
+            console.log("let's fake your user as an FB login")
+            login.setFakeLocalUser();
+        }*/
+
+        if ($rootScope.isLoggedIn) {
+            console.log("isLoggedIn", $rootScope.isLoggedIn);
+            console.log("state and num - ", $cookies.statename, $cookies.statenum);
+
+            if ($cookies.statename != undefined) {
+                $location.path($cookies.statename + '/' + $cookies.statenum);
+                $state.go($cookies.statename, { index: $cookies.statenum });
+            }
+            else {
+                $location.path('/');
+                $state.go('cwrapper', {}, { location: 'replace' });
+                //$state.go('cwrapper');
+            }
         }
 
-        if ($rootScope.isLoggedIn) $state.go('cwrapper');
         else activate();
 
         function activate() {
@@ -80,21 +94,11 @@
                             }
 
                         });*/
-
-                        console.log("isLoggedIn", $rootScope.isLoggedIn);
-                        console.log("state and num - ", $cookies.statename, $cookies.statenum);
-                        
-                        if ($cookies.statename != undefined){
-                            $location.path($cookies.statename + '/' + $cookies.statenum);
-                            $state.go($cookies.statename, {index: $cookies.statenum});
-                        }
-                        else {
-                            $location.path('/');
-                            $state.go('cwrapper', {}, {location: 'replace'});
-                            //$state.go('cwrapper');
-                        }
-
-                    },function () {
+                        $location.path('/');
+                        $state.go('cwrapper', {}, { location: 'replace' });
+                        //$state.go('cwrapper');
+ 
+                    }, function () {
                         vm.isProgressing = false;
                     });
             }
@@ -163,11 +167,11 @@
             $location.path('/register');
         }
 
-        function goBack(){
+        function goBack() {
             $state.go('cwrapper');
         }
 
-        function whyFacebookDialog(){
+        function whyFacebookDialog() {
             dialog.getDialog('whyFacebook');
         }
     }
