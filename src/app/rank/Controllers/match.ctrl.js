@@ -93,7 +93,8 @@
                 getAnswers();
             }
             else {
-                dialog.getDialog('notLoggedIn');
+                dialog.loginFacebook();
+                //dialog.getDialog('notLoggedIn');
                 return;
             }
         }

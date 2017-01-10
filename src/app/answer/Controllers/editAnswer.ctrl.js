@@ -224,7 +224,8 @@
                 else dialog.editConfirm(newEdit, 'field', createEdit);
             }
             else {
-                dialog.getDialog('notLoggedIn');
+                dialog.loginFacebook();
+                //dialog.getDialog('notLoggedIn');
                 return;
             }
 
@@ -251,7 +252,8 @@
                 q1.then(processImageResults, imageQueryFailed)
             }
             else {
-                dialog.getDialog('notLoggedIn');
+                dialog.loginFacebook();
+                //dialog.getDialog('notLoggedIn');
                 return;
             }
         }
@@ -338,7 +340,8 @@
                 displayActiveVotes();
             }
             else {
-                dialog.getDialog('notLoggedIn');
+                dialog.loginFacebook();
+                //dialog.getDialog('notLoggedIn');
                 return;
             }
         }
@@ -371,7 +374,8 @@
                 displayActiveVotes();
             }
             else {
-                dialog.getDialog('notLoggedIn');
+                dialog.loginFacebook();
+                //dialog.getDialog('notLoggedIn');
                 return;
             }
         }

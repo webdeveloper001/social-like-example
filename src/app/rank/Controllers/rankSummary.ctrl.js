@@ -918,7 +918,8 @@
                 dialog.getDialog('commentFlagged');
                 return;
             }
-            else dialog.getDialog('notLoggedIn'); 
+            else dialog.loginFacebook(); 
+            //dialog.getDialog('notLoggedIn'); 
         }
 
     }

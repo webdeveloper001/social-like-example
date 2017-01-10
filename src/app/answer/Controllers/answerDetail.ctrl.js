@@ -551,7 +551,8 @@
                 if ($rootScope.DEBUG_MODE) console.log("UpVote");
             }
             else {
-                dialog.getDialog('notLoggedIn');
+                dialog.loginFacebook();
+                //dialog.getDialog('notLoggedIn');
                 return;
             }
             
@@ -571,7 +572,8 @@
                 if ($rootScope.DEBUG_MODE) console.log("DownVote");
             }
             else {
-                dialog.getDialog('notLoggedIn');
+                dialog.loginFacebook();
+                //dialog.getDialog('notLoggedIn');
                 return;
             }
             
@@ -610,7 +612,8 @@
                 }
                 else $state.go("editAnswer", { index: vm.answer.id });
             }
-            else dialog.getDialog('notLoggedIn');           
+            else dialog.loginFacebook(); 
+            //dialog.getDialog('notLoggedIn');           
         }
 
         function deleteAnswer() {
@@ -649,7 +652,8 @@
                 dialog.getDialog('answerFlagged');
                 return;
             }
-            else dialog.getDialog('notLoggedIn');
+            else dialog.loginFacebook(); 
+            //dialog.getDialog('notLoggedIn');
         }
         
         function cmFlag(x){
@@ -659,7 +663,8 @@
                 dialog.getDialog('commentFlagged');
                 return;
             }
-            else dialog.getDialog('notLoggedIn'); 
+            else dialog.loginFacebook(); 
+            //dialog.getDialog('notLoggedIn'); 
         }
 
         function getAnswerRanks() {
@@ -903,7 +908,8 @@
                 if ($rootScope.DEBUG_MODE) console.log("VRow UpVote");
             }
             else {
-                dialog.getDialog('notLoggedIn');
+                dialog.loginFacebook();
+                //dialog.getDialog('notLoggedIn');
                 return;
             }
             //console.log("vm.answerRanks ---", vm.answerRanks);
@@ -922,7 +928,8 @@
                 if ($rootScope.DEBUG_MODE) console.log("DownVote");
             }
             else {
-                dialog.getDialog('notLoggedIn');
+                dialog.loginFacebook();
+                //dialog.getDialog('notLoggedIn');
                 return;
             }
             //console.log("vm.answerRanks ---", vm.answerRanks);
