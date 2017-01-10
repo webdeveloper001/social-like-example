@@ -33,26 +33,7 @@
             login.setFakeLocalUser();
         }*/
 
-        if ($rootScope.isLoggedIn) {
-            console.log("isLoggedIn", $rootScope.isLoggedIn);
-            
-            var statename = $cookies.get('statename');
-            var statenum = $cookies.get('statenum');
-            
-            console.log("state and num - ", statename, statenum);
-            
-            if (statename != undefined) {
-                $location.path(statename + '/' + statenum);
-                $state.go(statename, { index: statenum });
-            }
-            else {
-                $location.path('/');
-                $state.go('cwrapper', {}, { location: 'replace' });
-                //$state.go('cwrapper');
-            }
-        }
-
-        else activate();
+        activate();
 
         function activate() {
 
@@ -98,8 +79,24 @@
                             }
 
                         });*/
-                        $location.path('/');
-                        $state.go('cwrapper', {}, { location: 'replace' });
+                        if ($rootScope.isLoggedIn) {
+                            console.log("isLoggedIn", $rootScope.isLoggedIn);
+
+                            var statename = $cookies.get('statename');
+                            var statenum = $cookies.get('statenum');
+
+                            console.log("state and num - ", statename, statenum);
+
+                            if (statename != undefined) {
+                                $location.path(statename + '/' + statenum);
+                                $state.go(statename, { index: statenum });
+                            }
+                            else {
+                                $location.path('/');
+                                $state.go('cwrapper', {}, { location: 'replace' });
+                                //$state.go('cwrapper');
+                            }
+                        }
                         //$state.go('cwrapper');
  
                     }, function () {
