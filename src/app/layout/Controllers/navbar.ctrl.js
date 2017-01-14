@@ -23,6 +23,7 @@
         vm.goToLogin = goToLogin;
         vm.gotoAbout = gotoAbout;
         vm.gotomybiz = gotomybiz;
+        vm.gotomyfavs = gotomyfavs;
         vm.gotoFeedback = gotoFeedback;
         vm.gotoHome = gotoHome;
         vm.gotoAdmin = gotoAdmin;
@@ -59,6 +60,11 @@
             //$stateProvider.state('app');
             // http://localhost:3006/#/mybiz
             $state.go('mybiz');
+        }
+        
+        function gotomyfavs() {
+            //$stateProvider.state('app');
+            $state.go('myfavs');
         }
 
         function gotoAbout() {

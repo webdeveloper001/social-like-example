@@ -211,6 +211,7 @@
                     case "rank": data.rank = val[i]; break;
                     case "answer": data.answer = val[i];break;
                     case "isdup": data.isdup = val[i];break;
+                    case "category": data.category = val[i];break;
                 }
             }
             //console.log("data", data);
@@ -228,6 +229,7 @@
                     case "rank": $rootScope.catansrecs[idx].rank = val[i]; break;
                     case "answer": $rootScope.catansrecs[idx].answer = val[i]; break;
                     case "isdup": $rootScope.catansrecs[idx].isdup = val[i]; break;
+                    case "category": $rootScope.catansrecs[idx].category = val[i]; break;
                 }
             }                        
             

@@ -20,6 +20,7 @@
             checkSameAnswer: checkSameAnswer,
             showSameAnswer: showSameAnswer,
             deleteType: deleteType,
+            deleteThisCatans: deleteThisCatans,
             deleteRank: deleteRank,
             getLocation: getLocation,
             url: url,
@@ -440,6 +441,37 @@
                     if (result) everywhere();
                     else thisCatOnly();
 
+                }
+            });
+        }
+        
+        function deleteThisCatans(answer,category,callback){
+             var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Confirm Delete';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Delete';
+            message = 'This will delete the CatAns record for <strong>' + answer +
+            '</strong> in the category of <strong>' + category + '</strong>.';
+
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_DANGER,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-primary',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) callback();                   
                 }
             });
         }
@@ -1170,14 +1202,16 @@
             }
             m2 = '<br>' +
             '<div class="text-center">' +
-                '<img id="image" class="displayed" src="https://rankx.blob.core.windows.net/sandiego/';
-
+                '<img id="image" class="displayed" src="'+
+                //'https://rankx.blob.core.windows.net/sandiego/';
+                '';
             m3 =
             '" style="' + img_style + '">' +
                 '</div>'+
                 '<br/>';
             
-            messagehtml = m1 + m2 + blobList[n].Name + m3 + m4;
+            //messagehtml = m1 + m2 + blobList[n].Name + m3 + m4;
+            messagehtml = m1 + m2 + blobList[n] + m3 + m4;
             // function myMessage(dialogRef, messagehtml){
             //console.log("@myMessage - x - ",x);
         
@@ -1192,14 +1226,13 @@
                     $content.find('#prevbutton').click({}, function () {
                         n = n - 1;
                         if (n < 0) n = L - 1;
-                        console.log("prev");
-                        $content.find('#image').attr('src','https://rankx.blob.core.windows.net/sandiego/' + blobList[n].Name);
+                        $content.find('#image').attr('src',blobList[n]);
                     });
 
                     $content.find('#nextbutton').click({}, function () {
                         n = n + 1;
                         if (n >= L) n = 0;
-                        $content.find('#image').attr('src','https://rankx.blob.core.windows.net/sandiego/' + blobList[n].Name);
+                        $content.find('#image').attr('src',blobList[n]);
                     });
                     
                     $content.find('#trashbutton').click({}, function () {
@@ -1238,8 +1271,8 @@
             btnCancelLabel = 'Cancel';
             btnOkLabel = 'Yes, Delete';
             message = '<br>Please confirm, you want to delete this photo: '+
-            '<br/><img id="image" class="displayed" src="https://rankx.blob.core.windows.net/sandiego/'+
-            blobList[n].Name + 
+            '<br/><img id="image" class="displayed" src="'+
+            blobList[n] + 
              '" style="width:100%;height:auto">' +
             '<br><br>';
 
@@ -1257,7 +1290,7 @@
                 },
                 callback: function (result) {
                     if (result) {
-                        imagelist.deleteBlob(blobList[n].Name);
+                        imagelist.deleteBlob(blobList[n]);
                     }
                 }
             });
@@ -1274,8 +1307,8 @@
             btnCancelLabel = 'Cancel';
             btnOkLabel = 'Yes, make primary';
             message = '<br>Please confirm, you want to make this the primary photo: '+
-            '<br/><img id="image" class="displayed" src="https://rankx.blob.core.windows.net/sandiego/'+
-            blobList[n].Name + 
+            '<br/><img id="image" class="displayed" src="'+
+            blobList[n] + 
              '" style="width:100%;height:auto">' +
             '<br><br>';
 
@@ -1293,7 +1326,7 @@
                 },
                 callback: function (result) {
                     if (result) {
-                        var imageurl = 'https://rankx.blob.core.windows.net/sandiego/'+ blobList[n].Name;
+                        var imageurl = blobList[n];
                         answer.updateAnswer(myanswer.id,["image"],[imageurl]);
                     }
                 }

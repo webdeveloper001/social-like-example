@@ -60,6 +60,8 @@
 
         function activate() {
             
+            $rootScope.inFavMode = false;
+            
             getFeed();
             if ($rootScope.DEBUG_MODE) console.log("activate cwrapper!");
             vm.isNh = $rootScope.isNh;
@@ -346,7 +348,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-           //   $rootScope.$emit('applyRule');
+           //  $rootScope.$emit('applyRule');
         }
            
         function getFeed(){

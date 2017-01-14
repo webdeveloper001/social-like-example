@@ -30,7 +30,12 @@
                 var x2js = new X2JS();
                 var myJSON = x2js.xml_str2json(result.data);
                 
-                $rootScope.blobs = myJSON.EnumerationResults.Blobs.Blob;
+                var resParse = myJSON.EnumerationResults.Blobs.Blob;
+                $rootScope.blobs = [];
+                
+                for (var i=0; i < resParse.length; i++){
+                    $rootScope.blobs.push('https://rankx.blob.core.windows.net/sandiego/'+resParse[i].Name);
+                }
                 
                 if ($rootScope.DEBUG_MODE) console.log('query succeded');
 
@@ -44,7 +49,7 @@
         
         function deleteBlob(blobName) {
             
-            var url = "https://rankx.blob.core.windows.net/sandiego/" + blobName + 
+            var url = blobName + 
             "?sv=2015-04-05&ss=bfqt&srt=sco&sp=rwdlacup&se=2018-08-30T01:15:12Z&st=2016-08-29T17:15:12Z&spr=https,http&sig=PpyWE0X%2Fpz9SuRje5GtHh44WaWIii0GBU9PbIcDIka8%3D";
             
             return $http.delete(url).then(querySucceeded, queryFailed);

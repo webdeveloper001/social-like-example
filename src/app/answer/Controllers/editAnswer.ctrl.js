@@ -5,10 +5,10 @@
         .module('app')
         .controller('editAnswer', editAnswer);
 
-    editAnswer.$inject = ['dialog', '$stateParams', '$state', 'answers', '$rootScope', 
+    editAnswer.$inject = ['dialog', '$stateParams', '$state', 'answers', '$rootScope', 'catans', 
     '$modal', 'edit', 'editvote', 'answer', 'image','getgps','$window','getwiki', '$http'];
 
-    function editAnswer(dialog, $stateParams, $state, answers, $rootScope, 
+    function editAnswer(dialog, $stateParams, $state, answers, $rootScope, catans, 
     $modal, edit, editvote, answer, image, getgps, $window, getwiki, $http) {
         /* jshint validthis:true */
         var vm = this;
@@ -507,6 +507,43 @@
                         //answer.addAnswer(myAnswer).then(rankSummary);
                         });
                      }
+            }
+            else if (vm.edits[index].field == "cityarea"){
+                //if change neighborhood, modify catans as well
+                //---Search catans with this answer
+                var cidx = 0;
+                var cObj = {};
+                var sTitle = ''; //searched title
+                var rec2change = []; //store id of catans to change
+                var change2cat = []; //store category to change to
+                
+                for (var i=0; i<$rootScope.catansrecs.length; i++){
+                    if ($rootScope.catansrecs[i].answer == vm.answer.id){
+                        cidx = $rootScope.content.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[i].category);
+                        cObj = $rootScope.content[cidx];
+                        //if category for catans includes old nh, see if category for new nh exists
+                        if (cObj.title.indexOf(vm.answer.cityarea) > -1){
+                            sTitle = cObj.title.replace(vm.answer.cityarea,vm.edits[index].nval);
+                            for (var k=0; k<$rootScope.content.length; k++){
+                                //if searched title is found, store catans rec and category
+                                if ($rootScope.content[k].title == sTitle){
+                                    //console.log($rootScope.content[k].title);
+                                    rec2change.push($rootScope.catansrecs[i].id);
+                                    change2cat.push($rootScope.content[k].id);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                //console.log("rec2change - ", rec2change);
+                //console.log("change2cat - ", change2cat);
+                for (var i=0; i<rec2change.length; i++){
+                    catans.updateRec(rec2change[i],['category'],[change2cat[i]]);
+                }
+                if ($rootScope.DEBUG_MODE) console.log("EA-4");
+                answer.updateAnswer(vm.edits[index].answer, [vm.edits[index].field], [vm.edits[index].nval]);
+                
             }
             else {
                 if ($rootScope.DEBUG_MODE) console.log("EA-2");

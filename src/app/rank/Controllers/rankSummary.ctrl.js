@@ -81,11 +81,6 @@
         if ($rootScope.addInfoMsgAck) vm.addInfoMsgAck = $rootScope.addInfoMsgAck;
         else (vm.addInfoMsgAck = false);
         
-        //TODO: Would like to add this abstract template, but dont know how         
-        $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
-            $rootScope.previousState = from.name;
-        });
-
         $rootScope.$on('updateVoteTable', function () {
             if (!updateExec) updateVoteTable();
             updateExec = true;
@@ -104,6 +99,8 @@
         activate();
 
         function activate() {
+            
+            $rootScope.inFavMode = false;
 
             $window.scrollTo(0, 0);
             $rootScope.$emit('showLogo');
@@ -603,7 +600,6 @@
                                             //To determine if event is current look at end date if exist if not use start date
                                             //if (eventObj.edate != undefined && eventObj.edate != '') obj.date = answers[k].edate.slice(4);
                                             //else obj.date = answers[k].sdate.slice(4);
-                                            
                                             eventIsCurrent = datetime.eventIsCurrent(obj, answers[k]);
 
                                             if (eventIsCurrent) {
@@ -689,7 +685,6 @@
                                 break;
                             }
                         }
-
                     }
                 }
                 /*

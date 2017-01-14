@@ -10,7 +10,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" ng-click="vm.gotoHome()" style="cursor:pointer">Home</a>
-            <a class="navbar-brand" ng-show="vm.user"><i class="fa fa-user"></i> Welcome {{vm.user.first_name}}</a>
+            <a class="navbar-brand" ng-show="vm.user" ng-click="vm.gotomyfavs()" style="cursor:pointer"><i class="fa fa-user"></i> Welcome {{vm.user.first_name}}</a>
             <a class="navbar-brand" ng-if="vm.warning" style="background-color:#33cccc;color:black;margin:2px"
             ng-click="vm.goWarning()"><i class="fa fa-warning"></i></a>
             <a class="navbar-brand" ng-if="vm.coordsRdy" ng-click="vm.goCoords()"><i class="fa fa-location-arrow"></i></a>
@@ -38,7 +38,7 @@
                 <!-- <li><a href="" ng-click="vm.gotoHome()">Home</a></li> -->
                 <li><a href="" ng-click="vm.gotoAbout()">About</a></li>
                 <li><a href="" ng-click="vm.gotoFeedback()">Feedback</a></li>
-                <!-- <li><a href="" ng-click="vm.gotoAdmin()">Admin</a></li> -->   
+                <!-- <li><a href="" ng-click="vm.gotoAdmin()">Admin</a></li> -->
                 <!-- <li><a href="" ng-click="vm.openCitySelection()"><i style="color: #FFF;font-size: 20px"
                                                                              class="fa fa-map-marker"></i>
                     {{selectedCity.name || 'Select City'}}

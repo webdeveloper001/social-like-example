@@ -330,6 +330,13 @@
                   controller: 'navbar as vm'
                 }
             }
+          },
+          {
+                name: 'myfavs',
+                parent: 'layout',
+                url: '/myfavs',
+                templateUrl: 'app/layout/Partials/myfavs.html',
+                controller: 'myfavs as vm'
           }
         ];
 

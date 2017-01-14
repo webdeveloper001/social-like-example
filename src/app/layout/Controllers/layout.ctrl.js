@@ -4,24 +4,24 @@
     angular
         .module('app')
 
-        /*['ngAnimate',
-         'ngCookies',
-         'ngResource',
-         'ngRoute',
-         'ngSanitize',
-         'ngTouch',
-         'pascalprecht.translate',
-         'tmh.dynamicLocale'])*/
+    /*['ngAnimate',
+     'ngCookies',
+     'ngResource',
+     'ngRoute',
+     'ngSanitize',
+     'ngTouch',
+     'pascalprecht.translate',
+     'tmh.dynamicLocale'])*/
 
         .controller('layout', layout);
 
-    layout.$inject = ['$location', '$rootScope','$window','$q', '$http','pvisits', 
-    'DEBUG_MODE', 'rankofday', 'answer', 'table','special', 'datetime','uaf','userdata',
-    'matchrec', 'edit','useractivity','vrows','headline','cblock', 'catans','$state'];
+    layout.$inject = ['$location', '$rootScope', '$window', '$q', '$http', 'pvisits',
+        'DEBUG_MODE', 'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata',
+        'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state'];
 
-    function layout($location, $rootScope, $window, $q, $http, pvisits, 
-    DEBUG_MODE, rankofday, answer, table, special, datetime, uaf, userdata,
-    matchrec, edit, useractivity, vrows, headline, cblock, catans, $state) {
+    function layout($location, $rootScope, $window, $q, $http, pvisits,
+        DEBUG_MODE, rankofday, answer, table, special, datetime, uaf, userdata,
+        matchrec, edit, useractivity, vrows, headline, cblock, catans, $state) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'layout';
@@ -30,9 +30,9 @@
 
         //if ($rootScope.answers) vm.isLoading = false;
         //else 
-        vm.veilMsg = 'Loading San Diego\'s best...';
+        vm.veilMsg = 'Just a second, loading San Diego\'s best...';
         vm.hidelogo = false;
-        
+
         $rootScope.$on('refreshRanks', function () {
             if ($state.current.name == 'cwrapper') {
                 vm.hidelogo = $rootScope.hidelogo;
@@ -43,9 +43,6 @@
                 vm.hidelogo = false;
             }
         });
-        
-        // Members
-        activate();
         
         /*
         if ($window.innerWidth < 512) vm.logoimage = "../../../assets/images/rankxlogosd_sm.png";
@@ -62,9 +59,16 @@
             vm.sm = false;
         }
         
+        //TODO: Would like to add this abstract template, but dont know how         
+        $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
+            $rootScope.previousState = from.name;
+        });
         
+        // Members
+        activate();
+
         function activate() {
-            
+
             $rootScope.DEBUG_MODE = DEBUG_MODE;
 
             //$timeout(loadingDone, 1000);
@@ -75,39 +79,39 @@
              
             //Determine if user is using Facebook browser
             $rootScope.isFacebookApp = isFacebookApp();
-             
+
             if ($rootScope.DEBUG_MODE) console.log("Layout Loaded!");
 
         }
-        
-        function loadData(){
-            
+
+        function loadData() {
+
             $rootScope.neighborhoods = [
                 "Downtown", "La Jolla", "Pacific Beach", "Hillcrest", "University Heights", "Old Town", "Del Mar",
                 "Ocean Beach", "North Park", "Mission Hills", "Barrio Logan", "City Heights", "Clairemont", "La Mesa", "Point Loma",
-                "South Park", "Scripps Ranch", "Mission Beach", "Mission Valley","Kensington", "Cardiff by the Sea", "Coronado",
+                "South Park", "Scripps Ranch", "Mission Beach", "Mission Valley", "Kensington", "Cardiff by the Sea", "Coronado",
                 "Leucadia", "Oceanside", "National City", "Rancho Santa Fe", "Solana Beach", "Poway", "El Cajon",
-                "Escondido", "Carlsbad", "San Ysidro", "Otay Mesa", "Linda Vista", "Chula Vista", "Encinitas", "Golden Hills", 
+                "Escondido", "Carlsbad", "San Ysidro", "Otay Mesa", "Linda Vista", "Chula Vista", "Encinitas", "Golden Hills",
                 "Spring Valley", "Rancho San Diego", "Mira Mesa",
-                "Torrey Pines", "Carmel Valley", "Miramar","Kearny Mesa","Rancho Penasquitos",
-                "Sorrento Valley","Tierra Santa","Logan Heights","Serra Mesa","Normal Heights","Talmadge",
-                "Bird Rock","South San Diego","North City","San Carlos","Del Cerro","Grantville"
-                ];
-            
+                "Torrey Pines", "Carmel Valley", "Miramar", "Kearny Mesa", "Rancho Penasquitos",
+                "Sorrento Valley", "Tierra Santa", "Logan Heights", "Serra Mesa", "Normal Heights", "Talmadge",
+                "Bird Rock", "South San Diego", "North City", "San Carlos", "Del Cerro", "Grantville"
+            ];
+
             $rootScope.districts = [
                 "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
                 "Marina", "Seaport Village", "Bankers Hill"];
-            
+
             $http.get('../../../assets/fields.json').success(function (response) {
                 $rootScope.typeSchema = response;
             });
 
             $http.get('../../../assets/dialogs.json').success(function (response) {
-                $rootScope.dialogs = response;                
+                $rootScope.dialogs = response;
             });
-            
+
             $http.get('../../../assets/foodranks.json').success(function (response) {
-                $rootScope.foodranks = response;                
+                $rootScope.foodranks = response;
             });
             
             //answers
@@ -125,7 +129,7 @@
             var p11 = rankofday.getrankofday();
             var p12 = uaf.getactions();
 
-            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11,p12]).then(function (d){
+            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12]).then(function (d) {
                 $rootScope.answers = d[0];
                 $rootScope.content = d[1];
                 $rootScope.specials = d[2];
@@ -139,49 +143,49 @@
                 $rootScope.pvisits = d[10];
                 $rootScope.rankofday = d[11];
                 $rootScope.uafs = d[12];
-                
+
                 updatePageVisits();
                 loadingDone();
-                      
+
             });
-            
+
             userdata.loadVotes();
-            
+
         }
 
         function loadingDone() {
             vm.isLoading = false;
             $rootScope.dataIsLoaded = true;
         }
-        
-        function updatePageVisits(){
+
+        function updatePageVisits() {
             //get todays date
             var datenow = new Date();
             var tz = datenow.getTimezoneOffset();
-            
-            datenow.setMinutes( datenow.getMinutes() - tz);
+
+            datenow.setMinutes(datenow.getMinutes() - tz);
             
             //var dateStr = datenow.toLocaleDateString();
-            function pad(n) {return n < 10 ? n : n;}
-            var dateStr = pad(datenow.getMonth()+1)+"/"+pad(datenow.getDate())+"/"+datenow.getFullYear();
+            function pad(n) { return n < 10 ? n : n; }
+            var dateStr = pad(datenow.getMonth() + 1) + "/" + pad(datenow.getDate()) + "/" + datenow.getFullYear();
             
             //console.log('Date Str: ', dateStr);
             var newDate = true;
             var pvisitrec = {};
-            for (var i=0; i<$rootScope.pvisits.length; i++){
+            for (var i = 0; i < $rootScope.pvisits.length; i++) {
                 if ($rootScope.pvisits[i].date == dateStr) {
-                    newDate=false;
+                    newDate = false;
                     pvisitrec = $rootScope.pvisits[i];
                     break;
                 }
             }
             if (newDate) pvisits.postRec(dateStr);
-            else pvisits.patchRec(pvisitrec.id, pvisitrec.nvisits+1);
-            
+            else pvisits.patchRec(pvisitrec.id, pvisitrec.nvisits + 1);
+
             $rootScope.dateToday = dateStr;
             $rootScope.dateTodayNum = datetime.date2number(dateStr);
         }
-        
+
         function isFacebookApp() {
             var ua = navigator.userAgent || navigator.vendor || window.opera;
             //console.log("@isFacebook - ua - ", ua);

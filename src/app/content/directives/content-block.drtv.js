@@ -379,8 +379,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
         
                     /*//  2. Use this to add/remove a tag from a rank 
                     for (var i=0; i < vm.results.length; i++){
-                        if (vm.results[i].title.includes("WiFi")){
-                            var tags = vm.results[i].tags + ' internet wifi wireless';
+                        if (vm.results[i].title.includes("Fine dining")){
+                            var tags = vm.results[i].tags + ' food';
                             //var tags = vm.results[i].tags.replace('mission','');
                             //var newtype = 'Event';
                             table.update(vm.results[i].id, ['tags'],[tags]);    
@@ -516,12 +516,17 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                var genRank = vm.results[i].title.replace("Hillcrest", "San Diego");
                                for (var j=0; j<$rootScope.content.length; j++){
                                    if (genRank == $rootScope.content[j].title){
-                                       //if ($rootScope.content[j].catstr == null || //comment these 3
-                                       //$rootScope.content[j].catstr == undefined || //if want to redo everythign
-                                       //$rootScope.content[j].catstr.length == 0){  //categories
+                                       if ($rootScope.content[j].catstr == null || //comment these 3
+                                       $rootScope.content[j].catstr == undefined || //if want to redo everythign
+                                       $rootScope.content[j].catstr.length == 0){  //categories
                                       // TODO ---- 6949 --- events need to add 6969
                                       // TODO ---- 473 -- law san diego --- ignore, isatomic=true, catstr='';
-                                        //console.log("Found gen rank --- ", $rootScope.content[j].title);
+                                      
+                                      //--- Prevent execution for specific ranks ---
+                                      var cid = $rootScope.content[j].id;
+                                      if (cid != 473 && cid != 3125 && cid !=6949 && cid != 7424 && cid != 7675){
+                                      
+                                        console.log("Found gen rank --- ", $rootScope.content[j].title);
                                         var srchStr = $rootScope.content[j].title.replace("San Diego","");
                                            for (var k=0; k<$rootScope.content.length; k++){
                                                if ($rootScope.content[k].title.includes(srchStr) && k!=j ){
@@ -530,34 +535,42 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                                }
                                            }
                                            fcatstr = catstr.substring(1); //remove leading ':'
-                                           //console.log("final catstr ---", fcatstr)
+                                           console.log("final catstr ---", fcatstr)
+                                        
                                            table.update($rootScope.content[j].id, ['isatomic','catstr'],[false, fcatstr]);
-                                       //} //this is bracket
+                                       }//this is specific rank braket
+                                       } //this is bracket
                                    break;
                                    }
                                }                                              
                            }
                        }
-                       //SPECIAL CASES
+                       //SPECIAL CASES //only when redoing everything
+                       /*
                        for (var n=0; n<$rootScope.content.length; n++){
                            if ($rootScope.content[n].id == 473){
-                               table.update(473, ['isatomic','catstr'],[true, '']);
+                               console.log("update(473)");
+                               //table.update(473, ['isatomic','catstr'],[true, '']);
                            }
                            if ($rootScope.content[n].id == 3125){
-                               table.update(3125, ['isatomic','catstr'],[true, '']);
+                               console.log("update(3125)");
+                               //table.update(3125, ['isatomic','catstr'],[true, '']);
                            }
                            if ($rootScope.content[n].id == 6949){
-                               table.update(6949, ['isatomic','catstr'],[false, '6949:'+$rootScope.content[n].catstr]);
+                               console.log("update(6949)");
+                               //table.update(6949, ['isatomic','catstr'],[false, '6949:'+$rootScope.content[n].catstr]);
                            }
                            if ($rootScope.content[n].id == 7675){
-                               table.update(7675, ['isatomic','catstr'],[false, '7675:'+$rootScope.content[n].catstr]);
+                               console.log("update(7675)");
+                               //table.update(7675, ['isatomic','catstr'],[false, '7675:'+$rootScope.content[n].catstr]);
                            }
                            if ($rootScope.content[n].id == 7424){
-                               table.update(7424, ['isatomic','catstr'],[false, '7424:'+$rootScope.content[n].catstr]);
+                               console.log("update(7424)");
+                               //table.update(7424, ['isatomic','catstr'],[false, '7424:'+$rootScope.content[n].catstr]);
                            }
                        }
                        
-                    *///End 8
+                    */ //End 8
                
                     /*//  9. Clear answer string for all non-atomic ranks 
                     for (var i=0; i < $rootScope.content.length; i++){
@@ -628,16 +641,16 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     /*//12. Add 'pb' tag to all Pacific Beach
                     var tagstr = '';
                     for (var i=0; i<$rootScope.content.length; i++){
-                        if ($rootScope.content[i].title.includes('Mission Beach')){
-                            if ($rootScope.content[i].tags.includes('mb') == false){
+                        if ($rootScope.content[i].title.includes('Ocean Beach')){
+                            if ($rootScope.content[i].tags.includes('ob') == false){
                                 //console.log($rootScope.content[i].title);
-                                tagstr = $rootScope.content[i].tags + ' mb';
+                                tagstr = $rootScope.content[i].tags + ' ob';
                                 //console.log("tagstr - ", tagstr, $rootScope.content[i].title);
                                 table.update($rootScope.content[i].id,['tags'],[tagstr]);
                             }
                         }
                     }
-                    */ // End of 12
+                    */// End of 12
                     /*//13. Open all contents to refresh number of answers, add vrows
                     $timeout(function () {
                         $state.go('rankSummary', { index: $rootScope.content[midx].id });

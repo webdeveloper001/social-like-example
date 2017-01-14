@@ -7,11 +7,11 @@
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
         'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt',
-        '$location', 'vrows', 'vrowvotes','imagelist']; //AM:added user service
+        '$location', 'vrows', 'vrowvotes','imagelist','instagram']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
         votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt,
-        $location, vrows, vrowvotes, imagelist) { //AM:added user service
+        $location, vrows, vrowvotes, imagelist, instagram) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
@@ -58,6 +58,7 @@
         vm.selectPhoto = selectPhoto;
         vm.cmFlag = cmFlag;
         vm.toggleimgmode = toggleimgmode;
+        vm.deleteThisCatans = deleteThisCatans;
         
         vm.fields = $rootScope.fields;
         
@@ -83,7 +84,8 @@
         $rootScope.canswer = vm.answer;
         vm.type = vm.answer.type;
         
-        if ($rootScope.cCategory) vm.title = $rootScope.cCategory.title;
+        if ($rootScope.inFavMode) vm.title = $rootScope.myfavs.title; 
+        else if ($rootScope.cCategory) vm.title = $rootScope.cCategory.title;
         else {
             vm.title = '';
             answers = [vm.answer];
@@ -585,9 +587,12 @@
             
             //update Up and Down votes, and counter
             //if (!recordsUpdated && $rootScope.isLoggedIn) updateRecords();
-
+            
             if ($rootScope.previousState == 'match') {
                 $state.go('match');
+            }
+            else if ($rootScope.inFavMode) {
+                $state.go('myfavs');
             }
             else {
                 //var nViews = vm.answer.views + 1;
@@ -617,12 +622,14 @@
         }
 
         function deleteAnswer() {
-
+            
+            console.log("Delete Answer");
+            
             dialog.deleteType(function () {
                 //delete catans for this answer
                 matchrec.deleteRecordsbyCatans($rootScope.cCategory.id, vm.answer.id);
                 catans.deleteRec(vm.answer.id, $rootScope.cCategory.id).then(function () {
-                    $state.go("rankSummary", { index: $rootScope.cCategory.id });
+                    $state.go("answerDetail", { index: vm.answer.id },{reload:true});
                 });
                 
             }, function () {
@@ -644,6 +651,22 @@
             });
 
         }
+        
+        function deleteThisCatans(r){
+            
+            var thisAnswer = vm.answer.name;
+            var idx = $rootScope.content.map(function(x) {return x.id; }).indexOf(r.id);  
+            var thisCategory = $rootScope.content[idx].title;
+            dialog.deleteThisCatans(thisAnswer, thisCategory, function () {
+             //delete catans for this answer
+                matchrec.deleteRecordsbyCatans(r.id, vm.answer.id);
+                catans.deleteRec(vm.answer.id, r.id).then(function () {
+                    $state.go("answerDetail", { index: vm.answer.id },{reload:true});
+                });
+            });
+        }
+             
+        
 
         function flagAnswer(x) {
             if ($rootScope.isLoggedIn) {
@@ -846,8 +869,10 @@
         function getImages() {
             imagelist.getImageList().then(showImages);
             vm.showImageGallery = true;
+            //instagram.getImages().then(showImages);
         }
         function showImages(){
+            //vm.images = $rootScope.igimages;            
             vm.images = $rootScope.blobs;
         }
         /*
