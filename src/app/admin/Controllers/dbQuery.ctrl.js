@@ -21,6 +21,13 @@
         activate();
 
         function activate() {
+            
+            vm.isDET = $rootScope.isLoggedIn && ($rootScope.user.id == 12 ||
+                                          $rootScope.user.id == 30 ||
+                                          $rootScope.user.id == 41 ||  
+                                          $rootScope.user.id == 42 ||
+                                          $rootScope.user.id == 30);
+            
             //loadData();
             console.log("dbQuery page Loaded!");
         }

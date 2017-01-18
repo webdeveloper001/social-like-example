@@ -14,6 +14,7 @@
         <button class="btn btn-default {{vm.selFoodRanks}} " ng-click="vm.foodranks() ">Food Ranks</button>
     </div>
 </div>
+<button class="btn btn-default {{vm.selQuery}} " ng-click="vm.dbQuery()" ng-if="vm.isDET">Query</button>
 <br>
 <br>
 <div ui-view></div>

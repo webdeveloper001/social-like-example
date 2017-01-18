@@ -28,7 +28,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 var strlen_o = 0;
                 
                 //if (!vm.isDynamic) {
-                  //  console.log("this is the spot");
+                //  console.log("this is the spot");
                 if (vm.modType == 'rankofweek') getRankofDay();
                 else loadContent();
                 //}
@@ -51,12 +51,16 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             
                 //Filter content based on user input
                 function getRanks() {
-                    
+
                     vm.hideme = false;
                     var rt = '';
                     var ss = '';
                     var inm = false;
+                    
                     vm.nm = false;
+                    vm.rt = false;
+                    vm.rt_nm = false;
+                    
                     var rank = {};
                     var tagCapitalized = '';
                     var tagFirstLowered = '';
@@ -87,37 +91,61 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             inm = false;
                         }
                         
+                        //Special Cases
+                        if (inputVal == 'pho' || inputVal == 'Pho'){
+                            inputVal = 'vietnamese';
+                        }
+
                         if ($rootScope.isNh) inputVal = inputVal + ' ' + $rootScope.cnh;
                         //vm.showR = false;
                         //$rootScope.showR = false;
                         vm.results = [];
                         vm.results_nm = [];
+                        vm.results_rt = [];
+                        vm.results_rt_nm = [];
+
                         if (inputVal.length >= 3) {
                             //vm.content = $rootScope.content;
                             var valTags = inputVal.split(" ");
                             for (var j = 0; j < $rootScope.content.length; j++) {
                                 ss = $rootScope.searchStr[j]; //Search string
+                                rt = $rootScope.content[j].title; // title
                                 rank = $rootScope.content[j];
-                                //for (var j = 50; j < 60; j++) {
-                                var r = true;
+
+                                var r_ss = true; //match in search string
+                                var r_rt = true; //match in title
                                 var sc = false; //special case
+                                
                                 //check that all tags exist
                                 for (var k = 0; k < valTags.length; k++) {
                                     tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
                                     tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
-                                    r = r &&
+
+                                    r_ss = r_ss &&
                                     (ss.indexOf(valTags[k]) > -1 ||
                                         ss.indexOf(valTags[k].toUpperCase()) > -1 ||
                                         ss.indexOf(tagCapitalized) > -1 ||
                                         ss.indexOf(tagFirstLowered) > -1);
+
+                                    r_rt = r_rt &&
+                                    (rt.indexOf(valTags[k]) > -1 ||
+                                        rt.indexOf(valTags[k].toUpperCase()) > -1 ||
+                                        rt.indexOf(tagCapitalized) > -1 ||
+                                        rt.indexOf(tagFirstLowered) > -1);
                                 }
-                                if (r) {
+
+                                if (r_rt && rank.tags.indexOf('isMP') > -1) {
+                                    vm.results_rt.push($rootScope.content[j]);
+                                    vm.rt = true;
+                                }
+
+                                else if (r_ss) {
                                     if (inm) {
                                         if (rank.title.indexOf('in San Diego') > -1) {
                                             vm.results.push($rootScope.content[j]);
                                         }
                                     }
-                                    else vm.results.push($rootScope.content[j]);               
+                                    else vm.results.push($rootScope.content[j]);
                                 }
                             }
                             //show first non-atomic ranks -- for better user experience
@@ -135,16 +163,39 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                 //if a result includes San Diego, also add a results as 'Near Me'
                             }
                             else {*/
-                                for (var k = 0; k < vm.results.length; k++) {
-                                    rt = vm.results[k].title; //Rank title
-                                    if (rt.indexOf('in San Diego') > -1 && vm.results[k].isatomic == false) {
-                                        rankObj = JSON.parse(JSON.stringify(vm.results[k]));
-                                        rankObj.title = rankObj.title.replace('in San Diego', 'close to me');
-                                        vm.results_nm.push(rankObj);
-                                        vm.nm = true;
-                                    }
+                            /*
+                            for (var k = 0; k < vm.results_rt.length; k++) {
+                                rt = vm.results_rt[k].title; //Rank title
+                                if (rt.indexOf('in San Diego') > -1 && vm.results_rt[k].isatomic == false) {
+                                    rankObj = {};
+                                    rankObj = JSON.parse(JSON.stringify(vm.results_rt[k]));
+                                    rankObj.title = rankObj.title.replace('in San Diego', 'close to me');
+                                    vm.results_nm.push(rankObj);
+                                    vm.nm = true;
                                 }
-                                //console.log("vm.results_nm - ", vm.results_nm);
+                            }*/
+                            
+                            for (var k = 0; k < vm.results.length; k++) {
+                                rt = vm.results[k].title; //Rank title
+                                if (rt.indexOf('in San Diego') > -1 && vm.results[k].isatomic == false) {
+                                    rankObj = {};
+                                    rankObj = JSON.parse(JSON.stringify(vm.results[k]));
+                                    rankObj.title = rankObj.title.replace('in San Diego', 'close to me');
+                                    vm.results_nm.push(rankObj);
+                                    vm.nm = true;
+                                }
+                            }
+                            for (var k = 0; k < vm.results_rt.length; k++) {
+                                rt = vm.results_rt[k].title; //Rank title
+                                if (rt.indexOf('in San Diego') > -1 && vm.results_rt[k].isatomic == false) {
+                                    rankObj = {};
+                                    rankObj = JSON.parse(JSON.stringify(vm.results_rt[k]));
+                                    rankObj.title = rankObj.title.replace('in San Diego', 'close to me');
+                                    vm.results_rt_nm.push(rankObj);
+                                    vm.rt_nm = true;
+                                }
+                            }
+                            //console.log("vm.results_nm - ", vm.results_nm);
                             //}
                             
                             //resLT6 is used to hide the <<see more>> choice
@@ -165,6 +216,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             vm.results = [];
                         }
                     }
+                    //console.log("rt_nm - ", vm.results_rt_nm);
                 }
 
                 function getRankofDay() {
@@ -388,10 +440,10 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     } 
                     *///End of 2
         
-                    /* //  3.Use this to correct the title of a group of ranks
+                    /*//  3.Use this to correct the title of a group of ranks
                     for (var i=0; i < vm.results.length; i++){
-                        if (vm.results[i].title.includes('Italian food')) {
-                            var titlex = vm.results[i].title.replace("restaurant","restaurants");
+                        if (vm.results[i].title.includes('Dry cleaners')) {
+                            var titlex = vm.results[i].title.replace("Dry cleaners","Dry cleaners and tailors");
                             //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
                             //console.log("tags ", tags);
                             table.update(vm.results[i].id, ['title'],[titlex]);
