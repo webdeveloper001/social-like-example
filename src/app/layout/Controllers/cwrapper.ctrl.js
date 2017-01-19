@@ -360,11 +360,11 @@
         
         function seeMoreFeed(){
             if (vm.fres == 6){
-                vm.fres = 20;
+                vm.fres = 50;
                 vm.ftext = 'see less';
                 return;
             }
-            if (vm.fres == 20){
+            if (vm.fres == 50){
                 vm.fres = 6;
                 vm.ftext = 'see more';
                 return;

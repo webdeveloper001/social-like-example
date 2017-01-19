@@ -49,12 +49,12 @@
         else vm.logoimage = "../../../assets/images/rankxlogosd.png";
         */
         if ($window.innerWidth < 512) {
-            vm.logoimage = "/assets/images/rankxlogosd_sm.png";
+            vm.logoimage = "/assets/images/rankxlogosd2_sm.png";
             $rootScope.sm = true;
             vm.sm = true;
         }
         else {
-            vm.logoimage = "/assets/images/rankxlogosd.png";
+            vm.logoimage = "/assets/images/rankxlogosd2_sm.png";
             $rootScope.sm = false;
             vm.sm = false;
         }
