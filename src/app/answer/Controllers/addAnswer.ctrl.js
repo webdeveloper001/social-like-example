@@ -326,17 +326,18 @@
                 eqRanks();
                 //create 2 catans records one for downtown and then district
                 if (eqFound && !inCity) {
-                    if ($rootScope.DEBUG_MODE) console.log("P1 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx);
+                    if ($rootScope.DEBUG_MODE) console.log("P1 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx,myAnswer);
                     answer.addAnswer2(myAnswer, [$rootScope.cCategory.id, eqRankIdx]).then(rankSummary);                    
                 }
                 else if (eqFound && inCity) {
-                    if ($rootScope.DEBUG_MODE) console.log("P2 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx);
+                    if ($rootScope.DEBUG_MODE) console.log("P2 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx,myAnswer);
                     answer.addAnswer2(myAnswer, [eqRankIdx]).then(rankSummary);
                 }
-                else {
-                    if ($rootScope.DEBUG_MODE) console.log("P3");
+                else { 
+                    if ($rootScope.DEBUG_MODE) console.log("P3 - ", myAnswer);
                     answer.addAnswer(myAnswer).then(rankSummary);
-                } 
+                }
+                myAnswer = undefined; 
             }
         }
 
@@ -347,17 +348,18 @@
                 eqRanks();
                 //create 2 catans records one for downtown and then district
                 if (eqFound && !inCity) {
-                    if ($rootScope.DEBUG_MODE) console.log("P4 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx);
-                    answer.addAnswer2(myAnswer, [$rootScope.cCategory.id, eqRankIdx]).then(rankSummary);
+                    if ($rootScope.DEBUG_MODE) console.log("P4 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx, myAnswer);
+                    if (myAnswer) answer.addAnswer2(myAnswer, [$rootScope.cCategory.id, eqRankIdx]).then(rankSummary);
                 }
                 else if (eqFound && inCity) {
-                    if ($rootScope.DEBUG_MODE) console.log("P5 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx);
-                    answer.addAnswer2(myAnswer, [eqRankIdx]).then(rankSummary);
+                    if ($rootScope.DEBUG_MODE) console.log("P5 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx, myAnswer);
+                    if (myAnswer) answer.addAnswer2(myAnswer, [eqRankIdx]).then(rankSummary);
                 }
                 else {
-                    if ($rootScope.DEBUG_MODE) console.log("P6");
-                    answer.addAnswer(myAnswer).then(rankSummary);
-                }                                 
+                    if ($rootScope.DEBUG_MODE) console.log("P6",myAnswer);
+                    if (myAnswer) answer.addAnswer(myAnswer).then(rankSummary);
+                }
+                myAnswer = undefined;                                 
             }
         }
         
@@ -381,8 +383,9 @@
                 else {
                     if ($rootScope.DEBUG_MODE) console.log("P9");
                     catans.postRec(extAnswer.id).then(rankSummary);
-                }                
-            }
+                }
+                myAnswer = undefined;                
+             }
          }
 
         function eqRanks() {

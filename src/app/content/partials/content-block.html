@@ -12,7 +12,7 @@
 		<!--</div>-->
 	<!--	</div>-->
 	<!--	<div class="table">  -->
-	<br ng-if="isDynamic">	
+	<br ng-if="isDynamic">
 	<table class="table" style="border-style:none" ng-if="isRoW">
 		<tbody>
 			<thead>
@@ -23,10 +23,10 @@
 			</thead>
 		</tbody>
 	</table>
-	
+
 
 	<div class="container" ng-if="isRoW">
-		<div class="row">
+		<div class="row" ng-if="!isShortPhrase">
 			<div class="col-sm-6 col-md-6 col-lg-4">
 				<img class="mainpic" src="{{image1}}" style="display:{{image1 != undefined ? 'inline':'none'}}">
 			</div>
@@ -37,11 +37,40 @@
 				<img class="mainpic" src="{{image3}}" style="display:{{image3 != undefined ? 'inline':'none'}}">
 			</div>
 		</div>
+		<div class="row" ng-if="isShortPhrase">
+			<div class="col-sm-6 col-md-6 col-lg-4">
+				<div class="container-answer" style="width:100%; max-height:300px;">
+					<br>
+					<h2 style="text-align:center"><strong>{{title1}}</strong></h2>
+					<br>
+					<h4 style="text-align:center">{{addinfo1}}</h4>
+				</div>
+			</div>
+			<div class="hidden-xs col-sm-6 col-md-6 col-lg-4">
+				<div class="container-answer" style="width:100%; max-height:300px;">
+					<br>
+					<h2 style="text-align:center"><strong>{{title2}}</strong></h2>
+					<br>
+					<h4 style="text-align:center">{{addinfo2}}</h4>
+				</div>
+			</div>
+			<div class="hidden-xs hidden-sm hidden-md col-lg-4">
+				<div class="container-answer" style="width:100%; max-height:300px;">
+					<br>
+					<h2 style="text-align:center"><strong>{{title3}}</strong></h2>
+					<br>
+					<h4 style="text-align:center">{{addinfo3}}</h4>
+				</div>
+			</div>
+		</div>
+
 	</div>
+
+
 	<br ng-if="isRoW">
 	<table class="table">
 		<tbody>
-			<thead ng-if="!isRoW" style="border-style:none;"> 
+			<thead ng-if="!isRoW" style="border-style:none;">
 				<tr>
 					<th style="background-color:{{bgc}};color:{{fc}};width:50%;">
 						{{headline}}</th>

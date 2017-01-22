@@ -175,7 +175,7 @@
                     vm.isShortPhrase = true;
                     vm.title1 = vm.answers[0].name;
                     vm.addinfo1 = vm.answers[0].addinfo;
-                    vm.image1 = vm.title1 + '##' + vm.title1;
+                    vm.image1 = vm.title1 + '##' + vm.addinfo1;
                 }
                 else {
                     vm.isShortPhrase = false;
@@ -198,10 +198,10 @@
                     vm.isShortPhrase = true;
                     vm.title1 = vm.answers[0].name;
                     vm.addinfo1 = vm.answers[0].addinfo;
-                    vm.image1 = vm.title1 + '##' + vm.title1;
+                    vm.image1 = vm.title1 + '##' + vm.addinfo1;
                     vm.title2 = vm.answers[1].name;
                     vm.addinfo2 = vm.answers[1].addinfo;
-                    vm.image2 = vm.title2 + '##' + vm.title2;
+                    vm.image2 = vm.title2 + '##' + vm.addinfo2;
 
                 }
                 else {
@@ -231,13 +231,13 @@
                     vm.isShortPhrase = true;
                     vm.title1 = vm.answers[0].name;
                     vm.addinfo1 = vm.answers[0].addinfo;
-                    vm.image1 = vm.title1 + '##' + vm.title1;
+                    vm.image1 = vm.title1 + '##' + vm.addinfo1;
                     vm.title2 = vm.answers[1].name;
                     vm.addinfo2 = vm.answers[1].addinfo;
-                    vm.image2 = vm.title2 + '##' + vm.title2;
+                    vm.image2 = vm.title2 + '##' + vm.addinfo2;
                     vm.title3 = vm.answers[2].name;
                     vm.addinfo3 = vm.answers[2].addinfo;
-                    vm.image3 = vm.title3 + '##' + vm.title3;
+                    vm.image3 = vm.title3 + '##' + vm.addinfo3;
 
                 }
                 else {

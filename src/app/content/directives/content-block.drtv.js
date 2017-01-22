@@ -56,11 +56,11 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     var rt = '';
                     var ss = '';
                     var inm = false;
-                    
+
                     vm.nm = false;
                     vm.rt = false;
                     vm.rt_nm = false;
-                    
+
                     var rank = {};
                     var tagCapitalized = '';
                     var tagFirstLowered = '';
@@ -174,7 +174,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                     vm.nm = true;
                                 }
                             }*/
-                            
+
                             for (var k = 0; k < vm.results.length; k++) {
                                 rt = vm.results[k].title; //Rank title
                                 if (rt.indexOf('in San Diego') > -1 && vm.results[k].isatomic == false) {
@@ -230,6 +230,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     vm.image1 = "/assets/images/noimage.jpg";
                     vm.image2 = "/assets/images/noimage.jpg";
                     vm.image3 = "/assets/images/noimage.jpg";
+                    vm.isShortPhrase = false;
                 
                     //load colors and headline
                     for (var i = 0; i < $rootScope.headlines.length; i++) {
@@ -245,7 +246,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
                     var searchVal = '';
                     var rt = '';
-
+                    
+                    //$rootScope.rankofday[0].main = 'Women\'s March';
                     if ($rootScope.isCity) searchVal = $rootScope.rankofday[0].main;
                     if ($rootScope.isNh) searchVal = $rootScope.rankofday[0].nh + ' ' + $rootScope.cnh;
 
@@ -284,6 +286,25 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         if (vm.results[0].image3url != undefined) vm.image3 = vm.results[0].image3url;
                     }
                     
+                    //Check if results is Short-Phrase
+                    if (vm.results[0].type == 'Short-Phrase'){
+                        
+                        vm.isShortPhrase = true;
+                        
+                        var sPVals1 = vm.image1.split("##");
+                        vm.title1=sPVals1[0];
+                        vm.addinfo1 =sPVals1[1];
+                        
+                        var sPVals2 = vm.image2.split("##");
+                        vm.title2=sPVals2[0];
+                        vm.addinfo2=sPVals2[1];
+                        
+                        var sPVals3 = vm.image3.split("##");
+                        vm.title3=sPVals3[0];
+                        vm.addinfo3 =sPVals3[1];                        
+                    }
+                    
+                    
                     //resLT6 is used to hide the <<see more>> choice
                     if (vm.results.length <= 6) vm.resLT6 = true;
                     else vm.resLT6 = false;
@@ -321,6 +342,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             ($rootScope.cblocks[i].type == vm.modType)) {
                             catstr = $rootScope.cblocks[i].catstr;
                             idxs = catstr.split(':');
+                            shuffle(idxs);
                             for (var j = 0; j < idxs.length; j++) {
                                 vm.results.push($rootScope.content[idxs[j]]);
                             }
@@ -333,6 +355,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             ($rootScope.cblocks[i].scopename == $rootScope.cnh)) {
                             catstr = $rootScope.cblocks[i].catstr;
                             idxs = catstr.split(':');
+                            shuffle(idxs);
                             for (var j = 0; j < idxs.length; j++) {
                                 vm.results.push($rootScope.content[idxs[j]]);
                             }
@@ -361,6 +384,25 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     if (bFound && resGT0) vm.hideme = false;
                     else vm.hideme = true;
 
+                }
+
+                function shuffle(array) {
+                    var currentIndex = array.length, temporaryValue, randomIndex;
+
+                    // While there remain elements to shuffle...
+                    while (0 !== currentIndex) {
+
+                        // Pick a remaining element...
+                        randomIndex = Math.floor(Math.random() * currentIndex);
+                        currentIndex -= 1;
+
+                        // And swap it with the current element.
+                        temporaryValue = array[currentIndex];
+                        array[currentIndex] = array[randomIndex];
+                        array[randomIndex] = temporaryValue;
+                    }
+
+                    return array;
                 }
 
                 var applyRuleDone = false;
