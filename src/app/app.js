@@ -3,6 +3,7 @@
 
     angular.module('app', [
         // Angular modules 
+        'angulike',
         'color.picker',
         'ngFileUpload',
         'ngAnimate',
@@ -24,6 +25,6 @@
         'ui.bootstrap.modal',
         'mgcrea.ngStrap',
         
-        '720kb.datepicker', //date picker for specials
+        '720kb.datepicker', //date picker for specials       
     ]);
 })();

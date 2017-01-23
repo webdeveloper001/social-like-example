@@ -70,6 +70,8 @@
         function activate() {
 
             $rootScope.DEBUG_MODE = DEBUG_MODE;
+            $rootScope.facebookAppId = 1102409523140826;
+            $rootScope.facebookUrl = 'https://www.facebook.com/Rank-X-San-Diego-582174448644554';
 
             //$timeout(loadingDone, 1000);
             if ($rootScope.dataIsLoaded == undefined) {
