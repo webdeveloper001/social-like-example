@@ -928,12 +928,16 @@
         
          function sharefb(){
             console.log("@fbpost");
+            var imageurl = $rootScope.cCategory.image1url;
+            if ($rootScope.cCategory.type == 'Short-Phrase')
+                imageurl = 'https://rank-x.com/assets/images/rankxlogosd2_sm.png';
+                            
                 FB.ui(
                     {
                         method: 'feed',
                         name: $rootScope.cCategory.title,
                         link: vm.linkurl,
-                        picture: $rootScope.cCategory.image1url,
+                        picture: imageurl,
                         caption: 'Rank-X San Diego',
                         description: $rootScope.cCategory.question,
                         message: ''
