@@ -31,7 +31,7 @@
             }
             */
             //Get all uaf  records
-            var url0 = baseURI + '?limit=100&order=id%20DESC';
+            var url0 = baseURI + '?limit=200&order=id%20DESC';
             //var url1 = baseURI + '?offset=' + 1 * 1000;
 
             var p0 = $http.get(url0);

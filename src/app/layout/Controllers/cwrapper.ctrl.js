@@ -321,13 +321,24 @@
         
         function selfimprove(){
             var introsRank = 0;
+            var rankFound = false;
+            var rn = 0; //random number
+            var N = $rootScope.content.length-1;
+            
+            while(!rankFound){
+             rn = Math.floor(Math.random() * (N - 0 + 1)) + 0;
+                if ($rootScope.content[rn].tags.indexOf('isMP') > -1){
+                    rankFound=true;
+                }   
+            }
+            /*
             for (var i=0; i<$rootScope.content.length; i++){
                 if ($rootScope.content[i].title.indexOf($rootScope.rankofday[0].intros) > -1){
                     introsRank = $rootScope.content[i].id;
                     break;
                 }
-            }
-            $state.go('rankSummary', { index: introsRank });
+            }*/
+            $state.go('rankSummary', { index: $rootScope.content[rn].id });
         }
         
         function events(){
@@ -360,11 +371,11 @@
         
         function seeMoreFeed(){
             if (vm.fres == 6){
-                vm.fres = 50;
+                vm.fres = 400;
                 vm.ftext = 'see less';
                 return;
             }
-            if (vm.fres == 50){
+            if (vm.fres == 400){
                 vm.fres = 6;
                 vm.ftext = 'see more';
                 return;

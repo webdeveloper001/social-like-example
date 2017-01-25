@@ -40,7 +40,7 @@
             
             vm.isAdmin = $rootScope.isAdmin;
             console.log("admin page Loaded!");
-
+            
         }
         function keywords() {
             vm.selKeywords = 'active';
@@ -154,20 +154,6 @@
             //if ($rootScope.cCategory.id == undefined) $state.go('rankSummary', { index: $rootScope.cCategory.id });
             //else $state.go('rankSummary', { index: 1 });
             $state.go('content');
-        }
-        
-        function fbpost(){
-            console.log("@fbpost");
-                FB.ui(
-                    {
-                        method: 'feed',
-                        name: 'This is the content of the "name" field.',
-                        link: 'https://rank-x.com/#/rankSummary/9891',
-                        picture: $rootScope.cCategory.image1url,
-                        caption: 'mycaption',
-                        description: 'This is the content of the "description" field, below the caption.',
-                        message: ''
-                    });
-            } 
+        }     
     }
 })();

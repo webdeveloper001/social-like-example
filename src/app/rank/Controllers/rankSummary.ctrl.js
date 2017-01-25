@@ -35,6 +35,10 @@
         vm.loadComments = loadComments;
         vm.postComment = postComment;
         vm.cmFlag = cmFlag;
+        //Social Media Shares
+        vm.sharefb = sharefb;
+        //vm.sharetweet = sharetweet;
+        //vm.sharegplus = sharegplus;
 
         vm.selOverall = 'active';
         vm.selPersonal = '';
@@ -101,7 +105,7 @@
         function activate() {
             
             $rootScope.inFavMode = false;
-
+            
             $window.scrollTo(0, 0);
             $rootScope.$emit('showLogo');
 
@@ -274,6 +278,11 @@
 
             //TODO update answers in DB
             $rootScope.modeIsImage = true;
+            
+            //Data for social media shares
+            vm.linkurl = 'https://rank-x.com/#/rankSummary/' + $rootScope.cCategory.id;
+            vm.tweet = $rootScope.cCategory.title + ', endorse your favorite ones at: ';
+            
             if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
             //console.log("$rootScope.user", $rootScope.user);
             //createVrows();            
@@ -916,6 +925,20 @@
             else dialog.loginFacebook(); 
             //dialog.getDialog('notLoggedIn'); 
         }
+        
+         function sharefb(){
+            console.log("@fbpost");
+                FB.ui(
+                    {
+                        method: 'feed',
+                        name: $rootScope.cCategory.title,
+                        link: vm.linkurl,
+                        picture: $rootScope.cCategory.image1url,
+                        caption: vm.answers[0].name,
+                        description: $rootScope.cCategory.question,
+                        message: ''
+                    });
+            } 
 
     }
 })();

@@ -76,16 +76,23 @@
     </div>
 </div>
 <br>
-
-<div class="text-center">
-    <!-- <h4>Contributors: <b style="color:blue; "><i>4563</i></b></h4> -->
-    <!-- Twitter -->
-    <a href="http://twitter.com/home?status=" title="Share in Twitter" target="_blank " class="btn btn-twitter "><i class="fa fa-twitter "></i></a>
-    <!-- Facebook -->
-    <a href="https://www.facebook.com/sharer/sharer.php " title="Share in Facebook" target="_blank " class="btn btn-facebook "><i class="fa fa-facebook ">acebook</i></a>
-    <!-- Google+ -->
-    <a href="https://plus.google.com/share?url=" title="Share in Google+" target="_blank " class="btn btn-googleplus "><i class="fa fa-google-plus "></i></a>
+<!-- Social Media Buttons -->
+<div class="row">
+    <div class="hidden-xs-0 col-sm-4 col-md-8 col-lg-8"></div>
+    <div class="col-xs-3 col-sm-2 col-md-1 col-lg-1" align-items="center">    
+        <div tweet="vm.tweet" tweet-url="vm.linkurl"></div>
+    </div>
+    <div class="col-xs-3 col-sm-2 col-md-1 col-lg-1" align-items="center">
+        <a title="Share in Facebook" target="_blank " class="btn btn-facebook" ng-click="vm.sharefb()"><i class="fa fa-facebook ">&nbspShare</i></a>
+    </div>
+    <div class="col-xs-3 col-sm-2 col-md-1 col-lg-1" align-items="center">
+        <div google-plus="vm.linkurl"></div>
+    </div>
+    <div class="col-xs-3 col-sm-2 col-md-1 col-lg-1" align-items="center">
+        <div pin-it="vm.ranking" pin-it-image="vm.image1url" pin-it-url="vm.linkurl"></div>
+    </div>
 </div>
+
 <br class="hidden-md hidden-lg hidden-xl">
 <div class="row ">
 
