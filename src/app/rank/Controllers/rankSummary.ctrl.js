@@ -934,7 +934,7 @@
                         name: $rootScope.cCategory.title,
                         link: vm.linkurl,
                         picture: $rootScope.cCategory.image1url,
-                        caption: vm.answers[0].name,
+                        caption: 'Rank-X San Diego',
                         description: $rootScope.cCategory.question,
                         message: ''
                     });
