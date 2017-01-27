@@ -25,7 +25,7 @@
                 var p0 = votes.loadVotesByUser();
                 var p1 = editvote.loadEditVotesTable();
                 var p2 = vrowvotes.loadVrowVotes();
-                var p3 = useractivity.getActivityByUser();
+                var p3 = useractivity.getActivitybyUser();
 
                 return $q.all([p0, p1, p2, p3]).then(function (d) {
                     $rootScope.cvotes = d[0];
