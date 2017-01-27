@@ -131,6 +131,8 @@
             var p10 = pvisits.getpvisits();
             var p11 = rankofday.getrankofday();
             var p12 = uaf.getactions();
+            
+            userdata.loadVotes();
 
             return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12]).then(function (d) {
                 $rootScope.answers = d[0];
@@ -151,8 +153,6 @@
                 loadingDone();
 
             });
-
-            userdata.loadVotes();
 
         }
 
@@ -211,7 +211,7 @@
         $rootScope.selectCity = function (city) {
             $rootScope.selectedCity = city;
             window.localStorage.selectedCity = JSON.stringify($rootScope.selectedCity);
-            closeModal("#selectCityModal");
+            //closeModal("#selectCityModal");
         }
     }
 })();

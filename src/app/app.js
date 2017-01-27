@@ -16,7 +16,7 @@
         
         'pascalprecht.translate',
         'tmh.dynamicLocale',
-
+        
         // Custom modules 
         'login',
 
@@ -25,6 +25,7 @@
         'ui.bootstrap.modal',
         'mgcrea.ngStrap',
         
-        '720kb.datepicker', //date picker for specials       
+        '720kb.datepicker', //date picker for specials
+        '720kb.socialshare'
     ]);
 })();

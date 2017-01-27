@@ -26,7 +26,7 @@
         vm.dbQuery = dbQuery;
         vm.update = update;
         vm.foodranks = foodranks;
-        vm.fbpost = fbpost;
+        //vm.fbpost = fbpost;
         
         activate();
 

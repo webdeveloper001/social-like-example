@@ -76,29 +76,12 @@
     </div>
 </div>
 <br>
-<!-- Social Media Buttons -->
-<div class="row">
-    <div class="hidden-xs-0 col-sm-4 col-md-8 col-lg-8"></div>
-    <div class="col-xs-3 col-sm-2 col-md-1 col-lg-1" align-items="center">    
-        <div tweet="vm.tweet" tweet-url="vm.linkurl"></div>
-    </div>
-    <div class="col-xs-3 col-sm-2 col-md-1 col-lg-1" align-items="center">
-        <a title="Share in Facebook" target="_blank " class="btn btn-facebook" ng-click="vm.sharefb()"><i class="fa fa-facebook ">&nbspShare</i></a>
-    </div>
-    <div class="col-xs-3 col-sm-2 col-md-1 col-lg-1" align-items="center">
-        <div google-plus="vm.linkurl"></div>
-    </div>
-    <div class="col-xs-3 col-sm-2 col-md-1 col-lg-1" align-items="center">
-        <div pin-it="vm.ranking" pin-it-image="vm.image1url" pin-it-url="vm.linkurl"></div>
-    </div>
-</div>
-
 <br class="hidden-md hidden-lg hidden-xl">
+<p class="text-left" ng-if="vm.sm">Sort by:</p>
 <div class="row ">
-
-    <div class="btn-group col-sm-6 col-md-6">
-        <div>
-            <p>Sort by: <span>        
+    <div class="col-xs-8 col-sm-10 col-md-10 col-lg-10">
+        <div class="btn-group text-left">
+            <p>{{vm.sm ? '':'Sort by:'}}<span>        
         <button class="btn btn-default {{vm.selRank}} " ng-click="vm.sortByRank()" ng-if="vm.type != 'Event' && !vm.fnm">Rank</button>
         <button class="btn btn-default {{vm.selUpV}} " ng-click="vm.sortByUpV()">Popular</button>
         <button class="btn btn-default {{vm.selDistance}} " ng-click="vm.sortByDistance()"
@@ -109,13 +92,18 @@
         </span></p>
         </div>
     </div>
-    <div class="btn-group text-right col-sm-6 col-md-6 ">
-        <h4>Contributors: <b style="color:blue; "><i>{{vm.numContributors}}</i></b></h4>
+    <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2 btn-group text-right">
+        <button class="btn btn-default" ng-click="vm.share()">Share&nbsp&nbsp<span class="glyphicon glyphicon-share"></span></button>
     </div>
 </div>
-<div class="text-center">
-    <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">Rank</button>
-</div>
+<div class="row">
+    <div class="col-xs-6 text-right">
+            <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">Rank</button>
+    </div>
+    <div class="col-xs-6 btn-group text-right">
+        <h4>Contributors: <b style="color:blue; "><i>{{vm.numContributors}}</i></b></h4>
+    </div>
+</div>    
 <!--
 <div ng-show="{{vm.type == 'Establishment'}}">
     <div class="text-right" style="display:{{vm.haveLocation ? 'none':'inline'}}">

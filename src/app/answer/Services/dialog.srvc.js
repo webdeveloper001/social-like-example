@@ -5,9 +5,10 @@
         .module('app')
         .factory('dialog', dialog);
 
-    dialog.$inject = ['$q', '$rootScope', 'useraccnt','imagelist','answer','login','$window','$state', '$cookies'];
-
-    function dialog($q, $rootScope, useraccnt, imagelist, answer, login, $window, $state, $cookies) {
+    dialog.$inject = ['$q', '$rootScope', 'useraccnt', 'imagelist', 'answer', 'login',
+        '$window', '$state', '$cookies']
+    function dialog($q, $rootScope, useraccnt, imagelist, answer, login,
+        $window, $state, $cookies) {
 
         var service = {
             editConfirm: editConfirm,
@@ -37,7 +38,8 @@
             askPermissionToLocate: askPermissionToLocate,
             askEmail: askEmail,
             seePhotos: seePhotos,
-            loginFacebook: loginFacebook
+            loginFacebook: loginFacebook,
+            shareOptions: shareOptions
         };
 
         return service;
@@ -444,9 +446,9 @@
                 }
             });
         }
-        
-        function deleteThisCatans(answer,category,callback){
-             var title = '';
+
+        function deleteThisCatans(answer, category, callback) {
+            var title = '';
             var message = '';
             var btnCancelLabel = '';
             var btnOkLabel = '';
@@ -471,7 +473,7 @@
                 },
                 //callback: function (dialogRef, result) {
                 callback: function (result) {
-                    if (result) callback();                   
+                    if (result) callback();
                 }
             });
         }
@@ -1041,8 +1043,8 @@
             '<div class="text-center" style="border:2px"><button class="btn btn-default" id="noapprove">No, I don\'t approve</button></div>' +
             '</div>' +
             '</div>';
-            
-            messageLoading = '<div class="loading-pulse"></div>'+
+
+            messageLoading = '<div class="loading-pulse"></div>' +
             '<p>Just a moment, finding your location...</p>';
 
             BootstrapDialog.show({
@@ -1052,8 +1054,8 @@
                     var $content = $(messagehtml);
 
                     $content.find('#useGeo').click({}, function () {
-                        
-                        if ($rootScope.isFacebookApp){
+
+                        if ($rootScope.isFacebookApp) {
                             getDialog('FacebookAppNotSupported');
                         }
                         else {
@@ -1063,7 +1065,7 @@
                             x.setClosable(false);
                             x.getModalBody().html(messageLoading);
                             x.setTitle('Please wait');
-                            setTimeout(function(){
+                            setTimeout(function () {
                                 x.close();
                             }, 10000);
                         }
@@ -1103,7 +1105,7 @@
 
             title = 'Missing info';
 
-            messagehtml = '<div class="text-left">Let\'s stay in touch.'+
+            messagehtml = '<div class="text-left">Let\'s stay in touch.' +
             ' Please provide us an email address where we can ' +
             'keep you updated on everything related to the <strong>' + accntname + '</strong> account.</div>' +
             '<br>' +
@@ -1152,7 +1154,7 @@
             var n = idx;
             var L = blobList.length;
             var img_style = '';
-            
+
             if ($rootScope.sm) {
                 img_style = 'width:100%;height:auto';
             }
@@ -1166,49 +1168,49 @@
             var m2 = '';
             var m3 = '';
             var m4 = '';
-            
-            if (isOwner){
-            m1 =
-            '<div class="row">'+
-                    '<div class="text-left col-xs-3 col-md-4">' +
-                        '<button class="btn btn-default pull-left" id="prevbutton">&lt;&lt</button>' +
-                    '</div>'+ 
-                    '<div class="text-middle col-xs-5 col-md-4">' +
-                        '<button class="btn btn-default" id="makeprimary">Make Main Photo</button>' +
-                    '</div>'+
-                    '<div class="text-right col-xs-4 col-md-4">' +
-                        '<button class="btn btn-default pull-right" id="nextbutton">&gt;&gt</button>' +
-                    '</div>' +
-            '</div>';
-            m4 =    
+
+            if (isOwner) {
+                m1 =
+                '<div class="row">' +
+                '<div class="text-left col-xs-3 col-md-4">' +
+                '<button class="btn btn-default pull-left" id="prevbutton">&lt;&lt</button>' +
+                '</div>' +
+                '<div class="text-middle col-xs-5 col-md-4">' +
+                '<button class="btn btn-default" id="makeprimary">Make Main Photo</button>' +
+                '</div>' +
+                '<div class="text-right col-xs-4 col-md-4">' +
+                '<button class="btn btn-default pull-right" id="nextbutton">&gt;&gt</button>' +
+                '</div>' +
+                '</div>';
+                m4 =
                 '<div class="text-right">' +
-                    '<button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" id="trashbutton">'+
-                   		'<span class="glyphicon glyphicon-trash" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true">'+
-                        '</span>'+
-                    '</button>' +
+                '<button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" id="trashbutton">' +
+                '<span class="glyphicon glyphicon-trash" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true">' +
+                '</span>' +
+                '</button>' +
                 '</div><br/>';
-            
+
             }
             else {
-            m1 =  '<div class="row">'+
-                    '<div class="text-left col-xs-6">' +
-                        '<button class="btn btn-default pull-left" id="prevbutton">&lt;&lt</button>' +
-                    '</div>'+ 
-                    '<div class="text-right col-xs-6">' +
-                        '<button class="btn btn-default pull-right" id="nextbutton">&gt;&gt</button>' +
-                    '</div>' +
-            '</div>';
-            m4 = '<br/><br/>';
+                m1 = '<div class="row">' +
+                '<div class="text-left col-xs-6">' +
+                '<button class="btn btn-default pull-left" id="prevbutton">&lt;&lt</button>' +
+                '</div>' +
+                '<div class="text-right col-xs-6">' +
+                '<button class="btn btn-default pull-right" id="nextbutton">&gt;&gt</button>' +
+                '</div>' +
+                '</div>';
+                m4 = '<br/><br/>';
             }
             m2 = '<br>' +
             '<div class="text-center">' +
-                '<img id="image" class="displayed" src="'+
-                //'https://rankx.blob.core.windows.net/sandiego/';
-                '';
+            '<img id="image" class="displayed" src="' +
+            //'https://rankx.blob.core.windows.net/sandiego/';
+            '';
             m3 =
             '" style="' + img_style + '">' +
-                '</div>'+
-                '<br/>';
+            '</div>' +
+            '<br/>';
             
             //messagehtml = m1 + m2 + blobList[n].Name + m3 + m4;
             messagehtml = m1 + m2 + blobList[n] + m3 + m4;
@@ -1226,22 +1228,22 @@
                     $content.find('#prevbutton').click({}, function () {
                         n = n - 1;
                         if (n < 0) n = L - 1;
-                        $content.find('#image').attr('src',blobList[n]);
+                        $content.find('#image').attr('src', blobList[n]);
                     });
 
                     $content.find('#nextbutton').click({}, function () {
                         n = n + 1;
                         if (n >= L) n = 0;
-                        $content.find('#image').attr('src',blobList[n]);
+                        $content.find('#image').attr('src', blobList[n]);
                     });
-                    
+
                     $content.find('#trashbutton').click({}, function () {
-                        confirmPhotoDelete(blobList,n);
+                        confirmPhotoDelete(blobList, n);
                         x.close();
                     });
-                    
+
                     $content.find('#makeprimary').click({}, function () {
-                        confirmMakePrimary(blobList,n,answer);
+                        confirmMakePrimary(blobList, n, answer);
                         x.close();
                     });
                     return $content;
@@ -1259,7 +1261,7 @@
             });
 
         }
-        
+
         function confirmPhotoDelete(blobList, n) {
 
             var title = '';
@@ -1270,10 +1272,10 @@
             title = 'Please Confirm';
             btnCancelLabel = 'Cancel';
             btnOkLabel = 'Yes, Delete';
-            message = '<br>Please confirm, you want to delete this photo: '+
-            '<br/><img id="image" class="displayed" src="'+
-            blobList[n] + 
-             '" style="width:100%;height:auto">' +
+            message = '<br>Please confirm, you want to delete this photo: ' +
+            '<br/><img id="image" class="displayed" src="' +
+            blobList[n] +
+            '" style="width:100%;height:auto">' +
             '<br><br>';
 
             BootstrapDialog.confirm({
@@ -1295,7 +1297,7 @@
                 }
             });
         }
-        
+
         function confirmMakePrimary(blobList, n, myanswer) {
 
             var title = '';
@@ -1306,10 +1308,10 @@
             title = 'Please Confirm';
             btnCancelLabel = 'Cancel';
             btnOkLabel = 'Yes, make primary';
-            message = '<br>Please confirm, you want to make this the primary photo: '+
-            '<br/><img id="image" class="displayed" src="'+
-            blobList[n] + 
-             '" style="width:100%;height:auto">' +
+            message = '<br>Please confirm, you want to make this the primary photo: ' +
+            '<br/><img id="image" class="displayed" src="' +
+            blobList[n] +
+            '" style="width:100%;height:auto">' +
             '<br><br>';
 
             BootstrapDialog.confirm({
@@ -1327,58 +1329,158 @@
                 callback: function (result) {
                     if (result) {
                         var imageurl = blobList[n];
-                        answer.updateAnswer(myanswer.id,["image"],[imageurl]);
+                        answer.updateAnswer(myanswer.id, ["image"], [imageurl]);
                     }
                 }
             });
         }
-        
-        function loginFacebook(){
+
+        function loginFacebook() {
             var title = '';
             var message = '';
             var btnCancelLabel = '';
             var btnOkLabel = '';
 
             title = 'Login required';
-            message = 'You must be logged in to add answers, endorse establishments and participate in the rankings.'+
-            '</br></br>'+
+            message = 'You must be logged in to add answers, endorse establishments and participate in the rankings.' +
+            '</br></br>' +
             'Do you want to log in?';
 
             BootstrapDialog.show({
-            title: title,
-            message: message,
-            buttons: [{
-                 label: 'Not now',
-                 action: function(dialogItself){
-                      dialogItself.close();
-                 }
-                }, 
-                {
-                    icon: 'fa fa-facebook',
-                    label: 'Login',
-                    cssClass: 'btn-primary',
-                    action: function(){
+                title: title,
+                message: message,
+                buttons: [{
+                    label: 'Not now',
+                    action: function (dialogItself) {
+                        dialogItself.close();
+                    }
+                },
+                    {
+                        icon: 'fa fa-facebook',
+                        label: 'Login',
+                        cssClass: 'btn-primary',
+                        action: function () {
                         
-                        //Store in cookies memory, current state 
-                        var statename = $state.current.name; 
-                        $cookies.put('statename', statename);
-                        if (statename == 'rankSummary'){
-                            $cookies.put('statenum', $rootScope.cCategory.id);
+                            //Store in cookies memory, current state 
+                            var statename = $state.current.name;
+                            $cookies.put('statename', statename);
+                            if (statename == 'rankSummary') {
+                                $cookies.put('statenum', $rootScope.cCategory.id);
+                            }
+                            if (statename == 'answerDetail') {
+                                $cookies.put('statenum', $rootScope.canswer.id);
+                            }
+
+                            console.log("state and num - ", $cookies.statenum, $cookies.statenum);
+
+                            login.loginWithFacebook()
+                                .then(function (result) {
+                                    $window.location = result.url;
+                                });
                         }
-                        if (statename == 'answerDetail'){
-                            $cookies.put('statenum', $rootScope.canswer.id);
-                        }
-                        
-                        console.log("state and num - ", $cookies.statenum, $cookies.statenum);
-                        
-                        login.loginWithFacebook()
-                            .then(function (result) {
-                                $window.location = result.url;
-                        });
+                    }]
+            });
+        }
+
+        function shareOptions(callback, isMobile) {
+            var title = '';
+            var messagehtml = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Share Options';
+            messagehtml =
+            '<div class="row">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<img src="/assets/images/1485385043_mail.png" id="email" style="width:50px;margin-bottom:20px">' +
+            '</div>' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<img src="/assets/images/1485384809_2_-_Facebook.png" id="facebook" style="width:50px;margin-bottom:20px">' +
+            '</div>' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<img src="/assets/images/1485384868_1_-_Twitter.png" id="twitter" style="width:50px;margin-bottom:20px">' +
+            '</div>' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<img src="/assets/images/1485384841_13_-_Pintrest.png" id="pinterest" style="width:50px;margin-bottom:20px">' +
+            '</div>' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<img src="/assets/images/1485384824_6_-_Google_Plus.png" id="gplus" style="width:50px;margin-bottom:20px">' +
+            '</div>' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<img src="/assets/images/1485384853_5_-_Tumbler.png" id="tumblr" style="width:50px;margin-bottom:20px">' +
+            '</div>' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<img src="/assets/images/1485425301_reddit.png" id="reddit" style="width:50px;margin-bottom:20px">' +
+            '</div>' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<img src="/assets/images/1485384832_16_-_Whatsapp.png" id="whatsapp"'+
+            ' style="width:50px;margin-bottom:20px;display:'+ (isMobile ? 'inline':'none') + '">' +
+            '</div>' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<img src="/assets/images/1485385110_Facebook_Messenger.png" id="messenger"'+
+            ' style="width:50px;margin-bottom:20px;display:'+ (isMobile ? 'inline':'none') + '">' +
+            '</div>' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<img src="/assets/images/1485385026_sms.png" id="sms"'+ 
+            ' style="width:50px;margin-bottom:20px;display:'+ (isMobile ? 'inline':'none') + '">' +
+            '</div>'
+            '</div>';
+
+            BootstrapDialog.show({
+                title: title,
+                message: function (dialogRef) {
+                    var $content = $(messagehtml);
+                    var x = dialogRef;
+                    $content.find('#twitter').click({}, function () {
+                        callback('twitter');
+                        x.close();
+                    });
+                    $content.find('#facebook').click({}, function () {
+                        callback('facebook');
+                        x.close();
+                    });
+                    $content.find('#email').click({}, function () {
+                        callback('email');
+                        x.close();
+                    });
+                    $content.find('#pinterest').click({}, function () {
+                        callback('pinterest');
+                        x.close();
+                    });
+                    $content.find('#gplus').click({}, function () {
+                        callback('gplus');
+                        x.close();
+                    });
+                    $content.find('#reddit').click({}, function () {
+                        callback('reddit');
+                        x.close();
+                    });
+                    $content.find('#tumblr').click({}, function () {
+                        callback('tumblr');
+                        x.close();
+                    });
+                    $content.find('#whatsapp').click({}, function () {
+                        callback('whatsapp');
+                        x.close();
+                    });
+                    $content.find('#messenger').click({}, function () {
+                        callback('messenger');
+                        x.close();
+                    });
+                    $content.find('#sms').click({}, function () {
+                        callback('sms');
+                        x.close();
+                    });
+                    return $content;
+                },
+                buttons: [{
+                    label: 'Cancel',
+                    action: function (dialogItself) {
+                        dialogItself.close();
                     }
                 }]
             });
         }
-               
+
     }
 })();
