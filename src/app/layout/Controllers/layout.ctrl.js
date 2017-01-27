@@ -32,7 +32,7 @@
         //else 
         vm.veilMsg = 'Just a second, loading San Diego\'s best...';
         vm.hidelogo = false;
-
+        
         $rootScope.$on('refreshRanks', function () {
             if ($state.current.name == 'cwrapper') {
                 vm.hidelogo = $rootScope.hidelogo;
@@ -42,6 +42,9 @@
             if ($state.current.name == 'rankSummary' || $state.current.name == 'answerDetail') {
                 vm.hidelogo = false;
             }
+        });
+        $rootScope.$on('userDataLoaded', function () {
+            loadingDone();
         });
         
         /*
@@ -132,8 +135,9 @@
             var p11 = rankofday.getrankofday();
             var p12 = uaf.getactions();
             
-            userdata.loadVotes();
-
+            userdata.loadUserData();        //load user data (votes and activities)
+            userdata.loadUserAccount();     //load user business account
+            
             return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12]).then(function (d) {
                 $rootScope.answers = d[0];
                 $rootScope.content = d[1];
@@ -148,17 +152,28 @@
                 $rootScope.pvisits = d[10];
                 $rootScope.rankofday = d[11];
                 $rootScope.uafs = d[12];
+                
+                $rootScope.pageDataLoaded = true;
 
                 updatePageVisits();
                 loadingDone();
 
             });
+            
+            
 
         }
 
         function loadingDone() {
-            vm.isLoading = false;
-            $rootScope.dataIsLoaded = true;
+            if ($rootScope.pageDataLoaded == undefined) $rootScope.pageDataLoaded = false;
+            if ($rootScope.userDataLoaded == undefined) $rootScope.userDataLoaded = false;
+            
+            $rootScope.dataIsLoaded = $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
+            vm.isLoading = !$rootScope.dataIsLoaded;
+            if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.dataIsLoaded -", $rootScope.dataIsLoaded);
+            if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.pageDataLoaded -", $rootScope.pageDataLoaded);
+            if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.userDataLoaded -", $rootScope.userDataLoaded);
+
         }
 
         function updatePageVisits() {

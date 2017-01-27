@@ -145,7 +145,7 @@
             
             vm.searchActive = $rootScope.searchActive ? $rootScope.searchActive: false;
             
-            userdata.loadVotes();
+            //userdata.loadVotes();
             
         }
 
@@ -215,7 +215,7 @@
 
             vm.nhs = $rootScope.neighborhoods.concat($rootScope.districts);
             
-            userdata.loadVotes();
+            //userdata.loadVotes();
 
         }
 

@@ -11,10 +11,12 @@
 
         // Members
         var _alluseractivity = [];
+        var _useractivity = [];
         var baseURI = '/api/v2/mysql/_table/useractivity';
 
         var service = {
             getAllUserActivity: getAllUserActivity,
+            getActivitybyUser: getActivitybyUser,
             postRec: postRec,
             patchRec: patchRec,
             deleteRec: deleteRec,
@@ -38,6 +40,24 @@
             function querySucceeded(result) {
 
                 return _alluseractivity = result.data.resource;
+            }
+
+        }
+        
+        function getActivitybyUser(forceRefresh) {
+
+            if (_userActivityLoaded() && !forceRefresh) {
+
+                return $q.when(_userActivityLoaded);
+            }
+
+            var url = baseURI + '/?filter=user='+ $rootScope.user.id;;
+
+            return $http.get(url).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+
+                return _useractivity = result.data.resource;
             }
 
         }
@@ -154,6 +174,11 @@
         function _areAllUserActivityLoaded() {
 
             return _alluseractivity.length > 0;
+        }
+        
+        function _userActivityLoaded() {
+
+            return _useractivity.length > 0;
         }
 
         function _queryFailed(error) {
