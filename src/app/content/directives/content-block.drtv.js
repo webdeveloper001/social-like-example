@@ -91,6 +91,12 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             inm = false;
                         }
                         
+                        //ignore user typed words such as 'best', 'top'
+                        if (inputVal.indexOf('best ') > -1 ) inputVal = inputVal.replace('best ', '');
+                        if (inputVal.indexOf('Best ') > -1 ) inputVal = inputVal.replace('Best ', '');
+                        if (inputVal.indexOf('top ') > -1 ) inputVal = inputVal.replace('top ', '');
+                        if (inputVal.indexOf('Top ') > -1 ) inputVal = inputVal.replace('Top ', '');
+                        
                         //Special Cases
                         if (inputVal == 'pho' || inputVal == 'Pho'){
                             inputVal = 'vietnamese';
@@ -473,9 +479,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
         
                     /*//  2. Use this to add/remove a tag from a rank 
                     for (var i=0; i < vm.results.length; i++){
-                        if (vm.results[i].title.includes("Fine dining")){
-                            var tags = vm.results[i].tags + ' food';
-                            //var tags = vm.results[i].tags.replace('mission','');
+                        if (vm.results[i].title.includes("Spas in")){
+                            var tags = vm.results[i].tags + ' medspa med';
+                            //var tags = vm.results[i].tags.replace('lifestyle','');
                             //var newtype = 'Event';
                             table.update(vm.results[i].id, ['tags'],[tags]);    
                         }            
@@ -491,7 +497,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             table.update(vm.results[i].id, ['title'],[titlex]);
                         }
                     } 
-                    *///End of 3
+                    */ //End of 3
             
                     /*//  4.Use this to add a neighborhood
                     //var nhs = ["Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",

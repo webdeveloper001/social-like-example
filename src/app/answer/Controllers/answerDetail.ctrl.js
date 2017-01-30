@@ -120,9 +120,7 @@
         }
         
         //TODO: Would like to add this abstract template, but dont know how               
-            $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
-                $rootScope.previousState = from.name;
-            });
+            
             $rootScope.$on('$stateChangeStart',
                 function (ev, to, toParams, from, fromParams) {
                     if (from.name == 'answerDetail' && to.name != 'answerDetail' ) {

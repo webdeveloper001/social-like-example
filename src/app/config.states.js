@@ -318,6 +318,20 @@
                 }
             },
             {
+                name: 'privacypolicy',
+                url: '/privacypolicy',
+                views: {
+                    "@": {
+                        templateUrl: 'app/layout/Partials/privacypolicy.html',
+                        controller: 'privacypolicy as vm'
+                    },
+                    "navbar@about": {
+                        templateUrl: 'app/layout/Partials/navbar.html',
+                        controller: 'navbar as vm'
+                    }
+                }
+            },
+            {
               name: 'mybiz',
               url: '/mybiz',
               views: {

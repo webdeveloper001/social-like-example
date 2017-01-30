@@ -928,7 +928,7 @@
             function share(){
                 vm.linkurl = 'https://rank-x.com/#/rankSummary/' + $rootScope.cCategory.id; 
                 vm.tweet = $rootScope.cCategory.title + ', endorse your favorite ones at: ';
-                dialog.shareOptions(shareFunction, vm.isMobile);
+                dialog.shareOptions(shareFunction, false);
             }
             
             function shareFunction(x){

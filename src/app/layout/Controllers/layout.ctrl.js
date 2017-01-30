@@ -33,6 +33,8 @@
         vm.veilMsg = 'Just a second, loading San Diego\'s best...';
         vm.hidelogo = false;
         
+        vm.goPrivacyPolicy = goPrivacyPolicy;
+        
         $rootScope.$on('refreshRanks', function () {
             if ($state.current.name == 'cwrapper') {
                 vm.hidelogo = $rootScope.hidelogo;
@@ -46,6 +48,9 @@
         $rootScope.$on('userDataLoaded', function () {
             loadingDone();
         });
+        $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
+                $rootScope.previousState = from.name;
+            });
         
         /*
         if ($window.innerWidth < 512) vm.logoimage = "../../../assets/images/rankxlogosd_sm.png";
@@ -208,6 +213,10 @@
             var ua = navigator.userAgent || navigator.vendor || window.opera;
             //console.log("@isFacebook - ua - ", ua);
             return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
+        }
+        
+        function goPrivacyPolicy(){
+            $state.go('privacypolicy');
         }
         
         /*

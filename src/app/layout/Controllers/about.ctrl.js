@@ -15,11 +15,11 @@
         vm.goBack = goBack;
         
         if ($window.innerWidth < 512) {
-            vm.logoimage = "/assets/images/logogray.png";
+            vm.logoimage = "/assets/images/rankxlogo_noheadline.png";
             vm.sm = true;
         }
         else {
-            vm.logoimage = "/assets/images/logogray.png";
+            vm.logoimage = "/assets/images/rankxlogo_noheadline.png";
             vm.sm = false;
         }
       

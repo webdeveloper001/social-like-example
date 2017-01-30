@@ -82,7 +82,7 @@
 					<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;{{x.answers}}&nbspanswers-{{x.views}}&nbspviews</small>
 				</td>
 			</tr>
-			<tr ng-repeat="x in results_rt" ng-click="rankSel(x,true)" style="cursor:pointer;" ng-if="rt">
+			<tr ng-repeat="x in results_rt" ng-click="rankSel(x,false)" style="cursor:pointer;" ng-if="rt">
 				<td style="width:50%;">
 					{{x.title}}
 					<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;{{x.answers}}&nbspanswers-{{x.views}}&nbspviews</small>

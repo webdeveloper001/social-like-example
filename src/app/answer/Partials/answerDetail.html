@@ -10,6 +10,14 @@
         </h3>
     </div>
 </div>
+<div class="row" ng-if="vm.showNextnPrev">
+    <div class="text-left col-xs-6">
+        <button class="btn-success" ng-click="vm.goPrev()">&lt;&lt</button>
+    </div>
+    <div class="text-right col-xs-6">
+        <button class="btn-success" ng-click="vm.goNext()">&gt;&gt</button>
+    </div>
+</div>
 <div class="container">
     <!--
     <div class="text-right ">
@@ -61,8 +69,7 @@
 
 <!--<h3>{{vm.answerheader}}</h3>-->
 
-<div class="text-middle" ng-if="vm.type != 'Short-Phrase'">
-
+<div class="text-middle" ng-if="vm.type != 'Short-Phrase'"> 
     <img class="displayed" src="{{vm.answer.imageurl}}" alt="Moustiers Sainte Marie" style="height:{{vm.mxheight}}px;width:auto;max-width:96%;margin-left:auto;margin-right:auto;"
     ng-click="vm.showUrl()" ng-if="vm.modeIsImage">
 
@@ -78,14 +85,7 @@
     <h4 style="text-align:center">{{vm.answer.addinfo}}</h4>
 </div>
 <!-- <div class="row" ng-if="vm.type != 'Establishment'"> -->
-<div class="row" ng-if="vm.showNextnPrev">
-    <div class="text-left col-xs-6">
-        <button class="btn-success" ng-click="vm.goPrev()">&lt;&lt</button>
-    </div>
-    <div class="text-right col-xs-6">
-        <button class="btn-success" ng-click="vm.goNext()">&gt;&gt</button>
-    </div>
-</div>
+
 <div class="answer_info row" ng-if="vm.type != 'Short-Phrase' && vm.type != 'Event'">
     <div class="col-sm-8">
         <br>
@@ -149,7 +149,7 @@
         <h3 class="sub-header">Endorsements</h3>
     </div>
     <p class="text-left" ng-if="vm.type != 'Short-Phrase'"><strong>{{vm.answer.name}}</strong> is featured in the following ranks:</p>
-    <p>Vote up if you endorse. Vote down if you disapprove.</p>
+    <p>Endorse! Give a thumb up if you endorse for the ranking. Thumb down if you do not recommend.</p>
     <!--
 <div class="well well-light-ranks col-md-4 col-lg-4">
     <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
