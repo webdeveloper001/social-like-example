@@ -1,0 +1,69 @@
+<h1>Merge Answers</h1>
+</br>
+<h3>Pair {{vm.idx}} of {{vm.tot}}</h3>
+<div class="row">
+    <div class="text-left col-xs-6">
+        <button class="btn-success" ng-click="vm.goPrev(50)">&lt;&lt;&lt</button>
+		<button class="btn-success" ng-click="vm.goPrev(10)">&lt;&lt</button>
+		<button class="btn-success" ng-click="vm.goPrev(1)">&lt</button>
+    </div>
+    <div class="text-right col-xs-6">
+        <button class="btn-success" ng-click="vm.goNext(1)">&gt</button>
+		<button class="btn-success" ng-click="vm.goNext(10)">&gt;&gt</button>
+		<button class="btn-success" ng-click="vm.goNext(50)">&gt;&gt;&gt</button>
+    </div>
+</div>
+</br>
+<div class="container">
+	<div class="row">
+		<div class="col-xs-6 col-sm-6 col-lg-6">
+			<h4 class="radio"><input type="radio" ng-model="vm.ans1_NameSel" name="nameOption">{{vm.ans1.name}}</h4>
+			<div class="text-left btn-group"><button class="btn btn-danger" ng-click="vm.delAnswer(1)">Delete Answer</button>
+			<button class="btn btn-primary" ng-click="vm.editAnswer(1)">Edit Answer</button></div></br> 
+            <input type="radio" class="radio-inline" ng-model="vm.ans1_ImageSel" name="imageOption">
+			<img src="{{vm.ans1.imageurl}}" style="width:40%;height:100px">
+			<p class="text-left"><input type="radio" ng-model="vm.ans1_AddressSel" name="addressOption">&nbsp{{vm.ans1.location}}</p>
+			<p class="text-left"><input type="radio" ng-model="vm.ans1_NhSel" name="nhOption">&nbsp{{vm.ans1.cityarea}}</p>
+			<p class="text-left"><input type="radio" ng-model="vm.ans1_PhoneSel" name="phoneOption">&nbsp{{vm.ans1.phone}}</p>
+			<p class="text-left"><input type="radio" ng-model="vm.ans1_WebsiteSel" name="websiteOption">&nbsp{{vm.ans1.website}}</p>
+			<p class="text-left"><input type="radio" ng-model="vm.ans1_AddinfoSel" name="addinfoOption">&nbsp{{vm.ans1.addinfo}}</p>
+			<div ng-repeat="y in vm.ans1.catans track by $index">
+		 		{{y.rank}} --- {{y.id}} --- {{y.category}} --- {{y.answer}} <button class="btn btn-warning" ng-click="vm.delCatans(y)">Delete Catans</button><br>
+ 	 		</div>
+			<div class="text-left"><button class="btn btn-primary" ng-click="vm.addCatans(1)">Add Catans</button></div>
+			<div class="input-group" ng-if="vm.addcts1active">
+                <!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
+                <input type="text" class="form-control" ng-model="vm.addcts1val" bs-options="c for c in vm.addcts1opts" bs-typeahead>
+                <span class="input-group-btn text-right">
+                        <button class="btn btn-success" type="button" ng-click="vm.addcts(1)">Add</button>
+                </span>
+            </div>
+			<label class="checkbox-inline" ng-if="vm.addcts1active"><input type="checkbox" ng-model="vm.cat1isdup">Is Dup</label> 
+			
+		</div>
+		<div class="col-xs-6 col-sm-6 col-lg-6">
+			<h4 class="radio"><input type="radio" ng-model="vm.ans2_NameSel" name="nameOption">{{vm.ans2.name}}</h4>
+			<div class="text-left btn-group"><button class="btn btn-danger" ng-click="vm.delAnswer(2)">Delete Answer</button>
+			<button class="btn btn-primary" ng-click="vm.editAnswer(2)">Edit Answer</button></div></br> 
+		    <input type="radio" class="radio-inline" ng-model="vm.ans2_ImageSel" name="imageOption">
+			<img src="{{vm.ans2.imageurl}}" style="width:40%;height:100px">
+			<p class="text-left"><input type="radio" ng-model="vm.ans2_AddressSel" name="addressOption">&nbsp{{vm.ans2.location}}</p>
+			<p class="text-left"><input type="radio" ng-model="vm.ans2_NhSel" name="nhOption">&nbsp{{vm.ans2.cityarea}}</p>
+			<p class="text-left"><input type="radio" ng-model="vm.ans2_PhoneSel" name="phoneOption">&nbsp{{vm.ans2.phone}}</p>
+			<p class="text-left"><input type="radio" ng-model="vm.ans2_WebsiteSel" name="websiteOption">&nbsp{{vm.ans2.website}}</p>
+			<p class="text-left"><input type="radio" ng-model="vm.ans2_AddinfoSel" name="addinfoOption">&nbsp{{vm.ans2.addinfo}}</p>
+			<div ng-repeat="x in vm.ans2.catans track by $index">
+		 		{{x.rank}} --- {{x.id}} --- {{x.category}} --- {{x.answer}} <button class="btn btn-warning" ng-click="vm.delCatans(x)">Delete Catans</button><br>
+ 	 		</div>
+			<div class="text-left"><button class="btn btn-primary" ng-click="vm.addCatans(2)">Add Catans</button></div>
+			<div class="input-group" ng-if="vm.addcts2active">
+                <!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
+                <input type="text" class="form-control" ng-model="vm.addcts2val" bs-options="c for c in vm.addcts2opts" bs-typeahead>
+                <span class="input-group-btn text-right">
+                        <button class="btn btn-success" type="button" ng-click="vm.addcts(2)">Add</button>
+                </span>
+			</div>
+			<label class="checkbox-inline" ng-if="vm.addcts2active"><input type="checkbox" ng-model="vm.cat2isdup">Is Dup</label>
+        </div>
+	</div>
+</div>

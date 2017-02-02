@@ -29,12 +29,15 @@
                 //var xmlDoc = parser.parseFromString(result.data,"text/xml");
                 var x2js = new X2JS();
                 var myJSON = x2js.xml_str2json(result.data);
+                var myObj = {};
                 
                 var resParse = myJSON.EnumerationResults.Blobs.Blob;
                 $rootScope.blobs = [];
                 
                 for (var i=0; i < resParse.length; i++){
-                    $rootScope.blobs.push('https://rankx.blob.core.windows.net/sandiego/'+resParse[i].Name);
+                    myObj = {};
+                    myObj.url = 'https://rankx.blob.core.windows.net/sandiego/'+resParse[i].Name;
+                    $rootScope.blobs.push(myObj);
                 }
                 
                 if ($rootScope.DEBUG_MODE) console.log('query succeded');

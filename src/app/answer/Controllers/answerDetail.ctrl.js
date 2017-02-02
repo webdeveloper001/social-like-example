@@ -139,6 +139,10 @@
         
         function activate() {
             
+            //Temp for Instagram Demo
+            if (vm.answer.id == 2225) vm.igdemo = true;
+            else vm.igdemo = false;
+            
             getFields();
             
             //Set Image Mode -- Map or Photo
@@ -522,17 +526,17 @@
         function displayVote(x) {
             
             if (x.dV == 1) {
-                x.thumbUp = "thumbs_up_blue.png";
-                x.thumbDn = "thumbs_down_gray.png";
+                x.thumbUp = "thumbs_up_blue_table.png";//"thumbs_up_blue.png";//
+                x.thumbDn = "thumbs_down_gray_table.png";//"thumbs_down_gray.png";
             }
 
             if (x.dV == 0) {
-                x.thumbUp = "thumbs_up_gray.png";
-                x.thumbDn = "thumbs_down_gray.png";
+                x.thumbUp = "thumbs_up_gray_table.png";//"thumbs_up_gray.png";
+                x.thumbDn = "thumbs_down_gray_table.png";//"thumbs_down_gray.png";
             }
             if (x.dV == -1) {
-                x.thumbUp = "thumbs_up_gray.png";
-                x.thumbDn = "thumbs_down_blue.png";
+                x.thumbUp = "thumbs_up_gray_table.png";//"thumbs_up_gray.png";
+                x.thumbDn = "thumbs_down_blue_table.png";//"thumbs_down_blue.png";
             }
         }
         
@@ -865,13 +869,17 @@
         }
 
         function getImages() {
-            imagelist.getImageList().then(showImages);
+            
+            if (vm.igdemo) instagram.getImages().then(showImages);
+            else imagelist.getImageList().then(showImages);
+            
             vm.showImageGallery = true;
-            //instagram.getImages().then(showImages);
+            
         }
         function showImages(){
-            //vm.images = $rootScope.igimages;            
-            vm.images = $rootScope.blobs;
+            if (vm.igdemo) vm.images = $rootScope.igimages;            
+            else vm.images = $rootScope.blobs;
+            //console.log("@showImages - ", vm.images);
         }
         /*
         function showMap(){

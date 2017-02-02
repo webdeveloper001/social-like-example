@@ -5,6 +5,7 @@
 	<button class="btn btn-danger" ng-click="vm.deleteAnswers()">Delete Answers</button>
 	<button class="btn btn-default" ng-click="vm.showPossibleDuplicated()">Show Possible Duplicated</button>
 	<button class="btn btn-default" ng-click="vm.showDuplicatedOnlyName()">Show Duplicated Only Name</button>
+	<button class="btn btn-default" ng-click="vm.showDuplicatedByLocation()">Show Duplicated By Location</button>
 	<br>
 	<button class="btn btn-default" ng-click="vm.findPhoneWebsite()">Phone Numbers & Website</button>
 	<br>
@@ -49,4 +50,5 @@
 			<button class="btn btn-default" ng-click="vm.gotoAnswer(x)">Go to Answer</button>
 		</div>
 	</div>
+	<button ng-if="vm.dupAnsRdy" class="btn btn-primary" ng-click="vm.goMerge()">Go Merge Screen</button>
 </div>

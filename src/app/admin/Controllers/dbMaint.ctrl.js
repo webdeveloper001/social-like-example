@@ -5,11 +5,11 @@
         .module('app')
         .controller('dbMaint', dbMaint);
 
-    dbMaint.$inject = ['$location', '$rootScope', '$state', '$stateParams', 'Upload', 
-    'table', 'dialog', 'answer', 'catans', 'votes', '$http'];
+    dbMaint.$inject = ['$location', '$rootScope', '$state', '$stateParams', 'Upload',
+        'table', 'dialog', 'answer', 'catans', 'votes', '$http'];
 
-    function dbMaint(location, $rootScope, $state, $stateParams, Upload, 
-    table, dialog, answer, catans, votes, $http) {
+    function dbMaint(location, $rootScope, $state, $stateParams, Upload,
+        table, dialog, answer, catans, votes, $http) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'dbMaint';
@@ -20,6 +20,7 @@
         vm.syncToFirst = syncToFirst;
         vm.syncToSecond = syncToSecond;
         vm.showDuplicatedOnlyName = showDuplicatedOnlyName;
+        vm.showDuplicatedByLocation = showDuplicatedByLocation;
         vm.findPhoneWebsite = findPhoneWebsite;
         vm.findDuplicatedRanks = findDuplicatedRanks;
         vm.clearAllCatansVotes = clearAllCatansVotes;
@@ -29,8 +30,11 @@
         vm.gotoAnswer = gotoAnswer;
         vm.createImagesJSON = createImagesJSON;
         vm.updateUrls = updateUrls;
-        
+        vm.goMerge = goMerge;
+
         vm.isAdmin = $rootScope.isAdmin;
+        
+        vm.dupAnsRdy = false;
 
         activate();
 
@@ -176,6 +180,40 @@
                     }
                 }
             }
+        }
+
+        function showDuplicatedByLocation() {
+            // Find answers that are duplicated
+            $rootScope.fields = $rootScope.typeSchema[6].fields;
+            
+            var canswer = {};
+            var obj = {};
+            var dupAnsLocation = [];
+            var idx = 0;
+            for (var i = 0; i < $rootScope.answers.length; i++) {
+                canswer = $rootScope.answers[i];
+                if (canswer.location != undefined && canswer.location != '') {
+                    for (var j = 0; j < $rootScope.answers.length; j++) {
+                        if ($rootScope.answers[j].location != undefined && $rootScope.answers[j].location != '') {
+                            if (canswer.location == $rootScope.answers[j].location &&  i != j) {
+                                //console.log("Duplicated answer: ", canswer.name);
+                                obj = {};
+                                obj.ans1 = canswer;
+                                obj.ans2 = $rootScope.answers[j];
+                                dupAnsLocation.push(obj);
+                                idx++;
+                            }
+                        }
+                    }
+                }
+            }
+            $rootScope.dupAns = dupAnsLocation;
+            console.log("@finished - showDuplicatedByLocation");
+            vm.dupAnsRdy = true;
+        }
+        
+        function goMerge(){
+            $state.go('mergeAnswers');
         }
 
         function findPhoneWebsite() {
@@ -357,19 +395,19 @@
                 }
             }
         }
-        
-        function gotoAnswer(x){
+
+        function gotoAnswer(x) {
             $state.go("answerDetail", { index: x.id });
         }
-        
-        function createImagesJSON(){
+
+        function createImagesJSON() {
             
             //creates json of images that are non-secure
             var images = [];
             var imgObj = {};
             var idx = 1256;
-            for (var i=0; i< $rootScope.answers.length; i++){
-                if ($rootScope.answers[i].imageurl.indexOf('http://') > -1){
+            for (var i = 0; i < $rootScope.answers.length; i++) {
+                if ($rootScope.answers[i].imageurl.indexOf('http://') > -1) {
                     imgObj = {};
                     imgObj.id = idx++;
                     imgObj.answer = $rootScope.answers[i].id;
@@ -379,24 +417,24 @@
             }
             console.log(JSON.stringify(images));
         }
-        
-        function updateUrls(){
-            
+
+        function updateUrls() {
+
             var images = [];
             var fext = '';
             $http.get('../../../assets/images.json').success(function (response) {
                 images = response;
                 //console.log("images length - ", images.length);
-                for (var i=0; i < images.length; i++){
-                    
+                for (var i = 0; i < images.length; i++) {
+
                     if (images[i].url.indexOf('jpg') > -1) fext = 'jpg';
                     if (images[i].url.indexOf('png') > -1) fext = 'png';
                     if (images[i].url.indexOf('jpeg') > -1) fext = 'jpeg';
-                    
-                    answer.updateAnswer(images[i].answer, ['image'], 
-                    ['https://rankx.blob.core.windows.net/sandiego/' + images[i].answer + '/' + images[i].id + '.' + fext]);
-                }                
+
+                    answer.updateAnswer(images[i].answer, ['image'],
+                        ['https://rankx.blob.core.windows.net/sandiego/' + images[i].answer + '/' + images[i].id + '.' + fext]);
+                }
             });
-        }                
+        }
     }
 })();

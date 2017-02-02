@@ -898,7 +898,17 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                              answer.updateAnswer($rootScope.answers[i].id, ['numcom'], [0]); 
                          }
                      }
-                    */ //End 18                                                                   
+                    */ //End 18
+                    
+                    /* //19. Print all answers that do not have address, phone number or website
+                    for (var i=0; i<$rootScope.answers.length; i++){
+                        if ($rootScope.answers[i].type == 'Establishment'){
+                            if ($rootScope.answers[i].phone == undefined && $rootScope.answers[i].website ==undefined){
+                                console.log("Answer Id. ", $rootScope.answers[i].id, " Name: ", $rootScope.answers[i].name);
+                            }
+                        }
+                    } *///End 19
+                                                                                       
                 }
             }], //end controller
         link: function (scope) {

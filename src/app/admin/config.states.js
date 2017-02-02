@@ -58,6 +58,13 @@
                 templateUrl: 'app/admin/Partials/dbMaint.html',
                 controller: 'dbMaint as vm'               
             },
+            {
+                name: 'mergeAnswers',
+                parent: 'admin',
+                url: '/mergeAnswers',
+                templateUrl: 'app/admin/Partials/mergeAnswers.html',
+                controller: 'mergeAnswers as vm'               
+            },
              {
                 name: 'dbQuery',
                 parent: 'admin',

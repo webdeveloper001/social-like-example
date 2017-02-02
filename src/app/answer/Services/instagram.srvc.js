@@ -27,7 +27,7 @@
             
             var tags = $rootScope.canswer.name.replace(' ','');
             
-            var url = instagramAPIurl + '/tags/'+tags+'/media/recent?access_token='+instagramAccessToken + '&callback=JSON_CALLBACK';
+            var url = instagramAPIurl + '/tags/'+ 'rankxdemo' +'/media/recent?access_token='+instagramAccessToken + '&callback=JSON_CALLBACK';
             //var url = instagramAPIurl + '/media/search?lat='+$rootScope.canswer.lat+'&lng='+$rootScope.canswer.lng+
             //'&access_token='+instagramAccessToken + '&callback=JSON_CALLBACK';
             
@@ -43,9 +43,14 @@
             
             return $http.jsonp(url)
                 .success(function(data){
+                    var myObj = {};
                 console.log(data);
                 for (var i=0; i<data.data.length; i++){
-                    $rootScope.igimages.push(data.data[i].images.standard_resolution.url);
+                    myObj = {};
+                    myObj.url = data.data[i].images.standard_resolution.url;
+                    myObj.caption = data.data[i].caption ? data.data[i].caption.text : undefined;
+                    myObj.from = data.data[i].user.username;
+                    $rootScope.igimages.push(myObj);
                     //$rootScope.igimages[i].Name = data.data[i].images.standard_resolution.url;
                     console.log(data.data[i].images.standard_resolution.url);
                 }

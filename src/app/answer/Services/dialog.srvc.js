@@ -1168,7 +1168,8 @@
             var m2 = '';
             var m3 = '';
             var m4 = '';
-
+            var cap = '';
+            
             if (isOwner) {
                 m1 =
                 '<div class="row">' +
@@ -1200,7 +1201,7 @@
                 '<button class="btn btn-default pull-right" id="nextbutton">&gt;&gt</button>' +
                 '</div>' +
                 '</div>';
-                m4 = '<br/><br/>';
+                m4 = '<br/>';
             }
             m2 = '<br>' +
             '<div class="text-center">' +
@@ -1209,15 +1210,18 @@
             '';
             m3 =
             '" style="' + img_style + '">' +
-            '</div>' +
+            '</div>' + 
             '<br/>';
             
-            //messagehtml = m1 + m2 + blobList[n].Name + m3 + m4;
-            messagehtml = m1 + m2 + blobList[n] + m3 + m4;
-            // function myMessage(dialogRef, messagehtml){
-            //console.log("@myMessage - x - ",x);
-        
-            //}
+            if (blobList[n].from != undefined){
+                cap = '<p id="credit">Photo by:&nbsp<strong>@'+ blobList[n].from + '</strong></p></br><p id="caption">' + 
+                (blobList[n].caption ? blobList[n].caption : '')  +'</p>';
+            }
+            else{
+                cap = '<p id="credit"></p><p id="caption"></p>';
+            }
+            
+            messagehtml =  m1 + m2 + blobList[n].url + m3 + m4 + cap;
             
             BootstrapDialog.show({
                 type: BootstrapDialog.TYPE_PRIMARY,
@@ -1228,13 +1232,25 @@
                     $content.find('#prevbutton').click({}, function () {
                         n = n - 1;
                         if (n < 0) n = L - 1;
-                        $content.find('#image').attr('src', blobList[n]);
+                        $content.find('#image').attr('src', blobList[n].url);
+                        
+                        if (blobList[n].from != undefined) $('#credit').html('Photo by:&nbsp<strong>@'+ blobList[n].from + '</strong></br>');
+                        else $('#credit').html('');
+                        
+                        if (blobList[n].caption != undefined) $('#caption').html(blobList[n].caption);
+                        else $('#caption').html('');
                     });
 
                     $content.find('#nextbutton').click({}, function () {
                         n = n + 1;
                         if (n >= L) n = 0;
-                        $content.find('#image').attr('src', blobList[n]);
+                         $content.find('#image').attr('src', blobList[n].url);
+                         
+                         if (blobList[n].from != undefined) $('#credit').html('Photo by:&nbsp<strong>@'+ blobList[n].from + '</strong></br>');
+                         else $('#credit').html('');
+                        
+                         if (blobList[n].caption != undefined) $('#caption').html(blobList[n].caption);
+                         else $('#caption').html('');
                     });
 
                     $content.find('#trashbutton').click({}, function () {
