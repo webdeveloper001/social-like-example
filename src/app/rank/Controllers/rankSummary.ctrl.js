@@ -106,7 +106,7 @@
         activate();
 
         function activate() {
-            
+
             $rootScope.inFavMode = false;
             
             $window.scrollTo(0, 0);
@@ -284,7 +284,19 @@
             
             if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
             //console.log("$rootScope.user", $rootScope.user);
-            //createVrows();            
+            //createVrows();
+            //Store in cookies memory, current state
+            /* 
+            var statename = $state.current.name;
+            $cookies.put('statename', statename);
+            if (statename == 'rankSummary') {
+                $cookies.put('statenum', $rootScope.cCategory.id);
+            }
+            if (statename == 'answerDetail') {
+                $cookies.put('statenum', $rootScope.canswer.id);
+            }
+            console.log('@cookie test! -', $cookies.get('statename'),$cookies.get('statenum'));
+              */          
         }
 
         function getRankAnswers() {
@@ -582,7 +594,7 @@
                                     }
                                 }
                             }
-                        }
+                        }                  
                     }
                     //if rank is not atomic
                     else {
@@ -632,7 +644,7 @@
                                     }
                                 }
                             }
-                        }
+                        }                                     
                     }
 
                 }
@@ -741,12 +753,30 @@
             }
             */
             //Load UserActivity data
+            //compute number of contributions
             $rootScope.cuseractivity = [];
-            for (var i = 0; i < useractivities.length; i++) {
-                if (useractivities[i].category == $rootScope.cCategory.id) {
-                    $rootScope.cuseractivity.push(useractivities[i]);                     
+            //if rank is atomic
+            if ($rootScope.cCategory.isatomic == true) {
+                for (var i = 0; i < useractivities.length; i++) {
+                    if (useractivities[i].category == $rootScope.cCategory.id) {
+                        $rootScope.cuseractivity.push(useractivities[i]);
+
+                    }
                 }
             }
+            //else if rank is not atomic ('near me', 'San Diego', etc)
+            else {
+                var catArr2 = $rootScope.cCategory.catstr.split(':').map(Number);
+                for (var i = 0; i < useractivities.length; i++) {
+                    for (var j = 0; j < catArr2.length; j++) {
+                        if (useractivities[i].category == catArr2[j]) {
+                            $rootScope.cuseractivity.push(useractivities[i]);
+                            break;
+                        }
+                    }
+                }
+            }
+            
             vm.numContributors = $rootScope.cuseractivity.length;
             
             //data loading completed

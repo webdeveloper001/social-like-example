@@ -145,6 +145,8 @@
             
             vm.searchActive = $rootScope.searchActive ? $rootScope.searchActive: false;
             
+            if ($rootScope.isAdmin) prepareNewCatansOptions();
+            
             //userdata.loadVotes();
             
         }
@@ -359,7 +361,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-             $rootScope.$emit('applyRule');
+            // $rootScope.$emit('applyRule');
         }
            
         function getFeed(){
@@ -394,6 +396,22 @@
             $rootScope.fbmode = false;
             vm.fbm = $rootScope.fbmode;
         }
+        function prepareNewCatansOptions() {
+            
+            console.log("@prepareNewCatansOptions - $rootScope.content.length ", $rootScope.content.length);
+            $rootScope.ctsOptions = [];
+            var titlex = '';
+            for (var i = 0; i < $rootScope.content.length; i++) {
+                if ($rootScope.content[i].title.indexOf('in Hillcrest') > -1) {
+                    titlex = $rootScope.content[i].title.replace('Hillcrest', '@neighborhood');
+                    $rootScope.ctsOptions.push(titlex);
+                }
+                if ($rootScope.content[i].tags.indexOf('isMP') > -1) {
+                    $rootScope.ctsOptions.push($rootScope.content[i].title);
+                }
+            }
+        }
+        
         //***********End Admin Functions********************
     }
 })();

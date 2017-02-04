@@ -670,9 +670,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                            }
                        }
                        
-                    */ //End 8
+                     *///End 8
                
-                    /*//  9. Clear answer string for all non-atomic ranks 
+                    /* //  9. Clear answer string for all non-atomic ranks 
                     for (var i=0; i < $rootScope.content.length; i++){
                         if ($rootScope.content[i].isatomic == false){                
                             var answertags = '';
@@ -741,16 +741,16 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     /*//12. Add 'pb' tag to all Pacific Beach
                     var tagstr = '';
                     for (var i=0; i<$rootScope.content.length; i++){
-                        if ($rootScope.content[i].title.includes('Ocean Beach')){
-                            if ($rootScope.content[i].tags.includes('ob') == false){
+                        if ($rootScope.content[i].title.includes('Mission Beach')){
+                            if ($rootScope.content[i].tags.includes('mb') == false){
                                 //console.log($rootScope.content[i].title);
-                                tagstr = $rootScope.content[i].tags + ' ob';
+                                tagstr = $rootScope.content[i].tags + ' mb';
                                 //console.log("tagstr - ", tagstr, $rootScope.content[i].title);
                                 table.update($rootScope.content[i].id,['tags'],[tagstr]);
                             }
                         }
                     }
-                    */// End of 12
+                    */ // End of 12
                     /*//13. Open all contents to refresh number of answers, add vrows
                     $timeout(function () {
                         $state.go('rankSummary', { index: $rootScope.content[midx].id });
@@ -903,11 +903,11 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     /* //19. Print all answers that do not have address, phone number or website
                     for (var i=0; i<$rootScope.answers.length; i++){
                         if ($rootScope.answers[i].type == 'Establishment'){
-                            if ($rootScope.answers[i].phone == undefined && $rootScope.answers[i].website ==undefined){
-                                console.log("Answer Id. ", $rootScope.answers[i].id, " Name: ", $rootScope.answers[i].name);
+                            if ($rootScope.answers[i].cityarea == 'Downtown'){
+                                console.log("Answer Id. ", $rootScope.answers[i].id, " Name: ", $rootScope.answers[i].name, " Address: ", $rootScope.answers[i].location);
                             }
                         }
-                    } *///End 19
+                    } */ //End 19
                                                                                        
                 }
             }], //end controller

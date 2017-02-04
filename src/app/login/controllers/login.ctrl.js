@@ -80,23 +80,18 @@
                             }
 
                         });*/
-                        /*if ($rootScope.isLoggedIn) {
-                            console.log("isLoggedIn", $rootScope.isLoggedIn);
-
+                        
                             var statename = $cookies.get('statename');
                             var statenum = $cookies.get('statenum');
 
                             console.log("state and num - ", statename, statenum);
 
-                            if (statename != undefined) {
-                                $location.path(statename + '/' + statenum);
-                                $state.go(statename, { index: statenum });
+                            if (statename == 'rankSummary' || statename == 'answerDetail' ) {
+                                $state.go(statename, {index: statenum});
                             }
-                            else {*/
-                                $location.path('/');
-                                $state.go('cwrapper', {}, { location: 'replace' });
-                                //$state.go('cwrapper');
-                        //    }
+                            else {
+                                $state.go('cwrapper');
+                            }
                         //}
                         //$state.go('cwrapper');
  

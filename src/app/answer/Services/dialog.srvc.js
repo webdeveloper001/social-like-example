@@ -6,9 +6,9 @@
         .factory('dialog', dialog);
 
     dialog.$inject = ['$q', '$rootScope', 'useraccnt', 'imagelist', 'answer', 'login',
-        '$window', '$state', '$cookies']
+        '$window']
     function dialog($q, $rootScope, useraccnt, imagelist, answer, login,
-        $window, $state, $cookies) {
+        $window) {
 
         var service = {
             editConfirm: editConfirm,
@@ -1377,18 +1377,6 @@
                         cssClass: 'btn-primary',
                         action: function () {
                         
-                            //Store in cookies memory, current state 
-                            var statename = $state.current.name;
-                            $cookies.put('statename', statename);
-                            if (statename == 'rankSummary') {
-                                $cookies.put('statenum', $rootScope.cCategory.id);
-                            }
-                            if (statename == 'answerDetail') {
-                                $cookies.put('statenum', $rootScope.canswer.id);
-                            }
-
-                            console.log("state and num - ", $cookies.statenum, $cookies.statenum);
-
                             login.loginWithFacebook()
                                 .then(function (result) {
                                     $window.location = result.url;

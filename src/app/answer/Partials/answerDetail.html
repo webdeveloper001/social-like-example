@@ -169,7 +169,7 @@
     <br>
     <p class="hiw text-right" ng-click="vm.bizRegDialog()">&lt;&lt;See full ranking&gt;&gt;</p>
 </div>-->
-    <div class="well well-light-ranks col-md-4 col-lg-4" ng-repeat="r in vm.answerRanks">
+    <div class="well well-light-ranks col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-repeat="r in vm.answerRanks">
         <!--<p ng-click="vm.rankSel(r)"></p>-->
         <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
             <h4 class="sub-header">{{(vm.type == 'Short-Phrase') ? vm.answer.name : r.title}}</h4>
@@ -177,7 +177,7 @@
         <p class="text-center" ng-if="vm.type == 'Short-Phrase'"> on {{r.title}}</p>
         <p>Ranked <strong>#{{r.rank}}</strong> out of <strong>{{r.answers}}</strong></p>
         <div class="row">
-            <div class="col-xs-1 col-md-1 col-lg-1" style="{{vm.sp1}}"></div>
+            <div class="col-xs-1 hidden-sm col-md-1 col-lg-1" style="{{vm.sp1}}"></div>
             <!--
             <img style="{{vm.sp2}}" class="col-xs-1 col-md-1 col-lg-1 cursor" src="../../../assets/images/{{r.thumbUp}}" ng-click="vm.UpVote(r)">
             <label style="{{vm.sp3}}" class="col-xs-1 col-md-1 col-lg-1"><font size="5">{{r.upV}}</font></label>
@@ -194,6 +194,17 @@
         <p class="hiw text-right" ng-click="vm.gotoRank(r)">&lt;&lt;See full ranking&gt;&gt;</p>
         <p style="display:{{vm.deleteButton}};color:red" ng-click="vm.deleteThisCatans(r)">&lt;&lt;Delete&gt;&gt;</p>
         
+    </div>
+    <div ng-if="vm.isAdmin">
+        <div class="text-left"><button class="btn btn-primary" ng-click="vm.addCatans()">Add Catans</button></div>
+		<div class="input-group" ng-if="vm.addctsactive">
+        <!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
+        <input type="text" class="form-control" ng-model="vm.addctsval" bs-options="c for c in vm.addctsopts" bs-typeahead>
+        <span class="input-group-btn text-right">
+            <button class="btn btn-success" type="button" ng-click="vm.addcts()">Add</button>
+        </span>
+		</div>
+		<label class="checkbox-inline" ng-if="vm.addctsactive"><input type="checkbox" ng-model="vm.catisdup">Is Dup</label>
     </div>
 </div>
 <div class="col-xs-12" ng-if="true">

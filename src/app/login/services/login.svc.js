@@ -5,9 +5,9 @@
         .module('app')
         .factory('login', login);
 
-    login.$inject = ['$http', '$q', '$cookies', '$rootScope', 'INSTANCE_URL'];
+    login.$inject = ['$http', '$q', '$cookies', '$rootScope', 'INSTANCE_URL','$state'];
 
-    function login($http, $q, $cookies, $rootScope, INSTANCE_URL) {
+    function login($http, $q, $cookies, $rootScope, INSTANCE_URL,$state) {
         var service = {
             initiate: initiate,
             loginWithFacebook: loginWithFacebook,
@@ -35,6 +35,17 @@
         }
 
         function loginWithFacebook() {
+            
+            //Store in cookies memory, current state 
+            var statename = $state.current.name;
+            $cookies.put('statename', statename);
+            if (statename == 'rankSummary') {
+              $cookies.put('statenum', $rootScope.cCategory.id);
+            }
+            if (statename == 'answerDetail') {
+              $cookies.put('statenum', $rootScope.canswer.id);
+            }
+
 
             var deferred = $q.defer();
             var url = INSTANCE_URL + '/api/v2/user/session?service=facebook';

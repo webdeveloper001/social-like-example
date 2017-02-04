@@ -72,6 +72,7 @@
             $rootScope.previousState = from.name;
         });
         
+        var nidx = 0;
         // Members
         activate();
 
@@ -85,12 +86,13 @@
             //$timeout(loadingDone, 1000);
             if ($rootScope.dataIsLoaded == undefined) {
                 vm.isLoading = true;
+                //vm.nh = 'hang in there';
                 loadData();
             }
              
             //Determine if user is using Facebook browser
             $rootScope.isFacebookApp = isFacebookApp();
-
+            
             if ($rootScope.DEBUG_MODE) console.log("Layout Loaded!");
 
         }
@@ -124,6 +126,8 @@
             $http.get('../../../assets/foodranks.json').success(function (response) {
                 $rootScope.foodranks = response;
             });
+            
+            //showNeighborhoods();
             
             //answers
             var p0 = answer.getAnswers();
@@ -165,9 +169,9 @@
 
             });
             
-            
-
-        }
+            //vm.nh = $rootScope.neighborhoods[0];
+            //showNeighborhoods();
+      }
 
         function loadingDone() {
             if ($rootScope.pageDataLoaded == undefined) $rootScope.pageDataLoaded = false;
@@ -178,7 +182,7 @@
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.dataIsLoaded -", $rootScope.dataIsLoaded);
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.pageDataLoaded -", $rootScope.pageDataLoaded);
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.userDataLoaded -", $rootScope.userDataLoaded);
-
+            
         }
 
         function updatePageVisits() {
@@ -217,6 +221,18 @@
         
         function goPrivacyPolicy(){
             $state.go('privacypolicy');
+        }
+        
+        function showNeighborhoods(){
+            
+            setTimeout(function () {
+                if (vm.isLoading) {
+                    nidx = nidx + 1;
+                    if (nidx >= $rootScope.neighborhoods.length-1) nidx = 0;
+                    vm.nh = $rootScope.neighborhoods[nidx];
+                    showNeighborhoods();
+                }
+            }, 333); 
         }
         
         /*
