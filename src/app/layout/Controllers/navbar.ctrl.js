@@ -6,10 +6,10 @@
         .controller('navbar', navbar);
 
     navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state',
-        'city', '$cookieStore', '$http', 'GOOGLE_API_KEY', 'dialog','getgps'];
+        'city', '$cookies', '$http', 'GOOGLE_API_KEY', 'dialog','getgps'];
 
     function navbar($location, $translate, $rootScope, login, $state,
-        city, $cookieStore, $http, GOOGLE_API_KEY, dialog, getgps) {
+        city, $cookies, $http, GOOGLE_API_KEY, dialog, getgps) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'navbar';
