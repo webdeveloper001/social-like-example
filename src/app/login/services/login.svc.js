@@ -36,16 +36,21 @@
 
         function loginWithFacebook() {
             
-            //Store in cookies memory, current state 
-            var statename = $state.current.name;
-            $cookies.put('statename', statename);
-            if (statename == 'rankSummary') {
-              $cookies.put('statenum', $rootScope.cCategory.id);
-            }
-            if (statename == 'answerDetail') {
-              $cookies.put('statenum', $rootScope.canswer.id);
-            }
+            var statename = '';
+            var statenum = 0;
 
+            //Store in cookies memory to redirect after login, ignore state:login
+            if ($rootScope.stateName == undefined) statename = $state.current.name;
+            else statename = $rootScope.stateName;
+
+            if ($rootScope.stateName == undefined) { 
+                if (statename == 'rankSummary') statenum = $rootScope.cCategory.id; 
+                if (statename == 'answerDetail') statenum = $rootScope.canswer.id;
+            }
+            else statenum = $rootScope.stateNum;
+            
+            $cookies.put('statename', statename);
+            $cookies.put('statenum', statenum);    
 
             var deferred = $q.defer();
             var url = INSTANCE_URL + '/api/v2/user/session?service=facebook';

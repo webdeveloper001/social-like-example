@@ -102,7 +102,13 @@
 
         function goToLogin() {
 
-            $location.path('/login');
+            //Store current state 
+            $rootScope.stateName = $state.current.name;
+            if ($rootScope.stateName == 'rankSummary') $rootScope.stateNum = $rootScope.cCategory.id;
+            else if ($rootScope.stateName == 'answerDetail') $rootScope.stateNum = $rootScope.canswer.id;
+            else $rootScope.stateNum = undefined;
+
+            $state.go('login');            
         }
 
         function logout() {
