@@ -33,8 +33,9 @@
             login.setFakeLocalUser();
         }*/
         
-        if ($rootScope.isLoggedIn)  $state.go('cwrapper');
-        else activate();
+        //if ($rootScope.isLoggedIn)  $state.go('cwrapper');
+        //else activate();
+        activate();
 
         function activate() {
 
