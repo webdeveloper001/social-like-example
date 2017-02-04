@@ -219,8 +219,8 @@
             /**
              * Set Latitude and Longitude to cookie
              */
-            $cookieStore.put('currentUserLatitude', $rootScope.currentUserLatitude);
-            $cookieStore.put('currentUserLongitude', $rootScope.currentUserLongitude);
+            $cookies.put('currentUserLatitude', $rootScope.currentUserLatitude);
+            $cookies.put('currentUserLongitude', $rootScope.currentUserLongitude);
 
             $rootScope.coordsRdy = true;
             showCoordsIcon();

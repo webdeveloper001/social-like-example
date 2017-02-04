@@ -81,13 +81,23 @@
                             }
 
                         });*/
+
+                            var currentUserLatitude = $cookies.get('currentUserLatitude');
+                            var currentUserLongitude = $cookies.get('currentUserLongitude');
                         
+                            if (currentUserLatitude && currentUserLongitude) {
+                                $rootScope.currentUserLatitude = currentUserLatitude;
+                                $rootScope.currentUserLongitude = currentUserLongitude;
+                                $rootScope.coordsRdy = true;
+                                $rootScope.$emit('coordsRdy');
+                            }
+                            
                             var statename = $cookies.get('statename');
                             var statenum = $cookies.get('statenum');
 
                             console.log("state and num - ", statename, statenum);
 
-                            if (statename == 'rankSummary' || statename == 'answerDetail' ) {
+                            if (statename == 'rankSummary' || statename == 'answerDetail') {
                                 $state.go(statename, {index: statenum});
                             }
                             else {
