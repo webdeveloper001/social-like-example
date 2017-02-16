@@ -33,7 +33,7 @@
         vm.selnh = selnh;
         vm.goHome = goHome;
         vm.seeMoreFeed = seeMoreFeed;
-        vm.fres = 6;
+        vm.fres = 4;
         vm.ftext = 'see more';
         
         //vm.isAdmin = true;
@@ -361,24 +361,24 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-            // $rootScope.$emit('applyRule');
+             $rootScope.$emit('applyRule');
         }
            
         function getFeed(){
             vm.feeds = $rootScope.uafs;
-            vm.fres = 6;
+            vm.fres = 4;
             vm.ftext = 'see more';
             //console.log("vm.feeds - ", vm.feeds);
         }
         
         function seeMoreFeed(){
-            if (vm.fres == 6){
-                vm.fres = 400;
+            if (vm.fres == 4){
+                vm.fres = 20;
                 vm.ftext = 'see less';
                 return;
             }
-            if (vm.fres == 400){
-                vm.fres = 6;
+            if (vm.fres == 20){
+                vm.fres = 4;
                 vm.ftext = 'see more';
                 return;
             }            

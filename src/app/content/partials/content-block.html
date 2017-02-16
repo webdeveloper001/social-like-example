@@ -4,16 +4,17 @@
 <div style="display:{{hideme ? 'none':'inline'}}">
 
 	<!--	<div class="container">
-		<!--<div class="well-sm" style="background-color:{{bgc}};color:{{fc}}">-->
+		<!-- <div class="well-sm" style="background-color:{{bgc}};color:{{fc}}">-->
 
 	<!--		<label class="sub-header" style="background-color:{{bgc}};color:{{fc}};width:95%">
 				{{headline}}
         	</label>
-		<!--</div>-->
+		<!-- </div>-->
 	<!--	</div>-->
 	<!--	<div class="table">  -->
 	<br ng-if="isDynamic">
-	<table class="table" style="border-style:none" ng-if="isRoW">
+	
+	<table class="table" style="border-style:none;" ng-if="isRoW">
 		<tbody>
 			<thead>
 				<tr>
@@ -22,11 +23,11 @@
 				</tr>
 			</thead>
 		</tbody>
-	</table>
-	
+	</table> 
+	<!--
 	<div class="container" ng-if="isRoW">
 		<div class="row" ng-if="!isShortPhrase">
-			<div class="col-sm-6 col-md-6 col-lg-4">
+			<div class="col-xs-6- col-sm-6 col-md-6 col-lg-4">
 				<img class="mainpic" src="{{image1}}" style="display:{{image1 != undefined ? 'inline':'none'}}">
 			</div>
 			<div class="hidden-xs col-sm-6 col-md-6 col-lg-4">
@@ -63,11 +64,31 @@
 			</div>
 		</div>
 
-	</div>
+	</div>-->
+	<div class="container" ng-if="isRoW">
+		
+		<div class="row" ng-if="!isShortPhrase && isRoW" ng-click="rankSel(results[0],false)">
+			<div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" 
+			style="background-color:gray;height:{{sm ? '150px':'200px'}};color:white;margin:0px;padding:0px;border:0px;position:relative;">
+				<h2 class="text-center" 
+				style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{rankOfDay}}</h2> 
+				
+				<!-- <p class="text-center">What does she wants more?</p>-->
+			</div>
+			<div class="col-xs-6 col-sm-6 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px">
+				<img src="{{image1}}" style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
+			</div>
+			<div class="hidden-xs hidden-sm col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px">
+				<img src="{{image2}}" style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
+			</div>
+			<div class="hidden-xs hidden-sm hidden-md col-lg-3" style="margin:0px;padding:0px;border:0px">
+				<img src="{{image3}}" style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
+			</div>
+		</div>
+	</div> 
 
-
-	<br ng-if="isRoW">
-	<table class="table">
+	<br ng-if="isRoW"> 
+	<table class="table" style="border-style:none;" ng-if="!isRoW">
 		<tbody>
 			<thead ng-if="!isRoW" style="border-style:none;">
 				<tr>

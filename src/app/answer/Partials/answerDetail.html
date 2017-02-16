@@ -1,16 +1,20 @@
-﻿<div class="container" style="padding:0px;margin:0px;">
-    <div class="well-rank" style="padding:0px;margin:0px;">
+﻿<div class="well-rank" ng-if="vm.nsm" style="margin:0px;">
+        <h2 class="sub-header">{{vm.title}}
+            <span class="nomargin"><button type="button" class="glyphicon glyphicon-remove pull-right" 
+            style="margin:0px;padding:0px;border:0px;background-color:#006dcc;color:#002699;font-size:medium;
+            display:{{vm.title?'inline':'none'}}" 
+            ng-click="vm.closeRank()"></button></span>
+        </h2>
+    </div>
+    <div class="well-rank" ng-if="vm.sm" style="margin:0px;">
         <h3 class="sub-header">{{vm.title}}
-            <!--   <span class="nomargin">
-                    <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
-                    ng-click="vm.closeRank()">
-                    <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
-            </button>
-            </span>-->
+                <span class="nomargin"><button type="button" class="glyphicon glyphicon-remove pull-right" 
+                style="margin:0px;padding:0px;border:0px;background-color:#006dcc;color:#002699;font-size:medium;
+                display:{{vm.title?'inline':'none'}}" 
+                ng-click="vm.closeRank()"></button></span>
         </h3>
     </div>
-</div>
-<div class="row" ng-if="vm.showNextnPrev">
+<div class="row" ng-if="vm.showNextnPrev" style="margin:0px">
     <div class="text-left col-xs-6">
         <button class="btn-success" ng-click="vm.goPrev()">&lt;&lt</button>
     </div>
@@ -26,27 +30,34 @@
     -->
     <div class="well-answer" ng-if="vm.nsm">
         <h2 class="sub-header">{{vm.idx}}. {{vm.answer.name}}
+            <!--
                 <span class="nomargin">
                     <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
                     ng-click="vm.closeRank()">
                     <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
             </button>
-            </span>
+            </span>  -->
+            <span class="nomargin"><button type="button" class="glyphicon glyphicon-remove pull-right" 
+            style="margin:0px;padding:0px;border:0px;background-color:#b3b3b3;color:#4d4d4d;font-size:medium;" 
+            ng-click="vm.closeAnswerDetail()"></button></span>
          </h2>
     </div>
     <div class="well-answer" ng-if="vm.sm">
         <h3 class="sub-header">{{vm.idx}}. {{vm.answer.name}}
-               <span class="nomargin">
+               <!--<span class="nomargin">
                     <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
                     ng-click="vm.closeRank()">
                     <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
             </button>
-            </span>
+            </span>-->
+            <span class="nomargin"><button type="button" class="glyphicon glyphicon-remove pull-right" 
+            style="margin:0px;padding:0px;border:0px;background-color:#b3b3b3;color:#4d4d4d;font-size:medium;" 
+            ng-click="vm.closeAnswerDetail()"></button></span>
         </h3>
     </div>
 </div>
 
-<div class="row">
+<div class="row" style="margin:0px;">
     <div class="col-xs-8 col-sm-9 col-md-10">
         <h2><span ng-repeat="f in vm.fields" ng-show="{{vm.type != 'Short-Phrase'}}">
  <!--   {{(f.name == "name" && vm.answer.name) ? vm.answer.name : ""}} -->    
@@ -86,13 +97,13 @@
 </div>
 <!-- <div class="row" ng-if="vm.type != 'Establishment'"> -->
 
-<div class="answer_info row" ng-if="vm.type != 'Short-Phrase' && vm.type != 'Event'">
+<div class="answer_info row" ng-if="vm.type != 'Short-Phrase' && vm.type != 'Event'" style="padding:0px;margin:0px;border:0px;">
     <div class="col-sm-8">
-        <br>
+        <br ng-if="!vm.sm">
         <strong ng-if="vm.answer.location">Address:</strong>
         <a ng-if="vm.answer.location" href="http://maps.apple.com/maps?q={{vm.answer.location}}" target="_blank">{{vm.answer.location}}</a>
         <br ng-if="vm.answer.location">
-        <strong>{{(vm.answer.cityarea) ? 'Neighboorhood:' : ""}}</strong> {{(vm.answer.cityarea) ? vm.answer.cityarea : ""}}
+        <strong ng-if="vm.answer.cityarea">{{(vm.answer.cityarea) ? 'Neighboorhood:' : ""}}</strong> {{(vm.answer.cityarea) ? vm.answer.cityarea : ""}}
         <br style="display:{{(vm.answer.cityarea) ? 'inline' : 'none'}}">
         <strong ng-if="vm.answer.phone">Phone:</strong> <a ng-if="vm.answer.phone" href="tel:{{vm.answer.phone}}">{{vm.answer.phone}}</a>
         <br style="display:{{(vm.answer.phone) ? 'inline' : 'none'}}">
@@ -100,7 +111,7 @@
         <a ng-if="vm.answer.website.indexOf('http') >=0" href="{{vm.answer.website}}" target="_blank">{{vm.answer.website}}</a>
         <a ng-if="vm.answer.website.indexOf('http') == -1" href="http://{{vm.answer.website}}" target="_blank">{{vm.answer.website}}</a>
         <br ng-if="vm.answer.website">
-        <strong>{{(vm.answer.email) ? 'Email:' : ""}}</strong> {{(vm.answer.email) ? vm.answer.email : ""}}
+        <strong ng-if="vm.answer.email">{{(vm.answer.email) ? 'Email:' : ""}}</strong> {{(vm.answer.email) ? vm.answer.email : ""}}
         <br style="display:{{(vm.answer.email) ? 'inline' : 'none'}}">
     </div>
     <div class="col-sm-4 answer_info_buttons">
@@ -315,7 +326,7 @@
         </div>
     </div>
 </div>
-<div class="col-xs-12">
+<div class="col-xs-12" ng-if="false">
 
     <div ng-show="{{vm.type != 'Establishment' && vm.type != 'PersonCust' && vm.type != 'Event' }}">
         <div class="well-sm" style="background-color:#666666;color:#f8f8ff">

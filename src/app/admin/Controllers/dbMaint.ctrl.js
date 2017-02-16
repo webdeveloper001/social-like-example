@@ -363,7 +363,7 @@
         }
 
         function estDistances() {
-            console.log("@estDistances", $rootScope.answers.length);
+            console.log("@estDistances, need to have GPS location stored-", $rootScope.answers.length);
             vm.answerdist = [];
             //Calculate distances to user
             var p = 0.017453292519943295;    // Math.PI / 180

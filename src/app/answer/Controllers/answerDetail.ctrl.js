@@ -43,6 +43,7 @@
         vm.deleteButton = 'none';
         vm.showUrl = showUrl;
         vm.closeRank = closeRank;
+        vm.closeAnswerDetail = closeAnswerDetail;
         vm.rankSel = rankSel;
         vm.bizRegDialog = bizRegDialog;
         vm.openSpecials = openSpecials;
@@ -831,7 +832,10 @@
         }
 
         function closeRank() {
-            //$state.go('cwrapper');
+            $state.go('cwrapper');            
+        }
+
+        function closeAnswerDetail(){
             goBack();
         }
 

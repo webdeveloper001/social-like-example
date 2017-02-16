@@ -79,6 +79,7 @@
         $rootScope.userActRecId = 0;
 
         var canswers = [];
+        vm.hideInfoBox = false;
         if ($rootScope.addInfoMsgAck) vm.addInfoMsgAck = $rootScope.addInfoMsgAck;
         else (vm.addInfoMsgAck = false);
         
@@ -108,6 +109,8 @@
         function activate() {
 
             $rootScope.inFavMode = false;
+            if ($rootScope.rankIsNearMe == undefined) rankIsNearMe = false;
+            else rankIsNearMe = $rootScope.rankIsNearMe;
             
             $window.scrollTo(0, 0);
             $rootScope.$emit('showLogo');
@@ -116,8 +119,11 @@
             $rootScope.objNumAct = $rootScope.objNum;
 
             loadData(); //load data and write to $rootScope
-            //update number of views and answers
             
+            //Check if there are no answers
+            if (vm.answers.length == 0) vm.noAnswers = true;
+            else vm.noAnswers = false;
+
             getUserData(); //if user is logged in, get user data (vote record, etc)
             createAnswerStatus(); //enables/disables 'Create Answer' button
             
@@ -274,6 +280,9 @@
             }
   
             //Sorting rules
+            console.log("foodNearMe, ",foodNearMe);
+            console.log("rankIsNearMe, ",rankIsNearMe);
+
             if (foodNearMe || rankIsNearMe) sortByDistance();
             if (vm.isE) sortByDate();
             if (foodNearMe) vm.showR = false;
@@ -914,6 +923,7 @@
 
         function closeAddInfoMsg() {
             $rootScope.addInfoMsgAck = true;
+            vm.hideInfoBox = true;
             vm.addInfoMsgAck = true;
         }
 

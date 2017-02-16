@@ -10,31 +10,39 @@
     <br id="space2">
 </div>
 -->
-<div class="container">
-    <div class="well-rank" ng-if="vm.nsm">
+<!-- <img src="/assets/images/rankxlogo_noheadline.png" style="height:50px;margin:0px"> -->
+<!--<div class="container">-->
+    <div class="well-rank" ng-if="vm.nsm" style="margin:0px;">
         <h2 class="sub-header">{{vm.ranking}}
-            <span class="nomargin">
+          <!--  <span class="nomargin">
                     <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
                     ng-click="vm.closeRank()">
                     <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
             </button>
-            </span>
+            </span> -->
+            <span class="nomargin"><button type="button" class="glyphicon glyphicon-remove pull-right" 
+            style="margin:0px;padding:0px;border:0px;background-color:#006dcc;color:#002699;font-size:medium;" 
+            ng-click="vm.closeRank()"></button></span>
         </h2>
     </div>
-    <div class="well-rank" ng-if="vm.sm">
+    <div class="well-rank" ng-if="vm.sm" style="margin:0px;">
         <h3 class="sub-header">{{vm.ranking}}
-            <span class="nomargin">
-                    <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
-                    ng-click="vm.closeRank()">
-                    <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
-            </button>
-            </span>
+            <!-- <span class="nomargin"> -->
+               <!--     <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
+                    ng-click="vm.closeRank()">-->
+                    <!--
+                    <span class="glyphicon glyphicon-remove pull-right" style="font-size:small;color:white;glyph-orientation-vertical:middle" ng-click="vm.closeRank()"></span>
+                    -->
+                    <span class="nomargin"><button type="button" class="glyphicon glyphicon-remove pull-right" 
+                    style="margin:0px;padding:0px;border:0px;background-color:#006dcc;color:#002699;font-size:medium;" 
+                    ng-click="vm.closeRank()"></button></span>
+            <!--</button> -->
+            <!-- </span> -->
         </h3>
     </div>
-</div>
-<br>
+<!--</div>-->
 <!-- Images -->
-<div class="row" style="display:{{vm.isShortPhrase == false? 'inline':'none'}}">
+<div class="row" style="display:{{vm.isShortPhrase == false? 'inline':'none'}};margin:0px;">
     <div class="col-sm-6 col-md-6 col-lg-4">
         <img class="displayed" src="{{vm.image1}}" ng-if="vm.image1ok"
         style="width:100%;max-height:200px;display:{{vm.image1 != undefined ? 'inline':'none'}}">
@@ -49,7 +57,7 @@
     </div>
 </div>
 <!-- Short-Phrases -->
-<div class="row" style="display:{{vm.isShortPhrase == true? 'inline':'none'}}">
+<div class="row" style="display:{{vm.isShortPhrase == true? 'inline':'none'}};margin:0px;">
     <div class="col-sm-6 col-md-6 col-lg-4">
         <div class="container-answer" style="width:100%; max-height:300px;">
             <br>
@@ -77,9 +85,9 @@
 </div>
 <br>
 <br class="hidden-md hidden-lg hidden-xl">
-<p class="text-left" ng-if="vm.sm">Sort by:</p>
-<div class="row ">
-    <div class="col-xs-8 col-sm-10 col-md-10 col-lg-10">
+<p class="text-left" ng-if="vm.sm">&nbsp&nbspSort by:</p>
+<div class="row" style="margin:0px;padding:0px;">
+    <div class="col-xs-9 col-sm-10 col-md-10 col-lg-10">
         <div class="btn-group text-left">
             <p>{{vm.sm ? '':'Sort by:'}}<span>        
         <button class="btn btn-default {{vm.selRank}} " ng-click="vm.sortByRank()" ng-if="vm.type != 'Event' && !vm.fnm">Rank</button>
@@ -92,16 +100,16 @@
         </span></p>
         </div>
     </div>
-    <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2 btn-group text-right">
-        <button class="btn btn-default" ng-click="vm.share()">Share&nbsp&nbsp<span class="glyphicon glyphicon-share"></span></button>
+    <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2 btn-group text-right">
+        <button class="btn btn-default" ng-click="vm.share()" style="padding-right:5px">Share&nbsp&nbsp<span class="glyphicon glyphicon-share"></span></button>
     </div>
 </div>
-<div class="row">
+<div class="row" style="margin:0px;">
     <div class="col-xs-6 text-right">
             <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">Rank</button>
     </div>
     <div class="col-xs-6 btn-group text-right">
-        <h4>Contributors: <b style="color:blue; "><i>{{vm.numContributors}}</i></b></h4>
+        <h4>Contributors: <b style="color:blue; "><i>{{vm.numContributors}}&nbsp&nbsp</i></b></h4>
     </div>
 </div>    
 <!--
@@ -143,34 +151,37 @@
             </tr>
         </tbody>
 </table>
-<div class="row">
-    <div class="col-sm-1">
-        <a class="btn btn-primary" ng-click="vm.addAnswer() " class="btn btn-primary ">+</a>
+
+<div class="row" style="margin:0px;">
+    <div class="col-xs-2" style="padding:0px">
+        <a class="btn btn-primary" ng-click="vm.addAnswer()" class="btn btn-primary">+</a>
     </div>
-    <div class="col-sm-11" style="display:{{vm.addInfoMsgAck == false ? 'inline':'none'}}">
+    <div class="col-xs-10" style="display:{{vm.hideInfoBox ? 'none':'inline'}};padding:0px;" ng-if="!vm.addInfoMsgAck || vm.noAnswers">
         <div class="alert alert-warning" style="padding-top: 5px;padding-bottom: 5px;">
             <a class="close" data-dismiss="alert" aria-label="close" ng-click="vm.closeAddInfoMsg()">&times;</a>
-            <span class="glyphicon glyphicon-arrow-left"></span><strong>&nbsp;&nbsp;Are we missing one?</strong>&nbsp;&nbsp;Use
+            <span class="glyphicon glyphicon-arrow-left"></span><strong>&nbsp;&nbsp;
+                {{vm.noAnswers ? 'Oops, we have nothing on this list.':'Are we missing one?'}}
+                </strong>&nbsp;&nbsp;Use
             the '+' button to add a new 
-            <span ng-if="vm.type == 'Establishment'">Establishment to this list.</span>
-            <span ng-if="vm.type == 'Organization'">Organization or Company to this list.</span>
-            <span ng-if="vm.type == 'Person'">Person to this list.</span>
-            <span ng-if="vm.type == 'PersonCust'">Professional to this list.</span>
-            <span ng-if="vm.type == 'Place'">Place to this list.</span>
-            <span ng-if="vm.type == 'Short-Phrase'">Answer to this list.</span>
-            <span ng-if="vm.type == 'Thing'">Item to this list.</span>
-            <span ng-if="vm.type == 'Event'">Event to this list.</span>
+            <span ng-if="vm.type == 'Establishment'">Establishment.</span>
+            <span ng-if="vm.type == 'Organization'">Organization or Company.</span>
+            <span ng-if="vm.type == 'Person'">Person.</span>
+            <span ng-if="vm.type == 'PersonCust'">Professional.</span>
+            <span ng-if="vm.type == 'Place'">Place.</span>
+            <span ng-if="vm.type == 'Short-Phrase'">Answer.</span>
+            <span ng-if="vm.type == 'Thing'">Item.</span>
+            <span ng-if="vm.type == 'Event'">Event.</span>
         </div>
     </div>
 </div>
 
 <!-- <a ui-sref="match " class="btn btn-success ">{{"rankSummary.GoRank " | translate}}</a> -->
 <br>
-<br>
+<br ng-if="!vm.sm">
 <div class="text-center">
     <button ng-click="vm.loadComments()" class="btn btn-default" style="background-color:#e6e6e6;width:100%">COMMENTS ({{vm.numcom}})</button>
 </div>
-<br>
+<br ng-if="!vm.sm">
 <div style="display:{{vm.cm.commLoaded ? 'inline':'none'}}">
     <div ng-repeat="x in vm.cm.comments">
         <div class="row">

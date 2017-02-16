@@ -81,7 +81,7 @@
                             }
 
                         });*/
-
+               
                             var currentUserLatitude = $cookies.get('currentUserLatitude');
                             var currentUserLongitude = $cookies.get('currentUserLongitude');
                         

@@ -17,12 +17,13 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
                 vm.results = [];
                 vm.results_nm = [];
-                
+                vm.sm = $rootScope.sm;
+
                 //Methods
                 vm.loadContent = loadContent;
 
                 if (vm.modType == 'query') vm.maxRes = 4000;
-                else vm.maxRes = 6;
+                else vm.maxRes = 4;
 
                 vm.btext = 'see more';
                 var strlen_o = 0;
@@ -96,6 +97,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         if (inputVal.indexOf('Best ') > -1 ) inputVal = inputVal.replace('Best ', '');
                         if (inputVal.indexOf('top ') > -1 ) inputVal = inputVal.replace('top ', '');
                         if (inputVal.indexOf('Top ') > -1 ) inputVal = inputVal.replace('Top ', '');
+                        if (inputVal == 'Food ') inputVal = inputVal.replace('Food ', 'Food Near Me');
+                        if (inputVal == 'food ') inputVal = inputVal.replace('food ', 'Food Near Me');
                         
                         //Special Cases
                         if (inputVal == 'pho' || inputVal == 'Pho'){
@@ -310,6 +313,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         vm.addinfo3 =sPVals3[1];                        
                     }
                     
+                    vm.rankOfDay = vm.results[0].title;
                     
                     //resLT6 is used to hide the <<see more>> choice
                     if (vm.results.length <= 6) vm.resLT6 = true;
@@ -900,14 +904,14 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                      }
                     */ //End 18
                     
-                    /* //19. Print all answers that do not have address, phone number or website
+                     //19. Print all answers that do not have address, phone number or website
                     for (var i=0; i<$rootScope.answers.length; i++){
-                        if ($rootScope.answers[i].type == 'Establishment'){
-                            if ($rootScope.answers[i].cityarea == 'Downtown'){
-                                console.log("Answer Id. ", $rootScope.answers[i].id, " Name: ", $rootScope.answers[i].name, " Address: ", $rootScope.answers[i].location);
-                            }
+                        if ($rootScope.answers[i].cityarea == 'Marina'){
+                           // if ($rootScope.answers[i].cityarea == 'Downtown'){
+                                console.log("Answer Id. ", $rootScope.answers[i].id, " Name: ", $rootScope.answers[i].name, " Neighborhood: ", $rootScope.answers[i].cityarea);
+                           // }
                         }
-                    } */ //End 19
+                    }  //End 19
                                                                                        
                 }
             }], //end controller
@@ -921,13 +925,13 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 }
             };
             scope.seeMore = function (maxRes, btext) {
-                if (scope.maxRes == 6) {
+                if (scope.maxRes == 4) {
                     scope.btext = 'see less';
                     scope.maxRes = 100;
                 }
                 else {
                     scope.btext = 'see more';
-                    scope.maxRes = 6;
+                    scope.maxRes = 4;
                 }
                 // scope.loadContent();
             }
