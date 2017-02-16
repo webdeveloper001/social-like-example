@@ -904,14 +904,14 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                      }
                     */ //End 18
                     
-                     //19. Print all answers that do not have address, phone number or website
+                    /* //19. Print all answers that do not have address, phone number or website
                     for (var i=0; i<$rootScope.answers.length; i++){
                         if ($rootScope.answers[i].cityarea == 'Marina'){
                            // if ($rootScope.answers[i].cityarea == 'Downtown'){
                                 console.log("Answer Id. ", $rootScope.answers[i].id, " Name: ", $rootScope.answers[i].name, " Neighborhood: ", $rootScope.answers[i].cityarea);
                            // }
                         }
-                    }  //End 19
+                    }  */ //End 19
                                                                                        
                 }
             }], //end controller
