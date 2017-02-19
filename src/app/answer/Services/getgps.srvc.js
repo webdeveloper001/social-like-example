@@ -22,10 +22,24 @@
             delete $http.defaults.headers.common['X-DreamFactory-Session-Token'];
             
             var myLoc = '';
-                if (answer.location.indexOf('San Diego') < 0) {
+                
+                //Perform checks to make sure location is in recognizable format for google api
+                var nhs = $rootScope.neighborhoods.concat($rootScope.districts);
+                var locationHasNh = false; //location has neighborhood
+                for (var i = 0; i < nhs.length; i++) {
+                    if (answer.location.indexOf(nhs[i]) > -1) {
+                        locationHasNh = true;
+                        break;
+                    }
+                }    
+                //if location does not contain any neighborhodd, add 'San Diego, CA'
+                if (!locationHasNh && answer.location.indexOf('San Diego') < 0) {
                     myLoc = answer.location + ' San Diego, CA';
                 }
                 else myLoc = answer.location;
+                //Remove '#' from address. This character causes error at google api
+                myLoc = myLoc.replace('#','');
+
                 //console.log("myLoc, GOOGLE_API_KEY --- ", myLoc, GOOGLE_API_KEY);
                 var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + myLoc + '&key=' + GOOGLE_API_KEY;
                 //console.log("url --- ", url);

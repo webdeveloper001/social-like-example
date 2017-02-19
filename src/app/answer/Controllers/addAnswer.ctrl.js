@@ -99,6 +99,7 @@
             if ($rootScope.cCategory.title.indexOf('San Diego') > -1) {
                 inCity = true;
             }
+            /*
             if ($rootScope.cCategory.title.indexOf('Downtown') > -1) {
                 inDowntown = true;
             }
@@ -107,7 +108,7 @@
                     inDistrict = true;
                     inDistrictName = $rootScope.districts[j];
                 }
-            }
+            }*/
         }
 
         function loadPublicFields() {
@@ -153,7 +154,7 @@
                 
                 //When neighborhood is implied put it in the input field right away
                 if (vm.fields[i].name == "cityarea" && $rootScope.cCategory.type == 'Establishment' && $rootScope.NhImplied == true) {
-                    vm.fields[i].val = $rootScope.NhValue;
+                    if ($rootScope.NhValue != 'Downtown') vm.fields[i].val = $rootScope.NhValue;
                 }
 
                 if (vm.fields[i].name == "addinfo") vm.fields[i].textstyle = "textarea";

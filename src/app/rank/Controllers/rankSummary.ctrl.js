@@ -794,12 +794,14 @@
 
 
         function createAnswerStatus() {
+            /*
             if ($rootScope.canswers.length >= 30) {
                 answersFull = true;
             }
             else {
                 answersFull = false;
-            }
+            }*/
+            answersFull = false;
         }
 
         function rankPersonal() {

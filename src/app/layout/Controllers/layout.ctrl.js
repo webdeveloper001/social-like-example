@@ -16,11 +16,11 @@
         .controller('layout', layout);
 
     layout.$inject = ['$location', '$rootScope', '$window', '$q', '$http', 'pvisits', '$cookies',
-        'DEBUG_MODE', 'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata',
+        'DEBUG_MODE', 'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata', 'dialog',
         'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state'];
 
     function layout($location, $rootScope, $window, $q, $http, pvisits, $cookies,
-        DEBUG_MODE, rankofday, answer, table, special, datetime, uaf, userdata,
+        DEBUG_MODE, rankofday, answer, table, special, datetime, uaf, userdata, dialog,
         matchrec, edit, useractivity, vrows, headline, cblock, catans, $state) {
         /* jshint validthis:true */
         var vm = this;
@@ -105,6 +105,7 @@
                 vm.isLoading = true;
                 //vm.nh = 'hang in there';
                 loadData();
+                //dialog.tour();
             }
              
             //Determine if user is using Facebook browser
@@ -130,7 +131,7 @@
 
             $rootScope.districts = [
                 "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
-                "Marina", "Seaport Village", "Bankers Hill"];
+                "Marina", "Bankers Hill"];
 
             $http.get('../../../assets/fields.json').success(function (response) {
                 $rootScope.typeSchema = response;

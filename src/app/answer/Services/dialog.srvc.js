@@ -39,7 +39,8 @@
             askEmail: askEmail,
             seePhotos: seePhotos,
             loginFacebook: loginFacebook,
-            shareOptions: shareOptions
+            shareOptions: shareOptions,
+            tour: tour,
         };
 
         return service;
@@ -1485,6 +1486,82 @@
                 }]
             });
         }
+
+         function tour() {
+
+            var title = '';
+            var messagehtml = ''
+            var n = 1;
+            var img_style = '';
+            
+            if ($rootScope.sm) {
+                img_style = 'width:100%;height:400px';
+            }
+            else {
+                img_style = 'width:100%;height:400px';
+            }
+
+            title = 'Rank-X Intro Tour';
+
+            var m1 = '';
+            var m2 = '';
+            var m3 = '';
+            var m4 = '';
+            var cap = '';
+            
+            m1 =
+            '<img id="image" class="displayed" src="' +
+             '/assets/images/rxtour1.jpg'+'" style="'+img_style+'">';
+            
+            messagehtml =  m1;
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: messagehtml,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttons: [
+                {
+                id: 'btn-1',
+                label: 'Back',
+                action: function(dialog, messagehtml) {
+                    var $button = this; // 'this' here is a jQuery object that wrapping the <button> DOM element.
+                    //console.log("bt1-clicked,",n);
+                    if (n==1) dialog.close();
+                    else {
+                        n = n - 1;
+                        if (n==1) $button.text = 'No, thanks';
+                        else $button.text = 'Back';
+                        m1 = '<img id="image" class="displayed" src="' +
+                            '/assets/images/rxtour'+n+'.jpg'+'" style="'+img_style+'">';
+                        dialog.setMessage(m1);
+                        
+                        }
+                    }
+                },
+                {
+                id: 'btn-2',
+                label: 'Next',
+                action: function(dialog, messagehtml) {
+                    console.log("dialog.buttons", dialog.buttons);
+                    var $button = this; // 'this' here is a jQuery object that wrapping the <button> DOM element.
+                    //console.log("bt2-clicked,",n);
+                    if (n==12) dialog.close();
+                    else {
+                        n = n + 1;
+                        if (n == 12) dialog.getButton(this.id).label = 'Close';
+                        else $button.text = 'Next';
+                        m1 = '<img id="image" class="displayed" src="' +
+                            '/assets/images/rxtour'+n+'.jpg'+'" style="'+img_style+'">';
+                        dialog.setMessage(m1);
+                    }
+                }
+            }]
+
+            });
+
+        } 
 
     }
 })();

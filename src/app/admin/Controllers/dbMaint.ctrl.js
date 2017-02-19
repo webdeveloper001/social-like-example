@@ -390,7 +390,10 @@
 
                         dist_mi = (12742 * Math.asin(Math.sqrt(a))) / 1.609; // 2 * R; R = 6371 km
                         myObj.dist = dist_mi;
-                        if (dist_mi > 100 || dist_mi == NaN) vm.answerdist.push(myObj);
+                        if (dist_mi > 100 || dist_mi == NaN) {
+                            //console.log('Answer Id. ',myObj.id,' Name: ',myObj.name);
+                            vm.answerdist.push(myObj);
+                        }
                     }
                 }
             }

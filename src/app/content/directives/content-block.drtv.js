@@ -610,14 +610,15 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
          
          
                     //console.log("1");
-                    /*//8. Generate Category Strings for non neighborhood ranks            
+                    /*//8. Generate Category Strings for non neighborhood ranks
+                       var isDistrictRanking = false;             
                        for (var i=0; i<vm.results.length; i++){
                            //console.log("2");
                            if (vm.results[i].title.includes("Hillcrest")){
                                //console.log("2");
                                var catstr = '';
                                var fcatstr = '';
-                               var genRank = vm.results[i].title.replace("Hillcrest", "San Diego");
+                               var genRank = vm.results[i].title.replace("Hillcrest", "Downtown");
                                for (var j=0; j<$rootScope.content.length; j++){
                                    if (genRank == $rootScope.content[j].title){
                                        if ($rootScope.content[j].catstr == null || //comment these 3
@@ -628,15 +629,24 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                       
                                       //--- Prevent execution for specific ranks ---
                                       var cid = $rootScope.content[j].id;
-                                      if (cid != 473 && cid != 3125 && cid !=6949 && cid != 7424 && cid != 7675){
+                                      if (cid != 473 && cid != 3125 && cid !=6949 && cid != 7424 && cid != 7675 &&
+                                          cid != 3124 && cid != 3163 && cid !=3202){
                                       
-                                        console.log("Found gen rank --- ", $rootScope.content[j].title);
-                                        var srchStr = $rootScope.content[j].title.replace("San Diego","");
+                                        console.log("Found gen rank --- ", $rootScope.content[j].title,' ',$rootScope.content[j].id);
+                                        var srchStr = $rootScope.content[j].title.replace("Downtown","");
                                            for (var k=0; k<$rootScope.content.length; k++){
+
                                                if ($rootScope.content[k].title.includes(srchStr) && k!=j ){
                                                    //console.log("Found sub rank --- ", $rootScope.content[k].title);
-                                                   catstr = catstr + ':' + $rootScope.content[k].id;
+                                                    isDistrictRanking = false;
+                                                    for (var n=0; n<$rootScope.districts.length; n++){
+                                                        if ($rootScope.content[k].title.includes($rootScope.districts[n])){
+                                                            isDistrictRanking = true;
+                                                        }     
+                                                    }
+                                                    if (isDistrictRanking) catstr = catstr + ':' + $rootScope.content[k].id;
                                                }
+
                                            }
                                            fcatstr = catstr.substring(1); //remove leading ':'
                                            console.log("final catstr ---", fcatstr)
@@ -674,7 +684,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                            }
                        }
                        
-                     *///End 8
+                    *///End 8
                
                     /* //  9. Clear answer string for all non-atomic ranks 
                     for (var i=0; i < $rootScope.content.length; i++){
@@ -745,11 +755,11 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     /*//12. Add 'pb' tag to all Pacific Beach
                     var tagstr = '';
                     for (var i=0; i<$rootScope.content.length; i++){
-                        if ($rootScope.content[i].title.includes('Mission Beach')){
-                            if ($rootScope.content[i].tags.includes('mb') == false){
+                        if ($rootScope.content[i].title.includes('Ocean Beach')){
+                            if ($rootScope.content[i].tags.includes('ob') == false){
                                 //console.log($rootScope.content[i].title);
-                                tagstr = $rootScope.content[i].tags + ' mb';
-                                //console.log("tagstr - ", tagstr, $rootScope.content[i].title);
+                                tagstr = $rootScope.content[i].tags + ' ob';
+                                console.log("tagstr - ", tagstr, $rootScope.content[i].title);
                                 table.update($rootScope.content[i].id,['tags'],[tagstr]);
                             }
                         }
@@ -904,15 +914,23 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                      }
                     */ //End 18
                     
-                    /* //19. Print all answers that do not have address, phone number or website
+                    /*//19. Print all answers that do not have address, phone number or website
                     for (var i=0; i<$rootScope.answers.length; i++){
-                        if ($rootScope.answers[i].cityarea == 'Marina'){
+                        if ($rootScope.answers[i].cityarea == 'Downtown'){
                            // if ($rootScope.answers[i].cityarea == 'Downtown'){
                                 console.log("Answer Id. ", $rootScope.answers[i].id, " Name: ", $rootScope.answers[i].name, " Neighborhood: ", $rootScope.answers[i].cityarea);
                            // }
                         }
-                    }  */ //End 19
-                                                                                       
+                    } */ //End 19
+                    /*//20.Delete all catans from Downtown
+                    var catid = 0;
+                    for (var i=0; i<$rootScope.content.length; i++){
+                        if ($rootScope.content[i].title.includes('Downtown')){
+                             catid = $rootScope.content[i].id;
+                             catans.deletebyCategory(catid);
+                        }
+                    }
+                    *///end 20                                                                                       
                 }
             }], //end controller
         link: function (scope) {
