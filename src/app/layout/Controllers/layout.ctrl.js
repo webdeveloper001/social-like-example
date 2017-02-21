@@ -76,6 +76,9 @@
         // Members
         activate();
 
+        var tourviewed = $cookies.get('tourviewed');
+        if (tourviewed == undefined) tourviewed = false;
+
         function activate() {
 
             $rootScope.DEBUG_MODE = DEBUG_MODE;
@@ -105,7 +108,7 @@
                 vm.isLoading = true;
                 //vm.nh = 'hang in there';
                 loadData();
-                //dialog.tour();
+                if (!tourviewed) dialog.tour();
             }
              
             //Determine if user is using Facebook browser

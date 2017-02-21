@@ -860,6 +860,7 @@
             }
             else {
                 $rootScope.loadRankWhenCoordsRdy = true;
+                $rootScope.rankIsNearMe = true;
                 dialog.askPermissionToLocate();
             }
         }

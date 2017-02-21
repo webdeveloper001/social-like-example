@@ -25,6 +25,7 @@
         vm.gotomybiz = gotomybiz;
         vm.gotomyfavs = gotomyfavs;
         vm.gotoFeedback = gotoFeedback;
+        vm.gotoTour = gotoTour;
         vm.gotoHome = gotoHome;
         vm.gotoAdmin = gotoAdmin;
         vm.gotoFileUpload = gotoFileUpload;
@@ -86,6 +87,11 @@
             $rootScope.fbmode = true;
             $state.go('cwrapper', {}, { reload: true });
         }
+
+        function gotoTour() {
+            dialog.tour();
+        }
+
         function gotoHome() {
             $rootScope.fbmode = false;
             $rootScope.searchActive = false;

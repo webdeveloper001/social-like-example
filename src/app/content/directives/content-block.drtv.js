@@ -10,8 +10,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             isRoW: '=rankofweek',
             updateView: '&updateView'
         },
-        controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 'vrows',
-            function contentCtrl($scope, query, $http, answer, table, catans, $timeout, vrows) {
+        controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 'vrows','$window',
+            function contentCtrl($scope, query, $http, answer, table, catans, $timeout, vrows, $window) {
                 var vm = $scope;
                 vm.title = 'mycontent';
 
@@ -27,13 +27,20 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
                 vm.btext = 'see more';
                 var strlen_o = 0;
-                
+
+                //Adjust picture size for very small displays
+                if ($window.innerWidth < 768) vm.thumbheight = '70px';
+                if ($window.innerWidth >= 768 && $window.innerWidth < 992) vm.thumbheight = '90px';
+                if ($window.innerWidth >= 992 && $window.innerWidth < 1200) vm.thumbheight = '70px';
+                if ($window.innerWidth > 1200) vm.thumbheight = '90px';
+
                 //if (!vm.isDynamic) {
                 //  console.log("this is the spot");
                 if (vm.modType == 'rankofweek') getRankofDay();
+                else if (vm.modType == 'query') getRanks();
                 else loadContent();
                 //}
-                if (vm.modType == 'query') getRanks(); 
+                
                 //console.log("I am directive instance! ",vm.modType,vm.isDynamic,vm.isRoW);
 
                 $rootScope.$on('refreshRanks', function (e) {
@@ -225,7 +232,6 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             vm.results = [];
                         }
                     }
-                    //console.log("rt_nm - ", vm.results_rt_nm);
                 }
 
                 function getRankofDay() {
@@ -383,6 +389,21 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             break;
                         }
                     }
+
+                    //
+                    vm.resultsTop = [];
+                    var resObj = {};
+
+                    if (vm.results.length > 0) {
+                        for (var n = 0; n < 3; n++) {
+                            resObj = {};
+                            resObj = vm.results[n];
+                            editTitle(resObj);
+                            parseShortAnswer(resObj);
+                            vm.resultsTop.push(resObj);
+                        }
+                        vm.results = vm.results.slice(3);
+                    }
                 
                     //resLT6 is used to hide the <<see more>> choice
                     if (vm.results.length <= 6) vm.resLT6 = true;
@@ -413,6 +434,34 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     }
 
                     return array;
+                }
+
+                function editTitle(x){
+                    x.titlex = x.title.replace(' in San Diego','');
+                    if (x.answers == 0 && x.type != 'Short-Phrase') x.image1url = "../../../assets/images/noimage.jpg";
+                }
+
+                function parseShortAnswer(x) {
+                    //Check if results is Short-Phrase
+                    if (x.type == 'Short-Phrase') {
+
+                        x.isShortPhrase = true;
+                        if (x.image1url != undefined) {
+                            var sPVals1 = x.image1url.split("##");
+                            x.title1 = sPVals1[0];
+                            x.addinfo1 = sPVals1[1];
+                        }
+                        if (x.image2url != undefined) {
+                            var sPVals2 = x.image2url.split("##");
+                            x.title2 = sPVals2[0];
+                            x.addinfo2 = sPVals2[1];
+                        }
+                        if (x.image3url != undefined) {
+                            var sPVals3 = x.image3url.split("##");
+                            x.title3 = sPVals3[0];
+                            x.addinfo3 = sPVals3[1];
+                        }
+                    }
                 }
 
                 var applyRuleDone = false;
