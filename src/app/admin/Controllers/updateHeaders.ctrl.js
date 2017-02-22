@@ -5,9 +5,9 @@
         .module('app')
         .controller('updateHeaders', updateHeaders);
 
-    updateHeaders.$inject = ['$location', '$rootScope', '$state', 'headline', 'cblock'];
+    updateHeaders.$inject = ['$location', '$rootScope', '$state', 'headline', 'cblock','table'];
 
-    function updateHeaders(location, $rootScope, $state, headline, cblock) {
+    function updateHeaders(location, $rootScope, $state, headline, cblock, table) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'updateHeaders';
@@ -17,6 +17,7 @@
         vm.createCBlocksRecsNh = createCBlocksRecsNh;
         vm.createCBlocksRecsRankX = createCBlocksRecsRankX;
         vm.deleteCBlocks = deleteCBlocks;
+        vm.catStrings = catStrings;
 
         vm.isAdmin = $rootScope.isAdmin;
         
@@ -100,6 +101,136 @@
                     cblock.update($rootScope.cblocks[i].id, ['catstr'], [fcatstr]);
                 }
             }
+        }
+
+        function catStrings() {
+            //8. Generate Category Strings for non neighborhood ranks
+            var isDistrictRanking = false;
+            var results = [];
+
+            //Grab template for results
+            for (var n = 0; n < $rootScope.content.length; n++) {
+                if ($rootScope.content[n].title.indexOf('in Hillcrest') > -1) {
+                    results.push($rootScope.content[n]);
+                }
+            }
+
+            for (var i = 0; i < results.length; i++) {
+                var catstr = '';
+                var fcatstr = '';
+                //1. - Do cat strings for all San Diego first
+                var genRank = results[i].title.replace("Hillcrest", "San Diego");
+                for (var j = 0; j < $rootScope.content.length; j++) {
+                    if (genRank == $rootScope.content[j].title) {
+                        if ($rootScope.content[j].catstr == null || //comment these 3
+                            $rootScope.content[j].catstr == undefined || //if want to redo everythign
+                            $rootScope.content[j].catstr.length == 0) {  //categories
+                            // TODO ---- 6949 --- events need to add 6969
+                            // TODO ---- 473 -- law san diego --- ignore, isatomic=true, catstr='';
+
+                            //--- Prevent execution for specific ranks ---
+                            var cid = $rootScope.content[j].id;
+                            if (cid != 473 && cid != 3125 && cid != 6949 && cid != 7424 && cid != 7675 &&
+                                cid != 3124 && cid != 3163 && cid != 3202) {
+
+                                console.log("Found gen rank --- ", $rootScope.content[j].title, ' ', $rootScope.content[j].id);
+                                var srchStr = $rootScope.content[j].title.replace("San Diego", "");
+                                for (var k = 0; k < $rootScope.content.length; k++) {
+
+                                    if ($rootScope.content[k].title.indexOf(srchStr) > -1 && k != j) {
+                                        //console.log("Found sub rank --- ", $rootScope.content[k].title);
+                                        /*
+                                        isDistrictRanking = false;
+                                        for (var n = 0; n < $rootScope.districts.length; n++) {
+                                            if ($rootScope.content[k].title.includes($rootScope.districts[n])) {
+                                                isDistrictRanking = true;
+                                            }
+                                        }
+                                        if (isDistrictRanking) catstr = catstr + ':' + $rootScope.content[k].id;
+                                        */
+                                        catstr = catstr + ':' + $rootScope.content[k].id;
+
+                                    }
+
+                                }
+                                fcatstr = catstr.substring(1); //remove leading ':'
+                                console.log("final catstr ---", fcatstr);
+
+                                table.update($rootScope.content[j].id, ['isatomic', 'catstr'], [false, fcatstr]);
+                            }//this is specific rank braket
+                        } //this is bracket
+                        break;
+                    }
+                }
+                //2. - Do cat Strings for Downtown ranks
+                catstr = '';
+                fcatstr = '';
+                genRank = results[i].title.replace("Hillcrest", "Downtown");
+                
+                for (var j = 0; j < $rootScope.content.length; j++) {
+                    if (genRank == $rootScope.content[j].title) {
+                        if ($rootScope.content[j].catstr == null || //comment these 3
+                            $rootScope.content[j].catstr == undefined || //if want to redo everythign
+                            $rootScope.content[j].catstr.length == 0) {  //categories
+                            // TODO ---- 6949 --- events need to add 6969
+                            // TODO ---- 473 -- law san diego --- ignore, isatomic=true, catstr='';
+
+                            //--- Prevent execution for specific ranks ---
+                            var cid = $rootScope.content[j].id;
+                            if (cid != 473 && cid != 3125 && cid != 6949 && cid != 7424 && cid != 7675 &&
+                                cid != 3124 && cid != 3163 && cid != 3202) {
+
+                                console.log("Found gen rank --- ", $rootScope.content[j].title, ' ', $rootScope.content[j].id);
+                                var srchStr = $rootScope.content[j].title.replace("Downtown", "");
+                                for (var k = 0; k < $rootScope.content.length; k++) {
+
+                                    if ($rootScope.content[k].title.indexOf(srchStr) > -1 && k != j) {
+                                        //console.log("Found sub rank --- ", $rootScope.content[k].title);
+                                        isDistrictRanking = false;
+                                        for (var n = 0; n < $rootScope.districts.length; n++) {
+                                            if ($rootScope.content[k].title.includes($rootScope.districts[n])) {
+                                                isDistrictRanking = true;
+                                            }
+                                        }
+                                        if (isDistrictRanking) catstr = catstr + ':' + $rootScope.content[k].id;
+                                    }
+
+                                }
+                                fcatstr = catstr.substring(1); //remove leading ':'
+                                console.log("final catstr ---", fcatstr);
+
+                                table.update($rootScope.content[j].id, ['isatomic', 'catstr'], [false, fcatstr]);
+                            }//this is specific rank braket
+                        } //this is bracket
+                        break;
+                    }
+                }
+            }
+            //SPECIAL CASES //only when redoing everything
+            /*
+            for (var n=0; n<$rootScope.content.length; n++){
+                if ($rootScope.content[n].id == 473){
+                    console.log("update(473)");
+                    //table.update(473, ['isatomic','catstr'],[true, '']);
+                }
+                if ($rootScope.content[n].id == 3125){
+                    console.log("update(3125)");
+                    //table.update(3125, ['isatomic','catstr'],[true, '']);
+                }
+                if ($rootScope.content[n].id == 6949){
+                    console.log("update(6949)");
+                    //table.update(6949, ['isatomic','catstr'],[false, '6949:'+$rootScope.content[n].catstr]);
+                }
+                if ($rootScope.content[n].id == 7675){
+                    console.log("update(7675)");
+                    //table.update(7675, ['isatomic','catstr'],[false, '7675:'+$rootScope.content[n].catstr]);
+                }
+                if ($rootScope.content[n].id == 7424){
+                    console.log("update(7424)");
+                    //table.update(7424, ['isatomic','catstr'],[false, '7424:'+$rootScope.content[n].catstr]);
+                }
+            }*/
+            //End 8
         }
 
         function shuffle(array) {

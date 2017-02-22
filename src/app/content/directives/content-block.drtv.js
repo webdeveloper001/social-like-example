@@ -29,10 +29,10 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 var strlen_o = 0;
 
                 //Adjust picture size for very small displays
-                if ($window.innerWidth < 768) vm.thumbheight = '70px';
-                if ($window.innerWidth >= 768 && $window.innerWidth < 992) vm.thumbheight = '90px';
-                if ($window.innerWidth >= 992 && $window.innerWidth < 1200) vm.thumbheight = '70px';
-                if ($window.innerWidth > 1200) vm.thumbheight = '90px';
+                if ($window.innerWidth < 768) vm.thumbheight = '80px';
+                if ($window.innerWidth >= 768 && $window.innerWidth < 992) vm.thumbheight = '100px';
+                if ($window.innerWidth >= 992 && $window.innerWidth < 1200) vm.thumbheight = '80px';
+                if ($window.innerWidth > 1200) vm.thumbheight = '100px';
 
                 //if (!vm.isDynamic) {
                 //  console.log("this is the spot");
@@ -321,7 +321,23 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     
                     vm.rankOfDay = vm.results[0].title;
                     
+                    //Determine background color for rank of rankofday
+                    if (vm.results[0].tags.indexOf('food')>-1) {vm.rdbc = 'brown'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('lifestyle')>-1) {vm.rdbc = '#008080'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('social')>-1) {vm.rdbc = '#4682b4'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('city')>-1) {vm.rdbc = 'gray'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('neighborhood')>-1) {vm.rdbc = 'gray'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('politics')>-1) {vm.rdbc = '#595959'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('sports')>-1) {vm.rdbc = '#e6e6e6'; vm.rdfc = '#0033cc';} 
+                    else if (vm.results[0].tags.indexOf('beauty')>-1) {vm.rdbc = '#a3297a'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('health')>-1) {vm.rdbc = 'green'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('technology')>-1) {vm.rdbc = 'gray'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('dating')>-1) {vm.rdbc = '#b22222'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('personalities')>-1) {vm.rdbc = '#e6b800'; vm.rdfc = 'black';}
+                    else {vm.rdbc = 'gray'; vm.rdfc = '#f8f8ff';} 
+
                     //resLT6 is used to hide the <<see more>> choice
+                    /*
                     if (vm.results.length <= 6) vm.resLT6 = true;
                     else vm.resLT6 = false;
 
@@ -330,6 +346,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
                     if (resGT0) vm.hideme = false;
                     else vm.hideme = true;
+                    */
                 }
 
                 //load content based on mode
@@ -390,21 +407,6 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         }
                     }
 
-                    //
-                    vm.resultsTop = [];
-                    var resObj = {};
-
-                    if (vm.results.length > 0) {
-                        for (var n = 0; n < 3; n++) {
-                            resObj = {};
-                            resObj = vm.results[n];
-                            editTitle(resObj);
-                            parseShortAnswer(resObj);
-                            vm.resultsTop.push(resObj);
-                        }
-                        vm.results = vm.results.slice(3);
-                    }
-                
                     //resLT6 is used to hide the <<see more>> choice
                     if (vm.results.length <= 6) vm.resLT6 = true;
                     else vm.resLT6 = false;
@@ -415,6 +417,21 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     if (bFound && resGT0) vm.hideme = false;
                     else vm.hideme = true;
 
+                    //
+                    vm.resultsTop = [];
+                    var resObj = {};
+                    var M = vm.results.length > 2 ? 3:vm.results.length;
+                    if (vm.results.length > 0) {
+                        for (var n = 0; n < M; n++) {
+                            resObj = {};
+                            resObj = vm.results[n];
+                            editTitle(resObj);
+                            parseShortAnswer(resObj);
+                            vm.resultsTop.push(resObj);
+                        }
+                        vm.results = vm.results.slice(M+1);
+                    }
+                    
                 }
 
                 function shuffle(array) {

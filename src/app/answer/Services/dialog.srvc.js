@@ -1555,7 +1555,6 @@
                 id: 'btn2',
                 label: 'Yes, take tour',
                 action: function(dialog, messagehtml) {
-                    console.log("dialog.buttons", dialog.buttons);
                     var $button = this; // 'this' here is a jQuery object that wrapping the <button> DOM element.
                     //console.log("bt2-clicked,",n);
                     if (n==12) dialog.close();

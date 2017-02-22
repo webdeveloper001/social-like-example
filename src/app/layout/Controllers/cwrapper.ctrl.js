@@ -109,7 +109,6 @@
                 $rootScope.isAdmin = true;
                 vm.isAdmin = true;
             }
-
             viewRank();
                 */
             //******************************

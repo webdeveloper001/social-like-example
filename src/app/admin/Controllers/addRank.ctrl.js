@@ -76,6 +76,19 @@
                             //var newtags = tablex.tags.replace("meat food", "beer pb bars");
                             var newtags = vm.tags
                             tablex.tags = newtags;
+
+                            //add checks for pb,ob and mb
+                            if (newtitle.indexOf('Pacific Beach')>-1) tablex.tags = tablex.tags + ' pb';
+                            if (newtitle.indexOf('Ocean Beach')>-1) tablex.tags = tablex.tags + ' ob';
+                            if (newtitle.indexOf('Mission Beach')>-1) tablex.tags = tablex.tags + ' mb';
+
+                            //set isatomic flag to false and add 'isMP' tag    
+                            if (newtitle.indexOf('in San Diego')>-1) {
+                                tablex.tags = tablex.tags + ' isMP';
+                                tablex.isatomic = false;
+                            }
+                            if (newtitle.indexOf('in Downtown')>-1) tablex.isatomic = false; 
+
                             tablex.answers = 0;
                             tablex.views = 0;
                             tablex.answertags = '';
@@ -101,7 +114,11 @@
             vm.tags = '';
             vm.keywords = '';
             vm.type = '';
+            vm.isatomic = true;
             vm.question = '';
+            vm.image1url = '';
+            vm.image2url = '';
+            vm.image3url = '';
         }
         
         function goBack(){
