@@ -6,9 +6,9 @@
         .factory('dialog', dialog);
 
     dialog.$inject = ['$q', '$rootScope', 'useraccnt', 'imagelist', 'answer', 'login',
-        '$window']
+        '$window','$cookies']
     function dialog($q, $rootScope, useraccnt, imagelist, answer, login,
-        $window) {
+        $window, $cookies) {
 
         var service = {
             editConfirm: editConfirm,
@@ -39,7 +39,8 @@
             askEmail: askEmail,
             seePhotos: seePhotos,
             loginFacebook: loginFacebook,
-            shareOptions: shareOptions
+            shareOptions: shareOptions,
+            tour: tour,
         };
 
         return service;
@@ -1485,6 +1486,107 @@
                 }]
             });
         }
+
+         function tour() {
+
+            var title = '';
+            var messagehtml = ''
+            var n = 1;
+            var img_style = '';
+            
+            if ($rootScope.sm) {
+                img_style = 'width:100%;height:auto';
+            }
+            else {
+                img_style = 'width:90%;height:auto';
+            }
+
+            title = 'Rank-X Intro Tour';
+
+            var m1 = '';
+            var m2 = '';
+            var m3 = '';
+            var m4 = '';
+            var cap = '';
+            
+            m1 =
+            '<img id="image" class="displayed" src="' +
+             '/assets/images/rxtour1.png'+'" style="'+img_style+'">';
+            
+            messagehtml =  m1;
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: messagehtml,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttons: [
+                {
+                id: 'btn1',
+                label: 'No, thanks',
+                action: function(dialog, messagehtml) {
+                    var $button = this; // 'this' here is a jQuery object that wrapping the <button> DOM element.
+                    //console.log("bt1-clicked,",n);
+                    if (n==1) dialog.close();
+                    else {
+                        n = n - 1;
+                        if (n==1){
+                            $('#btn1').text('No, thanks');
+                            $('#btn2').text('Yes, take tour');
+                        }
+                        else if (n == 12){
+                            $('#btn1').text('Back');
+                            $('#btn2').text('Close');
+                            $cookies.put('tourviewed', true);
+                        } 
+                        else {
+                            $('#btn1').text('Back');
+                            $('#btn2').text('Next');
+                        }
+                        m1 = '<img id="image" class="displayed" src="' +
+                            '/assets/images/rxtour'+n+'.png'+'" style="'+img_style+'">';
+                        dialog.setMessage(m1);
+                        
+                        }
+                    }
+                },
+                {
+                id: 'btn2',
+                label: 'Yes, take tour',
+                action: function(dialog, messagehtml) {
+                    var $button = this; // 'this' here is a jQuery object that wrapping the <button> DOM element.
+                    //console.log("bt2-clicked,",n);
+                    if (n==12) dialog.close();
+                    else {
+                        if (n == 12) dialog.getButton(this.id).label = 'Close';
+                        else {
+                            //$button.text = 'Next'; 
+                            n = n + 1;
+                            if (n == 1) {
+                                $('#btn1').text('No, thanks');
+                                $('#btn2').text('Yes, take tour');
+                            }
+                            else if (n == 12) {
+                                $('#btn1').text('Back');
+                                $('#btn2').text('Close');
+                                $cookies.put('tourviewed', true);
+                            }
+                            else {
+                                $('#btn1').text('Back');
+                                $('#btn2').text('Next');
+                            }
+                        }
+                        m1 = '<img id="image" class="displayed" src="' +
+                            '/assets/images/rxtour' + n + '.png' + '" style="' + img_style + '">';
+                        dialog.setMessage(m1);
+                    }
+                }
+            }]
+
+            });
+
+        } 
 
     }
 })();

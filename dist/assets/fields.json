@@ -77,8 +77,8 @@
 	   {"name":"name","isrequired":true,"onlybyowner":false,"label":"Name"},
 	   {"name":"email","isrequired":true,"onlybyowner":false,"label":"Email"},
      {"name":"phone","isrequired":false, "onlybyowner":true,"label":"Phone Number"},
-     {"name":"website","isrequired":false, "onlybyowner":true,"label":"Website"},
-	   {"name":"addinfo","isrequired":false, "onlybyowner":true,"label":"Additional Info"}
+     {"name":"website","isrequired":false, "onlybyowner":false,"label":"Website"},
+	   {"name":"addinfo","isrequired":false, "onlybyowner":false,"label":"Additional Info"}
    ]   
  }
 ]

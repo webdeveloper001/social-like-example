@@ -4,10 +4,12 @@
     var app = angular.module('app');
 
     // Configure the states and state resolvers
-    app.config(['$stateProvider', '$urlRouterProvider', stateConfigurator]);
+    app.config(['$stateProvider', '$urlRouterProvider','$locationProvider', stateConfigurator]);
 
-    function stateConfigurator($stateProvider, $urlRouterProvider) {
+    function stateConfigurator($stateProvider, $urlRouterProvider,$locationProvider) {
 
+        // use the HTML5 History API
+        //$locationProvider.html5Mode(true);
 
         // For any unmatched url
         $urlRouterProvider.otherwise('/home');
@@ -358,5 +360,6 @@
 
             $stateProvider.state(this);
         });
+        
     }
 })();

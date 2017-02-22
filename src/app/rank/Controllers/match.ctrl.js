@@ -5,9 +5,9 @@
         .module('app')
         .controller('match', match);
 
-    match.$inject = ['$state', 'dialog', '$location', 'answer', '$rootScope', 'matchrec', '$modal', 'useractivity'];
+    match.$inject = ['$state', 'dialog', '$location', 'answer', '$rootScope', 'matchrec', '$modal', 'useractivity','$window'];
 
-    function match($state, dialog, $location, answer, $rootScope, matchrec, $modal, useractivity) {
+    function match($state, dialog, $location, answer, $rootScope, matchrec, $modal, useractivity, $window) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'match';
@@ -37,6 +37,10 @@
         vm.skipMatch = skipMatch;
         vm.answerDetail = answerDetail;
         vm.closeRank = closeRank;
+
+        //Adjust picture size for very small displays
+        if ($window.innerWidth < 512) { vm.sm = true; vm.nsm = false; }
+        else { vm.sm = false; vm.nsm = true; }
 
         activate();
 
@@ -205,7 +209,7 @@
         }
 
         function closeRank() {
-               $state.go('cwrapper');                            
+               $state.go('rankSummary',{index: $rootScope.cCategory.id});                            
         }
     }
 })();

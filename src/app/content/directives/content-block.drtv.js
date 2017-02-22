@@ -10,29 +10,37 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             isRoW: '=rankofweek',
             updateView: '&updateView'
         },
-        controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 'vrows',
-            function contentCtrl($scope, query, $http, answer, table, catans, $timeout, vrows) {
+        controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 'vrows','$window',
+            function contentCtrl($scope, query, $http, answer, table, catans, $timeout, vrows, $window) {
                 var vm = $scope;
                 vm.title = 'mycontent';
 
                 vm.results = [];
                 vm.results_nm = [];
-                
+                vm.sm = $rootScope.sm;
+
                 //Methods
                 vm.loadContent = loadContent;
 
                 if (vm.modType == 'query') vm.maxRes = 4000;
-                else vm.maxRes = 6;
+                else vm.maxRes = 4;
 
                 vm.btext = 'see more';
                 var strlen_o = 0;
-                
+
+                //Adjust picture size for very small displays
+                if ($window.innerWidth < 768) vm.thumbheight = '80px';
+                if ($window.innerWidth >= 768 && $window.innerWidth < 992) vm.thumbheight = '100px';
+                if ($window.innerWidth >= 992 && $window.innerWidth < 1200) vm.thumbheight = '80px';
+                if ($window.innerWidth > 1200) vm.thumbheight = '100px';
+
                 //if (!vm.isDynamic) {
                 //  console.log("this is the spot");
                 if (vm.modType == 'rankofweek') getRankofDay();
+                else if (vm.modType == 'query') getRanks();
                 else loadContent();
                 //}
-                if (vm.modType == 'query') getRanks(); 
+                
                 //console.log("I am directive instance! ",vm.modType,vm.isDynamic,vm.isRoW);
 
                 $rootScope.$on('refreshRanks', function (e) {
@@ -96,6 +104,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         if (inputVal.indexOf('Best ') > -1 ) inputVal = inputVal.replace('Best ', '');
                         if (inputVal.indexOf('top ') > -1 ) inputVal = inputVal.replace('top ', '');
                         if (inputVal.indexOf('Top ') > -1 ) inputVal = inputVal.replace('Top ', '');
+                        if (inputVal == 'Food ') inputVal = inputVal.replace('Food ', 'Food Near Me');
+                        if (inputVal == 'food ') inputVal = inputVal.replace('food ', 'Food Near Me');
                         
                         //Special Cases
                         if (inputVal == 'pho' || inputVal == 'Pho'){
@@ -222,7 +232,6 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             vm.results = [];
                         }
                     }
-                    //console.log("rt_nm - ", vm.results_rt_nm);
                 }
 
                 function getRankofDay() {
@@ -310,8 +319,25 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         vm.addinfo3 =sPVals3[1];                        
                     }
                     
+                    vm.rankOfDay = vm.results[0].title;
                     
+                    //Determine background color for rank of rankofday
+                    if (vm.results[0].tags.indexOf('food')>-1) {vm.rdbc = 'brown'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('lifestyle')>-1) {vm.rdbc = '#008080'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('social')>-1) {vm.rdbc = '#4682b4'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('city')>-1) {vm.rdbc = 'gray'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('neighborhood')>-1) {vm.rdbc = 'gray'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('politics')>-1) {vm.rdbc = '#595959'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('sports')>-1) {vm.rdbc = '#e6e6e6'; vm.rdfc = '#0033cc';} 
+                    else if (vm.results[0].tags.indexOf('beauty')>-1) {vm.rdbc = '#a3297a'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('health')>-1) {vm.rdbc = 'green'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('technology')>-1) {vm.rdbc = 'gray'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('dating')>-1) {vm.rdbc = '#b22222'; vm.rdfc = '#f8f8ff';}
+                    else if (vm.results[0].tags.indexOf('personalities')>-1) {vm.rdbc = '#e6b800'; vm.rdfc = 'black';}
+                    else {vm.rdbc = 'gray'; vm.rdfc = '#f8f8ff';} 
+
                     //resLT6 is used to hide the <<see more>> choice
+                    /*
                     if (vm.results.length <= 6) vm.resLT6 = true;
                     else vm.resLT6 = false;
 
@@ -320,6 +346,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
                     if (resGT0) vm.hideme = false;
                     else vm.hideme = true;
+                    */
                 }
 
                 //load content based on mode
@@ -379,7 +406,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             break;
                         }
                     }
-                
+
                     //resLT6 is used to hide the <<see more>> choice
                     if (vm.results.length <= 6) vm.resLT6 = true;
                     else vm.resLT6 = false;
@@ -390,6 +417,21 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     if (bFound && resGT0) vm.hideme = false;
                     else vm.hideme = true;
 
+                    //
+                    vm.resultsTop = [];
+                    var resObj = {};
+                    var M = vm.results.length > 2 ? 3:vm.results.length;
+                    if (vm.results.length > 0) {
+                        for (var n = 0; n < M; n++) {
+                            resObj = {};
+                            resObj = vm.results[n];
+                            editTitle(resObj);
+                            parseShortAnswer(resObj);
+                            vm.resultsTop.push(resObj);
+                        }
+                        vm.results = vm.results.slice(M+1);
+                    }
+                    
                 }
 
                 function shuffle(array) {
@@ -409,6 +451,34 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     }
 
                     return array;
+                }
+
+                function editTitle(x){
+                    x.titlex = x.title.replace(' in San Diego','');
+                    if (x.answers == 0 && x.type != 'Short-Phrase') x.image1url = "../../../assets/images/noimage.jpg";
+                }
+
+                function parseShortAnswer(x) {
+                    //Check if results is Short-Phrase
+                    if (x.type == 'Short-Phrase') {
+
+                        x.isShortPhrase = true;
+                        if (x.image1url != undefined) {
+                            var sPVals1 = x.image1url.split("##");
+                            x.title1 = sPVals1[0];
+                            x.addinfo1 = sPVals1[1];
+                        }
+                        if (x.image2url != undefined) {
+                            var sPVals2 = x.image2url.split("##");
+                            x.title2 = sPVals2[0];
+                            x.addinfo2 = sPVals2[1];
+                        }
+                        if (x.image3url != undefined) {
+                            var sPVals3 = x.image3url.split("##");
+                            x.title3 = sPVals3[0];
+                            x.addinfo3 = sPVals3[1];
+                        }
+                    }
                 }
 
                 var applyRuleDone = false;
@@ -606,14 +676,15 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
          
          
                     //console.log("1");
-                    /*//8. Generate Category Strings for non neighborhood ranks            
+                    /*//8. Generate Category Strings for non neighborhood ranks
+                       var isDistrictRanking = false;             
                        for (var i=0; i<vm.results.length; i++){
                            //console.log("2");
                            if (vm.results[i].title.includes("Hillcrest")){
                                //console.log("2");
                                var catstr = '';
                                var fcatstr = '';
-                               var genRank = vm.results[i].title.replace("Hillcrest", "San Diego");
+                               var genRank = vm.results[i].title.replace("Hillcrest", "Downtown");
                                for (var j=0; j<$rootScope.content.length; j++){
                                    if (genRank == $rootScope.content[j].title){
                                        if ($rootScope.content[j].catstr == null || //comment these 3
@@ -624,15 +695,24 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                       
                                       //--- Prevent execution for specific ranks ---
                                       var cid = $rootScope.content[j].id;
-                                      if (cid != 473 && cid != 3125 && cid !=6949 && cid != 7424 && cid != 7675){
+                                      if (cid != 473 && cid != 3125 && cid !=6949 && cid != 7424 && cid != 7675 &&
+                                          cid != 3124 && cid != 3163 && cid !=3202){
                                       
-                                        console.log("Found gen rank --- ", $rootScope.content[j].title);
-                                        var srchStr = $rootScope.content[j].title.replace("San Diego","");
+                                        console.log("Found gen rank --- ", $rootScope.content[j].title,' ',$rootScope.content[j].id);
+                                        var srchStr = $rootScope.content[j].title.replace("Downtown","");
                                            for (var k=0; k<$rootScope.content.length; k++){
+
                                                if ($rootScope.content[k].title.includes(srchStr) && k!=j ){
                                                    //console.log("Found sub rank --- ", $rootScope.content[k].title);
-                                                   catstr = catstr + ':' + $rootScope.content[k].id;
+                                                    isDistrictRanking = false;
+                                                    for (var n=0; n<$rootScope.districts.length; n++){
+                                                        if ($rootScope.content[k].title.includes($rootScope.districts[n])){
+                                                            isDistrictRanking = true;
+                                                        }     
+                                                    }
+                                                    if (isDistrictRanking) catstr = catstr + ':' + $rootScope.content[k].id;
                                                }
+
                                            }
                                            fcatstr = catstr.substring(1); //remove leading ':'
                                            console.log("final catstr ---", fcatstr)
@@ -670,7 +750,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                            }
                        }
                        
-                     *///End 8
+                    *///End 8
                
                     /* //  9. Clear answer string for all non-atomic ranks 
                     for (var i=0; i < $rootScope.content.length; i++){
@@ -741,11 +821,11 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     /*//12. Add 'pb' tag to all Pacific Beach
                     var tagstr = '';
                     for (var i=0; i<$rootScope.content.length; i++){
-                        if ($rootScope.content[i].title.includes('Mission Beach')){
-                            if ($rootScope.content[i].tags.includes('mb') == false){
+                        if ($rootScope.content[i].title.includes('Ocean Beach')){
+                            if ($rootScope.content[i].tags.includes('ob') == false){
                                 //console.log($rootScope.content[i].title);
-                                tagstr = $rootScope.content[i].tags + ' mb';
-                                //console.log("tagstr - ", tagstr, $rootScope.content[i].title);
+                                tagstr = $rootScope.content[i].tags + ' ob';
+                                console.log("tagstr - ", tagstr, $rootScope.content[i].title);
                                 table.update($rootScope.content[i].id,['tags'],[tagstr]);
                             }
                         }
@@ -900,15 +980,23 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                      }
                     */ //End 18
                     
-                    /* //19. Print all answers that do not have address, phone number or website
+                    /*//19. Print all answers that do not have address, phone number or website
                     for (var i=0; i<$rootScope.answers.length; i++){
-                        if ($rootScope.answers[i].type == 'Establishment'){
-                            if ($rootScope.answers[i].cityarea == 'Downtown'){
-                                console.log("Answer Id. ", $rootScope.answers[i].id, " Name: ", $rootScope.answers[i].name, " Address: ", $rootScope.answers[i].location);
-                            }
+                        if ($rootScope.answers[i].cityarea == 'Downtown'){
+                           // if ($rootScope.answers[i].cityarea == 'Downtown'){
+                                console.log("Answer Id. ", $rootScope.answers[i].id, " Name: ", $rootScope.answers[i].name, " Neighborhood: ", $rootScope.answers[i].cityarea);
+                           // }
                         }
                     } */ //End 19
-                                                                                       
+                    /*//20.Delete all catans from Downtown
+                    var catid = 0;
+                    for (var i=0; i<$rootScope.content.length; i++){
+                        if ($rootScope.content[i].title.includes('Downtown')){
+                             catid = $rootScope.content[i].id;
+                             catans.deletebyCategory(catid);
+                        }
+                    }
+                    *///end 20                                                                                       
                 }
             }], //end controller
         link: function (scope) {
@@ -921,13 +1009,13 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 }
             };
             scope.seeMore = function (maxRes, btext) {
-                if (scope.maxRes == 6) {
+                if (scope.maxRes == 4) {
                     scope.btext = 'see less';
                     scope.maxRes = 100;
                 }
                 else {
                     scope.btext = 'see more';
-                    scope.maxRes = 6;
+                    scope.maxRes = 4;
                 }
                 // scope.loadContent();
             }
