@@ -15,6 +15,7 @@
 
     <title>Rank-X | {{ seo.pageTitle }}</title>
     <meta name="description" content="{{seo.metaDescription}}">
+    
     <!-- <base href="/"> -->  
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
@@ -42,6 +43,8 @@
     <!--
 <p id="demo"></p>
 -->
+    <script> window.prerenderReady = false; </script>
+
     <div ui-view draggable=false></div>
 
     <!-- build:js(src) scripts/vendor.js -->
