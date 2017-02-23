@@ -4,7 +4,7 @@ var app = module.exports = express();
 app.configure(function(){ 
   // Here we require the prerender middleware that will handle requests from Search Engine crawlers 
   // We set the token only if we're using the Prerender.io service 
-  app.use(require('prerender-node').set('prerenderToken', 'RUfTYPRmORizHiodvGJF'));
+  app.use(require('prerender-node').set('prerenderServiceUrl','http://localhost:3000/').set('prerenderToken', 'RUfTYPRmORizHiodvGJF'));
   app.use(express.static("public")); app.use(app.router); 
 });
 
