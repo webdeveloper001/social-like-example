@@ -8,10 +8,17 @@
     cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
         'query', 'table', 'dialog', 'uaf','$window','userdata'];
 
-    function cwrapper($rootScope, $state, $http, $stateParams, $scope, 
+    function cwrapper($rootScope, $state, $http, $stateParams, $scope,
         query, table, dialog, uaf, $window, userdata) {
         /* jshint validthis:true */
         var vm = this;
+
+        //-----SEO tags ----
+        $scope.$parent.$parent.$parent.seo = { 
+        pageTitle : 'Rank-X', 
+        metaDescription: 'Rank-X create collective rankings on everything in your city.' 
+        };
+        
         vm.title = 'cwrapper';
 
         vm.switchScope = switchScope;
@@ -32,6 +39,8 @@
         //Methods
         vm.selnh = selnh;
         vm.goHome = goHome;
+        vm.gotoAnswer = gotoAnswer;
+        vm.gotoRank = gotoRank;
         vm.seeMoreFeed = seeMoreFeed;
         vm.fres = 4;
         vm.ftext = 'see more';
@@ -394,6 +403,12 @@
             //$rootScope.$emit('quitFeedbackMode');
             $rootScope.fbmode = false;
             vm.fbm = $rootScope.fbmode;
+        }
+        function gotoAnswer(x){
+            $state.go('answerDetail',{index: x.answer});
+        }
+        function gotoRank(x){
+            $state.go('rankSummary',{index: x.category});
         }
         function prepareNewCatansOptions() {
             

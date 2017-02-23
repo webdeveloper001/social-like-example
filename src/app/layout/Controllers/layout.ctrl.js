@@ -15,11 +15,11 @@
 
         .controller('layout', layout);
 
-    layout.$inject = ['$location', '$rootScope', '$window', '$q', '$http', 'pvisits', '$cookies',
+    layout.$inject = ['$location', '$rootScope', '$window', '$q', '$http', 'pvisits', '$cookies', '$scope',
         'DEBUG_MODE', 'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata', 'dialog',
         'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state'];
 
-    function layout($location, $rootScope, $window, $q, $http, pvisits, $cookies,
+    function layout($location, $rootScope, $window, $q, $http, pvisits, $cookies, $scope,
         DEBUG_MODE, rankofday, answer, table, special, datetime, uaf, userdata, dialog,
         matchrec, edit, useractivity, vrows, headline, cblock, catans, $state) {
         /* jshint validthis:true */
@@ -136,16 +136,16 @@
                 "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
                 "Marina", "Bankers Hill"];
 
-            $http.get('../../../assets/fields.json').success(function (response) {
-                $rootScope.typeSchema = response;
+            $http.get('../../../assets/fields.json').then(function (response) {
+                $rootScope.typeSchema = response.data;
             });
 
-            $http.get('../../../assets/dialogs.json').success(function (response) {
-                $rootScope.dialogs = response;
+            $http.get('../../../assets/dialogs.json').then(function (response) {
+                $rootScope.dialogs = response.data;
             });
 
-            $http.get('../../../assets/foodranks.json').success(function (response) {
-                $rootScope.foodranks = response;
+            $http.get('../../../assets/foodranks.json').then(function (response) {
+                $rootScope.foodranks = response.data;
             });
             
             //showNeighborhoods();

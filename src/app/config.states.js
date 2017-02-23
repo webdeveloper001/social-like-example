@@ -41,80 +41,6 @@
                         controller: 'cwrapper as vm'
                     }
                 }
-                /*
-                resolve: {
-
-                    answers: ['answer', function (answer) {
-                        return answer.getAnswers().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-
-                    rankings: ['table', function (table) {
-                        return table.getTables().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-
-                    specials: ['special', function (special) {
-                        return special.getSpecials().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-                     mrecs: ['matchrec', function (matchrec) {
-
-                        return matchrec.GetMatchTable().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-                    edits: ['edit', function (edit) {
-
-                        return edit.getEdits().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-                    useractivities: ['useractivity', function (useractivity) {
-
-                        return useractivity.getAllUserActivity().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-                    catansrecs: ['catans', function (catans) {
-
-                        return catans.getAllcatans().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-                    allvrows: ['vrows', function (vrows) {
-
-                        return vrows.getAllvrows().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-                    headlines: ['headline', function (headline) {
-
-                        return headline.getheadlines().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-                    cblocks: ['cblock', function (cblock) {
-
-                        return cblock.getcblocks().then(function (result) {
-
-                            return result;
-                        });
-                    }]
-                }
-                */
             },
 
             {
@@ -123,74 +49,6 @@
                 url: '/rankSummary/:index',
                 templateUrl: 'app/rank/Partials/RankSummary.html',
                 controller: 'rankSummary as vm'
-/*
-                resolve: {
-
-                    answers: ['answer', function (answer) {
-                        return answer.getAnswers().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-
-                    mrecs: ['matchrec', function (matchrec) {
-
-                        return matchrec.GetMatchTable().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-                    edits: ['edit', function (edit) {
-
-                        return edit.getEdits().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-                    useractivities: ['useractivity', function (useractivity) {
-
-                        return useractivity.getAllUserActivity().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-                    catansrecs: ['catans', function (catans) {
-
-                        return catans.getAllcatans().then(function (result) {
-
-                            return result;
-                        });
-                    }],
-                    allvrows: ['vrows', function (vrows) {
-
-                        return vrows.getAllvrows().then(function (result) {
-
-                            return result;
-                        });
-                    }]
-                    /*
-                    mrecs: ['matchrec', function () {
-                        return function () {
-                            return [];
-                        };
-                    }],
-                    edits: ['edit', function () {
-                        return function () {
-                            return [];
-                        };
-                    }],
-                    useractivities: ['useractivity', function () {
-                        return function () {
-                            return [];
-                        };
-                    }],
-                    catansrecs: ['catans', function () {
-                        return function () {
-                            return [];
-                        };
-                    }]*/
-
-//                }
             },
             {
                 name: 'editRanking',
@@ -263,24 +121,6 @@
                 url: '/answerDetail/:index',
                 templateUrl: 'app/answer/Partials/answerDetail.html',
                 controller: 'answerDetail as vm',
-                /*
-                resolve: {
-
-                    answers: ['answer', function (answer) {
-                        return answer.getAnswers().then(function (result) {
-
-                            return result;
-                        });
-                    }]
-
-                    /*
-                    answers: ['answer', function () {
-                        return function () {
-                            return [];
-                        };
-                    }]*/
-
-                //}
             },
             {
                 name: 'editvrows',
@@ -360,6 +200,9 @@
 
             $stateProvider.state(this);
         });
+
+        //$locationProvider.html5Mode(true);
+        $locationProvider.hashPrefix('!');
         
     }
 })();

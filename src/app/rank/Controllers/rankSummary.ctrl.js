@@ -6,11 +6,11 @@
         .controller('rankSummary', rankSummary);
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime'
-        , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows'
+        , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope'
         , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime
-        , answer, rank, $filter, table, vrowvotes, $window, vrows
+        , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope
         , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare) {
         /* jshint validthis:true */
 
@@ -119,6 +119,12 @@
             $rootScope.objNumAct = $rootScope.objNum;
 
             loadData(); //load data and write to $rootScope
+
+            //-----SEO tags ----
+            $scope.$parent.$parent.$parent.seo = { 
+            pageTitle : $rootScope.cCategory.title, 
+            metaDescription: $rootScope.cCategory.question,
+            };
             
             //Check if there are no answers
             if (vm.answers.length == 0) vm.noAnswers = true;

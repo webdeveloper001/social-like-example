@@ -1528,7 +1528,10 @@
                 action: function(dialog, messagehtml) {
                     var $button = this; // 'this' here is a jQuery object that wrapping the <button> DOM element.
                     //console.log("bt1-clicked,",n);
-                    if (n==1) dialog.close();
+                    if (n==1) {
+                        $cookies.put('tourviewed', true);
+                        dialog.close();
+                    }
                     else {
                         n = n - 1;
                         if (n==1){
@@ -1557,7 +1560,10 @@
                 action: function(dialog, messagehtml) {
                     var $button = this; // 'this' here is a jQuery object that wrapping the <button> DOM element.
                     //console.log("bt2-clicked,",n);
-                    if (n==12) dialog.close();
+                    if (n==12) {
+                        $cookies.put('tourviewed', true);
+                        dialog.close();
+                    }
                     else {
                         if (n == 12) dialog.getButton(this.id).label = 'Close';
                         else {
