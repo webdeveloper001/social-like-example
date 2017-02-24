@@ -73,11 +73,12 @@
         });
         
         var nidx = 0;
-        // Members
-        activate();
-
+        
         var tourviewed = $cookies.get('tourviewed');
         if (tourviewed == undefined) tourviewed = false;
+
+        // Members
+        activate();
 
         function activate() {
 
