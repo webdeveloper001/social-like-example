@@ -7,11 +7,11 @@
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
         'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt',
-        '$location', 'vrows', 'vrowvotes','imagelist','instagram']; //AM:added user service
+        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
         votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt,
-        $location, vrows, vrowvotes, imagelist, instagram) { //AM:added user service
+        $location, vrows, vrowvotes, imagelist, instagram, $scope) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
@@ -141,6 +141,12 @@
         $rootScope.$on('fileUploaded', function () {
             if ($state.current.name == 'answerDetail') getImages();
         });
+
+        //-----SEO tags ----
+        $scope.$parent.$parent.$parent.seo = { 
+        pageTitle : vm.answer.name, 
+        metaDescription: vm.answer.addinfo 
+        };
 
         activate();
 

@@ -15,8 +15,8 @@
 
         //-----SEO tags ----
         $scope.$parent.$parent.$parent.seo = { 
-        pageTitle : 'Rank-X', 
-        metaDescription: 'Rank-X create collective rankings on everything in your city.' 
+        pageTitle : 'Home', 
+        metaDescription: 'Rank-X creates collective rankings on everything in your city.' 
         };
         
         vm.title = 'cwrapper';
