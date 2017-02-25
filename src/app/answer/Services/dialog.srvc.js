@@ -6,9 +6,9 @@
         .factory('dialog', dialog);
 
     dialog.$inject = ['$q', '$rootScope', 'useraccnt', 'imagelist', 'answer', 'login',
-        '$window','$cookies']
+        '$window','$cookies', '$state']
     function dialog($q, $rootScope, useraccnt, imagelist, answer, login,
-        $window, $cookies) {
+        $window, $cookies, $state) {
 
         var service = {
             editConfirm: editConfirm,
