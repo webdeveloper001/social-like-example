@@ -104,9 +104,9 @@
             if ($rootScope.DEBUG_MODE) console.log("init cwrapper!");
                 
             //****SUPER TEMP*****************
-            $rootScope.isAdmin = true;
-            vm.isAdmin = true;
-               
+            $rootScope.isAdmin = false;
+            vm.isAdmin = false;
+               /*
             $rootScope.isLoggedIn = true;
             $rootScope.user = {};
             $rootScope.user.name = "Andres Moctezuma";
@@ -369,7 +369,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-             $rootScope.$emit('applyRule');
+         //   $rootScope.$emit('applyRule');
         }
            
         function getFeed(){
