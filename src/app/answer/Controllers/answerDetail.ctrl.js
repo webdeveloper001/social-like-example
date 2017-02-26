@@ -95,9 +95,9 @@
         //if there is no category, look for it in cookies
         if ($rootScope.cCategory == undefined){
             var ccategoryid = $cookies.get('ccategory');
+            console.log("@answerDetail - ccategory ", ccategoryid);
             var idx = $rootScope.content.map(function(x) {return x.id; }).indexOf(ccategoryid); 
             if (idx > -1) $rootScope.cCategory = $rootScope.content[idx];
-
         }
 
         if ($rootScope.inFavMode) vm.title = $rootScope.myfavs.title;

@@ -85,6 +85,8 @@
                 $rootScope.user = result.data;
                 
                 //remove /?code==#####/
+
+                $location.search({});
                 if ($location.$$search.code) {
                     delete $location.$$search.code;
                     $location.$$compose();
