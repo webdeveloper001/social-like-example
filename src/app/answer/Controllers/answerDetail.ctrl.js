@@ -102,12 +102,11 @@
 
         if ($rootScope.inFavMode) vm.title = $rootScope.myfavs.title;
         else if ($rootScope.cCategory) vm.title = $rootScope.cCategory.title;
-        else {
-            vm.title = '';
-            if ($rootScope.answers) answers = $rootScope.answers; 
-            else answers = [vm.answer];
-        }
+        else vm.title = '';
 
+        //if answers not loaded (state went straight to asnwerDetail, answers is just current answer)
+        if (answers == undefined) answers = [vm.answer];  
+        
         vm.idx = answers.map(function (x) { return x.id; }).indexOf(vm.answer.id) + 1;
 
         vm.isMobile = false; 
