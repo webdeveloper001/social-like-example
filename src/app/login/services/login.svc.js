@@ -83,7 +83,12 @@
                 $cookies.session_token = result.data.session_token;
 
                 $rootScope.user = result.data;
-                $location.search('key', null);
+                
+                //remove /?code==#####/
+                if ($location.$$search.code) {
+                    delete $location.$$search.code;
+                    $location.$$compose();
+                }
 
                 try {
                     window.localStorage.user = JSON.stringify(result.data);
