@@ -50,7 +50,8 @@
             }
             else statenum = $rootScope.stateNum;
 
-            ccategory = $rootScope.cCategory.id;
+            if ($rootScope.cCategory != undefined) ccategory = $rootScope.cCategory.id;
+            else ccategory.
 
             $cookies.put('statename', statename);
             $cookies.put('statenum', statenum);
