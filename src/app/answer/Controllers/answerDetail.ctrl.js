@@ -82,6 +82,7 @@
         cObj.newComment = '';
         vm.cm = cObj;
         vm.commentAllowed = true;
+
         
         //vm.userIsOwner = $rootScope.userIsOwner;
         if ($stateParams.index) {
@@ -91,11 +92,20 @@
         $rootScope.canswer = vm.answer;
         vm.type = vm.answer.type;
 
+        //if there is no category, look for it in cookies
+        if ($rootScope.cCategory == undefined){
+            var ccategoryid = $cookies.get('ccategory');
+            var idx = $rootScope.content.map(function(x) {return x.id; }).indexOf(ccategoryid); 
+            if (idx > -1) $rootScope.cCategory = $rootScope.content[idx];
+
+        }
+
         if ($rootScope.inFavMode) vm.title = $rootScope.myfavs.title;
         else if ($rootScope.cCategory) vm.title = $rootScope.cCategory.title;
         else {
             vm.title = '';
-            answers = [vm.answer];
+            if ($rootScope.answers) answers = $rootScope.answers; 
+            else answers = [vm.answer];
         }
 
         vm.idx = answers.map(function (x) { return x.id; }).indexOf(vm.answer.id) + 1;

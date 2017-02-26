@@ -94,8 +94,8 @@
                             
                             var statename = $cookies.get('statename');
                             var statenum = $cookies.get('statenum');
-
-                            console.log("state and num - ", statename, statenum);
+                            
+                            //console.log("state and num - ", statename, statenum, ccategory);
 
                             if (statename == 'rankSummary' || statename == 'answerDetail') {
                                 $state.go(statename, {index: statenum});

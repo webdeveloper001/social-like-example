@@ -38,6 +38,7 @@
                 
             var statename = '';
             var statenum = 0;
+            var ccategory = 0;
 
             //Store in cookies memory to redirect after login, ignore state:login
             if ($rootScope.stateName == undefined) statename = $state.current.name;
@@ -48,9 +49,12 @@
                 if (statename == 'answerDetail') statenum = $rootScope.canswer.id;
             }
             else statenum = $rootScope.stateNum;
-            
+
+            ccategory = $rootScope.cCategory.id;
+
             $cookies.put('statename', statename);
-            $cookies.put('statenum', statenum);    
+            $cookies.put('statenum', statenum);
+            $cookies.put('ccategory', ccategory);    
 
             var deferred = $q.defer();
             var url = INSTANCE_URL + '/api/v2/user/session?service=facebook';
