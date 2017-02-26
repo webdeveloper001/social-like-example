@@ -51,7 +51,7 @@
             else statenum = $rootScope.stateNum;
 
             if ($rootScope.cCategory != undefined) ccategory = $rootScope.cCategory.id;
-            else ccategory.
+            else ccategory = undefined;
 
             $cookies.put('statename', statename);
             $cookies.put('statenum', statenum);
