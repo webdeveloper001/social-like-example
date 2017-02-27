@@ -18,7 +18,7 @@
         vm.title = 'rankSummary';
         vm.addAnswerDisabled = '';
         
-        if ($location.absUrl().indexOf('code=')>-1)$window.location.search = '';
+        //if ($location.absUrl().indexOf('code=')>-1)$window.location.search = '';
         
         // Methods
         vm.answerDetail = answerDetail;
