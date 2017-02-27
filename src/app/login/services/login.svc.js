@@ -95,11 +95,11 @@
                 console.log("$location.path() ", $location.path());
                 var path = $location.path();
                 $location.url($location.path());
-                $location.path(path);
+                //$location.path(path);
                 
                 try {
                     window.localStorage.user = JSON.stringify(result.data);
-                    $window.location.search = '';
+                    //$window.location.search = '';
                 } catch (e) { }
             }
         }
