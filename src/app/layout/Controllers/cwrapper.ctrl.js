@@ -6,10 +6,10 @@
         .controller('cwrapper', cwrapper);
 
     cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
-        'query', 'table', 'dialog', 'uaf','$window','userdata'];
+        'query', 'table', 'dialog', 'uaf','$window','userdata','$location'];
 
     function cwrapper($rootScope, $state, $http, $stateParams, $scope,
-        query, table, dialog, uaf, $window, userdata) {
+        query, table, dialog, uaf, $window, userdata, $location) {
         /* jshint validthis:true */
         var vm = this;
 
@@ -18,6 +18,8 @@
         pageTitle : 'Home', 
         metaDescription: 'Rank-X creates collective rankings on everything in your city.' 
         };
+        
+        if ($location.absUrl().indexOf('code=')>-1) $window.location.search = '';
         
         vm.title = 'cwrapper';
 

@@ -17,6 +17,8 @@
         vm.title = 'answerDetail';
         vm.ranking = $rootScope.title;
 
+        if ($location.absUrl().indexOf('code=')>-1)$window.location.search = '';
+
         var voteRecordExists = false;
         var dV = 0;
         var upVi = 0;  //upVotes initial value

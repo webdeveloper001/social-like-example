@@ -7,17 +7,18 @@
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope'
-        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare'];
+        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', '$location'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime
         , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope
-        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare) {
+        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, $location) {
         /* jshint validthis:true */
 
         var vm = this;
         vm.title = 'rankSummary';
         vm.addAnswerDisabled = '';
         
+        if ($location.absUrl().indexOf('code=')>-1)$window.location.search = '';
         
         // Methods
         vm.answerDetail = answerDetail;

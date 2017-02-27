@@ -92,9 +92,9 @@
                     $location.$$compose();
                 }
                 */
-                console.log("$location.path() ", $location.path());
-                var path = $location.path();
-                $location.url($location.path());
+                //console.log("$location.path() ", $location.path());
+                //var path = $location.path();
+                //$location.url($location.path());
                 //$location.path(path);
                 
                 try {
