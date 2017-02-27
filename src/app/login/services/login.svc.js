@@ -92,6 +92,7 @@
                     $location.$$compose();
                 }
                 */
+                console.log("$location.path() ", $location.path());
                 $location.url($location.path());
 
                 try {
