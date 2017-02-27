@@ -5,9 +5,9 @@
         .module('app')
         .factory('login', login);
 
-    login.$inject = ['$http', '$q', '$cookies', '$rootScope', 'INSTANCE_URL','$state','$location'];
+    login.$inject = ['$http', '$q', '$cookies', '$rootScope', 'INSTANCE_URL','$state','$location','$window'];
 
-    function login($http, $q, $cookies, $rootScope, INSTANCE_URL, $state, $location) {
+    function login($http, $q, $cookies, $rootScope, INSTANCE_URL, $state, $location, $window) {
         var service = {
             initiate: initiate,
             loginWithFacebook: loginWithFacebook,
@@ -96,6 +96,7 @@
                 var path = $location.path();
                 $location.url($location.path());
                 $location.path(path);
+                $window.location.search = '';
 
                 try {
                     window.localStorage.user = JSON.stringify(result.data);
