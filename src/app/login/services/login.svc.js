@@ -96,10 +96,10 @@
                 var path = $location.path();
                 $location.url($location.path());
                 $location.path(path);
-                $window.location.search = '';
-
+                
                 try {
                     window.localStorage.user = JSON.stringify(result.data);
+                    $window.location.search = '';
                 } catch (e) { }
             }
         }
