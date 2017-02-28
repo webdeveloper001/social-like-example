@@ -1,53 +1,544 @@
 <!-- Navigation Bar -->
 <div ui-view="navbar"></div>
 
-<div class="panel panel-primary signin-card">
-    <div class="panel-heading">
-        <h3 class="text-center">Grow your Customer Base with Rank-X</h3>
-        <h1 class="text-center">Business Registration</h1>
+<!-- ------------  BIZ LOADER -->
+<style>
+/* Center the loader */
+#loader {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top:50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 }
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom {
+  from{ bottom:-100px; opacity:0 }
+  to{ bottom:0; opacity:1 }
+}
+
+#notLoader {
+  display: none;
+  text-align: center;
+}
+</style>
+<!-- ------------  END BIZ LOADER -->
+
+<!-- ---------------------------- loader -->
+<div id="loader"></div>
+
+
+<!-- ---------------------------- main page -->
+<div id="notLoader">
+
+<!-- <div ng-show="vm.showSpinner" class="loader">Loading...</div> -->
+
+
+<!-- ****************************** -->
+<!-- EULA Modal -->
+<style>
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    /*margin: 15% auto; /* 15% from the top and centered */*/
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #999999;
+    /*float: right;*/
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
+
+<div id="EULAModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <!-- <span class="close">&times; Ok, got it.</span> -->
+    <p style="text-align:left;">
+
+https://rank-x.com    Rank-X LLC
+<hr />
+SaaS Terms and Conditions of Use
+<br>
+<br>
+<br>Last updated February 6, 2017
+<br>
+<br>
+<br>1. This Service
+<br>The Rank-X (Service) is provided by Rank-X LLC (us, we) to you. Your use of this Service and any additional services introduced by us and contained within constitutes acceptance by you of these Terms & Conditions.
+<br>
+<br>
+<br>
+<br>2. Eligibility
+<br>You must be a minimum age of 18 to register on and use the Service. By registering and using the Service you warrant that you are 18 or older and understand your obligations under these Terms & Conditions.
+<br>
+<br>
+<br>
+<br>3. Registration and Account Integrity
+<br>3.1 As part of the registration process you will need to create an account, including a username & password. It is your responsibility to ensure that the information you provide is accurate, not misleading and relates to you. You cannot create an account or username & password using the names and information of another person or using words that are the trademarks or the property of another party (including ours), or vulgar, obscene or in any other way inappropriate. We reserve the right with or without notice to suspend or terminate any account in breach.
+<br>
+<br>3.2 Where we provide an organisation with a number of user licenses for the Service these must be adhered to. User licenses cannot be shared between users. A breach of this clause will result in termination of the abused accounts and/or all accounts provided to the organisation.
+<br>
+<br>3.3 If for any reason you suspect that your username & password has been disclosed to or obtained by another party you should contact us immediately. Please note that we never contact users requesting them to confirm their username & password or other details.
+<br>
+<br>
+<br>
+<br>4. Pricing, Plans and Features
+<br>4.1 For current pricing and plans please see the pricing page located on our website.
+<br>
+<br>4.2 We reserve the right to change pricing, plans and the features offered at any time and without notice to you.
+<br>
+<br>
+<br>
+<br>5. Payment and Credit Control
+<br>5.1 All services are billed monthly in advance.
+<br>
+<br>5.2 If you upgrade from a free or trial account you will be immediately charged for the necessary full account or accounts. Your monthly payment will be due from that date each month onwards.
+<br>
+<br>5.3 Where the Service has been paid for 12 months in advance, (where this option is offered by us) payment will be taken in full on each anniversary.
+<br>
+<br>5.4 It is a condition of use that a valid debit or credit card is provided at all times in order for your account or accounts to remain active.
+<br>
+<br>5.5 Where a credit or debit card payment request is made by us and is declined by your card company or bank (for whatever reason) access to your account or accounts may be suspended immediately until such time as a valid payment has been processed and a valid credit or debit card is associated with your account or accounts.
+<br>
+<br>Sample document – the remaining are clause headings only
+Full document contains all clauses
+<br>
+<br>6. Cancellation
+<br>
+<br>7. Upgrading or Downgrading Accounts
+<br>
+<br>8. Trial and Offer Periods
+<br>
+<br>9. Technical Support
+<br>
+<br>10. Specific Service Rules
+<br>
+<br>11. Content Ownership
+<br>
+<br>12. Copyrighted Material
+<br>
+<br>13. Content Monitoring
+<br>
+<br>14. Termination
+<br>
+<br>15. Access and Backups
+<br>
+<br>16. Disclaimer
+<br>
+<br>17. Limitation of Liability
+<br>
+<br>18. Indemnity
+<br>
+<br>19. Privacy
+<br>
+<br>20. Severability
+<br>
+<br>21. Waiver
+<br>
+<br>22. Jurisdiction
+<br>
+<!-- (c) http://www.compactlaw.co.uk -->
+    </p>
+    <span class="close">&times; Ok, got it.</span>
+  </div>
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById('EULAModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("termsOfService");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+<!-- END EULA Modal -->
+<!-- ****************************** -->
+
+
+<!-- <link type="text/css" rel="stylesheet" href="https://3.basecamp-static.com/bcxhq/assets/main-e91cc08f3760292278d0ba426fc041ea6bece512b2c57010c14f7524988061b0.css"> -->
+<link type="text/css" rel="stylesheet" href="./assets/css/mybiz/main.css">
+
+
+<!-- <link type="text/css" rel="stylesheet" href="https://3.basecamp-static.com/bcxhq/assets/fonts-d92bcf94f35f0a81408d218c35b3fe6084165d13324629da2c1e80b33a395ef8.css"> -->
+<link type="text/css" rel="stylesheet" href="./assets/css/mybiz/fonts.css">
+
+
+<!-- <link type="text/css" rel="stylesheet" href="https://3.basecamp-static.com/bcxhq/assets/pages/pricing-plans-e7d1f759b246a5cff34dfffab371d3d48f8e4e1e3249210d8b5e8641920292c0.css"> -->
+<link type="text/css" rel="stylesheet" href="./assets/css/mybiz/pricing-plans.css">
+
+<!-- <link type="text/css" rel="stylesheet" href="https://3.basecamp-static.com/bcxhq/assets/pages/pricing-value-b2a58b759b6274d2624cde8219e41e199bbd74af2c36d8100e12c60e1c5fed1b.css"> -->
+<link type="text/css" rel="stylesheet" href="../../../assets/css/mybiz/pricing-value.css">
+
+<!-- --------------------- -->
+<div ng-show="!vm.showCurrentPlan" >
+<h1>What can Rank-X for Business do for Yours?</h1>
+<p class="subhead">Dollar-for-dollar, Rank-X is one of the best investments
+  <br>you can make to help grow your customer base.</p>
+
+  <center>
+    <button type="button" class="btn btn-primary" ng-click="showpremium=true;">Learn More</button>
+  </center>
+
+<div ng-show="showpremium">
+
+
+<ul class="price-matrix">
+  <li class="price-plan">
+    <div class="price-plan__card price-plan__card--left-tilt">
+      <p class="price-plan__title"><strong>Business Registration</strong></p>
+            <p><button disabled=true href="/signup" class="button button--secondary button--block">Register Your Business Now</button></p>
+      <ul class="checklist">
+        <li class="checklist__item"><strong>Get Noticed</strong> Within San Diego</li>
+        <li class="checklist__item"><strong>Get Feedback</strong> from your customer base</li>
+      </ul>
     </div>
-    <div class="panel-body">
+  </li>
+  <li class="price-plan">
+    <!-- <div class="price-plan__card price-plan__card--featured price-plan__card--right-tilt"> -->
+    <div class="price-plan__card price-plan__card--featured price-plan__card">
+      <p class="price-plan__annual"><span>Insane Value!</span></p>
+      <p class="price-plan__title"><strong>Business Pro</strong></p>
+      <p class="price-plan__price">$(varies)<span class="price-plan__price-label">/month</span></p>
+      <p>
 
 
-      			<p>{{vm.user.name}}</p>
-      			<p>{{vm.user.email}}</p>
+        <!-- Identify a button by class name only (the Stripe button has no id or name, just class name) -->
+        <!-- Click your custom button to trigger a click of the Stripe button -->
+        <!-- usage:
+        eventFire(document.getElementsByClassName('stripe-button-el')[0], 'click'); -->
+        <script>
+        function eventFire(el, etype){
+          if (el.fireEvent) {
+            el.fireEvent('on' + etype);
+          } else {
+            var evObj = document.createEvent('Events');
+            evObj.initEvent(etype, true, false);
+            el.dispatchEvent(evObj);
+          }
+        }
+        function clickCancelPlanButton() {
+          showLoaderBriefDouble();
+          console.log("about to fire click event");
+          var resultOfEventFire = eventFire(document.getElementById('confirmCancelPlan'), 'click');
+          console.log("done firing click event, resultOfEventFire: " + resultOfEventFire);
+        }
+        function clickStripeButton() {
+          console.log("about to fire click event");
+          var resultOfEventFire = eventFire(document.getElementsByClassName('stripe-button-el')[0], 'click');
+
+          console.log("done firing click event, resultOfEventFire: " + resultOfEventFire);
+        }
+        </script>
+
+        <ul class="checklist">
+          <li class="checklist__item"><strong>Get Noticed</strong> Within San Diego</li>
+          <li class="checklist__item"><strong>Get Feedback</strong> from your customer base</li>
+          <li class="checklist__item"><strong>Offer Deals</strong> to customers</li>
+          <li class="checklist__item">New Features coming soon!</li>
+          <li class="checklist__item">Cancel any time</li>
+          <li class="checklist__item">Money back guarantee</li>
+        </ul>
+
+        <p>&nbsp</p>
+
+<script>
+function toggleCheckoutButton() {
+  var btn = document.getElementById("checkoutButton");
+  // btn.disabled = false;
+  btn.disabled = !btn.disabled;
+}
+</script>
+
+        <input checked type="checkbox" onchange="toggleCheckoutButton()" /> I agree to the <a id="termsOfService" name="termsOfService" href="" >terms of service</a>
+
+        <!-- <a class="button button--secondary button--block" onClick="clickStripeButton()">Try it free for 30 days</a> -->
+
+        <button id="checkoutButton" name="checkoutButton" class="button button--secondary button--block" onClick="clickStripeButton()">Try it free for 30 days</button>
 
 
-      			<div class="form-group text-center">
-      				<button type="button" class="btn btn-primary" ng-click="showpremium=true;vm.setupFreeBillingAccount();">Learn More</button>
 
-      		    <div ng-show="showpremium">
-      					<h2>Grow Your Business</h2>
-      					<p>
-      					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      					</p>
-
-                <!-- FROM: https://stripe.com/docs/checkout/tutorial -->
-                <!-- test card numbers
-                https://stripe.com/docs/testing#cards -->
-      					<form action="http://localhost:3000/charge" method="POST">
-      					  <script
-      					    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-      					    data-key="pk_test_q9kbYzvzE6uMwZH9ZUjfK6Xq"
-      					    data-amount="999"
-      					    data-name="Rank-X"
-      					    data-description="Subscription Upgrade"
-                    data-email={{vm.user.email}}
-      					    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-      					    data-locale="auto"
-      					    data-zip-code="true">
-      					  </script>
-                  <input type="hidden" id="userEmail" name="userEmail" value={{vm.user.email}}></input>
-      					</form>
-      					</br>
-      					<a ng-click="showpremium=false">maybe later</a>
-
-      				</div>
-
-      		  </div>
+        <!-- FROM: https://stripe.com/docs/checkout/tutorial -->
+        <!-- test card numbers
+        https://stripe.com/docs/testing#cards
+        VISA
+        4242424242424242
+        -->
 
 
 
+<div ng-show="!vm.showCurrentPlan" >
+
+        <!-- <form action="http://localhost:3000/charge" method="POST"> -->
+
+        <!-- // flip the server name if localhost -->
+        <form ng-show="vm.stripeServerLocal" action="http://localhost:3000/charge" method="POST">
+        <!-- vs.  -->
+        <form ng-show="!vm.stripeServerLocal" action="https://rank-x.com:3000/charge" method="POST">
+
+
+          <!--
+          EMAIL
+          ----------
+          fb email address comes through in a "confusing format" for shoppers, so let them enter their own
+
+          data-email={{vm.user.email}}
+          <input type="hidden" id="userEmail" name="userEmail" value={{vm.user.email}}></input>
+          ----------
+
+
+          data-amount="999"
+          data-panel-label="Start Free Trial"
+          -->
+
+
+          <!-- hide the stripe button since it's ugly -->
+          <!-- but click it virtually via your own button -->
+          <div style="display:none">
+            <script
+              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="pk_test_q9kbYzvzE6uMwZH9ZUjfK6Xq"
+              data-email=" "
+              data-label="Start Free Trial"
+              data-panel-label="Let's Go!"
+              data-name="Business Pro Membership"
+              data-image="/assets/images/rankx-logo-small-2-square.png"
+              data-locale="auto"
+              data-zip-code="true">
+              // data-description="60 Day Free Trial."
+            </script>
+          </div>
+
+
+          <input type="hidden" id="hiddenUserEmail" name="hiddenUserEmail" value={{vm.user.email}}></input>
+
+          <input type="hidden" id="hiddenRankxId" name="hiddenRankxId" value={{vm.user.id}}></input>
+
+          <input type="hidden" id="dfUseraccntId" name="dfUseraccntId" value={{vm.user.dfUseraccntId}}></input>
+
+          <input type="hidden" id="stripeId" name="stripeId" value={{vm.user.stripeId}}></input>
+
+          <input type="hidden" id="stripePlan" name="stripePlan" value={{vm.stripePlan}}></input>
+
+          Have a Coupon? &nbsp <input type="text" id="couponCode" name="couponCode" placeholder="COUPON CODE"></input>
+          <hr/>
+        </form>
+      </p>
+	    <div ng-show="showPayment">
+        <div class="container">
+            <div class="row">
+                <!-- You can make it whatever width you want. I'm making it full width
+                     on <= small devices and 4/12 page width on >= medium devices -->
+                <div class="col-xs-12 col-md-4">
+                </div>
+            </div>
+        </div>
+      </div>
+			</br>
     </div>
+  </li>
+</ul>
+</div>
+<!-- --------------------- -->
+</div>
+
+
+<!-- <span ng-show="vm.showCurrentPlan" ng-bind="vm.useraccntStatus"></span> -->
+
+<div ng-show="vm.showGoodbye" class="alert alert-info" >
+  Your account has been cancelled, but you can renew it at any time.
+</div>
+
+<div ng-show="vm.showCurrentPlan" >
+  <div style="margin-left:30%;min-width:800px;">
+  <center>
+  <ul>
+    <li class="price-plan">
+      <div class="price-plan__card">
+        <p class="price-plan__title">
+          <strong>
+            <span ng-bind="vm.useraccntStatus"></span>
+          </strong>
+        </p>
+        <!-- <p class="price-plan__price" style="font-size:1.2em;">$0 <span class="price-plan__price-label"> / month</span> / month </p> -->
+
+
+
+        <ul class="checklist">
+          <li class="checklist__item"><strong>Get Noticed</strong> Within San Diego</li>
+          <li class="checklist__item"><strong>Get Feedback</strong> from your customer base</li>
+          <li class="checklist__item"><strong>Offer Deals</strong> to customers</li>
+          <li class="checklist__item">New Features coming soon!</li>
+        </ul>
+
+        <hr />
+
+        <!-- brand new signup, hasn't even refreshed the page yet -->
+        <div ng-show="!(vm.showPricePerMonth)" >
+
+          <p><a href="/" class="button button--secondary button--block">Click here to Get Started!</a></p>
+
+        </div>
+
+
+
+        <!-- at least one page refresh has occurred -->
+        <div ng-show="vm.showPricePerMonth" >
+            Price: $<span ng-bind="vm.monthlyCost"></span> / month
+        </div>
+        <div ng-show="vm.showLastPaymentMade" >
+            Last Payment: <span ng-bind="vm.lastPaymentMade"></span>
+        </div>
+        <div ng-show="vm.showNextPaymentDue" >
+            Next Payment: <span ng-bind="vm.nextPaymentDue"></span>
+        </div>
+
+
+
+        <div ng-show="vm.showCancelOption">
+          <p><a ng-click="showConfirmCancel=true;">Cancel my plan</a></p>
+        </div>
+        <div ng-show="showConfirmCancel">
+          <div class="alert alert-warning" >
+            <p><strong>Are you sure?</strong></p>
+          </div>
+          <p>
+
+
+
+              <!-- // flip the server name if localhost -->
+              <form ng-show="vm.stripeServerLocal" action="http://localhost:3000/cancel" method="POST">
+              <!-- vs.  -->
+              <form ng-show="!vm.stripeServerLocal" action="https://rank-x.com:3000/cancel" method="POST">
+
+
+
+              <input type="hidden" id="dfUseraccntId" name="dfUseraccntId" value={{vm.dfUseraccntId}}></input>
+
+              <input type="hidden" id="stripeSubscriptionId" name="stripeSubscriptionId" value={{vm.stripeSubscriptionId}}></input>
+
+              <button onclick="clickCancelPlanButton()" class="btn btn-primary" >Confirm Cancellation</button>
+              <a ng-click="showConfirmCancel=false;">Keep my plan</a>
+
+              <div style="display:none;">
+              <input type="submit" id="confirmCancelPlan" name="confirmCancelPlan" class="btn btn-primary" value="Confirm Cancellation2"/>
+              </div>
+
+            </form>
+          </p>
+        </div>
+
+      </div>
+    </li>
+
+  </ul>
+  </center>
+  </div>
+
+
 
 </div>
+
+</div> <!-- ---------------------------- end main page notLoader -->
+
+<script>
+showLoaderBrief();
+
+
+// }
+function showLoader() {
+  document.getElementById("loader").style.display = "block";
+  document.getElementById("notLoader").style.display = "none";
+}
+function showLoaderBrief() {
+  //code before the pause
+  showLoader();
+  setTimeout(function(){
+      //do what you need here
+      hideLoader();
+  }, 2000);
+}
+function hideLoader() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("notLoader").style.display = "block";
+}
+</script>

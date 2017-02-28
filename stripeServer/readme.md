@@ -1,11 +1,21 @@
-This folder (stripeServer) is to handle calls to the stripe service. This is a development example, and needs testing and improvement.
-
-It is developed as per this guide: https://nairteashop.org/getting-started-with-stripe-part-2/
+This folder (stripeServer) is to handle calls to the stripe service.
 
 Backend: Node.js + Express
 
-Set it up and run it: npm init npm install --save stripe express body-parser node index.js
+Set it up:
+  npm init 
+  npm install --save stripe express body-parser unirest
 
-http://localhost:3000/stripe.html
+Launch it:
+  node stripeapi.srvc.js
 
--SJ
+It's now ready to call it's "charge" function in its "stripeapi.srvc.js" file when a form submit action is pointed to:
+
+  live example:
+  https://rank-x:3000/create-customer
+
+  development example:
+  http://localhost:3000/create-customer
+
+See a canned version of such a form here:
+  examples/stripe.html
