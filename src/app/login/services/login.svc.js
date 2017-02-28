@@ -5,9 +5,9 @@
         .module('app')
         .factory('login', login);
 
-    login.$inject = ['$http', '$q', '$cookies', '$rootScope', 'INSTANCE_URL','$state'];
+    login.$inject = ['$http', '$q', '$cookies', '$rootScope', 'INSTANCE_URL','$state','$location','$window'];
 
-    function login($http, $q, $cookies, $rootScope, INSTANCE_URL,$state) {
+    function login($http, $q, $cookies, $rootScope, INSTANCE_URL, $state, $location, $window) {
         var service = {
             initiate: initiate,
             loginWithFacebook: loginWithFacebook,
@@ -39,6 +39,7 @@
 
             var statename = '';
             var statenum = 0;
+            var ccategory = 0;
 
             //Store in cookies memory to redirect after login, ignore state:login
             if ($rootScope.stateName == undefined) statename = $state.current.name;
@@ -50,8 +51,12 @@
             }
             else statenum = $rootScope.stateNum;
 
+            if ($rootScope.cCategory != undefined) ccategory = $rootScope.cCategory.id;
+            else ccategory = undefined;
+
             $cookies.put('statename', statename);
             $cookies.put('statenum', statenum);
+            $cookies.put('ccategory', ccategory);
 
             var deferred = $q.defer();
             var url = INSTANCE_URL + '/api/v2/user/session?service=facebook';
@@ -80,8 +85,22 @@
 
                 $rootScope.user = result.data;
 
+                //remove /?code==#####/
+                /*
+                $location.search({});
+                if ($location.$$search.code) {
+                    delete $location.$$search.code;
+                    $location.$$compose();
+                }
+                */
+                //console.log("$location.path() ", $location.path());
+                //var path = $location.path();
+                //$location.url($location.path());
+                //$location.path(path);
+
                 try {
                     window.localStorage.user = JSON.stringify(result.data);
+                    //$window.location.search = '';
                 } catch (e) { }
             }
         }

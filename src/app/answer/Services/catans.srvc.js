@@ -38,15 +38,18 @@
             var url2 = baseURI + '?offset=' + 2 * 1000;
             var url3 = baseURI + '?offset=' + 3 * 1000;
             var url4 = baseURI + '?offset=' + 4 * 1000;
+            var url5 = baseURI + '?offset=' + 5 * 1000;
 
             var p0 = $http.get(url0);
             var p1 = $http.get(url1);
             var p2 = $http.get(url2);
             var p3 = $http.get(url3);
             var p4 = $http.get(url4);
+            var p5 = $http.get(url5);
 
-            return $q.all([p0, p1, p2, p3, p4]).then(function (d){
-                _allcatans = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource, d[4].data.resource);
+            return $q.all([p0, p1, p2, p3, p4, p5]).then(function (d){
+                _allcatans = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource, d[4].data.resource,
+                d[5].data.resource);
                 if ($rootScope.DEBUG_MODE) console.log("No. Cat-Ans: ", _allcatans.length);
                 return _allcatans;            
             }, _queryFailed);  

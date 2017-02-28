@@ -110,34 +110,34 @@
 				</div>
 				<div class="col-xs-10 col-sm-10 col-md-11 col-lg-11">
 					<div ng-if="x.action == 'addedAnswer'">
-						added <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a> to
-						<a href="#/rankSummary/{{x.category}}">{{x.text2}}</a>.
+						added <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a> to
+						<a ng-click="vm.gotoRank(x)">{{x.text2}}</a>.
 					</div>
 					<div ng-if="x.action == 'upVoted'">
-						endorsed <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a> in
-						<a href="#/rankSummary/{{x.category}}">{{x.text2}}</a>.
+						endorsed <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a> in
+						<a ng-click="vm.gotoRank(x)">{{x.text2}}</a>.
 					</div>
 					<div ng-if="x.action == 'downVoted'">
-						voted down <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a> in
-						<a href="#/rankSummary/{{x.category}}">{{x.text2}}</a>.
+						voted down <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a> in
+						<a ng-click="vm.gotoRank(x)">{{x.text2}}</a>.
 					</div>
 					<div ng-if="x.action == 'commentR'">
-						posted a comment in <a href="#/rankSummary/{{x.category}}">{{x.text2}}</a>.
+						posted a comment in <a ng-click="vm.gotoRank(x)">{{x.text2}}</a>.
 					</div>
 					<div ng-if="x.action == 'commentA'">
-						posted a comment for <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a>.
+						posted a comment for <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a>.
 					</div>
 					<div ng-if="x.action == 'editA'">
-						edited the information of <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a>.
+						edited the information of <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a>.
 					</div>
 					<div ng-if="x.action == 'upVotedVrow'">
-						endorsed the <em>{{x.text2}}</em> of <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a>.
+						endorsed the <em>{{x.text2}}</em> of <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a>.
 					</div>
 					<div ng-if="x.action == 'downVotedVrow'">
-						voted down the <em>{{x.text2}}</em> of <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a>.
+						voted down the <em>{{x.text2}}</em> of <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a>.
 					</div>
 					<div ng-if="x.action == 'binded'">
-						binded account to <a href="#/answerDetail/{{x.answer}}">{{x.text1}}</a>.
+						bound account to <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a>.
 					</div>
 				</div>
 			</div>
@@ -145,7 +145,6 @@
 		<p class="text-right" style="color:blue;" ng-click="vm.seeMoreFeed()" ng-if="vm.isCity">&lt;&lt;{{vm.ftext}}&gt;&gt;</p>
 <!--	</div> -->
 	<br ng-if="vm.sm">
-
 	<div class="row" style="border:0px;padding:0px;margin:0px;">
 		<div class="col-md-6" style="border:0px;padding:3px;margin:0px;">
 			<content-block type="lifestyle" dynamic="false"></content-block>

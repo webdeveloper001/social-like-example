@@ -15,11 +15,11 @@
 
         .controller('layout', layout);
 
-    layout.$inject = ['$location', '$rootScope', '$window', '$q', '$http', 'pvisits', '$cookies',
+    layout.$inject = ['$location', '$rootScope', '$window', '$q', '$http', 'pvisits', '$cookies', '$scope',
         'DEBUG_MODE', 'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata', 'dialog',
         'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state'];
 
-    function layout($location, $rootScope, $window, $q, $http, pvisits, $cookies,
+    function layout($location, $rootScope, $window, $q, $http, pvisits, $cookies, $scope,
         DEBUG_MODE, rankofday, answer, table, special, datetime, uaf, userdata, dialog,
         matchrec, edit, useractivity, vrows, headline, cblock, catans, $state) {
         /* jshint validthis:true */
@@ -73,11 +73,12 @@
         });
 
         var nidx = 0;
-        // Members
-        activate();
 
         var tourviewed = $cookies.get('tourviewed');
         if (tourviewed == undefined) tourviewed = false;
+
+        // Members
+        activate();
 
         function activate() {
 
@@ -137,15 +138,15 @@
                 "Marina", "Bankers Hill"];
 
             $http.get('../../../assets/fields.json').then(function (response) {
-                $rootScope.typeSchema = response;
+                $rootScope.typeSchema = response.data;
             });
 
             $http.get('../../../assets/dialogs.json').then(function (response) {
-                $rootScope.dialogs = response;
+                $rootScope.dialogs = response.data;
             });
 
             $http.get('../../../assets/foodranks.json').then(function (response) {
-                $rootScope.foodranks = response;
+                $rootScope.foodranks = response.data;
             });
 
             //showNeighborhoods();
@@ -203,6 +204,8 @@
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.dataIsLoaded -", $rootScope.dataIsLoaded);
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.pageDataLoaded -", $rootScope.pageDataLoaded);
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.userDataLoaded -", $rootScope.userDataLoaded);
+
+            $window.prerenderReady = true;
             /*
             console.log("Stored data in cookies!")
 

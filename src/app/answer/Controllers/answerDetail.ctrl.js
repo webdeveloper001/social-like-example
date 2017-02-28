@@ -7,15 +7,17 @@
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
         'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt',
-        '$location', 'vrows', 'vrowvotes','imagelist','instagram']; //AM:added user service
+        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope','$cookies']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
         votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt,
-        $location, vrows, vrowvotes, imagelist, instagram) { //AM:added user service
+        $location, vrows, vrowvotes, imagelist, instagram, $scope, $cookies) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
         vm.ranking = $rootScope.title;
+
+        //if ($location.absUrl().indexOf('code=')>-1)$window.location.search = '';
 
         var voteRecordExists = false;
         var dV = 0;
@@ -82,6 +84,7 @@
         cObj.newComment = '';
         vm.cm = cObj;
         vm.commentAllowed = true;
+
         
         //vm.userIsOwner = $rootScope.userIsOwner;
         if ($stateParams.index) {
@@ -91,13 +94,21 @@
         $rootScope.canswer = vm.answer;
         vm.type = vm.answer.type;
 
-        if ($rootScope.inFavMode) vm.title = $rootScope.myfavs.title;
-        else if ($rootScope.cCategory) vm.title = $rootScope.cCategory.title;
-        else {
-            vm.title = '';
-            answers = [vm.answer];
+        //if there is no category, look for it in cookies
+        if ($rootScope.cCategory == undefined){
+            var ccategoryid = $cookies.get('ccategory');
+            console.log("@answerDetail - ccategory ", ccategoryid);
+            var idx = $rootScope.content.map(function(x) {return x.id; }).indexOf(ccategoryid); 
+            if (idx > -1) $rootScope.cCategory = $rootScope.content[idx];
         }
 
+        if ($rootScope.inFavMode) vm.title = $rootScope.myfavs.title;
+        else if ($rootScope.cCategory) vm.title = $rootScope.cCategory.title;
+        else vm.title = '';
+
+        //if answers not loaded (state went straight to asnwerDetail, answers is just current answer)
+        if (answers == undefined) answers = [vm.answer];  
+        
         vm.idx = answers.map(function (x) { return x.id; }).indexOf(vm.answer.id) + 1;
 
         vm.isMobile = false; 
@@ -141,6 +152,12 @@
         $rootScope.$on('fileUploaded', function () {
             if ($state.current.name == 'answerDetail') getImages();
         });
+
+        //-----SEO tags ----
+        $scope.$parent.$parent.$parent.seo = { 
+        pageTitle : vm.answer.name, 
+        metaDescription: vm.answer.addinfo 
+        };
 
         activate();
 

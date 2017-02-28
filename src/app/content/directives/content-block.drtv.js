@@ -227,8 +227,14 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                                 //console.log("query!")
                             }*/
                             strlen_o = inputVal.length;
+                            //sort results, give priority to city ones
+                            function compare(a, b) {
+                                return b.title.indexOf('in San Diego') - a.title.indexOf('in San Diego');
+                            }
+                            vm.results = vm.results.sort(compare);    
                         }
-                        else {
+                
+                      else {
                             vm.results = [];
                         }
                     }
@@ -549,8 +555,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
         
                     /*//  2. Use this to add/remove a tag from a rank 
                     for (var i=0; i < vm.results.length; i++){
-                        if (vm.results[i].title.includes("Spas in")){
-                            var tags = vm.results[i].tags + ' medspa med';
+                        if (vm.results[i].title.includes("Middle Eastern food")){
+                            var tags = vm.results[i].tags + ' iranian kebabs lebanese kabob falafel hummus';
                             //var tags = vm.results[i].tags.replace('lifestyle','');
                             //var newtype = 'Event';
                             table.update(vm.results[i].id, ['tags'],[tags]);    

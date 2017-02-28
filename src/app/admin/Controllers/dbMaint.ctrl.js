@@ -425,8 +425,8 @@
 
             var images = [];
             var fext = '';
-            $http.get('../../../assets/images.json').success(function (response) {
-                images = response;
+            $http.get('../../../assets/images.json').then(function (response) {
+                images = response.data;
                 //console.log("images length - ", images.length);
                 for (var i = 0; i < images.length; i++) {
 

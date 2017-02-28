@@ -6,18 +6,19 @@
         .controller('rankSummary', rankSummary);
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime'
-        , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows'
-        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare'];
+        , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope'
+        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', '$location'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime
-        , answer, rank, $filter, table, vrowvotes, $window, vrows
-        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare) {
+        , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope
+        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, $location) {
         /* jshint validthis:true */
 
         var vm = this;
         vm.title = 'rankSummary';
         vm.addAnswerDisabled = '';
         
+        //if ($location.absUrl().indexOf('code=')>-1)$window.location.search = '';
         
         // Methods
         vm.answerDetail = answerDetail;
@@ -119,6 +120,12 @@
             $rootScope.objNumAct = $rootScope.objNum;
 
             loadData(); //load data and write to $rootScope
+
+            //-----SEO tags ----
+            $scope.$parent.$parent.$parent.seo = { 
+            pageTitle : $rootScope.cCategory.title, 
+            metaDescription: $rootScope.cCategory.question,
+            };
             
             //Check if there are no answers
             if (vm.answers.length == 0) vm.noAnswers = true;

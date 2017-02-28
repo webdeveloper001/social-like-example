@@ -5,9 +5,9 @@
         .module('app')
         .controller('about', about);
 
-    about.$inject = ['$location', '$rootScope', '$state','$window'];
+    about.$inject = ['$location', '$rootScope', '$state','$window', '$scope'];
 
-    function about(location, $rootScope, $state, $window) {
+    function about(location, $rootScope, $state, $window, $scope) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'about';
@@ -22,6 +22,12 @@
             vm.logoimage = "/assets/images/rankxlogo_noheadline.png";
             vm.sm = false;
         }
+
+        //-----SEO tags ----
+        $scope.$parent.seo = { 
+        pageTitle : 'About', 
+        metaDescription: 'Rank-X creates collective rankings on everything in your city.' 
+        };
       
         activate();
 
