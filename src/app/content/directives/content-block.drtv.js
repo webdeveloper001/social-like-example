@@ -18,7 +18,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 vm.results = [];
                 vm.results_nm = [];
                 vm.sm = $rootScope.sm;
-
+                
                 //Methods
                 vm.loadContent = loadContent;
 
