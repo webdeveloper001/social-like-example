@@ -371,7 +371,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-         //   $rootScope.$emit('applyRule');
+            $rootScope.$emit('applyRule');
         }
            
         function getFeed(){
@@ -383,11 +383,11 @@
         
         function seeMoreFeed(){
             if (vm.fres == 4){
-                vm.fres = 20;
+                vm.fres = 200;
                 vm.ftext = 'see less';
                 return;
             }
-            if (vm.fres == 20){
+            if (vm.fres == 200){
                 vm.fres = 4;
                 vm.ftext = 'see more';
                 return;

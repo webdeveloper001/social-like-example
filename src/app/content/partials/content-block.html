@@ -69,7 +69,7 @@
 		
 		<div class="row" ng-if="isRoW" ng-click="rankSel(results[0],false)">
 			<div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" 
-			style="background-color:{{rdbc}};font:{{rdfc}};height:{{sm ? '150px':'200px'}};color:white;margin:0px;padding:0px;border:0px;position:relative;">
+			style="background-color:{{rdbc}};color:{{rdfc}};height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
 				<h2 class=" hidden-xs text-center" 
 				style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{rankOfDay}}</h2> 
 				<h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" 
@@ -136,7 +136,7 @@
 				<div class="clearfix" ng-if="$index % 3 == 0" style="border:0px;padding:0px;margin:0px;"></div>
 				<div class="col-xs-4" ng-click="rankSel(x,false)" style="cursor:pointer;border:0px;padding:0px;margin:0px;">
 					<img src="{{x.image1url}}" style="width:100%;height:{{thumbheight}};" ng-if="!x.isShortPhrase">
-					<div style="width:100%;height:{{thumbheight}};background-color:darkgrey;font:black;position:relative;" ng-if="x.isShortPhrase">
+					<div style="width:100%;height:{{thumbheight}};background-color:darkgrey;color:black;position:relative;" ng-if="x.isShortPhrase">
 						</br>
 						<p style="text-align:center;position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
 							<strong>{{x.title1}}</strong></p>
