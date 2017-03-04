@@ -383,11 +383,11 @@
         
         function seeMoreFeed(){
             if (vm.fres == 4){
-                vm.fres = 200;
+                vm.fres = 20;
                 vm.ftext = 'see less';
                 return;
             }
-            if (vm.fres == 200){
+            if (vm.fres == 20){
                 vm.fres = 4;
                 vm.ftext = 'see more';
                 return;
