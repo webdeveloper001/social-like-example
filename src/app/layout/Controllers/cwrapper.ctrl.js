@@ -25,7 +25,9 @@
 
         vm.switchScope = switchScope;
         vm.refreshRanks = refreshRanks;
-        //vm.setObj = setObj;
+        
+        if ($rootScope.hidelogo == undefined) vm.hidelogo = false;
+        else vm.hidelogo = $rootScope.hidelogo;
         
         //Admin Functions
         vm.viewRank = viewRank;
