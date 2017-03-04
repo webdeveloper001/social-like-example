@@ -185,8 +185,8 @@
 
                 if (!foodNearMe) {
                     table.update($rootScope.cCategory.id,
-                        ['views', 'answers'],
-                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length]);
+                        ['views', 'answers','image1url', 'image2url', 'image3url'],
+                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,'','','']);
                 }
             }
             if (vm.answers.length == 1) {
@@ -199,7 +199,7 @@
                 }
                 else {
                     vm.isShortPhrase = false;
-                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null) {
+                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null && vm.answers[0].imageurl != '') {
                         vm.image1 = vm.answers[0].imageurl;
                         vm.image1ok = true;
                     }
@@ -207,9 +207,9 @@
                 }
                 if (!foodNearMe) {
                     table.update($rootScope.cCategory.id,
-                        ['views', 'answers', 'image1url'],
+                        ['views', 'answers', 'image1url','image2url', 'image3url'],
                         [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
-                            vm.image1]);
+                            vm.image1,'','']);
                 }
             }
             if (vm.answers.length == 2) {
@@ -226,12 +226,12 @@
                 }
                 else {
                     vm.isShortPhrase = false;
-                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null) {
+                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null && vm.answers[0].imageurl != '') {
                         vm.image1 = vm.answers[0].imageurl;
                         vm.image1ok = true;
                     }
                     else vm.image1ok = false;
-                    if (vm.answers[1].imageurl != undefined && vm.answers[1].imageurl != null) {
+                    if (vm.answers[1].imageurl != undefined && vm.answers[1].imageurl != null && vm.answers[1].imageurl != '') {
                         vm.image2 = vm.answers[1].imageurl;
                         vm.image2ok = true;
                     }
@@ -239,9 +239,9 @@
                 }
                 if (!foodNearMe) {
                     table.update($rootScope.cCategory.id,
-                        ['views', 'answers', 'image1url', 'image2url'],
+                        ['views', 'answers', 'image1url', 'image2url', 'image3url'],
                         [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
-                            vm.image1, vm.image2]);
+                            vm.image1, vm.image2,'']);
                 }
             }
 
@@ -262,17 +262,17 @@
                 }
                 else {
                     vm.isShortPhrase = false;
-                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null) {
+                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null && vm.answers[0].imageurl != '') {
                         vm.image1 = vm.answers[0].imageurl;
                         vm.image1ok = true;
                     }
                     else vm.image1ok = false;
-                    if (vm.answers[1].imageurl != undefined && vm.answers[1].imageurl != null) {
+                    if (vm.answers[1].imageurl != undefined && vm.answers[1].imageurl != null && vm.answers[1].imageurl != '') {
                         vm.image2 = vm.answers[1].imageurl;
                         vm.image2ok = true;
                     }
                     else vm.image2ok = false;
-                    if (vm.answers[2].imageurl != undefined && vm.answers[2].imageurl != null) {
+                    if (vm.answers[2].imageurl != undefined && vm.answers[2].imageurl != null && vm.answers[2].imageurl != '') {
                         vm.image3 = vm.answers[2].imageurl;
                         vm.image3ok = true;
                     }

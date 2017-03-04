@@ -18,7 +18,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 vm.results = [];
                 vm.results_nm = [];
                 vm.sm = $rootScope.sm;
-
+                
                 //Methods
                 vm.loadContent = loadContent;
 
@@ -816,13 +816,13 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         applyRuleDone = true;
                     //}
                     *///end of 10
-                    /*//11. Open all contents to refresh number of answers
+                    /* //11. Open all contents to refresh number of answers
                     $timeout(function () {
                         $state.go('rankSummary', { index: $rootScope.content[midx].id });
                         midx++;
                         $rootScope.$emit('applyRule');
-                    }, 500)
-                    */
+                    }, 350)
+                    */ //End 11.
                 
                     /*//12. Add 'pb' tag to all Pacific Beach
                     var tagstr = '';
@@ -838,14 +838,17 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     }
                     */ // End of 12
                     /*//13. Open all contents to refresh number of answers, add vrows
+                    var catstr = var catArr = catstr.split(':').map(Number);
                     $timeout(function () {
-                        $state.go('rankSummary', { index: $rootScope.content[midx].id });
+
+                        //$state.go('rankSummary', { index: $rootScope.content[midx].id });
+                        $state.go('rankSummary', { index: catArr[midx] });
                         //$state.go('rankSummary', { index: 74 });
                         midx++;
-                        console.log("midx - ", midx);
+                        //console.log("midx - ", midx);
                         $rootScope.$emit('applyRule');
-                    }, 1500);
-                    *///
+                    }, 350);
+                    */ //
                     /*//14. Validate all catans entries, checking category and answer values are valid.
                     var catans1 = {};
                     var cat1 = {};
@@ -1002,7 +1005,35 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                              catans.deletebyCategory(catid);
                         }
                     }
-                    *///end 20                                                                                       
+                    *///end 20
+                    /*//21. 
+                    var url1 = '';
+                    var url2 = '';
+                    var url3 = '';
+                    var noimage = '../../../assets/images/noimage.jpg';
+                    console.log("exec rule-abx");
+                    var cats = '';
+                    for (var i=0; i<$rootScope.content.length; i++){
+                        url1 = $rootScope.content[i].image1url;
+                        url2 = $rootScope.content[i].image2url;
+                        url3 = $rootScope.content[i].image3url;
+                        if ($rootScope.content[i].type != 'Short-Phrase') {
+                            if (url1 != undefined && url1 != '' && !url1.includes('https') && url1 != noimage ||
+                                url2 != undefined && url2 != '' && !url2.includes('https') && url2 != noimage ||
+                                url3 != undefined && url3 != '' && !url3.includes('https') && url3 != noimage) {
+                                console.log(url1 != undefined && url1 != '' && !url1.includes('https'),
+                                url2 != undefined && url2 != '' && !url2.includes('https'),
+                                url3 != undefined && url3 != '' && !url3.includes('https'));
+                                console.log($rootScope.content[i].title);
+                                console.log($rootScope.content[i].image1url);
+                                console.log($rootScope.content[i].image2url);
+                                console.log($rootScope.content[i].image3url);
+                                cats = cats + $rootScope.content[i].id + ':';
+                            }
+                        }
+                    }
+                    console.log("cats - ", cats);
+                    */// End of 21                                                                                                           
                 }
             }], //end controller
         link: function (scope) {

@@ -1500,12 +1500,12 @@
             var n = 1;
             var img_style = '';
             
-            if ($rootScope.sm) {
-                img_style = 'width:100%;height:auto';
-            }
-            else {
-                img_style = 'width:90%;height:auto';
-            }
+            //if ($rootScope.sm) {
+                img_style = 'width:100%;max-width:450px;height:auto;margin-left:auto;margin-right:auto;';
+            //}
+            //else {
+            //    img_style = 'width:90%;height:auto';
+            // }
 
             title = 'Rank-X Intro Tour';
 
@@ -1514,10 +1514,15 @@
             var m3 = '';
             var m4 = '';
             var cap = '';
+
+           // <div class="container hidden-xs hidden-sm hidden-md col-lg-3" ng-if="isShortPhrase" style="background-color:lightgray;color:black;height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+//	<div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
+		
+
             
             m1 =
             '<img id="image" class="displayed" src="' +
-             '/assets/images/rxtour1.png'+'" style="'+img_style+'">';
+            '/assets/images/rxtour1.png'+'" style="' + img_style + '">';
             
             messagehtml =  m1;
             
