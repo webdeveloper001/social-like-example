@@ -6,10 +6,10 @@
         .controller('navbar', navbar);
 
     navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state',
-        'city', '$cookies', '$http', 'GOOGLE_API_KEY', 'dialog','getgps'];
+        'city', '$cookies', '$http', 'GOOGLE_API_KEY', 'dialog','getgps', 'useraccnt'];
 
     function navbar($location, $translate, $rootScope, login, $state,
-        city, $cookies, $http, GOOGLE_API_KEY, dialog, getgps) {
+        city, $cookies, $http, GOOGLE_API_KEY, dialog, getgps, useraccnt) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'navbar';
@@ -60,9 +60,20 @@
         function gotomybiz() {
             //$stateProvider.state('app');
             // http://localhost:3006/#/mybiz
-            $state.go('mybiz');
+            // $state.go('mybiz');
+
+            if (vm.isLoggedIn) {
+              //double-check that a user account record exists
+              var promise = useraccnt.adduseraccnt();
+              promise.then(function(newId) {
+                $state.go('mybiz');
+              });
+
+            } else {
+              gotoHome();
+            }
         }
-        
+
         function gotomyfavs() {
             //$stateProvider.state('app');
             $state.go('myfavs');
@@ -108,13 +119,13 @@
 
         function goToLogin() {
 
-            //Store current state 
+            //Store current state
             $rootScope.stateName = $state.current.name;
             if ($rootScope.stateName == 'rankSummary') $rootScope.stateNum = $rootScope.cCategory.id;
             else if ($rootScope.stateName == 'answerDetail') $rootScope.stateNum = $rootScope.canswer.id;
             else $rootScope.stateNum = undefined;
 
-            $state.go('login');            
+            $state.go('login');
         }
 
         function logout() {
@@ -123,6 +134,8 @@
 
                 vm.user = '';
                 vm.isLoggedIn = false;
+
+                localStorage.clear();
 
                 //$location.path('/');
                 $state.go('cwrapper', {}, { location: 'replace' });

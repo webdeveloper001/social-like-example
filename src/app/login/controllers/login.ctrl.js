@@ -26,16 +26,14 @@
         vm.goBack = goBack;
 
         //Only use on localhost to fake a FB login
-        /*
         if (window.location.hostname == "localhost") {
-            console.log("server is: " + window.location.hostname)
-            console.log("let's fake your user as an FB login")
-            login.setFakeLocalUser();
-        }*/
-        
-        //if ($rootScope.isLoggedIn)  $state.go('cwrapper');
-        //else activate();
-        activate();
+          console.log("server is: " + window.location.hostname)
+          console.log("let's fake your user as an FB login")
+          login.setFakeLocalUser();
+        }
+
+        if ($rootScope.isLoggedIn) $state.go('cwrapper');
+        else activate();
 
         function activate() {
 
@@ -81,20 +79,22 @@
                             }
 
                         });*/
-               
+
                             var currentUserLatitude = $cookies.get('currentUserLatitude');
                             var currentUserLongitude = $cookies.get('currentUserLongitude');
-                        
+
                             if (currentUserLatitude && currentUserLongitude) {
                                 $rootScope.currentUserLatitude = currentUserLatitude;
                                 $rootScope.currentUserLongitude = currentUserLongitude;
                                 $rootScope.coordsRdy = true;
                                 $rootScope.$emit('coordsRdy');
                             }
-                            
+
                             var statename = $cookies.get('statename');
                             var statenum = $cookies.get('statenum');
-                            
+
+                            // console.log("isLoggedIn", $rootScope.isLoggedIn);
+
                             //console.log("state and num - ", statename, statenum, ccategory);
 
                             if (statename == 'rankSummary' || statename == 'answerDetail') {
@@ -105,7 +105,7 @@
                             }
                         //}
                         //$state.go('cwrapper');
- 
+
                     }, function () {
                         vm.isProgressing = false;
                     });

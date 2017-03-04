@@ -29,12 +29,12 @@
         //vm.searchRank = searchRank;
 
         //if ($rootScope.answers) vm.isLoading = false;
-        //else 
+        //else
         vm.veilMsg = 'Just a moment, loading the best information about San Diego';
         vm.hidelogo = false;
-        
+
         vm.goPrivacyPolicy = goPrivacyPolicy;
-        
+
         $rootScope.$on('refreshRanks', function () {
             if ($state.current.name == 'cwrapper') {
                 vm.hidelogo = $rootScope.hidelogo;
@@ -51,7 +51,7 @@
         $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
                 $rootScope.previousState = from.name;
             });
-        
+
         /*
         if ($window.innerWidth < 512) vm.logoimage = "../../../assets/images/rankxlogosd_sm.png";
         else vm.logoimage = "../../../assets/images/rankxlogosd.png";
@@ -66,14 +66,14 @@
             $rootScope.sm = false;
             vm.sm = false;
         }
-        
-        //TODO: Would like to add this abstract template, but dont know how         
+
+        //TODO: Would like to add this abstract template, but dont know how
         $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
             $rootScope.previousState = from.name;
         });
-        
+
         var nidx = 0;
-        
+
         var tourviewed = $cookies.get('tourviewed');
         if (tourviewed == undefined) tourviewed = false;
 
@@ -111,10 +111,10 @@
                 loadData();
                 if (!tourviewed) dialog.tour();
             }
-             
+
             //Determine if user is using Facebook browser
             $rootScope.isFacebookApp = isFacebookApp();
-            
+
             if ($rootScope.DEBUG_MODE) console.log("Layout Loaded!");
 
         }
@@ -148,9 +148,9 @@
             $http.get('../../../assets/foodranks.json').then(function (response) {
                 $rootScope.foodranks = response.data;
             });
-            
+
             //showNeighborhoods();
-            
+
             //answers
             var p0 = answer.getAnswers();
             var p1 = table.getTables();
@@ -165,10 +165,10 @@
             var p10 = pvisits.getpvisits();
             var p11 = rankofday.getrankofday();
             var p12 = uaf.getactions();
-            
+
             userdata.loadUserData();        //load user data (votes and activities)
             userdata.loadUserAccount();     //load user business account
-            
+
             return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12]).then(function (d) {
                 $rootScope.answers = d[0];
                 $rootScope.content = d[1];
@@ -183,14 +183,14 @@
                 $rootScope.pvisits = d[10];
                 $rootScope.rankofday = d[11];
                 $rootScope.uafs = d[12];
-                
+
                 $rootScope.pageDataLoaded = true;
 
                 updatePageVisits();
                 loadingDone();
 
             });
-            
+
             //vm.nh = $rootScope.neighborhoods[0];
             //showNeighborhoods();
       }
@@ -198,7 +198,7 @@
         function loadingDone() {
             if ($rootScope.pageDataLoaded == undefined) $rootScope.pageDataLoaded = false;
             if ($rootScope.userDataLoaded == undefined) $rootScope.userDataLoaded = false;
-            
+
             $rootScope.dataIsLoaded = $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
             vm.isLoading = !$rootScope.dataIsLoaded;
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.dataIsLoaded -", $rootScope.dataIsLoaded);
@@ -232,11 +232,11 @@
             var tz = datenow.getTimezoneOffset();
 
             datenow.setMinutes(datenow.getMinutes() - tz);
-            
+
             //var dateStr = datenow.toLocaleDateString();
             function pad(n) { return n < 10 ? n : n; }
             var dateStr = pad(datenow.getMonth() + 1) + "/" + pad(datenow.getDate()) + "/" + datenow.getFullYear();
-            
+
             //console.log('Date Str: ', dateStr);
             var newDate = true;
             var pvisitrec = {};
@@ -259,13 +259,13 @@
             //console.log("@isFacebook - ua - ", ua);
             return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
         }
-        
+
         function goPrivacyPolicy(){
             $state.go('privacypolicy');
         }
-        
+
         function showNeighborhoods(){
-            
+
             setTimeout(function () {
                 if (vm.isLoading) {
                     nidx = nidx + 1;
@@ -273,9 +273,9 @@
                     vm.nh = $rootScope.neighborhoods[nidx];
                     showNeighborhoods();
                 }
-            }, 333); 
+            }, 333);
         }
-        
+
         /*
         function searchRank() {
             $rootScope.sval = vm.val;
