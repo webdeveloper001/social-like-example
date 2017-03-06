@@ -167,7 +167,7 @@
                         templateUrl: 'app/layout/Partials/privacypolicy.html',
                         controller: 'privacypolicy as vm'
                     },
-                    "navbar@about": {
+                    "navbar@privacypolicy": {
                         templateUrl: 'app/layout/Partials/navbar.html',
                         controller: 'navbar as vm'
                     }
@@ -178,7 +178,7 @@
               url: '/mybiz',
               views: {
                 "@": {
-                  templateUrl: 'app/layout/Partials/mybiz.html',
+                  templateUrl: 'app/layout/Partials/mybiz2.html',
                   controller: 'mybiz as vm'
                 },
                 "navbar@mybiz": {
@@ -187,6 +187,27 @@
                 }
             }
           },
+          /*{
+              name: 'mybusiness',
+              parent: 'layout',
+              url: '/mybusiness',
+              templateUrl: 'app/layout/Partials/mybusiness.html',
+              controller: 'mybusiness as vm'
+          },*/
+          {
+                name: 'mybusiness',
+                url: '/mybusiness',
+                views: {
+                    "@": {
+                        templateUrl: 'app/layout/Partials/mybusiness.html',
+                        controller: 'mybusiness as vm'
+                    },
+                    "navbar@mybusiness": {
+                        templateUrl: 'app/layout/Partials/navbar.html',
+                        controller: 'navbar as vm'
+                    }
+                }
+            },
           {
                 name: 'myfavs',
                 parent: 'layout',

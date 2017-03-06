@@ -22,7 +22,7 @@
         vm.logout = logout;
         vm.goToLogin = goToLogin;
         vm.gotoAbout = gotoAbout;
-        vm.gotomybiz = gotomybiz;
+        vm.gotomybusiness = gotomybusiness;
         vm.gotomyfavs = gotomyfavs;
         vm.gotoFeedback = gotoFeedback;
         vm.gotoTour = gotoTour;
@@ -57,11 +57,11 @@
             //detectLocation2();
         }
 
-        function gotomybiz() {
+        function gotomybusiness() {
             //$stateProvider.state('app');
             // http://localhost:3006/#/mybiz
             // $state.go('mybiz');
-
+/* 
             if (vm.isLoggedIn) {
               //double-check that a user account record exists
               var promise = useraccnt.adduseraccnt();
@@ -72,6 +72,8 @@
             } else {
               gotoHome();
             }
+*/
+            $state.go('mybusiness');            
         }
 
         function gotomyfavs() {

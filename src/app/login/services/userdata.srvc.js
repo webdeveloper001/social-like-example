@@ -26,16 +26,15 @@
                 var p1 = editvote.loadEditVotesTable();
                 var p2 = vrowvotes.loadVrowVotes();
                 var p3 = useractivity.getActivitybyUser();
-
+                
                 return $q.all([p0, p1, p2, p3]).then(function (d) {
                     $rootScope.cvotes = d[0];
                     $rootScope.editvotes = d[1];
                     $rootScope.cvrowvotes = d[2];
                     $rootScope.thisuseractivity = d[3];
-
+                    
                     $rootScope.userDataLoaded = true;
-                    $rootScope.$emit('userDataLoaded');
-
+                    $rootScope.$emit('userDataLoaded');                   
                 });
             }
             else {

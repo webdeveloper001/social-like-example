@@ -873,7 +873,7 @@
         function bindAccount() {
             if ($rootScope.DEBUG_MODE) console.log("Bind business to user account");
             answer.updateAnswer(vm.answer.id, ['owner'], [$rootScope.user.id]).then(reloadAnswer);
-            useraccnt.adduseraccnt().then(function () {
+            useraccnt.adduseraccnt(vm.answer).then(function () {
                 //Check if user account has email - if not set warning in navbar
                 var hasEmail = false;
                 for (var i = 0; i < $rootScope.useraccnts.length; i++) {

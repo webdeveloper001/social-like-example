@@ -20,12 +20,12 @@
         };
         
         //if ($location.absUrl().indexOf('code=')>-1) $window.location.search = '';
-        
+         
         vm.title = 'cwrapper';
 
         vm.switchScope = switchScope;
         vm.refreshRanks = refreshRanks;
-        
+
         if ($rootScope.hidelogo == undefined) vm.hidelogo = false;
         else vm.hidelogo = $rootScope.hidelogo;
         
@@ -115,7 +115,10 @@
             $rootScope.user = {};
             $rootScope.user.name = "Andres Moctezuma";
             $rootScope.user.first_name = 'Andres';
+            $rootScope.user.last_name = 'Moctezuma';
             $rootScope.user.id = 12;
+            userdata.loadUserData();        //load user data (votes and activities)
+            userdata.loadUserAccount();     //load user business account
             //$rootScope.answeridxgps = 1258; //starting indx for gps conversion
                /*        
             if ($rootScope.isLoggedIn && $rootScope.user.name == "Andres Moctezuma" && $rootScope.user.id == 12) {

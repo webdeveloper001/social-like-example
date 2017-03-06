@@ -98,6 +98,7 @@
         refreshAccountInfo();
 
 
+
         // ------------------    END RUNTIME        ------------
         // -----------------------------------------------------
 
@@ -113,7 +114,7 @@
           var url = '';
 
 
-          <!-- // flip the server name if localhost -->
+          //<!-- // flip the server name if localhost -->
           if (vm.stripeServerLocal) {
             // url = 'http://localhost:3000/dreamfactory-stripe-user/' + _stripeCustomerId + '/' + vm.dfUseraccntId;
             url = 'http://localhost:3000/dreamfactory-stripe-user/' + stripeId + '/' + dfUseraccntId;
@@ -334,8 +335,6 @@
         return dateString;
       }
       // end makeDatePretty()
-
-
 
       function wasUpgradeSuccess() {
 

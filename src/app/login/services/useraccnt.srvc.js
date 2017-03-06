@@ -48,7 +48,8 @@
        * Function to add user detail in user_detail table
        *
        */
-      function adduseraccnt() {
+      function adduseraccnt(answer) {
+          /*
         console.log("START useraccnt.srvc.js:adduseraccnt:$rootScope.user.id: " + $rootScope.user.id)
 
         // check if the DF account already exists
@@ -79,16 +80,16 @@
               user = JSON.parse(localStorage.getItem("user"));
 
               console.log("app/login/services/useraccnt.srvc.js:userLocalStorage: " + JSON.stringify(user) );
-
+*/
               //form match record
               var data = {};
 
-              data.user = user.id;
-              data.answer = 0;
+              data.user = $rootScope.user.id;
+              data.answer = answer.id;
               data.bizcat = 'REB'
-              data.status = 'Non-paying';
+              data.status = 'Basic';
               data.stripeid = '0';
-              data.email = user.email;
+              data.email = '';
 
               // MINIMUM NEEDED
               // "user":999,
@@ -100,7 +101,7 @@
                 obj.resource = [];
                 obj.resource.push(data);
 
-                console.log("src/app/login/services/useraccnt.srvc.js:adduseraccnt():obj.resource = " + JSON.stringify(obj.resource) );
+                //console.log("src/app/login/services/useraccnt.srvc.js:adduseraccnt():obj.resource = " + JSON.stringify(obj.resource) );
                 // [{"answer":"","bizcat":"REB","status":"Non-paying","stripeid":"dskjflskdjflskjd","email":"10154674551822270+facebook@facebook.com"}]
 
                 var url = baseURI;
@@ -113,6 +114,7 @@
                 }).then(querySucceeded, _queryFailed);
 
                 function querySucceeded(result) {
+                    /*
                   console.log("useraccnt.srvc.js:querySucceeded:result:" + JSON.stringify(result));
                   console.log("the new useraccnt ID: " + result.data.resource[0].id);
 
@@ -123,6 +125,7 @@
                   user = JSON.parse(localStorage.getItem("user"));
 
                   console.log("useraccnt.srvc.js:user:" + JSON.stringify(user));
+                  */
 
                   // window.localstorage.setItem("dfUseraccntId", result.data.resource[0].id);
                   // localStorage.user.dfUseraccntId = result.data.resource[0].id;
@@ -131,14 +134,19 @@
                   // console.log("useraccnt.srvc.js:localStorage.user:" + JSON.stringify(localStorage.user));
 //useraccnt.srvc.js:localStorage.user:"{\"email\":\"sjurowski+facebook@ucsd.edu\",\"first_name\":\"Sandon\",\"host\":\"bitnami-dreamfactory-df88\",\"id\":37,\"is_sys_admin\":false,\"last_login_date\":\"2016-12-13 21:04:47\",\"last_name\":\"Jurowski\",\"name\":\"Sandon Jurowski\",\"role\":\"rank-user\",\"role_id\":1,\"session_id\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI5LCJ1c2VyX2lkIjoyOSwiZW1haWwiOiIxMDE1NDY3NDU1MTgyMjI3MCtmYWNlYm9va0BmYWNlYm9vay5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cHM6XC9cL2FwaS5yYW5rLXguY29tXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNDgxNjYzMDg3LCJleHAiOjE0ODE2NjY2ODcsIm5iZiI6MTQ4MTY2MzA4NywianRpIjoiYWQ2M2Q0OTI1MDRmNTJiYjBkMWZiZjJkNzAxMjQzNDMifQ.T-3B-jnz4d2Q2Q5rfN1ePF7ujin982gzPYbRwhLo9Uc\",\"session_token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI5LCJ1c2VyX2lkIjoyOSwiZW1haWwiOiIxMDE1NDY3NDU1MTgyMjI3MCtmYWNlYm9va0BmYWNlYm9vay5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cHM6XC9cL2FwaS5yYW5rLXguY29tXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNDgxNjYzMDg3LCJleHAiOjE0ODE2NjY2ODcsIm5iZiI6MTQ4MTY2MzA4NywianRpIjoiYWQ2M2Q0OTI1MDRmNTJiYjBkMWZiZjJkNzAxMjQzNDMifQ.T-3B-jnz4d2Q2Q5rfN1ePF7ujin982gzPYbRwhLo9Uc\"}"
 
+                  //update local copy
+                  var datax = data;
+                  datax.id = result.data.resource[0].id; 
+                  _useraccnts.push(datax);
+
                   //return the ID of the new account row
                   return result.data.resource[0].id;
                 }
             }
-          }
+  /*        }
         }
       }
-
+*/
 
       /*
       *
