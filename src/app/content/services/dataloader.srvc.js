@@ -16,6 +16,7 @@
         // Members
         var service = {
             gethomedata: gethomedata,
+            getallranks: getallranks,
             getrankdata: getrankdata,
             getanswerdata: getanswerdata,
             getpagevisitdata: getpagevisitdata,
@@ -25,7 +26,7 @@
 
         function gethomedata() {
 
-            var p0 = table.getTables();
+            var p0 = table.getTablesMain();
             var p1 = headline.getheadlines();
             var p2 = cblock.getcblocks();
             var p3 = rankofday.getrankofday();
@@ -47,6 +48,23 @@
                 //loadingDone();
                 if ($rootScope.DEBUG_MODE) console.log("cwrapper data ready!");
                 $rootScope.$emit('homeDataLoaded');
+
+            });
+        }
+
+        function getallranks(){
+            
+            var p0 = table.getTablesNonMain();      //Get ranks that are non main page, load them on the background
+
+            //Minimum Data for Cwrapper
+            return $q.all([p0]).then(function (d) {
+            
+                $rootScope.content = d[0];
+                $rootScope.allRanksLoaded = true;
+                createSearchStrings();
+                //loadingDone();
+                if ($rootScope.DEBUG_MODE) console.log("all ranks data ready!");
+                //$rootScope.$emit('homeDataLoaded');
 
             });
         }
@@ -158,8 +176,14 @@
             }
         }
 
+        function createSearchStrings(){
+            $rootScope.searchStr = [];
+            //Create seach strings combination of tags, title and answers            
+            for (var i = 0; i < $rootScope.content.length; i++) {                
+                //Create single string for search
+                $rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title + " " + $rootScope.content[i].answertags;
+            }
+        }
 
-        
-       
     }
 })();

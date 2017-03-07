@@ -160,6 +160,7 @@
             });
 
             dataloader.gethomedata();
+            dataloader.getallranks();
             dataloader.getrankdata();
             dataloader.getanswerdata();
             dataloader.getpagevisitdata();

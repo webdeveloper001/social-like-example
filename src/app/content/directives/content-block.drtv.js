@@ -1033,7 +1033,15 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         }
                     }
                     console.log("cats - ", cats);
-                    */// End of 21                                                                                                           
+                    */// End of 21
+                    /*//22. Set ismp on all main page ranks
+                    for (var i=0; i<$rootScope.content.length; i++){
+                        if ($rootScope.content[i].ismp == undefined){
+                            table.update($rootScope.content[i].id, ['ismp'], [false]); 
+                        }
+                        //else table.update($rootScope.content[i].id, ['ismp'], [false]);
+                    }
+                    */// End 22                                                                                                           
                 }
             }], //end controller
         link: function (scope) {

@@ -15,6 +15,8 @@
 
         var service = {
             getTables: getTables,
+            getTablesMain: getTablesMain,
+            getTablesNonMain: getTablesNonMain,
             update: update,
             addTable: addTable,
             deleteTable: deleteTable
@@ -63,6 +65,51 @@
                 //return _tables = result.data.resource;
             //}          
         }
+
+        function getTablesMain() {
+
+            var url0 = baseURI + '/?filter=ismp=true';
+
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                _tables = d[0].data.resource;
+                if ($rootScope.DEBUG_MODE) console.log("tables_main length: ", _tables.length);
+                return _tables;            
+            }, _queryFailed);  
+                      
+        }
+
+        function getTablesNonMain() {
+            
+            //Get all match records
+            var url0 = baseURI + '/?filter=ismp=false'+'&offset=' + 0 * 1000;
+            var url1 = baseURI + '/?filter=ismp=false'+'&offset=' + 1 * 1000;
+            var url2 = baseURI + '/?filter=ismp=false'+'&offset=' + 2 * 1000;
+            var url3 = baseURI + '/?filter=ismp=false'+'&offset=' + 3 * 1000;
+            var url4 = baseURI + '/?filter=ismp=false'+'&offset=' + 4 * 1000;
+            var url5 = baseURI + '/?filter=ismp=false'+'&offset=' + 5 * 1000;
+            var url6 = baseURI + '/?filter=ismp=false'+'&offset=' + 6 * 1000;
+            var url7 = baseURI + '/?filter=ismp=false'+'&offset=' + 7 * 1000;
+            
+            var p0 = $http.get(url0);
+            var p1 = $http.get(url1);
+            var p2 = $http.get(url2);
+            var p3 = $http.get(url3);
+            var p4 = $http.get(url4);
+            var p5 = $http.get(url5);
+            var p6 = $http.get(url6);
+            var p7 = $http.get(url7);
+
+            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7]).then(function (d){
+                _tables = _tables.concat(d[0].data.resource, d[1].data.resource, d[2].data.resource, d[3].data.resource,
+                  d[4].data.resource,  d[5].data.resource, d[6].data.resource, d[7].data.resource);
+                if ($rootScope.DEBUG_MODE) console.log("tables length: ", _tables.length);
+                return _tables;            
+            }, _queryFailed);
+                      
+        }
+
 
         function addTable(table) {
             
@@ -148,7 +195,8 @@
                     case "answertags": data.answertags = val[i]; break;
                     case "isatomic": data.isatomic = val[i]; break;
                     case "catstr": data.catstr = val[i]; break;
-                    case "numcom": data.numcom = val[i]; break;                    
+                    case "numcom": data.numcom = val[i]; break;
+                    case "ismp": data.ismp = val[i]; break;                    
                 }
             }
             //console.log("data", data);
@@ -179,7 +227,8 @@
                     case "answertags": $rootScope.content[idx].answertags = val[i]; break;
                     case "isatomic": $rootScope.content[idx].isatomic = val[i]; break;
                     case "catstr": $rootScope.content[idx].catstr = val[i]; break;
-                    case "numcom": $rootScope.content[idx].numcom = val[i]; break;                   
+                    case "numcom": $rootScope.content[idx].numcom = val[i]; break;
+                    case "ismp": $rootScope.content[idx].ismp = val[i]; break;                   
                 }
             }
 

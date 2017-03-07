@@ -172,8 +172,6 @@
             vm.searchArray = [];
             vm.empty = [];
             vm.cTags = {};
-            $rootScope.searchStr = [];
-            
             
             //start temp code to load answertags
             /*
@@ -207,12 +205,6 @@
             }
             */
             //end temp code to add answer tags
-            
-            //Create seach strings combination of tags, title and answers            
-            for (var i = 0; i < $rootScope.content.length; i++) {                
-                //Tags cwrapper of title and tags for better search
-                $rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title + " " + $rootScope.content[i].answertags;
-            }
             
             //temp
             /*
@@ -353,7 +345,7 @@
             //console.log("mode -- ", editMode);
         }
         function applyRule() {          
-            $rootScope.$emit('applyRule');
+            // $rootScope.$emit('applyRule');
         }
            
         function getFeed(){
