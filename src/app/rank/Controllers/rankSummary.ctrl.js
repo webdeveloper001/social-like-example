@@ -54,7 +54,6 @@
         //For readability
         var answers = $rootScope.answers;
         var catansrecs = $rootScope.catansrecs;
-        //var edits = $rootScope.edits;
         var useractivities = $rootScope.alluseractivity;
         var mrecs = $rootScope.mrecs;
 

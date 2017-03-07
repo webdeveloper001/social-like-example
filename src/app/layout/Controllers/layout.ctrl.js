@@ -17,11 +17,11 @@
 
     layout.$inject = ['$location', '$rootScope', '$window', '$q', '$http', 'pvisits', '$cookies', '$scope',
         'DEBUG_MODE', 'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata', 'dialog',
-        'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state'];
+        'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state','dataloader'];
 
     function layout($location, $rootScope, $window, $q, $http, pvisits, $cookies, $scope,
         DEBUG_MODE, rankofday, answer, table, special, datetime, uaf, userdata, dialog,
-        matchrec, edit, useractivity, vrows, headline, cblock, catans, $state) {
+        matchrec, edit, useractivity, vrows, headline, cblock, catans, $state, dataloader) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'layout';
@@ -48,6 +48,16 @@
         $rootScope.$on('userDataLoaded', function () {
             loadingDone();
         });
+        $rootScope.$on('homeDataLoaded', function () {
+            loadingDone();
+        });
+        $rootScope.$on('rankDataLoaded', function () {
+            loadingDone();
+        });
+        $rootScope.$on('answerDataLoaded', function () {
+            loadingDone();
+        });
+
         $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
                 $rootScope.previousState = from.name;
             });
@@ -149,57 +159,25 @@
                 $rootScope.foodranks = response.data;
             });
 
-            //showNeighborhoods();
-
-            //answers
-            var p0 = answer.getAnswers();
-            var p1 = table.getTables();
-            var p2 = special.getSpecials();
-            var p3 = matchrec.GetMatchTable();
-            var p4 = edit.getEdits();
-            var p5 = useractivity.getAllUserActivity();
-            var p6 = catans.getAllcatans();
-            var p7 = vrows.getAllvrows();
-            var p8 = headline.getheadlines();
-            var p9 = cblock.getcblocks();
-            var p10 = pvisits.getpvisits();
-            var p11 = rankofday.getrankofday();
-            var p12 = uaf.getactions();
-
-            userdata.loadUserData();        //load user data (votes and activities)
-            userdata.loadUserAccount();     //load user business account
-
-            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12]).then(function (d) {
-                $rootScope.answers = d[0];
-                $rootScope.content = d[1];
-                $rootScope.specials = d[2];
-                $rootScope.mrecs = d[3];
-                $rootScope.edits = d[4];
-                $rootScope.alluseractivity = d[5];
-                $rootScope.catansrecs = d[6];
-                $rootScope.cvrows = d[7];
-                $rootScope.headlines = d[8];
-                $rootScope.cblocks = d[9];
-                $rootScope.pvisits = d[10];
-                $rootScope.rankofday = d[11];
-                $rootScope.uafs = d[12];
-
-                $rootScope.pageDataLoaded = true;
-
-                updatePageVisits();
-                loadingDone();
-
-            });
-
-            //vm.nh = $rootScope.neighborhoods[0];
-            //showNeighborhoods();
+            dataloader.gethomedata();
+            dataloader.getrankdata();
+            dataloader.getanswerdata();
+            dataloader.getpagevisitdata();
       }
 
         function loadingDone() {
             if ($rootScope.pageDataLoaded == undefined) $rootScope.pageDataLoaded = false;
             if ($rootScope.userDataLoaded == undefined) $rootScope.userDataLoaded = false;
 
-            $rootScope.dataIsLoaded = $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
+            if (window.location.href.indexOf('rankSummary')>-1)
+            $rootScope.dataIsLoaded = $rootScope.rankSummaryDataLoaded && $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
+
+            else if (window.location.href.indexOf('answerDetail')>-1)
+            $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded && 
+                                    $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
+            
+            else $rootScope.dataIsLoaded = $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
+
             vm.isLoading = !$rootScope.dataIsLoaded;
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.dataIsLoaded -", $rootScope.dataIsLoaded);
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.pageDataLoaded -", $rootScope.pageDataLoaded);
@@ -224,34 +202,6 @@
                 $cookies.put('uafs',$rootScope.uafs);
                 $cookies.put('pageDataLoaded',$rootScope.pageDataLoaded);
 */
-        }
-
-        function updatePageVisits() {
-            //get todays date
-            var datenow = new Date();
-            var tz = datenow.getTimezoneOffset();
-
-            datenow.setMinutes(datenow.getMinutes() - tz);
-
-            //var dateStr = datenow.toLocaleDateString();
-            function pad(n) { return n < 10 ? n : n; }
-            var dateStr = pad(datenow.getMonth() + 1) + "/" + pad(datenow.getDate()) + "/" + datenow.getFullYear();
-
-            //console.log('Date Str: ', dateStr);
-            var newDate = true;
-            var pvisitrec = {};
-            for (var i = 0; i < $rootScope.pvisits.length; i++) {
-                if ($rootScope.pvisits[i].date == dateStr) {
-                    newDate = false;
-                    pvisitrec = $rootScope.pvisits[i];
-                    break;
-                }
-            }
-            if (newDate) pvisits.postRec(dateStr);
-            else pvisits.patchRec(pvisitrec.id, pvisitrec.nvisits + 1);
-
-            $rootScope.dateToday = dateStr;
-            $rootScope.dateTodayNum = datetime.date2number(dateStr);
         }
 
         function isFacebookApp() {

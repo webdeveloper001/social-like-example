@@ -32,7 +32,8 @@
             //var url = baseURI;
             //Get all match records
             var url0 = baseURI + '?offset=' + 0 * 1000;
-           
+           //var url0 = baseURI + '/?filter=scope=city';
+
             var p0 = $http.get(url0);
             
             return $q.all([p0]).then(function (d){

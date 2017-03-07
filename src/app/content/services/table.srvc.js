@@ -56,13 +56,12 @@
                 return _tables;            
             }, _queryFailed);  
             //return $http.get(url).then(querySucceeded, _queryFailed);
-           
+            
             //function querySucceeded(d) {
 
                 
                 //return _tables = result.data.resource;
-            //}
-
+            //}          
         }
 
         function addTable(table) {
