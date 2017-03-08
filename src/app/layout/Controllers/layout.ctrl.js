@@ -119,7 +119,7 @@
                 vm.isLoading = true;
                 //vm.nh = 'hang in there';
                 loadData();
-                if (!tourviewed) dialog.tour();
+                if (!tourviewed && $rootScope.previousState != 'login') dialog.tour();
             }
 
             //Determine if user is using Facebook browser
