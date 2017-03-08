@@ -10,6 +10,5 @@
 
         // http interceptor
         $httpProvider.interceptors.push('httpInterceptor');
-        $locationProvider.hashPrefix('');
     }
 })();
