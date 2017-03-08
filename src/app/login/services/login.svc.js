@@ -78,7 +78,20 @@
             return $http.post('/api/v2/user/session?oauth_callback=true&service=facebook&' + queryString).then(querySucceeded, _queryFailed);
 
             function querySucceeded(result) {
+                console.log("oauth results", result);
+                $http.defaults.headers.common['X-DreamFactory-Session-Token'] = result.data.session_token;
+                $cookies.session_token = result.data.session_token;
+
+                $rootScope.user = result.data;
+                $rootScope.isLoggedIn = true;
+
+                try {
+                    window.localStorage.user = JSON.stringify(result.data);
+                    //$window.location.search = '';
+                } catch (e) { }
+
                 if ($rootScope.DEBUG_MODE) console.log("oauthWithFacebook succesful");
+                $rootScope.$emit('redirectAfterLogin');
             }
         }
 

@@ -25,6 +25,10 @@
         vm.whyFacebookDialog = whyFacebookDialog;
         vm.goBack = goBack;
 
+        $rootScope.$on('redirectAfterLogin', function () {
+            redirectToState();
+        });
+
         //Only use on localhost to fake a FB login
         if (window.location.hostname == "localhost") {
           console.log("server is: " + window.location.hostname)
@@ -55,18 +59,6 @@
                 login.oauthWithFacebook(queryString)
                     .then(function (result) {
 
-                        console.log("oauth results", result);
-                        $http.defaults.headers.common['X-DreamFactory-Session-Token'] = result.data.session_token;
-                        $cookies.session_token = result.data.session_token;
-
-                        $rootScope.user = result.data;
-                        $rootScope.isLoggedIn = true;
-
-                        try {
-                            window.localStorage.user = JSON.stringify(result.data);
-                            //$window.location.search = '';
-                        } catch (e) { }
-
                         var currentUserLatitude = $cookies.get('currentUserLatitude');
                         var currentUserLongitude = $cookies.get('currentUserLongitude');
 
@@ -77,15 +69,7 @@
                             $rootScope.$emit('coordsRdy');
                         }
 
-                        var statename = $cookies.get('statename');
-                        var statenum = $cookies.get('statenum');
-
-                        if (statename == 'rankSummary' || statename == 'answerDetail') {
-                            $state.go(statename, { index: statenum });
-                        }
-                        else {
-                            $state.go('cwrapper');
-                        }
+                        if ($rootScope.isLoggedIn) redirectToState();
     
                     }, function () {
                         vm.isProgressing = false;
@@ -109,6 +93,18 @@
                 console.log("isLoggedIn", $rootScope.isLoggedIn);
                 $location.path('/');
             })
+        }
+
+        function redirectToState(){
+            var statename = $cookies.get('statename');
+            var statenum = $cookies.get('statenum');
+
+            if (statename == 'rankSummary' || statename == 'answerDetail') {
+                $state.go(statename, { index: statenum });
+            }
+            else {
+                $state.go('cwrapper');
+            }
         }
 
         function redirectForFacebook() {
