@@ -58,10 +58,6 @@
             loadingDone();
         });
 
-        $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
-                $rootScope.previousState = from.name;
-            });
-
         /*
         if ($window.innerWidth < 512) vm.logoimage = "../../../assets/images/rankxlogosd_sm.png";
         else vm.logoimage = "../../../assets/images/rankxlogosd.png";
@@ -119,7 +115,7 @@
                 vm.isLoading = true;
                 //vm.nh = 'hang in there';
                 loadData();
-                if (!tourviewed && $rootScope.previousState != 'login') dialog.tour();
+                if (!tourviewed && !$rootScope.isLoggedIn) dialog.tour();
             }
 
             //Determine if user is using Facebook browser
