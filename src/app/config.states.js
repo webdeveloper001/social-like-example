@@ -178,7 +178,7 @@
               url: '/mybiz',
               views: {
                 "@": {
-                  templateUrl: 'app/layout/Partials/mybiz2.html',
+                  templateUrl: 'app/layout/Partials/mybiz.html',
                   controller: 'mybiz as vm'
                 },
                 "navbar@mybiz": {
