@@ -5,9 +5,9 @@
         .module('login')
         .controller('login', login);
 
-    login.$inject = ['$location', '$window', '$rootScope', 'login', 'dialog', '$state', '$cookies'];
+    login.$inject = ['$location', '$window', '$rootScope', 'login', 'dialog', '$state', '$cookies','$http'];
 
-    function login($location, $window, $rootScope, login, dialog, $state, $cookies) {
+    function login($location, $window, $rootScope, login, dialog, $state, $cookies, $http) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'login';
@@ -49,63 +49,44 @@
 
             if (queryString) {
                 //vm.code = vm.response.code;
-
+                
                 vm.isProgressing = true;
+                
                 login.oauthWithFacebook(queryString)
                     .then(function (result) {
 
+                        console.log("oauth results", result);
+                        $http.defaults.headers.common['X-DreamFactory-Session-Token'] = result.data.session_token;
+                        $cookies.session_token = result.data.session_token;
+
+                        $rootScope.user = result.data;
                         $rootScope.isLoggedIn = true;
 
-                        /**
-                         * After user login successful check for user detail is available
-                         * if user detail is not available open modal for asking user details
-                         * if user detail is available assign it to $rootScope.user and change local storage object for logged in user
-                         */
-                        /*
-                        userDetail.getUserDetail().then(function (result) {
+                        try {
+                            window.localStorage.user = JSON.stringify(result.data);
+                            //$window.location.search = '';
+                        } catch (e) { }
 
-                            if (Object.keys(result).length == 0) {
+                        var currentUserLatitude = $cookies.get('currentUserLatitude');
+                        var currentUserLongitude = $cookies.get('currentUserLongitude');
 
-                               // $rootScope.openUserDetailModal();
+                        if (currentUserLatitude && currentUserLongitude) {
+                            $rootScope.currentUserLatitude = currentUserLatitude;
+                            $rootScope.currentUserLongitude = currentUserLongitude;
+                            $rootScope.coordsRdy = true;
+                            $rootScope.$emit('coordsRdy');
+                        }
 
-                            } else {
-                                $rootScope.user.age = calculateAge(new Date(result[0].birth_date));
-                                $rootScope.user.gender = result[0].gender;
-                                $rootScope.user.birth_date = result[0].birth_date;
+                        var statename = $cookies.get('statename');
+                        var statenum = $cookies.get('statenum');
 
-                                try {
-                                    window.localStorage.user = JSON.stringify($rootScope.user);
-                                } catch (e) { }
-                            }
-
-                        });*/
-
-                            var currentUserLatitude = $cookies.get('currentUserLatitude');
-                            var currentUserLongitude = $cookies.get('currentUserLongitude');
-
-                            if (currentUserLatitude && currentUserLongitude) {
-                                $rootScope.currentUserLatitude = currentUserLatitude;
-                                $rootScope.currentUserLongitude = currentUserLongitude;
-                                $rootScope.coordsRdy = true;
-                                $rootScope.$emit('coordsRdy');
-                            }
-
-                            var statename = $cookies.get('statename');
-                            var statenum = $cookies.get('statenum');
-
-                            // console.log("isLoggedIn", $rootScope.isLoggedIn);
-
-                            //console.log("state and num - ", statename, statenum, ccategory);
-
-                            if (statename == 'rankSummary' || statename == 'answerDetail') {
-                                $state.go(statename, {index: statenum});
-                            }
-                            else {
-                                $state.go('cwrapper');
-                            }
-                        //}
-                        //$state.go('cwrapper');
-
+                        if (statename == 'rankSummary' || statename == 'answerDetail') {
+                            $state.go(statename, { index: statenum });
+                        }
+                        else {
+                            $state.go('cwrapper');
+                        }
+    
                     }, function () {
                         vm.isProgressing = false;
                     });
