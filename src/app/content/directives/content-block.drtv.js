@@ -10,8 +10,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             isRoW: '=rankofweek',
             updateView: '&updateView'
         },
-        controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 'vrows','$window',
-            function contentCtrl($scope, query, $http, answer, table, catans, $timeout, vrows, $window) {
+        controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 'vrows','$window','cblock',
+            
+            function contentCtrl($scope, query, $http, answer, table, catans, $timeout, vrows, $window, cblock) {
                 var vm = $scope;
                 vm.title = 'mycontent';
 
@@ -1041,7 +1042,15 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         }
                         //else table.update($rootScope.content[i].id, ['ismp'], [false]);
                     }
-                    */// End 22                                                                                                           
+                    */// End 22
+                    /*//23. Set ismp on all main page ranks
+                    for (var i=0; i<$rootScope.cblocks.length; i++){
+                        if ($rootScope.cblocks[i].scope == 'city'){
+                            cblock.update($rootScope.cblocks[i].id, ['ismp'], [true]); 
+                        }
+                        else cblock.update($rootScope.cblocks[i].id, ['ismp'], [false]);
+                    }
+                    */// End 23                                                                                                                 
                 }
             }], //end controller
         link: function (scope) {

@@ -15,6 +15,7 @@
 
         var service = {
             getAllcatans: getAllcatans,
+            //getbyCategory: getbyCategory,
             postRec: postRec,
             postRec2: postRec2,
             deleteRec: deleteRec,
@@ -57,6 +58,29 @@
             }, _queryFailed);  
             
         }
+/*
+        function getbyCategory(catarr) {
+
+            //Create filter string
+            var filtstr = '';
+            for (var i=0; i<catarr.length; i++){
+                if (i == 0) filtstr = filtstr + '(answer=' + catarr[i] + ')';
+                else filtstr = filtstr + ' OR (answer=' + catarr[i] + ')';  
+            }
+
+            var url0 = baseURI + '?filter=' + filtstr;
+
+            //console.log('url0 - ', url0); 
+            
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                _allcatans = d[0].data.resource;
+                if ($rootScope.DEBUG_MODE) console.log("No. Cat-Ans by Category: ", _allcatans.length);
+                return _allcatans;            
+            }, _queryFailed);  
+       }
+       */
         
         function postRec(x) {
            

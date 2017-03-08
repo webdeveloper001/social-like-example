@@ -52,10 +52,10 @@
         $rootScope.cmrecs_user = [];
         
         //For readability
-        var answers = $rootScope.answers;
-        var catansrecs = $rootScope.catansrecs;
-        var useractivities = $rootScope.alluseractivity;
-        var mrecs = $rootScope.mrecs;
+        var answers = [];
+        var catansrecs = [];
+        var useractivities = [];
+        var mrecs = [];
 
         var answersFull = false;
         var updateExec = false;
@@ -87,6 +87,10 @@
             if (!updateExec) updateVoteTable();
             updateExec = true;
         });
+        $rootScope.$on('rankDataLoaded', function () {
+            vm.dataReady = true;
+            activate();
+        });
         
         vm.isMobile = false; 
         // device detection
@@ -104,9 +108,15 @@
             document.getElementById("SearchInput").blur();
         }
         
-        activate();
+        if ($rootScope.rankSummaryDataLoaded) { vm.dataReady = true; activate(); }
+        else vm.dataReady = false;
 
         function activate() {
+
+            answers = $rootScope.answers;
+            catansrecs = $rootScope.catansrecs;
+            useractivities = $rootScope.alluseractivity;
+            mrecs = $rootScope.mrecs;
 
             $rootScope.inFavMode = false;
             if ($rootScope.rankIsNearMe == undefined) rankIsNearMe = false;
@@ -286,8 +296,8 @@
             }
   
             //Sorting rules
-            console.log("foodNearMe, ",foodNearMe);
-            console.log("rankIsNearMe, ",rankIsNearMe);
+            if ($rootScope.DEBUG_MODE) console.log("foodNearMe, ",foodNearMe);
+            if ($rootScope.DEBUG_MODE) console.log("rankIsNearMe, ",rankIsNearMe);
 
             if (foodNearMe || rankIsNearMe) sortByDistance();
             if (vm.isE) sortByDate();

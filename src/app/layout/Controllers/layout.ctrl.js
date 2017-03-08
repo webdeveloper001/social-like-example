@@ -158,9 +158,19 @@
             $http.get('../../../assets/foodranks.json').then(function (response) {
                 $rootScope.foodranks = response.data;
             });
+/*
+            if (window.location.href.indexOf('rankSummary')>-1){
+                var myRegexp = /rankSummary\/([0-9]+)/g;
+                var match = myRegexp.exec(window.location.href);
+                var category = match[1];
+                dataloader.getthisrankdata(category);
+                console.log("rank id: ",match[1]);
+            }
+*/
 
             dataloader.gethomedata();
             dataloader.getallranks();
+            dataloader.getallcblocks();
             dataloader.getrankdata();
             dataloader.getanswerdata();
             dataloader.getpagevisitdata();

@@ -17,6 +17,8 @@
         var service = {
             gethomedata: gethomedata,
             getallranks: getallranks,
+            //getthisrankdata: getthisrankdata,
+            getallcblocks: getallcblocks,
             getrankdata: getrankdata,
             getanswerdata: getanswerdata,
             getpagevisitdata: getpagevisitdata,
@@ -28,7 +30,7 @@
 
             var p0 = table.getTablesMain();
             var p1 = headline.getheadlines();
-            var p2 = cblock.getcblocks();
+            var p2 = cblock.getcblocksmain();
             var p3 = rankofday.getrankofday();
             var p4 = uaf.getactions();
 
@@ -66,6 +68,21 @@
                 if ($rootScope.DEBUG_MODE) console.log("all ranks data ready!");
                 //$rootScope.$emit('homeDataLoaded');
 
+            });
+        }
+
+        function getallcblocks(){
+            
+            var p0 = cblock.getcblocksall();      //Get ranks that are non main page, load them on the background
+
+            //Minimum Data for Cwrapper
+            return $q.all([p0]).then(function (d) {
+            
+                $rootScope.cblocks = d[0];
+                $rootScope.allCblocksLoaded = true;
+                
+                if ($rootScope.DEBUG_MODE) console.log("all cblocks ready!");
+                //$rootScope.$emit('homeDataLoaded');
             });
         }
 
@@ -124,6 +141,25 @@
                 
             });      
         }
+
+        /*
+        function getthisrankdata(category){
+            var p0 = table.getSingleTable(category);
+            return $q.all([p0]).then(function (d) {
+                
+                $rootScope.content = d[0];
+                if ($rootScope.DEBUG_MODE) console.log("loaded single table!");
+
+                var catansarr = [];
+                if ($rootScope.content[0].isatomic == true){
+                    catansarr = [category];
+                }
+                else catansarr = $rootScope.content[0].catstr.split(':').map(Number);
+                console.log("catansarr - ",catansarr);
+                var s0 = catans.getbyCategory(catansarr);
+                
+            });
+        }*/
 
         function updatePageVisits() {
             //get todays date

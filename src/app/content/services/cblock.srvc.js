@@ -15,7 +15,9 @@
 
         var service = {
             getcblocks: getcblocks,
-			addcblock: addcblock,
+            getcblocksmain: getcblocksmain,
+			getcblocksall: getcblocksall,
+            addcblock: addcblock,
             update: update,
             deleteRec: deleteRec
         };
@@ -38,6 +40,36 @@
             
             return $q.all([p0]).then(function (d){
                 _cblocks = d[0].data.resource;
+                return _cblocks;            
+            }, _queryFailed);  
+
+        }
+
+        function getcblocksmain() {
+
+            //Get all match records
+            var url0 = baseURI + '/?filter=ismp=true';
+           //var url0 = baseURI + '/?filter=scope=city';
+
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                _cblocks = d[0].data.resource;
+                return _cblocks;            
+            }, _queryFailed);  
+
+        }
+
+        function getcblocksall() {
+
+            //Get all match records
+            var url0 = baseURI + '/?filter=ismp=false';
+           //var url0 = baseURI + '/?filter=scope=city';
+
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                _cblocks = _cblocks.concat(d[0].data.resource);
                 return _cblocks;            
             }, _queryFailed);  
 
@@ -82,7 +114,8 @@
 
             for (var i = 0; i < field.length; i++) {
                 switch (field[i]) {
-                    case "catstr": data.catstr = val[i]; break;                                          
+                    case "catstr": data.catstr = val[i]; break;
+                    case "ismp": data.ismp = val[i]; break;                                          
                 }
             }
             //console.log("data", data);
@@ -94,7 +127,8 @@
             var idx = _cblocks.map(function(x) {return x.id; }).indexOf(id);  
             for (var i = 0; i < field.length; i++) {
                 switch (field[i]) {
-                    case "catstr": _cblocks[idx].catstr = val[i]; break;                                    
+                    case "catstr": _cblocks[idx].catstr = val[i]; break;
+                    case "ismp": _cblocks[idx].ismp = val[i]; break;                                    
                 }
             }
 

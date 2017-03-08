@@ -17,6 +17,7 @@
             getTables: getTables,
             getTablesMain: getTablesMain,
             getTablesNonMain: getTablesNonMain,
+            //getSingleTable: getSingleTable,
             update: update,
             addTable: addTable,
             deleteTable: deleteTable
@@ -109,7 +110,23 @@
             }, _queryFailed);
                       
         }
+/*
+        function getSingleTable(id) {
 
+            var url0 = baseURI + '/?filter=id=' + id;
+
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                
+                _tables = d[0].data.resource;
+                console.log("single table ", _tables);
+                if ($rootScope.DEBUG_MODE) console.log("single table loaded: ", _tables.length);
+                return _tables;            
+            }, _queryFailed);  
+                      
+        }
+*/
 
         function addTable(table) {
             
