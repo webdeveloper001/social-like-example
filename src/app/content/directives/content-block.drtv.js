@@ -1050,7 +1050,29 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         }
                         else cblock.update($rootScope.cblocks[i].id, ['ismp'], [false]);
                     }
-                    */// End 23                                                                                                                 
+                    */// End 23
+                    /*//test stripe server
+                    var url = 'http://bitnami-dreamfactory-df88.westus.cloudapp.azure.com:3000/stripeServer/';
+                    var req = {
+                        method: 'GET',
+                        url: url,
+                        headers: {
+                            //'X-Dreamfactory-API-Key': undefined,
+                            //'X-DreamFactory-Session-Token': undefined
+                        }
+                    }
+
+                    $http(req).then(success, fail);
+
+            function success(result) {
+                console.log("success -", results);
+                return result.data.resource;
+            }
+            
+            function fail() {
+                console.log("failure -");
+            }
+                      */                                                                                           
                 }
             }], //end controller
         link: function (scope) {
