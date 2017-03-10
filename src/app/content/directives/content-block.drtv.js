@@ -1051,14 +1051,15 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                         else cblock.update($rootScope.cblocks[i].id, ['ismp'], [false]);
                     }
                     */// End 23
-                    /*//test stripe server
-                    var url = 'http://bitnami-dreamfactory-df88.westus.cloudapp.azure.com:3000/stripeServer/';
+                    //test stripe server
+                    /*//var url = 'http://rank-x.com/stripeServer/';
+                    var url = 'http://rank-x.com/stripeServer/';
                     var req = {
                         method: 'GET',
                         url: url,
                         headers: {
-                            //'X-Dreamfactory-API-Key': undefined,
-                            //'X-DreamFactory-Session-Token': undefined
+                            'X-Dreamfactory-API-Key': undefined,
+                            'X-DreamFactory-Session-Token': undefined
                         }
                     }
 
@@ -1071,8 +1072,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             
             function fail() {
                 console.log("failure -");
-            }
-                      */                                                                                           
+            }*/
+                                                                                                                 
                 }
             }], //end controller
         link: function (scope) {
