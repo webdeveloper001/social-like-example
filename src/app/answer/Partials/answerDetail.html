@@ -1,4 +1,14 @@
-﻿<div class="well-rank" ng-if="vm.nsm" style="margin:0px;">
+﻿<div id="veil" ng-hide="vm.dataReady"></div>
+    <div id="feedLoading" ng-hide="vm.dataReady">
+        <div style="text-align: center" ng-if="!vm.dataReady">
+            <div class="loading-pulse"></div>
+            <p style="font-size:large">loading details...</p>
+        </div>
+    </div>
+<div ng-if="vm.dataReady">
+
+
+<div class="well-rank" ng-if="vm.nsm" style="margin:0px;">
         <h2 class="sub-header">{{vm.title}}
             <span class="nomargin"><button type="button" class="glyphicon glyphicon-remove pull-right" 
             style="margin:0px;padding:0px;border:0px;background-color:#006dcc;color:#002699;font-size:medium;
@@ -428,3 +438,4 @@
 </div>    
 <br>
 <br>
+</div>

@@ -1052,8 +1052,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     }
                     */// End 23
                     //test stripe server
-                    /*//var url = 'http://rank-x.com/stripeServer/';
-                    var url = 'http://rank-x.com/stripeServer/';
+                    //var url = 'http://rank-x.com/stripeServer/';
+                    //var url = 'http://rank-x.com/';
+                    /*var url = 'http://rankxserver.azurewebsites.net/stripeServer/';
                     var req = {
                         method: 'GET',
                         url: url,

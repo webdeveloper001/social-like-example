@@ -15,15 +15,14 @@
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
-        vm.ranking = $rootScope.title;
-
+        
         //if ($location.absUrl().indexOf('code=')>-1)$window.location.search = '';
 
         var voteRecordExists = false;
         var dV = 0;
         var upVi = 0;  //upVotes initial value
         var downVi = 0; //downVotes initial value
-        var answers = $rootScope.canswers;
+        var answers = [];
         var recordsUpdated = false;
         vm.numEdits = 0;
         
@@ -63,13 +62,7 @@
         vm.toggleimgmode = toggleimgmode;
         vm.deleteThisCatans = deleteThisCatans;
 
-        vm.fields = $rootScope.fields;
-
-        $rootScope.isLoggedIn = $rootScope.isLoggedIn ? $rootScope.isLoggedIn : false;
-        vm.isLoggedIn = $rootScope.isLoggedIn;
-        
         //Admin Function adding catans on spot
-        vm.isAdmin = $rootScope.isAdmin;
         vm.addCatans = addCatans;
         vm.addctsactive = false;
         vm.addcts = addcts;
@@ -84,32 +77,6 @@
         cObj.newComment = '';
         vm.cm = cObj;
         vm.commentAllowed = true;
-
-        
-        //vm.userIsOwner = $rootScope.userIsOwner;
-        if ($stateParams.index) {
-            var i = $rootScope.answers.map(function (x) { return x.id; }).indexOf(+$stateParams.index);
-            vm.answer = $rootScope.answers[i];
-        }
-        $rootScope.canswer = vm.answer;
-        vm.type = vm.answer.type;
-
-        //if there is no category, look for it in cookies
-        if ($rootScope.cCategory == undefined){
-            var ccategoryid = $cookies.get('ccategory');
-            console.log("@answerDetail - ccategory ", ccategoryid);
-            var idx = $rootScope.content.map(function(x) {return x.id; }).indexOf(ccategoryid); 
-            if (idx > -1) $rootScope.cCategory = $rootScope.content[idx];
-        }
-
-        if ($rootScope.inFavMode) vm.title = $rootScope.myfavs.title;
-        else if ($rootScope.cCategory) vm.title = $rootScope.cCategory.title;
-        else vm.title = '';
-
-        //if answers not loaded (state went straight to asnwerDetail, answers is just current answer)
-        if (answers == undefined) answers = [vm.answer];  
-        
-        vm.idx = answers.map(function (x) { return x.id; }).indexOf(vm.answer.id) + 1;
 
         vm.isMobile = false; 
         // device detection
@@ -153,22 +120,65 @@
             if ($state.current.name == 'answerDetail') getImages();
         });
 
-        //-----SEO tags ----
-        $scope.$parent.$parent.$parent.seo = { 
-        pageTitle : vm.answer.name, 
-        metaDescription: vm.answer.addinfo 
-        };
+        $rootScope.$on('answerDataLoaded', function () {
+            vm.dataReady = true;
+            activate();
+        });
+    
+        if ($rootScope.answerDetailLoaded) { vm.dataReady = true; activate(); }
+        else vm.dataReady = false;
 
-        activate();
+        //activate();
 
         function activate() {
-            
+
+            //Init variables
+            vm.ranking = $rootScope.title;
+            answers = $rootScope.canswers;
+            vm.fields = $rootScope.fields;
+            vm.isAdmin = $rootScope.isAdmin;
+            $rootScope.isLoggedIn = $rootScope.isLoggedIn ? $rootScope.isLoggedIn : false;
+            vm.isLoggedIn = $rootScope.isLoggedIn;
+
+            //vm.userIsOwner = $rootScope.userIsOwner;
+            if ($stateParams.index) {
+                var i = $rootScope.answers.map(function (x) { return x.id; }).indexOf(+$stateParams.index);
+                vm.answer = $rootScope.answers[i];
+            }
+
+            // ----- SEO tags ----
+            $scope.$parent.$parent.$parent.seo = { 
+                pageTitle : vm.answer.name, 
+                metaDescription: vm.answer.addinfo 
+            };
+
+            $rootScope.canswer = vm.answer;
+            vm.type = vm.answer.type;
+
+            //if there is no category, look for it in cookies
+            if ($rootScope.cCategory == undefined) {
+                var ccategoryid = $cookies.get('ccategory');
+                console.log("@answerDetail - ccategory ", ccategoryid);
+                var idx = $rootScope.content.map(function (x) { return x.id; }).indexOf(ccategoryid);
+                if (idx > -1) $rootScope.cCategory = $rootScope.content[idx];
+            }
+
+            if ($rootScope.inFavMode) vm.title = $rootScope.myfavs.title;
+            else if ($rootScope.cCategory) vm.title = $rootScope.cCategory.title;
+            else vm.title = '';
+
+            //if answers not loaded (state went straight to asnwerDetail, answers is just current answer)
+            if (answers == undefined) answers = [vm.answer];
+
+            vm.idx = answers.map(function (x) { return x.id; }).indexOf(vm.answer.id) + 1;
+
+
             //Temp for Instagram Demo
             if (vm.answer.id == 2225) vm.igdemo = true;
             else vm.igdemo = false;
 
             getFields();
-            
+
             //Set Image Mode -- Map or Photo
             vm.modeIsImage = $rootScope.modeIsImage == undefined ? true : $rootScope.modeIsImage;
             if (vm.answer.location == undefined) vm.modeIsImage = true;
@@ -217,14 +227,14 @@
             else vm.userIsOwner = false;
 
             $rootScope.userIsOwner = vm.userIsOwner;
-            
+
             //Determine number of user comments
             if (vm.answer.numcom == undefined) vm.numcom = 0;
             else vm.numcom = vm.answer.numcom;
 
             if (answers.length > 1) vm.showNextnPrev = true;
             else vm.showNextnPrev = false;
-            
+
             //Update number of views
             var nViews = vm.answer.views + 1;
             answer.updateAnswer(vm.answer.id, ['views'], [nViews]);

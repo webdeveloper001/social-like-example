@@ -6,10 +6,12 @@
     useraccnt.$inject = ['$http','$q','$rootScope', 'login'];
     function useraccnt($http, $q, $rootScope, login) {
         var _useraccnts = [];
+        var _promoteraccnts = [];
         var baseURI = '/api/v2/mysql/_table/useraccnts';
 
         var service = {
             getuseraccnt: getuseraccnt,
+            getaccntsbycode: getaccntsbycode,
             adduseraccnt: adduseraccnt,
             updateuseraccnt: updateuseraccnt
     };
@@ -41,6 +43,21 @@
               return _useraccnts = result.data.resource;
           }
 
+      }
+
+      function getaccntsbycode (code){
+
+          var url = baseURI + '' + '?filter=(COUPON='+code+')';
+          // console.log("useraccnt.srvc.js:getuseraccnt(forcerefresh): GET");
+          return $http.get(url).then(querySucceeded, _queryFailed);
+
+          function querySucceeded(result) {
+            // console.log("useraccnt.srvc.js:getuseraccnt(forcerefresh): GET: SUCCESS");
+            // console.log("result.data.resource: " + JSON.stringify(result.data.resource[0]));
+
+              // return _useraccnts = result.data.resource[0];
+              return _promoteraccnts = result.data.resource;              
+          }
       }
 
       /*

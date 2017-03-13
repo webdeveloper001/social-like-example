@@ -5,9 +5,11 @@
         .module('app')
         .service('userdata', userdata);
 
-    userdata.$inject = ['$rootScope', 'votes', 'editvote', 'vrowvotes', 'useraccnt', 'useractivity', '$q'];
+    userdata.$inject = ['$rootScope', 'votes', 'editvote', 'vrowvotes', 'useraccnt',
+     'useractivity', '$q', 'promoter'];
 
-    function userdata($rootScope, votes, editvote, vrowvotes, useraccnt, useractivity, $q) {
+    function userdata($rootScope, votes, editvote, vrowvotes, useraccnt, 
+    useractivity, $q, promoter) {
 
         var service = {
 
@@ -26,13 +28,16 @@
                 var p1 = editvote.loadEditVotesTable();
                 var p2 = vrowvotes.loadVrowVotes();
                 var p3 = useractivity.getActivitybyUser();
+                var p4 = promoter.getbyUser($rootScope.user.id);
                 
-                return $q.all([p0, p1, p2, p3]).then(function (d) {
+                return $q.all([p0, p1, p2, p3, p4]).then(function (d) {
                     $rootScope.cvotes = d[0];
                     $rootScope.editvotes = d[1];
                     $rootScope.cvrowvotes = d[2];
                     $rootScope.thisuseractivity = d[3];
+                    $rootScope.userpromoter = d[4];
                     
+                    console.log("user promoter - ",$rootScope.userpromoter);
                     $rootScope.userDataLoaded = true;
                     $rootScope.$emit('userDataLoaded');                   
                 });
@@ -43,6 +48,7 @@
                 $rootScope.editvotes = [];
                 $rootScope.cvrowvotes = [];
                 $rootScope.thisuseractivity = [];
+                $rootScope.userpromoter = [];
 
                 $rootScope.userDataLoaded = true;
                 $rootScope.$emit('userDataLoaded');
@@ -62,6 +68,7 @@
                         for (var i = 0; i < $rootScope.useraccnts.length; i++) {
                             if ($rootScope.useraccnts[i].email != '') missingEmail = false;
                         }
+                        $rootScope.$emit('userAccountsLoaded');
                         if (missingEmail) {
                             $rootScope.showWarning = true;
                             $rootScope.$emit('showWarning');

@@ -28,6 +28,7 @@
         vm.gotoTour = gotoTour;
         vm.gotoHome = gotoHome;
         vm.gotoAdmin = gotoAdmin;
+        vm.goPromoterConsole = goPromoterConsole;
         vm.gotoFileUpload = gotoFileUpload;
         vm.gotoCustomer = gotoCustomer;
         vm.openCitySelection = openCitySelection;
@@ -41,9 +42,67 @@
         var geoOptions = {};
 
         vm.warning = false;
+
+        $rootScope.$on('getLocation', function (e) {
+            autoDetectCity();
+        });
+
+        $rootScope.$on('coordsRdy', function (e) {
+            showCoordsIcon();
+        });
+
+        $rootScope.$on('showWarning', function (e) {
+            if ($rootScope.DEBUG_MODE) console.log("rx showWarning");
+            showWarningsIcon();
+        });
+
+        $rootScope.$on('hideWarning', function (e) {
+            if ($rootScope.DEBUG_MODE) console.log("rx clearWarning");
+            hideWarningsIcon();
+        });
+
+        $rootScope.$on('useAddress', function (e, address) {
+            var obj = {};
+            obj.location = address.address;
+            obj.lat = 0;
+            obj.lng = 0;
+            $rootScope.coordForUSer = true;
+            getgps.getLocationGPS(obj);
+        });
+
+        $rootScope.$on('userDataLoaded', function (e) {
+            if ($rootScope.isLoggedIn && $rootScope.userpromoter.length > 0) {
+                vm.isPromoter = true;
+                $rootScope.isPromoter = true;
+                console.log("User is promoter");
+            }
+            else {
+                $rootScope.isPromoter = false;
+                vm.isPromoter = false;
+            }
+        });
+
+        $rootScope.$on('userAccountsLoaded', function (e) {
+            if ($rootScope.isLoggedIn && $rootScope.useraccnts.length > 0) {
+                vm.hasBusiness = true;
+                $rootScope.hasBusiness = true;
+                console.log("User has business");
+            }
+            else {
+                $rootScope.hasBusiness = false;
+                vm.hasBusiness = false;
+            }
+        });
+
         activate();
 
         function activate() {
+
+            if ($rootScope.hasBusiness == undefined) vm.hasBusiness = false;
+            else vm.hasBusiness = $rootScope.hasBusiness;
+
+            if ($rootScope.isPromoter == undefined) vm.isPromoter = false;
+            else vm.isPromoter = $rootScope.isPromoter;
 
             if ($rootScope.showWarning) showWarningsIcon();
             configGeolocation();
@@ -79,6 +138,10 @@
         function gotomyfavs() {
             //$stateProvider.state('app');
             $state.go('myfavs');
+        }
+
+        function goPromoterConsole(){
+            $state.go('promoterconsole');
         }
 
         function gotoAbout() {
@@ -166,33 +229,6 @@
             }
 
         }
-
-        $rootScope.$on('getLocation', function (e) {
-            autoDetectCity();
-        });
-
-        $rootScope.$on('coordsRdy', function (e) {
-            showCoordsIcon();
-        });
-
-        $rootScope.$on('showWarning', function (e) {
-            if ($rootScope.DEBUG_MODE) console.log("rx showWarning");
-            showWarningsIcon();
-        });
-        $rootScope.$on('hideWarning', function (e) {
-            if ($rootScope.DEBUG_MODE) console.log("rx clearWarning");
-            hideWarningsIcon();
-        });
-
-
-        $rootScope.$on('useAddress', function (e, address) {
-            var obj = {};
-            obj.location = address.address;
-            obj.lat = 0;
-            obj.lng = 0;
-            $rootScope.coordForUSer = true;
-            getgps.getLocationGPS(obj);
-        });
 
         /**
          * Function to get current location of User based on navigator

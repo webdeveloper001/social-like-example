@@ -17,6 +17,7 @@
         var service = {
             getall: getall,
             get: get,
+            getbyUser: getbyUser,
             add: add,
             update: update,
             deletepromoter: deletepromoter,
@@ -55,7 +56,19 @@
 
             function querySucceeded(result) {
 
-                return _promoter = result.data;
+                return _promoter = result.data.resource;
+            }
+        }
+
+        function getbyUser(user) {
+
+            var url = baseURI + '/?filter=user=' + user;
+
+            return $http.get(url).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+
+                return _promoter = result.data.resource;
             }
         }
         

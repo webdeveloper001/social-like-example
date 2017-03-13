@@ -209,6 +209,20 @@
                 }
             },
           {
+                name: 'promoterconsole',
+                url: '/promoterconsole',
+                views: {
+                    "@": {
+                        templateUrl: 'app/promoters/Partials/promoterconsole.html',
+                        controller: 'promoterconsole as vm'
+                    },
+                    "navbar@promoterconsole": {
+                        templateUrl: 'app/layout/Partials/navbar.html',
+                        controller: 'navbar as vm'
+                    }
+                }
+            },  
+          {
                 name: 'myfavs',
                 parent: 'layout',
                 url: '/myfavs',
