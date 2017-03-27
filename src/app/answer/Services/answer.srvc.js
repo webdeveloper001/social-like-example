@@ -219,6 +219,10 @@
                     case "strhours": data.strhours = val[i]; break;
                     case "eventstr": data.eventstr = val[i]; break;
                     case "numcom": data.numcom = val[i]; break;
+                    case "ranks": data.ranks = val[i]; break;
+                    case "ispremium": data.ispremium = val[i]; break;
+                    case "hasranks": data.hasranks = val[i]; break;
+                    case "ranksqty": data.ranksqty = val[i]; break;
                 }
             }
             //console.log("data", data);
@@ -247,6 +251,10 @@
                     case "strhours": $rootScope.answers[idx].strhours = val[i]; break;
                     case "eventstr": $rootScope.answers[idx].eventstr = val[i]; break;
                     case "numcom": $rootScope.answers[idx].numcom = val[i]; break;
+                    case "ranks": $rootScope.answers[idx].ranks = val[i]; break;
+                    case "ispremium": $rootScope.answers[idx].ispremium = val[i]; break;
+                    case "hasranks": $rootScope.answers[idx].hasranks = val[i]; break;
+                    case "ranksqty": $rootScope.answers[idx].ranksqty = val[i]; break;
                 }
             }                        
             

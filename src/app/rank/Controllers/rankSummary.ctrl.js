@@ -937,7 +937,11 @@
             if (vm.answers[2]) vm.image3 = vm.answers[2].imageurl;
         }
         function closeRank() {
-            $state.go('cwrapper');
+            //if ranking is one from answers, return to answer profile
+            if ($rootScope.cCategory.title.indexOf('@')>-1){
+                $state.go('answerDetail',{index: $rootScope.cCategory.owner});
+            }
+            else $state.go('cwrapper');
         }
 
         function closeAddInfoMsg() {

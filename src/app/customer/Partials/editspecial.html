@@ -60,13 +60,13 @@
 	<br>
 	<div class="row">
 		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-			<div style="display:{{vm.onetime ? 'inline':'none'}}">
+			<div ng-if="vm.onetime">
 				<p class="text-right">Start date:</p>
 			</div>
 		</div>
 
 		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-			<div style="display:{{vm.onetime ? 'inline':'none'}}">
+			<div ng-if="vm.onetime">
 				<datepicker date-format="EEE MMM d y" date-year-title="selected title------">
 					<input ng-model="vm.sp.sdate" type="text" />
 				</datepicker>
@@ -75,13 +75,13 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-			<div style="display:{{vm.onetime ? 'inline':'none'}}">
+			<div ng-if="vm.onetime">
 				<p class="text-right">Start time:</p>
 			</div>
 		</div>
 
 		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-			<div style="display:{{vm.onetime ? 'inline':'none'}}">
+			<div ng-if="vm.onetime">
 				<select ng-model="vm.sp.stime" ng-options="x for x in vm.timeDD">
 					<option value="">{{vm.sp.stime}}</option>
 				</select>
@@ -90,23 +90,23 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-			<div style="display:{{vm.onetime ? 'inline':'none'}}">
+			<div ng-if="vm.onetime">
 				<p class="text-right">End date:</p>
 			</div>
 		</div>
 
-		<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3" style="display:{{vm.onetime ? 'inline':'none'}}">
+		<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3" ng-if="vm.onetime">
 			<datepicker date-format="EEE MMM d y" date-year-title="selected title------">
 				<input ng-model="vm.sp.edate" type="text" />
 			</datepicker>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3" style="display:{{vm.onetime ? 'inline':'none'}}">
+		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3" ng-if="vm.onetime">
 			<p class="text-right">End time:</p>
 		</div>
 
-		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3" style="display:{{vm.onetime ? 'inline':'none'}}">
+		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3" ng-if="vm.onetime">
 			<select ng-model="vm.sp.etime" ng-options="x for x in vm.timeDD">
 				<option value="">{{vm.sp.etime}}</option>
 			</select>
@@ -115,7 +115,7 @@
 	</div>
 	<div class="row">
 		<div class="text-center">
-			<div class="col-xs-12 col-sm-12 col-md-12" style="display:{{vm.weekly ? 'inline':'none'}}">
+			<div class="col-xs-12 col-sm-12 col-md-12" ng-if="vm.weekly">
 
 				<label class="checkbox-inline">
 					<input type="checkbox" ng-model="vm.sp.mon" value="">Mon</label>
@@ -137,13 +137,13 @@
 	<br>
 	<div class="row">
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-			<div style="display:{{vm.weekly ? 'inline':'none'}}">
+			<div ng-if="vm.weekly">
 				<p class="text-right">Start time:</p>
 			</div>
 		</div>
 
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-			<div style="display:{{vm.weekly ? 'inline':'none'}}">
+			<div ng-if="vm.weekly">
 				<select ng-model="vm.sp.stime2" ng-options="x for x in vm.timeDD">
 					<option value="">{{vm.sp.stime2}}</option>
 				</select>
@@ -152,13 +152,13 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-			<div style="display:{{vm.weekly ? 'inline':'none'}}">
+			<div ng-if="vm.weekly">
 				<p class="text-right">End time:</p>
 			</div>
 		</div>
 
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-			<div style="display:{{vm.weekly ? 'inline':'none'}}">
+			<div ng-if="vm.weekly">
 				<select ng-model="vm.sp.etime2" ng-options="x for x in vm.timeDD">
 					<option value="">{{vm.sp.etime2}}</option>
 				</select>
@@ -182,7 +182,7 @@
 		<div class="">
 			<p> Event Image </p>
 			<img src="{{vm.imageURL}}" alt="{{image.errorLoading}}" style="width:100%; max-height:300px">
-			 <div ng-if="vm.userIsOwner" style="display:{{vm.userIsOwner ? 'inline':'none'}}">
+			 <div ng-if="vm.userIsOwner">
             		<blob-upload>
         	</div>
 		</div>

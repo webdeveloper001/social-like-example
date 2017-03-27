@@ -41,6 +41,9 @@
             loginFacebook: loginFacebook,
             shareOptions: shareOptions,
             tour: tour,
+            unbindAccount: unbindAccount,
+            confirmCancel: confirmCancel,
+            editNumRanks: editNumRanks,
         };
 
         return service;
@@ -543,18 +546,21 @@
             });
         }
 
-        function deleteRank(deleteRank) {
+        function deleteRank(x,callback,isSpecial) {
 
             var title = '';
             var message = '';
             var btnCancelLabel = '';
             var btnOkLabel = '';
 
-            title = 'Confirm Delete';
+            title = 'Yes, Delete';
             btnCancelLabel = 'Cancel';
             btnOkLabel = 'Delete';
-            message = 'Just confirming, do you want to delete?';
-
+            if (isSpecial)
+            message = 'Just confirming, do you want to delete the special <strong>' + x.stitle +'</strong>?';
+            else
+            message = 'Just confirming, do you want to delete the ranking <strong>' + x.title +'</strong>?';
+            
             BootstrapDialog.confirm({
                 type: BootstrapDialog.TYPE_DANGER,
                 title: title,
@@ -569,7 +575,7 @@
                 },
                 //callback: function (dialogRef, result) {
                 callback: function (result) {
-                    if (result) deleteRank();
+                    if (result) callback();
                 }
             });
         }
@@ -1291,7 +1297,7 @@
             btnOkLabel = 'Yes, Delete';
             message = '<br>Please confirm, you want to delete this photo: ' +
             '<br/><img id="image" class="displayed" src="' +
-            blobList[n] +
+            blobList[n].url +
             '" style="width:100%;height:auto">' +
             '<br><br>';
 
@@ -1309,7 +1315,7 @@
                 },
                 callback: function (result) {
                     if (result) {
-                        imagelist.deleteBlob(blobList[n]);
+                        imagelist.deleteBlob(blobList[n].url);
                     }
                 }
             });
@@ -1327,7 +1333,7 @@
             btnOkLabel = 'Yes, make primary';
             message = '<br>Please confirm, you want to make this the primary photo: ' +
             '<br/><img id="image" class="displayed" src="' +
-            blobList[n] +
+            blobList[n].url +
             '" style="width:100%;height:auto">' +
             '<br><br>';
 
@@ -1345,7 +1351,7 @@
                 },
                 callback: function (result) {
                     if (result) {
-                        var imageurl = blobList[n];
+                        var imageurl = blobList[n].url;
                         answer.updateAnswer(myanswer.id, ["image"], [imageurl]);
                     }
                 }
@@ -1603,7 +1609,212 @@
 
             });
 
-        } 
+        }
 
+        function unbindAccount(x, callback) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Confirm Unbind';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Yes, Unbind';
+            message = 'Just confirming, do you want to unbind <strong>' + x.name + '</strong> from your account?';
+
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_DANGER,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-primary',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) callback();
+                }
+            });
+        }
+
+        function confirmCancel(x, type, callback){
+             var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            if (type == 'Premium'){
+                btnOkLabel = 'Cancel Premium Membership';
+                message = 'Do you want to cancel your Premium Membership for <strong>'+x.name+'</strong>?'
+            }
+            if (type == 'Ranks'){
+                btnOkLabel = 'Cancel All Custom Ranks';
+                message = 'Do you want to cancel all of your Custom Ranks for <strong>'+x.name+'</strong>?'
+            }
+            if (type == 'All'){
+                btnOkLabel = 'Cancel All Subscriptions';
+                message = 'Do you want to cancel all of your Subscriptions for <strong>'+x.name+'</strong>?'
+            }
+
+            title = 'Please confirm';
+            btnCancelLabel = 'Back';
+            
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_DANGER,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'default',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) callback();
+                }
+            });
+        }
+
+        function editNumRanks(x,callback){
+            var title = 'Buy or Cancel Custom Ranks';
+            var message = '';
+            var btnCancelLabel = 'Back';
+            var btnOkLabel = 'Purchase';
+            var m1 = '';
+            var m2 = '';
+            var n = 1;
+            var N = x.ranksQty;
+            var action = 'purchase';
+            var msgpayment = '<br><br>If purchasing Custom Ranks you will be ask for your payment info after clicking the Purchase button.';
+            var msgcancel = '<br><br>Your Custom Ranks will be active until the last day of your subscription.';
+
+            var msg = 'You have selected to <strong>purchase ' + n + '</strong> Custom Ranks.' + msgpayment;
+            
+            //message = getMessageHtml(n,msg);
+            //function getMessageHtml(n,msg){
+            var message = 
+            '<p>You are currently subscribed to <strong>' + N + '</strong> Custom Ranks.</p>'+
+            '<br>'+
+            '<p class="text-left">Select what you want to do.</p>'+
+            '<br>'+
+            '<div class="radio">'+
+                '<label><input type="radio" value="0" checked name="radiogrp">PURCHASE CUSTOM RANKINGS</label>'+
+            '</div>'+
+            '<div class="radio">'+
+               '<label><input type="radio" value="1" name="radiogrp">CANCEL CUSTOM RANKINGS</label>'+
+            '</div>'+
+            '<br>' +
+            '<div class="row">'+
+                '<div class="col-xs-7">'+
+                    '<p class="text-right">Select quantity:</p>'+
+                '</div>'+
+                '<div class="col-xs-5">'+
+				    '<div class="input-group">'+
+					    '<span class="input-group-btn">'+
+					        '<button class="btn btn-primary" id="btn_minus"><i class="fa fa-minus"></i></button>'+
+				        '</span>'+
+					    '<input style="text-align:center" id="numRanks" class="form-control" type="text" placeholder="'+ n +'">'+
+					        '<span class="input-group-btn">'+
+					            '<button class="btn btn-primary" id="btn_plus"><i class="fa fa-plus"></i></button>'+
+				            '</span>'+
+				    '</div>'+
+			    '</div>'+
+            '</div>'+
+            '<br><p class="text-left" id="mytext">'+msg+'</p>';
+                //return msghtml;    
+            
+            title = 'Please confirm';
+            btnCancelLabel = 'Back';
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: function (dialogRef) {
+                    var $content = $(message);
+                    var x = dialogRef;
+                    var msg = '';
+                    var msgpayment = '<br><br>If purchasing Custom Ranks you will be ask for your payment info after clicking the Purchase button.';
+                    var msgcancel = '<br><br>Your Custom Ranks will be active until last day of your subscription.';
+
+                    $content.find('#btn_minus').click({}, function () {
+                        n = n - 1;
+                        if (n < 1) n = 1;
+                        $content.find('#numRanks').val(n);
+                        //console.log("n, N - ", n, N);
+                        if (action == 'purchase'){
+                            msg = 'You have selected to <strong>purchase ' + n + '</strong> Custom Ranks. ' + msgpayment;
+                            $('#btn2').text('Purchase ' + n + ' Custom Rankings');
+                        }
+                        else {
+                            msg = 'You have selected to <strong>cancel ' + n + '</strong> Custom Ranks. ' + msgcancel;
+                            $('#btn2').text('Cancel ' + n + ' Custom Rankings');
+                        }
+                        //console.log("msg - ", msg);
+                        $('#mytext').html(msg);                  
+                    });
+                    $content.find('#btn_plus').click({}, function () {
+                        n = n + 1;
+                        if (n > 10) n = 10;
+                        if (action == 'cancel'){
+                            if (n >= N) n = N;
+                        }
+                        $content.find('#numRanks').val(n);
+                        //console.log("n, N - ", n, N);
+                        if (action == 'purchase'){
+                            msg = 'You have selected to <strong>purchase ' + n + '</strong> Custom Ranks. ' + msgpayment;
+                            $('#btn2').text('Purchase ' + n + ' Custom Rankings');
+                        }
+                        else {
+                            msg = 'You have selected to <strong>cancel ' + n + '</strong> Custom Ranks. ' + msgcancel;
+                            $('#btn2').text('Cancel ' + n + ' Custom Rankings');
+                        }
+                        //console.log("msg - ", msg);
+                        $('#mytext').html(msg);                       
+                    });
+                    $content.find('input[type=radio][name=radiogrp]').change(function() {
+                        n = 1;
+                        if (this.value == 0) {
+                            action = 'purchase';
+                            $('#btn2').text('Purchase ' + n + ' Custom Rankings');
+                            msg = 'You have selected to <strong>purchase ' + n + '</strong> Custom Ranks. ' + msgpayment;                           
+                        }
+                        else if (this.value == 1) {
+                            action = 'cancel';
+                            $('#btn2').text('Cancel ' + n + ' Custom Rankings');
+                            msg = 'You have selected to <strong>cancel ' + n + '</strong> Custom Ranks. ' + msgcancel;
+                        }
+                        $content.find('#numRanks').val(n);
+                        $('#mytext').html(msg);
+                    });
+                    return $content;
+                },
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttons: [
+                {
+                id: 'btn1',
+                label: 'Back',
+                action: function(dialog) {
+                    dialog.close();
+                    }
+                },
+                {
+                id: 'btn2',
+                label: 'Purchase ' + n + ' Custom Rankings',
+                action: function(dialog, messagehtml) {
+                   callback(action,n);
+                   dialog.close();
+                }
+            }]
+            });
+        }
     }
 })();

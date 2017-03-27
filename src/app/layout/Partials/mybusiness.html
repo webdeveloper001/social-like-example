@@ -1,58 +1,298 @@
 <!-- Navigation Bar -->
 <div ui-view="navbar"></div>
 
+<div id="veil" ng-hide="vm.dataReady"></div>
+    <div id="feedLoading" ng-hide="vm.dataReady">
+        <div style="text-align: center" ng-if="!vm.dataReady">
+            <div class="loading-pulse"></div>
+            <p style="font-size:large">loading your business accounts...</p>
+        </div>
+    </div>
+<div ng-if="vm.dataReady">
+
 <div class="container">
+<div class="container" ng-if="!vm.noAns&&vm.overview">
 	<h3>My Business</h3>
 
-	<table class="table" ng-if="!vm.noAns&&vm.overview">
+	<table class="table">
 		<tbody>
 			<thead style="border-style:none;">
 				<tr>
 					<th>Name</th>
-					<th>Membership</th>
-					<th></th>
+					<th colspan=2 text-align="center">Memberships</th>
 				</tr>
 			</thead>
 			<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
 			<tr ng-repeat="x in vm.mybizs" style="cursor:pointer;">
 				<td ng-click="vm.gotoanswer(x)">{{x.name}}</td>
-				<td align="middle" style="{{x.style}}" ng-click="vm.gotomanage(x)">{{x.status}}</td>
+				<td align="center" style="{{x.style}}" ng-click="vm.gotomanage(x)">{{x.status}}</td>
+				<td align="center" style="{{x.style2}}" ng-click="vm.gotomanage(x)">{{x.status2}}</td>
 			</tr>
 		</tbody>
 	</table>
 
-	<div ng-if="!vm.overview">
-		<h4 align="center" style="background-color:#b3b3b3;padding:5px">Contact Info</h4>
-		<div>
-			<p class="text-left"><strong>Name:</strong>&nbsp{{vm.business.firstname}} {{vm.business.lastname}}</p>
-			<p class="text-left"><strong>Email:</strong>&nbsp{{vm.business.email}}</p>			
-		</div>
-		<h4 align="center" style="background-color:#b3b3b3;padding:5px">Business Info</h4>
-		<div>
-			<p class="text-left"><strong>Business Name:</strong>&nbsp{{vm.business.name}}</p>
-			<p class="text-left"><strong>Address:</strong>&nbsp{{vm.business.location}}</p>
-			<p class="text-left"><strong>Phone:</strong>&nbsp{{vm.business.phone}}</p>
-			<p class="text-left"><strong>Membership:</strong>&nbsp{{vm.business.status}}</p>			
-		</div>
-		<div class="jumbotron">
-			<h2>Upgrade to Premium</h2>
-			<i class="fa fa-check"></i><strong>&nbspGet more exposure</strong> within San Diego</li></br>
-        	<i class="fa fa-check"></i>&nbspLet people know all your <strong> specials, promotions and special events</strong></li></br>
-			<i class="fa fa-check"></i><strong>&nbspDrive more traffic</strong> to your business</li></br>
-			<i class="fa fa-check"></i><strong>&nbspBe the best</strong> at what you do.</li></br>
-      		</br></br>
-		<div class="text-center">
-			<button class="btn btn-success">Upgrade to Premium Membership</button>&nbsp&nbsp<a ng-click="">Learn more</a>
-		</div>
-		</div>
-	</div>
 	<div ng-if="vm.noAns">
 		</br>
 		<p>You have not bound your account to any business. If you own or represent a business in this city, bound your account so
 			you can manage its account.</p>
 	</div>
-
-	<div class="text-right" role="group">
-		<button type="button" ng-click="vm.goBack()" class="btn btn-default">Back</button>
+</div>
+<div class="container" ng-if="vm.manageview">
+	<h3>{{vm.business.name}}</h3>
+	<h4 align="center" style="background-color:#b3b3b3;padding:5px">Contact Info</h4>
+	<div>
+		<p class="text-left"><strong>Name:</strong>&nbsp{{vm.business.firstname}} {{vm.business.lastname}}</p>
+		<p class="text-left"><strong>Email:</strong>&nbsp{{vm.business.email}}</p>
 	</div>
-</div>    
+	<h4 align="center" style="background-color:#b3b3b3;padding:5px">Business Info</h4>
+	<div>
+		<p class="text-left"><strong>Business Name:</strong>&nbsp{{vm.business.name}}</p>
+		<p class="text-left"><strong>Address:</strong>&nbsp{{vm.business.location}}</p>
+		<p class="text-left"><strong>Phone:</strong>&nbsp{{vm.business.phone}}</p>
+		<p class="text-left"><strong>Membership:</strong>&nbsp{{vm.business.status}}</p>
+	</div>
+	<div class="text-right">
+		<a href="" ng-click="vm.unbind(vm.business.id)">Unbind this business from my account</a>
+	</div>
+	<h4 align="center" style="background-color:#b3b3b3;padding:5px" 
+			ng-if="vm.business.isPremium||vm.business.hasRanks">Subscriptions</h4>
+	<div class="text-right">
+		<div class="btn-group" ng-if="vm.business.isPremium||vm.business.hasRanks" style="padding-bottom:5px">
+			<button type="button" class="btn btn-default">Edit Payment Info</button>
+			<button type="button" class="btn btn-default">Invoices</button>
+		</div>
+	</div>		
+	<div ng-if="vm.business.isPremium||vm.business.hasRanks">
+		<table class="table">
+		<tbody>
+			<!--
+			<tr style="cursor:pointer;">
+				<td style="width:70%">Premium Membership</td>
+				<td style="width:15%"></td>
+				<td align="center" style="width:15%;background-color:#ff4d4d">Cancel</td>
+			</tr>
+			<tr style="cursor:pointer;">
+				<td style="width:70%">Custom Ranks  {{vm.business.ranksQty}}</td>
+				<td align="center" style="width:15%;background-color:#33adff">Edit</td>
+				<td align="center" style="width:15%;background-color:#ff4d4d">Cancel</td>
+			</tr>
+			-->
+			<thead style="border-style:none;">
+				<tr>
+					<th style="width:45%" text-align="center">Subscription</th>
+					<th style="width:15%" text-align="center">Monthly Cost</th>
+					<th style="width:20%"></th>
+					<th style="width:20%"></th>
+				</tr>
+			</thead>
+			<tr ng-if="vm.business.isPremium" style="cursor:pointer;">
+				<td style="width:45%">Premium Membership</td>
+				<td style="width:15%">${{vm.business.price}}</td>
+				<td style="width:20%"></td>
+				<td style="width:20%"><button class="btn btn-default" style="width:100%" ng-click="vm.cancelPremium()">Cancel</button></td>
+			</tr>
+			<tr ng-if="vm.business.hasRanks" style="cursor:pointer;">
+				<td style="width:45%">{{vm.business.ranksQty}} Custom Ranks</td>
+				<td style="width:15%">${{vm.business.ranksQty*35}}</td>
+				<td style="width:20%"><button class="btn btn-default" style="width:100%" ng-click="vm.editRanks()">Edit</button></td>
+				<td style="width:20%"><button class="btn btn-default" style="width:100%" ng-click="vm.cancelRanks()">Cancel</button></td>
+			</tr>
+			<tr style="cursor:pointer;">
+				<td style="width:45%"></td>
+				<td style="width:15%"></td>
+				<td style="width:20%"></td>
+				<td style="width:20%"><button class="btn btn-default" style="width:100%" ng-click="vm.cancelAll()" 
+				    ng-if="vm.business.hasranks&&vm.business.ispremium">Cancel All</button></td>
+			</tr>
+		</tbody>
+	</table>
+	<!--
+	<div ng-if="vm.business.isPremium||vm.business.hasRanks">
+	<p class="text-left"><strong>Last Payment Made: </strong>{{vm.business.lastPaymentMade}}</p>
+	<p class="text-left"><strong>Next Payment Due: </strong>{{vm.business.nextPaymentDue}}</p>
+	</div>
+	-->
+	</div>
+	<div class="well" ng-if="!vm.business.isPremium">
+		<h2 class="text-center">Upgrade to Premium</h2>
+		<h3 class="text-center">${{vm.business.price}} / month </h3>
+		<i class="fa fa-check"></i><strong>&nbspGet more exposure</strong> within San Diego</br>
+		<i class="fa fa-check"></i>&nbspLet people know all your <strong> specials, promotions and special events</strong></br>
+		<i class="fa fa-check"></i><strong>&nbspDrive more traffic</strong> to your business</br>
+		<i class="fa fa-check"></i><strong>&nbspBe the best</strong> at what you do.</br>
+
+		<div class="text-center">
+			<a href="" ng-click="">Learn More</a>
+		</div>
+		<label class="checkbox-inline">
+					<input type="checkbox" ng-model="vm.getPremium" value="">Get Premium Membership</label>
+	</div>
+	<div class="well" ng-if="!vm.business.hasRanks">
+		<h2 class="text-center">Purchase Rankings</h2>
+		<h3 class="text-center">$35 / month each </h3>
+		<i class="fa fa-check"></i>&nbspCreate <strong>unique rankings and lists</strong> for your own products and services</br>
+		<i class="fa fa-check"></i>&nbsp<strong>Focus</strong> on each of your products</br>
+		<i class="fa fa-check"></i><strong>&nbspEngage</strong> your audience</br>
+		<i class="fa fa-check"></i><strong>&nbspGet feedback</strong> from your customers.</br>
+
+		<div class="text-center">
+			<a href="" ng-click="">Learn More</a>
+		</div>
+		<div class="row">
+			<div class="col-xs-7 col-sm-9 col-md-10 col-lg-10">
+				<label class="checkbox-inline">
+					<input type="checkbox" ng-model="vm.getRanks" value="">Purchase Ranks</label>
+			</div>
+			<div class="col-xs-5 col-sm-3 col-md-2 col-lg-2">
+				<div class="input-group" ng-if="vm.getRanks">
+					<span class="input-group-btn">
+					<button class="btn btn-primary" ng-click="vm.minusQty()"><i class="fa fa-minus"></i></button>
+				</span>
+					<input style="text-align:center" class="form-control" ng-model="vm.ranksQty" type="text" placeholder="vm.ranksQty">
+					<span class="input-group-btn">
+					<button class="btn btn-primary" ng-click="vm.plusQty()"><i class="fa fa-plus"></i></button>
+				</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--
+		<div class="well">
+			<h2 class="text-center">Care Free Package</h2>
+			<h3 class="text-center">$45 / month</h3>
+			<i class="fa fa-check"></i><strong>&nbspMake the most</strong> of your Premium Membership.</br>
+			<i class="fa fa-check"></i><strong>&nbspWe create</strong> up to 5 specials and promo banners for you.</br>
+			<i class="fa fa-check"></i><strong>&nbspWeekly sync </strong>of all your specials with other media.</strong></br>
+        	<i class="fa fa-check"></i>&nbspKeep your information on Rank-X <strong>accurate</strong> at all times.</br>
+			<div class="text-center">
+				<button class="btn btn-primary">Learn More</button>
+			</div>
+		</div>-->
+	
+	<div class="row" ng-if="vm.sell">
+		<br>
+		<div class="col-xs-12">
+			<div class="input-group">
+				<span class="input-group-addon">Promo Code:</span>
+				<input class="form-control" style="color:red;" ng-model="vm.promocode" type="text" placeholder="Enter code...">
+				<span class="input-group-btn">
+						<button class="btn btn-default" ng-click="vm.checkcode()">Check Code</button>
+					</span>
+			</div>
+		</div>
+	</div>
+	<div class="text-center" ng-if="vm.sell">
+		<br>
+		<p><i>{{vm.codeMsg}}</i></p>
+	</div>
+	<div class="text-center" ng-if="vm.sell">
+		<br>
+		<button class="btn btn-success" ng-click="vm.goCheckout()">Checkout</button>
+	</div>
+</div>
+
+<div class="container" ng-if="vm.checkout"> <!-- A -->
+	<h3>Checkout</h3>
+	<br>
+	<p style="text-align:center">You are purchasing the following subscriptions for the business 
+		<strong>{{vm.business.name}}</strong>:</p>
+	<br>
+	<table class="table">
+		<tbody>
+			<thead style="border-style:none;">
+				<tr>
+					<th>Name</th>
+					<th>Quantity</th>
+					<th>Total</th>
+					<th></th>
+				</tr>
+			</thead>
+			<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
+			<tr ng-if="vm.getPremium">
+				<td style="width:70%">Premium Membership</td>
+				<td style="width:15%" align="center">1</td>
+				<td style="width:15%" align="center">${{vm.business.price}}</td>
+			</tr>
+			<tr ng-if="vm.getRanks">
+				<td style="width:70%">Custom Rankings</td>
+				<td style="width:15%" align="center">{{vm.ranksQty}}</td>
+				<td style="width:15%" align="center">${{vm.ranksQty*35}}</td>
+			</tr>
+			<tr>
+				<td style="width:85%" colspan="2">Total</td>
+				<td style="width:15%" align="center">${{vm.total}}</td>
+			</tr>
+		</tbody>
+	</table>
+	<p>You have a valid code to try the above subscriptions free for 60 days. You will not be charged
+		until the 60 day trial period expires. Afterwards your card will be charged <strong>${{vm.total}}</strong>
+		monthly. 
+	</p>
+	<p>You can log in and cancel or make modifications to your account at any time.</p>
+	<label class="checkbox-inline">
+					<input type="checkbox" ng-model="vm.acceptTOS" value="">I have read and understood the <a href="">Terms of Service</a></label>
+	<div class="text-center"> <!-- B -->
+		<!-- <button class="btn btn-success" ng-click="vm.goCheckout()">Pay with Card</button> -->
+		<br>
+		<button id="checkoutButton" name="checkoutButton" class="btn btn-success" onClick="clickStripeButton()">Pay with Card</button>
+		<br>
+		<div ng-show="!vm.showCurrentPlan" > <!-- C -->
+
+        <form action="https://server.rank-x.com/StripeServer/charge" method="POST">
+
+          <div style="display:none"> <!-- D -->
+            <script
+              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="pk_test_q9kbYzvzE6uMwZH9ZUjfK6Xq"
+              data-email="{{vm.business.email}}"
+              data-label="Pay with Card"
+              data-name="Rank-X"
+              data-description="Premium Membership Subscription"
+              data-panel-label="Subscribe"
+              data-image="/assets/images/rankx-logo-small-2-square.png"
+              data-locale="auto"
+              data-zip-code="true">
+            </script>
+          </div> <!-- /D -->
+		  	<input type="hidden" id="userEmail" name="userEmail" value={{vm.business.email}}></input>
+        	<input type="hidden" id="userId" name="userId" value={{vm.business.user}}></input>
+			<input type="hidden" id="useraccntId" name="useraccntId" value={{vm.business.accountid}}></input>
+			<input type="hidden" id="stripeId" name="stripeId" value={{vm.business.stripeid}}></input>
+			<input type="hidden" id="getPremiumPlan" name="getPremiumPlan" value={{vm.getPremium}}></input>
+			<input type="hidden" id="getCustomRanks" name="getCustomRanks" value={{vm.getRanks}}></input>
+			<input type="hidden" id="ranksQuantity" name="ranksQuantity" value={{vm.ranksQty}}></input>
+			<input type="hidden" id="couponValid" name="couponValid" value={{vm.codeOk}}></input>
+        </form>
+	</div> <!-- /C -->
+	</div> <!-- /B -->				
+</div><!-- /A -->
+<div class="text-right" role="group">
+	<button type="button" ng-click="vm.goBack()" class="btn btn-default">Back</button>
+</div>
+</br></br>
+</div>
+</div>
+        <script>
+        function eventFire(el, etype){
+          if (el.fireEvent) {
+            el.fireEvent('on' + etype);
+          } else {
+            var evObj = document.createEvent('Events');
+            evObj.initEvent(etype, true, false);
+            el.dispatchEvent(evObj);
+          }
+        }
+        function clickCancelPlanButton() {
+          showLoaderBriefDouble();
+          console.log("about to fire click event");
+          var resultOfEventFire = eventFire(document.getElementById('confirmCancelPlan'), 'click');
+          console.log("done firing click event, resultOfEventFire: " + resultOfEventFire);
+        }
+        function clickStripeButton() {
+          console.log("about to fire click event");
+          var resultOfEventFire = eventFire(document.getElementsByClassName('stripe-button-el')[0], 'click');
+
+          console.log("done firing click event, resultOfEventFire: " + resultOfEventFire);
+        }
+        </script>

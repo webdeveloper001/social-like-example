@@ -39,6 +39,8 @@
 <input class="form-control" ng-model="vm.catstr" type="text" placeholder="{{vm.catstr}}">
 <label><strong>Type:</strong></label>
 <input class="form-control" ng-model="vm.type"  bs-typeahead type="text" placeholder="{{vm.type}}" bs-options="c for c in vm.typeList">
+<label><strong>isMP Flag:</strong></label>
+<input class="form-control" ng-model="vm.ismp"  type="text" placeholder="{{vm.ismp}}">
 <br>
 <div class="form-group text-right">
     <button type="button" class="btn btn-primary" ng-click="vm.goEdit()">Edit</button>

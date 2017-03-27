@@ -1,18 +1,46 @@
-<div class="container">
-    <div class="well-sm">
-        <h3 class="sub-header">{{vm.header}}
-                <span class="nomargin">
-                    <button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
-                    ng-click="vm.closeRank()">
-                    <span class="glyphicon glyphicon-remove" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
-                    </button>
-                </span>
-        </h3>
+<div id="veil" ng-hide="vm.dataReady"></div>
+<div id="feedLoading" ng-hide="vm.dataReady">
+    <div style="text-align: center" ng-if="!vm.dataReady">
+        <div class="loading-pulse"></div>
+        <p style="font-size:large">loading specials...</p>
     </div>
 </div>
+<div ng-if="vm.dataReady">
+    <h2>Specials Manager</h2>
+    <br>
+    <p class="text-left">You have purchased premium membership for this Establishment. You can add up to 7 specials and promotions.</p>
+    <table class="table">
+        <tbody>
+            <thead style="border-style:none;">
+                <tr>
+                    <th>Special</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
+            <tr ng-repeat="x in vm.specialsList" style="cursor:pointer;">
+                <td ng-if="x.used" style="width:80%">{{x.stitle}}</td>
+                <td ng-if="!x.used" style="width:80%;color:#808080"><i>Empty</i></td>
+                <td ng-if="x.used" style="width:10%"><button class="btn btn-primary" ng-click="vm.selSpecial(x)">Edit</button></td>
+                <td ng-if="x.used" style="width:10%"><button class="btn btn-danger" ng-click="vm.deleteSpecial(x)">Delete</button></td>
+                <td ng-if="!x.used" style="width:10%"><button class="btn btn-success" ng-click="vm.addSpecial()">Add</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <p class="text-left"> Specials are a great way to let people know all the great offers you have at any time. </p>
 
+    <!-- <button class="btn btn-default">Purchase additional Ranks</button> -->
+    <div class="text-right">
+        <button class="btn btn-default" ng-click="vm.goBack()">Back</button>
+    </div>
+</div>
+<!--
 <label>{{vm.specialsList.length > 0? 'Choose a special to Edit':'There are no specials registered to this establishment'}}</label>
 <div ng-repeat="x in vm.specialsList">
+    
+    
+    
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-4">
             <label style="background-color:{{x.bc}};color:{{x.fc}};padding:3px;width:100%;cursor:pointer;" ng-click="vm.selSpecial(x)">{{x.stitle}}</label>
@@ -22,7 +50,7 @@
     <!--
 		<label><input type="radio" name="specialradio" ng-click="vm.selSpecial(x)">&nbsp;&nbsp;{{x.stitle}}, {{x.freq}}</label>
 -->
-
+<!--
 </div>
 <br>
 <button ng-click="vm.addSpecial() " class="btn btn-primary ">Add Special</button>

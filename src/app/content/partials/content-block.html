@@ -18,13 +18,19 @@
 		<tbody>
 			<thead>
 				<tr>
-					<th style="background-color:{{bgc}};color:{{fc}};width:50%;border-style:none">
+					<th style="background-color:{{bgc}};color:{{fc}};width:50%;border-style:none;">
 						{{headline}}</th>
 				</tr>
 			</thead>
 		</tbody>
 	</table> 
 	<!--
+		background: #595959;
+  						background: -webkit-linear-gradient(left, #595959 , #bfbfbf);
+  						background: -o-linear-gradient(right, #595959, #bfbfbf);
+  						background: -moz-linear-gradient(right, #595959, #bfbfbf);
+  						background: linear-gradient(to right, #595959 , #bfbfbf);"
+						
 	<div class="container" ng-if="isRoW">
 		<div class="row" ng-if="!isShortPhrase">
 			<div class="col-xs-6- col-sm-6 col-md-6 col-lg-4">
@@ -66,7 +72,7 @@
 
 	</div>-->
 	<div class="container" ng-if="isRoW">
-		
+		<!-- background-color:{{rdbc}} -->
 		<div class="row" ng-if="isRoW" ng-click="rankSel(results[0],false)">
 			<div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" 
 			style="background-color:{{rdbc}};color:{{rdfc}};height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">

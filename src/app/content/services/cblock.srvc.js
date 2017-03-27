@@ -40,6 +40,7 @@
             
             return $q.all([p0]).then(function (d){
                 _cblocks = d[0].data.resource;
+                if ($rootScope.DEBUG_MODE) console.log("No. C-Blocks: ", _cblocks.length);
                 return _cblocks;            
             }, _queryFailed);  
 
@@ -55,6 +56,7 @@
             
             return $q.all([p0]).then(function (d){
                 _cblocks = d[0].data.resource;
+                if ($rootScope.DEBUG_MODE) console.log("No. C-Blocks: ", _cblocks.length);
                 return _cblocks;            
             }, _queryFailed);  
 
@@ -70,6 +72,7 @@
             
             return $q.all([p0]).then(function (d){
                 _cblocks = _cblocks.concat(d[0].data.resource);
+                if ($rootScope.DEBUG_MODE) console.log("No. C-Blocks: ", _cblocks.length);
                 return _cblocks;            
             }, _queryFailed);  
 

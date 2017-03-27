@@ -55,7 +55,6 @@
 	<content-block type='query' dynamic="true"></content-block>
 </div> 
  <br ng-if="vm.isNh">
-
 <div style="display:{{((vm.isNhRdy || vm.isCity) && (vm.searchActive == false)) ? 'inline':'none'}}" ng-if="!vm.fbm">
 	<content-block type='rankofweek' dynamic="false" rankofweek="true"></content-block>
 
@@ -66,13 +65,21 @@
 	margin-bottom:10px;padding:0px;border:0px;margin-top:10px;--> 
 <!-- <div class="row" style="margin:0px;padding:0px;border:0px;">
 <!--	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin:0px;padding:0px;border:0px;"> -->
+<!--
+background: #595959;
+  						background: -webkit-linear-gradient(left, #595959 , #bfbfbf);
+  						background: -o-linear-gradient(right, #595959, #bfbfbf);
+  						background: -moz-linear-gradient(right, #595959, #bfbfbf);
+  						background: linear-gradient(to right, #595959 , #bfbfbf);">
+							
+	-->
 
 		<table class="table" style="border-style:none;" ng-if="vm.isCity">
 			<tbody>
 				<thead>
 					<tr>
-						<th style="background-color:#595959;color:#f8f8ff;width:50%;border-style:none">
-							Quick Links</th>
+						<th style="background-color:#595959;color:#f8f8ff;width:50%;border-style:none;">
+						Quick Links</th>
 					</tr>
 				</thead>
 			</tbody>
@@ -84,15 +91,16 @@
 			<button class="btn btn-success" ng-click="vm.selfimprove()">I feel lucky</button>
 		</div>
 	<!-- </div> -->
+	
 	 <br ng-if="vm.isCity"> 
 <!--	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin:0px;padding:0px;border:0px;"> -->
-
+		
 		<table class="table" style="border-style:none;" ng-if="vm.isCity">
 			<tbody>
 				<thead>
 					<tr>
-						<th style="background-color:#595959;color:#f8f8ff;width:50%">
-							Feed
+						<th style="background-color:#595959;color:#f8f8ff;width:50%;">
+						Feed
 							<span class="nomargin">
                     		<button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
                     		ng-click="vm.refreshFeed()">
@@ -146,8 +154,8 @@
 		</div>
 		<p class="text-right" style="color:blue;" ng-click="vm.seeMoreFeed()" ng-if="vm.isCity">&lt;&lt;{{vm.ftext}}&gt;&gt;</p>
 <!--	</div> -->
-
 	<br ng-if="vm.sm">
+	
 	<div class="row" style="border:0px;padding:0px;margin:0px;">
 		<div class="col-md-6" style="border:0px;padding:3px;margin:0px;">
 			<content-block type="lifestyle" dynamic="false"></content-block>

@@ -1,0 +1,57 @@
+<br>
+<h4> Add Ranking </h4>
+
+<label><strong>Title:</strong></label>
+<input class="form-control" ng-model="vm.rankTitle" type="text" placeholder="{{vm.rankTitle}}">
+<label><strong>Question:</strong></label>
+<input class="form-control" ng-model="vm.question" type="text" placeholder="{{vm.question}}">
+<div class="text-right">
+    <a href="" ng-click="">What is this?</a>
+</div>
+<br>
+<div class="row">
+    <div class="hidden-xs col-sm-2 col-md-2 col-lg-2"> </div>
+    <div class=" col-xs-6 col-sm-2 col-md-2 col-lg-2">
+        <p class="text-right">Background Color</p>
+    </div>
+    <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+        <color-picker ng-model="vm.bc" color-picker-swatch="true" color-picker-swatch-pos="'left'" color-picker-swatch-bootstrap="true"
+            color-picker-swatch-only="true">
+            </color-picker>
+    </div>
+
+    <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+        <p class="text-right">Font Color</p>
+    </div>
+    <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+        <color-picker ng-model="vm.fc" color-picker-swatch="true" color-picker-swatch-pos="'left'" color-picker-swatch-bootstrap="true"
+            color-picker-swatch-only="true">
+            </color-picker>
+    </div>
+    <div class="hidden-xs col-sm-2 col-md-2 col-lg-2"> </div>
+</div>
+
+<h4>Preview</h4>
+<div class="container" ng-if="true">
+    <div class="row" ng-if="vm.type != 'Short-Phrase'">
+        <div class="col-xs-12">
+            <div class="well-sm" style="background-color:#666666;color:#f8f8ff;">
+                <h3 class="sub-header">The Favorites</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container col-xs-6 col-sm-3 col-md-2 col-lg-2" style="background-color:{{vm.bc}};color:{{vm.fc}};height:{{vm.sm ? '120px':'150px'}};margin:0px;padding:0px;border:0px;position:relative;">
+            <h2 class=" hidden-xs text-center" style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{vm.rankTitle}}</h2>
+            <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{vm.rankTitle}}</h3>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2" style="margin:0px;padding:0px;border:0px;">
+            <img src="../../../assets/images/noimage.jpg" style="width:100%;height:{{vm.sm ? '120px':'150px'}};">
+        </div>
+    </div>
+</div>
+<br>
+<div class="text-right">
+    <button type="button" class="btn btn-default" ng-click="vm.goBack()">Cancel</button>
+    <button type="button" class="btn btn-primary" ng-click="vm.addRankingforAnswer()">{{vm.buttonLabel}}</button>
+</div>

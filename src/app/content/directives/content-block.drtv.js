@@ -274,7 +274,6 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     if ($rootScope.isNh) searchVal = $rootScope.rankofday[0].nh + ' ' + $rootScope.cnh;
 
                     vm.results = [];
-                        
                     //vm.content = $rootScope.content;
                     var valTags = searchVal.split(" ");
 
@@ -556,8 +555,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
         
                     /*//  2. Use this to add/remove a tag from a rank 
                     for (var i=0; i < vm.results.length; i++){
-                        if (vm.results[i].title.includes("Middle Eastern food")){
-                            var tags = vm.results[i].tags + ' iranian kebabs lebanese kabob falafel hummus';
+                        if (vm.results[i].title.includes("Greek")){
+                            var tags = vm.results[i].tags + ' gyros baklava';
                             //var tags = vm.results[i].tags.replace('lifestyle','');
                             //var newtype = 'Event';
                             table.update(vm.results[i].id, ['tags'],[tags]);    
@@ -1074,7 +1073,13 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             function fail() {
                 console.log("failure -");
             }*/
-                                                                                                                 
+                   //24. Print categories 
+                   /*for (var i=0; i <  vm.results.length; i++){
+                       if (vm.results[i].title.includes('in San Diego')){
+                        console.log(vm.results[i].title.replace('Hillcrest',''));
+                       }
+                   }
+                   *///End 24                                                                                              
                 }
             }], //end controller
         link: function (scope) {

@@ -61,6 +61,7 @@
         vm.cmFlag = cmFlag;
         vm.toggleimgmode = toggleimgmode;
         vm.deleteThisCatans = deleteThisCatans;
+        vm.addRankforAnswer = addRankforAnswer;
 
         //Admin Function adding catans on spot
         vm.addCatans = addCatans;
@@ -200,6 +201,21 @@
             if (vm.type == 'Establishment') getSpecials(vm.answer.id);
             if (vm.type == 'Establishment' || vm.type == 'PersonCust') getVRows(vm.answer.id);
             getAnswerRanks();
+
+            //custom ranks 
+            if (false) {
+                var n = 0;
+                vm.myranks = JSON.parse(vm.answer.ranks);
+                if (vm.myranks != undefined && vm.myranks.length > 0){
+                    for (var i=0; i<vm.myranks.length; i++){
+                        n = $rootScope.content.map(function(x) {return x.id; }).indexOf(vm.myranks[i].id);
+                        vm.myranks[i].title = $rootScope.content[n].title.replace(' @ '+vm.answer.name,'');
+                        vm.myranks[i].image = $rootScope.content[n].image1url;
+                        if (vm.myranks[i].image == undefined || vm.myranks[i].image == '')
+                        vm.myranks[i].image = '../../../assets/images/noimage.jpg';
+                    }
+                }
+            }
             //if user votes are available - do my thing at getAnswerVotes
             //else fetch user votes
             if ($rootScope.cvotes) getAnswerVotes();
@@ -903,6 +919,10 @@
 
         function editVRows() {
             $state.go('editvrows');
+        }
+
+        function addRankforAnswer() {
+            $state.go('answerRanksManager');
         }
 
         function getImages() {

@@ -5,10 +5,10 @@
         .module('app')
         .controller('editAnswer', editAnswer);
 
-    editAnswer.$inject = ['dialog', '$stateParams', '$state', 'answers', '$rootScope', 'catans', 
+    editAnswer.$inject = ['dialog', '$stateParams', '$state', '$rootScope', 'catans', 
     '$modal', 'edit', 'editvote', 'answer', 'image','getgps','$window','getwiki', '$http'];
 
-    function editAnswer(dialog, $stateParams, $state, answers, $rootScope, catans, 
+    function editAnswer(dialog, $stateParams, $state, $rootScope, catans, 
     $modal, edit, editvote, answer, image, getgps, $window, getwiki, $http) {
         /* jshint validthis:true */
         var vm = this;

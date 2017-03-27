@@ -65,6 +65,7 @@
             vm.answertags = $rootScope.cCategory.answertags;
             vm.isatomic = $rootScope.cCategory.isatomic;
             vm.catstr = $rootScope.cCategory.catstr;
+            vm.ismp = $rootScope.cCategory.ismp;
   
         }
         
@@ -117,18 +118,24 @@
                 fields.push('catstr');
                 vals.push(vm.catstr);
             }
+            //if isatomic changes
+            if (item.ismp != vm.ismp) {
+                fields.push('ismp');
+                vals.push(vm.ismp);
+            }
             
             table.update(item.id, fields, vals);
             closeRank();
         }
         
         function goDelete(){            
-            dialog.deleteRank(confirmDelete);           
+            dialog.deleteRank($rootScope.cCategory, confirmDelete);           
         }
         
         function confirmDelete(){
             table.deleteTable($rootScope.cCategory.id);
             catans.deletebyCategory($rootScope.cCategory.id);
+            $state.go('cwrapper');
         }      
     }
 })();

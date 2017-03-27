@@ -51,6 +51,8 @@
         }
         
         function deleteBlob(blobName) {
+
+            console.log("blobname, ", blobName);
             
             var url = blobName + 
             "?sv=2015-04-05&ss=bfqt&srt=sco&sp=rwdlacup&se=2018-08-30T01:15:12Z&st=2016-08-29T17:15:12Z&spr=https,http&sig=PpyWE0X%2Fpz9SuRje5GtHh44WaWIii0GBU9PbIcDIka8%3D";

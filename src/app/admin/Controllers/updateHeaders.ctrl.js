@@ -259,6 +259,7 @@
             for (var i = 0; i < cityArr.length; i++) {
                 cbObj = {};
                 cbObj.scope = 'city';
+                cbObj.ismp = true;
                 cbObj.scopename = 'San Diego';
                 cbObj.catstr = '0';
                 cbObj.type = cityArr[i];
@@ -277,6 +278,7 @@
                 for (var i = 0; i < nhArr.length; i++) {
                     cbObj = {};
                     cbObj.scope = 'nh';
+                    cbObj.ismp = false;
                     cbObj.scopename = nhs[n];
                     cbObj.catstr = '0';
                     cbObj.type = nhArr[i];
@@ -297,6 +299,7 @@
                 cbObj = {};
                 cbObj.scope = 'rx';
                 cbObj.scopename = 'RankX';
+                cbObj.ismp = false;
                 cbObj.catstr = '0';
                 cbObj.type = rxArr[i];
                 cblock.addcblock(cbObj);

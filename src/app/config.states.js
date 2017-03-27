@@ -116,11 +116,25 @@
                 controller: 'editspecial as vm'
             },
             {
+                name: 'addRankforAnswer',
+                parent: 'layout',
+                url: '/addRankforAnswer',
+                templateUrl: 'app/admin/Partials/addRankforAnswer.html',
+                controller: 'addRankforAnswer as vm'               
+            },
+            {
                 name: 'answerDetail',
                 parent: 'layout',
                 url: '/answerDetail/:index',
                 templateUrl: 'app/answer/Partials/answerDetail.html',
                 controller: 'answerDetail as vm',
+            },
+            {
+                name: 'answerRanksManager',
+                parent: 'layout',
+                url: '/answerRanksManager',
+                templateUrl: 'app/answer/Partials/answerRanksManager.html',
+                controller: 'answerRanksManager as vm',
             },
             {
                 name: 'editvrows',

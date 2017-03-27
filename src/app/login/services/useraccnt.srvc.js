@@ -12,6 +12,7 @@
         var service = {
             getuseraccnt: getuseraccnt,
             getaccntsbycode: getaccntsbycode,
+            getuseraccntans : getuseraccntans,
             adduseraccnt: adduseraccnt,
             updateuseraccnt: updateuseraccnt
     };
@@ -24,12 +25,12 @@
        * Function to get user detail from user_detail table for logged in user
        *
        */
-      function getuseraccnt(forceRefresh) {
+      function getuseraccnt() {
         // console.log("useraccnt.srvc.js:getuseraccnt(forcerefresh): START");
-          if (_isuseraccntLoaded() && !forceRefresh) {
+          //if (_isuseraccntLoaded() && !forceRefresh) {
 
-              return $q.when(_useraccnts);
-          }
+           //   return $q.when(_useraccnts);
+          //}
 
           var url = baseURI + '' + '?filter=(user='+$rootScope.user.id+')';
           // console.log("useraccnt.srvc.js:getuseraccnt(forcerefresh): GET");
@@ -45,9 +46,31 @@
 
       }
 
+      function getuseraccntans(answer) {
+        // console.log("useraccnt.srvc.js:getuseraccnt(forcerefresh): START");
+          //if (_isuseraccntLoaded() && !forceRefresh) {
+
+          //    return $q.when(_useraccnts);
+          //}
+
+          var url = baseURI + '' + '?filter=(user='+$rootScope.user.id+') AND (answer='+answer+')';
+
+          // console.log("useraccnt.srvc.js:getuseraccnt(forcerefresh): GET");
+          return $http.get(url).then(querySucceeded, _queryFailed);
+
+          function querySucceeded(result) {
+            // console.log("useraccnt.srvc.js:getuseraccnt(forcerefresh): GET: SUCCESS");
+            // console.log("result.data.resource: " + JSON.stringify(result.data.resource[0]));
+
+              // return _useraccnts = result.data.resource[0];
+              return result.data.resource;
+          }
+
+      }
+
       function getaccntsbycode (code){
 
-          var url = baseURI + '' + '?filter=(COUPON='+code+')';
+          var url = baseURI + '' + '?filter=(coupon='+code+')';
           // console.log("useraccnt.srvc.js:getuseraccnt(forcerefresh): GET");
           return $http.get(url).then(querySucceeded, _queryFailed);
 
@@ -103,7 +126,7 @@
 
               data.user = $rootScope.user.id;
               data.answer = answer.id;
-              data.bizcat = 'REB'
+              data.bizcat = getBizCat(answer.id);
               data.status = 'Basic';
               data.stripeid = '0';
               data.email = '';
@@ -186,6 +209,9 @@
                   case "email": data.email = val[i]; break;
                   case "status": data.status = val[i]; break;
                   case "stripeid": data.stripeid = val[i]; break;
+                  case "ispremium": data.ispremium = val[i]; break;
+                  case "hasranks": data.hasranks = val[i]; break;
+                  case "ranksqty": data.ranksqty = val[i]; break;
               }
           }
           //console.log("data", data);
@@ -202,6 +228,9 @@
                   case "email": _useraccnts[idx].email = val[i]; break;
                   case "status": _useraccnts[idx].status = val[i]; break;
                   case "stripeid": _useraccnts[idx].stripeid = val[i]; break;
+                  case "ispremium": _useraccnts[idx].ispremium = val[i]; break;
+                  case "hasranks": _useraccnts[idx].hasranks = val[i]; break;
+                  case "ranksqty": _useraccnts[idx].ranksqty = val[i]; break;
               }
           }
 
@@ -219,6 +248,43 @@
           }
       }
 
+      //Find which business category this answer belongs to
+      function getBizCat(answerid) {
+          var category = 0;
+          var rank = {};
+          var bizcat = '';
+          var scale_current = 0;
+          var scale_this = 0;
+          for (var j = 0; j < $rootScope.catansrecs.length; j++) {
+              if ($rootScope.catansrecs[j].answer == answerid) {
+                  category = $rootScope.catansrecs[j].category;
+                  var idx = $rootScope.content.map(function (x) { return x.id; }).indexOf(category);
+                  rank = $rootScope.content[idx];
+                  for (var k = 0; k < $rootScope.catcodes.length; k++) {
+                      if (rank.title.indexOf($rootScope.catcodes[k].category) > -1) {
+                          if (bizcat == '') {
+                              bizcat = $rootScope.catcodes[k].code;
+                          }
+                          else {
+                              //find current value of answer bizcat
+                              for (var l = 0; l < $rootScope.codeprices.length; l++) {
+                                  if ($rootScope.codeprices[l].code == bizcat) {
+                                      scale_current = $rootScope.codeprices[l].scale;
+                                  }
+                                  if ($rootScope.codeprices[l].code == $rootScope.catcodes[k].code) {
+                                      scale_this = $rootScope.codeprices[l].scale;
+                                  }
+                              }
+                              if (scale_this > scale_current) {
+                                  bizcat = $rootScope.catcodes[k].code;
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+          return bizcat;
+      }
 
       function _isuseraccntLoaded() {
 

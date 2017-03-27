@@ -5,11 +5,11 @@
         .module('app')
         .controller('dbMaint', dbMaint);
 
-    dbMaint.$inject = ['$location', '$rootScope', '$state', '$stateParams', 'Upload',
-        'table', 'dialog', 'answer', 'catans', 'votes', '$http'];
+    dbMaint.$inject = ['$location', '$rootScope', '$state', '$stateParams', 'Upload', '$q',
+        'table', 'dialog', 'answer', 'catans', 'votes', '$http','categorycode','codeprice'];
 
-    function dbMaint(location, $rootScope, $state, $stateParams, Upload,
-        table, dialog, answer, catans, votes, $http) {
+    function dbMaint(location, $rootScope, $state, $stateParams, Upload, $q,
+        table, dialog, answer, catans, votes, $http, categorycode, codeprice) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'dbMaint';
@@ -25,6 +25,7 @@
         vm.findDuplicatedRanks = findDuplicatedRanks;
         vm.clearAllCatansVotes = clearAllCatansVotes;
         vm.syncUserVotes = syncUserVotes;
+        vm.getAnswerBizCode = getAnswerBizCode;
         vm.updatecatans = updatecatans;
         vm.estDistances = estDistances;
         vm.gotoAnswer = gotoAnswer;
@@ -437,6 +438,61 @@
                     answer.updateAnswer(images[i].answer, ['image'],
                         ['https://rankx.blob.core.windows.net/sandiego/' + images[i].answer + '/' + images[i].id + '.' + fext]);
                 }
+            });
+        }
+
+        function getAnswerBizCode() {
+            var category = 0;
+            var rank = {};
+            var catcodes = [];
+            var scale_current = 0;
+            var scale_this = 0;
+
+            var p0 = categorycode.get();
+            var p1 = codeprice.get();
+
+            return $q.all([p0, p1]).then(function (d) {
+                $rootScope.catcodes = d[0];
+                $rootScope.codeprices = d[1];
+
+                console.log('Category-codes loaded...');
+                for (var i = 0; i < $rootScope.answers.length; i++) {
+                    if ($rootScope.answers[i].type == 'Establishment') {
+                        for (var j = 0; j < $rootScope.catansrecs.length; j++) {
+                            if ($rootScope.catansrecs[j].answer == $rootScope.answers[i].id) {
+                                category = $rootScope.catansrecs[j].category;
+                                var idx = $rootScope.content.map(function (x) { return x.id; }).indexOf(category);
+                                rank = $rootScope.content[idx];
+                                for (var k = 0; k < $rootScope.catcodes.length; k++) {
+                                    if (rank.title.indexOf($rootScope.catcodes[k].category) > -1) {
+                                        if ($rootScope.answers[i].bizcat == undefined) {
+                                            //console.log($rootScope.answers[i].name, " is ", $rootScope.catcodes[k].code);
+                                            console.log('---------- undefined!!------');
+                                            //answer.updateAnswer($rootScope.answers[i].id,['bizcat'],[$rootScope.catcodes[k].code]);
+                                        }
+                                        else {
+                                            //find current value of answer bizcat
+                                            for (var l=0; l < $rootScope.codeprices.length; l++){
+                                                if ($rootScope.codeprices[l].code == $rootScope.answers[i].bizcat){
+                                                    scale_current = $rootScope.codeprices[l].scale;
+                                                }
+                                                if ($rootScope.codeprices[l].code == $rootScope.catcodes[k].code){
+                                                    scale_this = $rootScope.codeprices[l].scale;
+                                                }
+                                            }
+                                            if (scale_this > scale_current){
+                                                //console.log($rootScope.answers[i].name, " is ", $rootScope.catcodes[k].code);
+                                                answer.updateAnswer($rootScope.answers[i].id,['bizcat'],[$rootScope.catcodes[k].code]);
+                                            } 
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (i%100 == 0) console.log(i,' of ',$rootScope.answers.length);
+                }
+
             });
         }
     }

@@ -434,7 +434,7 @@ function toggleCheckoutButton() {
         <!-- // flip the server name if localhost -->
         <form ng-show="vm.stripeServerLocal" action="http://localhost:3000/charge" method="POST">
         <!-- vs.  -->
-        <form ng-show="!vm.stripeServerLocal" action="https://rank-x.com:3000/charge" method="POST">
+        <form ng-show="!vm.stripeServerLocal" action="https://server.rank-x.com/StripeServer/charge" method="POST">
 
 
           <!--
@@ -458,10 +458,12 @@ function toggleCheckoutButton() {
             <script
               src="https://checkout.stripe.com/checkout.js" class="stripe-button"
               data-key="pk_test_q9kbYzvzE6uMwZH9ZUjfK6Xq"
-              data-email=" "
-              data-label="Start Free Trial"
-              data-panel-label="Let's Go!"
-              data-name="Business Pro Membership"
+              data-email="a@moct.com"
+              data-label="Pay with Card"
+              data-name="Rank-X"
+              data-description="Premium Membership Subscription"
+              data-amount="21000"
+              data-panel-label="Subscribe"
               data-image="/assets/images/rankx-logo-small-2-square.png"
               data-locale="auto"
               data-zip-code="true">
@@ -567,8 +569,6 @@ function toggleCheckoutButton() {
 
 
               <!-- // flip the server name if localhost -->
-              <form ng-show="vm.stripeServerLocal" action="http://localhost:3000/cancel" method="POST">
-              <!-- vs.  -->
               <form ng-show="!vm.stripeServerLocal" action="https://rank-x.com:3000/cancel" method="POST">
 
 

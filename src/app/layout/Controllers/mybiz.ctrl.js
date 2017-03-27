@@ -62,9 +62,9 @@
         vm.wasDowngradeSuccess = wasDowngradeSuccess;
 
         vm.stripeServerLocal = false;
-        if (window.location.hostname == "localhost") {
-          vm.stripeServerLocal = true;
-        }
+        //if (window.location.hostname == "localhost") {
+          //vm.stripeServerLocal = true;
+        //}
 
         // ------------------    END VIEW VARIABLES ------------
         // -----------------------------------------------------
@@ -121,7 +121,7 @@
 
           } else {
             // url = 'https://rank-x.com:3000/dreamfactory-stripe-user/' + _stripeCustomerId + '/' + vm.dfUseraccntId;
-            url = 'https://rank-x.com:3000/dreamfactory-stripe-user/' + dfUseraccntId + '/' + dfUseraccntId;
+            url = 'https://server.rank-x.com/StripeServer/' + dfUseraccntId + '/' + dfUseraccntId;
 
           }
 

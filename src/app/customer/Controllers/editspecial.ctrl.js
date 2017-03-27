@@ -12,6 +12,7 @@
         var vm = this;
         vm.title = 'editspecial';
         vm.sp = {};
+        var spx = {}; //special as loaded
         var item = {};
         
         //Methods
@@ -43,6 +44,7 @@
                 
                 //Copy object without reference
                 vm.sp = JSON.parse(JSON.stringify($rootScope.cspecial));
+                spx = JSON.parse(JSON.stringify($rootScope.cspecial));
                 datetime.formatdatetime(vm.sp);
                 
                 vm.isEdit = true;
@@ -99,20 +101,52 @@
         }
 
         function addSpecial() {
-            if (vm.isEdit == false) {
-                if (vm.sp.freq == 'onetime'){
-                    item.stime2 = null;
-                    item.etime2 = null;
-                }
-                if (vm.sp.freq == 'weekly'){
-                    item.stime = null; item.sdate = null;
-                    item.etime = null; item.edate = null;
-                }
-                special.addSpecial(item).then();
-                
+            if (vm.sp.freq == 'onetime') {
+                item.stime2 = null;
+                item.etime2 = null;
             }
-            else special.updateSpecial(item);
-            $state.go('specials');
+            if (vm.sp.freq == 'weekly') {
+                item.stime = null; item.sdate = null;
+                item.etime = null; item.edate = null;
+            }
+            if (vm.isEdit == false) {
+                special.addSpecial(item).then(function(){
+                    $state.go('specials');
+                });
+            }
+            else {
+                //update special
+                var fields = [];
+                var vals = [];
+                console.log("spx, vm.sp", spx, vm.sp);
+
+                if (spx.bc != vm.sp.bc) { fields.push('bc'); vals.push(vm.sp.bc); }
+                if (spx.fc != vm.sp.fc) { fields.push('fc'); vals.push(vm.sp.fc); }
+                if (spx.edate != vm.sp.edate) { fields.push('edate'); vals.push(vm.sp.edate); }
+                if (spx.etime != vm.sp.etime) { fields.push('etime'); vals.push(vm.sp.etime); }
+                if (spx.etime2 != vm.sp.etime2) { fields.push('etime2'); vals.push(vm.sp.etime2); }
+                if (spx.sdate != vm.sp.sdate) { fields.push('sdate'); vals.push(vm.sp.sdate); }
+                if (spx.stime != vm.sp.stime) { fields.push('stime'); vals.push(vm.sp.stime); }
+                if (spx.stime2 != vm.sp.stime2) { fields.push('stime2'); vals.push(vm.sp.stime2); }
+                if (spx.stitle != vm.sp.stitle) { fields.push('stitle'); vals.push(vm.sp.stitle); }
+                if (spx.image != vm.imageURL) { fields.push('image'); vals.push(vm.imageURL); }
+                if (spx.name != vm.sp.name) { fields.push('name'); vals.push(vm.sp.name); }
+                if (spx.details != vm.sp.details) { fields.push('details'); vals.push(vm.sp.details); }
+                if (spx.freq != vm.sp.freq) { fields.push('freq'); vals.push(vm.sp.freq); }
+                if (spx.mon != vm.sp.mon) { fields.push('mon'); vals.push(vm.sp.mon); }
+                if (spx.tue != vm.sp.tue) { fields.push('tue'); vals.push(vm.sp.tue); }
+                if (spx.wed != vm.sp.wed) { fields.push('wed'); vals.push(vm.sp.wed); }
+                if (spx.thu != vm.sp.thu) { fields.push('thu'); vals.push(vm.sp.thu); }
+                if (spx.fri != vm.sp.fri) { fields.push('fri'); vals.push(vm.sp.fri); }
+                if (spx.sat != vm.sp.sat) { fields.push('sat'); vals.push(vm.sp.sat); }
+                if (spx.sun != vm.sp.sun) { fields.push('sun'); vals.push(vm.sp.sun); }
+
+                console.log("fields, vals", fields, vals);
+                special.updateSpecial(item.id, fields, vals).then(function(){
+                    $state.go('specials');
+                });
+            }
+            
         }
         
        function deleteSpecial() {

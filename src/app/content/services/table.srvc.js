@@ -5,9 +5,9 @@
         .module('app')
         .factory('table', table);
 
-    table.$inject = ['$http', '$q', '$rootScope'];
+    table.$inject = ['$http', '$q', '$rootScope','answer','$state'];
 
-    function table($http, $q, $rootScope) {
+    function table($http, $q, $rootScope, answer, $state) {
 
         // Members
         var _tables = [];
@@ -20,6 +20,7 @@
             //getSingleTable: getSingleTable,
             update: update,
             addTable: addTable,
+            addTableforAnswer: addTableforAnswer,
             deleteTable: deleteTable
         };
 
@@ -155,6 +156,61 @@
                 return result.data;
             }
 
+        }
+
+        function addTableforAnswer(table,colors,answerid){
+            table.isatomic = true;
+
+            var url = baseURI;
+            var resource = [];
+
+            resource.push(table);
+
+            return $http.post(url, resource, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                body: resource
+            }).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+
+                //update local copy
+                var tablex = table;
+                tablex.id = result.data.resource[0].id;
+                _tables.push(tablex);
+
+                //update answer
+                var obj = {};
+                obj.id = result.data.resource[0].id;
+                obj.bc = colors[0];
+                obj.fc = colors[1];
+                var rankExists = false;
+                var ranksStr = '';
+                var ranks = [];
+                //if there is already a rank
+                if ($rootScope.canswer.ranks != undefined && $rootScope.canswer.ranks != null &&
+                    $rootScope.canswer.ranks != '') {
+                        console.log("there is already a rank");
+                        ranksStr = $rootScope.canswer.ranks;
+                        console.log("this is the existing string - ", ranksStr);
+                        ranks = JSON.parse(ranksStr);
+                        console.log("ranks", ranks);
+                        ranks.push(obj);
+                        ranksStr = JSON.stringify(ranks);
+                        console.log("this is the new string - ", ranksStr);
+                        answer.updateAnswer(answerid, ['ranks'], [ranksStr]);
+                }
+                //if this is rank #1
+                else{
+                    ranksStr = '[' + JSON.stringify(obj) +']';
+                    console.log("this is the new string - ", ranksStr);
+                    answer.updateAnswer(answerid, ['ranks'], [ranksStr]);
+                }
+                //$state.go('answerDetail',{index: answerid});
+                if ($rootScope.DEBUG_MODE) console.log("result", result);
+                return result.data;
+            }
         }
 
         function deleteTable(table_id) {

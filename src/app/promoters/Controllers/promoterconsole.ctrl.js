@@ -17,6 +17,7 @@
         //Methods
         vm.gotoanswer = gotoanswer;
         vm.gotomanage = gotomanage;
+        vm.gotoPromotePage = gotoPromotePage;
         vm.goBack = goBack;
         vm.myaccnts = [];
         activate();
@@ -60,6 +61,9 @@
                         if (obj.status == 'Premium-Active') obj.style = 'background-color:#009900';
                         vm.myaccnts.push(obj);
                     }
+                    if (vm.myaccnts.length > 0) vm.noAns = false;
+                    else vm.noAns = true;
+
                     vm.dataReady = true;
                     activate();
                 });
@@ -69,6 +73,10 @@
 
         function gotoanswer(x){
             $state.go('answerDetail', {index: x.id});
+        }
+
+        function gotoPromotePage(){
+            $state.go('promote');
         }
 
         function gotomanage(x){

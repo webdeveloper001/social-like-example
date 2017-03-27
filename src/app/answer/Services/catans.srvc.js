@@ -41,6 +41,7 @@
             var url4 = baseURI + '?offset=' + 4 * 1000;
             var url5 = baseURI + '?offset=' + 5 * 1000;
             var url6 = baseURI + '?offset=' + 6 * 1000;
+            var url7 = baseURI + '?offset=' + 7 * 1000;
 
             var p0 = $http.get(url0);
             var p1 = $http.get(url1);
@@ -49,10 +50,11 @@
             var p4 = $http.get(url4);
             var p5 = $http.get(url5);
             var p6 = $http.get(url6);
+            var p7 = $http.get(url7);
 
-            return $q.all([p0, p1, p2, p3, p4, p5, p6]).then(function (d){
+            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7]).then(function (d){
                 _allcatans = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource, d[4].data.resource,
-                d[5].data.resource, d[6].data.resource);
+                d[5].data.resource, d[6].data.resource, d[7].data.resource);
                 if ($rootScope.DEBUG_MODE) console.log("No. Cat-Ans: ", _allcatans.length);
                 return _allcatans;            
             }, _queryFailed);  
