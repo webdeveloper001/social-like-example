@@ -30,6 +30,7 @@
         vm.relativetable = [];
         vm.catans = [];
         vm.sm = false;
+        vm.votemode = false;
                
         // Methods
         vm.UpVote = UpVote;
@@ -62,6 +63,8 @@
         vm.toggleimgmode = toggleimgmode;
         vm.deleteThisCatans = deleteThisCatans;
         vm.addRankforAnswer = addRankforAnswer;
+        vm.votemodeON = votemodeON;
+        vm.votemodeOFF = votemodeOFF;
 
         //Admin Function adding catans on spot
         vm.addCatans = addCatans;
@@ -254,6 +257,8 @@
             //Update number of views
             var nViews = vm.answer.views + 1;
             answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
+
+            votemodeOFF();
 
             if ($rootScope.DEBUG_MODE) console.log("Answer details loaded");
 
@@ -759,6 +764,12 @@
                             rankObj.uservote = {};
                             rankObj.upVi = $rootScope.catansrecs[i].upV;
                             rankObj.downVi = $rootScope.catansrecs[i].downV;
+
+                            if (rankObj.rank == 1) rankObj.icon = "/assets/images/first.png";
+                            else if (rankObj.rank == 2) rankObj.icon = "/assets/images/second.png";
+                            else if (rankObj.rank == 3) rankObj.icon = "/assets/images/third.png";
+                            else if (rankObj.rank > 3 && rankObj.rank < 11) rankObj.icon = "/assets/images/topten.png";
+                            else rankObj.icon = "/assets/images/blank.png";
    
                             //TODO insert rank position out of total list, will be in catans
                             vm.answerRanks.push(rankObj);
@@ -1124,6 +1135,17 @@
                 else vm.addctsopts.push($rootScope.ctsOptions[i]);
             }
             vm.addctsactive = true;
+        }
+
+        function votemodeON(){
+            vm.votemode = true;
+            vm.voteonstyle = "background-color:#3277b3;color:#e6e6e6";
+            vm.voteoffstyle = "background-color:#e6e6e6;color:black";
+        }
+        function votemodeOFF(){
+            vm.votemode = false;
+            vm.voteonstyle = "background-color:#e6e6e6;color:black";
+            vm.voteoffstyle = "background-color:#3277b3;color:#e6e6e6";
         }
     }
 })();

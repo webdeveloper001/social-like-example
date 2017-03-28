@@ -95,7 +95,7 @@
 				<td style="width:45%">{{vm.business.ranksQty}} Custom Ranks</td>
 				<td style="width:15%">${{vm.business.ranksQty*35}}</td>
 				<td style="width:20%"><button class="btn btn-default" style="width:100%" ng-click="vm.editRanks()">Edit</button></td>
-				<td style="width:20%"><button class="btn btn-default" style="width:100%" ng-click="vm.cancelRanks()">Cancel</button></td>
+				<td style="width:20%"><button class="btn btn-default" style="width:100%" ng-click="vm.cancelAllRanks()">Cancel</button></td>
 			</tr>
 			<tr style="cursor:pointer;">
 				<td style="width:45%"></td>
@@ -174,7 +174,7 @@
 		<br>
 		<div class="col-xs-12">
 			<div class="input-group">
-				<span class="input-group-addon">Promo Code:</span>
+				<span class="input-group-addon" style="color:red">Promo Code:</span>
 				<input class="form-control" style="color:red;" ng-model="vm.promocode" type="text" placeholder="Enter code...">
 				<span class="input-group-btn">
 						<button class="btn btn-default" ng-click="vm.checkcode()">Check Code</button>

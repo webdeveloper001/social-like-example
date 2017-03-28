@@ -167,10 +167,20 @@
         </a>
 <div class="col-xs-12">
     <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
-        <h3 class="sub-header">Endorsements</h3>
+        <h3 class="sub-header">Endorsements</h3>        
+    </div>
+    <div class="text-right" style="padding-bottom:5px">
+        Vote:
+        <div class="btn-group btn-toggle"> 
+            <button class="btn btn-sm btn-default" style="{{vm.voteonstyle}}"
+            ng-click="vm.votemodeON()">ON</button>
+            <button class="btn btn-sm btn-default" style="{{vm.voteoffstyle}}"
+            ng-click="vm.votemodeOFF()">OFF</button>
+        </div>
     </div>
     <p class="text-left" ng-if="vm.type != 'Short-Phrase'"><strong>{{vm.answer.name}}</strong> is featured in the following ranks:</p>
-    <p>Endorse! Give a thumb up if you endorse for the ranking. Thumb down if you do not recommend.</p>
+    <p style="border:2px solid red;padding:5px" ng-if="vm.votemode"><strong>Endorse!</strong> Give a <strong>thumb up</strong> if you 
+    <strong>endorse</strong> for each ranking; <strong>thumb down</strong> if you <strong>do not recommend</strong>.</p>
     <!--
 <div class="well well-light-ranks col-md-4 col-lg-4">
     <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
@@ -190,31 +200,34 @@
     <br>
     <p class="hiw text-right" ng-click="vm.bizRegDialog()">&lt;&lt;See full ranking&gt;&gt;</p>
 </div>-->
-    <div class="well well-light-ranks col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-repeat="r in vm.answerRanks">
+    <div class="well well-light-ranks col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-repeat="r in vm.answerRanks | orderBy:'rank'">
         <!--<p ng-click="vm.rankSel(r)"></p>-->
         <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
             <h4 class="sub-header">{{(vm.type == 'Short-Phrase') ? vm.answer.name : r.title}}</h4>
         </div>
         <p class="text-center" ng-if="vm.type == 'Short-Phrase'"> on {{r.title}}</p>
-        <p>Ranked <strong>#{{r.rank}}</strong> out of <strong>{{r.answers}}</strong></p>
-        <div class="row">
+        <div class="row" ng-if="!vm.votemode">
+            <img style="height:50px;width:auto" class="col-xs-3 col-md-1 col-lg-1" src="{{r.icon}}">
+           <div class="col-xs-6">
+                <p style="padding-top:5px">Ranked <strong>#{{r.rank}}</strong> out of <strong>{{r.answers}}</strong></p>
+            </div>
+        <!-- <p class="hiw text-right col-xs-4" ng-click="vm.gotoRank(r)">&lt;See full ranking&gt</p> -->
+        <a href="" class="text-center col-xs-3" ng-click="vm.gotoRank(r)">Full ranking</a>
+        </div>
+        
+        <div class="row" ng-if="vm.votemode" style="padding-bottom:5px">
             <div class="col-xs-1 hidden-sm col-md-1 col-lg-1" style="{{vm.sp1}}"></div>
-            <!--
-            <img style="{{vm.sp2}}" class="col-xs-1 col-md-1 col-lg-1 cursor" src="../../../assets/images/{{r.thumbUp}}" ng-click="vm.UpVote(r)">
-            <label style="{{vm.sp3}}" class="col-xs-1 col-md-1 col-lg-1"><font size="5">{{r.upV}}</font></label>
-            <img style="{{vm.sp2}}" class="col-xs-1 col-md-1 col-lg-1 cursor" src="../../../assets/images/{{r.thumbDn}}" ng-click="vm.DownVote(r)">
-            <label style="{{vm.sp3}}" class="col-xs-1 col-md-1 col-lg-1"><font size="5">{{r.downV}}</font></label>
-            -->
             <img style="height:30px;width:auto" class="col-xs-1 col-md-1 col-lg-1 cursor" src="../../../assets/images/{{r.thumbUp}}" ng-click="vm.UpVote(r)">
-            <label style="{{vm.sp3}}" class="col-xs-1 col-md-1 col-lg-1"><font size="5">{{r.upV}}</font></label>
+            <label style="{{vm.sp3}}" class="col-xs-1 col-md-1 col-lg-1"><font size="4">{{r.upV}}</font></label>
             <img style="height:30px;width:auto" class="col-xs-1 col-md-1 col-lg-1 cursor" src="../../../assets/images/{{r.thumbDn}}" ng-click="vm.DownVote(r)">
-            <label style="{{vm.sp3}}" class="col-xs-1 col-md-1 col-lg-1"><font size="5">{{r.downV}}</font></label>
+            <label style="{{vm.sp3}}" class="col-xs-1 col-md-1 col-lg-1"><font size="4">{{r.downV}}</font></label>
             
         </div>
-        <!--<br>-->
-        <p class="hiw text-right" ng-click="vm.gotoRank(r)">&lt;&lt;See full ranking&gt;&gt;</p>
-        <p style="display:{{vm.deleteButton}};color:red" ng-click="vm.deleteThisCatans(r)">&lt;&lt;Delete&gt;&gt;</p>
         
+        <!--<br>-->
+        <!--
+        <p style="display:{{vm.deleteButton}};color:red" ng-click="vm.deleteThisCatans(r)">&lt;&lt;Delete&gt;&gt;</p>
+        -->
     </div>
     <div ng-if="vm.isAdmin">
         <div class="text-left"><button class="btn btn-primary" ng-click="vm.addCatans()">Add Catans</button></div>

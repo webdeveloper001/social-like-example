@@ -5,9 +5,9 @@
         .module('app')
         .controller('mybusiness', mybusiness);
 
-    mybusiness.$inject = ['$location', '$rootScope', '$state', '$window','useraccnt','dialog','answer','$http'];
+    mybusiness.$inject = ['$location', '$rootScope', '$state', '$window','useraccnt','dialog','answer','$http','promoter'];
 
-    function mybusiness(location, $rootScope, $state, $window, useraccnt, dialog, answer, $http) {
+    function mybusiness(location, $rootScope, $state, $window, useraccnt, dialog, answer, $http, promoter) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'mybusiness';
@@ -30,7 +30,7 @@
         vm.minusQty = minusQty;
         vm.checkcode = checkcode;
         vm.cancelPremium = cancelPremium;
-        vm.cancelRanks = cancelRanks;
+        vm.cancelAllRanks = cancelAllRanks;
         vm.editRanks = editRanks;
         vm.cancelAll = cancelAll;
 
@@ -133,7 +133,7 @@
             vm.ranksQty = 1;
             vm.overview = false;
             vm.manageview = true;
-            if (!x.isPremium && !x.hasRanks) vm.sell = true;
+            if (!x.isPremium || !x.hasRanks) vm.sell = true;
             else vm.sell = false;
 
             console.log("vm.business",x);
@@ -188,10 +188,21 @@
         }
 
         function checkcode(){
-            if (vm.promocode.length > 5){
+            if (vm.promocode.length == 8){
                 //TODO check code is valid
-                vm.codeOk = true;
-                vm.codeMsg = 'This code gets you 60 days free on all your subscriptions!';
+                vm.codeMsg = "Validating code ..."
+
+                promoter.getbyCode(vm.promocode).then(function(result){
+                    console.log("code exists - ", result.length, result);
+                    if (result.length > 0){
+                          vm.codeOk = true;
+                          vm.codeMsg = 'This code gets you 60 days free on all your subscriptions!';  
+                    }
+                    else {
+                        vm.codeOk = false;
+                        vm.codeMsg = 'Sorry, this is not a valid code.';
+                    }    
+                });           
             }
             else {
                 vm.codeOk = false;
@@ -211,7 +222,7 @@
                 vm.total = vm.getRanks*vm.ranksQty*35 + vm.getPremium*vm.business.price;
                 vm.manageview = false;
                 vm.checkout = true;
-                loopCheckUpgradeSuccess();
+                loopCheck('purchase');
                 
             }
         }
@@ -263,9 +274,9 @@
             }, function (error) {
                 console.log("Error Cancelling Premium Membership - ", error);
             });
-            loopCheckDowngradeSuccess();        
+            loopCheck('cancel');        
         }
-        function cancelRanks(){
+        function cancelAllRanks(){
             //Check if there are other subscriptions other than Premium, if not delete entire subscription otherwise StripeServer
             //gives error
             if (vm.business.isPremium){
@@ -296,8 +307,8 @@
         }
         function execEditNumRanks(action, N){
             //if deleting all ranks, call delete ranks subscription
-            if (action == 'cancel' && N == vm.busines.ranksQty){
-                cancelRanks();
+            if (action == 'cancel' && N == vm.business.ranksQty){
+                cancelAllRanks();
             }
             else {
 
@@ -327,153 +338,94 @@
                 }, function (error) {
                     console.log("Error Updating Quantity of Custom Ranks - ", error);
                 });
-                loopCheckDowngradeSuccess();
+                loopCheck('edit', updatedNumRanks);
             }
             console.log("Execute Edit Num Ranks");
 
         }
 
       // -------- **UPGRADE**  STRIPE LOOP CHECKERS
-      function loopCheckUpgradeSuccess() {
-         setTimeout(function () {
-           //  call a 3s setTimeout when the loop is called
-            //  your code here
-            console.log('loopCheckUpgradeSuccess --> wasUpgradeSuccess');
+        function loopCheck(check, updatedNumRanks) {
+            setTimeout(function () {
+                //  call a 3s setTimeout when the loop is called
+                //  your code here
+                console.log('loopCheck -- ', check);
 
 
-            useraccnt.getuseraccntans(vm.business.id).then(successGetuseraccnt, failGetuseraccnt);
-            function failGetuseraccnt(err) {
-                console.log(JSON.stringify(err));
-                return err;
-            }
-            function successGetuseraccnt(result) {
-              // result[0] =
-              // {"user":37,"answer":0,"bizcat":"REB","email":"sjurowski+facebook@ucsd.edu","status":"1001:Rank-X Premium Business Plan:sub_9qe3oH617BKGWD","stripeid":"cus_9qe3Kburx73l2L","id":176}
-
-              var checkAgain = true;
-              console.log("i'm in, will check every 3 seconds for signup success");
-              console.log("full result:");
-              console.log(result);
-              
-              var hasSubscription = false;
-              try {
-
-                if ((vm.getPremium && result[0].ispremium && !vm.getRanks) ||      //if purchase only Premium
-                (!vm.getPremium && vm.getRanks && result[0].hasranks && vm.ranksQty == result[0].ranksqty) || //if purchase only ranks
-                (vm.getPremium && result[0].ispremium && vm.getRanks && result[0].hasranks && vm.ranksQty == result[0].ranksqty)){
-
-                  hasSubscription = true;
-                  //update local copy
-                  var idx = $rootScope.useraccnts.map(function(x) {return x.id; }).indexOf(result[0].id);
-                  $rootScope.useraccnts[idx] = result[0]; 
-                  loadData();
-                  console.log(vm.mybiz);
-                  vm.overview = true;
-                  vm.manageview = false;
-                  vm.checkout = false;
-                  return true;
-
-                } else {
-                  console.log("no subscription created yet");
-                  // return false;  <-- this will stop the looping
+                useraccnt.getuseraccntans(vm.business.id).then(successGetuseraccnt, failGetuseraccnt);
+                function failGetuseraccnt(err) {
+                    console.log(JSON.stringify(err));
+                    return err;
                 }
-              }
-              catch(err) {
-                  console.log("error while looking up subscription info from DF: " + JSON.stringify(err));
+                function successGetuseraccnt(result) {
+                    // result[0] =
+                    // {"user":37,"answer":0,"bizcat":"REB","email":"sjurowski+facebook@ucsd.edu","status":"1001:Rank-X Premium Business Plan:sub_9qe3oH617BKGWD","stripeid":"cus_9qe3Kburx73l2L","id":176}
 
-                  checkAgain = false;
+                    var checkAgain = true;
+                    console.log("i'm in, will check every 3 seconds for signup success");
+                    console.log("full result:");
+                    console.log(result);
 
-                  return err;
-              }
+                    var missionAccomplished = false;
+                    try {
 
-            // if (loopCheckUpgradeSuccess() == true) {
-            //
-            //   this.vm.showSpinner = false;
-            //   this.vm.showCurrentPlan = true;
-            //   this.vm.showUpgrade = false;
-            //
-            //   return;
-            // }
+                        if (check == 'purchase') {
 
+                            if ((vm.getPremium && result[0].ispremium && !vm.getRanks) ||      //if purchase only Premium
+                                (!vm.getPremium && vm.getRanks && result[0].hasranks && vm.ranksQty == result[0].ranksqty) || //if purchase only ranks
+                                (vm.getPremium && result[0].ispremium && vm.getRanks && result[0].hasranks && vm.ranksQty == result[0].ranksqty)) {
 
-            //i++;
-            // if ( (i < 30) && (checkAgain == true) ) {
-            if ( (1 < 2) && (checkAgain == true) && vm.checkout) {
-              //recursion ... find another way if possible
-              loopCheckUpgradeSuccess();
-            } else {
-              return;
-            }
-            //  ..  setTimeout()
-          }
-         }, 3000);
-      }        
+                                missionAccomplished = true;
 
-            // -------- **DOWNGRADE**  STRIPE LOOP CHECKERS
-      function loopCheckDowngradeSuccess() {
-         setTimeout(function () {
-           //  call a 3s setTimeout when the loop is called
-            //  your code here
-            console.log('loopCheckDowngradeSuccess --> wasDowngradeSuccess');
+                            }
+                        }
 
+                        if (check == 'cancel') {
+                            if ((cancelPremium && !result[0].ispremium && result[0].stripesipremium == '') ||      //if Premium was cancellesd
+                                (cancelRanks && !result[0].hasranks && result[0].stripesiranks == '') || //if Ranks were cancelled
+                                (cancelAll && result[0].stripesub == '')) {
+                                missionAccomplished = true;
+                            }
+                        }
 
-            useraccnt.getuseraccntans(vm.business.id).then(successGetuseraccnt, failGetuseraccnt);
-            function failGetuseraccnt(err) {
-                console.log(JSON.stringify(err));
-                return err;
-            }
-            function successGetuseraccnt(result) {
-              // result[0] =
-              // {"user":37,"answer":0,"bizcat":"REB","email":"sjurowski+facebook@ucsd.edu","status":"1001:Rank-X Premium Business Plan:sub_9qe3oH617BKGWD","stripeid":"cus_9qe3Kburx73l2L","id":176}
+                        if (check == 'edit') {
+                            if (result[0].ranksqty == updatedNumRanks) missionAccomplished = true;
+                        }
 
-              var checkAgain = true;
-              console.log("i'm in, will check every 3 seconds for signup success");
-              console.log("full result:");
-              console.log(result);
-              
-              var hasDowngraded = false;
-              try {
+                        if (missionAccomplished) {
+                            //update local copy
+                            var idx = $rootScope.useraccnts.map(function (x) { return x.id; }).indexOf(result[0].id);
+                            $rootScope.useraccnts[idx] = result[0];
+                            loadData();
+                            console.log(vm.mybiz);
+                            vm.overview = true;
+                            vm.manageview = false;
+                            vm.checkout = false;
+                            return true;
 
-                console.log("l1", cancelPremium,!result[0].ispremium,result[0].stripesipremium == '');
-                console.log("l2", cancelRanks, !result[0].hasranks, result[0].stripesiranks == '');
-                console.log("l3", cancelAll, result[0].stripesub == '');
-                if ((cancelPremium && !result[0].ispremium && result[0].stripesipremium == '') ||      //if Premium was cancellesd
-                (cancelRanks && !result[0].hasranks && result[0].stripesiranks == '') || //if Ranks were cancellesd
-                (cancelAll && result[0].stripesub == '')){
+                        } else {
+                            console.log("havent accomplished mission yet");
+                            // return false;  <-- this will stop the looping
+                        }
+                    }
+                    catch (err) {
+                        console.log("error while looking up subscription info from DF: " + JSON.stringify(err));
 
-                  hasDowngraded = true;
-                  //update local copy
-                  var idx = $rootScope.useraccnts.map(function(x) {return x.id; }).indexOf(result[0].id);
-                  $rootScope.useraccnts[idx] = result[0]; 
-                  loadData();
-                  console.log(vm.mybiz);
-                  vm.overview = true;
-                  vm.manageview = false;
-                  vm.checkout = false;
-                  return true;
+                        checkAgain = false;
 
-                } else {
-                  console.log("subscription not cancelled yet");
-                  // return false;  <-- this will stop the looping
+                        return err;
+                    }
+
+                    if (checkAgain == true && (vm.checkout || vm.manage)) {
+                        //recursion ... find another way if possible
+                        loopCheck(check);
+                    } else {
+                        return;
+                    }
+                    //  ..  setTimeout()
                 }
-              }
-              catch(err) {
-                  console.log("error while looking up subscription info from DF: " + JSON.stringify(err));
+            }, 3000);
+        }        
 
-                  checkAgain = false;
-
-                  return err;
-              }
-
-            if ( (1 < 2) && (checkAgain == true) && vm.checkout) {
-              //recursion ... find another way if possible
-              loopCheckDowngradeSuccess();
-            } else {
-              return;
-            }
-            //  ..  setTimeout()
-          }
-         }, 3000);
-      }   
     }
 })();
