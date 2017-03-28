@@ -170,7 +170,7 @@
         <h3 class="sub-header">Endorsements</h3>        
     </div>
     <div class="text-right" style="padding-bottom:5px">
-        Vote:
+        Vote:&nbsp
         <div class="btn-group btn-toggle"> 
             <button class="btn btn-sm btn-default" style="{{vm.voteonstyle}}"
             ng-click="vm.votemodeON()">ON</button>
@@ -179,8 +179,8 @@
         </div>
     </div>
     <p class="text-left" ng-if="vm.type != 'Short-Phrase'"><strong>{{vm.answer.name}}</strong> is featured in the following ranks:</p>
-    <p style="border:2px solid red;padding:5px" ng-if="vm.votemode"><strong>Endorse!</strong> Give a <strong>thumb up</strong> if you 
-    <strong>endorse</strong> for each ranking; <strong>thumb down</strong> if you <strong>do not recommend</strong>.</p>
+    <p style="border:2px solid red;padding:5px" ng-if="vm.votemode"><strong>Endorse!</strong> For each ranking, give a <strong>thumb up</strong> if you 
+    <strong>endorse</strong>; a <strong>thumb down</strong> if you <strong>do not recommend</strong>.</p>
     <!--
 <div class="well well-light-ranks col-md-4 col-lg-4">
     <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
