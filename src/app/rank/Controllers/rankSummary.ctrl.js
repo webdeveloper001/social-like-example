@@ -111,6 +111,8 @@
         if ($rootScope.rankSummaryDataLoaded) { vm.dataReady = true; activate(); }
         else vm.dataReady = false;
 
+        window.prerenderReady = false;
+
         function activate() {
 
             answers = $rootScope.answers;
@@ -321,7 +323,9 @@
                 $cookies.put('statenum', $rootScope.canswer.id);
             }
             console.log('@cookie test! -', $cookies.get('statename'),$cookies.get('statenum'));
-              */          
+              */
+
+            window.prerenderReady = true;            
         }
 
         function getRankAnswers() {

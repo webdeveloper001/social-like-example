@@ -133,6 +133,7 @@
         else vm.dataReady = false;
 
         //activate();
+        window.prerenderReady = false;
 
         function activate() {
 
@@ -262,6 +263,7 @@
 
             if ($rootScope.DEBUG_MODE) console.log("Answer details loaded");
 
+            window.prerenderReady = true;
         }
 
         function getFields() {

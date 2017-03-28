@@ -37,6 +37,8 @@
 
         function loginWithFacebook() {
 
+            if ($rootScope.DEBUG_MODE) console.log("@loginWithFacebook");
+
             var statename = '';
             var statenum = 0;
             var ccategory = 0;
@@ -74,6 +76,8 @@
         }
 
         function oauthWithFacebook(queryString) {
+
+             if ($rootScope.DEBUG_MODE) console.log("@oauthWithFacebook - ",queryString);
 
             return $http.post('/api/v2/user/session?oauth_callback=true&service=facebook&' + queryString).then(querySucceeded, _queryFailed);
 

@@ -15,7 +15,7 @@
 
         //-----SEO tags ----
         $scope.$parent.$parent.$parent.seo = { 
-        pageTitle : 'Home', 
+        pageTitle : 'Rank-X', 
         metaDescription: 'Rank-X creates collective rankings on everything in your city.' 
         };
         
@@ -68,6 +68,8 @@
             }
         });
         
+        window.prerenderReady = false;
+
         if ($rootScope.cwrapperLoaded) activate();
         else init();
 
@@ -101,6 +103,8 @@
             $rootScope.cCategory = undefined;
             
             vm.val = $rootScope.inputVal; //remember user query
+
+            window.prerenderReady = true;
             
         }
         function init() {
@@ -152,7 +156,7 @@
 */
             loadcontent();
             //getEstablishmentAnswers();
-            getFeed();
+            //getFeed();
 
             //});
             $rootScope.cwrapperLoaded = true;
@@ -163,69 +167,23 @@
             if ($rootScope.isAdmin) prepareNewCatansOptions();
             
             //userdata.loadVotes();
+            activate();
+
             
         }
 
         function loadcontent() {
             
             //vm.content=[];
-            vm.searchArray = [];
-            vm.empty = [];
-            vm.cTags = {};
-            
-            //start temp code to load answertags
-            /*
-            //$rootScope.answers = answers;
-            
-            for (var i = 0; i < $rootScope.content.length; i++) {
-            //for (var i = 400; i < 500; i++) {               
-                       //Load current answers
-            //$rootScope.canswers = [];
-            
-            for (var j = 0; j < catansrecs.length; j++) {
-                if (catansrecs[j].category == $rootScope.content[i].id) {
-                    for (var k = 0; k < answers.length; k++){
-                        if (catansrecs[j].answer == answers[k].id){
-                            $rootScope.canswers.push(answers[k]);
-                            //$rootScope.ccatans.push(catansrecs[i]);
-                            
-                            //Collect array of 'current' catans records ids
-                            //$rootScope.B.push(catansrecs[i].id);
-                            break;        
-                        }
-                    }                    
-                }
-            }    
-            var answertags = '';
-            for (var n=0; n < $rootScope.canswers.length; n++){
-                answertags = answertags + ' ' + $rootScope.canswers[n].name;
-            }
-            table.update($rootScope.content[i].id,['answertags'],[answertags]);        
-            //console.log(answertags);
-            }
-            */
-            //end temp code to add answer tags
-            
-            //temp
-            /*
-            for (var i = 0; i < $rootScope.content.length; i++) {
-                //$rootScope.content[i].title = $rootScope.content[i].title.replace('Best ', '');
-                //$rootScope.content[i].title = $rootScope.content[i].title.replace('Top ', '');
-                //$rootScope.content[i].title = $rootScope.content[i].title.replace('Most ', '');
-                if ($rootScope.content[i].title.includes('Most ')){
-                    $rootScope.content[i].title = $rootScope.content[i].title.replace('Most ', '');
-                    $rootScope.content[i].title = $rootScope.content[i].title.charAt(0).toUpperCase() + $rootScope.content[i].title.slice(1);
-                    table.update($rootScope.content[i].id,['title'],[$rootScope.content[i].title]);
-                }
-            }*/
+            //vm.searchArray = [];
+            ///vm.empty = [];
+            //vm.cTags = {};
             
             $rootScope.cityranks = ['city', 'lifestyle', 'food', 'politics', 'services', 'social', 'beauty', 'sports', 'personalities', 'technology', 'dating', 'health'];
             $rootScope.nhranks = ['neighborhood', 'lifestyle', 'food', 'services', 'social', 'beauty', 'health'];
 
             vm.nhs = $rootScope.neighborhoods.concat($rootScope.districts);
-            
-            //userdata.loadVotes();
-
+           
         }
 
         function refreshRanks() {
