@@ -10,9 +10,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             isRoW: '=rankofweek',
             updateView: '&updateView'
         },
-        controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 'vrows','$window','cblock',
+        controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 'vrows','$window','cblock','color',
             
-            function contentCtrl($scope, query, $http, answer, table, catans, $timeout, vrows, $window, cblock) {
+            function contentCtrl($scope, query, $http, answer, table, catans, $timeout, vrows, $window, cblock, color) {
                 var vm = $scope;
                 vm.title = 'mycontent';
 
@@ -258,6 +258,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     for (var i = 0; i < $rootScope.headlines.length; i++) {
                         if ($rootScope.headlines[i].type == vm.modType) {
                             vm.bgc = $rootScope.headlines[i].bc;
+                            vm.bgc2 = color.shadeColor(vm.bgc,0.5);
                             vm.fc = $rootScope.headlines[i].fc;
                             vm.headline = $rootScope.headlines[i].title;
                             break;
@@ -342,17 +343,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     else if (vm.results[0].tags.indexOf('personalities')>-1) {vm.rdbc = '#e6b800'; vm.rdfc = 'black';}
                     else {vm.rdbc = 'gray'; vm.rdfc = '#f8f8ff';} 
 
-                    //resLT6 is used to hide the <<see more>> choice
-                    /*
-                    if (vm.results.length <= 6) vm.resLT6 = true;
-                    else vm.resLT6 = false;
-
-                    var resGT0 = (vm.results[0] != undefined);
-                    vm.updateView(resGT0);
-
-                    if (resGT0) vm.hideme = false;
-                    else vm.hideme = true;
-                    */
+                    vm.rdbc2 = color.shadeColor(vm.rdbc,0.4);
                 }
 
                 //load content based on mode
@@ -366,6 +357,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     for (var i = 0; i < $rootScope.headlines.length; i++) {
                         if ($rootScope.headlines[i].type == vm.modType) {
                             vm.bgc = $rootScope.headlines[i].bc;
+                            vm.bgc2 = color.shadeColor(vm.bgc,0.3);
                             vm.fc = $rootScope.headlines[i].fc;
                             vm.headline = $rootScope.headlines[i].title;
                             if ($rootScope.isNh &&

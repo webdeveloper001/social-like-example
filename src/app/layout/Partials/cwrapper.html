@@ -78,7 +78,7 @@ background: #595959;
 			<tbody>
 				<thead>
 					<tr>
-						<th style="background-color:#595959;color:#f8f8ff;width:50%;border-style:none;">
+						<th style="{{vm.headerStyle}}">
 						Quick Links</th>
 					</tr>
 				</thead>
@@ -99,8 +99,8 @@ background: #595959;
 			<tbody>
 				<thead>
 					<tr>
-						<th style="background-color:#595959;color:#f8f8ff;width:50%;">
-						Feed
+						<th style="{{vm.headerStyle}}">
+							Feed
 							<span class="nomargin">
                     		<button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
                     		ng-click="vm.refreshFeed()">

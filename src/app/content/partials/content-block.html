@@ -18,14 +18,19 @@
 		<tbody>
 			<thead>
 				<tr>
-					<th style="background-color:{{bgc}};color:{{fc}};width:50%;border-style:none;">
+					<th style="color:{{fc}};width:50%;border-style:none;
+						background: {{bgc}};
+  						background: -webkit-linear-gradient(left, {{bgc}}, {{bgc2}});
+  						background: -o-linear-gradient(right, {{bgc}}, {{bgc2}});
+  						background: -moz-linear-gradient(right, {{bgc}}, {{bgc2}});
+  						background: linear-gradient(to right, {{bgc}}, {{bgc2}});">
 						{{headline}}</th>
 				</tr>
 			</thead>
 		</tbody>
 	</table> 
 	<!--
-		background: #595959;
+						background: #595959;
   						background: -webkit-linear-gradient(left, #595959 , #bfbfbf);
   						background: -o-linear-gradient(right, #595959, #bfbfbf);
   						background: -moz-linear-gradient(right, #595959, #bfbfbf);
@@ -75,7 +80,12 @@
 		<!-- background-color:{{rdbc}} -->
 		<div class="row" ng-if="isRoW" ng-click="rankSel(results[0],false)">
 			<div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" 
-			style="background-color:{{rdbc}};color:{{rdfc}};height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+			style="color:{{rdfc}};height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;
+					background: {{rdbc}};
+  					background: -webkit-linear-gradient(left, {{rdbc}}, {{rdbc2}});
+  					background: -o-linear-gradient(right, {{rdbc}}, {{rdbc2}});
+  					background: -moz-linear-gradient(right, {{rdbc}}, {{rdbc2}});
+  					background: linear-gradient(to right, {{rdbc}}, {{rdbc2}});">
 				<h2 class=" hidden-xs text-center" 
 				style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{rankOfDay}}</h2> 
 				<h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" 
@@ -126,7 +136,12 @@
 		<tbody>
 			<thead ng-if="!isRoW" style="border-style:none;">
 				<tr>
-					<th style="background-color:{{bgc}};color:{{fc}};width:50%;">
+					<th style="background-color:{{bgc}};color:{{fc}};width:50%;
+						background: {{bgc}};
+  						background: -webkit-linear-gradient(left, {{bgc}}, {{bgc2}});
+  						background: -o-linear-gradient(right, {{bgc}}, {{bgc2}});
+  						background: -moz-linear-gradient(right, {{bgc}}, {{bgc2}});
+  						background: linear-gradient(to right, {{bgc}}, {{bgc2}});">
 						{{headline}}</th>
 				</tr>
 			</thead>

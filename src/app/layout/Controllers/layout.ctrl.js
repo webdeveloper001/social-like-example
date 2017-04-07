@@ -170,6 +170,7 @@
             dataloader.getrankdata();
             dataloader.getanswerdata();
             dataloader.getpagevisitdata();
+            //loadingDone();
       }
 
         function loadingDone() {
@@ -186,6 +187,8 @@
             else $rootScope.dataIsLoaded = $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
 
             vm.isLoading = !$rootScope.dataIsLoaded;
+            //vm.isLoading = false;
+            //$rootScope.dataIsLoaded = true;
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.dataIsLoaded -", $rootScope.dataIsLoaded);
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.pageDataLoaded -", $rootScope.pageDataLoaded);
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.userDataLoaded -", $rootScope.userDataLoaded);

@@ -6,10 +6,10 @@
         .controller('cwrapper', cwrapper);
 
     cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
-        'query', 'table', 'dialog', 'uaf','$window','userdata','$location'];
+        'query', 'table', 'dialog', 'uaf','$window','userdata','$location','color'];
 
     function cwrapper($rootScope, $state, $http, $stateParams, $scope,
-        query, table, dialog, uaf, $window, userdata, $location) {
+        query, table, dialog, uaf, $window, userdata, $location, color) {
         /* jshint validthis:true */
         var vm = this;
 
@@ -104,8 +104,17 @@
             
             vm.val = $rootScope.inputVal; //remember user query
 
+            var bgc = '#595959';
+            var bgc2 = color.shadeColor(bgc, 0.5);
+            vm.headerStyle = 'color:#f8f8ff;width:50%;border-style:none;'+
+                       'background:'+bgc+';'+
+  					   'background: -webkit-linear-gradient(left,'+bgc+','+bgc2+');'+
+  					   'background: -o-linear-gradient(right,'+bgc+','+bgc2+');'+
+  					   'background: -moz-linear-gradient(right,'+bgc+', '+bgc2+');'+
+  					   'background: linear-gradient(to right,'+bgc+', '+bgc2+');';  
+
             window.prerenderReady = true;
-            
+                    
         }
         function init() {
 
@@ -153,7 +162,17 @@
             $rootScope.cvrows = allvrows;
             $rootScope.headlines = headlines;
             $rootScope.cblocks = cblocks;
+            
 */
+            var bgc = '#595959';
+            var bgc2 = color.shadeColor(bgc, 0.5);
+            vm.headerStyle = 'color:#f8f8ff;width:50%;border-style:none;'+
+                       'background:'+bgc+';'+
+  					   'background: -webkit-linear-gradient(left,'+bgc+','+bgc2+');'+
+  					   'background: -o-linear-gradient(right,'+bgc+','+bgc2+');'+
+  					   'background: -moz-linear-gradient(right,'+bgc+', '+bgc2+');'+
+  					   'background: linear-gradient(to right,'+bgc+', '+bgc2+');';   
+            
             loadcontent();
             //getEstablishmentAnswers();
             //getFeed();
