@@ -207,7 +207,7 @@
             getAnswerRanks();
 
             //custom ranks 
-            if (false) {
+            if (vm.answer.hasranks) {
                 var n = 0;
                 vm.myranks = JSON.parse(vm.answer.ranks);
                 if (vm.myranks != undefined && vm.myranks.length > 0){
@@ -912,7 +912,11 @@
         function bindAccount() {
             if ($rootScope.DEBUG_MODE) console.log("Bind business to user account");
             answer.updateAnswer(vm.answer.id, ['owner'], [$rootScope.user.id]).then(reloadAnswer);
-            useraccnt.adduseraccnt(vm.answer).then(function () {
+            var item = {};
+            item = vm.answer;
+            item.name = $rootScope.user.first_name + ' ' + $rootScope.user.last_name;  
+            
+            useraccnt.adduseraccnt(item).then(function () {
                 //Check if user account has email - if not set warning in navbar
                 var hasEmail = false;
                 for (var i = 0; i < $rootScope.useraccnts.length; i++) {

@@ -71,7 +71,8 @@
         });
 
         $rootScope.$on('userDataLoaded', function (e) {
-            if ($rootScope.isLoggedIn && $rootScope.userpromoter.length > 0) {
+            //if ($rootScope.isLoggedIn && $rootScope.userpromoter.length > 0) {
+             if ($rootScope.isLoggedIn) {   
                 vm.isPromoter = true;
                 $rootScope.isPromoter = true;
                 console.log("User is promoter");

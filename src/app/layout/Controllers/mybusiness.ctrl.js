@@ -33,7 +33,8 @@
         vm.cancelAllRanks = cancelAllRanks;
         vm.editRanks = editRanks;
         vm.cancelAll = cancelAll;
-
+        vm.editContact = editContact;
+        
         vm.mybizs = [];
         activate();
         vm.noAns = false;
@@ -42,11 +43,14 @@
         var cancelPremium = false;
         var cancelRanks = false;
         var cancelNumRanks = 0;
+        var fields = [];
+        var labels = [];
+        var vals = [];
 
         function activate() {
 
-            useraccnt.getuseraccnt(true).then(function(result){
-                $rootScope.useraccnts.result;
+            useraccnt.getuseraccnt().then(function(result){
+                $rootScope.useraccnts = result;
                 vm.dataReady = true;
                 loadData();
             });
@@ -425,6 +429,19 @@
                     //  ..  setTimeout()
                 }
             }, 3000);
+        }
+
+        function editContact(){
+            fields = ['name','email'];
+            labels = ['Name','Email'];
+            vals = [vm.business.firstname + ' ' + vm.business.lastname, vm.business.email];
+            dialog.editInfo(fields,labels,vals,execEditContact);
+        }
+
+        function execEditContact(newvals){
+            useraccnt.updateuseraccnt(vm.business.accountid, fields, newvals).then(function(){
+                loadData();
+            })
         }        
 
     }

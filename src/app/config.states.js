@@ -235,6 +235,20 @@
                         controller: 'navbar as vm'
                     }
                 }
+            },
+            {
+                name: 'promotersignup',
+                url: '/promotersignup',
+                views: {
+                    "@": {
+                        templateUrl: 'app/promoters/Partials/promotersignup.html',
+                        controller: 'promotersignup as vm'
+                    },
+                    "navbar@promotersignup": {
+                        templateUrl: 'app/layout/Partials/navbar.html',
+                        controller: 'navbar as vm'
+                    }
+                }
             },  
           {
                 name: 'myfavs',

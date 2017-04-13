@@ -137,16 +137,16 @@
             var url = baseURI;
             
             //update local copy
-            var idx = _promoters.map(function(x) {return x.id; }).indexOf(promoter_id);  
+            var idx = _promoter.map(function(x) {return x.id; }).indexOf(promoter_id);  
             for (var i=0; i<field.length; i++){
                 switch (field[i]){
-                    case "firstname": _promoters[idx].firstname = val[i]; break;
-                    case "lastname": _promoters[idx].lastname = val[i]; break;
-                    case "email": _promoters[idx].email = val[i]; break;
-                    case "address": _promoters[idx].address = val[i]; break;
-                    case "phone": _promoters[idx].phone = val[i]; break;
-                    case "code": _promoters[idx].code = val[i]; break;
-                    case "stripeid": _promoters[idx].stripeid = val[i]; break;
+                    case "firstname": _promoter[idx].firstname = val[i]; break;
+                    case "lastname": _promoter[idx].lastname = val[i]; break;
+                    case "email": _promoter[idx].email = val[i]; break;
+                    case "address": _promoter[idx].address = val[i]; break;
+                    case "phone": _promoter[idx].phone = val[i]; break;
+                    case "code": _promoter[idx].code = val[i]; break;
+                    case "stripeid": _promoter[idx].stripeid = val[i]; break;
                 }
             }                        
             

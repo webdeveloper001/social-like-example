@@ -12,8 +12,14 @@
         var vm = this;
         vm.title = 'promote';
 
-        vm.getcode = getcode;
-        vm.submit = submit;
+        vm.show = show;
+
+        vm.showOne = false;
+        vm.showTwo = false;
+        vm.showThree = false;
+        vm.showFour = false;
+        vm.showFive = false;
+        vm.showSix = false;
         
         activate();
 
@@ -22,30 +28,30 @@
             console.log("promote page Loaded!");
         }
 
-        function submit() {
-            vm.promoter.user = $rootScope.user.id;
-            vm.promoter.code = vm.code;
+        function show(x) {
+
+            if (x == 1 && vm.showOne) vm.showOne = false;
+            else if (x == 2 && vm.showTwo) vm.showTwo = false;
+            else if (x == 3 && vm.showThree) vm.showThree = false;
+            else if (x == 4 && vm.showFour) vm.showFour = false;
+            else if (x == 5 && vm.showFive) vm.showFive = false;
+            else if (x == 6 && vm.showSix) vm.showSix = false;
+            else {
+                vm.showOne = false;
+                vm.showTwo = false;
+                vm.showThree = false;
+                vm.showFour = false;
+                vm.showFive = false;
+                vm.showSix = false;
+
+                if (x == 1 && !vm.showOne) vm.showOne = true;
+                if (x == 2 && !vm.showTwo) vm.showTwo = true;
+                if (x == 3 && !vm.showThree) vm.showThree = true;
+                if (x == 4 && !vm.showFour) vm.showFour = true;
+                if (x == 5 && !vm.showFive) vm.showFive = true;
+                if (x == 6 && !vm.showSix) vm.showSix = true;
+            }
             
-            console.log("Add Promoter");
-            promoter.add(vm.promoter);
-        }
-
-        //Create random code
-        function getcode() {
-
-            var text = "";
-            var nums = "";
-            //var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            //var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
-            var possiblet = "abcdefghijklmnopqrstuvwxyz";
-            var possiblen = "0123456789";
-            for (var i = 0; i < 5; i++)
-                text += possiblet.charAt(Math.floor(Math.random() * possiblet.length));
-
-            for (var i = 0; i < 3; i++)
-                nums += possiblen.charAt(Math.floor(Math.random() * possiblen.length));    
-
-            vm.code = text+nums;
         }
 
     }

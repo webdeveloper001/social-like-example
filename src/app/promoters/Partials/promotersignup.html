@@ -1,0 +1,46 @@
+<!-- Navigation Bar -->
+<div ui-view="navbar"></div>
+
+<div class="container">
+    <h3>Promoter Sign Up</h3>
+    <br>
+    <form class="form-horizontal" role="form" name="answerForm">
+        <div class="form-group">
+            <label class="control-label capitalize" style="padding-left:10px">
+                First Name:</label>
+            <input class="form-control" ng-model="vm.promoter.firstname" placeholder="{{vm.promoter.firstname}}" style="width:94%;margin-left:10px;margin-right:10px;">
+            <label class="control-label capitalize" style="padding-left:10px">
+                Last Name:</label>
+            <input class="form-control" ng-model="vm.promoter.lastname" placeholder="{{vm.promoter.lastname}}" style="width:94%;margin-left:10px;margin-right:10px;">
+            <label class="control-label capitalize" style="padding-left:10px">
+                Email:</label>
+            <input class="form-control" ng-model="vm.promoter.email" placeholder="Your email address" style="width:94%;margin-left:10px;margin-right:10px;">
+            <label class="control-label capitalize" style="padding-left:10px">
+                Phone:</label>
+            <input class="form-control" ng-model="vm.promoter.phone" placeholder="123-123-1234" style="width:94%;margin-left:10px;margin-right:10px;">
+            <label class="control-label capitalize" style="padding-left:10px">
+                Address:</label>
+            <input class="form-control" ng-model="vm.promoter.address" placeholder="Your address" style="width:94%;margin-left:10px;margin-right:10px;">
+        </div>
+    </form>
+
+    </br>
+    
+    <div class="row">
+        <div class="col-xs-3 col-sm-3 col-md-2">
+            <div class="text-right">
+                <button class="btn btn-primary" ng-click="vm.getcode()">Get Code</button>
+            </div>
+        </div>
+        <div class="col-xs-9 col-sm-9 col-md-10">
+            <h3 style="color:blue; margin:2px">{{vm.code}}</h3>
+        </div>
+    </div>
+    
+    </br>
+    
+    <div class="text-center">
+        <button class="btn btn-success" ng-click="vm.submit()">Submit</button>
+    </div>
+    </br>
+</div>

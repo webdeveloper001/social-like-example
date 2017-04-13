@@ -44,6 +44,8 @@
             unbindAccount: unbindAccount,
             confirmCancel: confirmCancel,
             editNumRanks: editNumRanks,
+            editInfo: editInfo,
+            notificationWithCallback: notificationWithCallback
         };
 
         return service;
@@ -1815,6 +1817,91 @@
                 }
             }]
             });
+        }
+
+         function editInfo(fields,labels,vals,callback) {
+
+            var title = '';
+            var messagehtml = ''
+            var btnCancelLabel = 'Cancel';
+            var btnOkLabel = 'Save';
+
+            title = 'Edit Information';
+
+            messagehtml = '<p>Please verify the information is correct.</p>';
+
+            for (var i=0; i<fields.length; i++){
+                messagehtml = messagehtml + 
+                
+                '<div class="input-group">'+
+                '<label class="input-group-addon">'+labels[i]+':</label>'+
+                '<input type="text" class="form-control" id="'+fields[i]+'" value="'+ vals[i] +'">'+
+                '</div>';
+            }
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: function (dialogRef) {
+                    var $content = $(messagehtml);
+                    return $content;
+                },
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-success',
+                btnCancelClass: 'btn-warning',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                buttons: [
+                    {
+                        id: 'btn1',
+                        label: 'Cancel',
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    },
+                    {
+                        id: 'btn2',
+                        label: 'Save',
+                        action: function (dialog, messagehtml) {
+                            var newvals = [];
+                            var val = '';
+                            for (var i = 0; i < fields.length; i++) {
+                                val = dialog.getModalBody().find('#' + fields[i])[0].value;
+                                //console.log(fields[i], " ", val);
+                                newvals.push(val);
+                            }
+                            callback(newvals);
+                            dialog.close();
+                        }
+                    }]
+            });
+         }
+
+         function notificationWithCallback(title, message, callback) {
+
+            var title = title;
+            var message = message;
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'OK',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef) {
+                        callback();
+                        dialogRef.close();
+                    }
+                }]
+            });
+
         }
     }
 })();

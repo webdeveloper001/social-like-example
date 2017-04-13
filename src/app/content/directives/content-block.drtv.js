@@ -62,12 +62,12 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 function getRanks() {
 
                     vm.hideme = false;
-                    var rt = '';
-                    var ss = '';
+                    var rt = '';   //rank title 
+                    var ss = '';   //search string
                     var inm = false;
 
-                    vm.nm = false;
-                    vm.rt = false;
+                    vm.nm = false;  //near me
+                    vm.rt = false;   
                     vm.rt_nm = false;
 
                     var rank = {};
@@ -89,7 +89,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             inputVal.indexOf('close') > -1 ||
                             inputVal.indexOf('close to') > -1 ||
                             inputVal.indexOf('close to me') > -1) {
-                            inm = true;
+                            inm = true; //input has near me context
                             inputVal = inputVal.replace('near me', 'in San Diego');
                             inputVal = inputVal.replace('near', 'in San Diego');
                             inputVal = inputVal.replace('close to me', 'in San Diego');

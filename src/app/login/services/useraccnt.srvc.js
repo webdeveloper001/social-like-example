@@ -212,6 +212,7 @@
                   case "ispremium": data.ispremium = val[i]; break;
                   case "hasranks": data.hasranks = val[i]; break;
                   case "ranksqty": data.ranksqty = val[i]; break;
+                  case "name": data.name = val[i]; break;
               }
           }
           //console.log("data", data);
@@ -231,6 +232,7 @@
                   case "ispremium": _useraccnts[idx].ispremium = val[i]; break;
                   case "hasranks": _useraccnts[idx].hasranks = val[i]; break;
                   case "ranksqty": _useraccnts[idx].ranksqty = val[i]; break;
+                  case "name": _useraccnts[idx].name = val[i]; break;
               }
           }
 

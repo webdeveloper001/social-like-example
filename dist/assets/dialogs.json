@@ -46,5 +46,19 @@
     "dialog.contactInfoIncomplete.title": "Contact Info Incomplete",
     "dialog.contactInfoIncomplete.text": "Your contact information is incomplete. Please make sure your information is complete.",   
     "dialog.nothingSelectedForPurchase.title": "Nothing Selected",
-    "dialog.nothingSelectedForPurchase.text": "You have not selected any subscription. Select the checkboxes for each subscription you wish to purchase."   
+    "dialog.nothingSelectedForPurchase.text": "You have not selected any subscription. Select the checkboxes for each subscription you wish to purchase.",
+    "dialog.nologinsignup.title": "You are not logged in",
+    "dialog.nologinsignup.text": "You need to log in in order to sign up to be a Promoter.",
+    "dialog.emailisinvalid.title": "Email is invalid",
+    "dialog.emailisinvalid.text": "Please enter a valid email address.",
+    "dialog.missingcode.title": "Missing Promoter Code",
+    "dialog.missingcode.text": "You are missing the promoter code. Click on the button 'Get Code' to get your code, and then click on 'Submit'.",
+    "dialog.addressisinvalid.title": "Address is invalid",
+    "dialog.addressisinvalid.text": "Please enter a valid address.",
+    "dialog.phoneisinvalid.title": "Phone Number is invalid",
+    "dialog.phoneisinvalid.text": "Please enter a valid phone number.",
+    "dialog.firstnameisinvalid.title": "First name is invalid",
+    "dialog.firstnameisinvalid.text": "Please enter a valid first name." ,
+    "dialog.lastnameisinvalid.title": "Last name is invalid",
+    "dialog.lastnameisinvalid.text": "Please enter a valid last name." 
 }
