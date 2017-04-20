@@ -16,7 +16,7 @@
 
  <!-- <div class="row" ng-if="!vm.fbm" style="border:0px;margin:0px;padding:0px"> 
 	<div class="col-sm-12 col-md-8" style="display:{{(vm.isNhRdy || vm.isCity) ? 'inline':'none'}}"> -->
-<div ng-if="!vm.fbm">	
+<div ng-if="!vm.fbm">
 		<div class="input-group" style="background-color:{{vm.querybc}};padding:5px">
 			<input type="text" class="form-control" placeholder="Search in {{vm.searchScope}}" 
 			ng-model="vm.val" ng-change="vm.getResults()" id="SearchInput">
@@ -116,12 +116,14 @@ background: #595959;
 
 		<div ng-repeat="x in vm.feeds | orderBy:'-id' | limitTo:vm.fres" ng-if="vm.isCity" style="padding:0px;border:0px;margin-top:10px;">
 			<div class="row" style="margin:4px">
-				<div ng-if="!x.picture" class="usericon col-xs-2 col-sm-2 col-md-1 col-lg-1" style="background-color:{{x.bc}};color:{{x.fc}};height:35px;" align="middle">
-					{{x.initials}}
+				
+				<div ng-if="!x.picture" class="profile-avatar-wrapper col-xs-2 col-sm-2 col-md-1 col-lg-1">
+					<div class="empty-profile-avatar-wrapper"  style="background-color:{{x.bc}};color:{{x.fc}};">{{x.initials}}</div>
 				</div>
-				<div ng-if="x.picture" class="usericon col-xs-2 col-sm-2 col-md-1 col-lg-1" align="middle">
-					<img ng-src="{{x.picture}}" class="img-responsive img-circle" style="width: 35px; height: 35px"/>
+				<div ng-if="x.picture" class="profile-avatar-wrapper col-xs-2 col-sm-2 col-md-1 col-lg-1" align="middle">
+					<img ng-src="{{x.picture}}" class="img-responsive img-circle profile-avatar"/>
 				</div>
+
 				<div class="col-xs-10 col-sm-10 col-md-11 col-lg-11" style="line-height:35px">
 					<div ng-if="x.action == 'addedAnswer'">
 						added <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a> to

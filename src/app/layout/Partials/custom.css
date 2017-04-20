@@ -259,15 +259,21 @@ td.happy
     background-color: #e6e6e6;
 }
 
-.usericon
-{
-    padding-top: 5px;
-    padding-right: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
 
-    border-right: 0 solid white;
-    border-left: 10px solid white;
+.profile-avatar-wrapper{
+}
+.profile-avatar-wrapper .empty-profile-avatar-wrapper{
+	border-radius: 50%;
+	line-height: 35px;
+	text-align: center;
+	width: 35px;
+	height: 35px;
+	margin: 0px auto;
+}
+
+.profile-avatar-wrapper img{
+	max-width:  35px;
+	height: 35px;
 }
 
 
