@@ -1059,19 +1059,13 @@
         }
 
         function loadComments() {
-            commentops.loadComments('answer', cObj)
+            commentops.loadComments('category', cObj)
             .then(function(){
 
-                console.log(cObj.comments);
                 $q.all(cObj.comments.map(function(comment){ return fbusers.getFBUserById(comment.user); }))
                 .then(function (fbUsers){
                     for (var i = 0; i < cObj.comments.length; i++) {
-                        // var userWithPic = angular.copy(cObj[i]);
                         cObj.comments[i].picture = fbUsers[i] ? fbUsers[i].picture.data.url : null;
-                        console.log(cObj.comments[i]);
-                        // .$apply();
-                        // vm.feeds[i] = userWithPic;
-                        // vm.feeds[i] = userWithPic;
                     }
                 });
                 

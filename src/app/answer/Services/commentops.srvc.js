@@ -102,6 +102,7 @@
             cobj.body = x.newComment;
             cobj.username = $rootScope.user.name;
             cobj.user = $rootScope.user.id;
+            cobj.picture = $rootScope.user.picture.data.url;
             cobj.timestmp = Date.now();
             x.newComment = '';
             if (type == 'category') {

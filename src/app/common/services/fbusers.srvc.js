@@ -32,6 +32,7 @@
                 return $q.when(user);
             return $facebook.api('/'+fbId+'?fields=first_name,gender,locale,picture,last_name,email', 'GET').then(
             function(user){
+                service.addFBUser(user);
                 return user;
             },
             function(err){

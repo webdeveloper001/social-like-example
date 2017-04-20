@@ -43,6 +43,7 @@
         vm.selRank = 'active';
         vm.selDistance = '';
         vm.commLoaded = false;
+        vm.user = $rootScope.user;
         //var myParent = $rootScope.parentNum;
 
         var votetable = [];
@@ -925,7 +926,17 @@
             //if (!vm.isE) vm.showR = false || (!vm.sm);
         }
         function loadComments() {
-            commentops.loadComments('category', cObj);
+            commentops.loadComments('category', cObj)
+            .then(function(){
+
+                $q.all(cObj.comments.map(function(comment){ return fbusers.getFBUserById(comment.user); }))
+                .then(function (fbUsers){
+                    for (var i = 0; i < cObj.comments.length; i++) {
+                        cObj.comments[i].picture = fbUsers[i] ? fbUsers[i].picture.data.url : null;
+                    }
+                });
+                
+            })
         }
         function postComment() {
             commentops.postComment('category', cObj);
