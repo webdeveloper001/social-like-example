@@ -163,7 +163,7 @@
             //if there is no category, look for it in cookies
             if ($rootScope.cCategory == undefined) {
                 var ccategoryid = $cookies.get('ccategory');
-                console.log("@answerDetail - ccategory ", ccategoryid);
+                if ($rootScope.DEBUG_MODE) console.log("@answerDetail - ccategory ", ccategoryid);
                 var idx = $rootScope.content.map(function (x) { return x.id; }).indexOf(ccategoryid);
                 if (idx > -1) $rootScope.cCategory = $rootScope.content[idx];
             }

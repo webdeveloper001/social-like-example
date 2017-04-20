@@ -91,8 +91,7 @@
             if ($state.current.name == 'editAnswer' && !$rootScope.cmd1exe) {
                 $rootScope.cmd1exe = true;
                 $rootScope.blobimage = data;
-                selectImage();
-                
+                selectImage();                
             }
         });
         

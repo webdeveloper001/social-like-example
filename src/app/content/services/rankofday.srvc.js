@@ -11,10 +11,13 @@
 
         // Members
         var _rankofday = [];
+        var _allranks = [];
         var baseURI = '/api/v2/mysql/_table/rankofday';
 
         var service = {
             getrankofday: getrankofday,
+            getall: getall,
+            update: update
         };
 
         return service;
@@ -44,6 +47,56 @@
             function querySucceeded(result) {
 
                 return _rankofday = result.data.resource;
+            }
+        }
+
+        function getall(){
+            var url = baseURI;
+            return $http.get(url).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+
+                return _allranks = result.data.resource;
+            }
+        }
+
+        function update(id, field, val) {
+           
+            //form match record
+            var obj = {};
+            obj.resource = [];
+
+            var data = {};
+            data.id = id;
+            
+            for (var i=0; i<field.length; i++){
+                switch (field[i]){
+                    case "introtext": data.introtext = val[i]; break;                    
+                }
+            }
+            //console.log("data", data);
+            obj.resource.push(data);
+
+            var url = baseURI;
+            
+            //update local copy
+            var idx = _allranks.map(function(x) {return x.id; }).indexOf(id);  
+            for (var i=0; i<field.length; i++){
+                switch (field[i]){
+                    case "name": _allranks[idx].introtext = val[i]; break;                    
+                }
+            }                        
+            
+            return $http.patch(url, obj, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                body: obj
+            }).then(querySucceeded, _queryFailed);
+            function querySucceeded(result) {
+                
+                console.log("updating rank of day succesful");
+                return result.data;
             }
         }
         

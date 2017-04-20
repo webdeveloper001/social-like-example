@@ -217,7 +217,9 @@
             //Create seach strings combination of tags, title and answers            
             for (var i = 0; i < $rootScope.content.length; i++) {                
                 //Create single string for search
-                $rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title + " " + $rootScope.content[i].answertags;
+                //$rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title + " " + $rootScope.content[i].answertags;
+                $rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title;
+            
             }
         }
 

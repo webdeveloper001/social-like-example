@@ -60,5 +60,11 @@
     "dialog.firstnameisinvalid.title": "First name is invalid",
     "dialog.firstnameisinvalid.text": "Please enter a valid first name." ,
     "dialog.lastnameisinvalid.title": "Last name is invalid",
-    "dialog.lastnameisinvalid.text": "Please enter a valid last name." 
+    "dialog.lastnameisinvalid.text": "Please enter a valid last name.",
+    "dialog.nouploadedimage.title": "No Uploaded Image",
+    "dialog.nouploadedimage.text": "Please upload a featured image.",
+    "dialog.introTextSaved.title": "Success",
+    "dialog.introTextSaved.text": "Intro text for ranking saved succesfully!.",
+    "dialog.wrongPassword.title": "Wrong Password",
+    "dialog.wrongPassword.text": "The password you have entered is incorrect."   
 }

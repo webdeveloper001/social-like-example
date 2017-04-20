@@ -34,6 +34,7 @@
         vm.hidelogo = false;
 
         vm.goPrivacyPolicy = goPrivacyPolicy;
+        vm.goRankofDayConsole = goRankofDayConsole;
 
         $rootScope.$on('refreshRanks', function () {
             if ($state.current.name == 'cwrapper') {
@@ -142,6 +143,8 @@
             $rootScope.districts = [
                 "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
                 "Marina", "Bankers Hill"];
+            
+            $rootScope.allnh = $rootScope.neighborhoods.concat($rootScope.districts);
 
             $http.get('../../../assets/fields.json').then(function (response) {
                 $rootScope.typeSchema = response.data;
@@ -221,6 +224,10 @@
 
         function goPrivacyPolicy(){
             $state.go('privacypolicy');
+        }
+
+        function goRankofDayConsole(){
+            $state.go('rodconsole');
         }
 
         function showNeighborhoods(){

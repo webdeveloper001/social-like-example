@@ -10,21 +10,18 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
             isRoW: '=rankofweek',
             updateView: '&updateView'
         },
-        controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 'vrows','$window','cblock','color',
+        controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 'vrows','$window','cblock','color','search',
             
-            function contentCtrl($scope, query, $http, answer, table, catans, $timeout, vrows, $window, cblock, color) {
+            function contentCtrl($scope, query, $http, answer, table, catans, $timeout, vrows, $window, cblock, color, search) {
                 var vm = $scope;
                 vm.title = 'mycontent';
 
-                vm.results = [];
-                vm.results_nm = [];
                 vm.sm = $rootScope.sm;
                 
                 //Methods
                 vm.loadContent = loadContent;
 
-                if (vm.modType == 'query') vm.maxRes = 4000;
-                else vm.maxRes = 4;
+                vm.maxRes = 4;
 
                 vm.btext = 'see more';
                 var strlen_o = 0;
@@ -35,19 +32,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 if ($window.innerWidth >= 992 && $window.innerWidth < 1200) vm.thumbheight = '80px';
                 if ($window.innerWidth > 1200) vm.thumbheight = '100px';
 
-                //if (!vm.isDynamic) {
-                //  console.log("this is the spot");
                 if (vm.modType == 'rankofweek') getRankofDay();
-                else if (vm.modType == 'query') getRanks();
                 else loadContent();
-                //}
                 
-                //console.log("I am directive instance! ",vm.modType,vm.isDynamic,vm.isRoW);
-
-                $rootScope.$on('refreshRanks', function (e) {
-                    //vm.input = $rootScope.inputVal;
-                    if (vm.modType == 'query') getRanks();
-                });
 
                 $rootScope.$on('loadNh', function (e) {
                     if (vm.modType == 'rankofweek') getRankofDay();
@@ -58,189 +45,6 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     applyRule();
                 });
             
-                //Filter content based on user input
-                function getRanks() {
-
-                    vm.hideme = false;
-                    var rt = '';   //rank title 
-                    var ss = '';   //search string
-                    var inm = false;
-
-                    vm.nm = false;  //near me
-                    vm.rt = false;   
-                    vm.rt_nm = false;
-
-                    var rank = {};
-                    var tagCapitalized = '';
-                    var tagFirstLowered = '';
-                    var rankObj = {};
-                    /*
-                    function compare(a, b) {
-                        return a.isatomic - b.isatomic;
-                    }
-                    */
-
-                    if ($rootScope.inputVal != undefined && vm.isDynamic) {
-                        var userIsTyping = false;
-                        var inputVal = $rootScope.inputVal;
-                        //Check if user typed 'near me' conditions
-                        if (inputVal.indexOf('near me') > -1 ||
-                            inputVal.indexOf('near') > -1 ||
-                            inputVal.indexOf('close') > -1 ||
-                            inputVal.indexOf('close to') > -1 ||
-                            inputVal.indexOf('close to me') > -1) {
-                            inm = true; //input has near me context
-                            inputVal = inputVal.replace('near me', 'in San Diego');
-                            inputVal = inputVal.replace('near', 'in San Diego');
-                            inputVal = inputVal.replace('close to me', 'in San Diego');
-                            inputVal = inputVal.replace('close to', 'in San Diego');
-                            inputVal = inputVal.replace('close', 'in San Diego');
-                        }
-                        else {
-                            inm = false;
-                        }
-                        
-                        //ignore user typed words such as 'best', 'top'
-                        if (inputVal.indexOf('best ') > -1 ) inputVal = inputVal.replace('best ', '');
-                        if (inputVal.indexOf('Best ') > -1 ) inputVal = inputVal.replace('Best ', '');
-                        if (inputVal.indexOf('top ') > -1 ) inputVal = inputVal.replace('top ', '');
-                        if (inputVal.indexOf('Top ') > -1 ) inputVal = inputVal.replace('Top ', '');
-                        if (inputVal == 'Food ') inputVal = inputVal.replace('Food ', 'Food Near Me');
-                        if (inputVal == 'food ') inputVal = inputVal.replace('food ', 'Food Near Me');
-                        
-                        //Special Cases
-                        if (inputVal == 'pho' || inputVal == 'Pho'){
-                            inputVal = 'vietnamese';
-                        }
-
-                        if ($rootScope.isNh) inputVal = inputVal + ' ' + $rootScope.cnh;
-                        //vm.showR = false;
-                        //$rootScope.showR = false;
-                        vm.results = [];
-                        vm.results_nm = [];
-                        vm.results_rt = [];
-                        vm.results_rt_nm = [];
-
-                        if (inputVal.length >= 3) {
-                            //vm.content = $rootScope.content;
-                            var valTags = inputVal.split(" ");
-                            for (var j = 0; j < $rootScope.content.length; j++) {
-                                ss = $rootScope.searchStr[j]; //Search string
-                                rt = $rootScope.content[j].title; // title
-                                rank = $rootScope.content[j];
-
-                                var r_ss = true; //match in search string
-                                var r_rt = true; //match in title
-                                var sc = false; //special case
-                                
-                                //check that all tags exist
-                                for (var k = 0; k < valTags.length; k++) {
-                                    tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
-                                    tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
-
-                                    r_ss = r_ss &&
-                                    (ss.indexOf(valTags[k]) > -1 ||
-                                        ss.indexOf(valTags[k].toUpperCase()) > -1 ||
-                                        ss.indexOf(tagCapitalized) > -1 ||
-                                        ss.indexOf(tagFirstLowered) > -1);
-
-                                    r_rt = r_rt &&
-                                    (rt.indexOf(valTags[k]) > -1 ||
-                                        rt.indexOf(valTags[k].toUpperCase()) > -1 ||
-                                        rt.indexOf(tagCapitalized) > -1 ||
-                                        rt.indexOf(tagFirstLowered) > -1);
-                                }
-
-                                if (r_rt && rank.tags.indexOf('isMP') > -1) {
-                                    vm.results_rt.push($rootScope.content[j]);
-                                    vm.rt = true;
-                                }
-
-                                else if (r_ss) {
-                                    if (inm) {
-                                        if (rank.title.indexOf('in San Diego') > -1) {
-                                            vm.results.push($rootScope.content[j]);
-                                        }
-                                    }
-                                    else vm.results.push($rootScope.content[j]);
-                                }
-                            }
-                            //show first non-atomic ranks -- for better user experience
-                            //vm.answers = vm.results.sort(compare);
-                            /*
-                            if (inm) {
-                                for (var k = 0; k < vm.results.length; k++) {
-                                    console.log("results- ",vm.results[k].title);
-                                    if (vm.results[k].title.indexOf('in San Diego') > -1) {
-                                        rt = vm.results[k].title.replace('in San Diego', 'close to me');
-                                        vm.results[k].title = rt;
-                                        //break;
-                                    }
-                                }
-                                //if a result includes San Diego, also add a results as 'Near Me'
-                            }
-                            else {*/
-                            /*
-                            for (var k = 0; k < vm.results_rt.length; k++) {
-                                rt = vm.results_rt[k].title; //Rank title
-                                if (rt.indexOf('in San Diego') > -1 && vm.results_rt[k].isatomic == false) {
-                                    rankObj = {};
-                                    rankObj = JSON.parse(JSON.stringify(vm.results_rt[k]));
-                                    rankObj.title = rankObj.title.replace('in San Diego', 'close to me');
-                                    vm.results_nm.push(rankObj);
-                                    vm.nm = true;
-                                }
-                            }*/
-
-                            for (var k = 0; k < vm.results.length; k++) {
-                                rt = vm.results[k].title; //Rank title
-                                if (rt.indexOf('in San Diego') > -1 && vm.results[k].isatomic == false) {
-                                    rankObj = {};
-                                    rankObj = JSON.parse(JSON.stringify(vm.results[k]));
-                                    rankObj.title = rankObj.title.replace('in San Diego', 'close to me');
-                                    vm.results_nm.push(rankObj);
-                                    vm.nm = true;
-                                }
-                            }
-                            for (var k = 0; k < vm.results_rt.length; k++) {
-                                rt = vm.results_rt[k].title; //Rank title
-                                if (rt.indexOf('in San Diego') > -1 && vm.results_rt[k].isatomic == false) {
-                                    rankObj = {};
-                                    rankObj = JSON.parse(JSON.stringify(vm.results_rt[k]));
-                                    rankObj.title = rankObj.title.replace('in San Diego', 'close to me');
-                                    vm.results_rt_nm.push(rankObj);
-                                    vm.rt_nm = true;
-                                }
-                            }
-                            //console.log("vm.results_nm - ", vm.results_nm);
-                            //}
-                            
-                            //resLT6 is used to hide the <<see more>> choice
-                            if (vm.results.length < 6) vm.resLT6 = true;
-                            else vm.resLT6 = false;
-
-                            if (inputVal.length >= strlen_o) userIsTyping = true;
-                            else userIsTyping = false;
-                            //if less than 5 results, write 'query record
-                            /*
-                            if (vm.results.length <= 5 && (inputVal.length % 5 == 0) && userIsTyping) {
-                                query.postQuery(inputVal, vm.results.length)
-                                //console.log("query!")
-                            }*/
-                            strlen_o = inputVal.length;
-                            //sort results, give priority to city ones
-                            function compare(a, b) {
-                                return b.title.indexOf('in San Diego') - a.title.indexOf('in San Diego');
-                            }
-                            vm.results = vm.results.sort(compare);    
-                        }
-                
-                      else {
-                            vm.results = [];
-                        }
-                    }
-                }
-
                 function getRankofDay() {
                 
                     //Clear images:
@@ -327,22 +131,11 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     }
                     
                     vm.rankOfDay = vm.results[0].title;
-                    
-                    //Determine background color for rank of rankofday
-                    if (vm.results[0].tags.indexOf('food')>-1) {vm.rdbc = 'brown'; vm.rdfc = '#f8f8ff';}
-                    else if (vm.results[0].tags.indexOf('lifestyle')>-1) {vm.rdbc = '#008080'; vm.rdfc = '#f8f8ff';}
-                    else if (vm.results[0].tags.indexOf('social')>-1) {vm.rdbc = '#4682b4'; vm.rdfc = '#f8f8ff';}
-                    else if (vm.results[0].tags.indexOf('city')>-1) {vm.rdbc = 'gray'; vm.rdfc = '#f8f8ff';}
-                    else if (vm.results[0].tags.indexOf('neighborhood')>-1) {vm.rdbc = 'gray'; vm.rdfc = '#f8f8ff';}
-                    else if (vm.results[0].tags.indexOf('politics')>-1) {vm.rdbc = '#595959'; vm.rdfc = '#f8f8ff';}
-                    else if (vm.results[0].tags.indexOf('sports')>-1) {vm.rdbc = '#e6e6e6'; vm.rdfc = '#0033cc';} 
-                    else if (vm.results[0].tags.indexOf('beauty')>-1) {vm.rdbc = '#a3297a'; vm.rdfc = '#f8f8ff';}
-                    else if (vm.results[0].tags.indexOf('health')>-1) {vm.rdbc = 'green'; vm.rdfc = '#f8f8ff';}
-                    else if (vm.results[0].tags.indexOf('technology')>-1) {vm.rdbc = 'gray'; vm.rdfc = '#f8f8ff';}
-                    else if (vm.results[0].tags.indexOf('dating')>-1) {vm.rdbc = '#b22222'; vm.rdfc = '#f8f8ff';}
-                    else if (vm.results[0].tags.indexOf('personalities')>-1) {vm.rdbc = '#e6b800'; vm.rdfc = 'black';}
-                    else {vm.rdbc = 'gray'; vm.rdfc = '#f8f8ff';} 
 
+                    var colors = color.defaultRankColor(vm.results[0]);
+                    vm.rdbc = colors[0];
+                    vm.rdfc = colors[1];
+                    
                     vm.rdbc2 = color.shadeColor(vm.rdbc,0.4);
                 }
 
@@ -350,8 +143,12 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 function loadContent() {
                     var catstr = '';
                     var idxs = [];
+                    var nidx = 0;
+                    var rankid = 0;
                     vm.results = [];
                     var bFound = false;
+
+                    //console.log("$rootScope.content - ", $rootScope.content);
                 
                     //load colors and headline
                     for (var i = 0; i < $rootScope.headlines.length; i++) {
@@ -375,7 +172,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             idxs = catstr.split(':');
                             shuffle(idxs);
                             for (var j = 0; j < idxs.length; j++) {
-                                vm.results.push($rootScope.content[idxs[j]]);
+                                nidx = $rootScope.content.map(function(x) {return x.id; }).indexOf(Number(idxs[j]));
+                                vm.results.push($rootScope.content[nidx]);
                             }
                             bFound = true;
                             break;
@@ -387,8 +185,10 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             catstr = $rootScope.cblocks[i].catstr;
                             idxs = catstr.split(':');
                             shuffle(idxs);
+
                             for (var j = 0; j < idxs.length; j++) {
-                                vm.results.push($rootScope.content[idxs[j]]);
+                                nidx = $rootScope.content.map(function(x) {return x.id; }).indexOf(Number(idxs[j])); 
+                                vm.results.push($rootScope.content[nidx]);
                             }
                             bFound = true;
                             break;
@@ -398,7 +198,9 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             catstr = $rootScope.cblocks[i].catstr;
                             idxs = catstr.split(':');
                             for (var j = 0; j < idxs.length; j++) {
-                                vm.results.push($rootScope.content[idxs[j]]);
+                                //vm.results.push($rootScope.content[idxs[j]]);
+                                nidx = $rootScope.content.map(function(x) {return x.id; }).indexOf(Number(idxs[j])); 
+                                vm.results.push($rootScope.content[nidx]);
                             }
                             bFound = true;
                             break;
@@ -414,7 +216,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
                     if (bFound && resGT0) vm.hideme = false;
                     else vm.hideme = true;
-
+                    //console.log("vm.results - ", vm.results);
                     //
                     vm.resultsTop = [];
                     var resObj = {};
