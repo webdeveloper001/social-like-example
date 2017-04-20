@@ -280,18 +280,20 @@ td.happy
 /*----------------- Navbar ----------------------*/
 
 /* navbar profile picture */
-.nav li a.navbar-profile-picture-wrapper{
-    padding-left: 50px;
+a.navbar-profile-picture-wrapper{
+
+    width: 100px;
+    padding: 5px;
+    display: inline;
+    line-height: 40px;
 }
 
-.nav li a.navbar-profile-picture-wrapper .navbar-profile-picture{
-    position: absolute;
-    left: 0px;
-    top: 5px;
+a.navbar-profile-picture-wrapper .navbar-profile-picture{
     max-height: 40px;
+    float: left;
 }
-.nav li:hover a.navbar-profile-picture-wrapper .navbar-profile-picture{
-	opacity: 0.7;
+a.navbar-profile-picture-wrapper span{
+    padding-left: 10px;
 }
 
 @media screen and (max-width: 768px) {

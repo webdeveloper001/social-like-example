@@ -7,11 +7,11 @@
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope'
-        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', '$location'];
+        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', '$location', '$q', 'fbusers'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime
         , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope
-        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, $location) {
+        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, $location, $q, fbusers) {
         /* jshint validthis:true */
 
         var vm = this;

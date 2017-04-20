@@ -1059,7 +1059,7 @@
         }
 
         function loadComments() {
-            commentops.loadComments('category', cObj)
+            commentops.loadComments('answer', cObj)
             .then(function(){
 
                 $q.all(cObj.comments.map(function(comment){ return fbusers.getFBUserById(comment.user); }))
