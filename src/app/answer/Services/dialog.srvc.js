@@ -1375,31 +1375,36 @@
             BootstrapDialog.show({
                 title: title,
                 message: message,
-                buttons: [{
+                buttons: [
+                {
                     label: 'Not now',
                     action: function (dialogItself) {
                         dialogItself.close();
                     }
                 },
-                    {
-                        icon: 'fa fa-facebook',
-                        label: 'Login',
-                        cssClass: 'btn-primary',
-                        action: function () {
+                {
+                    icon: 'fa fa-facebook',
+                    label: 'Login',
+                    cssClass: 'btn-primary',
+                    action: function (dialogItself) {
 
-                             //Store current state 
-                            $rootScope.stateName = $state.current.name;
-                            if ($rootScope.stateName == 'rankSummary') $rootScope.stateNum = $rootScope.cCategory.id;
-                            else if ($rootScope.stateName == 'answerDetail') $rootScope.stateNum = $rootScope.canswer.id;
-                            else $rootScope.stateNum = undefined;
-                        
-                            login.facebookSDKLogin();
-                            // login.loginWithFacebook()
-                            //     .then(function (result) {
-                            //         $window.location = result.url;
-                            //     });
-                        }
-                    }]
+                         //Store current state 
+                        $rootScope.stateName = $state.current.name;
+                        if ($rootScope.stateName == 'rankSummary') $rootScope.stateNum = $rootScope.cCategory.id;
+                        else if ($rootScope.stateName == 'answerDetail') $rootScope.stateNum = $rootScope.canswer.id;
+                        else $rootScope.stateNum = undefined;
+                    
+                        login.facebookSDKLogin()
+                        .then(function(){
+                            dialogItself.close();
+                            $state.go($state.current, {}, {reload: true}); 
+                        });
+                        // login.loginWithFacebook()
+                        //     .then(function (result) {
+                        //         $window.location = result.url;
+                        //     });
+                    }
+                }]
             });
         }
 
