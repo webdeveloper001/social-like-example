@@ -24,7 +24,7 @@
         vm.title = 'cwrapper';
 
         vm.switchScope = switchScope;
-        vm.refreshRanks = refreshRanks;
+        vm.getResults = getResults;
 
         if ($rootScope.hidelogo == undefined) vm.hidelogo = false;
         else vm.hidelogo = $rootScope.hidelogo;
@@ -103,7 +103,7 @@
             $rootScope.cCategory = undefined;
             
             vm.val = $rootScope.inputVal; //remember user query
-
+            
             var bgc = '#595959';
             var bgc2 = color.shadeColor(bgc, 0.5);
             vm.headerStyle = 'color:#f8f8ff;width:50%;border-style:none;'+
@@ -205,7 +205,7 @@
            
         }
 
-        function refreshRanks() {
+        function getResults() {
             $rootScope.inputVal = vm.val;
             if ($rootScope.inputVal.length > 0) {
                 $rootScope.searchActive = true;
@@ -219,14 +219,9 @@
             }
             vm.searchActive = $rootScope.searchActive;
             $window.scroll(0,0);
-            console.log("@refreshRanks");
-            $rootScope.$emit('refreshRanks');
+            $rootScope.$emit('getResults');
             
-             //This is to prevent double pulses and have two answers get submitted by hardware glitch
-             //$timeout(function () {
-             //       if ($rootScope.inputVal == vm.val) $rootScope.$emit('refreshRanks');
-             //}, 300);
-        }
+             }
 
         function switchScope(x) {
             if (x == 1) {
@@ -264,6 +259,8 @@
             vm.cnh = x;
             vm.isNhRdy = true;
             $rootScope.isNhRdy = vm.isNhRdy;
+            vm.inputVal = '';
+            vm.searchActive = false;
             $rootScope.$emit('loadNh');
             vm.searchScope = x;
             vm.val = '';

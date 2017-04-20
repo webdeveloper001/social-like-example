@@ -45,7 +45,8 @@
             confirmCancel: confirmCancel,
             editNumRanks: editNumRanks,
             editInfo: editInfo,
-            notificationWithCallback: notificationWithCallback
+            notificationWithCallback: notificationWithCallback,
+            enterPassword: enterPassword
         };
 
         return service;
@@ -1902,6 +1903,55 @@
                 }]
             });
 
+        }
+
+        function enterPassword(ok_callback, nok_callback) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Password Required';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Add';
+            message = '<br> Please enter access password:' +
+            '<br><br>' +
+            '<input class="form-control" type="text" placeholder="Enter password">' +
+            '<br><br>';
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                
+                buttons: [
+                    {
+                        id: 'btn1',
+                        label: 'Cancel',
+                        action: function (dialog) {
+                            nok_callback();
+                            dialog.close();
+                        }
+                    },
+                    {
+                        id: 'btn2',
+                        label: 'Go',
+                        action: function (dialog) {
+
+                            var password = dialog.getModalBody().find('input').val();
+                            if (password == 'S@nDieg0') {
+                                ok_callback();
+                            }
+                            else {
+                                nok_callback();
+                                getDialog('wrongPassword');
+                            }
+                            dialog.close();
+                        }
+                    }]
+            });
         }
     }
 })();

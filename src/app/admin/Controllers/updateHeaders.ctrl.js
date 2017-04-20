@@ -84,7 +84,8 @@
                             //AM: Changed searchStr to tags searchStr[j]
                         }
                         if (r) {
-                            arrIdxs.push(j);
+                            //arrIdxs.push(j);
+                            arrIdxs.push($rootScope.content[j].id);
                             //catstr = catstr + ':' + j;
                         }
                     }

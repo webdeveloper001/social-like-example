@@ -85,6 +85,20 @@
                 url: '/foodRanks',
                 templateUrl: 'app/admin/Partials/foodRanks.html',
                 controller: 'foodRanks as vm'               
+            },
+            {
+                name: 'rodconsole',
+                url: '/rodconsole',
+                views: {
+                    "@": {
+                        templateUrl: 'app/admin/Partials/rodconsole.html',
+                        controller: 'rodconsole as vm'
+                    },
+                    "navbar@rodconsole": {
+                        templateUrl: 'app/layout/Partials/navbar.html',
+                        controller: 'navbar as vm'
+                    }
+                }
             }
         ];
 

@@ -269,7 +269,11 @@
                     case "isatomic": data.isatomic = val[i]; break;
                     case "catstr": data.catstr = val[i]; break;
                     case "numcom": data.numcom = val[i]; break;
-                    case "ismp": data.ismp = val[i]; break;                    
+                    case "ismp": data.ismp = val[i]; break;
+                    case "fimage": data.fimage = val[i]; break;
+                    case "bc": data.bc = val[i]; break;
+                    case "fc": data.fc = val[i]; break;
+                    case "shade": data.shade = val[i]; break;                    
                 }
             }
             //console.log("data", data);
@@ -301,7 +305,11 @@
                     case "isatomic": $rootScope.content[idx].isatomic = val[i]; break;
                     case "catstr": $rootScope.content[idx].catstr = val[i]; break;
                     case "numcom": $rootScope.content[idx].numcom = val[i]; break;
-                    case "ismp": $rootScope.content[idx].ismp = val[i]; break;                   
+                    case "ismp": $rootScope.content[idx].ismp = val[i]; break;
+                    case "fimage": $rootScope.content[idx].fimage = val[i]; break;
+                    case "bc": $rootScope.content[idx].bc = val[i]; break;
+                    case "fc": $rootScope.content[idx].fc = val[i]; break;
+                    case "shade": $rootScope.content[idx].shade = val[i]; break;                   
                 }
             }
 
