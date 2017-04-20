@@ -61,18 +61,9 @@
             $cookies.put('ccategory', ccategory);
 
             var deferred = $q.defer();
-            var url = INSTANCE_URL + '/api/v2/user/session?service=facebook';
-
-            deferred.resolve({ url: url });
+            deferred.resolve(true);
 
             return deferred.promise;
-
-            //return $http.post('/api/v2/user/session?service=facebook', {}).then(querySucceeded, _queryFailed);
-
-            //function querySucceeded(result) {
-
-            //    console.log("facebook result", result);
-            //}
         }
 
         function oauthWithFacebook(queryString) {

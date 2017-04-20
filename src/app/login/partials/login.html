@@ -8,9 +8,13 @@
         <form ng-submit="vm.submit()" ng-if="!vm.isProgressing">
             <div class="form-group text-center">
                    
-                <button type="button" class="btn btn-primary form-control" ng-click="vm.redirectForFacebook()">
+                <button type="button" class="btn btn-primary form-control" ng-click="vm.facebookLogin()">
                     <i class="fa fa-facebook"></i>
                     Login
+                </button>
+                <button type="button" class="btn btn-primary form-control" ng-click="vm.redirectForFacebook()">
+                    <i class="fa fa-facebook"></i>
+                    Old Login
                 </button>
                 <br><br>
                 <button type="button" class="btn btn-default form-control" style="vertical-align:middle;" 
