@@ -6,13 +6,12 @@
         .controller('cwrapper', cwrapper);
 
     cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
-        'query', 'table', 'dialog', 'uaf','$window','userdata','$location','color'];
+        'query', 'table', 'dialog', 'uaf','$window','userdata','$location','color', 'fbusers', '$q'];
 
     function cwrapper($rootScope, $state, $http, $stateParams, $scope,
-        query, table, dialog, uaf, $window, userdata, $location, color) {
+        query, table, dialog, uaf, $window, userdata, $location, color, fbusers, $q) {
         /* jshint validthis:true */
         var vm = this;
-
         //-----SEO tags ----
         $scope.$parent.$parent.$parent.seo = { 
         pageTitle : 'Rank-X', 
@@ -323,7 +322,19 @@
         }
            
         function getFeed(){
-            vm.feeds = $rootScope.uafs;
+            // vm.feeds = angular.copy($rootScope.uafs);
+            vm.feeds = [];
+            $q.all($rootScope.uafs.map(function(feed){ return fbusers.getFBUserById(feed.userid); }))
+            .then(function (fbUsers){
+                for (var i = 0; i < $rootScope.uafs.length; i++) {
+                    var userWithPic = angular.copy($rootScope.uafs[i]);
+                    userWithPic.picture = fbUsers[i] ? fbUsers[i].picture.data.url : null;
+                    // .$apply();
+                    // vm.feeds[i] = userWithPic;
+                    vm.feeds[i] = userWithPic;
+                    console.log(vm.feeds[i]);
+                }
+            });
             vm.fres = 4;
             vm.ftext = 'see more';
             //console.log("vm.feeds - ", vm.feeds);

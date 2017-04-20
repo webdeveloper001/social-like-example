@@ -1393,10 +1393,11 @@
                             else if ($rootScope.stateName == 'answerDetail') $rootScope.stateNum = $rootScope.canswer.id;
                             else $rootScope.stateNum = undefined;
                         
-                            login.loginWithFacebook()
-                                .then(function (result) {
-                                    $window.location = result.url;
-                                });
+                            login.facebookSDKLogin();
+                            // login.loginWithFacebook()
+                            //     .then(function (result) {
+                            //         $window.location = result.url;
+                            //     });
                         }
                     }]
             });

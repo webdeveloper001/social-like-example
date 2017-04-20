@@ -5,7 +5,6 @@
         // Angular modules 
         'ngResource',
         'ngCookies',
-        'ngFacebook',
 
         // Custom modules 
 
@@ -30,7 +29,4 @@
         // use the shortcut in the initialize method directly
         //FacebookProvider.init('582752768556573');
     })
-    .config( function( $facebookProvider ) {
-        $facebookProvider.setAppId('1494723870571848');
-    });
 })();

@@ -26,6 +26,7 @@
         'mgcrea.ngStrap',
         
         '720kb.datepicker', //date picker for specials
-        '720kb.socialshare'
+        '720kb.socialshare',
+        'ngFacebook',
     ]);
 })();

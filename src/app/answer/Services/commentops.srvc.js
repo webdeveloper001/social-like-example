@@ -33,7 +33,7 @@
                 }
                 //comments = [];
                 if (type == 'answer') {
-                    comment2.getcomments().then(function (_comments) {
+                    return comment2.getcomments().then(function (_comments) {
                         //console.log("_comments", _comments);
                         x.comments = _comments;
                         for (var i = 0; i < x.comments.length; i++) {
@@ -64,7 +64,7 @@
                     });
                 }
                 if (type == 'category') {
-                    comment.getcomments().then(function (_comments) {
+                    return comment.getcomments().then(function (_comments) {
                         //console.log("_comments", _comments);
                         x.comments = _comments;
                         for (var i = 0; i < x.comments.length; i++) {

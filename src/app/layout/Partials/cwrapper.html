@@ -114,12 +114,15 @@ background: #595959;
 			</tbody>
 		</table>
 
-		<div ng-repeat="x in vm.feeds | orderBy:'-id' | limitTo:vm.fres" ng-if="vm.isCity" style="margin-bottom:10px;padding:0px;border:0px;margin-top:10px;">
+		<div ng-repeat="x in vm.feeds | orderBy:'-id' | limitTo:vm.fres" ng-if="vm.isCity" style="padding:0px;border:0px;margin-top:10px;">
 			<div class="row" style="margin:4px">
-				<div class="usericon col-xs-2 col-sm-2 col-md-1 col-lg-1" style="background-color:{{x.bc}};color:{{x.fc}};" align="middle">
+				<div ng-if="!x.picture" class="usericon col-xs-2 col-sm-2 col-md-1 col-lg-1" style="background-color:{{x.bc}};color:{{x.fc}};height:35px;" align="middle">
 					{{x.initials}}
 				</div>
-				<div class="col-xs-10 col-sm-10 col-md-11 col-lg-11">
+				<div ng-if="x.picture" class="usericon col-xs-2 col-sm-2 col-md-1 col-lg-1" align="middle">
+					<img ng-src="{{x.picture}}" class="img-responsive img-circle" style="width: 35px; height: 35px"/>
+				</div>
+				<div class="col-xs-10 col-sm-10 col-md-11 col-lg-11" style="line-height:35px">
 					<div ng-if="x.action == 'addedAnswer'">
 						added <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a> to
 						<a ng-click="vm.gotoRank(x)">{{x.text2}}</a>.

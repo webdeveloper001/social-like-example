@@ -7,11 +7,11 @@
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
         'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt',
-        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope','$cookies']; //AM:added user service
+        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope','$cookies', '$q', 'fbusers']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
         votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt,
-        $location, vrows, vrowvotes, imagelist, instagram, $scope, $cookies) { //AM:added user service
+        $location, vrows, vrowvotes, imagelist, instagram, $scope, $cookies, $q, fbusers) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
@@ -65,6 +65,7 @@
         vm.addRankforAnswer = addRankforAnswer;
         vm.votemodeON = votemodeON;
         vm.votemodeOFF = votemodeOFF;
+        vm.user = $rootScope.user;
 
         //Admin Function adding catans on spot
         vm.addCatans = addCatans;
@@ -1058,8 +1059,25 @@
         }
 
         function loadComments() {
-            commentops.loadComments('answer', cObj);
+            commentops.loadComments('answer', cObj)
+            .then(function(){
+
+                console.log(cObj.comments);
+                $q.all(cObj.comments.map(function(comment){ return fbusers.getFBUserById(comment.user); }))
+                .then(function (fbUsers){
+                    for (var i = 0; i < cObj.comments.length; i++) {
+                        // var userWithPic = angular.copy(cObj[i]);
+                        cObj.comments[i].picture = fbUsers[i] ? fbUsers[i].picture.data.url : null;
+                        console.log(cObj.comments[i]);
+                        // .$apply();
+                        // vm.feeds[i] = userWithPic;
+                        // vm.feeds[i] = userWithPic;
+                    }
+                });
+                
+            })
         }
+        
         function postComment() {
             commentops.postComment('answer', cObj);
         }

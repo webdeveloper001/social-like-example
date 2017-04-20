@@ -5,20 +5,58 @@
         .module('app')
         .factory('login', login);
 
-    login.$inject = ['$http', '$q', '$cookies', '$rootScope', 'INSTANCE_URL','$state','$location','$window'];
+    login.$inject = ['$http', '$q', '$cookies', '$rootScope', 'INSTANCE_URL','$state','$location','$window', '$facebook', 'fbusers'];
 
-    function login($http, $q, $cookies, $rootScope, INSTANCE_URL, $state, $location, $window) {
+    function login($http, $q, $cookies, $rootScope, INSTANCE_URL, $state, $location, $window, $facebook, fbusers) {
         var service = {
             initiate: initiate,
             loginWithFacebook: loginWithFacebook,
             oauthWithFacebook: oauthWithFacebook,
             register: register,
             logout: logout,
-            setFakeLocalUser: setFakeLocalUser
+            setFakeLocalUser: setFakeLocalUser,
+            facebookSDKLogin: facebookSDKLogin
         };
         // getUserObjectFromLocalStorage: getUserObjectFromLocalStorage,
 
         return service;
+
+        function facebookSDKLogin(){
+
+            service.loginWithFacebook()
+            .then(function(res){
+                return $facebook.login('public_profile,email,user_friends')
+                .then(function(res){
+                    if(res.status === 'connected'){
+                        return $facebook.api("/me?fields=id,name,picture,first_name,last_name,gender,age_range,locale");
+                    }
+                })
+                .then(function(me){
+                    console.log('My info: ', me);
+
+                    $rootScope.user = me;
+                    return $facebook.api('me/friends?fields=first_name,gender,locale,last_name,email,picture');
+                })
+                .then(function(friends){
+                    console.log('Got friends: ', friends);
+                    
+                    $rootScope.user.friends = friends;
+                    $rootScope.isLoggedIn = true;
+                    $rootScope.isAdmin = true;
+
+        			fbusers.addFBUser($rootScope.user);
+                    try {
+                        window.localStorage.user = JSON.stringify($rootScope.user);
+                    } catch (e) { }
+
+                    if ($rootScope.DEBUG_MODE) console.log("oauthWithFacebook succesful");
+                    $rootScope.$emit('redirectAfterLogin');
+                })
+                .catch(function(err){
+                    console.log(err);   
+                });
+            });   
+        }
 
         function initiate(options) {
           console.log("login/services/login.svc.js:initiate");
@@ -61,7 +99,9 @@
             $cookies.put('ccategory', ccategory);
 
             var deferred = $q.defer();
-            deferred.resolve(true);
+
+            var url = INSTANCE_URL + '/api/v2/user/session?service=facebook';
+            deferred.resolve({ url: url });
 
             return deferred.promise;
         }

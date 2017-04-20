@@ -4,11 +4,12 @@
 
     app.config(configure);
 
-    configure.$inject = ['$httpProvider','$locationProvider'];
+    configure.$inject = ['$httpProvider','$locationProvider', '$facebookProvider'];
 
-    function configure($httpProvider, $locationProvider) {
+    function configure($httpProvider, $locationProvide, $facebookProvider) {
 
         // http interceptor
         $httpProvider.interceptors.push('httpInterceptor');
+        $facebookProvider.setAppId('1494723870571848');
     }
 })();
