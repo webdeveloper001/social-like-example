@@ -130,6 +130,7 @@
               data.status = 'Basic';
               data.stripeid = '0';
               data.email = '';
+              data.username = $rootScope.user.name;
 
               // MINIMUM NEEDED
               // "user":999,

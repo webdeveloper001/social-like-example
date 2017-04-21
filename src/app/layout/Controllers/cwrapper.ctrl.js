@@ -128,7 +128,7 @@
             $rootScope.user.name = "Andres Moctezuma";
             $rootScope.user.first_name = 'Andres';
             $rootScope.user.last_name = 'Moctezuma';
-            $rootScope.user.id = 12;
+            $rootScope.user.id = "10104518570729893";
             userdata.loadUserData();        //load user data (votes and activities)
             userdata.loadUserAccount();     //load user business account
             //$rootScope.answeridxgps = 1258; //starting indx for gps conversion

@@ -915,7 +915,7 @@
             answer.updateAnswer(vm.answer.id, ['owner'], [$rootScope.user.id]).then(reloadAnswer);
             var item = {};
             item = vm.answer;
-            item.name = $rootScope.user.first_name + ' ' + $rootScope.user.last_name;  
+            item.username = $rootScope.user.first_name + ' ' + $rootScope.user.last_name;  
             
             useraccnt.adduseraccnt(item).then(function () {
                 //Check if user account has email - if not set warning in navbar
