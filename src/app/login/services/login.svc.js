@@ -209,25 +209,42 @@
 
             // taking the place of result.data below
             var fakeResult = new Object();
+            fakeResult.age_range = { min: 21 };
+            fakeResult.first_name = 'Test';
+            fakeResult.friends = {
+                data: [],
+                summary: {}
+            };
+            fakeResult.gender = 'male';
+            fakeResult.id = 187959328383879;
+            fakeResult.last_name = 'User';
+            fakeResult.locale = "us_EN";
+            fakeResult.name = "Test User";
+            fakeResult.picture = {
+                data: {
+                    url: "https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/18057110_194133167766495_4123816583005617544_n.jpg?oh=7dc367a88a4d28f4f84137f9007f847e&oe=59836C25"
+    
+                }
+            }
+            
+            // fakeResult.email = "sjurowski+facebook@ucsd.edu";
 
-            fakeResult.email = "sjurowski+facebook@ucsd.edu";
+            // // fakeResult.email = "10154674551822270+facebook@facebook.com";
+            // fakeResult.first_name = "Sandon";
+            // fakeResult.host = "bitnami-dreamfactory-df88";
+            // fakeResult.id = 187959328383879;
+            // // fakeResult.id = 29;
+            // fakeResult.is_sys_admin = false;
+            // fakeResult.last_login_date = "2016-12-13 21:04:47";
+            // fakeResult.last_name = "Jurowski";
+            // fakeResult.name = "Sandon Jurowski";
+            // fakeResult.role = "rank-user";
+            // fakeResult.role_id = 1;
+            // fakeResult.session_id = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI5LCJ1c2VyX2lkIjoyOSwiZW1haWwiOiIxMDE1NDY3NDU1MTgyMjI3MCtmYWNlYm9va0BmYWNlYm9vay5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cHM6XC9cL2FwaS5yYW5rLXguY29tXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNDgxNjYzMDg3LCJleHAiOjE0ODE2NjY2ODcsIm5iZiI6MTQ4MTY2MzA4NywianRpIjoiYWQ2M2Q0OTI1MDRmNTJiYjBkMWZiZjJkNzAxMjQzNDMifQ.T-3B-jnz4d2Q2Q5rfN1ePF7ujin982gzPYbRwhLo9Uc";
+            // fakeResult.session_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI5LCJ1c2VyX2lkIjoyOSwiZW1haWwiOiIxMDE1NDY3NDU1MTgyMjI3MCtmYWNlYm9va0BmYWNlYm9vay5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cHM6XC9cL2FwaS5yYW5rLXguY29tXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNDgxNjYzMDg3LCJleHAiOjE0ODE2NjY2ODcsIm5iZiI6MTQ4MTY2MzA4NywianRpIjoiYWQ2M2Q0OTI1MDRmNTJiYjBkMWZiZjJkNzAxMjQzNDMifQ.T-3B-jnz4d2Q2Q5rfN1ePF7ujin982gzPYbRwhLo9Uc";
 
-            // fakeResult.email = "10154674551822270+facebook@facebook.com";
-            fakeResult.first_name = "Sandon";
-            fakeResult.host = "bitnami-dreamfactory-df88";
-            fakeResult.id = 37;
-            // fakeResult.id = 29;
-            fakeResult.is_sys_admin = false;
-            fakeResult.last_login_date = "2016-12-13 21:04:47";
-            fakeResult.last_name = "Jurowski";
-            fakeResult.name = "Sandon Jurowski";
-            fakeResult.role = "rank-user";
-            fakeResult.role_id = 1;
-            fakeResult.session_id = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI5LCJ1c2VyX2lkIjoyOSwiZW1haWwiOiIxMDE1NDY3NDU1MTgyMjI3MCtmYWNlYm9va0BmYWNlYm9vay5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cHM6XC9cL2FwaS5yYW5rLXguY29tXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNDgxNjYzMDg3LCJleHAiOjE0ODE2NjY2ODcsIm5iZiI6MTQ4MTY2MzA4NywianRpIjoiYWQ2M2Q0OTI1MDRmNTJiYjBkMWZiZjJkNzAxMjQzNDMifQ.T-3B-jnz4d2Q2Q5rfN1ePF7ujin982gzPYbRwhLo9Uc";
-            fakeResult.session_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI5LCJ1c2VyX2lkIjoyOSwiZW1haWwiOiIxMDE1NDY3NDU1MTgyMjI3MCtmYWNlYm9va0BmYWNlYm9vay5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cHM6XC9cL2FwaS5yYW5rLXguY29tXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNDgxNjYzMDg3LCJleHAiOjE0ODE2NjY2ODcsIm5iZiI6MTQ4MTY2MzA4NywianRpIjoiYWQ2M2Q0OTI1MDRmNTJiYjBkMWZiZjJkNzAxMjQzNDMifQ.T-3B-jnz4d2Q2Q5rfN1ePF7ujin982gzPYbRwhLo9Uc";
-
-            console.log("oauth fake setting", fakeResult);
-            $http.defaults.headers.common['X-DreamFactory-Session-Token'] = fakeResult.session_token;
+            // console.log("oauth fake setting", fakeResult);
+            // $http.defaults.headers.common['X-DreamFactory-Session-Token'] = fakeResult.session_token;
 
             $cookies.session_token = fakeResult.session_token;
 

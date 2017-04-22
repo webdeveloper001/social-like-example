@@ -280,9 +280,12 @@ td.happy
 /*----------------- Navbar ----------------------*/
 
 /* navbar profile picture */
+a.home-link{
+    cursor: pointer;
+    padding-left: 2px;
+    margin: 0px;
+}
 a.navbar-profile-picture-wrapper{
-
-    width: 100px;
     padding: 5px;
     display: inline;
     line-height: 40px;
@@ -303,5 +306,17 @@ a.navbar-profile-picture-wrapper span{
     .nav li a.navbar-profile-picture-wrapper .navbar-profile-picture {
         top: 0px;
         left: 15px;
+    }
+}
+
+@media screen and (max-width: 414px) {
+	
+    a.home-link{
+        display: none;
+    }
+    a.navbar-profile-picture-wrapper{
+        padding-left: 10px;
+        display: inline;
+        line-height: 40px;
     }
 }
