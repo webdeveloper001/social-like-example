@@ -34,12 +34,12 @@
             redirectToState();
         });
 
-        //Only use on localhost to fake a FB login
-        // if (window.location.hostname == "localhost") {
-        //   console.log("server is: " + window.location.hostname)
-        //   console.log("let's fake your user as an FB login")
-        //   login.setFakeLocalUser();
-        // }
+        // Only use on localhost to fake a FB login
+        if (window.location.hostname == "localhost") {
+          console.log("server is: " + window.location.hostname)
+          console.log("let's fake your user as an FB login")
+          login.setFakeLocalUser();
+        }
 
         if ($rootScope.isLoggedIn) $state.go('cwrapper');
         // else activate();
