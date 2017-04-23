@@ -321,10 +321,7 @@
                 for (var i = 0; i < $rootScope.uafs.length; i++) {
                     var userWithPic = angular.copy($rootScope.uafs[i]);
                     userWithPic.picture = fbUsers[i] ? fbUsers[i].picture.data.url : null;
-                    // .$apply();
-                    // vm.feeds[i] = userWithPic;
                     vm.feeds[i] = userWithPic;
-                    console.log(vm.feeds[i]);
                 }
             });
             vm.fres = 4;

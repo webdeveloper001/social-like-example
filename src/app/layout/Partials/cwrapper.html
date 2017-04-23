@@ -117,7 +117,7 @@ background: #595959;
 		<div ng-repeat="x in vm.feeds | orderBy:'-id' | limitTo:vm.fres" ng-if="vm.isCity" style="padding:0px;border:0px;margin-top:10px;">
 			<div class="row" style="margin:4px">
 				
-				<div class="col-xs-12 media" style="line-height:35px">
+				<div class="col-xs-12 media">
 
 					<div ng-if="!x.picture" class="profile-avatar-wrapper media-left">
 						<div class="empty-profile-avatar-wrapper"  style="background-color:{{x.bc}};color:{{x.fc}};">{{x.initials}}</div>
@@ -125,34 +125,34 @@ background: #595959;
 					<div ng-if="x.picture" class="profile-avatar-wrapper  media-left" align="middle">
 						<img ng-src="{{x.picture}}" class="img-responsive img-circle profile-avatar"/>
 					</div>
-					<div ng-if="x.action == 'addedAnswer'" class="media-body">
+					<div ng-if="x.action == 'addedAnswer'" class="media-body" style="vertical-align: middle;">
 						added <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a> to
 						<a ng-click="vm.gotoRank(x)">{{x.text2}}</a>.
 					</div>
-					<div ng-if="x.action == 'upVoted'" class="media-body">
+					<div ng-if="x.action == 'upVoted'" class="media-body" style="vertical-align: middle;">
 						endorsed <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a> in
 						<a ng-click="vm.gotoRank(x)">{{x.text2}}</a>.
 					</div>
-					<div ng-if="x.action == 'downVoted'"  class="media-body">
+					<div ng-if="x.action == 'downVoted'"  class="media-body" style="vertical-align: middle;">
 						voted down <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a> in
 						<a ng-click="vm.gotoRank(x)">{{x.text2}}</a>.
 					</div>
-					<div ng-if="x.action == 'commentR'" class="media-body">
+					<div ng-if="x.action == 'commentR'" class="media-body" style="vertical-align: middle;">
 						posted a comment in <a ng-click="vm.gotoRank(x)">{{x.text2}}</a>.
 					</div>
-					<div ng-if="x.action == 'commentA'" class="media-body">
+					<div ng-if="x.action == 'commentA'" class="media-body" style="vertical-align: middle;">
 						posted a comment for <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a>.
 					</div>
-					<div ng-if="x.action == 'editA'" class="media-body">
+					<div ng-if="x.action == 'editA'" class="media-body" style="vertical-align: middle;">
 						edited the information of <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a>.
 					</div>
-					<div ng-if="x.action == 'upVotedVrow'" class="media-body">
+					<div ng-if="x.action == 'upVotedVrow'" class="media-body" style="vertical-align: middle;">
 						endorsed the <em>{{x.text2}}</em> of <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a>.
 					</div>
-					<div ng-if="x.action == 'downVotedVrow'" class="media-body">
+					<div ng-if="x.action == 'downVotedVrow'" class="media-body" style="vertical-align: middle;">
 						voted down the <em>{{x.text2}}</em> of <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a>.
 					</div>
-					<div ng-if="x.action == 'binded'" class="media-body">
+					<div ng-if="x.action == 'binded'" class="media-body" style="vertical-align: middle;">
 						bound account to <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a>.
 					</div>
 				</div>
