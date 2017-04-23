@@ -10,5 +10,6 @@
         .constant('APP_API_KEY','da4f7e05b7afc5beffe8d9d416abec73cf98ef89e3703beeb5144f325be5decc')
         .constant('GOOGLE_API_KEY', 'AIzaSyC2gAzj80m1XpaagvunSDPgEvOCleNNe5A')
         .constant('DEBUG_MODE', false)
+        .constant('EMPTY_IMAGE','../../../assets/images/noimage.jpg')
         
 })();

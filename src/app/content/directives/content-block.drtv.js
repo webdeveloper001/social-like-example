@@ -1,4 +1,6 @@
-angular.module('app').directive('contentBlock', ['$rootScope', '$state', function ($rootScope, $state) {
+angular.module('app').directive('contentBlock', 
+    ['$rootScope', '$state', 'answer', 'table', 'catans', '$timeout', 'vrows','$window','cblock','color','search',
+    function ($rootScope, $state, answer, table, catans, $timeout, vrows, $window, cblock, color, search) {
     'use strict';
 
     return {
@@ -18,9 +20,6 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
                 vm.sm = $rootScope.sm;
                 
-                //Methods
-                vm.loadContent = loadContent;
-
                 vm.maxRes = 4;
 
                 vm.btext = 'see more';
@@ -31,40 +30,38 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                 if ($window.innerWidth >= 768 && $window.innerWidth < 992) vm.thumbheight = '100px';
                 if ($window.innerWidth >= 992 && $window.innerWidth < 1200) vm.thumbheight = '80px';
                 if ($window.innerWidth > 1200) vm.thumbheight = '100px';
+ 
+            }], //end controller
+        link: function (scope) {
 
-                if (vm.modType == 'rankofweek') getRankofDay();
-                else loadContent();
-                
-
-                $rootScope.$on('loadNh', function (e) {
-                    if (vm.modType == 'rankofweek') getRankofDay();
+            if (scope.isDestroyed == undefined){
+                    if (scope.modType == 'rankofweek') getRankofDay();
+                    else loadContent();
+            }
+           
+            var loadNhListener = $rootScope.$on('loadNh', function (e) {
+                    if (scope.modType == 'rankofweek') getRankofDay();
                     else loadContent();
                 });
 
-                $rootScope.$on('applyRule', function (e) {
+             var applyRuleListener = $rootScope.$on('applyRule', function (e) {
                     applyRule();
                 });
             
-                function getRankofDay() {
-                
+            function getRankofDay(){
                     //Clear images:
-                    /*
-                    vm.image1 = "../../../assets/images/noimage.jpg";
-                    vm.image2 = "../../../assets/images/noimage.jpg";
-                    vm.image3 = "../../../assets/images/noimage.jpg";
-                    */
-                    vm.image1 = "/assets/images/noimage.jpg";
-                    vm.image2 = "/assets/images/noimage.jpg";
-                    vm.image3 = "/assets/images/noimage.jpg";
-                    vm.isShortPhrase = false;
+                    scope.image1 = "/assets/images/noimage.jpg";
+                    scope.image2 = "/assets/images/noimage.jpg";
+                    scope.image3 = "/assets/images/noimage.jpg";
+                    scope.isShortPhrase = false;
                 
                     //load colors and headline
                     for (var i = 0; i < $rootScope.headlines.length; i++) {
-                        if ($rootScope.headlines[i].type == vm.modType) {
-                            vm.bgc = $rootScope.headlines[i].bc;
-                            vm.bgc2 = color.shadeColor(vm.bgc,0.5);
-                            vm.fc = $rootScope.headlines[i].fc;
-                            vm.headline = $rootScope.headlines[i].title;
+                        if ($rootScope.headlines[i].type == scope.modType) {
+                            scope.bgc = $rootScope.headlines[i].bc;
+                            scope.bgc2 = color.shadeColor(scope.bgc,0.5);
+                            scope.fc = $rootScope.headlines[i].fc;
+                            scope.headline = $rootScope.headlines[i].title;
                             break;
                         }
                     }
@@ -78,8 +75,8 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     if ($rootScope.isCity) searchVal = $rootScope.rankofday[0].main;
                     if ($rootScope.isNh) searchVal = $rootScope.rankofday[0].nh + ' ' + $rootScope.cnh;
 
-                    vm.results = [];
-                    //vm.content = $rootScope.content;
+                    scope.results = [];
+                    //scope.content = $rootScope.content;
                     var valTags = searchVal.split(" ");
 
                     if ($rootScope.DEBUG_MODE) console.log("valTags _ ", valTags);
@@ -100,66 +97,65 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
                         }
                         if (r) {
-                            vm.results.push($rootScope.content[j]);
+                            scope.results.push($rootScope.content[j]);
                             break;
                         }
                     }
                        
                     //Check if photos exist for Rank of Week
-                    if (vm.results.length > 0 && vm.results[0] != undefined) {
-                        if (vm.results[0].image1url != undefined) vm.image1 = vm.results[0].image1url;
-                        if (vm.results[0].image2url != undefined) vm.image2 = vm.results[0].image2url;
-                        if (vm.results[0].image3url != undefined) vm.image3 = vm.results[0].image3url;
+                    if (scope.results.length > 0 && scope.results[0] != undefined) {
+                        if (scope.results[0].image1url != undefined) scope.image1 = scope.results[0].image1url;
+                        if (scope.results[0].image2url != undefined) scope.image2 = scope.results[0].image2url;
+                        if (scope.results[0].image3url != undefined) scope.image3 = scope.results[0].image3url;
                     }
                     
                     //Check if results is Short-Phrase
-                    if (vm.results[0].type == 'Short-Phrase'){
+                    if (scope.results[0].type == 'Short-Phrase'){
                         
-                        vm.isShortPhrase = true;
+                        scope.isShortPhrase = true;
                         
-                        var sPVals1 = vm.image1.split("##");
-                        vm.title1=sPVals1[0];
-                        vm.addinfo1 =sPVals1[1];
+                        var sPVals1 = scope.image1.split("##");
+                        scope.title1=sPVals1[0];
+                        scope.addinfo1 =sPVals1[1];
                         
-                        var sPVals2 = vm.image2.split("##");
-                        vm.title2=sPVals2[0];
-                        vm.addinfo2=sPVals2[1];
+                        var sPVals2 = scope.image2.split("##");
+                        scope.title2=sPVals2[0];
+                        scope.addinfo2=sPVals2[1];
                         
-                        var sPVals3 = vm.image3.split("##");
-                        vm.title3=sPVals3[0];
-                        vm.addinfo3 =sPVals3[1];                        
+                        var sPVals3 = scope.image3.split("##");
+                        scope.title3=sPVals3[0];
+                        scope.addinfo3 =sPVals3[1];                        
                     }
                     
-                    vm.rankOfDay = vm.results[0].title;
+                    scope.rankOfDay = scope.results[0].title;
 
-                    var colors = color.defaultRankColor(vm.results[0]);
-                    vm.rdbc = colors[0];
-                    vm.rdfc = colors[1];
+                    var colors = color.defaultRankColor(scope.results[0]);
+                    scope.rdbc = colors[0];
+                    scope.rdfc = colors[1];
                     
-                    vm.rdbc2 = color.shadeColor(vm.rdbc,0.4);
+                    scope.rdbc2 = color.shadeColor(scope.rdbc,0.4);
                 }
 
                 //load content based on mode
                 function loadContent() {
+
                     var catstr = '';
                     var idxs = [];
                     var nidx = 0;
                     var rankid = 0;
-                    vm.results = [];
+                    scope.results = [];
                     var bFound = false;
 
-                    //console.log("$rootScope.content - ", $rootScope.content);
-                
                     //load colors and headline
                     for (var i = 0; i < $rootScope.headlines.length; i++) {
-                        if ($rootScope.headlines[i].type == vm.modType) {
-                            vm.bgc = $rootScope.headlines[i].bc;
-                            vm.bgc2 = color.shadeColor(vm.bgc,0.3);
-                            vm.fc = $rootScope.headlines[i].fc;
-                            vm.headline = $rootScope.headlines[i].title;
+                        if ($rootScope.headlines[i].type == scope.modType) {
+                            scope.bgc = $rootScope.headlines[i].bc;
+                            scope.bgc2 = color.shadeColor(scope.bgc,0.3);
+                            scope.fc = $rootScope.headlines[i].fc;
+                            scope.headline = $rootScope.headlines[i].title;
                             if ($rootScope.isNh &&
                                 $rootScope.headlines[i].type != 'rxfeedback' &&
-                                $rootScope.headlines[i].type != 'rxsuggestion') vm.headline = vm.headline + ' - ' + $rootScope.cnh;
+                                $rootScope.headlines[i].type != 'rxsuggestion') scope.headline = scope.headline + ' - ' + $rootScope.cnh;
                             break;
                         }
                     }
@@ -167,20 +163,20 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     //load content 
                     for (var i = 0; i < $rootScope.cblocks.length; i++) {
                         if (($rootScope.cblocks[i].scope == 'city' && $rootScope.isCity) &&
-                            ($rootScope.cblocks[i].type == vm.modType)) {
+                            ($rootScope.cblocks[i].type == scope.modType)) {
                             catstr = $rootScope.cblocks[i].catstr;
                             idxs = catstr.split(':');
                             shuffle(idxs);
                             for (var j = 0; j < idxs.length; j++) {
                                 nidx = $rootScope.content.map(function(x) {return x.id; }).indexOf(Number(idxs[j]));
-                                vm.results.push($rootScope.content[nidx]);
+                                scope.results.push($rootScope.content[nidx]);
                             }
                             bFound = true;
                             break;
                         }
 
                         else if (($rootScope.cblocks[i].scope == 'nh' && $rootScope.isNh) &&
-                            ($rootScope.cblocks[i].type == vm.modType) &&
+                            ($rootScope.cblocks[i].type == scope.modType) &&
                             ($rootScope.cblocks[i].scopename == $rootScope.cnh)) {
                             catstr = $rootScope.cblocks[i].catstr;
                             idxs = catstr.split(':');
@@ -188,19 +184,19 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
 
                             for (var j = 0; j < idxs.length; j++) {
                                 nidx = $rootScope.content.map(function(x) {return x.id; }).indexOf(Number(idxs[j])); 
-                                vm.results.push($rootScope.content[nidx]);
+                                scope.results.push($rootScope.content[nidx]);
                             }
                             bFound = true;
                             break;
                         }
-                        else if ($rootScope.cblocks[i].scope == 'rx' && $rootScope.cblocks[i].type == vm.modType &&
+                        else if ($rootScope.cblocks[i].scope == 'rx' && $rootScope.cblocks[i].type == scope.modType &&
                             $rootScope.cblocks[i].scopename == 'RankX') {
                             catstr = $rootScope.cblocks[i].catstr;
                             idxs = catstr.split(':');
                             for (var j = 0; j < idxs.length; j++) {
-                                //vm.results.push($rootScope.content[idxs[j]]);
+                                //scope.results.push($rootScope.content[idxs[j]]);
                                 nidx = $rootScope.content.map(function(x) {return x.id; }).indexOf(Number(idxs[j])); 
-                                vm.results.push($rootScope.content[nidx]);
+                                scope.results.push($rootScope.content[nidx]);
                             }
                             bFound = true;
                             break;
@@ -208,33 +204,32 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     }
 
                     //resLT6 is used to hide the <<see more>> choice
-                    if (vm.results.length <= 6) vm.resLT6 = true;
-                    else vm.resLT6 = false;
+                    if (scope.results.length <= 6) scope.resLT6 = true;
+                    else scope.resLT6 = false;
 
-                    var resGT0 = (vm.results[0] != undefined);
-                    vm.updateView(bFound && resGT0);
+                    var resGT0 = (scope.results[0] != undefined);
+                    scope.updateView(bFound && resGT0);
 
-                    if (bFound && resGT0) vm.hideme = false;
-                    else vm.hideme = true;
-                    //console.log("vm.results - ", vm.results);
+                    if (bFound && resGT0) scope.hideme = false;
+                    else scope.hideme = true;
                     //
-                    vm.resultsTop = [];
+                    scope.resultsTop = [];
                     var resObj = {};
-                    var M = vm.results.length > 2 ? 3:vm.results.length;
-                    if (vm.results.length > 0) {
+                    var M = scope.results.length > 2 ? 3:scope.results.length;
+                    if (scope.results.length > 0) {
                         for (var n = 0; n < M; n++) {
                             resObj = {};
-                            resObj = vm.results[n];
+                            resObj = scope.results[n];
                             editTitle(resObj);
                             parseShortAnswer(resObj);
-                            vm.resultsTop.push(resObj);
+                            scope.resultsTop.push(resObj);
                         }
-                        vm.results = vm.results.slice(M+1);
+                        scope.results = scope.results.slice(M+1);
                     }
                     
                 }
 
-                function shuffle(array) {
+            function shuffle(array) {
                     var currentIndex = array.length, temporaryValue, randomIndex;
 
                     // While there remain elements to shuffle...
@@ -253,7 +248,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     return array;
                 }
 
-                function editTitle(x){
+             function editTitle(x){
                     x.titlex = x.title.replace(' in San Diego','');
                     if (x.answers == 0 && x.type != 'Short-Phrase') x.image1url = "../../../assets/images/noimage.jpg";
                 }
@@ -279,9 +274,40 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                             x.addinfo3 = sPVals3[1];
                         }
                     }
-                }
+                }             
 
-                var applyRuleDone = false;
+            scope.rankSel = function (x,nm) {
+                if (nm) $rootScope.rankIsNearMe = true;
+                else $rootScope.rankIsNearMe = false;
+                if ($rootScope.editMode) $state.go('editRanking', { index: x.id });
+                else {
+                    $state.go('rankSummary', { index: x.id });
+                }
+            };
+            scope.seeMore = function (maxRes, btext) {
+                if (scope.maxRes == 4) {
+                    scope.btext = 'see less';
+                    scope.maxRes = 100;
+                }
+                else {
+                    scope.btext = 'see more';
+                    scope.maxRes = 4;
+                }
+                // scope.loadContent();
+            }
+            scope.updateView = function (bFound) {
+                if (bFound) scope.hideme = false;
+                else scope.hideme = true;
+            }
+
+            scope.$on('$destroy', loadNhListener); 
+            scope.$on('$destroy', applyRuleListener);
+            //scope.$on('$destroy', loadBlocksListener);
+            scope.$on('$destroy',function(){
+                scope.isDestroyed = true;
+            });
+
+            var applyRuleDone = false;
                 var midx = 0;
                 function applyRule() {
                     console.log("apply Rule");
@@ -804,7 +830,7 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                     var url1 = '';
                     var url2 = '';
                     var url3 = '';
-                    var noimage = '../../../assets/images/noimage.jpg';
+                    var noimage = $rootScope.EMPTY_IMAGE;
                     console.log("exec rule-abx");
                     var cats = '';
                     for (var i=0; i<$rootScope.content.length; i++){
@@ -874,35 +900,10 @@ angular.module('app').directive('contentBlock', ['$rootScope', '$state', functio
                        }
                    }
                    *///End 24                                                                                              
-                }
-            }], //end controller
-        link: function (scope) {
-            scope.rankSel = function (x,nm) {
-                if (nm) $rootScope.rankIsNearMe = true;
-                else $rootScope.rankIsNearMe = false;
-                if ($rootScope.editMode) $state.go('editRanking', { index: x.id });
-                else {
-                    $state.go('rankSummary', { index: x.id });
-                }
-            };
-            scope.seeMore = function (maxRes, btext) {
-                if (scope.maxRes == 4) {
-                    scope.btext = 'see less';
-                    scope.maxRes = 100;
-                }
-                else {
-                    scope.btext = 'see more';
-                    scope.maxRes = 4;
-                }
-                // scope.loadContent();
-            }
-            scope.updateView = function (bFound) {
-                if (bFound) scope.hideme = false;
-                else scope.hideme = true;
-            }
+                } 
+             
         },
     }
 }
-    /*angular.module('app').directive('contentBlock', function() {
-        */
+
 ]);

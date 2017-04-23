@@ -38,7 +38,7 @@
 
         $rootScope.canswer = {};
         $rootScope.canswer.id = 'featuredImages';
-        vm.testimage = '../../../assets/images/noimage.jpg';
+        vm.testimage = $rootScope.EMPTY_IMAGE;
 
         var hexcolor = '';
 
@@ -66,13 +66,12 @@
             todaydatenum = datetime.date2number(dateStr);
 
             loadData();
-            console.log("rodconsole page Loaded!");
+            if ($rootScope.DEBUG_MODE) console.log("rodconsole page Loaded!");
             
         }
     
         function loadData(){
 
-            console.log("Loading Data");
             var res = [];
             rods = [];
 
@@ -131,7 +130,6 @@
                 vm.allIsSelected = false;
             } 
             
-            console.log("filterData - vm.next20IsSelected - ",vm.next20IsSelected);
             vm.rods = [];
             if (vm.next20IsSelected){
                 for (var i=0; i<rods.length; i++){

@@ -118,17 +118,21 @@
                 }
             });
 
-        $rootScope.$on('refreshImages', function () {
+        var refreshImagesListener = $rootScope.$on('refreshImages', function () {
             if ($state.current.name == 'answerDetail') getImages();
         });
-        $rootScope.$on('fileUploaded', function () {
+        var fileUploadedListener = $rootScope.$on('fileUploaded', function () {
             if ($state.current.name == 'answerDetail') getImages();
         });
 
-        $rootScope.$on('answerDataLoaded', function () {
+        var answerDataLoadedListener = $rootScope.$on('answerDataLoaded', function () {
             vm.dataReady = true;
             activate();
         });
+
+        $scope.$on('$destroy',refreshImagesListener);
+        $scope.$on('$destroy',fileUploadedListener);
+        $scope.$on('$destroy',answerDataLoadedListener);
     
         if ($rootScope.answerDetailLoaded) { vm.dataReady = true; activate(); }
         else vm.dataReady = false;
@@ -217,7 +221,7 @@
                         vm.myranks[i].title = $rootScope.content[n].title.replace(' @ '+vm.answer.name,'');
                         vm.myranks[i].image = $rootScope.content[n].image1url;
                         if (vm.myranks[i].image == undefined || vm.myranks[i].image == '')
-                        vm.myranks[i].image = '../../../assets/images/noimage.jpg';
+                        vm.myranks[i].image = $rootScope.EMPTY_IMAGE;
                     }
                 }
             }
@@ -253,7 +257,8 @@
             if (vm.answer.numcom == undefined) vm.numcom = 0;
             else vm.numcom = vm.answer.numcom;
 
-            if (answers.length > 1) vm.showNextnPrev = true;
+            //Determine if necessary to show navigation buttons
+            if (vm.title) vm.showNextnPrev = true;
             else vm.showNextnPrev = false;
 
             //Update number of views
@@ -799,7 +804,7 @@
                         'white-space:pre;';
                     $rootScope.specials[i].style = spStyle;
                     if ($rootScope.specials[i].image != undefined &&
-                        $rootScope.specials[i].image != '../../../assets/images/noimage.jpg') {
+                        $rootScope.specials[i].image != $rootScope.EMPTY_IMAGE) {
                         $rootScope.specials[i].hasimage = true;
                     }
                     else $rootScope.specials[i].hasimage = false;

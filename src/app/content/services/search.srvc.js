@@ -39,7 +39,7 @@
             var results = [];
 
             var input = $rootScope.inputVal;
-
+            
             if (input) {
 
                 if (input.length >= 3) {

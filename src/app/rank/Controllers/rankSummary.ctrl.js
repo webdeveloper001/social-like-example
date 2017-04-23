@@ -84,14 +84,17 @@
         if ($rootScope.addInfoMsgAck) vm.addInfoMsgAck = $rootScope.addInfoMsgAck;
         else (vm.addInfoMsgAck = false);
         
-        $rootScope.$on('updateVoteTable', function () {
+        var updateVoteTableListener = $rootScope.$on('updateVoteTable', function () {
             if (!updateExec) updateVoteTable();
             updateExec = true;
         });
-        $rootScope.$on('rankDataLoaded', function () {
+        var rankDataLoadedListener = $rootScope.$on('rankDataLoaded', function () {
             vm.dataReady = true;
             activate();
         });
+
+        $scope.$on('$destroy',updateVoteTableListener);
+        $scope.$on('$destroy',rankDataLoadedListener);
         
         vm.isMobile = false; 
         // device detection
@@ -181,6 +184,7 @@
                         
             //check that number of answer is same as store in content object
             //if different, compute answertags and update table - only if rank is atomic
+            /*
             if ($rootScope.cCategory.isatomic == true && !foodNearMe) {
                 if (vm.answers.length != $rootScope.cCategory.answers && vm.answers.length > 0) {
                     var answertags = vm.answers[0].name;
@@ -189,7 +193,7 @@
                     }
                     table.update($rootScope.cCategory.id, ['answertags'], [answertags]);
                 }
-            }
+            }*/
             
             //Check number of answers for this ranking
             if (vm.answers.length == 0) {
@@ -274,10 +278,36 @@
                 }
                 else {
                     vm.isShortPhrase = false;
-                    if (vm.answers[0].imageurl != undefined && vm.answers[0].imageurl != null && vm.answers[0].imageurl != '') {
-                        vm.image1 = vm.answers[0].imageurl;
-                        vm.image1ok = true;
+                    console.log("Executed image selection");
+                    //Set Images, initialize values
+                    vm.image1 = $rootScope.EMPTY_IMAGE;
+                    vm.image2 = $rootScope.EMPTY_IMAGE;
+                    vm.image3 = $rootScope.EMPTY_IMAGE;
+                    vm.image1ok = true;
+                    vm.image2ok = true;
+                    vm.image3ok = true;
+                    //Load rank images with top 3 results with good images
+                    var img = 1;
+                    for (var n=0; n < vm.answers.length; n++){
+
+                        console.log("vm.answers[n].imageurl != undefined  ", vm.answers[n].imageurl != undefined);
+                        console.log("vm.answers[n].imageurl != null  ", vm.answers[n].imageurl != null);
+                        console.log("vm.answers[n].imageurl != ''  ", vm.answers[n].imageurl != '');
+                        console.log("vm.answers[n].imageurl != $rootScope.EMPTY_IMAGE  ", vm.answers[n].imageurl != $rootScope.EMPTY_IMAGE);
+
+                        if (vm.answers[n].imageurl != undefined && vm.answers[n].imageurl != null 
+                            && vm.answers[n].imageurl != '' && vm.answers[n].imageurl != $rootScope.EMPTY_IMAGE) {
+                            
+                            if (img == 3) { vm.image3 = vm.answers[n].imageurl; break; }
+                            if (img == 2) { vm.image2 = vm.answers[n].imageurl; img++ }
+                            if (img == 1) { vm.image1 = vm.answers[n].imageurl; img++ }                         
+                        
+                        //vm.image1ok = true;
+                        }
                     }
+
+
+                    /*
                     else vm.image1ok = false;
                     if (vm.answers[1].imageurl != undefined && vm.answers[1].imageurl != null && vm.answers[1].imageurl != '') {
                         vm.image2 = vm.answers[1].imageurl;
@@ -289,6 +319,7 @@
                         vm.image3ok = true;
                     }
                     else vm.image3ok = false;
+                    }*/
                 }
                 if (!foodNearMe) {
                     table.update($rootScope.cCategory.id,

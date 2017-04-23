@@ -174,8 +174,11 @@
             $rootScope.searchActive = false;
             $rootScope.hidelogo = false;
             $rootScope.inputVal = '';
-            $state.go('cwrapper', {}, { reload: true });
-            $rootScope.$emit('mainView');
+            //$state.go('cwrapper', {}, { reload: true });
+            if ($state.current.name != 'cwrapper') {
+                $state.go('cwrapper',{main: true});
+            }
+            else $rootScope.$emit('mainView');
         }
 
 

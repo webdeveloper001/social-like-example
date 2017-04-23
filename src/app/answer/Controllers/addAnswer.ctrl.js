@@ -70,7 +70,7 @@
         vm.onNoGoodImages = onNoGoodImages;
         vm.showHowItWorksDialog = showHowItWorksDialog;
         
-        vm.imageURL = '../../../assets/images/noimage.jpg';
+        vm.imageURL = $rootScope.EMPTY_IMAGE;
         vm.header = $rootScope.header;
         
         //TODO: Would like to add this abstract template, but dont know how         
@@ -452,7 +452,7 @@
 
         function showImageNotOk(url, result) {
             if (result == "error" || result == "timeout") {
-                vm.imageURL = '../../../assets/images/noimage.jpg';
+                vm.imageURL = $rootScope.EMPTY_IMAGE;
             }
         }
 
@@ -536,7 +536,7 @@
         
         function onNoGoodImages(x){
             if (x){
-                vm.imageURL = '../../../assets/images/noimage.jpg';
+                vm.imageURL = $rootScope.EMPTY_IMAGE;
             }
             else{
                 vm.imageURL = imageLinks[vm.linkIdx];

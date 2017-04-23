@@ -771,7 +771,7 @@
         
         function onNoGoodImages(x){
             if (x){
-                vm.imageURL = '../../../assets/images/noimage.jpg';
+                vm.imageURL = $rootScope.EMPTY_IMAGE;
                 selectImage();
             }
             else{

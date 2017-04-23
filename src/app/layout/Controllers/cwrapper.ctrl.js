@@ -60,19 +60,22 @@
         //vm.searchActive = $rootScope.searchActive;
         
         //Receive from navbar, if 'Home' go to Main View
-        $rootScope.$on('mainView', function (event) {
+        var mainViewListener = $rootScope.$on('mainView', function (event) {
             if ($state.current.name == 'cwrapper') {
-                $rootScope.inputVal = '';
-                switchScope(1);
+                goHome();
             }
         });
-        
+
+        $scope.$on('$destroy',mainViewListener);
+
         window.prerenderReady = false;
 
         if ($rootScope.cwrapperLoaded) activate();
         else init();
 
         function activate() {
+
+            if ($state.params.main == true) goHome();
             
             $rootScope.inFavMode = false;
             
@@ -152,17 +155,7 @@
             $rootScope.cnh = vm.cnh;
             vm.isNhRdy = false;
             $rootScope.isNhRdy = false; 
-            //vm.viewNum = 0;
-/*
-            $rootScope.content = rankings; //response
-            $rootScope.specials = specials;
-            $rootScope.answers = answers;
-            $rootScope.catansrecs = catansrecs;
-            $rootScope.cvrows = allvrows;
-            $rootScope.headlines = headlines;
-            $rootScope.cblocks = cblocks;
-            
-*/
+
             var bgc = '#595959';
             var bgc2 = color.shadeColor(bgc, 0.5);
             vm.headerStyle = 'color:#f8f8ff;width:50%;border-style:none;'+
@@ -187,11 +180,10 @@
             //userdata.loadVotes();
             activate();
 
-            
         }
 
         function loadcontent() {
-            
+
             //vm.content=[];
             //vm.searchArray = [];
             ///vm.empty = [];
@@ -362,6 +354,9 @@
         }
         function goHome(){
             //$rootScope.$emit('quitFeedbackMode');
+            $rootScope.inputVal = '';
+            vm.val = '';
+            switchScope(1);
             $rootScope.fbmode = false;
             vm.fbm = $rootScope.fbmode;
         }

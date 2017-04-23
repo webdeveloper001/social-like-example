@@ -27,7 +27,7 @@
         vm.isEdit = false;
         vm.userIsOwner = $rootScope.userIsOwner;
         
-         $rootScope.$on('fileUploaded', function (event, data){            
+         var fileUploadedListener = $rootScope.$on('fileUploaded', function (event, data){            
             console.log("Received fileUploaded", data);
             console.log('$state.current.name - ',$state.current.name);
             if ($state.current.name == 'editspecial') {
@@ -35,6 +35,8 @@
                 vm.imageURL = data;
             }
         });
+
+        $scope.$on('$destroy',fileUploadedListener);
 
         activate();
 
@@ -53,7 +55,7 @@
                 vm.sp.bc = vm.sp.bc;
                 vm.sp.fc = vm.sp.fc;
                 if (vm.sp.image != undefined) vm.imageURL = vm.sp.image;
-                else vm.imageURL = '../../../assets/images/noimage.jpg'; 
+                else vm.imageURL = $rootScope.EMPTY_IMAGE; 
                 
             }
 
@@ -63,7 +65,7 @@
                 vm.sp.fc = "hsl(0, 100%, 0%)"; //black
                 vm.sp.bc = "hsl(0, 0%, 100%)"; //white
                 frequencySel(1);
-                vm.imageURL = '../../../assets/images/noimage.jpg';
+                vm.imageURL = $rootScope.EMPTY_IMAGE;
             }
 
             createTimeDropdown();

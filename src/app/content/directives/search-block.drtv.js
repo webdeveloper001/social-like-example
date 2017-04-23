@@ -1,41 +1,14 @@
-angular.module('app').directive('searchBlock', ['$rootScope', '$state', function ($rootScope, $state) {
+angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search',function ($rootScope, $state, search) {
     'use strict';
 
     return {
         templateUrl: 'app/content/partials/search-block.html',
         transclude: true,
         scope: {},
-        controller: ['$scope','search',
+        controller: ['$scope',
             
-            function contentCtrl($scope,search) {
-                var vm = $scope;
-                vm.title = 'mysearch';
-
-                vm.resRanks = [];
-                vm.resAnswers = [];
-                vm.maxRes = 4000;
-
-                getResults();
-                
-                $rootScope.$on('getResults', function (e) {
-                    getResults();
-                });
-
-                //Filter content based on user input
-                function getResults() {
-                    vm.resRanks = [];
-                    vm.resRanks = search.searchRanks();
-                    vm.resAnswers = [];
-                    vm.resAnswers = search.searchAnswers();
-                    for (var i=0; i<vm.resAnswers.length; i++){
-                        if (vm.resAnswers[i].type == 'Establishment') vm.resAnswers[i].icon = 'fa fa-building-o';
-                        if (vm.resAnswers[i].type == 'Person' || vm.resAnswers[i].type == 'PersonCust') vm.resAnswers[i].icon = 'fa fa-male';
-                        if (vm.resAnswers[i].type == 'Short-Phrase') vm.resAnswers[i].icon = 'fa fa-comment-o';
-                        if (vm.resAnswers[i].type == 'Event') vm.resAnswers[i].icon = 'fa fa-calendar-o';
-                        if (vm.resAnswers[i].type == 'Organization') vm.resAnswers[i].icon = 'fa fa-trademark'; 
-                    }                   
-                }
-                
+            function contentCtrl($scope) {
+ 
             }], //end controller
         link: function (scope) {
             scope.rankSel = function (x,nm) {
@@ -48,7 +21,32 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', function
             };
             scope.ansSel = function (x) {
                 $state.go('answerDetail', { index: x.id });                
-            };            
+            };
+
+            scope.resRanks = [];
+            scope.resAnswers = [];
+            scope.maxRes = 4000;
+
+            var searchListener = $rootScope.$on('getResults', function (e) {
+                    scope.getResults();
+            });
+
+                //Filter content based on user input
+                scope.getResults = function() {
+                    scope.resRanks = [];
+                    scope.resRanks = search.searchRanks();
+                    scope.resAnswers = [];
+                    scope.resAnswers = search.searchAnswers();
+                    for (var i=0; i<scope.resAnswers.length; i++){
+                        if (scope.resAnswers[i].type == 'Establishment') scope.resAnswers[i].icon = 'fa fa-building-o';
+                        if (scope.resAnswers[i].type == 'Person' || scope.resAnswers[i].type == 'PersonCust') scope.resAnswers[i].icon = 'fa fa-male';
+                        if (scope.resAnswers[i].type == 'Short-Phrase') scope.resAnswers[i].icon = 'fa fa-comment-o';
+                        if (scope.resAnswers[i].type == 'Event') scope.resAnswers[i].icon = 'fa fa-calendar-o';
+                        if (scope.resAnswers[i].type == 'Organization') scope.resAnswers[i].icon = 'fa fa-trademark'; 
+                    }                   
+                }
+
+            scope.$on('$destroy', searchListener);            
         },
     }
 }

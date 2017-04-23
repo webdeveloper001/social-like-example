@@ -50,8 +50,8 @@
 			</ul>
 	</div> 	
 </div>
-
-<div style="display:{{vm.searchActive ? 'inline':'none'}}" ng-if="!vm.fbm&&vm.searchActive">	
+<!-- style="display:{{vm.searchActive ? 'inline':'none'}}" -->
+<div ng-show="vm.searchActive" ng-if="!vm.fbm">	
 	<br ng-if="vm.isNh">
 	<search-block></search-block>
 </div> 

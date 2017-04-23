@@ -16,11 +16,11 @@
         .controller('layout', layout);
 
     layout.$inject = ['$location', '$rootScope', '$window', '$q', '$http', 'pvisits', '$cookies', '$scope',
-        'DEBUG_MODE', 'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata', 'dialog',
+        'DEBUG_MODE', 'EMPTY_IMAGE', 'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata', 'dialog',
         'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state','dataloader'];
 
     function layout($location, $rootScope, $window, $q, $http, pvisits, $cookies, $scope,
-        DEBUG_MODE, rankofday, answer, table, special, datetime, uaf, userdata, dialog,
+        DEBUG_MODE, EMPTY_IMAGE, rankofday, answer, table, special, datetime, uaf, userdata, dialog,
         matchrec, edit, useractivity, vrows, headline, cblock, catans, $state, dataloader) {
         /* jshint validthis:true */
         var vm = this;
@@ -90,6 +90,8 @@
         function activate() {
 
             $rootScope.DEBUG_MODE = DEBUG_MODE;
+            $rootScope.EMPTY_IMAGE = EMPTY_IMAGE;    
+
             $rootScope.facebookAppId = ''; //1102409523140826'';
             $rootScope.facebookUrl = 'https://www.facebook.com/Rank-X-San-Diego-582174448644554';
             /*
