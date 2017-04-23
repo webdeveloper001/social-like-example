@@ -41,7 +41,7 @@
                     $rootScope.catcodes = d[5];
                     $rootScope.codeprices = d[6];
                     
-                    console.log("user promoter - ",$rootScope.userpromoter);
+                    if ($rootScope.DEBUG_MODE) console.log("user promoter - ",$rootScope.userpromoter);
                     $rootScope.userDataLoaded = true;
                     $rootScope.$emit('userDataLoaded');                   
                 });

@@ -75,7 +75,7 @@
              if ($rootScope.isLoggedIn) {   
                 vm.isPromoter = true;
                 $rootScope.isPromoter = true;
-                console.log("User is promoter");
+                if ($rootScope.DEBUG_MODE) console.log("User is promoter");
             }
             else {
                 $rootScope.isPromoter = false;
@@ -87,7 +87,7 @@
             if ($rootScope.isLoggedIn && $rootScope.useraccnts.length > 0) {
                 vm.hasBusiness = true;
                 $rootScope.hasBusiness = true;
-                console.log("User has business");
+                if ($rootScope.DEBUG_MODE) console.log("User has business");
             }
             else {
                 $rootScope.hasBusiness = false;

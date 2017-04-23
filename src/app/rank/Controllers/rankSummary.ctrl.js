@@ -278,7 +278,6 @@
                 }
                 else {
                     vm.isShortPhrase = false;
-                    console.log("Executed image selection");
                     //Set Images, initialize values
                     vm.image1 = $rootScope.EMPTY_IMAGE;
                     vm.image2 = $rootScope.EMPTY_IMAGE;
@@ -289,11 +288,6 @@
                     //Load rank images with top 3 results with good images
                     var img = 1;
                     for (var n=0; n < vm.answers.length; n++){
-
-                        console.log("vm.answers[n].imageurl != undefined  ", vm.answers[n].imageurl != undefined);
-                        console.log("vm.answers[n].imageurl != null  ", vm.answers[n].imageurl != null);
-                        console.log("vm.answers[n].imageurl != ''  ", vm.answers[n].imageurl != '');
-                        console.log("vm.answers[n].imageurl != $rootScope.EMPTY_IMAGE  ", vm.answers[n].imageurl != $rootScope.EMPTY_IMAGE);
 
                         if (vm.answers[n].imageurl != undefined && vm.answers[n].imageurl != null 
                             && vm.answers[n].imageurl != '' && vm.answers[n].imageurl != $rootScope.EMPTY_IMAGE) {
