@@ -22,6 +22,15 @@
                 config.url = INSTANCE_URL + config.url;
             };
 
+            // Append instance url before every api call
+            if (config.url.indexOf('api.instagram.com') > -1) {
+                config.headers.useXDomain = true;
+                config.headers.common = 'Content-Type: application/json';
+                delete config.headers.common['X-Requested-With'];
+                delete config.headers['X-DreamFactory-Session-Token'];
+                delete config.headers['X-Dreamfactory-API-Key'];
+
+            };
             // delete x-dreamfactory-session-token header if login
             if (config.method.toLowerCase() === 'post' && config.url.indexOf('/api/v2/user/session') > -1) {
                 delete config.headers['X-DreamFactory-Session-Token'];

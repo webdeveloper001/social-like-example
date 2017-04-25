@@ -12,5 +12,7 @@
         // My App ID: 1494723870571848
         $httpProvider.interceptors.push('httpInterceptor');
         $facebookProvider.setAppId('1102409523140826');
+        
+
     }
 })();
