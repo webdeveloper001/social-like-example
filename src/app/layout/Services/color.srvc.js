@@ -28,7 +28,7 @@
                 else if (color == 'darkgrey' || color == 'darkgray') color = '#a9a9a9';
                 else if (color == 'green') color = '#008000';
                 else if (color == 'brown') color = '#a52a2a';
-                else if (color == 'blue') color = '#ff0000';
+                else if (color == 'blue') color = '#0000ff';
                 else if (color == 'white') color = '#ffffff';
                 else console.log("Dont know what color is ", color);
             }

@@ -19,23 +19,17 @@
 	<div class="container" ng-if="isRoW">
 		<!-- background-color:{{rdbc}} -->
 		<div class="row" ng-if="isRoW" ng-click="rankSel(results[0],false)">
-			<div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" style="color:{{rdfc}};height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;
-					background: {{rdbc}};
-  					background: -webkit-linear-gradient(left, {{rdbc}}, {{rdbc2}});
-  					background: -o-linear-gradient(right, {{rdbc}}, {{rdbc2}});
-  					background: -moz-linear-gradient(right, {{rdbc}}, {{rdbc2}});
-  					background: linear-gradient(to right, {{rdbc}}, {{rdbc2}});">
-				<h2 class=" hidden-xs text-center" style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{rankOfDay}}</h2>
-				<h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{rankOfDay}}</h3>
-		</div>
+			<div class="container-bgbox col-xs-6 col-sm-6 col-md-4 col-lg-3">
+			<bg-box bc="{{rdbc}}" bc2="{{rdbc2}}" fc="{{rdfc}}" text="{{rankOfDay}}" dir="horizontal" w="100%" h="{{sm ? '150px':'200px'}}"></bg-box>
+			</div>
 		<div class="col-xs-6 col-sm-6 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!isShortPhrase">
-			<img src="{{image1}}" style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
+			<img ng-src="{{image1}}" style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
 		</div>
 		<div class="hidden-xs hidden-sm col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!isShortPhrase">
-			<img src="{{image2}}" style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
+			<img ng-src="{{image2}}" style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
 		</div>
 		<div class="hidden-xs hidden-sm hidden-md col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!isShortPhrase">
-			<img src="{{image3}}" style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
+			<img ng-src="{{image3}}" style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
 		</div>
 
 		<div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" ng-if="isShortPhrase" style="background-color:lightgray;color:black;height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
@@ -89,7 +83,7 @@
 					<div ng-repeat="x in resultsTop" style="border:0px;padding:0px;margin:0px;">
 						<div class="clearfix" ng-if="$index % 3 == 0" style="border:0px;padding:0px;margin:0px;"></div>
 						<div class="col-xs-4" ng-click="rankSel(x,false)" style="cursor:pointer;border:0px;padding:0px;margin:0px;">
-							<img src="{{x.image1url}}" style="width:100%;height:{{thumbheight}};" ng-if="!x.isShortPhrase">
+							<img ng-src="{{x.image1url}}" style="width:100%;height:{{thumbheight}};" ng-if="!x.isShortPhrase">
 							<div style="width:100%;height:{{thumbheight}};background-color:darkgrey;color:black;position:relative;" ng-if="x.isShortPhrase">
 								</br>
 								<p style="text-align:center;position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">

@@ -23,8 +23,7 @@
         vm.title = 'cwrapper';
 
         vm.switchScope = switchScope;
-        vm.getResults = getResults;
-
+        
         if ($rootScope.hidelogo == undefined) vm.hidelogo = false;
         else vm.hidelogo = $rootScope.hidelogo;
         
@@ -67,6 +66,13 @@
         });
 
         $scope.$on('$destroy',mainViewListener);
+
+        //Receive from layout search bar
+        var getResultsListener = $rootScope.$on('getResults', function (event) {
+            vm.searchActive = $rootScope.searchActive;
+        });
+
+        $scope.$on('$destroy',getResultsListener);
 
         window.prerenderReady = false;
 
@@ -195,24 +201,6 @@
             vm.nhs = $rootScope.neighborhoods.concat($rootScope.districts);
            
         }
-
-        function getResults() {
-            $rootScope.inputVal = vm.val;
-            if ($rootScope.inputVal.length > 0) {
-                $rootScope.searchActive = true;
-                vm.hidelogo = true;
-                $rootScope.hidelogo = true;
-            }
-            else {
-                $rootScope.searchActive = false;
-                vm.hidelogo = false;
-                $rootScope.hidelogo = false;
-            }
-            vm.searchActive = $rootScope.searchActive;
-            $window.scroll(0,0);
-            $rootScope.$emit('getResults');
-            
-             }
 
         function switchScope(x) {
             if (x == 1) {

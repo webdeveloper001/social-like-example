@@ -6,7 +6,11 @@
         </div>
     </div>
 <div ng-if="vm.dataReady">
-
+    <!--
+<div class="text-right">
+        <button type="button" style="font-size:medium;" 
+        class="glyphicon glyphicon-remove pull-right" ng-click="vm.closeRank()">Back</button>
+</div>
 <!-- ---------------------------- main page -->
 
 <!-- <img src="/assets/images/rankxlogo_noheadline.png" style="height:50px;margin:0px"> -->
@@ -75,31 +79,23 @@
 <div class="container">
 		<!-- background-color:{{rdbc}} -->
 		<div class="row">
-			<div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" style="color:{{vm.fc}};height:{{vm.sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;
-					background: {{vm.bc}};
-  					background: -webkit-linear-gradient(left, {{vm.bc}}, {{vm.bc2}});
-  					background: -o-linear-gradient(right, {{vm.bc}}, {{vm.bc2}});
-  					background: -moz-linear-gradient(right, {{vm.bc}}, {{vm.bc2}});
-  					background: linear-gradient(to right, {{vm.bc}}, {{vm.bc2}});">
-				<h2 class=" hidden-xs text-center" style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{vm.ranking}}</h2>
-				<h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{vm.ranking}}</h3>
-		</div>
+            <div class="container-bgbox col-xs-6 col-sm-6 col-md-4 col-lg-3">
+			    <bg-box bc="{{vm.bc}}" bc2="{{vm.bc2}}" fc="{{vm.fc}}" text="{{vm.ranking}}" dir="horizontal" w="100%" h="{{vm.sm ? '150px':'200px'}}"></bg-box>
+			</div>
 		<div class="col-xs-6 col-sm-6 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
-			<img src="{{vm.image1}}" style="display:{{vm.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
+			<img ng-src="{{vm.image1}}" style="display:{{vm.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
 		</div>
 		<div class="hidden-xs hidden-sm col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
-			<img src="{{vm.image2}}" style="display:{{vm.image2 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
+			<img ng-src="{{vm.image2}}" style="display:{{vm.image2 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
 		</div>
 		<div class="hidden-xs hidden-sm hidden-md col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
-			<img src="{{vm.image3}}" style="display:{{vm.image3 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
+			<img ng-src="{{vm.image3}}" style="display:{{vm.image3 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
 		</div>
 
 		<div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" ng-if="vm.isShortPhrase" style="background-color:lightgray;color:black;height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
 			<div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
 				<h2 class="hidden-xs text-center">{{vm.title1}}</h2>
 				<h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.title1}}</h3>
-				<!--</br>
-		<h4 class="text-center">{{addinfo1}}</h4>-->
 			</div>
 		</div>
 
@@ -107,8 +103,6 @@
 			<div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
 				<h2 class="hidden-xs text-center">{{vm.title2}}</h2>
 				<h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.title2}}</h3>
-				<!--</br>
-		<h4 class="text-center">{{addinfo2}}</h4>-->
 			</div>
 		</div>
 
@@ -116,18 +110,14 @@
 			<div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
 				<h2 class="hidden-xs text-center">{{vm.title3}}</h2>
 				<h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.title3}}</h3>
-				<!--</br>
-		<h4 class="text-center">{{addinfo3}}</h4>-->
 			</div>
 		</div>
 
 	</div>
 </div>
 
-
-
+<!-- <br> -->
 <br>
-<br class="hidden-md hidden-lg hidden-xl">
 <p class="text-left" ng-if="vm.sm">&nbsp&nbspSort by:</p>
 <div class="row" style="margin:0px;padding:0px;">
     <div class="col-xs-9 col-sm-10 col-md-10 col-lg-10">
