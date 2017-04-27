@@ -5,11 +5,11 @@
         .module('app')
         .controller('rankSummary', rankSummary);
 
-    rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime'
+    rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope'
         , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', '$location', '$q', 'fbusers'];
 
-    function rankSummary(dialog, $stateParams, $state, catans, datetime
+    function rankSummary(dialog, $stateParams, $state, catans, datetime, color
         , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope
         , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, $location, $q, fbusers) {
         /* jshint validthis:true */
@@ -180,20 +180,7 @@
                         }
                     }
                 }
-            }
-                        
-            //check that number of answer is same as store in content object
-            //if different, compute answertags and update table - only if rank is atomic
-            /*
-            if ($rootScope.cCategory.isatomic == true && !foodNearMe) {
-                if (vm.answers.length != $rootScope.cCategory.answers && vm.answers.length > 0) {
-                    var answertags = vm.answers[0].name;
-                    for (var n = 1; n < vm.answers.length; n++) {
-                        answertags = answertags + ' ' + vm.answers[n].name;
-                    }
-                    table.update($rootScope.cCategory.id, ['answertags'], [answertags]);
-                }
-            }*/
+            }                        
             
             //Check number of answers for this ranking
             if (vm.answers.length == 0) {
@@ -274,7 +261,7 @@
                     vm.title3 = vm.answers[2].name;
                     vm.addinfo3 = vm.answers[2].addinfo;
                     vm.image3 = vm.title3 + '##' + vm.addinfo3;
-
+                    
                 }
                 else {
                     vm.isShortPhrase = false;
@@ -300,20 +287,6 @@
                         }
                     }
 
-
-                    /*
-                    else vm.image1ok = false;
-                    if (vm.answers[1].imageurl != undefined && vm.answers[1].imageurl != null && vm.answers[1].imageurl != '') {
-                        vm.image2 = vm.answers[1].imageurl;
-                        vm.image2ok = true;
-                    }
-                    else vm.image2ok = false;
-                    if (vm.answers[2].imageurl != undefined && vm.answers[2].imageurl != null && vm.answers[2].imageurl != '') {
-                        vm.image3 = vm.answers[2].imageurl;
-                        vm.image3ok = true;
-                    }
-                    else vm.image3ok = false;
-                    }*/
                 }
                 if (!foodNearMe) {
                     table.update($rootScope.cCategory.id,
@@ -322,7 +295,14 @@
                             vm.image1, vm.image2, vm.image3]);
                 }
             }
-  
+
+            //Set colors for title hideInfoBox
+            var colors = color.defaultRankColor($rootScope.cCategory);
+            //console.log("colors - ", colors);
+            vm.bc = colors[0];
+            vm.fc = colors[1];
+            vm.bc2 = color.shadeColor(vm.bc, 0.4);
+
             //Sorting rules
             if ($rootScope.DEBUG_MODE) console.log("foodNearMe, ",foodNearMe);
             if ($rootScope.DEBUG_MODE) console.log("rankIsNearMe, ",rankIsNearMe);
@@ -336,21 +316,7 @@
             $rootScope.modeIsImage = true;
             
             if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
-            //console.log("$rootScope.user", $rootScope.user);
-            //createVrows();
-            //Store in cookies memory, current state
-            /* 
-            var statename = $state.current.name;
-            $cookies.put('statename', statename);
-            if (statename == 'rankSummary') {
-                $cookies.put('statenum', $rootScope.cCategory.id);
-            }
-            if (statename == 'answerDetail') {
-                $cookies.put('statenum', $rootScope.canswer.id);
-            }
-            console.log('@cookie test! -', $cookies.get('statename'),$cookies.get('statenum'));
-              */
-
+            
             window.prerenderReady = true; 
         }
 
