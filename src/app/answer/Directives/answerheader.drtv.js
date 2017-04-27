@@ -31,8 +31,8 @@ function (color, $window, $rootScope, $state, dialog) {
             scope.hasMap = scope.answer.location != undefined && scope.answer.location != ''; 
 
             //Effective width vs $window.innerWidth
-            var iWa = [0, 769, 971, 996, 1173, 1201, 1635, 1960, 3500];
-            var eWa = [0.96, 0.96, 0.75, 0.96, 0.68, 0.96, 0.64, 0.6, 0.6];
+            var iWa = [0, 401, 474, 769, 971, 996, 1173, 1201, 1635, 1960, 3500];
+            var eWa = [0.86, 0.86, 0.88, 0.96, 0.75, 0.96, 0.68, 0.96, 0.64, 0.6, 0.6];
             var iW = $window.innerWidth;
             var eW = 0; //effective width
             for (var n = 0; n < iWa.length - 1; n++) {
@@ -51,8 +51,9 @@ function (color, $window, $rootScope, $state, dialog) {
                 scope.sp3 = 'width:20%';
                 scope.sm = true; scope.nsm = false;
                 scope.width = Math.round(iW * eW);
-                scope.mxheight = '' + Math.round((scope.width / 2) / 1.25) + '';
-                console.log("scope.width, scope.mxheight ", scope.width, scope.mxheight);
+                scope.mxheight = Math.round((scope.width / 1.25));
+                //clamp max height
+                if (scope.mxheight > 300) scope.mxheight = 300;
                 if ($rootScope.cCategory) {
                     var colors = color.defaultRankColor($rootScope.cCategory);
                     scope.bc = colors[0];

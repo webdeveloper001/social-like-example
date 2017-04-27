@@ -23,7 +23,7 @@ angular.module('app').directive('bgBox', ['color',function (color) {
                scope.dirHor = false;
                scope.dirVer = true;
            }
-           if (scope.bc2 == undefined) scope.bc2 = color.shadeColor(scope.bc,scope.shade);    
+           if (scope.bc2 == undefined) scope.bc2 = color.shadeColor(scope.bc,scope.shade); 
         },
     }
 }

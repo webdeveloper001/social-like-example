@@ -55,7 +55,7 @@
 </div>
 
  <br ng-if="vm.isNh">
-<div style="display:{{((vm.isNhRdy || vm.isCity) && (vm.searchActive == false)) ? 'inline':'none'}}" ng-if="!vm.fbm">
+<div style="display:{{((vm.isNhRdy || vm.isCity) && (vm.searchActive == false)) ? 'inline':'none'}}" ng-if="!vm.fbm">	
 	<content-block type='rankofweek' dynamic="false" rankofweek="true"></content-block>
 <!--
 		<table class="table" style="border-style:none;" ng-if="vm.isCity">
@@ -162,7 +162,7 @@
 			<content-block type='health' dynamic="false"></content-block>
 		</div>
 	</div>
-	
+	<!--
 	<div class="row" style="border:0px;padding:0px;margin:0px;">
 		<div class="col-md-6" style="border:0px;padding:3px;margin:0px;">
 			<content-block type="politics" dynamic="false"></content-block>
@@ -171,7 +171,8 @@
 			<content-block type='sports' dynamic="false"></content-block>
 		</div>
 	</div>
-	
+	-->
+	<!--
 	<div class="row" style="border:0px;padding:0px;margin:0px;">
 		<div class="col-md-6" style="border:0px;padding:3px;margin:0px;">
 			<content-block type='city' dynamic="false"></content-block>
@@ -180,6 +181,7 @@
 			<content-block type='personalities' dynamic="false"></content-block>
 		</div>
 	</div>
+	-->
 	
 	<div class="row" style="border:0px;padding:0px;margin:0px;">
 		<div class="col-md-6" style="border:0px;padding:3px;margin:0px;">
@@ -189,6 +191,7 @@
 			<content-block type='services' dynamic="false"></content-block>
 		</div>
 	</div>
+	<!--
 	<div class="row" style="border:0px;padding:0px;margin:0px;">
 		<div class="col-md-6" style="border:0px;padding:3px;margin:0px;">
 			<content-block type='neighborhood' dynamic="false"></content-block>
@@ -198,7 +201,7 @@
 			<content-block type='dating' dynamic="false"></content-block>
 		</div>
 	</div>
-	
+	-->
 	
 </div>
 

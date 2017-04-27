@@ -66,8 +66,8 @@
         vm.addCatans = addCatans;
         vm.addctsactive = false;
         vm.addcts = addcts;
-  
-        //Comments related variables
+
+       //Comments related variables
         var cObj = {};
         cObj.commLoaded = false;
         cObj.initials = '';
@@ -77,10 +77,8 @@
         cObj.newComment = '';
         vm.cm = cObj;
         vm.commentAllowed = true;
-
-        
-        //TODO: Would like to add this abstract template, but dont know how               
-            
+  
+        //TODO: Would like to add this abstract template, but dont know how                           
         $rootScope.$on('$stateChangeStart',
             function (ev, to, toParams, from, fromParams) {
                 if (from.name == 'answerDetail' && to.name != 'answerDetail') {

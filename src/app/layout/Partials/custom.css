@@ -47,10 +47,11 @@ img.displayed-uc
 }
 .well-rank
 {
-    padding-top: 0;
+    padding-top: 0px;
     padding-right: 0;
-    padding-bottom: 0;
+    padding-bottom: 0px;
     padding-left: 20px;
+    margin: 0px;
 
     color: #fff;
     background-color: #006dcc;
