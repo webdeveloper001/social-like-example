@@ -225,6 +225,7 @@
                     case "ispremium": data.ispremium = val[i]; break;
                     case "hasranks": data.hasranks = val[i]; break;
                     case "ranksqty": data.ranksqty = val[i]; break;
+                    case "ig_image_urls": data.ig_image_urls = val[i]; break;
                 }
             }
             //console.log("data", data);

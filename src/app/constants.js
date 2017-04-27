@@ -11,5 +11,5 @@
         .constant('GOOGLE_API_KEY', 'AIzaSyC2gAzj80m1XpaagvunSDPgEvOCleNNe5A')
         .constant('DEBUG_MODE', false)
         .constant('EMPTY_IMAGE','../../../assets/images/noimage.jpg')
-        
+        .constant('INSTAGRAM_CLIENT_ID', "205800c140bd4ff8a1e7778b5ec4a681")
 })();

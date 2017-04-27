@@ -24,12 +24,7 @@
         vm.redirectForFacebook = redirectForFacebook;
         vm.whyFacebookDialog = whyFacebookDialog;
         vm.facebookLogin = facebookLogin;
-        vm.instagramLogin = instagramLogin;
         vm.goBack = goBack;
-
-        function instagramLogin(){
-            InstagramService.login();
-        }
 
         function facebookLogin(){
             login.facebookSDKLogin();
@@ -40,11 +35,11 @@
         });
 
         // Only use on localhost to fake a FB login
-        // if (window.location.hostname == "localhost") {
-        //   console.log("server is: " + window.location.hostname)
-        //   console.log("let's fake your user as an FB login")
-        //   login.setFakeLocalUser();
-        // }
+        if (window.location.hostname == "localhost") {
+          console.log("server is: " + window.location.hostname)
+          console.log("let's fake your user as an FB login")
+          login.setFakeLocalUser();
+        }
 
         if ($rootScope.isLoggedIn) $state.go('cwrapper');
         // else activate();
