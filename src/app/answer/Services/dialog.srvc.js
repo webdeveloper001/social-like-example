@@ -1321,7 +1321,7 @@
                 callback: function (result) {
                     if (result) {
                         console.log(blobList);
-                        if( blobList[n].type == 'instagram' ){
+                        if( blobList[n].type == 'Instagram' ){
                             var itempos = current_answer.ig_image_urls.indexOf(blobList[n].url);
                             if( itempos != -1){
                                 current_answer.ig_image_urls = current_answer.ig_image_urls.substr(0, itempos) + current_answer.ig_image_urls.substr(itempos + blobList[n].url.length);
