@@ -46,7 +46,8 @@
             editNumRanks: editNumRanks,
             editInfo: editInfo,
             notificationWithCallback: notificationWithCallback,
-            enterPassword: enterPassword
+            enterPassword: enterPassword,
+            chooseImgFromIgDlg: chooseImgFromIgDlg
         };
 
         return service;
@@ -1221,6 +1222,7 @@
             m3 =
             '" style="' + img_style + '">' +
             '</div>' + 
+            '<p>Photo from &nbsp<strong id="source">' + blobList[n].type + '</strong></p></br>' + 
             '<br/>';
             
             if (blobList[n].from != undefined){
@@ -1230,7 +1232,7 @@
             else{
                 cap = '<p id="credit"></p><p id="caption"></p>';
             }
-            
+            var m5 = '';
             messagehtml =  m1 + m2 + blobList[n].url + m3 + m4 + cap;
             
             BootstrapDialog.show({
@@ -1243,7 +1245,7 @@
                         n = n - 1;
                         if (n < 0) n = L - 1;
                         $content.find('#image').attr('src', blobList[n].url);
-                        
+                        $content.find('#source').html(blobList[n].type);
                         if (blobList[n].from != undefined) $('#credit').html('Photo by:&nbsp<strong>@'+ blobList[n].from + '</strong></br>');
                         else $('#credit').html('');
                         
@@ -1254,17 +1256,17 @@
                     $content.find('#nextbutton').click({}, function () {
                         n = n + 1;
                         if (n >= L) n = 0;
-                         $content.find('#image').attr('src', blobList[n].url);
-                         
-                         if (blobList[n].from != undefined) $('#credit').html('Photo by:&nbsp<strong>@'+ blobList[n].from + '</strong></br>');
-                         else $('#credit').html('');
-                        
-                         if (blobList[n].caption != undefined) $('#caption').html(blobList[n].caption);
-                         else $('#caption').html('');
+                        $content.find('#image').attr('src', blobList[n].url);
+                        $content.find('#source').html(blobList[n].type);
+                        if (blobList[n].from != undefined) $('#credit').html('Photo by:&nbsp<strong>@'+ blobList[n].from + '</strong></br>');
+                        else $('#credit').html('');
+
+                        if (blobList[n].caption != undefined) $('#caption').html(blobList[n].caption);
+                        else $('#caption').html('');
                     });
 
                     $content.find('#trashbutton').click({}, function () {
-                        confirmPhotoDelete(blobList, n);
+                        confirmPhotoDelete(blobList, n, answer);
                         x.close();
                     });
 
@@ -1288,7 +1290,7 @@
 
         }
 
-        function confirmPhotoDelete(blobList, n) {
+        function confirmPhotoDelete(blobList, n, current_answer) {
 
             var title = '';
             var message = '';
@@ -1318,7 +1320,21 @@
                 },
                 callback: function (result) {
                     if (result) {
-                        imagelist.deleteBlob(blobList[n].url);
+                        console.log(blobList);
+                        if( blobList[n].type == 'Instagram' ){
+                            var itempos = current_answer.ig_image_urls.indexOf(blobList[n].url);
+                            if( itempos != -1){
+                                current_answer.ig_image_urls = current_answer.ig_image_urls.substr(0, itempos) + current_answer.ig_image_urls.substr(itempos + blobList[n].url.length);
+
+                                setInstagramImageUrl(current_answer.id, current_answer.ig_image_urls)
+                                .then(function(answer){
+                                    $rootScope.$emit('refreshImages');
+                                })
+                            }
+                            
+                        } else {
+                            imagelist.deleteBlob(blobList[n].url);
+                        }
                     }
                 }
             });
@@ -1531,8 +1547,8 @@
             var cap = '';
 
            // <div class="container hidden-xs hidden-sm hidden-md col-lg-3" ng-if="isShortPhrase" style="background-color:lightgray;color:black;height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
-//	<div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
-		
+//  <div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
+        
 
             
             m1 =
@@ -1726,16 +1742,16 @@
                     '<p class="text-right">Select quantity:</p>'+
                 '</div>'+
                 '<div class="col-xs-5">'+
-				    '<div class="input-group">'+
-					    '<span class="input-group-btn">'+
-					        '<button class="btn btn-primary" id="btn_minus"><i class="fa fa-minus"></i></button>'+
-				        '</span>'+
-					    '<input style="text-align:center" id="numRanks" class="form-control" type="text" placeholder="'+ n +'">'+
-					        '<span class="input-group-btn">'+
-					            '<button class="btn btn-primary" id="btn_plus"><i class="fa fa-plus"></i></button>'+
-				            '</span>'+
-				    '</div>'+
-			    '</div>'+
+                    '<div class="input-group">'+
+                        '<span class="input-group-btn">'+
+                            '<button class="btn btn-primary" id="btn_minus"><i class="fa fa-minus"></i></button>'+
+                        '</span>'+
+                        '<input style="text-align:center" id="numRanks" class="form-control" type="text" placeholder="'+ n +'">'+
+                            '<span class="input-group-btn">'+
+                                '<button class="btn btn-primary" id="btn_plus"><i class="fa fa-plus"></i></button>'+
+                            '</span>'+
+                    '</div>'+
+                '</div>'+
             '</div>'+
             '<br><p class="text-left" id="mytext">'+msg+'</p>';
                 //return msghtml;    
@@ -1958,6 +1974,118 @@
                         }
                     }]
             });
+        }
+
+        function setInstagramImageUrl(id, urls){
+            return answer.updateAnswer(id, ['ig_image_urls'], [urls]);
+        }
+        function chooseImgFromIgDlg(blobList,  answer, isOwner) {
+
+            var title = '';
+            var messagehtml = ''
+            var btnCancelLabel = 'No, I don\'t approve';
+            var btnOkLabel = 'Yes, locate me';
+            var L = blobList.length;
+            var img_style = '';
+
+            if ($rootScope.sm) {
+                img_style = 'width:100%;height:auto';
+            }
+            else {
+                img_style = 'width:100%;height:auto';
+            }
+
+            title = 'My Instagram Photos';
+
+            var m1 = '';
+            var m2 = '';
+            var m3 = '';
+            var m4 = '';
+            var cap = '';
+            
+            m1 =
+            '<div class="row">' +
+
+            '</div>';
+            m4 =
+            '<div class="text-right">' +
+            '</div><br/>';
+
+            var imageListHtml = '';
+            m2 = '<img id="image" class="displayed col-xs-3 thumbnail" src="';
+            //'https://rankx.blob.core.windows.net/sandiego/';
+            m3 ='" style="' + img_style + '">';
+            imageListHtml = '<div class="row">';
+            for (var i = 0; i < blobList.length; i++) {
+                if(blobList[i].type == 'image'){
+                    imageListHtml += '<div class="col-xs-6 col-md-4">';
+                    imageListHtml += m2 + blobList[i].images.low_resolution.url + m3;
+                    if( answer.ig_image_urls.indexOf(blobList[i].images.low_resolution.url) == -1 )
+                        imageListHtml +=    '<div class="text-center">' +
+                                            '<button class="btn btn-primary" style="margin-top:10px" id="add_photo">Add</button>' +
+                                            '</div>';
+                    else
+                        imageListHtml +=    '<div class="text-center">' +
+                                            '<button class="btn btn-primary disabled" style="margin-top:10px" id="add_photo">Added</button>' +
+                                            '</div>';
+
+                    imageListHtml += '</div>';
+                }
+            }
+            imageListHtml += '</div>';
+            
+            messagehtml =  m1 + imageListHtml + m4;
+            
+            BootstrapDialog.show({
+                size: BootstrapDialog.SIZE_WIDE,
+                type: BootstrapDialog.TYPE_PRIMARY,
+                cssClass: 'instagram-image-dialog',
+                title: title,
+                message: function (dialogRef) {
+                    var $content = $(messagehtml);
+                    var x = dialogRef;
+                    $content.find('#add_photo').click({}, function () {
+                        console.log(answer.ig_image_urls);
+                        var url = $(this).parent().parent().children('#image').attr('src');
+
+                        if(answer.ig_image_urls.indexOf(url) != -1){
+                            $(this).html('Added');
+                            $(this).addClass('disabled');
+                        }
+                        else{
+                            var _this = this;
+                            answer.ig_image_urls += ";" + url;
+                            setInstagramImageUrl(answer.id, answer.ig_image_urls)
+                            .then(function(answer){
+                                $rootScope.$emit('refreshImages');
+                                $(_this).html('Added');
+                                $(_this).addClass('disabled');
+                            })
+                        }
+                        
+                    });
+                    return $content;
+                },
+
+                buttons: [{
+                    label: 'Close',
+                    action: function (dialogRef) {
+                        //console.log("dialogRef2---", dialogRef);
+                        dialogRef.close();
+                    },
+                }],
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-success',
+                btnCancelClass: 'btn-warning',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+
+            });
+
         }
     }
 })();
