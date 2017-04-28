@@ -16,7 +16,9 @@
 
  <!-- <div class="row" ng-if="!vm.fbm" style="border:0px;margin:0px;padding:0px"> 
 	<div class="col-sm-12 col-md-8" style="display:{{(vm.isNhRdy || vm.isCity) ? 'inline':'none'}}"> -->
+<!--
 <div ng-if="!vm.fbm">
+	<!--
 		<div class="input-group" style="background-color:{{vm.querybc}};padding:5px">
 			<input type="text" class="form-control" placeholder="Search in {{vm.searchScope}}" 
 			ng-model="vm.val" ng-change="vm.getResults()" id="SearchInput">
@@ -25,15 +27,16 @@
 			</div>
 		</div>
 <!--	</div> -->
-	<br ng-if="!vm.hidelogo"> 
-	<div class="text-center" ng-if="!vm.hidelogo">
+<!--	<br ng-if="!vm.hidelogo"> --> 
+<!--
+	<div class="text-center" ng-hide="vm.searchActive">
 		<div class="btn-group">
 			<button class="btn btn-default {{vm.isCity ? 'active':''}}" ng-click="vm.switchScope(1)">San Diego</button>
 			<button class="btn btn-default {{vm.isNh ? 'active':''}}" ng-click="vm.switchScope(2)">Neighborhood</button>
 		</div>
 	</div>
-	</br ng-if="!vm.hidelogo">
-</div>	
+	</br ng-if="!vm.hidelogo">-->
+<!--</div>	
  <!-- </div>  --> 
 
 <div style="display:{{vm.isNh ? 'inline':'none'}}" ng-if="!vm.fbm">
@@ -50,31 +53,11 @@
 			</ul>
 	</div> 	
 </div>
-<!-- style="display:{{vm.searchActive ? 'inline':'none'}}" -->
-<div ng-show="vm.searchActive" ng-if="!vm.fbm">	
-	<br ng-if="vm.isNh">
-	<search-block></search-block>
-</div> 
+
  <br ng-if="vm.isNh">
-<div style="display:{{((vm.isNhRdy || vm.isCity) && (vm.searchActive == false)) ? 'inline':'none'}}" ng-if="!vm.fbm">
+<div style="display:{{((vm.isNhRdy || vm.isCity) && (vm.searchActive == false)) ? 'inline':'none'}}" ng-if="!vm.fbm">	
 	<content-block type='rankofweek' dynamic="false" rankofweek="true"></content-block>
-
-	<!-- <content-block type='quickLinks' dynamic="false" ></content-block> -->
-	<!--<content-block type='rankofweeknh' dynamic="false" rankofweek=true></content-block>-->
-	<!-- Instagram and Facebook Like buttons 
-	margin-bottom:10px;padding:0px;border:0px;margin-top:10px;margin-left:0px;margin-right:0px;
-	margin-bottom:10px;padding:0px;border:0px;margin-top:10px;--> 
-<!-- <div class="row" style="margin:0px;padding:0px;border:0px;">
-<!--	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin:0px;padding:0px;border:0px;"> -->
 <!--
-background: #595959;
-  						background: -webkit-linear-gradient(left, #595959 , #bfbfbf);
-  						background: -o-linear-gradient(right, #595959, #bfbfbf);
-  						background: -moz-linear-gradient(right, #595959, #bfbfbf);
-  						background: linear-gradient(to right, #595959 , #bfbfbf);">
-							
-	-->
-
 		<table class="table" style="border-style:none;" ng-if="vm.isCity">
 			<tbody>
 				<thead>
@@ -179,7 +162,7 @@ background: #595959;
 			<content-block type='health' dynamic="false"></content-block>
 		</div>
 	</div>
-	
+	<!--
 	<div class="row" style="border:0px;padding:0px;margin:0px;">
 		<div class="col-md-6" style="border:0px;padding:3px;margin:0px;">
 			<content-block type="politics" dynamic="false"></content-block>
@@ -188,7 +171,8 @@ background: #595959;
 			<content-block type='sports' dynamic="false"></content-block>
 		</div>
 	</div>
-	
+	-->
+	<!--
 	<div class="row" style="border:0px;padding:0px;margin:0px;">
 		<div class="col-md-6" style="border:0px;padding:3px;margin:0px;">
 			<content-block type='city' dynamic="false"></content-block>
@@ -197,6 +181,7 @@ background: #595959;
 			<content-block type='personalities' dynamic="false"></content-block>
 		</div>
 	</div>
+	-->
 	
 	<div class="row" style="border:0px;padding:0px;margin:0px;">
 		<div class="col-md-6" style="border:0px;padding:3px;margin:0px;">
@@ -206,6 +191,7 @@ background: #595959;
 			<content-block type='services' dynamic="false"></content-block>
 		</div>
 	</div>
+	<!--
 	<div class="row" style="border:0px;padding:0px;margin:0px;">
 		<div class="col-md-6" style="border:0px;padding:3px;margin:0px;">
 			<content-block type='neighborhood' dynamic="false"></content-block>
@@ -215,19 +201,6 @@ background: #595959;
 			<content-block type='dating' dynamic="false"></content-block>
 		</div>
 	</div>
-	
-	<!--
-	<content-block type='food' dynamic="false"></content-block>
-	<content-block type='city' dynamic="false"></content-block>
-	<content-block type='social' dynamic="false"></content-block>
-	<content-block type='neighborhood' dynamic="false"></content-block>
-	<content-block type='services' dynamic="false"></content-block>
-	<content-block type='personalities' dynamic="false"></content-block>
-	<content-block type='health' dynamic="false"></content-block>
-	<content-block type='beauty' dynamic="false"></content-block>
-	<content-block type='dating' dynamic="false"></content-block>
-	<content-block type='technology' dynamic="false"></content-block>
-	<content-block type='lifestyle' dynamic="false"></content-block>
 	-->
 	
 </div>

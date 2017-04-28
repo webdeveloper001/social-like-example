@@ -1,0 +1,150 @@
+<!-- Answer Header Partial -->
+<!-- MEDIUM AND LARGE DISPLAYS -->
+<div class="container hidden-xs" ng-if="!isShortPhrase">
+    <div class="row">
+        <!-- Box 1 - Answer Name and Info -->
+        <div class="container col-sm-6 col-md-4 col-lg-4" style="height:{{mxheight}}px;margin:0px;padding:0px;border:0px;">
+            <div class="container-bgbox">
+                <bg-box bc="{{bc}}" bc2="{{bc2}}" fc="{{fc}}" text="{{idx > 0 ? idx + '. ' + answer.name:answer.name}}" 
+                    dir="vertical" w="100%" h="120px"></bg-box>
+            </div>
+            <div class="container" style="width:100%; height:{{mxheight-120}}px;background-color:#d8d8d8;">
+                <br ng-if="!sm">
+                <strong ng-if="answer.location">Address:</strong>
+                <a ng-if="answer.location" href="http://maps.apple.com/maps?q={{answer.location}}" target="_blank">{{answer.location}}</a>
+                <br ng-if="answer.location">
+                <strong ng-if="answer.cityarea">{{(answer.cityarea) ? 'Neighboorhood:' : ""}}</strong> {{(answer.cityarea)
+                ? answer.cityarea : ""}}
+                <br style="display:{{(answer.cityarea) ? 'inline' : 'none'}}">
+                <strong ng-if="answer.phone">Phone:</strong> <a ng-if="answer.phone" href="tel:{{answer.phone}}">{{answer.phone}}</a>
+                <br style="display:{{(answer.phone) ? 'inline' : 'none'}}">
+                <strong ng-if="answer.website">Website:</strong>
+                <a ng-if="answer.website.indexOf('http') >=0" href="{{answer.website}}" target="_blank">{{answer.website}}</a>
+                <a ng-if="answer.website.indexOf('http') == -1" href="http://{{answer.website}}" target="_blank">{{answer.website}}</a>
+                <br ng-if="answer.website">
+                <strong ng-if="answer.email">{{(answer.email) ? 'Email:' : ""}}</strong> {{(answer.email) ? answer.email
+                : ""}}
+                <br style="display:{{(answer.email) ? 'inline' : 'none'}}">
+                <i style="display:{{hrset ? 'inline':'none'}}">{{hourstr}}</i>
+                <div class=" text-center answer_info_buttons">
+                    <br>
+
+                    <a type="button" class="btn btn-default" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;" ng-if="!answer.hasOwner || userIsOwner"
+                        ng-click="editAnswer()" target="_blank">
+                        Edit&nbsp&nbsp<span class="fa fa-pencil"></span>
+                        </a>
+                        <!-- isMobile && answer.phone -->
+                        <a type="button" class="btn btn-default" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;" ng-if="isMobile && answer.phone" 
+                        href="tel:{{answer.phone}}" target="_blank">
+                            Call&nbsp&nbsp<span class="fa fa-phone"></span>
+                            </a>
+                            <a type="button" class="btn btn-default" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;" ng-if="answer.lat && answer.lng"
+                                href="http://maps.apple.com/maps?q={{answer.lat}}, {{answer.lng}}" target="_blank">
+                                Directions&nbsp&nbsp<span class="fa fa-map-marker"></span>
+                                </a>
+                                <a type="button" class="btn btn-default hidden-md hidden-lg hidden-xl" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;"
+                                    ng-if="answer.lat && answer.lng" ng-click="toggleimgmode()">
+                                    {{imgmode}}&nbsp&nbsp<span class="{{imgmodeicon}}"></span>
+                                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Box 2 - Answer Image (On Smaller displays, alternate image and map) -->
+        <div class="col-sm-6 col-md-4 col-lg-4" style="margin:0px;padding:0px;border:0px;">
+
+            <img class="displayed" ng-src="{{answer.imageurl}}" alt="Moustiers Sainte Marie" style="height:{{mxheight}}px;width:100%;margin-left:auto;margin-right:auto;"
+                ng-click="showUrl()" ng-if="modeIsImage">
+
+            <img class="displayed" ng-src="https://maps.googleapis.com/maps/api/staticmap?center={{answer.location}}&zoom=13&size={{width2}}x{{mxheight}}&maptype=roadmap
+                &markers=color:red%7Clabel:%7C{{answer.lat}},{{answer.lng}}&key=AIzaSyDKXsql-P8czb4nAQMXjkFpm_I5HqKsQpo"
+                    ng-if="!modeIsImage">
+
+        </div>
+        <!-- Box 3 - Google Map -->
+        <div class="hidden-sm col-md-4 col-lg-4" style="margin:0px;padding:0px;border:0px;">
+
+            <img class="displayed" ng-src="https://maps.googleapis.com/maps/api/staticmap?center={{answer.location}}&zoom=13&size={{width3}}x{{mxheight}}&maptype=roadmap
+                &markers=color:red%7Clabel:%7C{{answer.lat}},{{answer.lng}}&key=AIzaSyDKXsql-P8czb4nAQMXjkFpm_I5HqKsQpo"
+                ng-if="hasMap">
+
+                <div class="container" style="background-color:#d8d8d8;width:{{width3}}px;height:{{mxheight}}px;margin-left:auto;margin-right:auto;"
+                    ng-if="!hasMap">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- SMALL DISPLAYS -->
+<div class="container hidden-sm hidden-md hidden-lg hidden-xl" ng-if="!isShortPhrase">
+    <!-- Map is display over container when image mode is selected -->
+        <div class="container-bgbox">
+            <bg-box bc="{{bc}}" bc2="{{bc2}}" fc="{{fc}}" text="{{idx > 0 ? idx + '. ' + answer.name:answer.name}}" dir="vertical" w="100%" h="75px"></bg-box>
+        </div>
+        <div class="container" style="margin:0px;padding:0px;border:0px;">
+                <img class="displayed" ng-src="{{answer.imageurl}}" alt="Moustiers Sainte Marie" style="height:auto;width:100%;"
+                    ng-click="showUrl()" ng-if="modeIsImage">
+                <img class="displayed" ng-src="https://maps.googleapis.com/maps/api/staticmap?center={{answer.location}}&zoom=13&size={{width}}x{{mxheight}}&maptype=roadmap
+                &markers=color:red%7Clabel:%7C{{answer.lat}},{{answer.lng}}&key=AIzaSyDKXsql-P8czb4nAQMXjkFpm_I5HqKsQpo"
+                ng-if="!modeIsImage">    
+        </div>
+</div>
+<!-- SHORT-PHRASE DISPLAY -->
+<div class="container-answer" style="width:100%;height:auto" ng-if="isShortPhrase">
+    <br>
+    <h2 style="text-align:center"><strong>{{answer.name}}</strong></h2>
+    <br>
+    <h4 style="text-align:center">{{answer.addinfo}}</h4>
+</div>
+
+<!-- Answer Info and Buttons - for SMALL DISPLAYS -->
+<div class="answer_info row" ng-if="!isShortPhrase&&!isEvent" style="padding:0px;margin:0px;border:0px;">
+    <div class="container hidden-sm hidden-md hidden-lg hidden-xl">
+        <br ng-if="answer.location">
+        <strong ng-if="answer.location">Address:</strong>
+        <a ng-if="answer.location" href="http://maps.apple.com/maps?q={{answer.location}}" target="_blank">{{answer.location}}</a>
+        <br ng-if="answer.location">
+        <div class="row">
+            <div class="col-xs-9">
+                <strong ng-if="answer.cityarea">{{(answer.cityarea) ? 'Neighboorhood:' : ""}}</strong> {{(answer.cityarea)
+                ? answer.cityarea : ""}}
+                <br style="display:{{(answer.cityarea) ? 'inline' : 'none'}}">
+                <strong ng-if="answer.phone">Phone:</strong> <a ng-if="answer.phone" href="tel:{{answer.phone}}">{{answer.phone}}</a>
+                <br style="display:{{(answer.phone) ? 'inline' : 'none'}}">
+                <strong ng-if="answer.website">Website:</strong>
+                <a ng-if="answer.website.indexOf('http') >=0" href="{{answer.website}}" target="_blank">{{answer.website}}</a>
+                <a ng-if="answer.website.indexOf('http') == -1" href="http://{{answer.website}}" target="_blank">{{answer.website}}</a>
+                <br ng-if="answer.website">
+                <strong ng-if="answer.email">{{(answer.email) ? 'Email:' : ""}}</strong> {{(answer.email) ? answer.email
+                : ""}}
+                <br style="display:{{(answer.email) ? 'inline' : 'none'}}">
+            </div>
+            <div class="col-xs-3 text-left">
+                <a type="button" class="btn btn-default" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;margin-top:15px;"
+                    ng-if="!answer.hasOwner || userIsOwner" ng-click="editAnswer()" target="_blank">&nbsp&nbsp<span class="fa fa-pencil"></span></a>
+            </div>
+        </div>
+        <i style="display:{{hrset ? 'inline':'none'}}">{{hourstr}}</i>        
+    </div>
+
+    <div class="hidden-sm hidden-md hidden-lg hidden-xl text-center answer_info_buttons" style="padding-top:10px;">
+        <a type="button" class="btn btn-default" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;" ng-if="isMobile && answer.phone" 
+        href="tel:{{answer.phone}}" target="_blank">
+            Call&nbsp&nbsp<span class="fa fa-phone"></span>
+            </a>
+            <a type="button" class="btn btn-default" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;" ng-if="answer.lat && answer.lng"
+                href="http://maps.apple.com/maps?q={{answer.lat}}, {{answer.lng}}" target="_blank">
+                Directions&nbsp&nbsp<span class="fa fa-map-marker"></span>
+            </a>
+            <a type="button" class="btn btn-default" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;" ng-if="answer.lat && answer.lng"
+                    ng-click="toggleimgmode()">
+                    {{imgmode}}&nbsp&nbsp<span class="{{imgmodeicon}}"></span>
+            </a>
+    </div>
+</div>
+<div style="padding:5px"></div>
+<!-- Answer Additional Information Text -->
+<div ng-if="!isShortPhrase && !isEvent" style="display:{{answer.addinfo ? 'inline':'none'}};">
+    <span>{{answer.addinfo_teaser}}</span>
+    <span ng-show="completeinfo">{{answer.addinfo_complete}}</span>
+    <span ng-if="answer.addinfo.length > 0" ng-click="showcomplete()" style="background-color:lightgray;cursor:pointer">{{moretext}}</span>
+    <br style="display:{{answer.addinfo ? 'inline':'none'}}">
+</div>

@@ -215,18 +215,35 @@ angular.module('app').directive('contentBlock',
                     //
                     scope.resultsTop = [];
                     var resObj = {};
-                    var M = scope.results.length > 2 ? 3:scope.results.length;
-                    if (scope.results.length > 0) {
+                    //var M = scope.results.length > 2 ? 3:scope.results.length;
+                    var M = scope.results.length;
+                    if (M > 0) {
                         for (var n = 0; n < M; n++) {
                             resObj = {};
-                            resObj = scope.results[n];
-                            editTitle(resObj);
-                            parseShortAnswer(resObj);
-                            scope.resultsTop.push(resObj);
+                            resObj = JSON.parse(JSON.stringify(scope.results[n]));
+
+                            //Set only ranks with good images on front-page
+                            if (scope.results[n].image1url != $rootScope.EMPTY_IMAGE && 
+                                scope.results[n].image1url != undefined &&
+                                scope.results[n].image1url != ''){
+                                editTitle(resObj);
+                                parseShortAnswer(resObj);
+                                scope.resultsTop.push(resObj);
+                            }
+                            else {
+                                //shift up results, move rank with bad images to end of array
+                                for (var m = n; m < M-1; m++){
+                                    scope.results[m] = scope.results[m+1]; 
+                                }
+                                scope.results[M-1] = resObj;
+                            }
+                            if (scope.resultsTop.length > 2 || scope.resultsTop.length == M ) {
+                                scope.results = scope.results.slice(scope.resultsTop.length+1);
+                                break;
+                            }
                         }
-                        scope.results = scope.results.slice(M+1);
-                    }
-                    
+                        //scope.results = scope.results.slice(M+1);
+                    }                    
                 }
 
             function shuffle(array) {

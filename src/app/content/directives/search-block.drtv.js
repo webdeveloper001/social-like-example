@@ -20,6 +20,7 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
                 }
             };
             scope.ansSel = function (x) {
+                $rootScope.cCategory = undefined;
                 $state.go('answerDetail', { index: x.id });                
             };
 
@@ -33,6 +34,7 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
 
                 //Filter content based on user input
                 scope.getResults = function() {
+
                     scope.resRanks = [];
                     scope.resRanks = search.searchRanks();
                     scope.resAnswers = [];

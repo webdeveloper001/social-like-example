@@ -32,6 +32,9 @@
         //else
         vm.veilMsg = 'Just a moment, loading the best information about San Diego';
         vm.hidelogo = false;
+        vm.getResults = getResults;
+        vm.hideSearch = hideSearch;
+        vm.gotoHome = gotoHome;
 
         vm.goPrivacyPolicy = goPrivacyPolicy;
         vm.goRankofDayConsole = goRankofDayConsole;
@@ -94,25 +97,7 @@
 
             $rootScope.facebookAppId = ''; //1102409523140826'';
             $rootScope.facebookUrl = 'https://www.facebook.com/Rank-X-San-Diego-582174448644554';
-            /*
-            var dataInCookies = $cookies.get('dataIsLoaded');
-
-            if (dataInCookies){
-                $rootScope.answers = $cookies.get('answers');
-                $rootScope.content = $cookies.get('content');
-                $rootScope.specials = $cookies.get('specials');
-                $rootScope.mrecs = $cookies.get('mrecs');
-                $rootScope.edits = $cookies.get('edits');
-                $rootScope.alluseractivity = $cookies.get('alluseractivity');
-                $rootScope.catansrecs = $cookies.get('catansrecs');
-                $rootScope.cvrows = $cookies.get('cvrows');
-                $rootScope.headlines = $cookies.get('headlines');
-                $rootScope.cblocks = $cookies.get('cblocks');
-                $rootScope.pvisits = $cookies.get('pvisits');
-                $rootScope.rankofday = $cookies.get('rankofday');
-                $rootScope.uafs = $cookies.get('uafs');
-                //$cookies.put('pageDataLoaded',$rootScope.pageDataLoaded);
-            }*/
+       
             //$timeout(loadingDone, 1000);
             if ($rootScope.dataIsLoaded == undefined) {
                 vm.isLoading = true;
@@ -198,24 +183,6 @@
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.pageDataLoaded -", $rootScope.pageDataLoaded);
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.userDataLoaded -", $rootScope.userDataLoaded);
 
-            /*
-            console.log("Stored data in cookies!")
-
-                $cookies.put('answers',$rootScope.answers);
-                $cookies.put('content',$rootScope.content);
-                $cookies.put('specials',$rootScope.specials);
-                $cookies.put('mrecs',$rootScope.mrecs);
-                $cookies.put('edits',$rootScope.edits);
-                $cookies.put('alluseractivity',$rootScope.alluseractivity);
-                $cookies.put('catansrecs',$rootScope.catansrecs);
-                $cookies.put('cvrows',$rootScope.cvrows);
-                $cookies.put('headlines',$rootScope.headlines);
-                $cookies.put('cblocks',$rootScope.cblocks);
-                $cookies.put('pvisits',$rootScope.pvisits);
-                $cookies.put('rankofday',$rootScope.rankofday);
-                $cookies.put('uafs',$rootScope.uafs);
-                $cookies.put('pageDataLoaded',$rootScope.pageDataLoaded);
-*/
         }
 
         function isFacebookApp() {
@@ -242,6 +209,37 @@
                     showNeighborhoods();
                 }
             }, 333);
+        }
+
+        function getResults() {
+            $rootScope.inputVal = vm.val;
+            if ($rootScope.inputVal.length > 0) {
+                $rootScope.searchActive = true;
+            }
+            else {
+                $rootScope.searchActive = false;
+            }
+            vm.searchActive = $rootScope.searchActive;
+            $window.scroll(0,0);
+            $rootScope.$emit('getResults');
+            
+        }
+
+        function hideSearch(){
+            vm.searchActive = false;
+        }
+
+         function gotoHome() {
+            $rootScope.fbmode = false;
+            $rootScope.searchActive = false;
+            $rootScope.hidelogo = false;
+            $rootScope.inputVal = '';
+            vm.val = '';
+            //$state.go('cwrapper', {}, { reload: true });
+            if ($state.current.name != 'cwrapper') {
+                $state.go('cwrapper',{main: true});
+            }
+            else $rootScope.$emit('mainView');
         }
 
         /*

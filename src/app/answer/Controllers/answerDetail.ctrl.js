@@ -6,6 +6,7 @@
         .controller('answerDetail', answerDetail);
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
+
         'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt',
         '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope','$cookies', '$q', 'fbusers', 'InstagramService']; //AM:added user service
 
@@ -28,7 +29,7 @@
         // Members
         vm.relativetable = [];
         vm.catans = [];
-        vm.sm = false;
+        vm.sm = $rootScope.sm;
         vm.votemode = false;
                
         // Methods
@@ -38,7 +39,6 @@
         vm.goBack = goBack;
         vm.goPrev = goPrev;
         vm.goNext = goNext;
-        vm.editAnswer = editAnswer;
         vm.deleteAnswer = deleteAnswer;
         vm.flagAnswer = flagAnswer;
         vm.deleteButton = 'none';
@@ -52,14 +52,12 @@
         vm.getImages = getImages;
         vm.showsimage = showsimage;
         vm.gotoRank = gotoRank;
-        vm.showcomplete = showcomplete;
         vm.vrowVoteUp = vrowVoteUp;
         vm.vrowVoteDown = vrowVoteDown;
         vm.loadComments = loadComments;
         vm.postComment = postComment;
         vm.selectPhoto = selectPhoto;
         vm.cmFlag = cmFlag;
-        vm.toggleimgmode = toggleimgmode;
         vm.deleteThisCatans = deleteThisCatans;
         vm.addRankforAnswer = addRankforAnswer;
         vm.votemodeON = votemodeON;
@@ -71,8 +69,8 @@
         vm.addCatans = addCatans;
         vm.addctsactive = false;
         vm.addcts = addcts;
-  
-        //Comments related variables
+
+       //Comments related variables
         var cObj = {};
         cObj.commLoaded = false;
         cObj.initials = '';
@@ -82,35 +80,8 @@
         cObj.newComment = '';
         vm.cm = cObj;
         vm.commentAllowed = true;
-
-        vm.isMobile = false; 
-        // device detection
-        if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
-            || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0, 4)))
-            vm.isMobile = true;
-    
-        //Adjust picture size for very small displays
-        if ($window.innerWidth < 512) {
-            vm.mxheight = '250';
-            vm.sp1 = 'width:5%;padding:0px;';
-            vm.sp2 = 'width:25%;max-height:50px';
-            vm.sp3 = 'width:20%';
-            vm.sm = true; vm.nsm = false;
-            vm.width = Math.round($window.innerWidth * 0.9);
-            //console.log('screen is small');
-        }
-        else {
-            vm.mxheight = '300';
-            vm.sp1 = 'width:15%';
-            vm.sp2 = 'width:22.5%;max-height:50px;';
-            vm.sp3 = 'width:20%';
-            vm.sm = false; vm.nsm = true;
-            vm.width = Math.round($window.innerWidth * 0.9);
-            //console.log('screen is big');
-        }
-        
-        //TODO: Would like to add this abstract template, but dont know how               
-            
+  
+        //TODO: Would like to add this abstract template, but dont know how                           
         $rootScope.$on('$stateChangeStart',
             function (ev, to, toParams, from, fromParams) {
                 if (from.name == 'answerDetail' && to.name != 'answerDetail') {
@@ -164,7 +135,8 @@
 
             $rootScope.canswer = vm.answer;
             vm.type = vm.answer.type;
-
+            //vm.isShortPhrase = vm.type == 'Short-Phrase';
+            
             //if there is no category, look for it in cookies
             if ($rootScope.cCategory == undefined) {
                 var ccategoryid = $cookies.get('ccategory');
@@ -173,15 +145,15 @@
                 if (idx > -1) $rootScope.cCategory = $rootScope.content[idx];
             }
 
-            if ($rootScope.inFavMode) vm.title = $rootScope.myfavs.title;
-            else if ($rootScope.cCategory) vm.title = $rootScope.cCategory.title;
-            else vm.title = '';
+            if ($rootScope.inFavMode) vm.ranking = $rootScope.myfavs.title;
+            else if ($rootScope.cCategory) vm.ranking = $rootScope.cCategory.title;
+            else vm.ranking = '';
 
             //if answers not loaded (state went straight to asnwerDetail, answers is just current answer)
             if (answers == undefined) answers = [vm.answer];
 
             vm.idx = answers.map(function (x) { return x.id; }).indexOf(vm.answer.id) + 1;
-
+            if ($rootScope.cCategory == undefined) vm.idx = 0;
 
             //Temp for Instagram Demo
             if (vm.answer.id == 2225) vm.igdemo = true;
@@ -193,9 +165,6 @@
             vm.modeIsImage = $rootScope.modeIsImage == undefined ? true : $rootScope.modeIsImage;
             if (vm.answer.location == undefined) vm.modeIsImage = true;
 
-            if (vm.modeIsImage) setImage();
-            else setMap();
-
             if ($rootScope.previousState != 'answerDetail') $window.scrollTo(0, 0);
 
             vm.showImageGallery = false;
@@ -205,7 +174,7 @@
             //        getCatAnsId(vm.answer.id);
             getEdits(vm.answer.id);
             deleteButtonAccess();
-            if (vm.type == 'Establishment') getHours();
+            //if (vm.type == 'Establishment') getHours();
             if (vm.type != 'Establishment' && vm.type != 'Event' && false) makeRelativeTable(vm.answer.id);
             if (vm.type == 'Establishment') getSpecials(vm.answer.id);
             if (vm.type == 'Establishment' || vm.type == 'PersonCust') getVRows(vm.answer.id);
@@ -233,6 +202,7 @@
                 $rootScope.ceditvotes = [];
             }
 
+            //Check if answer is event
             if (vm.type == 'Event') {
                 var eventObj = JSON.parse(vm.answer.eventstr);
                 //Object.assign(vm.answer, eventObj);
@@ -258,7 +228,7 @@
             else vm.numcom = vm.answer.numcom;
 
             //Determine if necessary to show navigation buttons
-            if (vm.title) vm.showNextnPrev = true;
+            if (vm.ranking) vm.showNextnPrev = true;
             else vm.showNextnPrev = false;
 
             //Update number of views
@@ -302,54 +272,13 @@
             }
             else vm.answer.hasOwner = true;
 
-            if (vm.answer.addinfo != undefined) {
-                vm.answer.addinfo_teaser = vm.answer.addinfo.slice(0, 300);
-                //console.log("addinfo_teaser - ", vm.answer.addinfo_teaser);
-                vm.answer.addinfo_complete = vm.answer.addinfo.slice(300);
-                //console.log("addinfo_complete - ", vm.answer.addinfo_complete);
-            }
-
             vm.bindtxt = '';
             if (vm.type == 'Establishment') vm.bindtxt = 'I represent this business';
             if (vm.type == 'PersonCust') vm.bindtxt = 'I am this person';
             if (vm.type == 'Event') vm.bindtxt = 'I organize this event';
 
-            vm.moretext = ' more ';
-            vm.completeinfo = false;
         }
 
-        function showcomplete() {
-            if (vm.moretext == ' more ') {
-                vm.moretext = ' less ';
-                vm.completeinfo = true;
-                return;
-            }
-            if (vm.moretext == ' less ') {
-                vm.moretext = ' more ';
-                vm.completeinfo = false;
-                return;
-            }
-        }
-
-        function getHours() {
-            vm.hrset = false;
-            if (vm.answer.strhours != undefined && vm.answer.strhours != null) {
-                vm.hrset = true;
-                var cdate = new Date();
-                var dayOfWeek = cdate.getDay();
-                var idx = dayOfWeek - 1;
-                if (idx < 0) idx = 6;
-
-                var openhours = JSON.parse(vm.answer.strhours);
-                if (openhours[idx].opn == 'CLOSED') {
-                    vm.hourstr = 'Closed today';
-                }
-                else {
-                    vm.hourstr = 'Open today from: ' + openhours[idx].st + ' to ' + openhours[idx].ct;
-                }
-            }
-        }
-                      
         //AM: Create the relative table of this answer with respect to the other ones.
         function makeRelativeTable(id) {
             //rank.computeRanking(answers,mrecs);
@@ -673,19 +602,6 @@
             $state.go('rankSummary', { index: x.id });
         }
 
-
-        function editAnswer() {
-            if ($rootScope.isLoggedIn) {
-                if (vm.answer.type == 'Event') {
-                    $rootScope.eventmode = 'edit';
-                    $state.go("addEvent", { index: vm.answer.id });
-                }
-                else $state.go("editAnswer", { index: vm.answer.id });
-            }
-            else dialog.loginFacebook(); 
-            //dialog.getDialog('notLoggedIn');           
-        }
-
         function deleteAnswer() {
 
             console.log("Delete Answer");
@@ -773,10 +689,13 @@
                             rankObj.upVi = $rootScope.catansrecs[i].upV;
                             rankObj.downVi = $rootScope.catansrecs[i].downV;
 
-                            if (rankObj.rank == 1) rankObj.icon = "/assets/images/first.png";
-                            else if (rankObj.rank == 2) rankObj.icon = "/assets/images/second.png";
-                            else if (rankObj.rank == 3) rankObj.icon = "/assets/images/third.png";
-                            else if (rankObj.rank > 3 && rankObj.rank < 11) rankObj.icon = "/assets/images/topten.png";
+                            if (rankObj.rank == 1) rankObj.icon = "/assets/images/gold_.png";
+                            else if (rankObj.rank == 2) rankObj.icon = "/assets/images/silver_.png";
+                            else if (rankObj.rank == 3) rankObj.icon = "/assets/images/bronze_.png";
+                            else if (rankObj.rank > 3 && rankObj.rank < 11) rankObj.icon = "/assets/images/top_10.png";
+                            else if (rankObj.rank >= 11 && rankObj.rank < 21) rankObj.icon = "/assets/images/top_20.png";
+                            else if (rankObj.rank >= 21 && rankObj.rank < 51) rankObj.icon = "/assets/images/top_50.png";
+                            else if (rankObj.rank >= 51 && rankObj.rank < 101) rankObj.icon = "/assets/images/top_100.png";
                             else rankObj.icon = "/assets/images/blank.png";
    
                             //TODO insert rank position out of total list, will be in catans
@@ -1114,25 +1033,6 @@
 
         function selectPhoto(x) {
             dialog.seePhotos(vm.images, x, vm.answer, vm.userIsOwner);
-        }
-
-        function toggleimgmode() {
-            if (vm.modeIsImage) setMap();
-            else setImage();
-        }
-
-        function setImage() {
-            vm.imgmode = 'Show Map';
-            vm.imgmodeicon = 'fa fa-globe';
-            vm.modeIsImage = true;
-            $rootScope.modeIsImage = true;
-        }
-
-        function setMap() {
-            vm.imgmode = 'Show Image';
-            vm.imgmodeicon = 'fa fa-picture-o';
-            vm.modeIsImage = false;
-            $rootScope.modeIsImage = false;
         }
 
         function addcts(x) {
