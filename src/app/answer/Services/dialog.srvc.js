@@ -1324,7 +1324,7 @@
                         if( blobList[n].type == 'Instagram' ){
                             var itempos = current_answer.ig_image_urls.indexOf(blobList[n].url);
                             if( itempos != -1){
-                                current_answer.ig_image_urls = current_answer.ig_image_urls.substr(0, itempos) + current_answer.ig_image_urls.substr(itempos + blobList[n].url.length);
+                                current_answer.ig_image_urls = current_answer.ig_image_urls.substr(0, itempos-1) + current_answer.ig_image_urls.substr(itempos + blobList[n].url.length);
 
                                 setInstagramImageUrl(current_answer.id, current_answer.ig_image_urls)
                                 .then(function(answer){
@@ -2018,16 +2018,25 @@
             imageListHtml = '<div class="row">';
             for (var i = 0; i < blobList.length; i++) {
                 if(blobList[i].type == 'image'){
-                    imageListHtml += '<div class="col-xs-6 col-md-4">';
+                    imageListHtml += '<div class="col-xs-6 col-md-4" style="position:relative">';
                     imageListHtml += m2 + blobList[i].images.low_resolution.url + m3;
-                    if( answer.ig_image_urls.indexOf(blobList[i].images.low_resolution.url) == -1 )
-                        imageListHtml +=    '<div class="text-center">' +
-                                            '<button class="btn btn-primary" style="margin-top:10px" id="add_photo">Add</button>' +
-                                            '</div>';
-                    else
-                        imageListHtml +=    '<div class="text-center">' +
-                                            '<button class="btn btn-primary disabled" style="margin-top:10px" id="add_photo">Added</button>' +
-                                            '</div>';
+                    var opacity = 0
+                    if( answer.ig_image_urls.indexOf(blobList[i].images.low_resolution.url) != -1 ){
+                        
+                        opacity = 0.7;
+                    }
+                    imageListHtml += '<div id="add_photo" style="background-color: grey;opacity:' + opacity + ';position: absolute;left: 19px;right: 19px;top: 4px;bottom: 24px;border-radius: 5px;display: flex;align-items: center;">';
+                    imageListHtml += '<i class="fa fa-check-circle-o" aria-hidden="true" style="color: #2d6c38;font-size: 100px;margin: auto" ></i>';
+                    imageListHtml += '</div>';
+
+                    // if( answer.ig_image_urls.indexOf(blobList[i].images.low_resolution.url) == -1 )
+                    //     imageListHtml +=    '<div class="text-center">' +
+                    //                         '<button class="btn btn-primary" style="margin-top:10px" id="add_photo">Add</button>' +
+                    //                         '</div>';
+                    // else
+                    //     imageListHtml +=    '<div class="text-center">' +
+                    //                         '<button class="btn btn-primary disabled" style="margin-top:10px" id="add_photo">Added</button>' +
+                    //                         '</div>';
 
                     imageListHtml += '</div>';
                 }
@@ -2046,11 +2055,22 @@
                     var x = dialogRef;
                     $content.find('#add_photo').click({}, function () {
                         console.log(answer.ig_image_urls);
-                        var url = $(this).parent().parent().children('#image').attr('src');
+                        var url = $(this).parent().children('#image').attr('src');
 
                         if(answer.ig_image_urls.indexOf(url) != -1){
-                            $(this).html('Added');
-                            $(this).addClass('disabled');
+                            // $(this).html('Added');
+                            // $(this).css('opacity', 0.7);
+                            var _this = this;
+                            var itempos = answer.ig_image_urls.indexOf(url);
+                            if( itempos != -1){
+                                answer.ig_image_urls = answer.ig_image_urls.substr(0, itempos-1) + answer.ig_image_urls.substr(itempos +url.length);
+
+                                setInstagramImageUrl(answer.id, answer.ig_image_urls)
+                                .then(function(answer){
+                                    $rootScope.$emit('refreshImages');
+                                    $(_this).css('opacity', 0);
+                                })
+                            }
                         }
                         else{
                             var _this = this;
@@ -2058,8 +2078,8 @@
                             setInstagramImageUrl(answer.id, answer.ig_image_urls)
                             .then(function(answer){
                                 $rootScope.$emit('refreshImages');
-                                $(_this).html('Added');
-                                $(_this).addClass('disabled');
+                                // $(_this).html('Added');
+                                $(_this).css('opacity', 0.7);
                             })
                         }
                         

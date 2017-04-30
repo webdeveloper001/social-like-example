@@ -1099,6 +1099,7 @@
             $rootScope.$on("instagramLoggedIn", function (evt, args) {
                 InstagramService.getMyRecentImages()
                 .then(function(response){
+                    console.log(response);
                     dialog.chooseImgFromIgDlg(response.data.data, vm.answer, vm.userIsOwner);
                 }).catch(function(err){
                     console.log(err);
