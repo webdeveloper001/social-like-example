@@ -32,11 +32,18 @@
                 var myObj = {};
                 
                 var resParse = myJSON.EnumerationResults.Blobs.Blob;
-                $rootScope.blobs = [];
-                
-                for (var i=0; i < resParse.length; i++){
+
+                if ((!!resParse) && (resParse.constructor === Array)){
+                    for (var i=0; i < resParse.length; i++){
+                        myObj = {};
+                        myObj.url = 'https://rankx.blob.core.windows.net/sandiego/'+resParse[i].Name;
+                        myObj.type = 'azure-uploaded';
+                        $rootScope.blobs.push(myObj);
+                    }
+                } else if ((!!resParse) && (resParse.constructor === Object)) {
                     myObj = {};
-                    myObj.url = 'https://rankx.blob.core.windows.net/sandiego/'+resParse[i].Name;
+                    myObj.url = 'https://rankx.blob.core.windows.net/sandiego/'+resParse.Name;
+                    myObj.type = 'Uploaded';
                     $rootScope.blobs.push(myObj);
                 }
                 
