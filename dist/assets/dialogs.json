@@ -66,5 +66,5 @@
     "dialog.introTextSaved.title": "Success",
     "dialog.introTextSaved.text": "Intro text for ranking saved succesfully!.",
     "dialog.wrongPassword.title": "Wrong Password",
-    "dialog.wrongPassword.text": "The password you have entered is incorrect."   
+    "dialog.wrongPassword.text": "The password you have entered is incorrect."
 }

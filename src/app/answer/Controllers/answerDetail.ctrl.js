@@ -6,15 +6,17 @@
         .controller('answerDetail', answerDetail);
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
-        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt','color',
-        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope','$cookies', '$q', 'fbusers']; //AM:added user service
+
+        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt',
+        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope','$cookies', '$q', 'fbusers', 'InstagramService']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
-        votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt,color,
-        $location, vrows, vrowvotes, imagelist, instagram, $scope, $cookies, $q, fbusers) { //AM:added user service
+        votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt,
+        $location, vrows, vrowvotes, imagelist, instagram, $scope, $cookies, $q, fbusers, InstagramService) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
+        //if ($location.absUrl().indexOf('code=')>-1)$window.location.search = '';
 
         var voteRecordExists = false;
         var dV = 0;
@@ -62,6 +64,7 @@
         vm.votemodeOFF = votemodeOFF;
         vm.user = $rootScope.user;
         vm.endorseDialog = endorseDialog;
+        vm.selectInstagramImages = selectInstagramImages;
 
         //Admin Function adding catans on spot
         vm.addCatans = addCatans;
@@ -866,9 +869,21 @@
         }
 
         function getImages() {
-
             if (vm.igdemo) instagram.getImages().then(showImages);
-            else imagelist.getImageList().then(showImages);
+            else {
+                $rootScope.blobs = [];
+                var urls = vm.answer.ig_image_urls.split(';');
+
+                for (var i = 0; i < urls.length; i++) {
+                    if(urls[i] != ''){
+                        var myObj = {};
+                        myObj.url = urls[i];
+                        myObj.type = 'Instagram';
+                        $rootScope.blobs.push(myObj);
+                    }
+                }
+                imagelist.getImageList().then(showImages);
+            }
 
             vm.showImageGallery = true;
 
@@ -1074,6 +1089,30 @@
         function endorseDialog(){
             dialog.endorse(vm.type);
             $rootScope.endorseDialogShown = true;
+        }
+
+        function selectInstagramImages(){
+            if(InstagramService.access_token() == null) {
+                InstagramService.login();
+            }
+            else {
+                InstagramService.getMyRecentImages()
+                .then(function(response){
+                    dialog.chooseImgFromIgDlg(response.data.data, vm.answer, vm.userIsOwner);
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+            }
+            $rootScope.$on("instagramLoggedIn", function (evt, args) {
+                InstagramService.getMyRecentImages()
+                .then(function(response){
+                    console.log(response);
+                    dialog.chooseImgFromIgDlg(response.data.data, vm.answer, vm.userIsOwner);
+                }).catch(function(err){
+                    console.log(err);
+                });
+            });
         }
     }
 })();
