@@ -232,6 +232,7 @@
          function gotoHome() {
             $rootScope.fbmode = false;
             $rootScope.searchActive = false;
+            vm.searchActive = false;
             $rootScope.hidelogo = false;
             $rootScope.inputVal = '';
             vm.val = '';

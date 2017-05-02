@@ -46,7 +46,8 @@
             editNumRanks: editNumRanks,
             editInfo: editInfo,
             notificationWithCallback: notificationWithCallback,
-            enterPassword: enterPassword
+            enterPassword: enterPassword,
+            endorse: endorse,
         };
 
         return service;
@@ -1904,6 +1905,41 @@
                     autospin: false,
                     action: function (dialogRef) {
                         callback();
+                        dialogRef.close();
+                    }
+                }]
+            });
+
+        }
+
+        function endorse(type) {
+
+            var typeStr = '';
+
+            if (type == 'Establishment') typeStr = 'establishment';
+            if (type == 'Person') typeStr = 'person';
+            if (type == 'Place') typeStr = 'place';
+            if (type == 'PersonCust') typeStr = 'person';
+            if (type == 'Organization') typeStr = 'organization';
+            if (type == 'Event') typeStr = 'event';
+            if (type == 'Thing') typeStr = 'item';
+            if (type == 'Short-Phrase') typeStr = 'answer';
+
+            var title = 'Endorse!';
+            var message = "Switch to Vote Mode to Vote! <br><br>Your endorsements make the rankings! <br><br>Give a <strong>thumb up</strong> " +
+            "if you <strong>endorse</strong> this " + 
+            typeStr + " in each ranking;" + " a <strong>thumb down</strong> if you <strong>do not endorse</strong>.";
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'Got it',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef) {
                         dialogRef.close();
                     }
                 }]

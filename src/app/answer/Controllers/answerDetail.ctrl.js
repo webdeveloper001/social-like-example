@@ -61,6 +61,7 @@
         vm.votemodeON = votemodeON;
         vm.votemodeOFF = votemodeOFF;
         vm.user = $rootScope.user;
+        vm.endorseDialog = endorseDialog;
 
         //Admin Function adding catans on spot
         vm.addCatans = addCatans;
@@ -686,13 +687,13 @@
                             rankObj.upVi = $rootScope.catansrecs[i].upV;
                             rankObj.downVi = $rootScope.catansrecs[i].downV;
 
-                            if (rankObj.rank == 1) rankObj.icon = "/assets/images/gold_.png";
-                            else if (rankObj.rank == 2) rankObj.icon = "/assets/images/silver_.png";
-                            else if (rankObj.rank == 3) rankObj.icon = "/assets/images/bronze_.png";
-                            else if (rankObj.rank > 3 && rankObj.rank < 11) rankObj.icon = "/assets/images/top_10.png";
-                            else if (rankObj.rank >= 11 && rankObj.rank < 21) rankObj.icon = "/assets/images/top_20.png";
-                            else if (rankObj.rank >= 21 && rankObj.rank < 51) rankObj.icon = "/assets/images/top_50.png";
-                            else if (rankObj.rank >= 51 && rankObj.rank < 101) rankObj.icon = "/assets/images/top_100.png";
+                            if (rankObj.rank == 1) rankObj.icon = "/assets/images/gold.png";
+                            else if (rankObj.rank == 2) rankObj.icon = "/assets/images/silver.png";
+                            else if (rankObj.rank == 3) rankObj.icon = "/assets/images/bronze.png";
+                            else if (rankObj.rank > 3 && rankObj.rank < 11) rankObj.icon = "/assets/images/top10.png";
+                            else if (rankObj.rank >= 11 && rankObj.rank < 21) rankObj.icon = "/assets/images/top20.png";
+                            else if (rankObj.rank >= 21 && rankObj.rank < 51) rankObj.icon = "/assets/images/top50.png";
+                            else if (rankObj.rank >= 51 && rankObj.rank < 101) rankObj.icon = "/assets/images/top100.png";
                             else rankObj.icon = "/assets/images/blank.png";
    
                             //TODO insert rank position out of total list, will be in catans
@@ -1061,11 +1062,18 @@
             vm.votemode = true;
             vm.voteonstyle = "background-color:#3277b3;color:#e6e6e6";
             vm.voteoffstyle = "background-color:#e6e6e6;color:black";
+            if ($rootScope.endorseDialogShown == undefined) endorseDialog();
+            
         }
         function votemodeOFF(){
             vm.votemode = false;
             vm.voteonstyle = "background-color:#e6e6e6;color:black";
             vm.voteoffstyle = "background-color:#3277b3;color:#e6e6e6";
+        }
+
+        function endorseDialog(){
+            dialog.endorse(vm.type);
+            $rootScope.endorseDialogShown = true;
         }
     }
 })();
