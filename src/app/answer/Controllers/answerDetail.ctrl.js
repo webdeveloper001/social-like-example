@@ -63,10 +63,7 @@
         vm.votemodeON = votemodeON;
         vm.votemodeOFF = votemodeOFF;
         vm.user = $rootScope.user;
-<<<<<<< HEAD
         vm.endorseDialog = endorseDialog;
-=======
->>>>>>> 84316da33a8acf791e072b70f01b4da1ad04b9c5
         vm.selectInstagramImages = selectInstagramImages;
 
         //Admin Function adding catans on spot

@@ -2006,8 +2006,8 @@
                                 nok_callback();
                                 getDialog('wrongPassword');
                             }
-                        }
                             dialog.close();
+                        }
                     }]
             });
         }
