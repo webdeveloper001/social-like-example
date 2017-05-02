@@ -50,12 +50,12 @@
             endorse: endorse,
             chooseImgFromIgDlg: chooseImgFromIgDlg
         };
-
         return service;
 
+
         function showDialog(title, text) {
+               type: BootstrapDialog.TYPE_PRIMARY,
             BootstrapDialog.show({
-                type: BootstrapDialog.TYPE_PRIMARY,
                 title: title,
                 message: text,
                 buttons: [{
@@ -1935,8 +1935,8 @@
             if (type == 'Establishment') typeStr = 'establishment';
             if (type == 'Person') typeStr = 'person';
             if (type == 'Place') typeStr = 'place';
-            if (type == 'PersonCust') typeStr = 'person';
             if (type == 'Organization') typeStr = 'organization';
+            if (type == 'PersonCust') typeStr = 'person';
             if (type == 'Event') typeStr = 'event';
             if (type == 'Thing') typeStr = 'item';
             if (type == 'Short-Phrase') typeStr = 'answer';
@@ -1960,8 +1960,8 @@
                     }
                 }]
             });
-
         }
+
 
         function enterPassword(ok_callback, nok_callback) {
 
@@ -2006,8 +2006,8 @@
                                 nok_callback();
                                 getDialog('wrongPassword');
                             }
-                            dialog.close();
                         }
+                            dialog.close();
                     }]
             });
         }

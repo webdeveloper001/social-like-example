@@ -63,7 +63,10 @@
         vm.votemodeON = votemodeON;
         vm.votemodeOFF = votemodeOFF;
         vm.user = $rootScope.user;
+<<<<<<< HEAD
         vm.endorseDialog = endorseDialog;
+=======
+>>>>>>> 84316da33a8acf791e072b70f01b4da1ad04b9c5
         vm.selectInstagramImages = selectInstagramImages;
 
         //Admin Function adding catans on spot
@@ -1082,16 +1085,19 @@
         }
         function votemodeOFF(){
             vm.votemode = false;
-            vm.voteonstyle = "background-color:#e6e6e6;color:black";
             vm.voteoffstyle = "background-color:#3277b3;color:#e6e6e6";
+            vm.voteonstyle = "background-color:#e6e6e6;color:black";
         }
+
 
         function endorseDialog(){
             dialog.endorse(vm.type);
             $rootScope.endorseDialogShown = true;
         }
 
-        function selectInstagramImages(){
+
+
+            function selectInstagramImages(){
             if(InstagramService.access_token() == null) {
                 InstagramService.login();
             }
