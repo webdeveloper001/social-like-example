@@ -108,6 +108,23 @@ angular.module('app').directive('contentBlock',
                         if (scope.results[0].image2url != undefined) scope.image2 = scope.results[0].image2url;
                         if (scope.results[0].image3url != undefined) scope.image3 = scope.results[0].image3url;
                     }
+
+                    //If featured image exist, shift images, set bg-box with color and shade
+                    if (scope.results[0].fimage != undefined && scope.results[0].fimage != ''){
+                        scope.image3 = scope.image2;
+                        scope.image2 = scope.image1;
+                        scope.image1 = scope.results[0].fimage;
+                        scope.rdbc = scope.results[0].bc;
+                        scope.rdfc = scope.results[0].fc;
+                        scope.shade = scope.results[0].shade;
+                    }
+                    else{
+                        var colors = color.defaultRankColor(scope.results[0]);
+                        scope.rdbc = colors[0];
+                        scope.rdfc = colors[1];
+                        scope.shade = 4;
+
+                    }
                     
                     //Check if results is Short-Phrase
                     if (scope.results[0].type == 'Short-Phrase'){
@@ -127,13 +144,7 @@ angular.module('app').directive('contentBlock',
                         scope.addinfo3 =sPVals3[1];                        
                     }
                     
-                    scope.rankOfDay = scope.results[0].title;
-
-                    var colors = color.defaultRankColor(scope.results[0]);
-                    scope.rdbc = colors[0];
-                    scope.rdfc = colors[1];
-                    
-                    scope.rdbc2 = color.shadeColor(scope.rdbc,0.4);
+                    scope.rankOfDay = scope.results[0].title;                    
                 }
 
                 //load content based on mode
@@ -221,6 +232,11 @@ angular.module('app').directive('contentBlock',
                         for (var n = 0; n < M; n++) {
                             resObj = {};
                             resObj = JSON.parse(JSON.stringify(scope.results[n]));
+
+                            //Set feautured image
+                            if (scope.results[n].fimage != undefined && scope.results[n].fimage != '' ){
+                                scope.results[n].image1url = scope.results[n].fimage; 
+                            }
 
                             //Set only ranks with good images on front-page
                             if (scope.results[n].image1url != $rootScope.EMPTY_IMAGE && 

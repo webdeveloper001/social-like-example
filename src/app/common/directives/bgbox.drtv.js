@@ -15,6 +15,7 @@ angular.module('app').directive('bgBox', ['color',function (color) {
             h: '@',
         },
         link: function (scope) {
+
            if (scope.dir == "horizontal"){
                scope.dirHor = true;
                scope.dirVer = false;
@@ -23,7 +24,7 @@ angular.module('app').directive('bgBox', ['color',function (color) {
                scope.dirHor = false;
                scope.dirVer = true;
            }
-           if (scope.bc2 == undefined) scope.bc2 = color.shadeColor(scope.bc,scope.shade); 
+           if (scope.bc2 == undefined) scope.bc2 = color.shadeColor(scope.bc,scope.shade/10); 
         },
     }
 }

@@ -20,7 +20,7 @@
 		<!-- background-color:{{rdbc}} -->
 		<div class="row" ng-if="isRoW" ng-click="rankSel(results[0],false)">
 			<div class="container-bgbox col-xs-6 col-sm-6 col-md-4 col-lg-3">
-			<bg-box bc="{{rdbc}}" bc2="{{rdbc2}}" fc="{{rdfc}}" text="{{rankOfDay}}" dir="horizontal" w="100%" h="{{sm ? '150px':'200px'}}"></bg-box>
+			<bg-box bc="{{rdbc}}" shade="{{shade}}" fc="{{rdfc}}" text="{{rankOfDay}}" dir="horizontal" w="100%" h="{{sm ? '150px':'200px'}}"></bg-box>
 			</div>
 		<div class="col-xs-6 col-sm-6 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!isShortPhrase">
 			<img ng-src="{{image1}}" style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
