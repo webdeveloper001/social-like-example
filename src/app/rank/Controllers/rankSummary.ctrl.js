@@ -285,8 +285,7 @@
                         
                         //vm.image1ok = true;
                         }
-                    }
-
+                    }                    
                 }
                 if (!foodNearMe) {
                     table.update($rootScope.cCategory.id,
@@ -296,12 +295,23 @@
                 }
             }
 
-            //Set colors for title hideInfoBox
-            var colors = color.defaultRankColor($rootScope.cCategory);
-            //console.log("colors - ", colors);
-            vm.bc = colors[0];
-            vm.fc = colors[1];
-            vm.bc2 = color.shadeColor(vm.bc, 0.4);
+            //Set Feautured Image && box color
+            if ($rootScope.cCategory.fimage != undefined && $rootScope.cCategory.fimage != ''){
+                vm.image3 = vm.image2;
+                vm.image2 = vm.image1;
+                vm.image1 = $rootScope.cCategory.fimage;
+                vm.bc = $rootScope.cCategory.bc;
+                vm.fc = $rootScope.cCategory.fc;
+                vm.shade = $rootScope.cCategory.shade;              
+            }
+            else{
+                //Set colors for title hideInfoBox
+                var colors = color.defaultRankColor($rootScope.cCategory);
+                //console.log("colors - ", colors);
+                vm.bc = colors[0];
+                vm.fc = colors[1];
+                vm.shade = 4;
+            } 
 
             //Sorting rules
             if ($rootScope.DEBUG_MODE) console.log("foodNearMe, ",foodNearMe);

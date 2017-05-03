@@ -187,27 +187,7 @@
                     }
                 }
             },
-            {
-              name: 'mybiz',
-              url: '/mybiz',
-              views: {
-                "@": {
-                  templateUrl: 'app/layout/Partials/mybiz.html',
-                  controller: 'mybiz as vm'
-                },
-                "navbar@mybiz": {
-                  templateUrl: 'app/layout/Partials/navbar.html',
-                  controller: 'navbar as vm'
-                }
-            }
-          },
-          /*{
-              name: 'mybusiness',
-              parent: 'layout',
-              url: '/mybusiness',
-              templateUrl: 'app/layout/Partials/mybusiness.html',
-              controller: 'mybusiness as vm'
-          },*/
+
           {
                 name: 'mybusiness',
                 url: '/mybusiness',

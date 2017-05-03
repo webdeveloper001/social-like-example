@@ -6,10 +6,10 @@
         .controller('rodconsole', rodconsole);
 
     rodconsole.$inject = ['$location', '$rootScope', '$state','rankofday','color',
-    'datetime','dialog','$q','table'];
+    'datetime','dialog','$q','table','imagelist'];
 
     function rodconsole(location, $rootScope, $state, rankofday, color,
-     datetime, dialog, $q, table) {
+     datetime, dialog, $q, table, imagelist) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'rodconsole';
@@ -23,6 +23,7 @@
         vm.filterData = filterData;
         vm.goSaveImage = goSaveImage;
         vm.goSaveText = goSaveText;
+        vm.goDeleteImage = goDeleteImage;
 
         vm.dataReady = false;
         var rods = [];
@@ -99,7 +100,7 @@
                             rods[i].fc = colors[1];
                             rods[i].shade = 0;
                         }
-                        if (rods[i].fimage != undefined && rods[i].fimage != undefined) {
+                        if (rods[i].fimage != undefined && rods[i].fimage != '') {
                             rods[i].imageok = true;
                             fimageExists = true;
                         }
@@ -177,7 +178,9 @@
                 vm.rank.image2 = vm.rank.image1;
                 vm.rank.image1 = vm.rank.fimage;
             }
-            hexcolor = color.hsl2rgb(vm.rank.bc);
+            console.log(vm.rank.bc);
+            if (vm.rank.bc.charAt(0) != 'h') hexcolor = vm.rank.bc;
+            else hexcolor = color.hsl2rgb(vm.rank.bc);
             vm.rank.bc2 = color.shadeColor(hexcolor, vm.rank.shade/10);
             $rootScope.cmd1exe = false;
             console.log("selRank", vm.rank);
@@ -237,6 +240,11 @@
 
             if (vm.rank.fimage != undefined && vm.rank.fimage != ''){
             var fields = ['fimage','bc','fc','shade'];
+            
+            //If color is in HSL, change color to RGB
+            if (vm.rank.bc.charAt(0) == 'h') vm.rank.bc = color.hsl2rgb(vm.rank.bc);
+            if (vm.rank.fc.charAt(0) == 'h') vm.rank.fc = color.hsl2rgb(vm.rank.fc);
+
             var vals = [vm.rank.fimage, vm.rank.bc, vm.rank.fc, vm.rank.shade];
             var traw = '';  //raw title (no location)
             var promiseArray = [];
@@ -255,12 +263,18 @@
                         
                         $q.all(promiseArray).then(function(){
                             vm.dataReady = true;
+                            dialog.getDialog('rodimageuploadsuccess');
+                            loadData();
                             goBack();
                         });
                 }
                 else {
                     console.log("rank:",vm.rank.title);
-                    //table.update(vm.rank.rankid,fields, vals);
+                    table.update(vm.rank.rankid,fields, vals).then(function(){
+                        dialog.getDialog('rodimageuploadsuccess');
+                        loadData();
+                        goBack();
+                    });
                 }
             }
             else dialog.getDialog('nouploadedimage');
@@ -271,6 +285,50 @@
                 dialog.getDialog('introTextSaved');
                 loadData();
             });
+        }
+
+        function goDeleteImage(){
+            if (vm.rank.fimage != undefined && vm.rank.fimage != ''){
+            //Delete image from Azure Storage
+            imagelist.deleteBlob(vm.rank.fimage);
+
+            //Find ranking to determine original default colors
+            var idx = $rootScope.content.map(function(x) {return x.id; }).indexOf(vm.rank.rankid);
+            var colors = color.defaultRankColor($rootScope.content[idx]);
+            var fields = ['fimage','bc','fc','shade'];
+            var vals = ['', colors[0], colors[1], 0];
+            var traw = '';  //raw title (no location)
+            var promiseArray = [];
+            
+                if (!vm.rank.isatomic){
+                    vm.dataReady = false;
+                    vm.loadText = 'Deleting image...';
+                    traw = vm.rank.title.replace(' in San Diego','');
+                        for (var i=0; i<$rootScope.content.length; i++){
+                            if ($rootScope.content[i].title.indexOf(traw)>-1){
+                                //console.log("rank:",$rootScope.content[i].title);
+                                //table.update($rootScope.content[i].id,fields, vals);
+                                promiseArray.push(table.update($rootScope.content[i].id,fields, vals));
+                            }
+                        }
+                        
+                        $q.all(promiseArray).then(function(){
+                            vm.dataReady = true;
+                            dialog.getDialog('rodimagedeletesuccess');
+                            loadData();
+                            goBack();
+                        });
+                }
+                else {
+                    //console.log("rank:",vm.rank.title);
+                    table.update(vm.rank.rankid,fields, vals).then(function(){
+                        dialog.getDialog('rodimagedeletesuccess');
+                        loadData();
+                        goBack();
+                    });
+                }
+            }
+            else dialog.getDialog('nouploadedimage');          
         }                  
     }
 })();
