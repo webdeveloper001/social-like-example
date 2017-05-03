@@ -6,16 +6,16 @@
         .controller('cwrapper', cwrapper);
 
     cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
-        'query', 'table', 'dialog', 'uaf','$window','userdata','$location','color', 'fbusers', '$q'];
+        'query', 'table', 'dialog', 'uaf','$window','userdata','$location','color', 'fbusers', '$q', '$timeout'];
 
     function cwrapper($rootScope, $state, $http, $stateParams, $scope,
-        query, table, dialog, uaf, $window, userdata, $location, color, fbusers, $q) {
+        query, table, dialog, uaf, $window, userdata, $location, color, fbusers, $q, $timeout) {
         /* jshint validthis:true */
         var vm = this;
         //-----SEO tags ----
         $scope.$parent.$parent.$parent.seo = { 
-        pageTitle : 'Rank-X', 
-        metaDescription: 'Rank-X creates collective rankings on everything in your city.' 
+            pageTitle : 'Home | ', 
+            metaDescription: 'Home | Rank-X creates collective rankings on everything in your city.' 
         };
         
         //if ($location.absUrl().indexOf('code=')>-1) $window.location.search = '';
@@ -120,8 +120,10 @@
   					   'background: -o-linear-gradient(right,'+bgc+','+bgc2+');'+
   					   'background: -moz-linear-gradient(right,'+bgc+', '+bgc2+');'+
   					   'background: linear-gradient(to right,'+bgc+', '+bgc2+');';  
-
-            window.prerenderReady = true;
+            $timeout(function(){
+                window.prerenderReady = true;    
+            }, 1000);
+            
                     
         }
         function init() {

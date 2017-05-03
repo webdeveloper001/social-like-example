@@ -9,10 +9,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" ng-click="vm.gotoHome()" style="cursor:pointer;padding:0px;border:0px;margin:0px;">
+            <a class="navbar-brand" href="/mybusiness" ng-click="vm.gotoHome()" style="cursor:pointer;padding:0px;border:0px;margin:0px;">
                 <img src="/assets/images/logosqwborder.jpg" style="width:60px;"></a>
-            <a class="navbar-brand home-link" ng-click="vm.gotoHome()" >Home</a>
-            <a class="navbar-brand navbar-profile-picture-wrapper" ng-show="vm.user" ng-click="vm.gotomyfavs()">
+            <a class="navbar-brand home-link" href='/mybusiness' ng-click="vm.gotoHome()" >Home</a>
+            <a class="navbar-brand navbar-profile-picture-wrapper" ng-show="vm.user" href="/myfavs" ng-click="vm.gotomyfavs()">
                 <img class="img-responsive img-circle navbar-profile-picture" ng-src="{{vm.user.picture.data.url}}" />
                 <span>{{vm.user.first_name}}</span>
             </a>
@@ -41,14 +41,14 @@
                 <!-- <li><a href="" ng-click="vm.gotoHome()">Home</a></li> -->
                 <!-- <li ng-if="vm.hasBusiness"><a href="" ng-click="vm.gotomybusiness()">My Business</a></li> -->
                 <!-- <li ng-if="vm.isPromoter"><a href="" ng-click="vm.goPromoterConsole()">Promote</a></li> --> 
-                <li><a href="" ng-click="vm.gotoAbout()">About</a></li>
-                <li><a href="" ng-click="vm.gotoTour()">Tour</a></li>
-                <li><a href="" ng-click="vm.gotoFeedback()">Feedback</a></li>
+                <li><a href="/about" ng-click="vm.gotoAbout()">About</a></li>
+                <li><a href="/tour" ng-click="vm.gotoTour()">Tour</a></li>
+                <li><a href="/home" ng-click="vm.gotoFeedback()">Feedback</a></li>
                 <!-- <li><a href="" ng-click="vm.gotoAdmin()">Admin</a></li> -->
-                <li ng-if="!vm.isLoggedIn"><a href="" ng-click="vm.goToLogin()">Login</a></li>
+                <li ng-if="!vm.isLoggedIn"><a href="/login" ng-click="vm.goToLogin()">Login</a></li>
                 
                 <li ng-if="vm.isLoggedIn">
-                    <a href="" ng-click="vm.logout()" class="">
+                    <a href="/logout" ng-click="vm.logout()" class="">
                         Logout
                     </a>
                 </li>        

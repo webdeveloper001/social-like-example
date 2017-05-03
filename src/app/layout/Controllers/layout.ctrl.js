@@ -26,6 +26,12 @@
         var vm = this;
         vm.title = 'layout';
         vm.header = '';
+        //-----SEO tags ----
+        $scope.$parent.seo = { 
+            pageTitle : 'Home |', 
+            metaDescription: 'Home | Rank-X creates collective rankings on everything in your city.' 
+        };
+        
         //vm.searchRank = searchRank;
 
         //if ($rootScope.answers) vm.isLoading = false;

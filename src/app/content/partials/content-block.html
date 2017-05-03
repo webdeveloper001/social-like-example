@@ -96,8 +96,10 @@
 		</tr>
 		<tr ng-repeat="x in results | limitTo:maxRes" ng-click="rankSel(x,false)" style="cursor:pointer;">
 			<td style="width:50%;">
-				{{x.title}}
-				<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;{{x.answers}}&nbspanswers-{{x.views}}&nbspviews</small>
+				<a href="{{'/rankSummary/' + x.id}}" >
+					{{x.title}}
+					<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;{{x.answers}}&nbspanswers-{{x.views}}&nbspviews</small>
+				</a>
 			</td>
 		</tr>
 
