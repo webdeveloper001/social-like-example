@@ -138,8 +138,8 @@
 
             //-----SEO tags ----
             $scope.$parent.$parent.$parent.seo = { 
-            pageTitle : $rootScope.cCategory.title, 
-            metaDescription: $rootScope.cCategory.question,
+                pageTitle : $rootScope.cCategory.title, 
+                metaDescription: $rootScope.cCategory.question,
             };
             
             //Check if there are no answers
