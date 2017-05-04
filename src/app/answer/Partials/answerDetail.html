@@ -54,7 +54,7 @@
     </div>
     <p class="text-left" ng-if="vm.type != 'Short-Phrase'"><strong>{{vm.answer.name}}</strong> is featured in the following ranks:</p>
  
-    <div class="well well-light-ranks col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-repeat="r in vm.answerRanks | orderBy:'rank'">
+    <div class="well well-light-ranks col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-repeat="r in vm.answerRanks | orderBy:'rank' | limitTo:vm.dispRanks">
         
         <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
             <h4 class="sub-header">{{(vm.type == 'Short-Phrase') ? vm.answer.name : r.title}}</h4>
@@ -82,6 +82,10 @@
         <p style="display:{{vm.deleteButton}};color:red" ng-click="vm.deleteThisCatans(r)">&lt;&lt;Delete&gt;&gt;</p>
         
     </div>
+    
+     <p ng-show="{{vm.answerRanks.length > 3}}"style="background-color:lightgray;cursor:pointer" ng-click="vm.showRanks()">
+                {{vm.dispRanks > 3 ? 'Show less':('Show more (' + (vm.answerRanks.length - 3) + ')') }}</p>
+
     <div ng-if="vm.isAdmin">
         <div class="text-left"><button class="btn btn-primary" ng-click="vm.addCatans()">Add Catans</button></div>
 		<div class="input-group" ng-if="vm.addctsactive">
