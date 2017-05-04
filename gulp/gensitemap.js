@@ -1,64 +1,99 @@
 'use strict';
+var rp = require('request-promise');
 
-var path = require('path');
+require('ssl-root-cas').inject();
 var gulp = require('gulp');
-var conf = require('./conf');
+var Promise = require('bluebird');
+var builder = require('xmlbuilder');
+var fs = require("fs");
+var path = require('path');
+gulp.task('gensitemap',  function () {
 
-var browserSync = require('browser-sync');
-var browserSyncSpa = require('browser-sync-spa');
-
-var util = require('util');
-
-var proxyMiddleware = require('http-proxy-middleware');
-
-function browserSyncInit(baseDir, browser) {
-  browser = browser === undefined ? 'default' : browser;
-
-  var routes = null;
-  if(baseDir === conf.paths.src || (util.isArray(baseDir) && baseDir.indexOf(conf.paths.src) !== -1)) {
-    routes = {
-      '/bower_components': 'bower_components'
-    };
-  }
-
-  var server = {
-    baseDir: baseDir,
-    routes: routes
+  let answeruri = 'https://api.rank-x.com/api/v2/mysql/_table/answers?offset=$$offset$$';
+  let rankuri = 'https://api.rank-x.com/api/v2/mysql/_table/ranking/?filter=ismp=false&offset=$$offset$$';
+  var answerCount = 1;
+  var rankCount = 1;
+  let option = {
+      method: 'GET',
+      headers: {
+          'X-Dreamfactory-API-Key': 'da4f7e05b7afc5beffe8d9d416abec73cf98ef89e3703beeb5144f325be5decc',
+          'Accept': 'application/json, text/plain, */*',
+          'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'
+      },
+      json: true, // Automatically parses the JSON string in the response,
+      rejectUnauthorized: false
   };
 
-  /*
-   * You can add a proxy to your backend by uncommenting the line bellow.
-   * You just have to configure a context which will we redirected and the target url.
-   * Example: $http.get('/users') requests will be automatically proxified.
-   *
-   * For more details and option, https://github.com/chimurai/http-proxy-middleware/blob/v0.0.5/README.md
-   */
-  // server.middleware = proxyMiddleware('/users', {target: 'http://jsonplaceholder.typicode.com', proxyHost: 'jsonplaceholder.typicode.com'});
+  let options = [];
 
-  browserSync.instance = browserSync.init({
-    startPath: '/',
-    server: server,
-    browser: browser,
-    port: 3006
+  for (let offset = 0; offset < 1000 * answerCount; offset += 1000)
+  {
+    option.uri = answeruri.replace('$$offset$$', '' + offset);
+    options.push(option);
+  }
+
+  for (let offset = 0; offset < 1000 * rankCount; offset += 1000)
+  {
+    option.uri = rankuri.replace('$$offset$$', '' + offset);
+    options.push(option);
+  }
+
+  Promise.all(options.map(option => rp(option)) )
+  .then(data => {
+    var answers = [];
+    var ranks = [];
+    var baseUrl = {
+      "loc": "https://rank-x.com/",
+      "lastmod": "2013-11-29T22:55:40+00:00"      
+    };
+
+    var xmlUrl = [];
+    for (var i = 0; i < answerCount; i++) {
+      answers = answers.concat(data[i].resource);
+    }
+    for (i = answerCount; i < rankCount + answerCount; i++) {
+      ranks = ranks.concat(data[i].resource);
+    }
+
+    var mapxml = {
+      urlset: {
+        "@xmlns":"http://www.sitemaps.org/schemas/sitemap/0.9",
+        "@xmlns:xsi":"http://www.w3.org/2001/XMLSchema-instance",
+        "@xsi:schemaLocation":`http://www.sitemaps.org/schemas/sitemap/0.9
+                              http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd`,
+
+        "url": [
+          {
+            "loc": "https://rank-x.com/",
+            "lastmod": "2013-11-29T22:55:40+00:00"
+          }
+        ]
+      }
+    }
+    
+    for (i = 0; i < answers.length; i++) {
+      xmlUrl.push({
+        "loc": "https://rank-x.com/answerDetail/" + answers[i].id,
+        "lastmod": "2013-11-29T22:55:40+00:00"
+      })
+    }
+
+      
+    for (i = 0; i < ranks.length; i++) {
+      xmlUrl.push({
+        "loc": "https://rank-x.com/rankSummary/" + ranks[i].id,
+        "lastmod": "2013-11-29T22:55:40+00:00"
+      })
+    }
+    mapxml.urlset.url = mapxml.urlset.url.concat(xmlUrl);
+
+    var map = builder.create(mapxml, { encoding: 'utf-8' })
+    // console.log(path.join(__dirname, '/../src/sitemap.xml'));
+    fs.writeFile(path.join(__dirname, '/../src/sitemap.xml'), map.end({ pretty: true }), function(err){
+      if(err)
+        console.log("Error writing sitemap.xml", err);
+      else
+        console.log("sitemap.xml is generated successfully.")
+    })
   });
-}
-
-browserSync.use(browserSyncSpa({
-  selector: '[ng-app]'// Only needed for angular apps
-}));
-
-gulp.task('serve', ['watch'], function () {
-  browserSyncInit([path.join(conf.paths.tmp, '/serve'), conf.paths.src]);
-});
-
-gulp.task('serve:dist', ['build'], function () {
-  browserSyncInit(conf.paths.dist);
-});
-
-gulp.task('serve:e2e', ['inject'], function () {
-  browserSyncInit([conf.paths.tmp + '/serve', conf.paths.src], []);
-});
-
-gulp.task('serve:e2e-dist', ['build'], function () {
-  browserSyncInit(conf.paths.dist, []);
 });
