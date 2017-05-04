@@ -31,6 +31,7 @@
         vm.catans = [];
         vm.sm = $rootScope.sm;
         vm.votemode = false;
+        vm.dispRanks = 3;
                
         // Methods
         vm.UpVote = UpVote;
@@ -65,6 +66,7 @@
         vm.user = $rootScope.user;
         vm.endorseDialog = endorseDialog;
         vm.selectInstagramImages = selectInstagramImages;
+        vm.showRanks = showRanks;
 
         //Admin Function adding catans on spot
         vm.addCatans = addCatans;
@@ -1116,6 +1118,11 @@
                     console.log(err);
                 });
             });
+        }
+
+        function showRanks(){
+            if (vm.dispRanks <= 3) vm.dispRanks = vm.answerRanks.length;
+            else vm.dispRanks = 3; 
         }
     }
 })();

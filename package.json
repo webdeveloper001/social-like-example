@@ -4,6 +4,7 @@
   "dependencies": {
     "angular": "^1.5.10",
     "angular-stripe": "^4.2.12",
+    "azure-storage": "^2.1.0",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "index.js": "0.0.3",

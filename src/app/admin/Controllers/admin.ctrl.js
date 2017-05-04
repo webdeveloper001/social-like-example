@@ -32,7 +32,7 @@
 
         function activate() {
             
-            vm.isDET = $rootScope.isLoggedIn && ($rootScope.user.id == 12 ||
+            vm.isDET = $rootScope.isLoggedIn && ($rootScope.user.id == '10104518570729893' ||
                                           $rootScope.user.id == 30 ||
                                           $rootScope.user.id == 41 ||  
                                           $rootScope.user.id == 42 ||
