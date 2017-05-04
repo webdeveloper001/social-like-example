@@ -35,12 +35,8 @@
                 parent: 'layout',
                 //abstract: true,
                 url: '/home', ///cwrapper',
-                views: {
-                    "@layout": {
-                        templateUrl: 'app/layout/Partials/cwrapper.html',
-                        controller: 'cwrapper as vm'
-                    }
-                }
+                templateUrl: 'app/layout/Partials/cwrapper.html',
+                controller: 'cwrapper as vm'
             },
 
             {

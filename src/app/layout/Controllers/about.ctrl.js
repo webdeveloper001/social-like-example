@@ -25,8 +25,8 @@
 
         //-----SEO tags ----
         $scope.$parent.seo = { 
-        pageTitle : 'About', 
-        metaDescription: 'Rank-X creates collective rankings on everything in your city.' 
+            pageTitle : 'About', 
+            metaDescription: 'Rank-X creates collective rankings on everything in your city.' 
         };
       
         activate();

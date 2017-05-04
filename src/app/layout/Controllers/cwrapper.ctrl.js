@@ -120,9 +120,8 @@
   					   'background: -o-linear-gradient(right,'+bgc+','+bgc2+');'+
   					   'background: -moz-linear-gradient(right,'+bgc+', '+bgc2+');'+
   					   'background: linear-gradient(to right,'+bgc+', '+bgc2+');';  
-            $timeout(function(){
-                window.prerenderReady = true;    
-            }, 1000);
+
+            window.prerenderReady = true;   
             
                     
         }
