@@ -31,7 +31,7 @@
             //Load current category
             $rootScope.cCategory = {};
             for (var i = 0; i < $rootScope.content.length; i++) {
-                if ($rootScope.content[i].id == $stateParams.index) {
+                if (($rootScope.content[i].id == $stateParams.index) || ($rootScope.content[i].slug == $stateParams.index)) {
                     $rootScope.cCategory = $rootScope.content[i];
                     break;
                 }
