@@ -73,7 +73,7 @@ gulp.task('gensitemap',  function () {
     
     for (i = 0; i < answers.length; i++) {
       xmlUrl.push({
-        "loc": "https://rank-x.com/answerDetail/" + answers[i].id,
+        "loc": "https://rank-x.com/answerDetail/" + answers[i].slug,
         "lastmod": "2013-11-29T22:55:40+00:00"
       })
     }
@@ -81,7 +81,7 @@ gulp.task('gensitemap',  function () {
       
     for (i = 0; i < ranks.length; i++) {
       xmlUrl.push({
-        "loc": "https://rank-x.com/rankSummary/" + ranks[i].id,
+        "loc": "https://rank-x.com/rankSummary/" + ranks[i].slug,
         "lastmod": "2013-11-29T22:55:40+00:00"
       })
     }
