@@ -11,8 +11,8 @@ gulp.task('gensitemap',  function () {
 
   let answeruri = 'https://api.rank-x.com/api/v2/mysql/_table/answers?offset=$$offset$$';
   let rankuri = 'https://api.rank-x.com/api/v2/mysql/_table/ranking/?filter=ismp=false&offset=$$offset$$';
-  var answerCount = 1;
-  var rankCount = 1;
+  var answerCount = 7;
+  var rankCount = 7;
   let option = {
       method: 'GET',
       headers: {
