@@ -1005,9 +1005,9 @@
         }
             
             function share(){
-                vm.linkurl = 'https://rank-x.com/#/rankSummary/' + $rootScope.cCategory.id; 
+                vm.linkurl = 'https://rank-x.com/#/rankSummary/' + $rootScope.cCategory.slug; 
                 vm.tweet = $rootScope.cCategory.title + ', endorse your favorite ones at: ';
-                dialog.shareOptions(shareFunction, false);
+                dialog.shareOptions(shareFunction, vm.isMobile);
             }
             
             function shareFunction(x){
