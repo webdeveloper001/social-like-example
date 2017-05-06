@@ -1005,9 +1005,14 @@
         }
             
             function share(){
-                vm.linkurl = 'https://rank-x.com/#/rankSummary/' + $rootScope.cCategory.slug; 
+                vm.linkurl = 'https://rank-x.com/rankSummary/' + $rootScope.cCategory.slug; 
                 vm.tweet = $rootScope.cCategory.title + ', endorse your favorite ones at: ';
-                dialog.shareOptions(shareFunction, vm.isMobile, vm.linkurl, 'Rank-X, '+ vm.ranking + ', '+ $rootScope.cCategory.question, $scope);
+
+                var imageurl = $rootScope.cCategory.image1url;
+                if ($rootScope.cCategory.type == 'Short-Phrase')
+                    imageurl = 'https://rank-x.com/assets/images/rankxlogosd2_sm.png';
+
+                dialog.shareOptions(shareFunction, vm.isMobile, vm.linkurl, 'Rank-X, '+ vm.ranking + ', '+ $rootScope.cCategory.question + imageurl, $scope);
             }
             
             function shareFunction(x){
