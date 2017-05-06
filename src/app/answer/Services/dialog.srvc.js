@@ -6,9 +6,9 @@
         .factory('dialog', dialog);
 
     dialog.$inject = ['$q', '$rootScope', 'useraccnt', 'imagelist', 'answer', 'login',
-        '$window','$cookies', '$state']
+        '$window','$cookies', '$state', '$compile']
     function dialog($q, $rootScope, useraccnt, imagelist, answer, login,
-        $window, $cookies, $state) {
+        $window, $cookies, $state, $compile) {
 
         var service = {
             editConfirm: editConfirm,
@@ -1425,14 +1425,14 @@
             });
         }
 
-        function shareOptions(callback, isMobile, link, text) {
+        function shareOptions(callback, isMobile, link, text, scope) {
             var title = '';
-            var messagehtml = '';
+            var rendercode = '';
             var btnCancelLabel = '';
             var btnOkLabel = '';
 
             title = 'Share Options';
-            messagehtml =
+            rendercode =
             '<div class="row">' +
             '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
             '<img src="/assets/images/1485385043_mail.png" id="email" style="width:50px;margin-bottom:20px">' +
@@ -1480,9 +1480,9 @@
             '<img src="/assets/images/1485385026_sms.png" id="sms"'+ 
             ' style="width:50px;margin-bottom:20px;display:'+ (isMobile ? 'inline':'none') + '">' +
             ' </a>' +
-            '</div>'
+            '</div>' +
             '</div>';
-
+            var messagehtml = $compile(rendercode)(scope);
             BootstrapDialog.show({
                 title: title,
                 message: function (dialogRef) {
