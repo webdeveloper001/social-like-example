@@ -1425,7 +1425,7 @@
             });
         }
 
-        function shareOptions(callback, isMobile) {
+        function shareOptions(callback, isMobile, link, text) {
             var title = '';
             var messagehtml = '';
             var btnCancelLabel = '';
@@ -1455,17 +1455,31 @@
             '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
             '<img src="/assets/images/1485425301_reddit.png" id="reddit" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +    
+            '<a href="#" socialshare ' +
+                'socialshare-provider="whatsapp" ' +
+                'socialshare-text="'+ text + '" ' +
+                'socialshare-url="' + link + '">' +
             '<img src="/assets/images/1485384832_16_-_Whatsapp.png" id="whatsapp"'+
             ' style="width:50px;margin-bottom:20px;display:'+ (isMobile ? 'inline':'none') + '">' +
+            ' </a>' +
             '</div>' +
             '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<a href="#" socialshare ' +
+                'socialshare-provider="facebook-messenger" ' +
+                'socialshare-url="' + link + '">' +
             '<img src="/assets/images/1485385110_Facebook_Messenger.png" id="messenger"'+
             ' style="width:50px;margin-bottom:20px;display:'+ (isMobile ? 'inline':'none') + '">' +
+            ' </a>' +
             '</div>' +
             '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<a href="#" socialshare ' +
+                'socialshare-provider="sms" ' +
+                'socialshare-text="'+ text + '" ' +
+                'socialshare-url="' + link + '">' +
             '<img src="/assets/images/1485385026_sms.png" id="sms"'+ 
             ' style="width:50px;margin-bottom:20px;display:'+ (isMobile ? 'inline':'none') + '">' +
+            ' </a>' +
             '</div>'
             '</div>';
 
@@ -1503,15 +1517,15 @@
                         x.close();
                     });
                     $content.find('#whatsapp').click({}, function () {
-                        callback('whatsapp');
+                        // callback('whatsapp');
                         x.close();
                     });
                     $content.find('#messenger').click({}, function () {
-                        callback('messenger');
+                        // callback('messenger');
                         x.close();
                     });
                     $content.find('#sms').click({}, function () {
-                        callback('sms');
+                        // callback('sms');
                         x.close();
                     });
                     return $content;
