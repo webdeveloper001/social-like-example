@@ -138,7 +138,7 @@
 
         function gotomyfavs() {
             //$stateProvider.state('app');
-            $state.go('myfavs');
+            $state.go('favs');
         }
 
         function goPromoterConsole(){

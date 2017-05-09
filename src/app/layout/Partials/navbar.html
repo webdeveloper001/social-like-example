@@ -12,7 +12,7 @@
             <a class="navbar-brand" href="/cwrapper" ng-click="vm.gotoHome()" style="cursor:pointer;padding:0px;border:0px;margin:0px;">
                 <img src="/assets/images/logosqwborder.jpg" style="width:60px;"></a>
             <a class="navbar-brand home-link" href='/cwrapper' ng-click="vm.gotoHome()" >Home</a>
-            <a class="navbar-brand navbar-profile-picture-wrapper" ng-show="vm.user" href="/myfavs" ng-click="vm.gotomyfavs()">
+            <a class="navbar-brand navbar-profile-picture-wrapper" ng-show="vm.user" href="/favs" ng-click="vm.gotofavs()">
                 <img class="img-responsive img-circle navbar-profile-picture" ng-src="{{vm.user.picture.data.url}}" />
                 <span>{{vm.user.first_name}}</span>
             </a>
@@ -41,7 +41,6 @@
                 <!-- <li><a href="" ng-click="vm.gotoHome()">Home</a></li> -->
                 <!-- <li ng-if="vm.hasBusiness"><a href="" ng-click="vm.gotomybusiness()">My Business</a></li> -->
                 <!-- <li ng-if="vm.isPromoter"><a href="" ng-click="vm.goPromoterConsole()">Promote</a></li> --> 
-                <li ng-if="vm.isLoggedIn"><a href="/myfriends">My Friends</a></li>
                 <li><a href="/about" ng-click="vm.gotoAbout()">About</a></li>
                 <li><a href="/tour" ng-click="vm.gotoTour()">Tour</a></li>
                 <li><a href="/home" ng-click="vm.gotoFeedback()">Feedback</a></li>

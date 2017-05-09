@@ -179,7 +179,7 @@
             else if (window.location.href.indexOf('answerDetail')>-1)
                 $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded && 
                                     $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
-            else if (window.location.href.indexOf('myfriends')>-1)
+            else if (window.location.href.indexOf('favs')>-1)
                 $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded && 
                                     $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
             else $rootScope.dataIsLoaded = $rootScope.pageDataLoaded && $rootScope.userDataLoaded;

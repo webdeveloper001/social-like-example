@@ -5,9 +5,9 @@
         .module('app')
         .controller('myfriends', myfriends);
 
-    myfriends.$inject = ['$location', '$rootScope', '$state', '$window', 'votes', '$scope'];
+    myfriends.$inject = ['$location', '$rootScope', '$state', '$window', 'votes', '$scope', 'dialog'];
 
-    function myfriends(location, $rootScope, $state, $window, votes, $scope) {
+    function myfriends(location, $rootScope, $state, $window, votes, $scope, dialog) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'myfriends';
@@ -15,7 +15,7 @@
         vm.goBack = goBack;
         vm.answerDetail = answerDetail;
         vm.seeMore = seeMore;
-
+        vm.showAllFriendsList = showAllFriendsList;
 
         // ----- SEO tags ----
         $scope.$parent.$parent.$parent.seo = { 
@@ -40,7 +40,12 @@
         vm.cb4gt5 = false;
         vm.cb5gt5 = false;
 
+
+        function showAllFriendsList(userObjs){
+            dialog.showAllFriendsListDlg(userObjs);
+        }
         activate();
+
         function activate() {
             formatTables(); 
             if( !$rootScope.friendsVotes ){
@@ -131,48 +136,27 @@
                                 category = $rootScope.content[idx2];
 
                                 if (category.title.indexOf('food') > -1 || category.tags.indexOf('food') > -1) {
-                                    var data = angular.copy(answer);
-                                    getSpecials(data);
-                                    data.trackID = data.id + '' + $rootScope.friends_votes[i].id;
-                                    data.userObjs = [];
-                                    getUser(data, $rootScope.friends_votes[i]);
-                                    vm.foodans.push(data);
+                                    addRecord(vm.foodans, answer, i);
                                 }
 
                                 if (category.title.indexOf('lifestyle') > -1 || category.tags.indexOf('lifestyle') > -1) {
-                                    var data = angular.copy(answer);
-                                    getSpecials(data);
-                                    data.trackID = data.id + '' + $rootScope.friends_votes[i].id;
-                                    data.userObjs = [];
-                                    getUser(data, $rootScope.friends_votes[i]);
-                                    vm.lifestyleans.push(data);
+
+                                    addRecord(vm.lifestyleans, answer, i);
                                 }
 
                                 if (category.title.indexOf('services') > -1 || category.tags.indexOf('services') > -1) {
-                                    var data = angular.copy(answer);
-                                    getSpecials(data);
-                                    data.trackID = data.id + '' + $rootScope.friends_votes[i].id;
-                                    data.userObjs = [];
-                                    getUser(data, $rootScope.friends_votes[i]);
-                                    vm.servicesans.push(data);
+
+                                    addRecord(vm.servicesans, answer, i);
                                 }
 
                                 if (category.title.indexOf('health') > -1 || category.tags.indexOf('health') > -1) {
-                                    var data = angular.copy(answer);
-                                    getSpecials(data);
-                                    data.trackID = data.id + '' + $rootScope.friends_votes[i].id;
-                                    data.userObjs = [];
-                                    getUser(data, $rootScope.friends_votes[i]);
-                                    vm.healthans.push(data);
+
+                                    addRecord(vm.healthans, answer, i);
                                 }
 
                                 if (category.title.indexOf('beauty') > -1 || category.tags.indexOf('beauty') > -1) {
-                                    var data = angular.copy(answer);
-                                    getSpecials(data);
-                                    data.trackID = data.id + '' + $rootScope.friends_votes[i].id;
-                                    data.userObjs = [];
-                                    getUser(data, $rootScope.friends_votes[i]);
-                                    vm.beautyans.push(data);
+ 
+                                    addRecord(vm.beautyans, answer, i);
                                 }
                             }
                         }
@@ -233,9 +217,35 @@
         function getUser(answer, votetable) {
             for (var i = 0; i < $rootScope.user.friends.data.length; i++) {
                 if (votetable.user == $rootScope.user.friends.data[i].id) {
-                    answer.userObjs.push($rootScope.user.friends.data[i]);
+                    return $rootScope.user.friends.data[i];
                 }
             }
+        }
+
+        function addRecord(part, answer, i){
+            var map = part.map(function (x) { return x.id; });
+            if( map.indexOf(answer.id) == -1 ){
+                var data = angular.copy(answer);
+                getSpecials(data);
+                data.trackID = data.id + '' + $rootScope.friends_votes[i].id;
+                data.userObjs = [];
+                var friend = getUser(data, $rootScope.friends_votes[i]);
+                data.userObjs.push(friend);
+                part.push(data);    
+            }
+            else{
+                var data = part[map.indexOf(answer.id)];
+                var friend = getUser(data, $rootScope.friends_votes[i]);
+                addUser(data, friend);
+            }
+        }
+
+        function addUser(data, friend){
+
+            var map = data.userObjs.map(function (x) { return x.id; });
+            if( map.indexOf(friend.id) == -1 )
+                data.userObjs.push(friend);
+
         }
 
         function answerDetail(cb,x) {

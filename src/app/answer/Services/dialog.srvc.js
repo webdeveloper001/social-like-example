@@ -48,7 +48,8 @@
             notificationWithCallback: notificationWithCallback,
             enterPassword: enterPassword,
             endorse: endorse,
-            chooseImgFromIgDlg: chooseImgFromIgDlg
+            chooseImgFromIgDlg: chooseImgFromIgDlg,
+            showAllFriendsListDlg: showAllFriendsListDlg
         };
         return service;
 
@@ -2156,6 +2157,51 @@
 
             });
 
+        }
+
+
+        function showAllFriendsListDlg(userObjs) {
+            var imageListHtml = "<div class='row'>";
+            for (var i = 0; i < userObjs.length; i++) {
+
+                imageListHtml += '<div class="col-xs-3 col-md-3 text-center">';
+  
+                imageListHtml += '<img src="' + userObjs[i].picture.data.url + '" class="img-responsive img-circle profile-avatar" style="width: 100%;height: 100%;"/>';
+                imageListHtml += '<span>' + userObjs[i].first_name + ' ' + userObjs[i].last_name + '</span>';
+                imageListHtml += '</div>';
+
+            }
+            imageListHtml += '</div>';
+            
+            BootstrapDialog.show({
+                size: BootstrapDialog.SIZE_SM,
+                type: BootstrapDialog.TYPE_PRIMARY,
+                cssClass: 'fav-list-user-image-dialog',
+                title: "Friends",
+                message: function (dialogRef) {
+                    var $content = $(imageListHtml);
+                    var x = dialogRef;
+
+                    return $content;
+                },
+
+                buttons: [{
+                    label: 'Close',
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    },
+                }],
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: "OK",
+                btnOKLabel: "Close",
+                btnOKClass: 'btn-success',
+                btnCancelClass: 'btn-warning',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+
+            });
         }
     }
 })();
