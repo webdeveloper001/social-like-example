@@ -2160,7 +2160,7 @@
         }
 
 
-        function showAllFriendsListDlg(userObjs) {
+        function showAllFriendsListDlg(userObjs, answername) {
             var imageListHtml = "<div class='row'>";
             for (var i = 0; i < userObjs.length; i++) {
 
@@ -2177,7 +2177,7 @@
                 size: BootstrapDialog.SIZE_SM,
                 type: BootstrapDialog.TYPE_PRIMARY,
                 cssClass: 'fav-list-user-image-dialog',
-                title: "Friends",
+                title: "My Friends that like " + answername,
                 message: function (dialogRef) {
                     var $content = $(imageListHtml);
                     var x = dialogRef;

@@ -41,8 +41,8 @@
         vm.cb5gt5 = false;
 
 
-        function showAllFriendsList(userObjs){
-            dialog.showAllFriendsListDlg(userObjs);
+        function showAllFriendsList(userObjs, answername){
+            dialog.showAllFriendsListDlg(userObjs, answername);
         }
         activate();
 
