@@ -3,24 +3,31 @@
 
     angular
         .module('app')
-        .controller('myfavs', myfavs);
+        .controller('myfriends', myfriends);
 
-    myfavs.$inject = ['$location', '$rootScope', '$state', '$window'];
+    myfriends.$inject = ['$location', '$rootScope', '$state', '$window', 'votes', '$scope'];
 
-    function myfavs(location, $rootScope, $state, $window) {
+    function myfriends(location, $rootScope, $state, $window, votes, $scope) {
         /* jshint validthis:true */
         var vm = this;
-        vm.title = 'myfavs';
+        vm.title = 'myfriends';
 
         vm.goBack = goBack;
         vm.answerDetail = answerDetail;
         vm.seeMore = seeMore;
 
+
+        // ----- SEO tags ----
+        $scope.$parent.$parent.$parent.seo = { 
+            pageTitle : "My Friends' Favourite", 
+            metaDescription: "RankX lets you see your friends' favorite food, lifestyle, health, beauty and services." 
+        };
+
         var cdate = new Date();
         var dayOfWeek = cdate.getDay();
         var isToday = false;
         vm.noAns = false;
-
+        vm.friendsDataLoading = true;
         vm.maxRes1 = 5; vm.btext1 = 'See more';
         vm.maxRes2 = 5; vm.btext2 = 'See more';
         vm.maxRes3 = 5; vm.btext3 = 'See more';
@@ -34,15 +41,17 @@
         vm.cb5gt5 = false;
 
         activate();
-
         function activate() {
-            
-            $rootScope.inFavMode = true;
-
-            formatTables();
-            loadData();
-            console.log("myfavs page Loaded!");
-
+            formatTables(); 
+            if( !$rootScope.friendsVotes ){
+                votes.loadVotesByMyFriends()
+                .then(function(data){
+                    $rootScope.friends_votes = data;
+                    formatData();
+                })
+            } else {
+                formatData();
+            }
         }
 
         function formatTables() {
@@ -51,7 +60,7 @@
                 if ($rootScope.headlines[i].type == 'food') {
                     vm.bgc1 = $rootScope.headlines[i].bc;
                     vm.fc1 = $rootScope.headlines[i].fc;
-                    vm.headline1 = 'My ' + $rootScope.headlines[i].title;
+                    vm.headline1 = $rootScope.headlines[i].title;
                     break;
                 }
             }
@@ -60,7 +69,7 @@
                 if ($rootScope.headlines[i].type == 'lifestyle') {
                     vm.bgc2 = $rootScope.headlines[i].bc;
                     vm.fc2 = $rootScope.headlines[i].fc;
-                    vm.headline2 = 'My ' + $rootScope.headlines[i].title; 
+                    vm.headline2 = $rootScope.headlines[i].title; 
                     break;
                 }
             }
@@ -69,7 +78,7 @@
                 if ($rootScope.headlines[i].type == 'services') {
                     vm.bgc3 = $rootScope.headlines[i].bc;
                     vm.fc3 = $rootScope.headlines[i].fc;
-                    vm.headline3 = 'My ' + $rootScope.headlines[i].title;
+                    vm.headline3 = $rootScope.headlines[i].title;
                     break;
                 }
             }
@@ -78,7 +87,7 @@
                 if ($rootScope.headlines[i].type == 'health') {
                     vm.bgc4 = $rootScope.headlines[i].bc;
                     vm.fc4 = $rootScope.headlines[i].fc;
-                    vm.headline4 = 'My ' + $rootScope.headlines[i].title;
+                    vm.headline4 = $rootScope.headlines[i].title;
                     break;
                 }
             }
@@ -87,28 +96,28 @@
                 if ($rootScope.headlines[i].type == 'beauty') {
                     vm.bgc5 = $rootScope.headlines[i].bc;
                     vm.fc5 = $rootScope.headlines[i].fc;
-                    vm.headline5 = 'My ' + $rootScope.headlines[i].title;
+                    vm.headline5 = $rootScope.headlines[i].title;
                     break;
                 }
             }
         }
 
-        function loadData() {
+        function formatData() {
             var answer = {};
             var category = {};
 
-            vm.myfoodans = [];
-            vm.mylifestyleans = [];
-            vm.myservicesans = [];
-            vm.myhealthans = [];
-            vm.mybeautyans = [];
+            vm.foodans = [];
+            vm.lifestyleans = [];
+            vm.servicesans = [];
+            vm.healthans = [];
+            vm.beautyans = [];
 
             var tmap = [];
 
 
-            for (var i = 0; i < $rootScope.cvotes.length; i++) {
-                if ($rootScope.cvotes[i].vote == 1) {
-                    var idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf($rootScope.cvotes[i].answer);
+            for (var i = 0; i < $rootScope.friends_votes.length; i++) {
+                if ($rootScope.friends_votes[i].vote == 1) {
+                    var idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf($rootScope.friends_votes[i].answer);
                     answer = $rootScope.answers[idx];
                     //console.log("answer - ", answer.name);
                     if (answer.type == 'Establishment') {
@@ -122,74 +131,78 @@
                                 category = $rootScope.content[idx2];
 
                                 if (category.title.indexOf('food') > -1 || category.tags.indexOf('food') > -1) {
-                                    tmap = vm.myfoodans.map(function (x) { return x.id; });
-                                    if (tmap.indexOf(answer.id) < 0) {
-                                        getSpecials(answer);
-                                        vm.myfoodans.push(answer);
-                                    }
+                                    var data = angular.copy(answer);
+                                    getSpecials(data);
+                                    data.trackID = data.id + '' + $rootScope.friends_votes[i].id;
+                                    data.userObjs = [];
+                                    getUser(data, $rootScope.friends_votes[i]);
+                                    vm.foodans.push(data);
                                 }
 
                                 if (category.title.indexOf('lifestyle') > -1 || category.tags.indexOf('lifestyle') > -1) {
-                                    tmap = vm.mylifestyleans.map(function (x) { return x.id; });
-                                    if (tmap.indexOf(answer.id) < 0) {
-                                        getSpecials(answer);
-                                        vm.mylifestyleans.push(answer);
-                                    }
+                                    var data = angular.copy(answer);
+                                    getSpecials(data);
+                                    data.trackID = data.id + '' + $rootScope.friends_votes[i].id;
+                                    data.userObjs = [];
+                                    getUser(data, $rootScope.friends_votes[i]);
+                                    vm.lifestyleans.push(data);
                                 }
 
                                 if (category.title.indexOf('services') > -1 || category.tags.indexOf('services') > -1) {
-                                    tmap = vm.myservicesans.map(function (x) { return x.id; });
-                                    if (tmap.indexOf(answer.id) < 0) {
-                                        getSpecials(answer);
-                                        vm.myservicesans.push(answer);
-                                    }
+                                    var data = angular.copy(answer);
+                                    getSpecials(data);
+                                    data.trackID = data.id + '' + $rootScope.friends_votes[i].id;
+                                    data.userObjs = [];
+                                    getUser(data, $rootScope.friends_votes[i]);
+                                    vm.servicesans.push(data);
                                 }
 
                                 if (category.title.indexOf('health') > -1 || category.tags.indexOf('health') > -1) {
-                                    tmap = vm.myhealthans.map(function (x) { return x.id; });
-                                    if (tmap.indexOf(answer.id) < 0) {
-                                        getSpecials(answer);
-                                        vm.myhealthans.push(answer);
-                                    }
+                                    var data = angular.copy(answer);
+                                    getSpecials(data);
+                                    data.trackID = data.id + '' + $rootScope.friends_votes[i].id;
+                                    data.userObjs = [];
+                                    getUser(data, $rootScope.friends_votes[i]);
+                                    vm.healthans.push(data);
                                 }
 
                                 if (category.title.indexOf('beauty') > -1 || category.tags.indexOf('beauty') > -1) {
-                                    tmap = vm.mybeautyans.map(function (x) { return x.id; });
-                                    if (tmap.indexOf(answer.id) < 0) {
-                                        getSpecials(answer);
-                                        vm.mybeautyans.push(answer);
-                                    }
+                                    var data = angular.copy(answer);
+                                    getSpecials(data);
+                                    data.trackID = data.id + '' + $rootScope.friends_votes[i].id;
+                                    data.userObjs = [];
+                                    getUser(data, $rootScope.friends_votes[i]);
+                                    vm.beautyans.push(data);
                                 }
                             }
                         }
-
-                    }
+                    }   
                 }
             }
             
-            if (vm.myfoodans.length > 5) vm.cb1gt5 = true;
-            if (vm.mylifestyleans.length > 5) vm.cb2gt5 = true;
-            if (vm.myservicesans.length > 5) vm.cb3gt5 = true;
-            if (vm.myhealthans.length > 5) vm.cb4gt5 = true;
-            if (vm.mybeautyans.length > 5) vm.cb5gt5 = true;
+            if (vm.foodans.length > 5) vm.cb1gt5 = true;
+            if (vm.lifestyleans.length > 5) vm.cb2gt5 = true;
+            if (vm.servicesans.length > 5) vm.cb3gt5 = true;
+            if (vm.healthans.length > 5) vm.cb4gt5 = true;
+            if (vm.beautyans.length > 5) vm.cb5gt5 = true;
 
-            if (vm.myfoodans.length > 0) vm.answerExist1 = true;
+            if (vm.foodans.length > 0) vm.answerExist1 = true;
             else vm.answerExist1 = false;
 
-            if (vm.mylifestyleans.length > 0) vm.answerExist2 = true;
+            if (vm.lifestyleans.length > 0) vm.answerExist2 = true;
             else vm.answerExist2 = false;
 
-            if (vm.myservicesans.length > 0) vm.answerExist3 = true;
+            if (vm.servicesans.length > 0) vm.answerExist3 = true;
             else vm.answerExist3 = false;
 
-            if (vm.myhealthans.length > 0) vm.answerExist4 = true;
+            if (vm.healthans.length > 0) vm.answerExist4 = true;
             else vm.answerExist4 = false;
 
-            if (vm.mybeautyans.length > 0) vm.answerExist5 = true;
+            if (vm.beautyans.length > 0) vm.answerExist5 = true;
             else vm.answerExist5 = false;
             
-            if (vm.myfoodans.length == 0 && vm.myservicesans.length == 0 && vm.mylifestyleans.length == 0 &&
-            vm.myhealthans.length == 0 && vm.mybeautyans.length == 0){
+            if (vm.foodans.length == 0 && vm.servicesans.length == 0 && vm.lifestyleans.length == 0 &&
+            vm.healthans.length == 0 && vm.beautyans.length == 0){
                 vm.noAns = true;
             }
 
@@ -217,20 +230,28 @@
             }
         }
 
+        function getUser(answer, votetable) {
+            for (var i = 0; i < $rootScope.user.friends.data.length; i++) {
+                if (votetable.user == $rootScope.user.friends.data[i].id) {
+                    answer.userObjs.push($rootScope.user.friends.data[i]);
+                }
+            }
+        }
+
         function answerDetail(cb,x) {
             
             $rootScope.myfavs = {};
             
             switch (cb){
-                case 1: { $rootScope.canswers = vm.myfoodans; 
+                case 1: { $rootScope.canswers = vm.foodans; 
                           $rootScope.myfavs.title = 'My Food';  break; }
-                case 2: { $rootScope.canswers = vm.mylifestyleans; 
+                case 2: { $rootScope.canswers = vm.lifestyleans; 
                           $rootScope.myfavs.title = 'My Lifestyle';  break; }
-                case 3: { $rootScope.canswers = vm.myservicesans;
+                case 3: { $rootScope.canswers = vm.servicesans;
                           $rootScope.myfavs.title = 'My Services';  break; }  
-                case 4: { $rootScope.canswers = vm.myhealthans; 
+                case 4: { $rootScope.canswers = vm.healthans; 
                           $rootScope.myfavs.title = 'My Health';  break; }
-                case 5: { $rootScope.canswers = vm.mybeautyans; 
+                case 5: { $rootScope.canswers = vm.beautyans; 
                           $rootScope.myfavs.title = 'My Beauty';  break; }
             }
             $state.go("answerDetail", { index: x.id });

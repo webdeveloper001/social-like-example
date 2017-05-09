@@ -132,7 +132,7 @@
             //****SUPER TEMP*****************
             $rootScope.isAdmin = false;
             vm.isAdmin = false;
-               /*
+            /*
             $rootScope.isLoggedIn = true;
             $rootScope.user = {};
             $rootScope.user.name = "Andres Moctezuma";
@@ -170,7 +170,7 @@
   					   'background: -webkit-linear-gradient(left,'+bgc+','+bgc2+');'+
   					   'background: -o-linear-gradient(right,'+bgc+','+bgc2+');'+
   					   'background: -moz-linear-gradient(right,'+bgc+', '+bgc2+');'+
-  					   'background: linear-gradient(to right,'+bgc+', '+bgc2+');';   
+  					   'background: linear-gradient(to right,'+bgc+', '+bgc2+');';
             
             loadcontent();
             //getEstablishmentAnswers();

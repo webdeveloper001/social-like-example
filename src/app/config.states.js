@@ -232,6 +232,13 @@
                 url: '/myfavs',
                 templateUrl: 'app/layout/Partials/myfavs.html',
                 controller: 'myfavs as vm'
+          },
+          {
+                name: 'myfriends',
+                parent: 'layout',
+                url: '/myfriends',
+                templateUrl: 'app/layout/Partials/myfriends.html',
+                controller: 'myfriends as vm'
           }
         ];
 

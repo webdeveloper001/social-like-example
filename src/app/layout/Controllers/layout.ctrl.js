@@ -167,19 +167,21 @@
             dataloader.getanswerdata();
             dataloader.getpagevisitdata();
             //loadingDone();
-      }
+        }
 
         function loadingDone() {
             if ($rootScope.pageDataLoaded == undefined) $rootScope.pageDataLoaded = false;
             if ($rootScope.userDataLoaded == undefined) $rootScope.userDataLoaded = false;
 
             if (window.location.href.indexOf('rankSummary')>-1)
-            $rootScope.dataIsLoaded = $rootScope.rankSummaryDataLoaded && $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
+                $rootScope.dataIsLoaded = $rootScope.rankSummaryDataLoaded && $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
 
             else if (window.location.href.indexOf('answerDetail')>-1)
-            $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded && 
+                $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded && 
                                     $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
-            
+            else if (window.location.href.indexOf('myfriends')>-1)
+                $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded && 
+                                    $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
             else $rootScope.dataIsLoaded = $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
 
             vm.isLoading = !$rootScope.dataIsLoaded;
