@@ -68,11 +68,12 @@
         $scope.$on('$destroy',mainViewListener);
 
         //Receive from layout search bar
+        /*
         var getResultsListener = $rootScope.$on('getResults', function (event) {
             vm.searchActive = $rootScope.searchActive;
-        });
+        });*/
 
-        $scope.$on('$destroy',getResultsListener);
+        //$scope.$on('$destroy',getResultsListener);
 
         window.prerenderReady = false;
 
@@ -130,9 +131,9 @@
             if ($rootScope.DEBUG_MODE) console.log("init cwrapper!");
                 
             //****SUPER TEMP*****************
-            $rootScope.isAdmin = false;
-            vm.isAdmin = false;
-               /*
+            $rootScope.isAdmin = true;
+            vm.isAdmin = true;
+               
             $rootScope.isLoggedIn = true;
             $rootScope.user = {};
             $rootScope.user.name = "Andres Moctezuma";

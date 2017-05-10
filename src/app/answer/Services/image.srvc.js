@@ -117,8 +117,10 @@
                 link_length = _searchResults.data.items[i].link.length; 
                 
                 //check last character in result link is 'g' or 'p' (jpg, png or bmp)
-                if (_searchResults.data.items[i].link[link_length - 1] == 'g' ||
-                    _searchResults.data.items[i].link[link_length - 1] == 'p') linkOk = true;
+                // and that image is serve securely from https source
+                if ((_searchResults.data.items[i].link[link_length - 1] == 'g' ||
+                    _searchResults.data.items[i].link[link_length - 1] == 'p') &&(
+                    _searchResults.data.items[i].link.indexOf('https')>-1 )) linkOk = true;
                 
                 if (sizeOk && linkOk) {
                     var url = _searchResults.data.items[i].link;
