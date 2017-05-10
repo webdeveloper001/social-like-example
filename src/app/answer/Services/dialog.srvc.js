@@ -49,7 +49,8 @@
             enterPassword: enterPassword,
             endorse: endorse,
             chooseImgFromIgDlg: chooseImgFromIgDlg,
-            showAllFriendsListDlg: showAllFriendsListDlg
+            whatisrankquestion: whatisrankquestion,
+            showAllFriendsListDlg: showAllFriendsListDlg,
         };
         return service;
 
@@ -2158,7 +2159,31 @@
             });
 
         }
+       
+            function whatisrankquestion() {
 
+            var title = 'Ranking Question';
+            var message = 'The <strong>Ranking Question</strong> is what you ask users when comparing two items in the rank.' + 
+            ' It is the question to determine which item deserves the higher ranking.' + '<br><br>' + 
+            'For example, if ranking the "Hamburgers in Pacific Beach", ' + 
+            'the <strong>Ranking Question</strong> would be "Who makes the better burgers?".<br><br>'+
+            'The Ranking Question is shown in the Rank Console, when users rank their endorsements.<br><br>'+
+            '<img style="width:100%;height:auto" src="/assets/images/whatisrankquestion.png">' ;
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'Got it',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }]
+            });
 
         function showAllFriendsListDlg(userObjs, answername) {
             var imageListHtml = "<div class='row'>";

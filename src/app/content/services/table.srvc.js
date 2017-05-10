@@ -152,6 +152,12 @@
                 tablex.id = result.data.resource[0].id;
                 _tables.push(tablex);
 
+                //update slug tag
+                var slug = result.data.resource[0].title.toLowerCase(); 
+                slug = slug.replace(/ /g,'-');
+                slug = slug + '-' + result.data.resource[0].id;
+                update(result.data.resource[0].id,['slug'],[slug]);
+
                 if ($rootScope.DEBUG_MODE) console.log("result", result);
                 return result.data;
             }
@@ -273,7 +279,8 @@
                     case "fimage": data.fimage = val[i]; break;
                     case "bc": data.bc = val[i]; break;
                     case "fc": data.fc = val[i]; break;
-                    case "shade": data.shade = val[i]; break;                    
+                    case "shade": data.shade = val[i]; break;
+                    case "slug": data.slug = val[i]; break;                     
                 }
             }
             //console.log("data", data);
@@ -309,7 +316,8 @@
                     case "fimage": $rootScope.content[idx].fimage = val[i]; break;
                     case "bc": $rootScope.content[idx].bc = val[i]; break;
                     case "fc": $rootScope.content[idx].fc = val[i]; break;
-                    case "shade": $rootScope.content[idx].shade = val[i]; break;                   
+                    case "shade": $rootScope.content[idx].shade = val[i]; break;
+                    case "slug": $rootScope.content[idx].slug = val[i]; break;                   
                 }
             }
 

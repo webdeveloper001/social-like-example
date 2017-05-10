@@ -226,6 +226,7 @@
                     case "hasranks": data.hasranks = val[i]; break;
                     case "ranksqty": data.ranksqty = val[i]; break;
                     case "ig_image_urls": data.ig_image_urls = val[i]; break;
+                    case "slug": data.slug = val[i]; break;
                 }
             }
             //console.log("data", data);
@@ -258,6 +259,7 @@
                     case "ispremium": $rootScope.answers[idx].ispremium = val[i]; break;
                     case "hasranks": $rootScope.answers[idx].hasranks = val[i]; break;
                     case "ranksqty": $rootScope.answers[idx].ranksqty = val[i]; break;
+                    case "slug": $rootScope.answers[idx].slug = val[i]; break;
                 }
             }                        
             

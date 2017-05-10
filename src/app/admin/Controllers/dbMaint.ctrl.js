@@ -32,6 +32,7 @@
         vm.createImagesJSON = createImagesJSON;
         vm.updateUrls = updateUrls;
         vm.goMerge = goMerge;
+        vm.getSlugs = getSlugs;
 
         vm.isAdmin = $rootScope.isAdmin;
         
@@ -494,6 +495,46 @@
                 }
 
             });
+        }
+
+        function getSlugs(){
+            /*
+            //for answers
+            for (var i=0; i<$rootScope.answers.length; i++){
+                if ($rootScope.answers[i].slug == undefined || $rootScope.answers[i].slug == ''){
+                var slugTag = '';
+                //Change all to lowercase
+                slugTag = $rootScope.answers[i].name.toLowerCase();
+                //replace space with dash
+                slugTag = slugTag.replace(/ /g,'-');
+                //add -id at the end to ensure uniqueness
+                slugTag = slugTag + '-' + $rootScope.answers[i].id;
+                
+                //Update database
+                answer.updateAnswer($rootScope.answers[i].id,['slug'],[slugTag]);
+                }
+                //console.log("slugTag - ", slugTag);  
+            }*/
+
+            
+            //for rankings
+            //for (var i=0; i<20; i++){
+            /*
+            for (var i=0; i<$rootScope.content.length; i++){
+                if ($rootScope.content[i].slug == undefined || $rootScope.content[i].slug == ''){    
+                var slugTag = '';
+                //Change all to lowercase
+                slugTag = $rootScope.content[i].title.toLowerCase();
+                //replace space with dash
+                slugTag = slugTag.replace(/ /g,'-');
+                //add -id at the end to ensure uniqueness
+                slugTag = slugTag + '-' + $rootScope.content[i].id;
+                
+                //Update database
+                table.update($rootScope.content[i].id,['slug'],[slugTag]);
+                //console.log("slugTag - ", slugTag);
+                }  
+            }*/
         }
     }
 })();

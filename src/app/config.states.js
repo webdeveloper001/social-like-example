@@ -140,6 +140,20 @@
                 controller: 'editvrows as vm'
             },
             {
+                name: 'addCustomRank',
+                url: '/addCustomRank',
+                views: {
+                    "@": {
+                        templateUrl: 'app/admin/Partials/addCustomRank.html',
+                        controller: 'addCustomRank as vm'
+                    },
+                    "navbar@addCustomRank": {
+                        templateUrl: 'app/layout/Partials/navbar.html',
+                        controller: 'navbar as vm'
+                    }
+                }
+            },
+            {
                 name: 'match',
                 parent: 'layout',
                 url: '/match',

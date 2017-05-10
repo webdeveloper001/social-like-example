@@ -68,11 +68,12 @@
         $scope.$on('$destroy',mainViewListener);
 
         //Receive from layout search bar
+        /*
         var getResultsListener = $rootScope.$on('getResults', function (event) {
             vm.searchActive = $rootScope.searchActive;
-        });
+        });*/
 
-        $scope.$on('$destroy',getResultsListener);
+        //$scope.$on('$destroy',getResultsListener);
 
         window.prerenderReady = false;
 

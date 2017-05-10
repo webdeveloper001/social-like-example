@@ -41,7 +41,8 @@
         vm.getResults = getResults;
         vm.hideSearch = hideSearch;
         vm.gotoHome = gotoHome;
-
+        vm.goAddRank = goAddRank;
+        
         vm.goPrivacyPolicy = goPrivacyPolicy;
         vm.goRankofDayConsole = goRankofDayConsole;
 
@@ -220,17 +221,16 @@
         }
 
         function getResults() {
+            
             $rootScope.inputVal = vm.val;
             if ($rootScope.inputVal.length > 0) {
-                $rootScope.searchActive = true;
+                   $rootScope.searchActive = true;
             }
             else {
                 $rootScope.searchActive = false;
             }
             vm.searchActive = $rootScope.searchActive;
-            $window.scroll(0,0);
-            $rootScope.$emit('getResults');
-            
+            $window.scroll(0,0);                    
         }
 
         function hideSearch(){
@@ -249,6 +249,10 @@
                 $state.go('cwrapper',{main: true});
             }
             else $rootScope.$emit('mainView');
+        }
+
+        function goAddRank(){
+            $state.go('addCustomRank');
         }
 
         /*
