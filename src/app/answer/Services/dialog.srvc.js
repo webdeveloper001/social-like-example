@@ -2184,7 +2184,7 @@
                     }
                 }]
             });
-
+            }
         function showAllFriendsListDlg(userObjs, answername) {
             var imageListHtml = "<div class='row'>";
             for (var i = 0; i < userObjs.length; i++) {
