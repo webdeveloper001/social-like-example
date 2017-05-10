@@ -19,8 +19,8 @@
             patchRec: patchRec,
 			postRec: postRec,
             deleteVotesbyCatans: deleteVotesbyCatans,
-            deleteRec: deleteRec
-			
+            deleteRec: deleteRec,
+			loadVotesByMyFriends: loadVotesByMyFriends
             //    addTable: addTable
         };
 
@@ -46,6 +46,29 @@
                  
         }
         
+        function loadVotesByMyFriends(forceRefresh) {
+            var filterQuery = "";
+            
+            for (var i = 0; i < $rootScope.user.friends.data.length; i++) {
+                filterQuery += '(user=';
+                filterQuery += $rootScope.user.friends.data[i].id;
+                filterQuery += ')';
+                if( i != $rootScope.user.friends.data.length - 1 )
+                    filterQuery += ' or ';
+            }
+
+            //Get all vote records for current user
+            var url = baseURI + '/?filter=' + filterQuery;
+             
+            return $http.get(url).then(querySucceeded, _queryFailed);
+            
+            function querySucceeded(result) {
+
+                return result.data.resource;
+            }
+                 
+        }
+
         function loadAllVotes(forceRefresh) {
       
            //Get all vote records for current user

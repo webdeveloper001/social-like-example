@@ -11,9 +11,9 @@ angular.module('app')
 	    	return this._access_token;         
 	    },
     	login: function () {
-
+            var redirect_uri = $location.absUrl().split($location.path())[0] + '/';
 	        var igPopup = window.open("https://api.instagram.com/oauth/authorize/?client_id=" + client_id +                 
-	        "&redirect_uri=" + $location.absUrl().split('#')[0] +
+	        "&redirect_uri=" + redirect_uri +
 	        "&response_type=token&scope=likes+relationships+public_content+follower_list",'Instagram Auth', 'width=400, height=600, centerscreen=true, chrome=yes');
         },
         getMyRecentImages: function() {

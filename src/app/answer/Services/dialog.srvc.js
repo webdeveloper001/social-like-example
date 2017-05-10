@@ -6,9 +6,9 @@
         .factory('dialog', dialog);
 
     dialog.$inject = ['$q', '$rootScope', 'useraccnt', 'imagelist', 'answer', 'login',
-        '$window','$cookies', '$state']
+        '$window','$cookies', '$state', '$compile']
     function dialog($q, $rootScope, useraccnt, imagelist, answer, login,
-        $window, $cookies, $state) {
+        $window, $cookies, $state, $compile) {
 
         var service = {
             editConfirm: editConfirm,
@@ -50,6 +50,7 @@
             endorse: endorse,
             chooseImgFromIgDlg: chooseImgFromIgDlg,
             whatisrankquestion: whatisrankquestion,
+            showAllFriendsListDlg: showAllFriendsListDlg,
         };
         return service;
 
@@ -1426,14 +1427,14 @@
             });
         }
 
-        function shareOptions(callback, isMobile) {
+        function shareOptions(callback, isMobile, link, text, scope) {
             var title = '';
-            var messagehtml = '';
+            var rendercode = '';
             var btnCancelLabel = '';
             var btnOkLabel = '';
 
             title = 'Share Options';
-            messagehtml =
+            rendercode =
             '<div class="row">' +
             '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
             '<img src="/assets/images/1485385043_mail.png" id="email" style="width:50px;margin-bottom:20px">' +
@@ -1456,20 +1457,34 @@
             '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
             '<img src="/assets/images/1485425301_reddit.png" id="reddit" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +    
+            '<a href="#" socialshare ' +
+                'socialshare-provider="whatsapp" ' +
+                'socialshare-text="'+ text + '" ' +
+                'socialshare-url="' + link + '">' +
             '<img src="/assets/images/1485384832_16_-_Whatsapp.png" id="whatsapp"'+
             ' style="width:50px;margin-bottom:20px;display:'+ (isMobile ? 'inline':'none') + '">' +
+            ' </a>' +
             '</div>' +
             '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<a href="#" socialshare ' +
+                'socialshare-provider="facebook-messenger" ' +
+                'socialshare-url="' + link + '">' +
             '<img src="/assets/images/1485385110_Facebook_Messenger.png" id="messenger"'+
             ' style="width:50px;margin-bottom:20px;display:'+ (isMobile ? 'inline':'none') + '">' +
+            ' </a>' +
             '</div>' +
             '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<a href="#" socialshare ' +
+                'socialshare-provider="sms" ' +
+                'socialshare-text="'+ text + '" ' +
+                'socialshare-url="' + link + '">' +
             '<img src="/assets/images/1485385026_sms.png" id="sms"'+ 
             ' style="width:50px;margin-bottom:20px;display:'+ (isMobile ? 'inline':'none') + '">' +
-            '</div>'
+            ' </a>' +
+            '</div>' +
             '</div>';
-
+            var messagehtml = $compile(rendercode)(scope);
             BootstrapDialog.show({
                 title: title,
                 message: function (dialogRef) {
@@ -1504,15 +1519,15 @@
                         x.close();
                     });
                     $content.find('#whatsapp').click({}, function () {
-                        callback('whatsapp');
+                        // callback('whatsapp');
                         x.close();
                     });
                     $content.find('#messenger').click({}, function () {
-                        callback('messenger');
+                        // callback('messenger');
                         x.close();
                     });
                     $content.find('#sms').click({}, function () {
-                        callback('sms');
+                        // callback('sms');
                         x.close();
                     });
                     return $content;
@@ -2144,7 +2159,6 @@
             });
 
         }
-
        
             function whatisrankquestion() {
 
@@ -2170,7 +2184,49 @@
                     }
                 }]
             });
-        
+
+        function showAllFriendsListDlg(userObjs, answername) {
+            var imageListHtml = "<div class='row'>";
+            for (var i = 0; i < userObjs.length; i++) {
+
+                imageListHtml += '<div class="col-xs-3 col-md-3 text-center">';
+  
+                imageListHtml += '<img src="' + userObjs[i].picture.data.url + '" class="img-responsive img-circle profile-avatar" style="width: 100%;height: 100%;"/>';
+                imageListHtml += '<span>' + userObjs[i].first_name + ' ' + userObjs[i].last_name + '</span>';
+                imageListHtml += '</div>';
+
+            }
+            imageListHtml += '</div>';
+            
+            BootstrapDialog.show({
+                size: BootstrapDialog.SIZE_SM,
+                type: BootstrapDialog.TYPE_PRIMARY,
+                cssClass: 'fav-list-user-image-dialog',
+                title: "My Friends that like " + answername,
+                message: function (dialogRef) {
+                    var $content = $(imageListHtml);
+                    var x = dialogRef;
+
+                    return $content;
+                },
+
+                buttons: [{
+                    label: 'Close',
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    },
+                }],
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: "OK",
+                btnOKLabel: "Close",
+                btnOKClass: 'btn-success',
+                btnCancelClass: 'btn-warning',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+
+            });
         }
     }
 })();

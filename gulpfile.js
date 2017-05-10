@@ -6,6 +6,7 @@
 
 'use strict';
 
+require('babel-register');  
 var gulp = require('gulp');
 var wrench = require('wrench');
 

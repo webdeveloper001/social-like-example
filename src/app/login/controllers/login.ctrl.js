@@ -17,7 +17,7 @@
         vm.password = '';
         vm.code = '';
         vm.isProgressing = false;
-
+        
         // Methods
         vm.submit = submit;
         vm.register = register;

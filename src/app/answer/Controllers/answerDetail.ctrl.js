@@ -126,8 +126,14 @@
 
             //vm.userIsOwner = $rootScope.userIsOwner;
             if ($stateParams.index) {
-                var i = $rootScope.answers.map(function (x) { return x.id; }).indexOf(+$stateParams.index);
-                vm.answer = $rootScope.answers[i];
+                var isnum = /^\d+$/.test($stateParams.index);
+                if(isnum){
+                    var i = $rootScope.answers.map(function (x) { return x.id; }).indexOf(+$stateParams.index);
+                    vm.answer = $rootScope.answers[i];
+                } else {
+                    var i = $rootScope.answers.map(function (x) { return x.slug; }).indexOf($stateParams.index);
+                    vm.answer = $rootScope.answers[i];
+                }
             }
 
             // ----- SEO tags ----

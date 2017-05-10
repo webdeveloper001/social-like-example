@@ -153,8 +153,6 @@
         }
 
         function register(options) {
-
-
             console.log("options", options);
             return $http.post('/api/v2/user/register?login=true', options).then(function(result) {
                 console.log("register result", result);
@@ -212,7 +210,32 @@
             fakeResult.age_range = { min: 21 };
             fakeResult.first_name = 'Test';
             fakeResult.friends = {
-                data: [],
+                data: [{
+                    first_name:"John",
+                    gender:"male",
+                    id:"362411340826490",
+                    last_name:"Carter",
+                    locale:"en_US",
+                    picture:{
+                        data:{
+                            is_silhouette:false,
+                            url:"https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/18034179_362408994160058_2814191765613662934_n.jpg?oh=03f00905624bc37bc3f57b76148a44aa&oe=59BC08B8"
+                        }
+                    }
+                },
+                {
+                    first_name:"John",
+                    gender:"male",
+                    id:"398314100568945",
+                    last_name:"Will",
+                    locale:"en_US",
+                    picture:{
+                        data:{
+                            is_silhouette:false,
+                            url:"https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/14915696_288291968237826_1651783963192855784_n.jpg?oh=18bee38eafb63165ac9ecf37d649d8ee&oe=597C137F"
+                        }
+                    }
+                }],
                 summary: {}
             };
             fakeResult.gender = 'male';

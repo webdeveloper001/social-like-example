@@ -138,8 +138,8 @@
 
             //-----SEO tags ----
             $scope.$parent.$parent.$parent.seo = { 
-            pageTitle : $rootScope.cCategory.title, 
-            metaDescription: $rootScope.cCategory.question,
+                pageTitle : $rootScope.cCategory.title, 
+                metaDescription: $rootScope.cCategory.question,
             };
             
             //Check if there are no answers
@@ -400,7 +400,7 @@
         }
 
         function answerDetail(x) {
-            $state.go("answerDetail", { index: x.id });
+            $state.go("answerDetail", { index: x.slug });
         }
 
         function goRank() {
@@ -444,7 +444,7 @@
             //Load current category
             $rootScope.cCategory = {};
             for (var i = 0; i < $rootScope.content.length; i++) {
-                if ($rootScope.content[i].id == $stateParams.index) {
+                if (($rootScope.content[i].id == $stateParams.index) || ($rootScope.content[i].slug == $stateParams.index)){
                     $rootScope.cCategory = $rootScope.content[i];
                     break;
                 }
@@ -1005,9 +1005,14 @@
         }
             
             function share(){
-                vm.linkurl = 'https://rank-x.com/#/rankSummary/' + $rootScope.cCategory.id; 
+                vm.linkurl = 'https://rank-x.com/rankSummary/' + $rootScope.cCategory.slug; 
                 vm.tweet = $rootScope.cCategory.title + ', endorse your favorite ones at: ';
-                dialog.shareOptions(shareFunction, false);
+
+                var imageurl = "https://rank-x.com/" + $rootScope.cCategory.image1url;
+                if ($rootScope.cCategory.type == 'Short-Phrase')
+                    imageurl = 'https://rank-x.com/assets/images/rankxlogosd2_sm.png';
+
+                dialog.shareOptions(shareFunction, vm.isMobile, vm.linkurl, 'Rank-X, '+ vm.ranking + ', '+ $rootScope.cCategory.question + '\n' + imageurl, $scope);
             }
             
             function shareFunction(x){
@@ -1103,38 +1108,38 @@
                         }); 
                         break;
                     }
-                    case 'whatsapp':{
-                        if ($rootScope.DEBUG_MODE) console.log(x);
-                        Socialshare.share({
-                            'provider': 'whatsapp',
-                            'attrs': {
-                                'socialshareUrl': vm.linkurl,
-                                'socialshareText': 'Rank-X, '+ vm.ranking + ', '+ $rootScope.cCategory.question,
-                             }
-                        }); 
-                        break;
-                    }
-                    case 'messenger':{
-                        if ($rootScope.DEBUG_MODE) console.log(x);
-                        Socialshare.share({
-                            'provider': 'facebook-messenger',
-                            'attrs': {
-                                'socialshareUrl': vm.linkurl,
-                             }
-                        }); 
-                        break;
-                    }
-                    case 'sms':{
-                        if ($rootScope.DEBUG_MODE) console.log(x);
-                        Socialshare.share({
-                            'provider': 'sms',
-                            'attrs': {
-                                'socialshareUrl': vm.linkurl,
-                                'socialshareText': 'Rank-X, '+ vm.ranking + ', '+ $rootScope.cCategory.question,
-                             }
-                        }); 
-                        break;
-                    }
+                    // case 'whatsapp':{
+                    //     if ($rootScope.DEBUG_MODE) console.log(x);
+                    //     Socialshare.share({
+                    //         'provider': 'whatsapp',
+                    //         'attrs': {
+                    //             'socialshareUrl': vm.linkurl,
+                    //             'socialshareText': 'Rank-X, '+ vm.ranking + ', '+ $rootScope.cCategory.question,
+                    //          }
+                    //     }); 
+                    //     break;
+                    // }
+                    // case 'messenger':{
+                    //     if ($rootScope.DEBUG_MODE) console.log(x);
+                    //     Socialshare.share({
+                    //         'provider': 'facebook-messenger',
+                    //         'attrs': {
+                    //             'socialshareUrl': vm.linkurl,
+                    //          }
+                    //     }); 
+                    //     break;
+                    // }
+                    // case 'sms':{
+                    //     if ($rootScope.DEBUG_MODE) console.log(x);
+                    //     Socialshare.share({
+                    //         'provider': 'sms',
+                    //         'attrs': {
+                    //             'socialshareUrl': vm.linkurl,
+                    //             'socialshareText': 'Rank-X, '+ vm.ranking + ', '+ $rootScope.cCategory.question,
+                    //          }
+                    //     }); 
+                    //     break;
+                    // }
                 } 
             }
     }

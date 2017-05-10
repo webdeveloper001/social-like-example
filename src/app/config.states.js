@@ -241,11 +241,11 @@
                 }
             },  
           {
-                name: 'myfavs',
+                name: 'favs',
                 parent: 'layout',
-                url: '/myfavs',
-                templateUrl: 'app/layout/Partials/myfavs.html',
-                controller: 'myfavs as vm'
+                url: '/favs',
+                templateUrl: 'app/layout/Partials/favs.html',
+                controller: 'favs as ctrl'
           }
         ];
 

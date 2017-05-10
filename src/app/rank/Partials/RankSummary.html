@@ -170,12 +170,12 @@
         </thead>
         <tbody>
             <!--| orderBy: '-Rank' -->
-            <tr ng-repeat="x in vm.answers track by $index" ng-click="vm.answerDetail(x)">
+            <tr ng-repeat="x in vm.answers track by $index" ng-click="vm.answerDetail(x)" >
                 <td>{{vm.showR ? x.Rank : x.upV}}</td>
                 <td ng-show="{{!vm.sm && !vm.fnm && !vm.isE}}">{{x.upV}}</td>
                 <!--<td>{{x.Rank}}</td>-->
                 <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
-                <td ng-repeat="h in vm.fields | filter:{isrequired:true}">{{ x[h.name]}}</td> 
+                <td ng-repeat="h in vm.fields | filter:{isrequired:true}" ><a style="text-decoration: none;" href="{{'/answerDetail/' + x.slug }}">{{ x[h.name]}}</a></td> 
                 <!-- style="background-color:{{x.bc}};color:{{x.fc}}"> -->
                 <td ng-show="{{vm.type == 'Establishment' && vm.haveLocation}}">{{x.dist}}</td>
                 <td ng-show="{{vm.type == 'Event'}}">{{x.date}}</td>

@@ -23,7 +23,7 @@
 			<bg-box bc="{{rdbc}}" shade="{{shade}}" fc="{{rdfc}}" text="{{rankOfDay}}" dir="horizontal" w="100%" h="{{sm ? '150px':'200px'}}"></bg-box>
 			</div>
 		<div class="col-xs-6 col-sm-6 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!isShortPhrase">
-			<img ng-src="{{image1}}" style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
+			<img ng-src="{{image1}}" style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};" >
 		</div>
 		<div class="hidden-xs hidden-sm col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!isShortPhrase">
 			<img ng-src="{{image2}}" style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
@@ -81,8 +81,8 @@
 				<div class="row" style="width:100%;border:0px;padding:0px;margin:0px;">
 					<div ng-repeat="x in resultsTop" style="border:0px;padding:0px;margin:0px;">
 						<div class="clearfix" ng-if="$index % 3 == 0" style="border:0px;padding:0px;margin:0px;"></div>
-						<div class="col-xs-4" ng-click="rankSel(x,false)" style="cursor:pointer;border:0px;padding:0px;margin:0px;">
-							<img ng-src="{{x.image1url}}" style="width:100%;height:{{thumbheight}};" ng-if="!x.isShortPhrase">
+						<div class="col-xs-4" ng-click="rankSel(x,false)" style="cursor:pointer;border:0px;padding:0px;margin:0px;" href="{{'/rankSummary/' + x.slug}}">
+							<a  href="{{'/rankSummary/' + x.slug}}"><img ng-src="{{x.image1url}}" style="width:100%;height:{{thumbheight}};" ng-if="!x.isShortPhrase" alt="{{x.titlex}}"></a>
 							<div style="width:100%;height:{{thumbheight}};background-color:darkgrey;color:black;position:relative;" ng-if="x.isShortPhrase">
 								</br>
 								<p style="text-align:center;position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
@@ -96,7 +96,7 @@
 		</tr>
 		<tr ng-repeat="x in results | limitTo:maxRes" ng-click="rankSel(x,false)" style="cursor:pointer;">
 			<td style="width:50%;">
-				<a href="{{'/rankSummary/' + x.id}}" >
+				<a href="{{'/rankSummary/' + x.slug}}" ng-click="rankSel(x,false)" >
 					{{x.title}}
 					<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;{{x.answers}}&nbspanswers-{{x.views}}&nbspviews</small>
 				</a>
