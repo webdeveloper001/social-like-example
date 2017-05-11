@@ -19,14 +19,14 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
             scope.rankSel = function (x,nm) {
                 if (nm) $rootScope.rankIsNearMe = true;
                 else $rootScope.rankIsNearMe = false;
-                if ($rootScope.editMode) $state.go('editRanking', { index: x.id });
+                if ($rootScope.editMode) $state.go('editRanking', { index: x.slug });
                 else {
-                    $state.go('rankSummary', { index: x.id });
+                    $state.go('rankSummary', { index: x.slug });
                 }
             };
             scope.ansSel = function (x) {
                 $rootScope.cCategory = undefined;
-                $state.go('answerDetail', { index: x.id });                
+                $state.go('answerDetail', { index: x.slug });                
             };
 
             scope.resRanks = [];

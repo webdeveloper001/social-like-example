@@ -1,19 +1,4 @@
-
-<div class="input-group" style="width:100%" ng-if="vm.isAdmin">
-	<!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
-	<div class="text-center" style="display:{{vm.isAdmin ? 'inline':'none'}}">
-		<div class="btn-group col-sm-6 col-md-6">
-			<button class="btn btn-primary {{vm.selEditRank}} " ng-click="vm.editRank() ">Edit Mode</button>
-			<button class="btn btn-primary {{vm.selViewRank}} " ng-click="vm.viewRank() ">View Mode</button>
-		</div>
-		<button class="btn btn-danger" ng-click="vm.applyRule() ">apply Rule</button>
-	</div>
-	<br style="display:{{vm.isAdmin ? 'inline':'none'}}">
-	<br style="display:{{vm.isAdmin ? 'inline':'none'}}">
-	<br style="display:{{vm.isAdmin ? 'inline':'none'}}">
-</div>
-
- <!-- <div class="row" ng-if="!vm.fbm" style="border:0px;margin:0px;padding:0px"> 
+<!-- <div class="row" ng-if="!vm.fbm" style="border:0px;margin:0px;padding:0px"> 
 	<div class="col-sm-12 col-md-8" style="display:{{(vm.isNhRdy || vm.isCity) ? 'inline':'none'}}"> -->
 <!--
 <div ng-if="!vm.fbm">
@@ -203,7 +188,6 @@
 	-->
 	
 </div>
-
 <div ng-if="vm.fbm">
 	<div class="well-small" style="background-color:#d9d9d9;color:#24478f; padding:5px;">
 		<P>Thanks for visiting Rank-X. You can use the ranks below to give us feedback and suggestions or 

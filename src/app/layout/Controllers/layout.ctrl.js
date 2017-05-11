@@ -42,6 +42,11 @@
         vm.hideSearch = hideSearch;
         vm.gotoHome = gotoHome;
         vm.goAddRank = goAddRank;
+
+        //Admin Methods
+        vm.editRank = editRank;
+        vm.viewRank = viewRank;
+        vm.applyRule = applyRule;
         
         vm.goPrivacyPolicy = goPrivacyPolicy;
         vm.goRankofDayConsole = goRankofDayConsole;
@@ -98,6 +103,20 @@
         activate();
 
         function activate() {
+
+            //****TEMP CODE, ENable for Admin Functions*****************
+            $rootScope.isAdmin = false;
+            vm.isAdmin = false;
+            /*
+            $rootScope.isLoggedIn = true;
+            $rootScope.user = {};
+            $rootScope.user.name = "Andres Moctezuma";
+            $rootScope.user.first_name = 'Andres';
+            $rootScope.user.last_name = 'Moctezuma';
+            $rootScope.user.id = "10104518570729893";
+            userdata.loadUserData();        //load user data (votes and activities)
+            userdata.loadUserAccount();     //load user business account
+            //**********************End of Temp Code */
 
             $rootScope.DEBUG_MODE = DEBUG_MODE;
             $rootScope.EMPTY_IMAGE = EMPTY_IMAGE;    
@@ -255,23 +274,27 @@
             $state.go('addCustomRank');
         }
 
-        /*
-        function searchRank() {
-            $rootScope.sval = vm.val;
-            $rootScope.$emit('searchRank');
+         //*****************Admin Functions************
+        function editRank() {
+            $rootScope.editMode = true;
+            vm.selEditRank = 'active';
+            vm.selViewRank = '';
+            console.log("$rootScope.editMode -- ", $rootScope.editMode);
+
         }
-        */
-        /**
-         * Set selected city
-         * Now you can use $rootScope.selectCity variable anywhere to load city specific data.
-         * i.e if you want to load ranks from particular city having table rank-la.
-         * so you will get la from $rootScope.selectCity.code
-         * @param city
-         */
+        function viewRank() {
+            $rootScope.editMode = false;
+            vm.selEditRank = '';
+            vm.selViewRank = 'active';
+            //console.log("mode -- ", editMode);
+        }
+        function applyRule() {          
+            $rootScope.$emit('applyRule');
+        }
+/*
         $rootScope.selectCity = function (city) {
             $rootScope.selectedCity = city;
             window.localStorage.selectedCity = JSON.stringify($rootScope.selectedCity);
-            //closeModal("#selectCityModal");
-        }
+        }*/
     }
 })();

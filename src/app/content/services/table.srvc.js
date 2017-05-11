@@ -152,11 +152,16 @@
                 tablex.id = result.data.resource[0].id;
                 _tables.push(tablex);
 
-                //update slug tag
-                var slug = result.data.resource[0].title.toLowerCase(); 
+                //push to search String array
+                var searchStr = tablex.tags + " " + tablex.title;
+                $rootScope.searchStr.push(searchStr);
+
+                //update slug tag and featured image
+                var slug = tablex.title.toLowerCase(); 
                 slug = slug.replace(/ /g,'-');
                 slug = slug + '-' + result.data.resource[0].id;
-                update(result.data.resource[0].id,['slug'],[slug]);
+                var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/'+slug+'.jpg';
+                update(result.data.resource[0].id,['slug','fimage'],[slug,fimage]);
 
                 if ($rootScope.DEBUG_MODE) console.log("result", result);
                 return result.data;
@@ -185,6 +190,17 @@
                 var tablex = table;
                 tablex.id = result.data.resource[0].id;
                 _tables.push(tablex);
+
+                //push to search String array
+                var searchStr = tablex.tags + " " + tablex.title;
+                $rootScope.searchStr.push(searchStr);
+
+                //update slug tag and featured image
+                var slug = tablex.title.toLowerCase(); 
+                slug = slug.replace(/ /g,'-');
+                slug = slug + '-' + result.data.resource[0].id;
+                var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/'+slug+'.jpg';
+                update(result.data.resource[0].id,['slug','fimage'],[slug,fimage]);
 
                 //update answer
                 var obj = {};

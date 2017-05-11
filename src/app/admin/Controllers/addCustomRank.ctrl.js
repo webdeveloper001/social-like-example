@@ -148,6 +148,7 @@
                 item.fc = vm.fc;
                 item.shade = vm.shade;
                 item.keywords = '';
+                item.fimage = vm.image;
             
                 table.addTable(item).then(function(result){
                     if ($rootScope.DEBUG_MODE) console.log("table added --- ", result);

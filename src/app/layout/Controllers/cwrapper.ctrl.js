@@ -26,11 +26,6 @@
         
         if ($rootScope.hidelogo == undefined) vm.hidelogo = false;
         else vm.hidelogo = $rootScope.hidelogo;
-        
-        //Admin Functions
-        vm.viewRank = viewRank;
-        vm.editRank = editRank;
-        vm.applyRule = applyRule;
           
         //Quick Links 
         vm.foodNearMe = foodNearMe;
@@ -103,10 +98,6 @@
             
             vm.nhs = $rootScope.neighborhoods.concat($rootScope.districts);
             vm.searchActive = $rootScope.searchActive ? $rootScope.searchActive: false;
-            vm.isAdmin = $rootScope.isAdmin;
-
-            vm.selEditRank = $rootScope.editMode ? 'active' : 'none';
-            vm.selViewRank = $rootScope.editMode ? 'none' : 'active';
             
             //$rootScope.includeNearMe = false;
             $rootScope.cCategory = undefined;
@@ -130,32 +121,6 @@
 
             if ($rootScope.DEBUG_MODE) console.log("init cwrapper!");
                 
-            //****SUPER TEMP*****************
-            $rootScope.isAdmin = false;
-            vm.isAdmin = false;
-            /*
-            $rootScope.isLoggedIn = true;
-            $rootScope.user = {};
-            $rootScope.user.name = "Andres Moctezuma";
-            $rootScope.user.first_name = 'Andres';
-            $rootScope.user.last_name = 'Moctezuma';
-            $rootScope.user.id = "10104518570729893";
-            userdata.loadUserData();        //load user data (votes and activities)
-            userdata.loadUserAccount();     //load user business account
-            //$rootScope.answeridxgps = 1258; //starting indx for gps conversion
-               /*        
-            if ($rootScope.isLoggedIn && $rootScope.user.name == "Andres Moctezuma" && $rootScope.user.id == 12) {
-                $rootScope.isAdmin = true;
-                vm.isAdmin = true;
-            }
-            viewRank();
-                */
-            //******************************
-
-            //Load current category
-            //$rootScope.content = {};
-            //vm.isBasic = $rootScope.isBasic;
-            
             $rootScope.inputVal = '';
             
             switchScope(1); //Default view is basic query view
@@ -284,23 +249,6 @@
         
         function events(){
              $state.go('rankSummary', { index: 6949 });
-        }
-        //*****************Admin Functions************
-        function editRank() {
-            $rootScope.editMode = true;
-            vm.selEditRank = 'active';
-            vm.selViewRank = '';
-            //console.log("mode -- ", editMode);
-
-        }
-        function viewRank() {
-            $rootScope.editMode = false;
-            vm.selEditRank = '';
-            vm.selViewRank = 'active';
-            //console.log("mode -- ", editMode);
-        }
-        function applyRule() {          
-            $rootScope.$emit('applyRule');
         }
            
         function getFeed(){
