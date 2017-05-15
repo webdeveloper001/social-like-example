@@ -31,16 +31,14 @@
         vm.foodNearMe = foodNearMe;
         vm.events = events;
         vm.selfimprove = selfimprove;
-        vm.refreshFeed = refreshFeed;
         
         //Methods
         vm.selnh = selnh;
         vm.goHome = goHome;
         vm.gotoAnswer = gotoAnswer;
         vm.gotoRank = gotoRank;
-        vm.seeMoreFeed = seeMoreFeed;
-        vm.fres = 4;
-        vm.ftext = 'see more';
+        //vm.fres = 4;
+        //vm.ftext = 'see more';
         
         //vm.isAdmin = true;
         $rootScope.editMode = false;
@@ -81,7 +79,7 @@
             
             $rootScope.inFavMode = false;
             
-            getFeed();
+            //getFeed();
             if ($rootScope.DEBUG_MODE) console.log("activate cwrapper!");
             vm.isNh = $rootScope.isNh;
             
@@ -104,15 +102,6 @@
             
             vm.val = $rootScope.inputVal; //remember user query
             
-            var bgc = '#595959';
-            var bgc2 = color.shadeColor(bgc, 0.5);
-            vm.headerStyle = 'color:#f8f8ff;width:50%;border-style:none;'+
-                       'background:'+bgc+';'+
-  					   'background: -webkit-linear-gradient(left,'+bgc+','+bgc2+');'+
-  					   'background: -o-linear-gradient(right,'+bgc+','+bgc2+');'+
-  					   'background: -moz-linear-gradient(right,'+bgc+', '+bgc2+');'+
-  					   'background: linear-gradient(to right,'+bgc+', '+bgc2+');';  
-
             window.prerenderReady = true;   
             
                     
@@ -251,42 +240,6 @@
              $state.go('rankSummary', { index: 6949 });
         }
            
-        function getFeed(){
-            // vm.feeds = angular.copy($rootScope.uafs);
-            vm.feeds = [];
-            $q.all($rootScope.uafs.map(function(feed){ return fbusers.getFBUserById(feed.userid); }))
-            .then(function (fbUsers){
-                for (var i = 0; i < $rootScope.uafs.length; i++) {
-                    var userWithPic = angular.copy($rootScope.uafs[i]);
-                    userWithPic.picture = fbUsers[i] ? fbUsers[i].picture.data.url : null;
-                    vm.feeds[i] = userWithPic;
-                }
-            });
-            vm.fres = 4;
-            vm.ftext = 'see more';
-            //console.log("vm.feeds - ", vm.feeds);
-        }
-        
-        function seeMoreFeed(){
-            if (vm.fres == 4){
-                vm.fres = 20;
-                vm.ftext = 'see less';
-                return;
-            }
-            if (vm.fres == 20){
-                vm.fres = 4;
-                vm.ftext = 'see more';
-                return;
-            }            
-        }
-        
-        function refreshFeed(){
-            console.log("refreshFeed");
-            uaf.getactions().then(function(response){
-                $rootScope.uafs = response;
-                getFeed();
-            });
-        }
         function goHome(){
             //$rootScope.$emit('quitFeedbackMode');
             $rootScope.inputVal = '';

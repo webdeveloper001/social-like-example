@@ -153,6 +153,11 @@
                 table.addTable(item).then(function(result){
                     if ($rootScope.DEBUG_MODE) console.log("table added --- ", result);
                     var rankid = result.resource[0].id;
+                    //Create and update slug
+                    var slug = item.title.toLowerCase();; 
+                    slug = slug.replace(/ /g,'-');
+                    slug = slug + '-' + rankid;
+                    table.update(rankid,['slug'],[slug]);
                     processImage(rankid);
                 });
             }

@@ -1,0 +1,29 @@
+<div class="container" style="padding-bottom:10px">
+    <!-- Basic Layout -->
+    <div class="row" ng-click="rankSel(resultsTop[0],false)" ng-if="isBasic">
+        <div class="container-bgbox col-xs-6 col-sm-3 col-md-3 col-lg-2">
+            <bg-box2 bc="{{bc}}" shade="{{shade}}" fc="{{fc}}" text="{{title}}" dir="horizontal" 
+            w="100%" h="{{sm ? '150':'200'}}" stats="{{stats}}"></bg-box>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin:0px;padding:0px;border:0px;" ng-if="!isShortPhrase">
+            <img ng-src="{{image1}}" style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
+        </div>
+    </div>
+
+    <!-- Grid4 Layout -->
+    <div class="row" ng-click="rankSel(resultsTop[0],false)" ng-if="isGrid4">
+        <div class="container-bgbox col-xs-6 col-sm-6 col-md-3 col-lg-3">
+            <bg-box bc="{{bc}}" shade="{{shade}}" fc="{{fc}}" text="{{title}}" dir="horizontal" w="100%" h="{{sm ? '150':'200'}}"></bg-box>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3" style="margin:0px;padding-right:15px;border:0px;">
+            <div class="row">
+                    <img ng-src="{{image1}}" style="width:{{w4}}px;height:75px;margin:0px;padding:0px;border:0px;">
+                    <img ng-src="{{image2}}" style="width:{{w4}}px;height:75px;margin:0px;padding:0px;border:0px;">
+            </div>
+            <div class="row">
+                    <img ng-src="{{image3}}" style="width:{{w4}}px;height:75px;margin:0px;padding:0px;border:0px;">
+                    <img ng-src="{{image4}}" style="width:{{w4}}px;height:75px;margin:0px;padding:0px;border:0px;">
+            </div>
+        </div>
+    </div>
+</div>
