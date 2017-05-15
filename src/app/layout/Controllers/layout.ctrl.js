@@ -114,8 +114,6 @@
             $rootScope.user.first_name = 'Andres';
             $rootScope.user.last_name = 'Moctezuma';
             $rootScope.user.id = "10104518570729893";
-            userdata.loadUserData();        //load user data (votes and activities)
-            userdata.loadUserAccount();     //load user business account
             //**********************End of Temp Code */
 
             $rootScope.DEBUG_MODE = DEBUG_MODE;
@@ -130,6 +128,12 @@
                 //vm.nh = 'hang in there';
                 loadData();
                 //if (!tourviewed && !$rootScope.isLoggedIn) dialog.tour();
+            }
+
+            //If user is logged in, get data of this user
+            if ($rootScope.isLoggedIn){
+                 userdata.loadUserData();        //load user data (votes and activities)
+                userdata.loadUserAccount();     //load user business account
             }
 
             //Determine if user is using Facebook browser

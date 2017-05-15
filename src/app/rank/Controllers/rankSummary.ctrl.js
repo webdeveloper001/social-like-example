@@ -310,9 +310,9 @@
                 //console.log("colors - ", colors);
                 vm.bc = colors[0];
                 vm.fc = colors[1];
-                vm.shade = 4;
+                vm.shade = -4;
             } 
-
+            
             //Sorting rules
             if ($rootScope.DEBUG_MODE) console.log("foodNearMe, ",foodNearMe);
             if ($rootScope.DEBUG_MODE) console.log("rankIsNearMe, ",rankIsNearMe);
