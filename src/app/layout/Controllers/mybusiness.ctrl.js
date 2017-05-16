@@ -5,10 +5,20 @@
         .module('app')
         .controller('mybusiness', mybusiness);
 
-    mybusiness.$inject = ['$location', '$rootScope', '$state', '$window','useraccnt','dialog','answer','$http','promoter'];
+    mybusiness.$inject = ['$location', '$rootScope', '$state', '$window','useraccnt','dialog','answer','$http','promoter', 'SERVER_URL'];
 
-    function mybusiness(location, $rootScope, $state, $window, useraccnt, dialog, answer, $http, promoter) {
+    function mybusiness(location, $rootScope, $state, $window, useraccnt, dialog, answer, $http, promoter, SERVER_URL) {
         /* jshint validthis:true */
+        if($window.location.href.indexOf('cardUpdate') !== -1) {
+            var isSuccess =  $window.location.href.slice($window.location.href.indexOf('cardUpdate')).split('=')[1].split('&')[0];
+            if(isSuccess == 'success'){
+                $window.alert("Successfully changed card details.");
+            } else {
+                $window.alert($window.location.href.slice($window.location.href.indexOf('messgage')).split('=')[1].split('&')[0]);
+            }
+        }
+
+          
         var vm = this;
         vm.title = 'mybusiness';
 
@@ -18,6 +28,10 @@
         vm.getRanks = false;
         vm.getPremium = false;
         vm.dataReady = false;
+        vm.showInvoices = false;
+        vm.showPaymentInfo = false;
+        
+        vm.SERVER_URL = SERVER_URL;
 
         //Methods
         vm.gotoanswer = gotoanswer;
@@ -34,7 +48,10 @@
         vm.editRanks = editRanks;
         vm.cancelAll = cancelAll;
         vm.editContact = editContact;
-        
+        vm.showInvoicsClicked = showInvoicsClicked;
+        vm.showPaymentInfoEditClicked = showPaymentInfoEditClicked;
+        vm.changeCardNumber = changeCardNumber;
+        vm.GetFormattedDate = GetFormattedDate;
         vm.mybizs = [];
         activate();
         vm.noAns = false;
@@ -47,8 +64,10 @@
         var labels = [];
         var vals = [];
 
+        function changeCardNumber(){
+            $state.go('mybusiness', {}, {reload: true})
+        }
         function activate() {
-
             useraccnt.getuseraccnt().then(function(result){
                 $rootScope.useraccnts = result;
                 vm.dataReady = true;
@@ -91,17 +110,19 @@
                             bizObj.user = $rootScope.useraccnts[j].user;
                             bizObj.firstname = $rootScope.user.first_name;
                             bizObj.lastname = $rootScope.user.last_name;
-                                
-                                if (bizObj.isPremium) {
-                                    bizObj.status = 'Premium'; bizObj.style = 'background-color:#009900';
-                                }
-                                else {bizObj.status = 'Basic'; bizObj.style = 'background-color:#bfbfbf';}
 
-                                if (bizObj.hasRanks) {
-                                    bizObj.status2 = bizObj.ranksQty + ' Custom Ranks';
-                                     bizObj.style2 = 'background-color:#009900';
-                                }
-                                else {bizObj.status2 = 'No Custom Ranks'; bizObj.style2 = 'background-color:#bfbfbf';}
+                            bizObj.promocode = $rootScope.useraccnts[j].promocode;
+                                
+                            if (bizObj.isPremium) {
+                                bizObj.status = 'Premium'; bizObj.style = 'background-color:#009900';
+                            }
+                            else {bizObj.status = 'Basic'; bizObj.style = 'background-color:#bfbfbf';}
+
+                            if (bizObj.hasRanks) {
+                                bizObj.status2 = bizObj.ranksQty + ' Custom Ranks';
+                                    bizObj.style2 = 'background-color:#009900';
+                            }
+                            else {bizObj.status2 = 'No Custom Ranks'; bizObj.style2 = 'background-color:#bfbfbf';}
 
                             //get monthly price
                             for (var k=0; k<$rootScope.codeprices.length; k++){
@@ -115,7 +136,11 @@
                         }                        
                     }
                     if (!accntExists) useraccnt.adduseraccnt($rootScope.answers[i]);
-                    vm.mybizs.push(bizObj);               
+                    bizObj.loadingInvoices = true;
+                    bizObj.invoices = [];
+                    loadInvoicesAndCustomer(bizObj);
+                    loadPromoter(bizObj);
+                    vm.mybizs.push(bizObj);     
                 }
             }
   
@@ -123,11 +148,70 @@
             if (vm.mybizs.length == 0) vm.noAns = true;           
         }
 
+        function showInvoicsClicked(){
+            vm.showInvoices = !vm.showInvoices;
+        }
+        function showPaymentInfoEditClicked(){
+            vm.showPaymentInfo = !vm.showPaymentInfo;
+        }
+        function GetFormattedDate(date) {
+            var month = format(date.getMonth() + 1);
+            var day = format(date.getDate());
+            var year = format(date.getFullYear());
+            return month + "/" + day + "/" + year;
+        }
+        function loadPromoter(biz){
+            if(biz.promocode){
+                promoter.getbyCode(biz.promocode)
+                .then(function(promoterObj){
+                    if(promoterObj.length >= 1)
+                        biz.promoterObj = promoterObj[0];
+            
+                })
+            } else {
+                biz.promoterObj = undefined;
+            }
+        }
+        function loadInvoicesAndCustomer(biz){
+            if([undefined, '', '0'].indexOf(biz.stripeid) === -1){
+                useraccnt.getuseraccntInvoicesAndCustomer(biz.stripeid).then(function(result){
+                    
+                    var invoices = angular.copy(result.invoices);
+                    biz.invoices = invoices.data.map(function(invoice){
+                        invoice.period_end = new Date(invoice.period_end * 1000);
+                        invoice.date = moment(invoice.date * 1000).format('YYYY-MM-DD');
+                        invoice.period_start = new Date(invoice.period_start * 1000);
+                        
+                        if (invoice.discount) {
+                            if(Date.now() > invoice.discount.end * 1000)
+                                invoice.discountMsg = "Trial Ended";
+                            else    
+                                invoice.discountMsg = "Trial " + Math.ceil(moment.duration(invoice.discount.end * 1000- Date.now()).asDays()) + ' Days left';
+                        } else {
+                            invoice.discountMsg = 'No Discount';
+                        }
+                        return invoice;
+                    });
+                    biz.customer = result.customer;
+                    biz.loadingInvoices = false;
+                }).catch(function(err){
+                    biz.invoices = [];
+                    console.log("Error getting Stripe Invoices - ", err);
+                })
+
+            } else {
+
+            }
+        }
+
         function gotoanswer(x){
-            $state.go('answerDetail', {index: x.id});
+            $state.go('answerDetail', {index: x.slug});
         }
 
         function gotomanage(x){
+            vm.showInvoices = false;
+            vm.showPaymentInfo = false;
+            
             vm.codeMsg = 'Enter a code and validate it using the \'Check code\' button';
             vm.promocode = '';
             //$state.go('mybiz');
@@ -159,9 +243,9 @@
             }
 
             if ($rootScope.previousState == 'rankSummary')
-                    $state.go('rankSummary', {index: $rootScope.cCategory.id});
+                    $state.go('rankSummary', {index: $rootScope.cCategory.slug});
             else if ($rootScope.previousState == 'answerDetail')
-                    $state.go('answerDetail', {index: $rootScope.canswer.id});
+                    $state.go('answerDetail', {index: $rootScope.canswer.slug});
             else if ($rootScope.previousState == 'addAnswer')
                     $state.go('addAnswer', {index: $rootScope.canswer.id});
             else if ($rootScope.previousState == 'editAnswer')
@@ -177,9 +261,16 @@
 
         function exec_unbind(){
             answer.updateAnswer(vm.business.id,['owner'],[0]);
-            vm.mybizs = [];
-            loadData();
-            vm.overview = true;
+            useraccnt.deleteAccount(vm.business.stripeid)
+            .then(function(res){
+                vm.mybizs = [];
+                loadData();
+                vm.overview = true;
+                vm.manageview = false;
+            })
+            .catch(function(err){
+                console.log(err);
+            });
         }
 
         function plusQty(){
@@ -251,7 +342,7 @@
         }
 
         function execCancel(){
-            var url = 'https://server.rank-x.com/StripeServer/cancel';
+            var url = SERVER_URL + 'StripeServer/cancel';
             var req = {
                 method: 'POST',
                 url: url,
@@ -319,7 +410,7 @@
                 var updatedNumRanks = 0;
                 if (action == 'purchase') updatedNumRanks = vm.business.ranksQty + N;
                 if (action == 'cancel') updatedNumRanks = vm.business.ranksQty - N;
-                var url = 'https://server.rank-x.com/StripeServer/edit';
+                var url = SERVER_URL + 'StripeServer/edit';
                 var req = {
                     method: 'POST',
                     url: url,

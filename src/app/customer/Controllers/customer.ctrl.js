@@ -27,8 +27,8 @@
         $rootScope.cust.id = 1;
         //**********************************************************************           
 
-       activate();
-
+        activate();
+        //utiat228
         function activate() {            
 
             //Load answers for this customer

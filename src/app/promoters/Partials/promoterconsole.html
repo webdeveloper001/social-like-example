@@ -15,6 +15,10 @@
 		<h3>Promoter Console</h3>
 		<div ng-if="vm.userIsPromoter">
 			<h4 align="center" style="background-color:#b3b3b3;padding:5px">Account Information</h4>
+			<div ng-if="!vm.promoter.stripeid" style="padding: 10px;background-color: indianred;border-radius: 10px;text-align: center;margin-bottom:10px">
+				You should link your stripe account to get payed.
+				<a class="btn btn-primary" ng-click="vm.connectStripe()">Connect with Stripe</a>
+			</div>
 			<p class="text-left"><strong>First Name:</strong>&nbsp{{vm.promoter.firstname}}</p>
 			<p class="text-left"><strong>Last Name:</strong>&nbsp{{vm.promoter.lastname}}</p>
 			<p class="text-left"><strong>Email:</strong>&nbsp{{vm.promoter.email}}</p>
@@ -32,17 +36,54 @@
 					<thead style="border-style:none;">
 						<tr>
 							<th>Business</th>
+							<th>Total Commission After Trial</th>
 							<th>Status</th>
 						</tr>
 					</thead>
 					<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
 					<tr ng-repeat="x in vm.myaccnts" style="cursor:pointer;">
 						<td ng-click="vm.gotoanswer(x)">{{x.name}}</td>
+						<td ng-click="vm.gotomanage(x)">${{x.totalCommission}}</td>
 						<td align="middle" style="{{x.style}}" ng-click="vm.gotomanage(x)">{{x.status}}</td>
 					</tr>
 				</tbody>
 			</table>
-
+			<div ng-if="vm.manageview">
+				<p class="text-left"><strong>Owner Name:</strong>&nbsp{{vm.business.answerObj.name}}</p>
+				<p class="text-left"><strong>Owner Name:</strong>&nbsp{{vm.business.username}}</p>
+				<p class="text-left"><strong>Last Name:</strong>&nbsp{{vm.promoter.lastname}}</p>
+				<p class="text-left"><strong>Status:</strong><span align="middle" style="{{x.style}}" >{{x.business.status}}</span></p>
+				<p class="text-left"> 
+					<table class="table"  ng-if="vm.business.status=='Active'">
+						<tbody>
+							<thead style="border-style:none;">
+								<tr>
+									<th style="width:45%" text-align="center">Subscription</th>
+									<th style="width:15%" text-align="center">Commission</th>
+								</tr>
+							</thead>
+							<tr ng-if="vm.business.ispremium" style="cursor:pointer;">
+								<td style="width:45%">Premium Membership</td>
+								<td style="width:15%">${{vm.business.price*vm.STRIPE_COMMISSION_PERCENTAGE}}</td>
+							</tr>
+							<tr ng-if="vm.business.hasranks" style="cursor:pointer;">
+								<td style="width:45%">{{vm.business.ranksqty}} Custom Ranks</td>
+								<td style="width:15%">${{vm.business.ranksqty*35*vm.STRIPE_COMMISSION_PERCENTAGE}}</td>
+							</tr>
+							<tr>
+								<td style="width:45%">Total</td>
+								<td style="width:15%; background-color: darkgray;">${{vm.business.totalCommission}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</p>
+				<p class="text-left" ng-if="vm.business.status.indexOf('On Trial') != -1">
+					Will be active from {{vm.business.discountEndDate}}.
+				</p>
+				<p class="text-left"><strong>Address:</strong>&nbsp{{vm.promoter.address}}</p>
+				<p class="text-left"><strong>Phone Number:</strong>&nbsp{{vm.promoter.phone}}</p>
+				<p class="text-left"><strong>Promoter Code:</strong>&nbsp{{vm.promoter.code}}</p>
+			</div>
 			<div ng-if="vm.noAns">
 				</br>
 				<p>No businesses have signed up using your promoter code. For tips and suggestions on how to get businesses to sign up using

@@ -130,8 +130,7 @@
             if ($rootScope.DEBUG_MODE) console.log("init cwrapper!");
                 
             //****SUPER TEMP*****************
-            $rootScope.isAdmin = false;
-            vm.isAdmin = false;
+            vm.isAdmin = $rootScope.isAdmin;
             /*
             $rootScope.isLoggedIn = true;
             $rootScope.user = {};

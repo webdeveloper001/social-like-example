@@ -20,6 +20,9 @@
             if ($rootScope.user) {
                 $rootScope.isLoggedIn = true;
             }
+            if ($rootScope.user.is_sys_admin){
+                $rootScope.isAdmin = true;
+            }
         } catch (e) { };
     }])
 

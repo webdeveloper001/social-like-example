@@ -5,11 +5,19 @@
         .module('app')
         .controller('promoterconsole', promoterconsole);
 
-    promoterconsole.$inject = ['$location', '$rootScope', '$state', '$window', 'useraccnt', 'dialog', 'promoter'];
+    promoterconsole.$inject = ['$location', '$rootScope', '$state', '$window', 'useraccnt', 'dialog', 'promoter', '$location', 'STRIPE_CLIENT_ID', 'setting'];
 
-    function promoterconsole(location, $rootScope, $state, $window, useraccnt, dialog, promoter) {
+    function promoterconsole(location, $rootScope, $state, $window, useraccnt, dialog, promoter, $location, STRIPE_CLIENT_ID, setting) {
         /* jshint validthis:true */
         var vm = this;
+        if($window.location.href.indexOf('connectStripe') !== -1) {
+            var isSuccess =  $window.location.href.slice($window.location.href.indexOf('connectStripe')).split('=')[1].split('&')[0];
+            if(isSuccess == 'success'){
+                $window.alert("Successfully connected to Stripe Account.");
+            } else {
+                $window.alert($window.location.href.slice($window.location.href.indexOf('message')).split('=')[1].split('&')[0]);
+            }
+        }
 
         var fields = [];
         var labels = [];
@@ -18,7 +26,8 @@
         vm.title = 'promoterconsole';
 
         vm.overview = true;
-
+        vm.manageview = true;
+        vm.STRIPE_COMMISSION_PERCENTAGE = $rootScope.setting ? $rootScope.setting.STRIPE_COMMISSION_PERCENTAGE : 0.2;
         //Methods
         vm.gotoanswer = gotoanswer;
         vm.gotomanage = gotomanage;
@@ -26,9 +35,10 @@
         vm.goBack = goBack;
         vm.goEdit = goEdit;
         vm.goSignup = goSignup;
+        vm.connectStripe = connectStripe;
         vm.myaccnts = [];
         vm.noAns = false;
-
+        vm.manageview = false;
         vm.dataReady = false;
         var promoterdataok = false;
 
@@ -39,6 +49,11 @@
                  $rootScope.userpromoter = result;
                  activate();
             });
+        }
+
+        function connectStripe(){
+	        var igPopup = window.open('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=' + STRIPE_CLIENT_ID + '&scope=read_write&state=' + vm.promoter.id,'Stripe Connect', '_self');
+            
         }
 
         function activate() {
@@ -77,18 +92,39 @@
 
             if (!vm.dataReady && promoterdataok) {
                 useraccnt.getaccntsbycode($rootScope.userpromoter[0].code).then(function (result) {
-                    //vm.myaccnts = result;
+
                     console.log("resuls -", result);
 
                     for (var i = 0; i < result.length; i++) {
                         answerid = result[i].answer;
                         obj = {};
                         idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf(answerid);
-                        obj = result[i];
+                        obj = angular.copy(result[i])
                         obj.name = $rootScope.answers[idx].name;
+                        obj.answerObj = $rootScope.answers[idx];
                         if (obj.status == 'Basic') obj.style = 'background-color:#bfbfbf';
-                        if (obj.status == 'Premium-Free Trial') obj.style = 'background-color:#b3b300';
-                        if (obj.status == 'Premium-Active') obj.style = 'background-color:#009900';
+                        if (obj.istrial){
+                            obj.status = 'On Trial ' + Math.ceil(moment.duration(moment(obj.discountEndDate) - moment()).asDays()) + ' Days left';
+                            obj.style = 'background-color:#b3b300';
+                        } else {
+                            obj.status = 'Active';
+                            obj.style = 'background-color:#009900';
+                        } 
+
+                        //get monthly price
+                        for (var k=0; k<$rootScope.codeprices.length; k++){
+                            //console.log($rootScope.codeprices[k].code, bizObj.bizcat);
+                            if ($rootScope.codeprices[k].code == obj.bizcat){
+                                obj.price = $rootScope.codeprices[k].price;
+                                break;
+                            }
+                        }
+                        obj.totalCommission = 0;
+                        if(obj.ispremiumobj)
+                            obj.totalCommission += obj.ranksqty * 35 * vm.STRIPE_COMMISSION_PERCENTAGE;
+                        if(obj.hasranks)
+                            obj.totalCommission += obj.price*vm.STRIPE_COMMISSION_PERCENTAGE;
+
                         vm.myaccnts.push(obj);
                     }
                     if (vm.myaccnts.length > 0) vm.noAns = false;
@@ -103,7 +139,7 @@
 
 
         function gotoanswer(x) {
-            $state.go('answerDetail', { index: x.id });
+            $state.go('answerDetail', { index: x.slug });
         }
 
         function gotoPromotePage() {
@@ -112,15 +148,15 @@
 
         function gotomanage(x) {
             //$state.go('mybiz');
-            if (x.status == 'Basic') vm.isBasic = true;
-            else vm.isBasic = false;
+            vm.manageview = true;
             vm.business = x;
             vm.overview = false;
         }
 
         function goBack() {
-            if (vm.overview == false) {
+            if (vm.manageview == true) {
                 vm.overview = true;
+                vm.manageview = false;
                 return;
             }
 

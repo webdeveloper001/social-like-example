@@ -87,6 +87,13 @@
                 controller: 'foodRanks as vm'               
             },
             {
+                name: 'payment',
+                parent: 'admin',
+                url: '/payment',
+                templateUrl: 'app/admin/Partials/payment.html',
+                controller: 'payment as vm'               
+            },
+            {
                 name: 'rodconsole',
                 url: '/rodconsole',
                 views: {

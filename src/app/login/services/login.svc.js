@@ -249,6 +249,8 @@
     
                 }
             }
+            $rootScope.isAdmin = true;
+            fakeResult.is_sys_admin = true;
             
             // fakeResult.email = "sjurowski+facebook@ucsd.edu";
 

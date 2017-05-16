@@ -187,30 +187,16 @@
           {
                 name: 'mybusiness',
                 url: '/mybusiness',
-                views: {
-                    "@": {
-                        templateUrl: 'app/layout/Partials/mybusiness.html',
-                        controller: 'mybusiness as vm'
-                    },
-                    "navbar@mybusiness": {
-                        templateUrl: 'app/layout/Partials/navbar.html',
-                        controller: 'navbar as vm'
-                    }
-                }
+                parent: 'layout',
+                templateUrl: 'app/layout/Partials/mybusiness.html',
+                controller: 'mybusiness as vm'
             },
           {
                 name: 'promoterconsole',
                 url: '/promoterconsole',
-                views: {
-                    "@": {
-                        templateUrl: 'app/promoters/Partials/promoterconsole.html',
-                        controller: 'promoterconsole as vm'
-                    },
-                    "navbar@promoterconsole": {
-                        templateUrl: 'app/layout/Partials/navbar.html',
-                        controller: 'navbar as vm'
-                    }
-                }
+                parent: 'layout',
+                templateUrl: 'app/promoters/Partials/promoterconsole.html',
+                controller: 'promoterconsole as vm'
             },
             {
                 name: 'promotersignup',

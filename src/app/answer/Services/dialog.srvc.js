@@ -49,7 +49,8 @@
             enterPassword: enterPassword,
             endorse: endorse,
             chooseImgFromIgDlg: chooseImgFromIgDlg,
-            showAllFriendsListDlg: showAllFriendsListDlg
+            showAllFriendsListDlg: showAllFriendsListDlg,
+            showBusinessDetailDlg: showBusinessDetailDlg
         };
         return service;
 
@@ -2178,6 +2179,76 @@
                 type: BootstrapDialog.TYPE_PRIMARY,
                 cssClass: 'fav-list-user-image-dialog',
                 title: "My Friends that like " + answername,
+                message: function (dialogRef) {
+                    var $content = $(imageListHtml);
+                    var x = dialogRef;
+
+                    return $content;
+                },
+
+                buttons: [{
+                    label: 'Close',
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    },
+                }],
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: "OK",
+                btnOKLabel: "Close",
+                btnOKClass: 'btn-success',
+                btnCancelClass: 'btn-warning',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+
+            });
+        }
+
+
+        function showBusinessDetailDlg(x, STRIPE_COMMISSION_PERCENTAGE) {
+            var imageListHtml = 
+            '<div class="row"> ' +
+            '<div class="col-xs-12"> ' +
+            '<tr ng-repeat-end> ' +
+                '<td colspan=3> ' +
+                    '<table class="table" > ' +
+                        '<thead style="border-style:none;"> ' +
+                            '<tr> ' +
+                             '   <th style="width:45%" text-align="center">Subscription</th> ' +
+                             '   <th style="width:15%" text-align="center">Commission</th> ' +
+                            '</tr> ' +
+                        '</thead> ' +
+                        '<tbody> ';
+            if(x.ispremium){
+                imageListHtml += 
+                            '<tr style="cursor:pointer;">' +
+                            '   <td style="width:45%">Premium Membership</td>' +
+                            '    <td style="width:15%">' + x.price*STRIPE_COMMISSION_PERCENTAGE + '</td>' +
+                            '</tr>';
+            }
+            if(x.hasranks){
+                imageListHtml += 
+                            '<tr style="cursor:pointer;">' + 
+                                '<td style="width:45%">' + x.ranksqty +' Custom Ranks</td>' + 
+                                '<td style="width:15%">$'+x.ranksqty*35*STRIPE_COMMISSION_PERCENTAGE + '</td>' + 
+                            '</tr>';
+            }
+            imageListHtml +=          
+            '                <tr>' + 
+            '                    <td style="width:45%">Total</td>' + 
+            '                    <td style="width:15%; background-color: darkgray;">$'+x.totalCommission+'</td>' + 
+            '                </tr>' + 
+            '            </tbody>' + 
+            '        </table>' + 
+            '    </td>' + 
+            '</tr></div></div>';
+            
+            BootstrapDialog.show({
+                size: BootstrapDialog.SIZE_SM,
+                type: BootstrapDialog.TYPE_PRIMARY,
+                cssClass: 'admin-payment-business-detail-dialog',
+                title: x.answerObj.name + " Details",
                 message: function (dialogRef) {
                     var $content = $(imageListHtml);
                     var x = dialogRef;

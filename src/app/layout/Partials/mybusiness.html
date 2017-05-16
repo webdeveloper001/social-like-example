@@ -19,12 +19,16 @@
 			<thead style="border-style:none;">
 				<tr>
 					<th>Name</th>
+					<th>Promoter</th>
+					<th>Code</th>
 					<th colspan=2 text-align="center">Memberships</th>
 				</tr>
 			</thead>
 			<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
 			<tr ng-repeat="x in vm.mybizs" style="cursor:pointer;">
 				<td ng-click="vm.gotoanswer(x)">{{x.name}}</td>
+				<td>{{x.promoterObj?x.promoterObj.firstname + ' ' + x.promoterObj.lastname:'None'}}</td>
+				<td>{{x.promoterObj?x.promoterObj.code:'None'}}</td>
 				<td align="center" style="{{x.style}}" ng-click="vm.gotomanage(x)">{{x.status}}</td>
 				<td align="center" style="{{x.style2}}" ng-click="vm.gotomanage(x)">{{x.status2}}</td>
 			</tr>
@@ -61,11 +65,79 @@
 			ng-if="vm.business.isPremium||vm.business.hasRanks">Subscriptions</h4>
 	<div class="text-right">
 		<div class="btn-group" ng-if="vm.business.isPremium||vm.business.hasRanks" style="padding-bottom:5px">
-			<button type="button" class="btn btn-default">Edit Payment Info</button>
-			<button type="button" class="btn btn-default">Invoices</button>
+			<button type="button" class="btn btn-default" ng-class="vm.showPaymentInfo?'active':''" ng-click="vm.showPaymentInfoEditClicked()">Edit Payment Info</button>
+			<button type="button" class="btn btn-default" ng-class="vm.showInvoices?'active':''" ng-click="vm.showInvoicsClicked()">Invoices</button>
 		</div>
-	</div>		
+	</div>	
+	<div ng-if="vm.showPaymentInfo && !vm.business.loadingInvoices">
+		<h3> Payment Information </h3>
+		<hr>
+		Now you are billing with {{vm.business.customer.sources.data[0].brand}} Card 
+		<span><code> **** - **** - **** - {{vm.business.customer.sources.data[0].last4}} </code></span>
+		Please Click here to change the card 
+		<button id="updateCardButton" name="updateCardButton" class="btn btn-success" onClick="updateCardNumberButton()">Update Card Details</button>
+		
+		<form action="http://localhost:3000/StripeServer/changeSource" method="POST" ng-submit="changeCardNumber()" id="updateCardNumberForm">
+
+          <div style="display: none"> <!-- D -->
+            <script
+              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="pk_test_q9kbYzvzE6uMwZH9ZUjfK6Xq"
+              data-email="{{vm.business.email}}"
+			  data-label="Update Card Details"
+              data-name="Rank-X"
+              data-description="Update Card Details"
+              data-panel-label="Subscribe"
+              data-image="/assets/images/rankx-logo-small-2-square.png"
+              data-locale="auto"
+              data-zip-code="true">
+            </script>
+          </div> <!-- /D -->
+        	<input type="hidden" id="userId" name="userId" value={{vm.business.user}}></input>
+			<input type="hidden" id="useraccntId" name="useraccntId" value={{vm.business.accountid}}></input>
+			<input type="hidden" id="stripeId" name="stripeId" value={{vm.business.stripeid}}></input>
+        </form>
+	</div>
+	<div ng-if="vm.showInvoices && !vm.business.loadingInvoices">
+		<h3> Invoices </h3>
+		<hr>
+		<table class="table">
+			<thead style="border-style:none;">
+				<tr>
+					<th style="width:25%" text-align="center">Date</th>
+					<th style="width:15%" text-align="center">SubTotal</th>
+					<th style="width:15%" text-align="center">Discount</th>
+					<th style="width:15%" text-align="center">Total</th>
+					<th style="width:20%">Status</th>
+					<th style="width:20%"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="invoice in vm.business.invoices">
+					<td>
+						{{invoice.date}}
+					</td>
+					<td>
+						{{invoice.subtotal/100  + ' ' + invoice.currency.toUpperCase()}}
+					</td>
+					<td>
+						{{invoice.discountMsg}}
+					</td>
+					<td>
+						{{invoice.total/100 + ' ' + invoice.currency.toUpperCase()}}
+					</td>
+					<td>
+						{{invoice.paid ? 'Paid' : ''}}
+					</td>
+					<td>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>	
 	<div ng-if="vm.business.isPremium||vm.business.hasRanks">
+		<h3> Subscriptions </h3>
+		<hr>
 		<table class="table">
 		<tbody>
 			<!--
@@ -180,8 +252,8 @@
 				<span class="input-group-addon" style="color:red">Promo Code:</span>
 				<input class="form-control" style="color:red;" ng-model="vm.promocode" type="text" placeholder="Enter code...">
 				<span class="input-group-btn">
-						<button class="btn btn-default" ng-click="vm.checkcode()">Check Code</button>
-					</span>
+					<button class="btn btn-default" ng-click="vm.checkcode()">Check Code</button>
+				</span>
 			</div>
 		</div>
 	</div>
@@ -242,7 +314,7 @@
 		<br>
 		<div ng-show="!vm.showCurrentPlan" > <!-- C -->
 
-        <form action="https://server.rank-x.com/StripeServer/charge" method="POST">
+        <form action="http://localhost:3000/StripeServer/charge" method="POST">
 
           <div style="display:none"> <!-- D -->
             <script
@@ -266,6 +338,7 @@
 			<input type="hidden" id="getCustomRanks" name="getCustomRanks" value={{vm.getRanks}}></input>
 			<input type="hidden" id="ranksQuantity" name="ranksQuantity" value={{vm.ranksQty}}></input>
 			<input type="hidden" id="couponValid" name="couponValid" value={{vm.codeOk}}></input>
+			<input type="hidden" id="couponValid" name="promoCode" value={{vm.promocode}}></input>
         </form>
 	</div> <!-- /C -->
 	</div> <!-- /B -->				
@@ -295,6 +368,13 @@
         function clickStripeButton() {
           console.log("about to fire click event");
           var resultOfEventFire = eventFire(document.getElementsByClassName('stripe-button-el')[0], 'click');
+
+          console.log("done firing click event, resultOfEventFire: " + resultOfEventFire);
+        }
+
+        function updateCardNumberButton() {
+          console.log("about to fire update stripe info event");
+		  var resultOfEventFire = eventFire($('#updateCardNumberForm .stripe-button-el')[0], 'click');
 
           console.log("done firing click event, resultOfEventFire: " + resultOfEventFire);
         }

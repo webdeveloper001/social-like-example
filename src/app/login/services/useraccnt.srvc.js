@@ -3,8 +3,8 @@
     angular
         .module('app')
         .factory('useraccnt', useraccnt);
-    useraccnt.$inject = ['$http','$q','$rootScope', 'login'];
-    function useraccnt($http, $q, $rootScope, login) {
+    useraccnt.$inject = ['$http','$q','$rootScope', 'login', 'SERVER_URL'];
+    function useraccnt($http, $q, $rootScope, login, SERVER_URL) {
         var _useraccnts = [];
         var _promoteraccnts = [];
         var baseURI = '/api/v2/mysql/_table/useraccnts';
@@ -13,12 +13,83 @@
             getuseraccnt: getuseraccnt,
             getaccntsbycode: getaccntsbycode,
             getuseraccntans : getuseraccntans,
+            getallaccnts : getallaccnts,
             adduseraccnt: adduseraccnt,
-            updateuseraccnt: updateuseraccnt
+            updateuseraccnt: updateuseraccnt,
+            getuseraccntInvoicesAndCustomer: getuseraccntInvoicesAndCustomer,
+            deleteAccount: deleteAccount,
+            payPromoter: payPromoter
     };
     return service;
 
+    function payPromoter(promoter, STRIPE_COMMISSION_PERCENTAGE){
+        var url = SERVER_URL + 'stripeServer/payPromoter';
+        var req = {
+            method: 'POST',
+            url: url,
+            data: {
+                stripeId: promoter.stripeid,
+                promoterId: promoter.id,
+                amount: promoter.balance * STRIPE_COMMISSION_PERCENTAGE
+            },
+            headers: {
+                'X-Dreamfactory-API-Key': undefined,
+                'X-DreamFactory-Session-Token': undefined
+            }
+        }
 
+        return $http(req).then(function(result){
+            return result;
+        });
+    }
+    function deleteAccount(stripeid, accountId){
+        var url = SERVER_URL + 'stripeServer/' + stripeid + '/' + accountId + '/deleteCustomer';
+        var req = {
+            method: 'GET',
+            url: url,
+            headers: {
+                'X-Dreamfactory-API-Key': undefined,
+                'X-DreamFactory-Session-Token': undefined
+            }
+        }
+
+        return $http(req).then(function(result){
+            return result;
+        });
+    }
+
+    function getuseraccntInvoicesAndCustomer(stripeid){
+        var url = SERVER_URL + 'stripeServer/' + stripeid + '/invoices';
+        var req = {
+            method: 'GET',
+            url: url,
+            headers: {
+                'X-Dreamfactory-API-Key': undefined,
+                'X-DreamFactory-Session-Token': undefined
+            }
+        }
+
+        return $http(req).then(function(result){
+            return result.data;
+        });
+    }
+
+
+      /*
+       *
+       * Function to get user detail from user_detail table for logged in user
+       *
+       */
+      function getallaccnts() {
+
+          var url = baseURI;
+          return $http.get(url).then(querySucceeded, _queryFailed);
+
+          function querySucceeded(result) {
+              return _useraccnts = result.data.resource;
+          }
+
+      }
 
       /*
        *
@@ -70,7 +141,7 @@
 
       function getaccntsbycode (code){
 
-          var url = baseURI + '' + '?filter=(coupon='+code+')';
+          var url = baseURI + '' + '?filter=(promocode='+code+')';
           // console.log("useraccnt.srvc.js:getuseraccnt(forcerefresh): GET");
           return $http.get(url).then(querySucceeded, _queryFailed);
 

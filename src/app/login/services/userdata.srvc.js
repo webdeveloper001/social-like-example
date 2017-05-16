@@ -6,10 +6,10 @@
         .service('userdata', userdata);
 
     userdata.$inject = ['$rootScope', 'votes', 'editvote', 'vrowvotes', 'useraccnt',
-     'useractivity', '$q', 'promoter','categorycode', 'codeprice','$http'];
+     'useractivity', '$q', 'promoter','categorycode', 'codeprice','$http', 'SERVER_URL'];
 
     function userdata($rootScope, votes, editvote, vrowvotes, useraccnt, 
-    useractivity, $q, promoter, categorycode, codeprice, $http) {
+    useractivity, $q, promoter, categorycode, codeprice, $http, SERVER_URL) {
 
         var service = {
 
@@ -79,7 +79,8 @@
                             //If user is customer, asynchronously ask server to get from Stripe latest invoice/subscription info
                             if ($rootScope.useraccnts[i].stripeid != undefined && $rootScope.useraccnts[i].stripeid != '' && 
                                 $rootScope.useraccnts[i].stripeid != 0){
-                                url = 'https://server.rank-x.com/dreamfactory-stripe-user/'+$rootScope.useraccnts[i].stripeid+'/'+$rootScope.useraccnts[i].id;
+                                url = SERVER_URL + 'dreamfactory-stripe-user/'+$rootScope.useraccnts[i].stripeid+'/'+$rootScope.useraccnts[i].id;
+                                var useraccnt = $rootScope.useraccnts[i];
                                 var req = {
                                     method: 'GET',
                                     url: url,
@@ -89,11 +90,13 @@
                                     }
                                 }
 
-                                $http(req).then(function(result){
-                                    console.log("Success updating Stripe Invoices - ", result);
-                                },function(error){
+                                $http(req).then(succeedFunc,function(error){
                                     console.log("Error updating Stripe Invoices - ", error);
                                 });
+                                function succeedFunc(result){
+                                    // console.log("Success updating Stripe Invoices - ", result);
+                                    useraccnt.customer = result.data;
+                                }
                                 console.log("Retrieving latest invoice info from Stripe");
                             }
                         }

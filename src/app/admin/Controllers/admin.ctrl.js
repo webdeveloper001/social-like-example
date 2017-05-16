@@ -26,6 +26,7 @@
         vm.dbQuery = dbQuery;
         vm.update = update;
         vm.foodranks = foodranks;
+        vm.payment = payment;
         //vm.fbpost = fbpost;
         
         activate();
@@ -36,9 +37,10 @@
                                           $rootScope.user.id == 30 ||
                                           $rootScope.user.id == 41 ||  
                                           $rootScope.user.id == 42 ||
-                                          $rootScope.user.id == 30);
+                                          $rootScope.user.id == 30 ||
+                                          $rootScope.user.id == 187959328383879);
             
-            vm.isAdmin = $rootScope.isAdmin;
+            vm.isAdmin = $rootScope.user.is_sys_admin;
             console.log("admin page Loaded!");
             
         }
@@ -51,6 +53,7 @@
             vm.selQuery = '';
             vm.selUpdate = '';
             vm.selFoodRanks = '';
+            vm.selPayment = '';
 
             $state.go('queries');
 
@@ -64,6 +67,7 @@
             vm.selQuery = '';
             vm.selUpdate = '';
             vm.selFoodRanks = '';
+            vm.selPayment = '';
 
             $state.go('views');
 
@@ -77,6 +81,7 @@
             vm.selQuery = '';
             vm.selUpdate = '';
             vm.selFoodRanks = '';
+            vm.selPayment = '';
 
             $state.go('flags');
 
@@ -91,6 +96,7 @@
             vm.selQuery = '';
             vm.selUpdate = '';
             vm.selFoodRanks = '';
+            vm.selPayment = '';
 
             $state.go('addRank');
 
@@ -105,6 +111,7 @@
             vm.selQuery = '';
             vm.selUpdate = '';
             vm.selFoodRanks = '';
+            vm.selPayment = '';
             
             $state.go('dbMaint');
         }
@@ -118,6 +125,7 @@
             vm.selQuery = 'active';
             vm.selUpdate = '';
             vm.selFoodRanks = '';
+            vm.selPayment = '';
             
             $state.go('dbQuery');
         }
@@ -131,6 +139,7 @@
             vm.selQuery = '';
             vm.selUpdate = 'active';
             vm.selFoodRanks = '';
+            vm.selPayment = '';
             
             $state.go('updateHeaders');
         }
@@ -144,11 +153,26 @@
             vm.selQuery = '';
             vm.selUpdate = '';
             vm.selFoodRanks = 'active';
+            vm.selPayment = '';
             
             $state.go('foodRanks');
             
         }
 
+        function payment() {
+            vm.selKeywords = '';
+            vm.selViews = '';
+            vm.selFlags = '';
+            vm.selRankings = '';
+            vm.selDbMaint = '';
+            vm.selQuery = '';
+            vm.selUpdate = '';
+            vm.selFoodRanks = '';
+            vm.selPayment = 'active';
+
+            $state.go('payment');
+
+        }
 
         function goBack() {
             //if ($rootScope.cCategory.id == undefined) $state.go('rankSummary', { index: $rootScope.cCategory.id });

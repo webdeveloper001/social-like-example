@@ -17,11 +17,11 @@
 
     layout.$inject = ['$location', '$rootScope', '$window', '$q', '$http', 'pvisits', '$cookies', '$scope',
         'DEBUG_MODE', 'EMPTY_IMAGE', 'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata', 'dialog',
-        'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state','dataloader'];
+        'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state','dataloader', 'setting'];
 
     function layout($location, $rootScope, $window, $q, $http, pvisits, $cookies, $scope,
         DEBUG_MODE, EMPTY_IMAGE, rankofday, answer, table, special, datetime, uaf, userdata, dialog,
-        matchrec, edit, useractivity, vrows, headline, cblock, catans, $state, dataloader) {
+        matchrec, edit, useractivity, vrows, headline, cblock, catans, $state, dataloader, setting) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'layout';
@@ -166,6 +166,7 @@
             dataloader.getrankdata();
             dataloader.getanswerdata();
             dataloader.getpagevisitdata();
+            setting.getSetting();
             //loadingDone();
         }
 
@@ -180,6 +181,11 @@
                 $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded && 
                                     $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
             else if (window.location.href.indexOf('favs')>-1)
+                $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded && 
+                                    $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
+            else if (window.location.href.indexOf('mybusiness')>-1)
+                $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded;
+            else if (window.location.href.indexOf('promoteconsole')>-1)
                 $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded && 
                                     $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
             else $rootScope.dataIsLoaded = $rootScope.pageDataLoaded && $rootScope.userDataLoaded;

@@ -264,7 +264,7 @@
                 case 5: { $rootScope.canswers = vm.beautyans; 
                           $rootScope.myfavs.title = 'My Beauty';  break; }
             }
-            $state.go("answerDetail", { index: x.id });
+            $state.go("answerDetail", { index: x.slug });
         }
 
         function seeMore(x) {
