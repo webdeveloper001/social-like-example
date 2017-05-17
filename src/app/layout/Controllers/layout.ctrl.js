@@ -41,7 +41,13 @@
         vm.getResults = getResults;
         vm.hideSearch = hideSearch;
         vm.gotoHome = gotoHome;
+        vm.goAddRank = goAddRank;
 
+        //Admin Methods
+        vm.editRank = editRank;
+        vm.viewRank = viewRank;
+        vm.applyRule = applyRule;
+        
         vm.goPrivacyPolicy = goPrivacyPolicy;
         vm.goRankofDayConsole = goRankofDayConsole;
 
@@ -98,6 +104,18 @@
 
         function activate() {
 
+            //****TEMP CODE, ENable for Admin Functions*****************
+            $rootScope.isAdmin = false;
+            vm.isAdmin = false;
+            /*
+            $rootScope.isLoggedIn = true;
+            $rootScope.user = {};
+            $rootScope.user.name = "Andres Moctezuma";
+            $rootScope.user.first_name = 'Andres';
+            $rootScope.user.last_name = 'Moctezuma';
+            $rootScope.user.id = "10104518570729893";
+            //**********************End of Temp Code */
+
             $rootScope.DEBUG_MODE = DEBUG_MODE;
             $rootScope.EMPTY_IMAGE = EMPTY_IMAGE;    
 
@@ -110,6 +128,12 @@
                 //vm.nh = 'hang in there';
                 loadData();
                 //if (!tourviewed && !$rootScope.isLoggedIn) dialog.tour();
+            }
+
+            //If user is logged in, get data of this user
+            if ($rootScope.isLoggedIn){
+                 userdata.loadUserData();        //load user data (votes and activities)
+                userdata.loadUserAccount();     //load user business account
             }
 
             //Determine if user is using Facebook browser
@@ -226,17 +250,16 @@
         }
 
         function getResults() {
+            
             $rootScope.inputVal = vm.val;
             if ($rootScope.inputVal.length > 0) {
-                $rootScope.searchActive = true;
+                   $rootScope.searchActive = true;
             }
             else {
                 $rootScope.searchActive = false;
             }
             vm.searchActive = $rootScope.searchActive;
-            $window.scroll(0,0);
-            $rootScope.$emit('getResults');
-            
+            $window.scroll(0,0);                    
         }
 
         function hideSearch(){
@@ -257,23 +280,31 @@
             else $rootScope.$emit('mainView');
         }
 
-        /*
-        function searchRank() {
-            $rootScope.sval = vm.val;
-            $rootScope.$emit('searchRank');
+        function goAddRank(){
+            $state.go('addCustomRank');
         }
-        */
-        /**
-         * Set selected city
-         * Now you can use $rootScope.selectCity variable anywhere to load city specific data.
-         * i.e if you want to load ranks from particular city having table rank-la.
-         * so you will get la from $rootScope.selectCity.code
-         * @param city
-         */
+
+         //*****************Admin Functions************
+        function editRank() {
+            $rootScope.editMode = true;
+            vm.selEditRank = 'active';
+            vm.selViewRank = '';
+            console.log("$rootScope.editMode -- ", $rootScope.editMode);
+
+        }
+        function viewRank() {
+            $rootScope.editMode = false;
+            vm.selEditRank = '';
+            vm.selViewRank = 'active';
+            //console.log("mode -- ", editMode);
+        }
+        function applyRule() {          
+            $rootScope.$emit('applyRule');
+        }
+/*
         $rootScope.selectCity = function (city) {
             $rootScope.selectedCity = city;
             window.localStorage.selectedCity = JSON.stringify($rootScope.selectedCity);
-            //closeModal("#selectCityModal");
-        }
+        }*/
     }
 })();

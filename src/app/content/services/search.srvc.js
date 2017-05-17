@@ -19,7 +19,7 @@
 
         return service;
 
-        function searchRanks() {
+        function searchRanks(query) {
 
             //initialize tool variables 
             var rt = '';   //rank title 
@@ -38,15 +38,36 @@
             var nhe = false;
             var results = [];
 
-            var input = $rootScope.inputVal;
+            var input = query;
             
             if (input) {
+                
+                //ignore some keywords
+                if (input.indexOf('best') > -1) input = input.replace('best', '');
+                if (input.indexOf('Best') > -1) input = input.replace('Best', '');
+                if (input.indexOf('top') > -1) input = input.replace('top', '');
+                if (input.indexOf('Top') > -1) input = input.replace('Top', '');
+                if (input.indexOf('great') > -1) input = input.replace('great', '');
+                if (input.indexOf('Great') > -1) input = input.replace('Great', '');
+                if (input.indexOf('awesome') > -1) input = input.replace('awesome', '');
+                if (input.indexOf('Awesome') > -1) input = input.replace('Awesome', '');
+                if (input.indexOf('amazing') > -1) input = input.replace('amazing', '');
+                if (input.indexOf('Amazing') > -1) input = input.replace('Amazing', '');
+                if (input.indexOf('most') > -1) input = input.replace('most', '');
+                if (input.indexOf('Most') > -1) input = input.replace('Most', '');
+                if (input.indexOf('the ') > -1) input = input.replace('the ', '');
+                if (input.indexOf('The ') > -1) input = input.replace('The ', '');
+                if (input.indexOf('shops') > -1) input = input.replace('shops', '');
+                if (input.indexOf('Shops') > -1) input = input.replace('Shops', '');
+                if (input.indexOf('places') > -1) input = input.replace('places', '');
+                if (input.indexOf('Places') > -1) input = input.replace('Places', '');
+                if (input.indexOf('delicious') > -1) input = input.replace('delicious', '');
+                if (input.indexOf('Delicious') > -1) input = input.replace('Delicious', '');
 
                 if (input.length >= 3) {
 
                 var userIsTyping = false;
                 var inputVal = input;
-
 
                 //Check if user typed 'near me' conditions
                 if (inputVal.indexOf('near me') > -1 ||
@@ -65,14 +86,9 @@
                     inm = false;
                 }
 
-                //ignore user typed words such as 'best', 'top'
-                if (inputVal.indexOf('best') > -1) inputVal = inputVal.replace('best', '');
-                if (inputVal.indexOf('Best') > -1) inputVal = inputVal.replace('Best', '');
-                if (inputVal.indexOf('top') > -1) inputVal = inputVal.replace('top', '');
-                if (inputVal.indexOf('Top') > -1) inputVal = inputVal.replace('Top', '');
-                if (inputVal == 'Food') inputVal = inputVal.replace('Food', 'Food Near Me');
-                if (inputVal == 'food') inputVal = inputVal.replace('food', 'Food Near Me');
-
+                    if (inputVal == 'Food') inputVal = inputVal.replace('Food', 'Food Near Me');
+                    if (inputVal == 'food') inputVal = inputVal.replace('food', 'Food Near Me');
+                 
                 //Special Cases
                 if (inputVal == 'pho' || inputVal == 'Pho') {
                     inputVal = 'vietnamese';
@@ -139,6 +155,7 @@
                                     }
                                 }
                                 //Special cases for neighborhoods
+                                if (valTags[k].length == 2) {
                                 for (var q=0; q < short.length; q++) {
                                     if (short[q].indexOf(valTags[k]) > -1 ||
                                         short[q].indexOf(valTags[k].toUpperCase()) > -1 ||
@@ -148,9 +165,10 @@
                                         m_nh = true;
                                     }
                                 }
+                                }
 
                             }
-
+                            
                             if (m_rt && rank.tags.indexOf('isMP') > -1) {
                                 results_rt.push($rootScope.content[j]);
                                 rte = true;
@@ -242,13 +260,13 @@
 
         }
 
-        function searchAnswers() {
+        function searchAnswers(query) {
 
             //initialize tool variables
             var tagCapitalized = '';
             var tagFirstLowered = '';
             var results_ans = [];
-            var input = $rootScope.inputVal;
+            var input = query;
             var m = false;
             var an = '';   //answer name
             

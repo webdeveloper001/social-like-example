@@ -1,20 +1,4 @@
-
-<div class="input-group" style="width:100%" ng-if="vm.isAdmin">
-	<!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
-	<div class="text-center" style="display:{{vm.isAdmin ? 'inline':'none'}}">
-		<div class="btn-group col-sm-6 col-md-6">
-			<button class="btn btn-primary {{vm.selEditRank}} " ng-click="vm.editRank() ">Edit Mode</button>
-			<button class="btn btn-primary {{vm.selViewRank}} " ng-click="vm.viewRank() ">View Mode</button>
-		</div>
-		<button class="btn btn-danger" ng-click="vm.applyRule() ">apply Rule</button>
-	</div>
-	<br style="display:{{vm.isAdmin ? 'inline':'none'}}">
-	<br style="display:{{vm.isAdmin ? 'inline':'none'}}">
-	<br style="display:{{vm.isAdmin ? 'inline':'none'}}">
-</div>
-
-
- <!-- <div class="row" ng-if="!vm.fbm" style="border:0px;margin:0px;padding:0px"> 
+<!-- <div class="row" ng-if="!vm.fbm" style="border:0px;margin:0px;padding:0px"> 
 	<div class="col-sm-12 col-md-8" style="display:{{(vm.isNhRdy || vm.isCity) ? 'inline':'none'}}"> -->
 <!--
 <div ng-if="!vm.fbm">
@@ -55,7 +39,8 @@
 </div>
 
  <br ng-if="vm.isNh">
-<div style="display:{{((vm.isNhRdy || vm.isCity) && (vm.searchActive == false)) ? 'inline':'none'}}" ng-if="!vm.fbm">	
+<div style="display:{{((vm.isNhRdy || vm.isCity) && (vm.searchActive == false)) ? 'inline':'none'}}" ng-if="!vm.fbm">
+<!--	
 	<content-block type='rankofweek' dynamic="false" rankofweek="true"></content-block>
 <!--
 		<table class="table" style="border-style:none;" ng-if="vm.isCity">
@@ -77,74 +62,171 @@
 	<!-- </div> -->
 	
 	 <br ng-if="vm.isCity"> 
-<!--	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin:0px;padding:0px;border:0px;"> -->
+<!--	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin:0px;padding:0px;border:0px;"> -->	
 		
-		<table class="table" style="border-style:none;" ng-if="vm.isCity">
-			<tbody>
-				<thead>
-					<tr>
-						<th style="{{vm.headerStyle}}">
-							Feed
-							<span class="nomargin">
-                    		<button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
-                    		ng-click="vm.refreshFeed()">
-                    		<span class="glyphicon glyphicon-refresh" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
-							</button>
-							</span>
-						</th>
-					</tr>
-				</thead>
-			</tbody>
-		</table>
-
-		<div ng-repeat="x in vm.feeds | orderBy:'-id' | limitTo:vm.fres" ng-if="vm.isCity" style="padding:0px;border:0px;margin-top:10px;">
-			<div class="row" style="margin:4px">
-				
-				<div class="col-xs-12 media">
-
-					<div ng-if="!x.picture" class="profile-avatar-wrapper media-left">
-						<div class="empty-profile-avatar-wrapper"  style="background-color:{{x.bc}};color:{{x.fc}};">{{x.initials}}</div>
-					</div>
-					<div ng-if="x.picture" class="profile-avatar-wrapper  media-left" align="middle">
-						<img ng-src="{{x.picture}}" class="img-responsive img-circle profile-avatar"/>
-					</div>
-					<div ng-if="x.action == 'addedAnswer'" class="media-body" style="vertical-align: middle;">
-						added <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a> to
-						<a ng-click="vm.gotoRank(x)">{{x.text2}}</a>.
-					</div>
-					<div ng-if="x.action == 'upVoted'" class="media-body" style="vertical-align: middle;">
-						endorsed <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a> in
-						<a ng-click="vm.gotoRank(x)">{{x.text2}}</a>.
-					</div>
-					<div ng-if="x.action == 'downVoted'"  class="media-body" style="vertical-align: middle;">
-						voted down <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a> in
-						<a ng-click="vm.gotoRank(x)">{{x.text2}}</a>.
-					</div>
-					<div ng-if="x.action == 'commentR'" class="media-body" style="vertical-align: middle;">
-						posted a comment in <a ng-click="vm.gotoRank(x)">{{x.text2}}</a>.
-					</div>
-					<div ng-if="x.action == 'commentA'" class="media-body" style="vertical-align: middle;">
-						posted a comment for <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a>.
-					</div>
-					<div ng-if="x.action == 'editA'" class="media-body" style="vertical-align: middle;">
-						edited the information of <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a>.
-					</div>
-					<div ng-if="x.action == 'upVotedVrow'" class="media-body" style="vertical-align: middle;">
-						endorsed the <em>{{x.text2}}</em> of <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a>.
-					</div>
-					<div ng-if="x.action == 'downVotedVrow'" class="media-body" style="vertical-align: middle;">
-						voted down the <em>{{x.text2}}</em> of <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a>.
-					</div>
-					<div ng-if="x.action == 'binded'" class="media-body" style="vertical-align: middle;">
-						bound account to <a ng-click="vm.gotoAnswer(x)">{{x.text1}}</a>.
-					</div>
-				</div>
-			</div>
-		</div>
-		<p class="text-right" style="color:blue;" ng-click="vm.seeMoreFeed()" ng-if="vm.isCity">&lt;&lt;{{vm.ftext}}&gt;&gt;</p>
 <!--	</div> -->
 	<br ng-if="vm.sm">
-	
+
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+		<div class="row">
+			<div class="col-sm-12 col-md-6">	
+				<rank-block theme="social" type="basic"></rank-block>
+			</div>
+			<div class="col-sm-12 col-md-6">
+				<rank-block theme="lifestyle" type="basic"></rank-block>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12 col-md-6">	
+				<rank-block theme="food" type="basic"></rank-block>
+			</div>
+			<div class="col-sm-12 col-md-6">
+				<rank-block theme="food" type="basic"></rank-block>
+			</div>
+		</div>
+	</div>	
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<!--<trend-block></trend-block>-->
+		<!--  <rank-block theme="lifestyle" type="basic"></rank-block> -->
+		<userfeed-block></userfeed-block>
+	</div>		
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="lifestyle" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">	
+		<rank-block theme="social" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="food" type="basic"></rank-block>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="health" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">	
+		<rank-block theme="beauty" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="services" type="basic"></rank-block>
+	</div>
+</div>	
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="politics" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">	
+		<rank-block theme="sports" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="city" type="basic"></rank-block>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="personalities" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">	
+		<rank-block theme="dating" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="technology" type="basic"></rank-block>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="lifestyle" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">	
+		<rank-block theme="social" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="food" type="basic"></rank-block>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="health" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">	
+		<rank-block theme="beauty" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="services" type="basic"></rank-block>
+	</div>
+</div>	
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="politics" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">	
+		<rank-block theme="sports" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="city" type="basic"></rank-block>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="personalities" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">	
+		<rank-block theme="dating" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="technology" type="basic"></rank-block>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="lifestyle" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">	
+		<rank-block theme="social" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="food" type="basic"></rank-block>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="health" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">	
+		<rank-block theme="beauty" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="services" type="basic"></rank-block>
+	</div>
+</div>	
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="politics" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">	
+		<rank-block theme="sports" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="city" type="basic"></rank-block>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="personalities" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">	
+		<rank-block theme="dating" type="basic"></rank-block>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<rank-block theme="technology" type="basic"></rank-block>
+	</div>
+</div>
+
+<!--	
 	<div class="row" style="border:0px;padding:0px;margin:0px;">
 		<div class="col-md-6" style="border:0px;padding:3px;margin:0px;">
 			<content-block type="lifestyle" dynamic="false"></content-block>
@@ -182,7 +264,7 @@
 		</div>
 	</div>
 	-->
-	
+<!--	
 	<div class="row" style="border:0px;padding:0px;margin:0px;">
 		<div class="col-md-6" style="border:0px;padding:3px;margin:0px;">
 			<content-block type='beauty' dynamic="false"></content-block>
@@ -204,7 +286,6 @@
 	-->
 	
 </div>
-
 <div ng-if="vm.fbm">
 	<div class="well-small" style="background-color:#d9d9d9;color:#24478f; padding:5px;">
 		<P>Thanks for visiting Rank-X. You can use the ranks below to give us feedback and suggestions or 

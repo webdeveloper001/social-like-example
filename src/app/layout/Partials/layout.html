@@ -14,11 +14,27 @@
     </div>
 
     <div ng-hide="vm.isLoading">
-        
-        <div class="row" style="padding:0px;margin:0px;border:0px">
-            <div class="col-xs-9 col-sm-10 col-md-10 col-lg-11">
-        <div class="input-group" style="padding-left:0px;padding-right:5px;padding-bottom:10px;">
-            <input type="text" class="form-control" placeholder="Search in San Diego" ng-model="vm.val" ng-change="vm.getResults()"
+
+            
+<div class="input-group" style="width:100%" ng-if="vm.isAdmin">
+	<!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
+	<div class="text-center" style="display:{{vm.isAdmin ? 'inline':'none'}}">
+		<div class="btn-group col-sm-6 col-md-6">
+			<button class="btn btn-primary {{vm.selEditRank}} " ng-click="vm.editRank() ">Edit Mode</button>
+			<button class="btn btn-primary {{vm.selViewRank}} " ng-click="vm.viewRank() ">View Mode</button>
+		</div>
+		<button class="btn btn-danger" ng-click="vm.applyRule() ">apply Rule</button>
+	</div>
+	<br style="display:{{vm.isAdmin ? 'inline':'none'}}">
+	<br style="display:{{vm.isAdmin ? 'inline':'none'}}">
+	<br style="display:{{vm.isAdmin ? 'inline':'none'}}">
+</div>
+
+        <div class="container"> <!-- style="padding-left:5px;padding-right:5px;"> -->
+        <div class="row" style="padding-bottom:10px">
+            <div class="col-xs-7 col-sm-9 col-md-10 col-lg-10">
+            <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search San Diego" ng-model="vm.val" ng-change="vm.getResults()"
                 id="SearchInput">
                 <div class="input-group-btn">
                     <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
@@ -26,18 +42,19 @@
         </div>
         </div>
         
-        <div class="col-xs-3 col-sm-2 col-md-2 col-lg-1">
-            <div class="input-group-btn pull-left">
+        <div class="col-xs-5 col-sm-3 col-md-2 col-lg-2">
+            <div class="text-center input-group-btn">
                     <button class="btn btn-default" ng-click="vm.gotoHome()"><i class="glyphicon glyphicon-home"></i></button>
                     <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-tasks"></i></button>
+                    <button class="btn btn-default" ng-click="vm.goAddRank()"><i class="glyphicon glyphicon-plus"></i></button>
                 </div>
             </div>
-        </div>
+        </div> 
+        </div> 
         <div ng-show="vm.searchActive">	
-	        <search-block ng-click="vm.hideSearch()"></search-block>
+	        <search-block ng-click="vm.hideSearch()" query="{{vm.val}}" ans="true" ranks="true" length="vm.slen"></search-block>
         </div> 
         <div ui-view ng-if="!vm.isLoading&&!vm.searchActive"></div>
-
     </div>
 
 </div>

@@ -26,6 +26,7 @@
         vm.showBusinessDetail = showBusinessDetail; 
         vm.addOrRemovePromoter = addOrRemovePromoter;
         vm.paySelectedPromoters = paySelectedPromoters;
+        vm.changeCommission = changeCommission;
         // answer.getAnswers()
         // .then(function (res) {
         //     $rootScope.answers = res;
@@ -112,6 +113,16 @@
             console.log("payment admin page Loaded!");
         }
 
+        function changeCommission(){
+            dialog.changeCommissionDlg(vm.STRIPE_COMMISSION_PERCENTAGE, execChangeCommssion);
+        }
+
+        function execChangeCommssion(changePercent){
+            setting.setSetting({STRIPE_COMMISSION_PERCENTAGE: parseInt(changePercent)/100})
+            .then(function(setting){
+                vm.STRIPE_COMMISSION_PERCENTAGE = setting.STRIPE_COMMISSION_PERCENTAGE;
+            });
+        }
         function addOrRemovePromoter(promoter){
             if(vm.selectedPromoters.indexOf(promoter) != -1){
                 vm.selectedPromoters.splice(vm.selectedPromoters.indexOf(promoter), 1);

@@ -152,6 +152,17 @@
                 tablex.id = result.data.resource[0].id;
                 _tables.push(tablex);
 
+                //push to search String array
+                var searchStr = tablex.tags + " " + tablex.title;
+                $rootScope.searchStr.push(searchStr);
+
+                //update slug tag and featured image
+                var slug = tablex.title.toLowerCase(); 
+                slug = slug.replace(/ /g,'-');
+                slug = slug + '-' + result.data.resource[0].id;
+                var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/'+slug+'.jpg';
+                update(result.data.resource[0].id,['slug','fimage'],[slug,fimage]);
+
                 if ($rootScope.DEBUG_MODE) console.log("result", result);
                 return result.data;
             }
@@ -179,6 +190,17 @@
                 var tablex = table;
                 tablex.id = result.data.resource[0].id;
                 _tables.push(tablex);
+
+                //push to search String array
+                var searchStr = tablex.tags + " " + tablex.title;
+                $rootScope.searchStr.push(searchStr);
+
+                //update slug tag and featured image
+                var slug = tablex.title.toLowerCase(); 
+                slug = slug.replace(/ /g,'-');
+                slug = slug + '-' + result.data.resource[0].id;
+                var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/'+slug+'.jpg';
+                update(result.data.resource[0].id,['slug','fimage'],[slug,fimage]);
 
                 //update answer
                 var obj = {};
@@ -273,7 +295,8 @@
                     case "fimage": data.fimage = val[i]; break;
                     case "bc": data.bc = val[i]; break;
                     case "fc": data.fc = val[i]; break;
-                    case "shade": data.shade = val[i]; break;                    
+                    case "shade": data.shade = val[i]; break;
+                    case "slug": data.slug = val[i]; break;                     
                 }
             }
             //console.log("data", data);
@@ -309,7 +332,8 @@
                     case "fimage": $rootScope.content[idx].fimage = val[i]; break;
                     case "bc": $rootScope.content[idx].bc = val[i]; break;
                     case "fc": $rootScope.content[idx].fc = val[i]; break;
-                    case "shade": $rootScope.content[idx].shade = val[i]; break;                   
+                    case "shade": $rootScope.content[idx].shade = val[i]; break;
+                    case "slug": $rootScope.content[idx].slug = val[i]; break;                   
                 }
             }
 

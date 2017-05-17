@@ -36,8 +36,22 @@
             });
         }
 
-        function setSetting(commission_percent){
-            
+        function setSetting(setting){
+            var url = SERVER_URL + 'settings/';
+            var req = {
+                method: 'POST',
+                url: url,
+                data: setting,
+                headers: {
+                    'X-Dreamfactory-API-Key': undefined,
+                    'X-DreamFactory-Session-Token': undefined
+                }
+            }
+
+            return $http(req).then(function(result){
+                $rootScope.setting = result.data.settings;
+                return result.data.settings;
+            });
         }
 
     }

@@ -23,8 +23,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
-// var rankxBaseUrl = "https://rank-x.com";
-var rankxBaseUrl = "http://localhost:3006";
+var rankxBaseUrl = "https://rank-x.com";
+// var rankxBaseUrl = "http://localhost:3006";
 
 
 
@@ -111,9 +111,14 @@ app.get('/settings/', function(req, res, next) {
 });
 
 app.post('/settings/', function(req, res, next) {
-    log("***********   responding to your GET request to Stripe Server ***************");
-    res.send('hello world ... just responding to your GET request to the Stripe Server \'/\'');
-
+    var config = jsonfile.readFileSync(configFilePath);
+    
+    for (key in req.body){
+        config[key] = req.body[key];
+    }
+    jsonfile.writeFileSync(configFilePath, config);
+    config.serverDate = moment().format('YYYY-MM-DD');
+    res.json({settings:config});
 });
 
 app.get('/stripeServer/:stripeId/invoices', function(req, res, next) {
@@ -188,7 +193,7 @@ app.post('/stripeServer/payPromoter', function(req, res, next) {
     }).catch(function(err){
         console.log(err);
         res.status(400).json({err: err});
-    })
+    });
 });
    
 // app.get('/dreamfactory-user', function (req, res) {

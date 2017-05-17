@@ -50,7 +50,9 @@
             endorse: endorse,
             chooseImgFromIgDlg: chooseImgFromIgDlg,
             showAllFriendsListDlg: showAllFriendsListDlg,
-            showBusinessDetailDlg: showBusinessDetailDlg
+            showBusinessDetailDlg: showBusinessDetailDlg,
+            whatisrankquestion: whatisrankquestion,
+            changeCommissionDlg: changeCommissionDlg
         };
         return service;
 
@@ -2159,8 +2161,32 @@
             });
 
         }
+       
+            function whatisrankquestion() {
 
-
+            var title = 'Ranking Question';
+            var message = 'The <strong>Ranking Question</strong> is what you ask users when comparing two items in the rank.' + 
+            ' It is the question to determine which item deserves the higher ranking.' + '<br><br>' + 
+            'For example, if ranking the "Hamburgers in Pacific Beach", ' + 
+            'the <strong>Ranking Question</strong> would be "Who makes the better burgers?".<br><br>'+
+            'The Ranking Question is shown in the Rank Console, when users rank their endorsements.<br><br>'+
+            '<img style="width:100%;height:auto" src="/assets/images/whatisrankquestion.png">' ;
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'Got it',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }]
+            });
+            }
         function showAllFriendsListDlg(userObjs, answername) {
             var imageListHtml = "<div class='row'>";
             for (var i = 0; i < userObjs.length; i++) {
@@ -2273,6 +2299,59 @@
                 },
 
             });
+        }exec
+
+        function changeCommissionDlg(STRIPE_COMMISSION_PERCENTAGE, execChangeFee) {
+            var imageListHtml = 
+            '<div class="row"> ' +
+            '<div class="col-xs-12"> ' +
+            '<div class="form-group">' +
+            '    <label for="commission-percent">Please Type Commission Percentage.</label> '+
+            '    <div class="col-xs-11"><input type="commission-percent" class="form-control" id="commission-percent" value="' + STRIPE_COMMISSION_PERCENTAGE*100 + '"> </div>' +
+            '    <div class="col-xs-1" style="padding: 10px;padding-left: 0px;"><span>%</span></div>' +
+            '</div>'
+            '</div></div>';
+            
+            BootstrapDialog.show({
+                size: BootstrapDialog.SIZE_SM,
+                type: BootstrapDialog.TYPE_PRIMARY,
+                cssClass: 'change-commission-percentage-dialog',
+                title: "Change Commmission",
+                message: function (dialogRef) {
+                    var $content = $(imageListHtml);
+                    var x = dialogRef;
+
+                    return $content;
+                },
+
+                buttons: [
+                    {
+                        label: 'Close',
+                        action: function (dialogRef) {
+                            dialogRef.close();
+                        }
+                    },
+                    {
+                        label: 'OK',
+                        action: function (dialogRef, result) {
+                            //console.log("dialogRef---", dialogRef);
+                            var percent = dialogRef.getModalBody().find('input').val();
+                            if (result) execChangeFee(percent);
+                            dialogRef.close();
+                        },
+                    }
+                ],
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: "OK",
+                btnOKLabel: "Close",
+                btnOKClass: 'btn-success',
+                btnCancelClass: 'btn-warning',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                }
+            });
         }
     }
+    
 })();

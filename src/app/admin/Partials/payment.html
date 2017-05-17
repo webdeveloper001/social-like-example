@@ -24,7 +24,7 @@
                         margin-bottom: 20px;
                         border-radius: 5px;">
                 Current Commission Fee is {{vm.STRIPE_COMMISSION_PERCENTAGE*100}}%.
-                <button class="btn btn-primary pull-right btn-sm">Change</button>
+                <button class="btn btn-primary pull-right btn-sm" ng-click="vm.changeCommission()">Change</button>
             </div>
             <button ng-class="vm.selectedPromoters.length == 0 ? 'disabled' : ''" class="btn btn-primary pull-right" style="margin-bottom:10px" ng-click="vm.paySelectedPromoters()">Pay Selected Promoters</button>
             <div style="clear:both"></div>

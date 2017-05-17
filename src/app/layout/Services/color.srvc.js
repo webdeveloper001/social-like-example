@@ -87,12 +87,13 @@
                     else if (x.tags.indexOf('city')>-1) {bc = 'gray'; fc = '#f8f8ff';}
                     else if (x.tags.indexOf('neighborhood')>-1) {bc = 'gray'; fc = '#f8f8ff';}
                     else if (x.tags.indexOf('politics')>-1) {bc = '#595959'; fc = '#f8f8ff';}
-                    else if (x.tags.indexOf('sports')>-1) {bc = '#e6e6e6'; fc = '#0033cc';} 
+                    else if (x.tags.indexOf('sports')>-1) {bc = '#4682b4'; fc = '#f8f8ff';} 
                     else if (x.tags.indexOf('beauty')>-1) {bc = '#a3297a'; fc = '#f8f8ff';}
                     else if (x.tags.indexOf('health')>-1) {bc = 'green'; fc = '#f8f8ff';}
+                    else if (x.tags.indexOf('services')>-1) {bc = '#c68c53'; fc = '#f8f8ff';}
                     else if (x.tags.indexOf('technology')>-1) {bc = 'gray'; fc = '#f8f8ff';}
                     else if (x.tags.indexOf('dating')>-1) {bc = '#b22222'; fc = '#f8f8ff';}
-                    else if (x.tags.indexOf('personalities')>-1) {bc = '#e6b800'; fc = 'black';}
+                    else if (x.tags.indexOf('personalities')>-1) {bc = '#c68c53'; fc = '#f8f8ff';}
                     else {bc = 'gray'; fc = '#f8f8ff';}
 
                     return [bc, fc];

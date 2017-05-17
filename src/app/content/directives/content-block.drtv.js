@@ -54,7 +54,7 @@ angular.module('app').directive('contentBlock',
                     scope.image2 = "/assets/images/noimage.jpg";
                     scope.image3 = "/assets/images/noimage.jpg";
                     scope.isShortPhrase = false;
-                
+                    
                     //load colors and headline
                     for (var i = 0; i < $rootScope.headlines.length; i++) {
                         if ($rootScope.headlines[i].type == scope.modType) {
@@ -101,29 +101,29 @@ angular.module('app').directive('contentBlock',
                             break;
                         }
                     }
-                       
-                    //Check if photos exist for Rank of Week
+                    //Copy without reference
+                    var sc = JSON.parse(JSON.stringify(scope.results[0]));
+                   //Check if photos exist for Rank of Week
                     if (scope.results.length > 0 && scope.results[0] != undefined) {
-                        if (scope.results[0].image1url != undefined) scope.image1 = scope.results[0].image1url;
-                        if (scope.results[0].image2url != undefined) scope.image2 = scope.results[0].image2url;
-                        if (scope.results[0].image3url != undefined) scope.image3 = scope.results[0].image3url;
-                    }
-
-                    //If featured image exist, shift images, set bg-box with color and shade
-                    if (scope.results[0].fimage != undefined && scope.results[0].fimage != ''){
-                        scope.image3 = scope.image2;
-                        scope.image2 = scope.image1;
-                        scope.image1 = scope.results[0].fimage;
-                        scope.rdbc = scope.results[0].bc;
-                        scope.rdfc = scope.results[0].fc;
-                        scope.shade = scope.results[0].shade;
-                    }
-                    else{
-                        var colors = color.defaultRankColor(scope.results[0]);
-                        scope.rdbc = colors[0];
-                        scope.rdfc = colors[1];
-                        scope.shade = 4;
-
+                        //If featured image exist, shift images, set bg-box with color and shade
+                        if (scope.results[0].fimage != undefined && scope.results[0].fimage != '' 
+                        && sc.image1url.indexOf('featuredImages')<0 ){
+                            scope.image3 = sc.image2url;
+                            scope.image2 = sc.image1url;
+                            scope.image1 = sc.fimage;
+                            scope.rdbc = scope.results[0].bc;
+                            scope.rdfc = scope.results[0].fc;
+                            scope.shade = scope.results[0].shade;
+                        }
+                        else{
+                            var colors = color.defaultRankColor(scope.results[0]);
+                            scope.rdbc = colors[0];
+                            scope.rdfc = colors[1];
+                            scope.shade = 4;
+                            if (scope.results[0].image1url != undefined) scope.image1 = sc.image1url;
+                            if (scope.results[0].image2url != undefined) scope.image2 = sc.image2url;
+                            if (scope.results[0].image3url != undefined) scope.image3 = sc.image3url;
+                        }                        
                     }
                     
                     //Check if results is Short-Phrase
