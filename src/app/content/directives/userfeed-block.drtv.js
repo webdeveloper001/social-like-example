@@ -43,7 +43,9 @@ angular.module('app').directive('userfeedBlock',
             console.log("$rootScope.uafs.length - ",$rootScope.uafs.length);
 
             scope.feeds = [];
-            $q.all($rootScope.uafs.map(function(feed){ return fbusers.getFBUserById(feed.userid); }))
+            $q.all($rootScope.uafs.map(function(feed){ 
+                return fbusers.getFBUserById(feed.userid); 
+            }))
             .then(function (fbUsers){
                 for (var i = 0; i < $rootScope.uafs.length; i++) {
                     var userWithPic = angular.copy($rootScope.uafs[i]);

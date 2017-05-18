@@ -318,6 +318,14 @@ a.navbar-profile-picture-wrapper span{
         top: 0px;
         left: 15px;
     }
+    #mybiztable{
+        padding: 4px;
+        font-size: 12px;
+    }
+    #mybiztable-container{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
 }
 
 @media screen and (max-width: 414px) {
@@ -329,6 +337,9 @@ a.navbar-profile-picture-wrapper span{
         padding-left: 10px;
         display: inline;
         line-height: 40px;
+    }
+    .hidden-custom{
+        display: none;
     }
 }
 

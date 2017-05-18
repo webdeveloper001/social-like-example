@@ -11,24 +11,24 @@
 <div ng-if="vm.dataReady">
 
 <div class="container">
-<div class="container" ng-if="!vm.noAns&&vm.overview">
+<div class="container" ng-if="!vm.noAns&&vm.overview" id="mybiztable-container">
 	<h3>My Business</h3>
 
-	<table class="table">
+	<table class="table" id="mybiztable">
 		<tbody>
 			<thead style="border-style:none;">
 				<tr>
 					<th>Name</th>
-					<th>Promoter</th>
-					<th>Code</th>
+					<!--<th>Promoter</th>
+					<th class="hidden-custom">Code</th>-->
 					<th colspan=2 text-align="center">Memberships</th>
 				</tr>
 			</thead>
 			<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
 			<tr ng-repeat="x in vm.mybizs" style="cursor:pointer;">
 				<td ng-click="vm.gotoanswer(x)">{{x.name}}</td>
-				<td>{{x.promoterObj?x.promoterObj.firstname + ' ' + x.promoterObj.lastname:'None'}}</td>
-				<td>{{x.promoterObj?x.promoterObj.code:'None'}}</td>
+				<!--<td>{{x.promoterObj?x.promoterObj.firstname + ' ' + x.promoterObj.lastname:'None'}}</td>
+				<td class="hidden-custom">{{x.promoterObj?x.promoterObj.code:'None'}}</td>-->
 				<td align="center" style="{{x.style}}" ng-click="vm.gotomanage(x)">{{x.status}}</td>
 				<td align="center" style="{{x.style2}}" ng-click="vm.gotomanage(x)">{{x.status2}}</td>
 			</tr>
@@ -65,19 +65,20 @@
 			ng-if="vm.business.isPremium||vm.business.hasRanks">Subscriptions</h4>
 	<div class="text-right">
 		<div class="btn-group" ng-if="vm.business.isPremium||vm.business.hasRanks" style="padding-bottom:5px">
-			<button type="button" class="btn btn-default" ng-class="vm.showPaymentInfo?'active':''" ng-click="vm.showPaymentInfoEditClicked()">Edit Payment Info</button>
-			<button type="button" class="btn btn-default" ng-class="vm.showInvoices?'active':''" ng-click="vm.showInvoicsClicked()">Invoices</button>
+			<button type="button" class="btn btn-default" ng-class="vm.showPaymentInfo?'active':''" ng-click="vm.showPaymentInfoEditClicked()">{{vm.showPaymentInfo?'Hide Payment Info':'Show Payment Info'}}</button>
+			<button type="button" class="btn btn-default" ng-class="vm.showInvoices?'active':''" ng-click="vm.showInvoicsClicked()">{{vm.showInvoices?'Hide Invoices':'Show Invoices'}}</button>
 		</div>
 	</div>	
 	<div ng-if="vm.showPaymentInfo && !vm.business.loadingInvoices">
 		<h3> Payment Information </h3>
 		<hr>
-		Now you are billing with {{vm.business.customer.sources.data[0].brand}} Card 
-		<span><code> **** - **** - **** - {{vm.business.customer.sources.data[0].last4}} </code></span>
-		Please Click here to change the card 
-		<button id="updateCardButton" name="updateCardButton" class="btn btn-success" onClick="updateCardNumberButton()">Update Card Details</button>
+		<div class="text-center">
 		
-		<form action="http://localhost:3000/StripeServer/changeSource" method="POST" ng-submit="changeCardNumber()" id="updateCardNumberForm">
+		<span>Now you are billing with {{vm.business.customer.sources.data[0].brand}} Card  <code> **** - **** - **** - {{vm.business.customer.sources.data[0].last4}} </code>
+		Please Click here to change the card.</span><br/>
+			<button id="updateCardButton" name="updateCardButton" class="btn btn-success" onClick="updateCardNumberButton()" style="margin-top:10px">Update Card Details</button>
+		</div>
+		<form action="https://server.rank-x.com/StripeServer/changeSource" method="POST" ng-submit="changeCardNumber()" id="updateCardNumberForm">
 
           <div style="display: none"> <!-- D -->
             <script

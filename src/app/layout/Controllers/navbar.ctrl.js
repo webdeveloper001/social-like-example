@@ -23,7 +23,7 @@
         vm.goToLogin = goToLogin;
         vm.gotoAbout = gotoAbout;
         vm.gotomybusiness = gotomybusiness;
-        vm.gotomyfavs = gotomyfavs;
+        vm.gotofavs = gotofavs;
         vm.gotoFeedback = gotoFeedback;
         vm.gotoTour = gotoTour;
         vm.gotoHome = gotoHome;
@@ -133,16 +133,18 @@
               gotoHome();
             }
 */
-            $state.go('mybusiness');            
+            $state.go('mybusiness');   
+            $(".navbar-collapse").collapse('hide');         
         }
 
-        function gotomyfavs() {
+        function gotofavs() {
             //$stateProvider.state('app');
             $state.go('favs');
         }
 
         function goPromoterConsole(){
             $state.go('promoterconsole');
+            $(".navbar-collapse").collapse('hide');
         }
 
         function gotoAbout() {
@@ -167,6 +169,7 @@
 
         function gotoTour() {
             dialog.tour();
+            $(".navbar-collapse").collapse('hide');
         }
 
         function gotoHome() {
@@ -204,6 +207,8 @@
 
                 vm.user = '';
                 vm.isLoggedIn = false;
+                vm.hasBusiness = false;
+                vm.isPromoter = false;
 
                 localStorage.clear();
 

@@ -35,22 +35,23 @@
 				<tbody>
 					<thead style="border-style:none;">
 						<tr>
-							<th>Business</th>
-							<th>Total Commission After Trial</th>
+							<th>Business Name</th>
 							<th>Status</th>
+							<th style="text-align:right">Commission (after trial)</th>
 						</tr>
 					</thead>
 					<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
 					<tr ng-repeat="x in vm.myaccnts" style="cursor:pointer;">
-						<td ng-click="vm.gotoanswer(x)">{{x.name}}</td>
-						<td ng-click="vm.gotomanage(x)">${{x.totalCommission}}</td>
+						<td ng-click="vm.gotoanswer(x.answerObj)">{{x.name}}</td>
 						<td align="middle" style="{{x.style}}" ng-click="vm.gotomanage(x)">{{x.status}}</td>
+						<td ng-click="vm.gotomanage(x)" style="text-align:right">${{x.totalCommission}}</td>
 					</tr>
 				</tbody>
 			</table>
 			<div ng-if="vm.manageview">
-				<p class="text-left"><strong>Owner Name:</strong>&nbsp{{vm.business.answerObj.name}}</p>
-				<p class="text-left"><strong>Owner Name:</strong>&nbsp{{vm.business.username}}</p>
+				<p class="text-left"><strong>Business Name:</strong>&nbsp{{vm.business.answerObj.name}}</p>
+				<p class="text-left"><strong>Email:</strong>&nbsp{{vm.business.email}}</p>
+				<p class="text-left"><strong>Owner/Contact Name:</strong>&nbsp{{vm.business.username}}</p>
 				<p class="text-left"><strong>Last Name:</strong>&nbsp{{vm.promoter.lastname}}</p>
 				<p class="text-left"><strong>Status:</strong><span align="middle" style="{{x.style}}" >{{x.business.status}}</span></p>
 				<p class="text-left"> 
@@ -82,7 +83,6 @@
 				</p>
 				<p class="text-left"><strong>Address:</strong>&nbsp{{vm.promoter.address}}</p>
 				<p class="text-left"><strong>Phone Number:</strong>&nbsp{{vm.promoter.phone}}</p>
-				<p class="text-left"><strong>Promoter Code:</strong>&nbsp{{vm.promoter.code}}</p>
 			</div>
 			<div ng-if="vm.noAns">
 				</br>

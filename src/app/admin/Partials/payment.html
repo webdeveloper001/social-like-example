@@ -76,7 +76,7 @@
                     <tbody>
                         <!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
                         <tr ng-repeat="x in vm.currentPromoter.businesses" style="cursor:pointer;">
-                            <td ng-click="vm.gotoanswer(x)" >{{x.answerObj.name}}</td>
+                            <td ng-click="vm.gotoanswer(x.answerObj)" >{{x.answerObj.name}}</td>
                             <td ng-click="vm.showBusinessDetail(x)">${{x.totalCommission}}</td>
                             <td align="middle" style="{{x.style}}"  ng-click="vm.showBusinessDetail(x)">{{x.status}}</td>
                         </tr>

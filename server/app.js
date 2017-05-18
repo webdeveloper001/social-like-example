@@ -159,7 +159,10 @@ app.get('/stripeServer/connectpromoter', function(req, res, next) {
         var accessToken = JSON.parse(body).access_token;
         var stripe_user_id = JSON.parse(body).stripe_user_id;
 
-        writeToDreamFactoryPromoters("updatePromoterStripeId", promoterId, {stripeid: stripe_user_id}, res);
+        writeToDreamFactoryPromoters("updatePromoterStripeId", promoterId, {stripeid: stripe_user_id}, res)
+        .end(function(response){
+            res.redirect(rankxBaseUrl + '/promoterconsole?connectStripe=success');
+        });
     });
 });
 
