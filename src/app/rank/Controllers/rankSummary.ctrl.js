@@ -457,7 +457,9 @@
                 foodNearMe = true;
                 vm.fnm = true;
                 vm.showR = false;
-            }               
+            }
+
+            vm.introtext = $rootScope.cCategory.introtext;               
                 
             //vm.url = 'http://rankdev.azurewebsites.net/#/rankSummary/' + $rootScope.cCategory.id;
             //vm.header = "table" + $rootScope.cCategory.id + ".header";
