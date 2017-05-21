@@ -281,9 +281,15 @@
         }
 
         function goSaveText(){
+            //Save post for social media
             rankofday.update(vm.rank.id,['introtext'],[vm.rank.introtext]).then(function(){
                 dialog.getDialog('introTextSaved');
                 loadData();
+            });
+            //Save intro text for ranking
+            table.update(vm.rank.rankid,['introtext'],[vm.rank.webtext]).then(function(){
+                //dialog.getDialog('introTextSaved');
+                //loadData();
             });
         }
 

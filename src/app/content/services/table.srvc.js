@@ -296,7 +296,8 @@
                     case "bc": data.bc = val[i]; break;
                     case "fc": data.fc = val[i]; break;
                     case "shade": data.shade = val[i]; break;
-                    case "slug": data.slug = val[i]; break;                     
+                    case "slug": data.slug = val[i]; break;
+                    case "introtext": data.introtext = val[i]; break;                     
                 }
             }
             //console.log("data", data);
@@ -333,7 +334,8 @@
                     case "bc": $rootScope.content[idx].bc = val[i]; break;
                     case "fc": $rootScope.content[idx].fc = val[i]; break;
                     case "shade": $rootScope.content[idx].shade = val[i]; break;
-                    case "slug": $rootScope.content[idx].slug = val[i]; break;                   
+                    case "slug": $rootScope.content[idx].slug = val[i]; break;
+                    case "introtext": $rootScope.content[idx].introtext = val[i]; break;                   
                 }
             }
 
