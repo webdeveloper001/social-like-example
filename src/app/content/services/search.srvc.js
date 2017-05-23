@@ -107,8 +107,6 @@
                 var m_nh = false; //reference to neighborhood
                 var nh = ''; //neighborhood reference
                 var sc = false; //special case
-
-                
                     //vm.content = $rootScope.content;
                     var valTags = inputVal.split(" ");
                     for (var j = 0; j < $rootScope.content.length; j++) {

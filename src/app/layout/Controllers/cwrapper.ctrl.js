@@ -6,27 +6,42 @@
         .controller('cwrapper', cwrapper);
 
     cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
-        'query', 'table', 'dialog', 'uaf','$window','userdata','$location','color', 'fbusers', '$q', '$timeout'];
+        'query', 'table', 'dialog', 'uaf','$window','userdata','$location','color', 'fbusers', '$q', '$timeout', 'filter', 'search'];
 
     function cwrapper($rootScope, $state, $http, $stateParams, $scope,
-        query, table, dialog, uaf, $window, userdata, $location, color, fbusers, $q, $timeout) {
+        query, table, dialog, uaf, $window, userdata, $location, color, fbusers, $q, $timeout, filter, search) {
         /* jshint validthis:true */
         var vm = this;
         //-----SEO tags ----
         $scope.$parent.$parent.$parent.seo = { 
-            pageTitle : 'Home | ', 
+            pageTitle : 'Home ', 
             metaDescription: 'Home | Rank-X creates collective rankings on everything in your city.' 
         };
         
         //if ($location.absUrl().indexOf('code=')>-1) $window.location.search = '';
          
+
+        /// ui-scroll
+        var datasource = {};
+        datasource.get = function (index, count, success) {
+                $timeout(function () {
+                    var result = [];
+                    for (var i = index; i <= index + count - 1; i++) {
+                        result.push("item #" + i);
+                    }
+                    success(result);
+                }, 100);
+            };
+
+        vm.datasource = datasource;
+        ///Ui-scroll ends
+
         vm.title = 'cwrapper';
 
         vm.switchScope = switchScope;
         
         if ($rootScope.hidelogo == undefined) vm.hidelogo = false;
         else vm.hidelogo = $rootScope.hidelogo;
-          
         //Quick Links 
         vm.foodNearMe = foodNearMe;
         vm.events = events;
@@ -37,6 +52,7 @@
         vm.goHome = goHome;
         vm.gotoAnswer = gotoAnswer;
         vm.gotoRank = gotoRank;
+        
         //vm.fres = 4;
         //vm.ftext = 'see more';
         
@@ -57,6 +73,178 @@
                 goHome();
             }
         });
+
+
+        /* Start Ininite scrolling and new features by Roy */
+        vm.loadMore = loadMore;
+        vm.showLess = showLess;
+
+        vm.pageDataLoaded = $rootScope.pageDataLoaded;
+        vm.initalHomeData = $rootScope.initalHomeData;
+        
+        vm.currentIndex = 0;
+            vm.startIndex = 0;
+        if($rootScope.sm){
+            vm.scrollingItemsOnePage = 6;
+            vm.loadingCountOneScroll = 3;
+        }
+        else{
+            vm.loadingCountOneScroll = 6;
+            vm.scrollingItemsOnePage = 12;
+        }
+
+        vm.scrollingItemsOnePage = 1000;
+        vm.scrollingData = [];
+        vm.scrollDataLoading = false;
+        vm.content = [];
+        vm.endReached = false;
+        vm.scrollingData = [];
+        vm.uniqueResult = [];
+        if($rootScope.pageDataLoaded){
+            vm.content = $rootScope.content;
+            loadInifiniteScroll(false);
+        }
+
+        $rootScope.$on('filterOptionChanged', function () {
+            if(vm.pageDataLoaded)
+                loadInifiniteScroll(true);
+        });
+
+        $rootScope.$on('homeDataLoaded', function () {
+            vm.pageDataLoaded = true;
+            vm.content = $rootScope.content;
+            loadInifiniteScroll();
+        });
+
+
+        angular.element($window).bind("scroll", function() {
+            var height = Math.max( angular.element('body')[0].scrollHeight, angular.element('body')[0].offsetHeight, 
+                       angular.element('html')[0].clientHeight, angular.element('html')[0].scrollHeight, angular.element('html')[0].offsetHeight );
+            if (($('#inifinite-container').offset().top + 600 > this.pageYOffset) && (this.pageYOffset > $('#inifinite-container').offset().top)) {
+                console.log(height, this.pageYOffset);
+                // vm.showLess();
+            } 
+            $scope.$apply();
+        });
+        function loadInifiniteScroll(reloading){
+
+            vm.currentIndex = 0;
+            vm.startIndex = 0;
+            vm.loadingCountOneScroll = 6;
+            vm.scrollingData = [];
+            vm.scrollDataLoading = false;
+            vm.content = [];
+            vm.endReached = false;
+            vm.scrollingData = [];
+            
+            var searchResult = [];
+            var uniqueResult = [];
+
+            var searchLocation = '';
+            if($rootScope.filterOptions.isCity)
+                searchLocation = " in San Diego";
+            else
+                searchLocation = ' in ' + $rootScope.filterOptions.cnh;
+
+            if($rootScope.filterOptions.isAllTopics && $rootScope.filterOptions.isCity){
+                uniqueResult = angular.copy($rootScope.content.filter(function(ranking){ return ranking.ismp == 1;}));
+            } else if($rootScope.filterOptions.isAllTopics && !$rootScope.filterOptions.isCity) {
+                var res = search.searchRanks($rootScope.filterOptions.cnh);
+                searchResult = searchResult.concat(res);
+            } else {
+                for (var i = 0; i < $rootScope.filterOptions.ctopics.length; i++) {
+                    var res = search.searchRanks($rootScope.filterOptions.ctopics[i].toLowerCase() + searchLocation);
+                    searchResult = searchResult.concat(res);
+                
+                }
+            }
+
+            shuffle(searchResult);
+
+            searchResult.forEach(function(ranking){
+                if(uniqueResult.indexOf(ranking) == -1){
+                    uniqueResult.push(ranking);
+                }
+            });
+
+            uniqueResult.sort(function(ranking1, ranking2){
+                var view1 = ranking1.views ? ranking1.views : 0;
+                var view2 = ranking2.views ? ranking2.views : 0;
+                if( ranking1.id == ranking2.id )
+                    return 0;
+
+                return view1 < view2 ? 1 : -1;
+            })
+
+            if(reloading) {
+                if( uniqueResult.length >= 8 ) {
+                    vm.initalHomeData = uniqueResult.splice(0, 8);
+                    filter.saveInitalHomeData(vm.initalHomeData);
+                } else {
+                    vm.initalHomeData = uniqueResult;
+                    filter.saveInitalHomeData(vm.initalHomeData);
+                    uniqueResult = [];
+                }
+                vm.uniqueResult = uniqueResult;
+            } else {
+                var initalHomeDataIDs = vm.initalHomeData.map(function(ranking){ return ranking.id; })
+                vm.uniqueResult = uniqueResult.filter(function(ranking){
+                    return initalHomeDataIDs.indexOf(ranking.id) == -1;
+                });
+
+            }
+            for(var i = 0; i < vm.uniqueResult.length; i ++){
+                //Push Only applying to filters
+                vm.scrollingData.push(i);
+            }
+            
+            shuffle(vm.scrollingData);
+            //Sort again to lay rankings with images first
+        }
+
+        function loadMore(){
+
+            vm.scrollDataLoading = true;
+            $timeout(function(){
+                if(vm.currentIndex + vm.loadingCountOneScroll > vm.scrollingData.length - 1){
+                    vm.current = vm.scrollingData.length;
+                    vm.endReached = true;
+                }
+                vm.currentIndex += vm.loadingCountOneScroll;
+                if((vm.currentIndex - vm.startIndex) > vm.scrollingItemsOnePage){
+                    vm.startIndex = vm.currentIndex - vm.scrollingItemsOnePage;        
+                }
+
+            
+                vm.scrollDataLoading = false;
+            }, 500);
+        }
+
+        function showLess(){
+            if(vm.startIndex >= 3){
+                vm.startIndex -= 3;
+                vm.currentIndex -= 3;
+            }
+        }
+        function shuffle(array) {
+            var currentIndex = array.length, temporaryValue, randomIndex;
+
+            // While there remain elements to shuffle...
+            while (0 !== currentIndex) {
+
+                // Pick a remaining element...
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex -= 1;
+
+                // And swap it with the current element.
+                temporaryValue = array[currentIndex];
+                array[currentIndex] = array[randomIndex];
+                array[randomIndex] = temporaryValue;
+            }
+
+            return array;
+        }
+        /* End Ininite scrolling and new features by Roy */
 
         $scope.$on('$destroy',mainViewListener);
 
@@ -170,12 +358,6 @@
         }
 
         function loadcontent() {
-
-            //vm.content=[];
-            //vm.searchArray = [];
-            ///vm.empty = [];
-            //vm.cTags = {};
-            
             $rootScope.cityranks = ['city', 'lifestyle', 'food', 'politics', 'services', 'social', 'beauty', 'sports', 'personalities', 'technology', 'dating', 'health'];
             $rootScope.nhranks = ['neighborhood', 'lifestyle', 'food', 'services', 'social', 'beauty', 'health'];
 

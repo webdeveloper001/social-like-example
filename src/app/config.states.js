@@ -226,13 +226,23 @@
                     }
                 }
             },  
-          {
+            {
                 name: 'favs',
                 parent: 'layout',
                 url: '/favs',
                 templateUrl: 'app/layout/Partials/favs.html',
                 controller: 'favs as ctrl'
-          }
+            },
+
+            {
+                name: 'feeds',
+                parent: 'layout',
+                //abstract: true,
+                url: '/feeds', ///cwrapper',
+                templateUrl: 'app/layout/Partials/feeds.html',
+                controller: 'feeds as vm'
+            },
+
         ];
 
         $(states).each(function () {

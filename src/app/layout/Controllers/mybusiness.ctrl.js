@@ -52,6 +52,7 @@
         vm.showPaymentInfoEditClicked = showPaymentInfoEditClicked;
         vm.changeCardNumber = changeCardNumber;
         vm.GetFormattedDate = GetFormattedDate;
+        vm.hideInvoices = hideInvoices;
         vm.mybizs = [];
         activate();
         vm.noAns = false;
@@ -150,6 +151,9 @@
 
         function showInvoicsClicked(){
             vm.showInvoices = !vm.showInvoices;
+        }
+        function hideInvoices(){
+            vm.showInvoices = false;   
         }
         function showPaymentInfoEditClicked(){
             vm.showPaymentInfo = !vm.showPaymentInfo;

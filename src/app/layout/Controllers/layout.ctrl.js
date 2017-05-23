@@ -17,11 +17,11 @@
 
     layout.$inject = ['$location', '$rootScope', '$window', '$q', '$http', 'pvisits', '$cookies', '$scope',
         'DEBUG_MODE', 'EMPTY_IMAGE', 'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata', 'dialog',
-        'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state','dataloader', 'setting'];
+        'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state','dataloader', 'setting', 'filter'];
 
     function layout($location, $rootScope, $window, $q, $http, pvisits, $cookies, $scope,
         DEBUG_MODE, EMPTY_IMAGE, rankofday, answer, table, special, datetime, uaf, userdata, dialog,
-        matchrec, edit, useractivity, vrows, headline, cblock, catans, $state, dataloader, setting) {
+        matchrec, edit, useractivity, vrows, headline, cblock, catans, $state, dataloader, setting, filter) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'layout';
@@ -50,6 +50,63 @@
         
         vm.goPrivacyPolicy = goPrivacyPolicy;
         vm.goRankofDayConsole = goRankofDayConsole;
+        /* Start Filtering feature by Roy */
+        
+        vm.showFilters = false;
+        vm.toggleFilterBox = function(){
+            vm.showFilters = !vm.showFilters;
+        }
+        
+        vm.selectNh = function(item, data){
+            vm.filterOptions.isCity = false;
+            vm.filterOptions.isNh = true;
+        }
+
+        vm.selectTopic = function(topic){
+            if (topic == "All"){
+                if(vm.filterOptions.isAllTopics == false){
+                    vm.filterOptions.isAllTopics = true;
+                    vm.filterOptions.ctopics = vm.allTopics;
+                } else {
+                    vm.filterOptions.isAllTopics = false;
+                    vm.filterOptions.ctopics = [];
+                }
+
+            } else {
+                if (vm.filterOptions.ctopics.indexOf(topic) !== -1) {
+                    vm.filterOptions.isAllTopics = false;
+                    vm.filterOptions.ctopics.splice(vm.filterOptions.ctopics.indexOf(topic), 1);
+                } else {
+                    vm.filterOptions.ctopics.push(topic);
+                    var isAll = vm.allTopics.filter(function(topic){ return vm.filterOptions.ctopics.indexOf(topic) == -1 });
+                    if(isAll.length == 0){
+                        vm.filterOptions.isAllTopics = true;
+                    }
+                }
+            }
+        }
+        
+        vm.switchLocationScope = function(loc){
+            if( loc == 'city' ){
+                vm.filterOptions.isCity = true;    
+                vm.filterOptions.isNh = false;
+            } else {
+
+                vm.filterOptions.isCity = false;
+                vm.filterOptions.isNh = true;
+            }
+        }
+
+        vm.applyFilters = function(){
+            if(vm.filterOptions.ctopics.length == 0){
+                alert("Please select at least 1 topic.");
+                return;
+            }
+            filter.saveFilterOptions(vm.filterOptions);
+            $rootScope.$emit('filterOptionChanged');
+            vm.showFilters = !vm.showFilters;
+        }
+        /* End Filtering feature by Roy */
 
         $rootScope.$on('refreshRanks', function () {
             if ($state.current.name == 'cwrapper') {
@@ -73,7 +130,10 @@
         $rootScope.$on('answerDataLoaded', function () {
             loadingDone();
         });
-
+        $rootScope.$on('initalHomeDataLoaded', function () {
+            $rootScope.initalHomeDataLoaded = true;
+            loadingDone();
+        });
         /*
         if ($window.innerWidth < 512) vm.logoimage = "../../../assets/images/rankxlogosd_sm.png";
         else vm.logoimage = "../../../assets/images/rankxlogosd.png";
@@ -132,7 +192,7 @@
 
             //If user is logged in, get data of this user
             if ($rootScope.isLoggedIn){
-                 userdata.loadUserData();        //load user data (votes and activities)
+                userdata.loadUserData();        //load user data (votes and activities)
                 userdata.loadUserAccount();     //load user business account
             }
 
@@ -160,7 +220,14 @@
             $rootScope.districts = [
                 "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
                 "Marina", "Bankers Hill"];
+
+            vm.nhs = [];
+            vm.nhs = vm.nhs.concat($rootScope.neighborhoods,$rootScope.districts);
+            vm.allTopics = ['LifeStyle', 'Social', 'Sports', 'Food', 'Beauty & Fashion', 'Family', 'Technology', 'Dating', 'City', 'Services', 'Health', 'Celebrities'];
+
             
+            vm.filterOptions = filter.loadFilterOptions();
+
             $rootScope.allnh = $rootScope.neighborhoods.concat($rootScope.districts);
 
             $http.get('../../../assets/fields.json').then(function (response) {
@@ -183,7 +250,8 @@
                 console.log("rank id: ",match[1]);
             }
 */
-
+            if(!filter.loadInitalHomeData())
+                table.getMostPopularData();
             dataloader.gethomedata();
             dataloader.getallranks();
             dataloader.getallcblocks();
@@ -212,6 +280,8 @@
             else if (window.location.href.indexOf('promoteconsole')>-1)
                 $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded && 
                                     $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
+            else if (window.location.href.indexOf('home')>-1)
+                $rootScope.dataIsLoaded = $rootScope.initalHomeDataLoaded;
             else $rootScope.dataIsLoaded = $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
 
             vm.isLoading = !$rootScope.dataIsLoaded;

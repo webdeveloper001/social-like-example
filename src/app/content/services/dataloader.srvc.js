@@ -22,10 +22,16 @@
             getrankdata: getrankdata,
             getanswerdata: getanswerdata,
             getpagevisitdata: getpagevisitdata,
+            getInitalHomeData: getInitalHomeData
         };
 
         return service;
 
+        function getInitalHomeData() {
+            table.getInitalHomeData().then(function(response){
+
+            });
+        }
         function gethomedata() {
 
             var p0 = table.getTablesMain();
@@ -48,6 +54,7 @@
 
                 $rootScope.pageDataLoaded = true;
                 //loadingDone();
+                createSearchStrings();
                 if ($rootScope.DEBUG_MODE) console.log("cwrapper data ready!");
                 $rootScope.$emit('homeDataLoaded');
 
@@ -66,7 +73,7 @@
                 createSearchStrings();
                 //loadingDone();
                 if ($rootScope.DEBUG_MODE) console.log("all ranks data ready!");
-                //$rootScope.$emit('homeDataLoaded');
+                // $rootScope.$emit('homeDataLoaded');
 
             });
         }

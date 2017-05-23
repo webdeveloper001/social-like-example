@@ -5,9 +5,9 @@
         .module('app')
         .factory('table', table);
 
-    table.$inject = ['$http', '$q', '$rootScope','answer','$state'];
+    table.$inject = ['$http', '$q', '$rootScope','answer','$state', 'filter'];
 
-    function table($http, $q, $rootScope, answer, $state) {
+    function table($http, $q, $rootScope, answer, $state, filter) {
 
         // Members
         var _tables = [];
@@ -21,10 +21,21 @@
             update: update,
             addTable: addTable,
             addTableforAnswer: addTableforAnswer,
-            deleteTable: deleteTable
+            deleteTable: deleteTable,
+            getMostPopularData: getMostPopularData
         };
 
         return service;
+        function getMostPopularData(){
+            // $rootScope.filterOptions.isCity
+            $http.get(baseURI + '?order=views DESC&offset=0&limit=8')
+            .then(function(data){
+                $rootScope.initalHomeData = data.data.resource;
+                filter.saveInitalHomeData($rootScope.initalHomeData);
+                $rootScope.$emit('initalHomeDataLoaded');
+            });
+            return true;
+        }
 
         function getTables(forceRefresh) {
 

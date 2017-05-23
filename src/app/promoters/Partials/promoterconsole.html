@@ -19,6 +19,9 @@
 				You should link your stripe account to get payed.
 				<a class="btn btn-primary" ng-click="vm.connectStripe()">Connect with Stripe</a>
 			</div>
+			<div ng-if="vm.notifications.length != 0">
+				<notification-block notifications="vm.notifications" />
+			</div>
 			<p class="text-left"><strong>First Name:</strong>&nbsp{{vm.promoter.firstname}}</p>
 			<p class="text-left"><strong>Last Name:</strong>&nbsp{{vm.promoter.lastname}}</p>
 			<p class="text-left"><strong>Email:</strong>&nbsp{{vm.promoter.email}}</p>
@@ -35,9 +38,9 @@
 				<tbody>
 					<thead style="border-style:none;">
 						<tr>
-							<th>Business Name</th>
-							<th>Status</th>
-							<th style="text-align:right">Commission (after trial)</th>
+							<th class="text-center">Business Name</th>
+							<th class="text-center">Status</th>
+							<th class="text-center">Commission (after trial)</th>
 						</tr>
 					</thead>
 					<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->

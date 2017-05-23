@@ -29,5 +29,8 @@
         '720kb.datepicker', //date picker for specials
         '720kb.socialshare',
         'ngFacebook',
+        
+        'ui.select',
+        'infinite-scroll'
     ]);
 })();

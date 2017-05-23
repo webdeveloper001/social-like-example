@@ -1,0 +1,6 @@
+<div>
+	<div class="alert fade in" ng-repeat = "notification in notifications" ng-class="notification.type=='success' ? 'alert-success' : 'alert-warning'">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  		<strong>{{noticiation.type.toUpperCase()}}</strong> {{notification.message}}
+  	</div>
+</div>

@@ -63,9 +63,9 @@
                             // accntcopy.answerObj = $rootScope.answers[i];
                             accntcopy.totalCommission = 0;
                             if(accntcopy.ispremium)
-                                accntcopy.totalCommission += accntcopy.ranksqty * 35 * vm.STRIPE_COMMISSION_PERCENTAGE;
-                            if(accntcopy.hasranks)
                                 accntcopy.totalCommission += accntcopy.price*vm.STRIPE_COMMISSION_PERCENTAGE;
+                            if(accntcopy.hasranks)
+                                accntcopy.totalCommission += accntcopy.ranksqty * 35 * vm.STRIPE_COMMISSION_PERCENTAGE;
                             
                             pextend.businesses.push(accntcopy);
                             getAnswer(pextend.businesses[pextend.businesses.length-1]);

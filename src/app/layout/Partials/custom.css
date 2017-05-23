@@ -349,3 +349,11 @@ a.navbar-profile-picture-wrapper span{
     }
 }
 
+
+.active-back{
+    background-color: #efefef;
+}
+
+.ranking-blog-item:hover{
+    background: #efefef;
+}

@@ -10,10 +10,11 @@
     function promoterconsole(location, $rootScope, $state, $window, useraccnt, dialog, promoter, $location, STRIPE_CLIENT_ID, setting) {
         /* jshint validthis:true */
         var vm = this;
+        vm.notifications = [];        
         if($window.location.href.indexOf('connectStripe') !== -1) {
             var isSuccess =  $window.location.href.slice($window.location.href.indexOf('connectStripe')).split('=')[1].split('&')[0];
             if(isSuccess == 'success'){
-                $window.alert("Successfully connected to Stripe Account.");
+                vm.notifications.push({message:"You are successfully connected to your Stripe Account", type: "success"});
             } else {
                 $window.alert($window.location.href.slice($window.location.href.indexOf('message')).split('=')[1].split('&')[0]);
             }
@@ -120,10 +121,10 @@
                             }
                         }
                         obj.totalCommission = 0;
-                        if(obj.ispremiumobj)
-                            obj.totalCommission += obj.ranksqty * 35 * vm.STRIPE_COMMISSION_PERCENTAGE;
+                        if(obj.ispremium)
+                            obj.totalCommission += obj.price  * vm.STRIPE_COMMISSION_PERCENTAGE;
                         if(obj.hasranks)
-                            obj.totalCommission += obj.price*vm.STRIPE_COMMISSION_PERCENTAGE;
+                            obj.totalCommission += obj.ranksqty* 35 *vm.STRIPE_COMMISSION_PERCENTAGE;
 
                         vm.myaccnts.push(obj);
                     }

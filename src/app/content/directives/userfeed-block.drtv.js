@@ -7,6 +7,7 @@ angular.module('app').directive('userfeedBlock',
         templateUrl: 'app/content/partials/userfeed-block.html',
         transclude: true,
         scope: {
+            showAll: '@'
         },
         controller: ['$scope','$window',
             
@@ -53,22 +54,26 @@ angular.module('app').directive('userfeedBlock',
                     scope.feeds[i] = userWithPic;
                  }
             });
-            scope.fres = 6;
+            if(scope.showAll == 'true')
+                scope.fres = 30;
+            else
+                scope.fres = 6;
             scope.ftext = 'see more';
             //console.log("vm.feeds - ", vm.feeds);
         }
         
         scope.seeMoreFeed = function(){
-            if (scope.fres == 6){
-                scope.fres = 20;
-                scope.ftext = 'see less';
-                return;
-            }
-            if (scope.fres == 20){
-                scope.fres = 6;
-                scope.ftext = 'see more';
-                return;
-            }            
+            // if (scope.fres == 6){
+            //     scope.fres = 20;
+            //     scope.ftext = 'see less';
+            //     return;
+            // }
+            // if (scope.fres == 20){
+            //     scope.fres = 6;
+            //     scope.ftext = 'see more';
+            //     return;
+            // }            
+            $state.go('feeds');
         }
         
         scope.refreshFeed = function(){

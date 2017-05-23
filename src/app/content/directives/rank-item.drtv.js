@@ -1,4 +1,4 @@
-angular.module('app').directive('rankBlock', 
+angular.module('app').directive('rankItem', 
     ['$rootScope', '$state', 'answer', 'table', 'catans', '$timeout', 'vrows','$window','cblock','color','search',
     function ($rootScope, $state, answer, table, catans, $timeout, vrows, $window, cblock, color, search) {
     'use strict';
@@ -7,8 +7,7 @@ angular.module('app').directive('rankBlock',
         templateUrl: 'app/content/partials/rank-block.html',
         transclude: true,
         scope: {
-            theme: '@',
-            type: '@',
+            rankObject: '='
         },
         controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 'vrows','$window','cblock','color','search',
             
@@ -46,68 +45,26 @@ angular.module('app').directive('rankBlock',
                     scope.w4 = Math.round(w/4)-5;
                     scope.w8 = Math.round(w/8); 
 
-                    //load content 
-                    for (var i = 0; i < $rootScope.cblocks.length; i++) {
-                        if (($rootScope.cblocks[i].scope == 'city' && $rootScope.isCity) &&
-                            ($rootScope.cblocks[i].type == scope.theme)) {
-                            catstr = $rootScope.cblocks[i].catstr;
-                            idxs = catstr.split(':');
-                            shuffle(idxs);
-                            for (var j = 0; j < idxs.length; j++) {
-                                nidx = $rootScope.content.map(function(x) {return x.id; }).indexOf(Number(idxs[j]));
-                                scope.results.push($rootScope.content[nidx]);
-                            }
-                            bFound = true;
-                            break;
-                        }
-                    }
+
                     
                     //
                     scope.resultsTop = [];
                     var resObj = {};
-                    //var M = scope.results.length > 2 ? 3:scope.results.length;
-                    var M = scope.results.length;
-                    if (M > 0) {
-                        for (var n = 0; n < M; n++) {
-                            resObj = {};
-                            resObj = JSON.parse(JSON.stringify(scope.results[n]));
-    /*
-                            //Set only ranks with good images on front-page
-                            if (scope.results[n].fimage != $rootScope.EMPTY_IMAGE && 
-                                scope.results[n].fimage != undefined &&
-                                scope.results[n].fimage != ''){
-                                editTitle(resObj);
-                                parseShortAnswer(resObj);
-                                scope.resultsTop.push(resObj);
-                            }
-    */
-                            //Set only ranks with good images on front-page
-                            if (scope.results[n].image1url != $rootScope.EMPTY_IMAGE && 
-                                scope.results[n].image1url != undefined &&
-                                scope.results[n].image1url != ''){
-                                editTitle(resObj);
-                                parseShortAnswer(resObj);
-                                if (resObj.type != 'Short-Phrase' || resObj.fimage != undefined){
-                                    scope.resultsTop.push(resObj);
-                                }
-                            }
 
+                    resObj = {};
+                    resObj = JSON.parse(JSON.stringify(scope.rankObject));
 
-                            /*
-                            else {
-                                //shift up results, move rank with bad images to end of array
-                                for (var m = n; m < M-1; m++){
-                                    scope.results[m] = scope.results[m+1]; 
-                                }
-                                scope.results[M-1] = resObj;
-                            }
-                            if (scope.resultsTop.length > 2 || scope.resultsTop.length == M ) {
-                                scope.results = scope.results.slice(scope.resultsTop.length+1);
-                                break;
-                            }*/
-                        }
-                        
-                    }
+                    // if (scope.rankObject.image1url != $rootScope.EMPTY_IMAGE && 
+                    //     scope.rankObject.image1url != undefined &&
+                    //     scope.rankObject.image1url != ''){
+                        editTitle(resObj);
+                        parseShortAnswer(resObj);
+                        // if (resObj.type != 'Short-Phrase' || resObj.fimage != undefined){
+                            scope.resultsTop.push(resObj);
+                        // }
+                    // }
+
+                    
                     var tr = scope.resultsTop[0]; //top result
                     scope.title = tr.title;
                     
@@ -120,8 +77,7 @@ angular.module('app').directive('rankBlock',
                     if (scope.stats.numcom == undefined || scope.stats.numcom == null )
                     scope.stats.numcom = 0;
 
-                    if (scope.type == 'basic') scope.isBasic = true;
-                    if (scope.type == 'grid4') scope.isGrid4 = true;
+                    scope.isBasic = true;
                     
 
                     //Set Feautured Image && box color
@@ -153,25 +109,6 @@ angular.module('app').directive('rankBlock',
                     scope.image1 = tr.image1url;
                 } 
                                         
-            }
-
-            function shuffle(array) {
-                var currentIndex = array.length, temporaryValue, randomIndex;
-
-                // While there remain elements to shuffle...
-                while (0 !== currentIndex) {
-
-                    // Pick a remaining element...
-                    randomIndex = Math.floor(Math.random() * currentIndex);
-                    currentIndex -= 1;
-
-                    // And swap it with the current element.
-                    temporaryValue = array[currentIndex];
-                    array[currentIndex] = array[randomIndex];
-                    array[randomIndex] = temporaryValue;
-                }
-
-                return array;
             }
 
             function editTitle(x){
