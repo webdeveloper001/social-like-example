@@ -1,6 +1,6 @@
-<div class="container" style="max-height:200px">
-    <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+<div class="">
+    <div class="">
+        <div class="col-xs-12 " style=" padding: 0px;">
 
 
             <ul class="nav nav-tabs">
@@ -9,12 +9,12 @@
             </ul>
 
             <div class="tab-content" >
-                <div class="tab-pane in active fade" style="padding-top:10px;padding-bottom:10px; max-height: 340px; overflow-y: scroll;" id="popular">
+                <div class="tab-pane in active fade" style="padding-top:10px;padding-bottom:10px;  " ng-class="showAll =='true' ?'':'trend-tab-single-page'" id="popular">
                         
-                    <div class="col-xs-12 media ranking-blog-item" ng-repeat="ranking in popularOrder" style="cursor: pointer;" ng-click="rankSel(ranking)">
+                    <div class="col-xs-12 media ranking-blog-item" ng-repeat="ranking in popularOrder  | limitTo:popularLimit" style="cursor: pointer;" ng-click="rankSel(ranking)">
 
                         <div class="profile-avatar-wrapper media-left">
-                            <img src="{{ranking.image1url ? ranking.image1url : '../../../assets/images/noimage.jpg'}}" />
+                            <img src="{{ranking.realimage}}" />
                         </div>
                         <div class="media-body" style="vertical-align: middle;">
                             {{ranking.title}}
@@ -23,13 +23,15 @@
 
                     </div>
 
+
+                    <p class="text-center" style="color:blue; margin-top:10px" ng-if="showAll == 'true'"><a class="btn btn-default" style='margin-right:20px;' ng-click="seeMore('popular')">See More</a><a class="btn btn-default" href="/home">Back</a></p>
                 </div>
-                <div class="tab-pane fade"  style="padding-top:10px;padding-bottom:10px; max-height: 340px; overflow-y: scroll;" id="newest">
+                <div class="tab-pane fade"  style="padding-top:10px;padding-bottom:10px; " id="newest" ng-class="showAll =='true' ?'':'trend-tab-single-page'">
                     
-                    <div class="col-xs-12 media ranking-blog-item" ng-repeat="ranking in newestOrder"  ng-click="rankSel(ranking)" style="cursor: pointer;">
+                    <div class="col-xs-12 media ranking-blog-item" ng-repeat="ranking in newestOrder| limitTo:newestLimit"  ng-click="rankSel(ranking)" style="cursor: pointer;">
 
                         <div class="profile-avatar-wrapper media-left">
-                            <img src="{{ranking.image1url ? ranking.image1url : '../../../assets/images/noimage.jpg'}}" />
+                            <img src="{{ranking.realimage}}" />
                         </div>
                         <div class="media-body" style="vertical-align: middle;">
                             {{ranking.title}}
@@ -37,8 +39,12 @@
                         </div>
 
                     </div>
+
+                    <p class="text-center" style="color:blue; margin-top:10px" ng-if="showAll == 'true'"><a class="btn btn-default" style='margin-right:20px;' ng-click="seeMore('newest')">See More</a><a class="btn btn-default" href="/home">Back</a></p>
                 </div>
             </div>
+
+            <p class="text-center " style="color:blue;margin-top:10px" ng-if="showAll == 'false'" ><a class="btn btn-default" href="/trends">See More</a></p>
             <!--
     <div class="row" ng-click="rankSel(resultsTop[0],false)" ng-if="isBasic">
         <div class="container-bgbox col-xs-6 col-sm-3 col-md-3 col-lg-2">

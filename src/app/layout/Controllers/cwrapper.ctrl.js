@@ -32,7 +32,7 @@
                     success(result);
                 }, 100);
             };
-
+        vm.sm = $rootScope.sm;
         vm.datasource = datasource;
         ///Ui-scroll ends
 
@@ -117,15 +117,15 @@
         });
 
 
-        angular.element($window).bind("scroll", function() {
-            var height = Math.max( angular.element('body')[0].scrollHeight, angular.element('body')[0].offsetHeight, 
-                       angular.element('html')[0].clientHeight, angular.element('html')[0].scrollHeight, angular.element('html')[0].offsetHeight );
-            if (($('#inifinite-container').offset().top + 600 > this.pageYOffset) && (this.pageYOffset > $('#inifinite-container').offset().top)) {
-                console.log(height, this.pageYOffset);
-                // vm.showLess();
-            } 
-            $scope.$apply();
-        });
+        // angular.element($window).bind("scroll", function() {
+        //     var height = Math.max( angular.element('body')[0].scrollHeight, angular.element('body')[0].offsetHeight, 
+        //                angular.element('html')[0].clientHeight, angular.element('html')[0].scrollHeight, angular.element('html')[0].offsetHeight );
+        //     if (($('#inifinite-container').offset().top + 600 > this.pageYOffset) && (this.pageYOffset > $('#inifinite-container').offset().top)) {
+        //         console.log(height, this.pageYOffset);
+        //         // vm.showLess();
+        //     } 
+        //     $scope.$apply();
+        // });
         function loadInifiniteScroll(reloading){
 
             vm.currentIndex = 0;

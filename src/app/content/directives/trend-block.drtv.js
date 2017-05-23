@@ -7,6 +7,7 @@ angular.module('app').directive('trendBlock',
         templateUrl: 'app/content/partials/trend-block.html',
         transclude: true,
         scope: {
+            showAll: '@'
         },
         controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 'vrows','$window','cblock','color','search',
             
@@ -28,6 +29,8 @@ angular.module('app').directive('trendBlock',
             if (scope.isDestroyed == undefined){
                 //   loadContent();
             }   
+                scope.popularLimit = 8;
+                scope.newestLimit = 8;
                 
                 scope.seeTab = function(x){
                     if (x == 1){
@@ -54,7 +57,18 @@ angular.module('app').directive('trendBlock',
                         return view1 < view2 ? 1 : -1;
                     })
 
-                    scope.popularOrder = res.slice(0, 8);
+                    res.forEach(function(ranking){
+                        if(ranking.fimage && ranking.fimage != '') {
+                            ranking.realimage = ranking.fimage;
+                        } else if (ranking.image1url  && ranking.image1url != '') {
+                            ranking.realimage = ranking.image1url;
+                        } else {
+                            ranking.realimage = '../../../assets/images/noimage.jpg';
+                        }
+                    })
+                    scope.popularOrder = res;
+
+                    res = angular.copy($rootScope.content.filter(function(ranking){ return ranking.ismp == 1;}));
 
                     res.sort(function(ranking1, ranking2){
                         var view1 = ranking1.timestmp ? ranking1.timestmp : 0;
@@ -63,10 +77,25 @@ angular.module('app').directive('trendBlock',
                             return 0;
 
                         return view1 < view2 ? 1 : -1;
+                    });
+                    res.forEach(function(ranking){
+                        if(ranking.fimage  && ranking.fimage != '') {
+                            ranking.realimage = ranking.fimage;
+                        } else if (ranking.image1url  && ranking.image1url != '') {
+                            ranking.realimage = ranking.image1url;
+                        } else {
+                            ranking.realimage = '../../../assets/images/noimage.jpg';
+                        }
                     })
-                    scope.newestOrder = res.slice(0, 8);
+                    scope.newestOrder = res;
                 }
-
+            scope.seeMore = function(status){
+                if(status == 'newest'){
+                    scope.newestLimit += 8;
+                } else {
+                    scope.popularLimit += 8;
+                }
+            }
             scope.rankSel = function (x,nm) {
                 if (nm) $rootScope.rankIsNearMe = true;
                 else $rootScope.rankIsNearMe = false;

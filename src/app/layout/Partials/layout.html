@@ -51,7 +51,7 @@
                 </div>
             </div> 
             
-            <div class="col-xs-12" ng-if="vm.showFilters" style="font-size: 18px">
+            <div class="col-xs-12 fade in" ng-if="vm.showFilters" style="font-size: 18px">
                 <h2> Filters </h2>
                 <hr/>
                 <form class="row form-horizontal">
@@ -120,7 +120,7 @@
         <div ng-show="vm.searchActive">	
 	        <search-block ng-click="vm.hideSearch()" query="{{vm.val}}" ans="true" ranks="true" length="vm.slen"></search-block>
         </div> 
-        <div ui-view ng-if="!vm.isLoading&&!vm.searchActive"></div>
+        <div ui-view ng-if="!vm.isLoading&&!vm.searchActive" class="container"></div>
     </div>
 
 </div>

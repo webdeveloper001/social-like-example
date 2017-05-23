@@ -242,6 +242,14 @@
                 templateUrl: 'app/layout/Partials/feeds.html',
                 controller: 'feeds as vm'
             },
+            {
+                name: 'trends',
+                parent: 'layout',
+                //abstract: true,
+                url: '/trends', ///cwrapper',
+                templateUrl: 'app/layout/Partials/trends.html',
+                controller: 'trends as vm'
+            },
 
         ];
 

@@ -66,7 +66,7 @@
             if (topic == "All"){
                 if(vm.filterOptions.isAllTopics == false){
                     vm.filterOptions.isAllTopics = true;
-                    vm.filterOptions.ctopics = vm.allTopics;
+                    vm.filterOptions.ctopics = angular.copy(vm.allTopics);
                 } else {
                     vm.filterOptions.isAllTopics = false;
                     vm.filterOptions.ctopics = [];

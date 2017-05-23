@@ -357,3 +357,10 @@ a.navbar-profile-picture-wrapper span{
 .ranking-blog-item:hover{
     background: #efefef;
 }
+.rank-item{
+    margin-right: 5px;
+}
+.trend-tab-single-page{
+    max-height: 320px;
+    overflow-y: scroll;
+}

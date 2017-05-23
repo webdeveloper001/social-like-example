@@ -62,18 +62,14 @@ angular.module('app').directive('userfeedBlock',
             //console.log("vm.feeds - ", vm.feeds);
         }
         
-        scope.seeMoreFeed = function(){
-            // if (scope.fres == 6){
-            //     scope.fres = 20;
-            //     scope.ftext = 'see less';
-            //     return;
-            // }
-            // if (scope.fres == 20){
-            //     scope.fres = 6;
-            //     scope.ftext = 'see more';
-            //     return;
-            // }            
-            $state.go('feeds');
+        scope.seeMoreFeed = function(isShowAll){
+            if(scope.showAll == 'true'){
+                scope.fres += 20;
+                      
+            }         
+            else{
+                $state.go('feeds');
+            }
         }
         
         scope.refreshFeed = function(){
