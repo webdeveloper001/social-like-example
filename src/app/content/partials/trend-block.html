@@ -2,13 +2,14 @@
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
 
+
             <ul class="nav nav-tabs">
-                <li class="active" style="cursor: pointer"><a data-toggle="tab" ng-click="seeTab(1)">Popular</a></li>
-                <li style="cursor: pointer"><a data-toggle="tab" ng-click="seeTab(2)">Newest</a></li>
+                <li class="active" style="cursor: pointer"><a data-toggle="tab" href="#popular">Popular</a></li>
+                <li style="cursor: pointer"><a data-toggle="tab" href="#newest">Newest</a></li>
             </ul>
 
-            <div class="tab-content">
-                <div class="tab-pane in active" ng-show="popular" style="padding-top:10px;padding-bottom:10px; max-height: 340px; overflow-y: scroll;">
+            <div class="tab-content" >
+                <div class="tab-pane in active fade" style="padding-top:10px;padding-bottom:10px; max-height: 340px; overflow-y: scroll;" id="popular">
                         
                     <div class="col-xs-12 media ranking-blog-item" ng-repeat="ranking in popularOrder" style="cursor: pointer;" ng-click="rankSel(ranking)">
 
@@ -23,7 +24,7 @@
                     </div>
 
                 </div>
-                <div class="tab-pane in active"  ng-show="newest" style="padding-top:10px;padding-bottom:10px; max-height: 340px; overflow-y: scroll;" >
+                <div class="tab-pane fade"  style="padding-top:10px;padding-bottom:10px; max-height: 340px; overflow-y: scroll;" id="newest">
                     
                     <div class="col-xs-12 media ranking-blog-item" ng-repeat="ranking in newestOrder"  ng-click="rankSel(ranking)" style="cursor: pointer;">
 
