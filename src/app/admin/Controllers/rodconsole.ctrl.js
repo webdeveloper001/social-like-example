@@ -91,7 +91,7 @@
                         rods[i].image2 = res[0].image2url;
                         rods[i].image3 = res[0].image3url;
                         rods[i].isatomic = res[0].isatomic;
-                        rods[i].shade = res[0].shade;
+                        rods[i].webtext = res[0].introtext;
                         rods[i].datenum = datetime.date2number(rods[i].date);
                         
                         if (rods[i].bc == undefined || rods[i].bc == ''){
@@ -281,9 +281,15 @@
         }
 
         function goSaveText(){
+            //Save post for social media
             rankofday.update(vm.rank.id,['introtext'],[vm.rank.introtext]).then(function(){
                 dialog.getDialog('introTextSaved');
                 loadData();
+            });
+            //Save intro text for ranking
+            table.update(vm.rank.rankid,['introtext'],[vm.rank.webtext]).then(function(){
+                //dialog.getDialog('introTextSaved');
+                //loadData();
             });
         }
 
