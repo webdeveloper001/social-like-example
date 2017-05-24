@@ -68,6 +68,7 @@
 
 		<div class="col-xs-12  col-md-6"  ng-repeat="ranking in vm.initalHomeData"  ng-if="vm.initalHomeData.length<4">
 			<rank-item rank-object="ranking"></rank-item>
+
 		</div>
 		<div class="col-xs-12  col-md-6" ng-repeat="ranking in vm.initalHomeData.slice(0, 4)" ng-if="vm.initalHomeData.length>=4">
 			<rank-item rank-object="ranking"></rank-item>
