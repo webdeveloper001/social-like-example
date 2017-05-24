@@ -3,19 +3,19 @@
 <div class="container hidden-xs" ng-if="!isShortPhrase">
     <div class="row">
         <!-- Box 1 - Answer Name and Info -->
-        <div class="container col-sm-6 col-md-4 col-lg-4" style="height:{{mxheight}}px;margin:0px;padding:0px;border:0px;">
+        <div class="container col-sm-6 col-md-4 col-lg-4" ng-attr-style="height:{{mxheight}}px;margin:0px;padding:0px;border:0px;">
             <div class="container-bgbox">
                 <bg-box bc="{{bc}}" bc2="{{bc2}}" fc="{{fc}}" text="{{idx > 0 ? idx + '. ' + answer.name:answer.name}}" 
                     dir="vertical" w="100%" h="120px"></bg-box>
             </div>
-            <div class="container" style="width:100%; height:{{mxheight-120}}px;background-color:#d8d8d8;">
+            <div class="container" ng-attr-style="width:100%; height:{{mxheight-120}}px;background-color:#d8d8d8;">
                 <br ng-if="!sm">
                 <strong ng-if="answer.location">Address:</strong>
                 <a ng-if="answer.location" href="http://maps.apple.com/maps?q={{answer.location}}" target="_blank">{{answer.location}}</a>
                 <br ng-if="answer.location">
                 <strong ng-if="answer.cityarea">{{(answer.cityarea) ? 'Neighboorhood:' : ""}}</strong> {{(answer.cityarea)
                 ? answer.cityarea : ""}}
-                <br style="display:{{(answer.cityarea) ? 'inline' : 'none'}}">
+                <br ng-attr-style="display:{{(answer.cityarea) ? 'inline' : 'none'}}">
                 <strong ng-if="answer.phone">Phone:</strong> <a ng-if="answer.phone" href="tel:{{answer.phone}}">{{answer.phone}}</a>
                 <br style="display:{{(answer.phone) ? 'inline' : 'none'}}">
                 <strong ng-if="answer.website">Website:</strong>
@@ -24,11 +24,10 @@
                 <br ng-if="answer.website">
                 <strong ng-if="answer.email">{{(answer.email) ? 'Email:' : ""}}</strong> {{(answer.email) ? answer.email
                 : ""}}
-                <br style="display:{{(answer.email) ? 'inline' : 'none'}}">
-                <i style="display:{{hrset ? 'inline':'none'}}">{{hourstr}}</i>
+                <br ng-attr-style="display:{{(answer.email) ? 'inline' : 'none'}}">
+                <i ng-attr-style="display:{{hrset ? 'inline':'none'}}">{{hourstr}}</i>
                 <div class=" text-center answer_info_buttons">
                     <br>
-
                     <a type="button" class="btn btn-default" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;" ng-if="!answer.hasOwner || userIsOwner"
                         ng-click="editAnswer()" target="_blank">
                         Edit&nbsp&nbsp<span class="fa fa-pencil"></span>
@@ -52,7 +51,7 @@
         <!-- Box 2 - Answer Image (On Smaller displays, alternate image and map) -->
         <div class="col-sm-6 col-md-4 col-lg-4" style="margin:0px;padding:0px;border:0px;">
 
-            <img class="displayed" ng-src="{{answer.imageurl}}" alt="Moustiers Sainte Marie" style="height:{{mxheight}}px;width:100%;margin-left:auto;margin-right:auto;"
+            <img class="displayed" ng-src="{{answer.imageurl}}" alt="Moustiers Sainte Marie" ng-attr-style="height:{{mxheight}}px;width:100%;margin-left:auto;margin-right:auto;"
                 ng-click="showUrl()" ng-if="modeIsImage">
 
             <img class="displayed" ng-src="https://maps.googleapis.com/maps/api/staticmap?center={{answer.location}}&zoom=13&size={{width2}}x{{mxheight}}&maptype=roadmap
@@ -67,7 +66,7 @@
                 &markers=color:red%7Clabel:%7C{{answer.lat}},{{answer.lng}}&key=AIzaSyDKXsql-P8czb4nAQMXjkFpm_I5HqKsQpo"
                 ng-if="hasMap">
 
-                <div class="container" style="background-color:#d8d8d8;width:{{width3}}px;height:{{mxheight}}px;margin-left:auto;margin-right:auto;"
+                <div class="container" ng-attr-style="background-color:#d8d8d8;width:{{width3}}px;height:{{mxheight}}px;margin-left:auto;margin-right:auto;"
                     ng-if="!hasMap">
             </div>
         </div>
@@ -146,5 +145,5 @@
     <span>{{answer.addinfo_teaser}}</span>
     <span ng-show="completeinfo">{{answer.addinfo_complete}}</span>
     <span ng-if="answer.addinfo.length > 0" ng-click="showcomplete()" style="background-color:lightgray;cursor:pointer">{{moretext}}</span>
-    <br style="display:{{answer.addinfo ? 'inline':'none'}}">
+    <br ng-attr-style="display:{{answer.addinfo ? 'inline':'none'}}">
 </div>

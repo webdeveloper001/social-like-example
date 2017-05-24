@@ -84,13 +84,13 @@
 			    <bg-box bc="{{vm.bc}}" shade="{{vm.shade}}" fc="{{vm.fc}}" text="{{vm.ranking}}" dir="horizontal" w="100%" h="{{vm.sm ? '200px':'200px'}}"></bg-box>
 			</div>
 		<div class="col-xs-6 col-sm-6 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
-			<img ng-src="{{vm.image1}}" style="display:{{vm.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '200px':'200px'}};">
+			<img ng-src="{{vm.image1}}" ng-attr-style="display:{{vm.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '200px':'200px'}};">
 		</div>
 		<div class="hidden-xs hidden-sm col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
-			<img ng-src="{{vm.image2}}" style="display:{{vm.image2 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '200px':'200px'}};">
+			<img ng-src="{{vm.image2}}" ng-attr-style="display:{{vm.image2 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '200px':'200px'}};">
 		</div>
 		<div class="hidden-xs hidden-sm hidden-md col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
-			<img ng-src="{{vm.image3}}" style="display:{{vm.image3 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '200px':'200px'}};">
+			<img ng-src="{{vm.image3}}" ng-attr-style="display:{{vm.image3 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '200px':'200px'}};">
 		</div>
 
 		<div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" ng-if="vm.isShortPhrase" style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
