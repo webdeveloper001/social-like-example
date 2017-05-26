@@ -147,7 +147,9 @@
                 searchLocation = ' in ' + $rootScope.filterOptions.cnh;
 
             if($rootScope.filterOptions.isAllTopics && $rootScope.filterOptions.isCity){
-                uniqueResult = angular.copy($rootScope.content.filter(function(ranking){ return ranking.ismp == 1;}));
+                // uniqueResult = angular.copy($rootScope.content.filter(function(ranking){ return ranking.ismp == 1;}));
+                var res = search.searchRanks('san diego');
+                searchResult = searchResult.concat(res);
             } else if($rootScope.filterOptions.isAllTopics && !$rootScope.filterOptions.isCity) {
                 var res = search.searchRanks($rootScope.filterOptions.cnh);
                 searchResult = searchResult.concat(res);

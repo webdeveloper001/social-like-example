@@ -525,6 +525,7 @@ app.post('/StripeServer/charge', function(req, res, next) {
     this.useraccntId = req.body.useraccntId;
     var userEmail = req.body.userEmail;
     this.couponValid = req.body.couponValid;
+    this.bizcat = req.body.bizcat;
     this.getPremium = req.body.getPremiumPlan;
     this.getRanks = req.body.getCustomRanks;
     this.ranksQuantity = req.body.ranksQuantity;
@@ -535,7 +536,7 @@ app.post('/StripeServer/charge', function(req, res, next) {
     var subscriptions = [];
     if (this.getPremium == 'true') {
         var item = {};
-        item.plan = "premium-plan-REB";
+        item.plan = "premium-plan-" + this.bizcat;
         subscriptions.push(item);
     }
     if (this.getRanks == 'true') {
