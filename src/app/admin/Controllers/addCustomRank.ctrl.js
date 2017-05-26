@@ -29,9 +29,11 @@
         vm.selectImg = selectImg;
         vm.processImage = processImage;
         vm.whatisrankquestion = whatisrankquestion;
+        vm.whataretags = whataretags;
         vm.csel = csel;
         vm.c1sel = true;
-        vm.showAlert = false;    
+        vm.showAlert = false;
+        vm.showAddButton = false;    
         
         var item = {};
         var rankTitleOk = true;
@@ -286,6 +288,7 @@
 
         function selectImg(){
             vm.step = 7;
+            vm.showAddButton = true;
         }
 
         function alertOk(){
@@ -312,6 +315,9 @@
 
         function whatisrankquestion(){
             dialog.whatisrankquestion();
+        }
+        function whataretags(){
+            dialog.getDialog('whataretags');
         }
 
         function processImage(category){
