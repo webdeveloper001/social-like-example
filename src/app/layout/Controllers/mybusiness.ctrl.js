@@ -5,9 +5,9 @@
         .module('app')
         .controller('mybusiness', mybusiness);
 
-    mybusiness.$inject = ['$location', '$rootScope', '$state', '$window','useraccnt','dialog','answer','$http','promoter', 'SERVER_URL'];
+    mybusiness.$inject = ['$location', '$rootScope', '$state', '$window','useraccnt','dialog','answer','$http','promoter', 'SERVER_URL', '$q', 'setting'];
 
-    function mybusiness(location, $rootScope, $state, $window, useraccnt, dialog, answer, $http, promoter, SERVER_URL) {
+    function mybusiness(location, $rootScope, $state, $window, useraccnt, dialog, answer, $http, promoter, SERVER_URL, $q, setting) {
         /* jshint validthis:true */
         if($window.location.href.indexOf('cardUpdate') !== -1) {
             var isSuccess =  $window.location.href.slice($window.location.href.indexOf('cardUpdate')).split('=')[1].split('&')[0];
@@ -69,8 +69,9 @@
             $state.go('mybusiness', {}, {reload: true})
         }
         function activate() {
-            useraccnt.getuseraccnt().then(function(result){
-                $rootScope.useraccnts = result;
+            $q.all([ useraccnt.getuseraccnt(),  setting.getSetting()]).then(function(data){
+                $rootScope.useraccnts = data[0];
+                vm.CUSTOM_RANK_PRICE = data[1].CUSTOM_RANK_PRICE;
                 vm.dataReady = true;
                 loadData();
             });
@@ -318,7 +319,7 @@
                 dialog.getDialog('nothingSelectedForPurchase');
             }
             else {
-                vm.total = vm.getRanks*vm.ranksQty*35 + vm.getPremium*vm.business.price;
+                vm.total = vm.getRanks*vm.ranksQty*vm.CUSTOM_RANK_PRICE + vm.getPremium*vm.business.price;
                 vm.manageview = false;
                 vm.checkout = true;
                 loopCheck('purchase');

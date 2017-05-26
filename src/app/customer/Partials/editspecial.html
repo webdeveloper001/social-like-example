@@ -19,7 +19,7 @@
 		</div>
 		<div class="col-xs-12 col-sm-4 col-md-4">
 			<input class="form-control" ng-model="vm.sp.stitle" type="text" placeholder="Special Banner" ng-change="vm.displayCharLength()"
-			maxlength="25" style="background-color:{{vm.sp.bc}};color:{{vm.sp.fc}}">
+			maxlength="25" ng-attr-style="background-color:{{vm.sp.bc}};color:{{vm.sp.fc}}">
 		</div>
 		<div class="col-xs-8 hidden-sm hidden-md hidden-lg hidden-xl"> </div>
 		<div class="col-xs-6 col-sm-4 col-md-4">
@@ -171,7 +171,7 @@
 		<div class="col-sm-0 col-md-3 col-lg-3"></div>
 		<div class="container col-sm-12 col-md-6 col-lg-6">
 			<p> Event Details </p>
-			<textarea class="form-control" ng-model="vm.sp.details" placeholder="{{x.label}}" rows="4" style="background-color:{{vm.sp.bc}};color:{{vm.sp.fc}};width:100%"></textarea>
+			<textarea class="form-control" ng-model="vm.sp.details" placeholder="{{x.label}}" rows="4" ng-attr-style="background-color:{{vm.sp.bc}};color:{{vm.sp.fc}};width:100%"></textarea>
 		</div>
 		<div class="col-sm-0 col-md-3 col-lg-3"></div>
 		<br>
@@ -194,7 +194,7 @@
 	<div class="form-group text-center">
 		<button type="button" class="btn btn-success" ng-click="vm.goBack()">Back</button>
 		<button type="button" class="btn btn-primary" ng-click="vm.showPreview()">Preview</button>
-		<button type="button" class="btn btn-danger" ng-click="vm.deleteSpecial()" style="display:{{vm.isEdit ? 'inline':'none'}}">Delete</button>
+		<button type="button" class="btn btn-danger" ng-click="vm.deleteSpecial()" ng-attr-style="display:{{vm.isEdit ? 'inline':'none'}}">Delete</button>
 
 	</div>
 </div>

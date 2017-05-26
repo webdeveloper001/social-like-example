@@ -46,7 +46,7 @@
 					<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
 					<tr ng-repeat="x in vm.myaccnts" style="cursor:pointer;">
 						<td ng-click="vm.gotoanswer(x.answerObj)">{{x.name}}</td>
-						<td align="middle" style="{{x.style}}" ng-click="vm.gotomanage(x)">{{x.status}}</td>
+						<td align="middle" ng-attr-style="{{x.style}}" ng-click="vm.gotomanage(x)">{{x.status}}</td>
 						<td ng-click="vm.gotomanage(x)" style="text-align:right">${{x.totalCommission}}</td>
 					</tr>
 				</tbody>
@@ -56,7 +56,7 @@
 				<p class="text-left"><strong>Email:</strong>&nbsp{{vm.business.email}}</p>
 				<p class="text-left"><strong>Owner/Contact Name:</strong>&nbsp{{vm.business.username}}</p>
 				<p class="text-left"><strong>Last Name:</strong>&nbsp{{vm.promoter.lastname}}</p>
-				<p class="text-left"><strong>Status:</strong><span align="middle" style="{{x.style}}" >{{x.business.status}}</span></p>
+				<p class="text-left"><strong>Status:</strong><span align="middle" ng-attr-style="{{x.style}}" >{{x.business.status}}</span></p>
 				<p class="text-left"> 
 					<table class="table"  ng-if="vm.business.status=='Active'">
 						<tbody>
@@ -72,7 +72,7 @@
 							</tr>
 							<tr ng-if="vm.business.hasranks" style="cursor:pointer;">
 								<td style="width:45%">{{vm.business.ranksqty}} Custom Ranks</td>
-								<td style="width:15%">${{vm.business.ranksqty*35*vm.STRIPE_COMMISSION_PERCENTAGE}}</td>
+								<td style="width:15%">${{vm.business.ranksqty*vm.CUSTOM_RANK_PRICE*vm.STRIPE_COMMISSION_PERCENTAGE}}</td>
 							</tr>
 							<tr>
 								<td style="width:45%">Total</td>

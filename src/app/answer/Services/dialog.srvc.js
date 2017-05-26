@@ -52,7 +52,8 @@
             showAllFriendsListDlg: showAllFriendsListDlg,
             showBusinessDetailDlg: showBusinessDetailDlg,
             whatisrankquestion: whatisrankquestion,
-            changeCommissionDlg: changeCommissionDlg
+            changeCommissionDlg: changeCommissionDlg,
+            changeCodePriceDlg: changeCodePriceDlg
         };
         return service;
 
@@ -1565,7 +1566,7 @@
             var m4 = '';
             var cap = '';
 
-           // <div class="container hidden-xs hidden-sm hidden-md col-lg-3" ng-if="isShortPhrase" style="background-color:lightgray;color:black;height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+           // <div class="container hidden-xs hidden-sm hidden-md col-lg-3" ng-if="isShortPhrase" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
 //  <div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
         
 
@@ -2232,7 +2233,7 @@
         }
 
 
-        function showBusinessDetailDlg(x, STRIPE_COMMISSION_PERCENTAGE) {
+        function showBusinessDetailDlg(x, STRIPE_COMMISSION_PERCENTAGE,CUSTOM_RANK_PRICE) {
             var imageListHtml = 
             '<div class="row"> ' +
             '<div class="col-xs-12"> ' +
@@ -2257,7 +2258,7 @@
                 imageListHtml += 
                             '<tr style="cursor:pointer;">' + 
                                 '<td style="width:45%">' + x.ranksqty +' Custom Ranks</td>' + 
-                                '<td style="width:15%">$'+x.ranksqty*35*STRIPE_COMMISSION_PERCENTAGE + '</td>' + 
+                                '<td style="width:15%">$'+x.ranksqty*CUSTOM_RANK_PRICE*STRIPE_COMMISSION_PERCENTAGE + '</td>' + 
                             '</tr>';
             }
             imageListHtml +=          
@@ -2337,6 +2338,58 @@
                             //console.log("dialogRef---", dialogRef);
                             var percent = dialogRef.getModalBody().find('input').val();
                             if (result) execChangeFee(percent);
+                            dialogRef.close();
+                        },
+                    }
+                ],
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: "OK",
+                btnOKLabel: "Close",
+                btnOKClass: 'btn-success',
+                btnCancelClass: 'btn-warning',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                }
+            });
+        }
+
+        function changeCodePriceDlg(codeprice, execChangeCodePrice) {
+            var imageListHtml = 
+            '<div class="row"> ' +
+            '<div class="col-xs-12"> ' +
+            '<div class="form-group">' +
+            '    <label for="commission-percent">Please Enter '+codeprice.code+' plan price.</label> '+
+            '    <div class="col-xs-11"><input type="commission-percent" class="form-control" id="commission-percent" value="' + codeprice.price + '"> </div>' +
+            '    <div class="col-xs-1" style="padding: 10px;padding-left: 0px;"><span>$</span></div>' +
+            '</div>'
+            '</div></div>';
+            
+            BootstrapDialog.show({
+                size: BootstrapDialog.SIZE_SM,
+                type: BootstrapDialog.TYPE_PRIMARY,
+                cssClass: 'change-commission-percentage-dialog',
+                title: "Change " + codeprice.code + " Price",
+                message: function (dialogRef) {
+                    var $content = $(imageListHtml);
+                    var x = dialogRef;
+
+                    return $content;
+                },
+
+                buttons: [
+                    {
+                        label: 'Close',
+                        action: function (dialogRef) {
+                            dialogRef.close();
+                        }
+                    },
+                    {
+                        label: 'Change',
+                        action: function (dialogRef, result) {
+                            //console.log("dialogRef---", dialogRef);
+                            var price = dialogRef.getModalBody().find('input').val();
+                            if (result) execChangeCodePrice(codeprice, price);
                             dialogRef.close();
                         },
                     }

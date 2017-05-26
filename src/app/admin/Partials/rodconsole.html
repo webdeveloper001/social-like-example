@@ -42,8 +42,8 @@
                     <tr ng-repeat="x in vm.rods" style="cursor:pointer;" ng-click="vm.selRank(x)">
                         <td align="middle">{{x.datenum}}</td>
                         <td align="middle">{{x.title}}</td>
-                        <td align="middle" style="background-color:{{x.imageok ? 'palegreen':'grey'}}">{{x.imageok ? 'Ready':'None'}}</td>
-                        <td align="middle" style="background-color:{{x.textok ? 'palegreen':'grey'}}">{{x.textok ? 'Ready':'None'}}</td>
+                        <td align="middle" ng-attr-style="background-color:{{x.imageok ? 'palegreen':'grey'}}">{{x.imageok ? 'Ready':'None'}}</td>
+                        <td align="middle" ng-attr-style="background-color:{{x.textok ? 'palegreen':'grey'}}">{{x.textok ? 'Ready':'None'}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -106,16 +106,16 @@
                             <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{vm.rank.title}}</h3>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
-                        <img src="{{vm.rank.image1}}" style="display:{{vm.rank.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
+                        <img src="{{vm.rank.image1}}" ng-attr-style="display:{{vm.rank.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
                     </div>
                     <div class="hidden-xs hidden-sm col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
-                        <img src="{{vm.rank.image2}}" style="display:{{vm.rank.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
+                        <img src="{{vm.rank.image2}}" ng-attr-style="display:{{vm.rank.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
                     </div>
                     <div class="hidden-xs hidden-sm hidden-md col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
-                        <img src="{{vm.rank.image3}}" style="display:{{vm.rank.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
+                        <img src="{{vm.rank.image3}}" ng-attr-style="display:{{vm.rank.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
                     </div>
 
-                    <div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" ng-if="vm.isShortPhrase" style="background-color:lightgray;color:black;height:{{vm.sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+                    <div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" ng-if="vm.isShortPhrase" ng-attr-style="background-color:lightgray;color:black;height:{{vm.sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
                         <div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
                             <h2 class="hidden-xs text-center">{{vm.rank.title1}}</h2>
                             <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.rank.title1}}</h3>
@@ -124,7 +124,7 @@
                         </div>
                     </div>
 
-                    <div class="container hidden-xs hidden-sm col-md-4 col-lg-3" ng-if="vm.isShortPhrase" style="background-color:lightgray;color:black;height:{{vm.sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+                    <div class="container hidden-xs hidden-sm col-md-4 col-lg-3" ng-if="vm.isShortPhrase" ng-attr-style="background-color:lightgray;color:black;height:{{vm.sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
                         <div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
                             <h2 class="hidden-xs text-center">{{vm.rank.title2}}</h2>
                             <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.rank.title2}}</h3>
@@ -133,7 +133,7 @@
                         </div>
                     </div>
 
-                    <div class="container hidden-xs hidden-sm hidden-md col-lg-3" ng-if="vm.isShortPhrase" style="background-color:lightgray;color:black;height:{{vm.sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+                    <div class="container hidden-xs hidden-sm hidden-md col-lg-3" ng-if="vm.isShortPhrase" ng-attr-style="background-color:lightgray;color:black;height:{{vm.sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
                         <div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
                             <h2 class="hidden-xs text-center">{{vm.rank.title3}}</h2>
                             <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.rank.title3}}</h3>

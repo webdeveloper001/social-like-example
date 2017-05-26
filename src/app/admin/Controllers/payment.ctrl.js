@@ -39,6 +39,9 @@
                 //data[1] useraccount array
                 var accounts = data[1];
                 var codeprices = data[2];
+
+                vm.STRIPE_COMMISSION_PERCENTAGE = data[3].STRIPE_COMMISSION_PERCENTAGE ? data[3].STRIPE_COMMISSION_PERCENTAGE : 0.2;
+                vm.CUSTOM_RANK_PRICE = data[3].CUSTOM_RANK_PRICE;
                 data[0].forEach(function(promoter){
                     var pextend = angular.copy(promoter);
                     pextend.businesses = [];
@@ -65,7 +68,7 @@
                             if(accntcopy.ispremium)
                                 accntcopy.totalCommission += accntcopy.price*vm.STRIPE_COMMISSION_PERCENTAGE;
                             if(accntcopy.hasranks)
-                                accntcopy.totalCommission += accntcopy.ranksqty * 35 * vm.STRIPE_COMMISSION_PERCENTAGE;
+                                accntcopy.totalCommission += accntcopy.ranksqty * vm.CUSTOM_RANK_PRICE * vm.STRIPE_COMMISSION_PERCENTAGE;
                             
                             pextend.businesses.push(accntcopy);
                             getAnswer(pextend.businesses[pextend.businesses.length-1]);
@@ -99,8 +102,6 @@
                     pextend.ontrialCount = pextend.businesses.filter(function(p){ return p.status.indexOf('On Trial') != -1}).length;
                     vm.promoters.push(pextend);
 
-
-                    vm.STRIPE_COMMISSION_PERCENTAGE = data[3].STRIPE_COMMISSION_PERCENTAGE ? data[3].STRIPE_COMMISSION_PERCENTAGE : 0.2;
    
                 });
 
@@ -184,7 +185,7 @@
             }
         }
         function showBusinessDetail(business){
-            dialog.showBusinessDetailDlg(business, vm.STRIPE_COMMISSION_PERCENTAGE);
+            dialog.showBusinessDetailDlg(business, vm.STRIPE_COMMISSION_PERCENTAGE, vm.CUSTOM_RANK_PRICE);
         }
         function gotoanswer(x) {
             $state.go('answerDetail', { index: x.slug });

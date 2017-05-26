@@ -33,23 +33,23 @@
 <!--</div>-->
 <!-- Images -->
 <!--
-<div class="row" style="display:{{vm.isShortPhrase == false? 'inline':'none'}};margin:0px;">
+<div class="row" ng-attr-style="display:{{vm.isShortPhrase == false? 'inline':'none'}};margin:0px;">
     <div class="col-sm-6 col-md-6 col-lg-4">
         <img class="displayed" src="{{vm.image1}}" ng-if="vm.image1ok"
-        style="width:100%;max-height:200px;display:{{vm.image1 != undefined ? 'inline':'none'}}">
+        ng-attr-style="width:100%;max-height:200px;display:{{vm.image1 != undefined ? 'inline':'none'}}">
     </div>
     <div class="hidden-xs col-sm-6 col-md-6 col-lg-4">
         <img class="displayed" src="{{vm.image2}}" ng-if="vm.image2ok"
-        style="width:100%;max-height:200px;display:{{vm.image2 != undefined ? 'inline':'none'}}">
+        ng-attr-style="width:100%;max-height:200px;display:{{vm.image2 != undefined ? 'inline':'none'}}">
     </div>
     <div class="hidden-xs hidden-sm hidden-md col-lg-4">
         <img class="displayed" src="{{vm.image3}}" ng-if="vm.image3ok"
-        style="width:100%;max-height:200px;display:{{vm.image3 != undefined ? 'inline':'none'}}">
+        ng-attr-style="width:100%;max-height:200px;display:{{vm.image3 != undefined ? 'inline':'none'}}">
     </div>
 </div>
 <!-- Short-Phrases -->
 <!--
-<div class="row" style="display:{{vm.isShortPhrase == true? 'inline':'none'}};margin:0px;">
+<div class="row" ng-attr-style="display:{{vm.isShortPhrase == true? 'inline':'none'}};margin:0px;">
     <div class="col-sm-6 col-md-6 col-lg-4">
         <div class="container-answer" style="width:100%; max-height:300px;">
             <br>
@@ -93,21 +93,21 @@
 			<img ng-src="{{vm.image3}}" ng-attr-style="display:{{vm.image3 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '200px':'200px'}};">
 		</div>
 
-		<div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" ng-if="vm.isShortPhrase" style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+		<div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" ng-if="vm.isShortPhrase" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
 			<div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
 				<h2 class="hidden-xs text-center">{{vm.title1}}</h2>
 				<h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.title1}}</h3>
 			</div>
 		</div>
 
-		<div class="container hidden-xs hidden-sm col-md-4 col-lg-3" ng-if="vm.isShortPhrase" style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+		<div class="container hidden-xs hidden-sm col-md-4 col-lg-3" ng-if="vm.isShortPhrase" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
 			<div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
 				<h2 class="hidden-xs text-center">{{vm.title2}}</h2>
 				<h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.title2}}</h3>
 			</div>
 		</div>
 
-		<div class="container hidden-xs hidden-sm hidden-md col-lg-3" ng-if="vm.isShortPhrase" style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+		<div class="container hidden-xs hidden-sm hidden-md col-lg-3" ng-if="vm.isShortPhrase" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
 			<div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
 				<h2 class="hidden-xs text-center">{{vm.title3}}</h2>
 				<h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.title3}}</h3>
@@ -150,7 +150,7 @@
 </div>    
 <!--
 <div ng-show="{{vm.type == 'Establishment'}}">
-    <div class="text-right" style="display:{{vm.haveLocation ? 'none':'inline'}}">
+    <div class="text-right" ng-attr-style="display:{{vm.haveLocation ? 'none':'inline'}}">
         <p class="hiw text-right" ng-click="vm.whyNoDistance()"><u>why cant I see distances?</u></p>
     </div>
 </div>
@@ -177,12 +177,12 @@
                 <td ng-show="{{!vm.sm && !vm.fnm && !vm.isE}}">{{x.upV}}</td>
                 <!--<td>{{x.Rank}}</td>-->
                 <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
-                <td ng-repeat="h in vm.fields | filter:{isrequired:true}" ><a style="text-decoration: none;" href="{{'/answerDetail/' + x.slug }}">{{ x[h.name]}}</a></td> 
-                <!-- style="background-color:{{x.bc}};color:{{x.fc}}"> -->
+                <td ng-repeat="h in vm.fields | filter:{isrequired:true}" ><a ng-attr-style="text-decoration: none;" href="{{'/answerDetail/' + x.slug }}">{{ x[h.name]}}</a></td> 
+                <!-- ng-attr-style="background-color:{{x.bc}};color:{{x.fc}}"> -->
                 <td ng-show="{{vm.type == 'Establishment' && vm.haveLocation}}">{{x.dist}}</td>
                 <td ng-show="{{vm.type == 'Event'}}">{{x.date}}</td>
-                <!-- style="background-color:{{x.bc}};color:{{x.fc}}" -->
-                <td ng-show="{{vm.type == 'Establishment'}}" style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">
+                <!-- ng-attr-style="background-color:{{x.bc}};color:{{x.fc}}" -->
+                <td ng-show="{{vm.type == 'Establishment'}}" ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">
                     {{x.sp_title}}</td>
             </tr>
         </tbody>
@@ -192,7 +192,7 @@
     <div class="col-xs-2" style="padding:0px">
         <a class="btn btn-primary" ng-click="vm.addAnswer()" class="btn btn-primary">+</a>
     </div>
-    <div class="col-xs-10" style="display:{{vm.hideInfoBox ? 'none':'inline'}};padding:0px;" ng-if="!vm.addInfoMsgAck || vm.noAnswers">
+    <div class="col-xs-10" ng-attr-style="display:{{vm.hideInfoBox ? 'none':'inline'}};padding:0px;" ng-if="!vm.addInfoMsgAck || vm.noAnswers">
         <div class="alert alert-warning" style="padding-top: 5px;padding-bottom: 5px;">
             <a class="close" data-dismiss="alert" aria-label="close" ng-click="vm.closeAddInfoMsg()">&times;</a>
             <span class="glyphicon glyphicon-arrow-left"></span><strong>&nbsp;&nbsp;
@@ -218,12 +218,12 @@
     <button ng-click="vm.loadComments()" class="btn btn-default"  ng-class="vm.cm.commLoaded ? 'disabled' : ''" style="background-color:#e6e6e6;width:100%">COMMENTS ({{vm.numcom}})</button>
 </div>
 <br ng-if="!vm.sm">
-<div style="display:{{vm.cm.commLoaded ? 'inline':'none'}}">
+<div ng-attr-style="display:{{vm.cm.commLoaded ? 'inline':'none'}}">
     <div ng-repeat="x in vm.cm.comments">
         <div class="col-xs-12 media">
 
             <div ng-if="!x.picture" class="profile-avatar-wrapper media-left">
-                <div class="empty-profile-avatar-wrapper"  style="background-color:{{x.bc}};color:{{x.fc}};">{{x.initials}}</div>
+                <div class="empty-profile-avatar-wrapper"  ng-attr-style="background-color:{{x.bc}};color:{{x.fc}};">{{x.initials}}</div>
             </div>
             <div ng-if="x.picture" class="profile-avatar-wrapper media-left" align="middle">
                 <img ng-src="{{x.picture}}" class="img-responsive img-circle profile-avatar"/>
@@ -245,22 +245,22 @@
         </div>
         <br>
     </div>
-    <div style="display:{{(vm.cm.commLoaded && vm.cm.comments.length == 0 && !vm.isLoggedIn) ? 'inline':'none'}}">
+    <div ng-attr-style="display:{{(vm.cm.commLoaded && vm.cm.comments.length == 0 && !vm.isLoggedIn) ? 'inline':'none'}}">
         <br>
         <p><small> Nobody has commented yet. Be the first. Log in, endorse answers and leave a comment. </small></p>
     </div>
-    <div style="display:{{(vm.cm.commLoaded && vm.cm.comments.length > 0 && !vm.isLoggedIn) ? 'inline':'none'}}">
+    <div ng-attr-style="display:{{(vm.cm.commLoaded && vm.cm.comments.length > 0 && !vm.isLoggedIn) ? 'inline':'none'}}">
         <br>
         <p><small> You must log in and endorse one or more answers to leave a comment. </small></p>
     </div>
-    <div style="display:{{(vm.cm.commLoaded && vm.isLoggedIn && !vm.commentAllowed) ? 'inline':'none'}}">
+    <div ng-attr-style="display:{{(vm.cm.commLoaded && vm.isLoggedIn && !vm.commentAllowed) ? 'inline':'none'}}">
         <br>
         <p><small> Endorse one or more answers to leave a comment. </small></p>
     </div>
-    <div style="display:{{(vm.isLoggedIn && vm.commentAllowed) ? 'inline':'none'}}">
+    <div ng-attr-style="display:{{(vm.isLoggedIn && vm.commentAllowed) ? 'inline':'none'}}">
         <div class="media">
             <div ng-if="!user.picture.data.url" class="profile-avatar-wrapper media-left">
-                <div class="empty-profile-avatar-wrapper"  style="background-color:{{x.bc}};color:{{x.fc}};">{{x.initials}}</div>
+                <div class="empty-profile-avatar-wrapper"  ng-attr-style="background-color:{{x.bc}};color:{{x.fc}};">{{x.initials}}</div>
             </div>
             <div ng-if="user.picture.data.url" class="profile-avatar-wrapper media-left" align="middle">
                 <img ng-src="{{user.picture.data.url}}" class="img-responsive img-circle profile-avatar"/>

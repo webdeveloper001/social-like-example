@@ -1,6 +1,6 @@
 <!--
 <div ng-if="!vm.fbm">
-		<div class="input-group" style="background-color:{{vm.querybc}};padding:5px">
+		<div class="input-group" ng-attr-style="background-color:{{vm.querybc}};padding:5px">
 			<input type="text" class="form-control" placeholder="Search in {{vm.searchScope}}" 
 			ng-model="vm.val" ng-change="vm.getResults()" id="SearchInput">
 			<div class="input-group-btn">
@@ -20,7 +20,7 @@
 </div>
 -->
 
-<!--<div style="display:{{vm.isNh ? 'inline':'none'}}" ng-if="!vm.fbm">
+<!--<div ng-attr-style="display:{{vm.isNh ? 'inline':'none'}}" ng-if="!vm.fbm">
 	<br ng-if="!vm.hidelogo">
 	<div class="dropdown">
 		<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="nhdropdown" style="width:200px">
@@ -35,7 +35,7 @@
 </div>
 
 <br ng-if="vm.isNh">
-<div style="display:{{((vm.isNhRdy || vm.isCity) && (vm.searchActive == false)) ? 'inline':'none'}}" ng-if="!vm.fbm">-->
+<div ng-attr-style="display:{{((vm.isNhRdy || vm.isCity) && (vm.searchActive == false)) ? 'inline':'none'}}" ng-if="!vm.fbm">-->
 <!--	
 	<content-block type='rankofweek' dynamic="false" rankofweek="true"></content-block>
 <!--
@@ -43,7 +43,7 @@
 			<tbody>
 				<thead>
 					<tr>
-						<th style="{{vm.headerStyle}}">
+						<th ng-attr-style="{{vm.headerStyle}}">
 						Quick Links</th>
 					</tr>
 				</thead>
@@ -64,7 +64,7 @@
 	<br ng-if="vm.sm">
 
 <div class="row">
-	<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8" style="{{vm.sm? '':'padding-right: 5px;'}}">
+	<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8" ng-attr-style="{{vm.sm? '':'padding-right: 5px;'}}">
 
 		<div class="col-xs-12  col-md-6"  ng-repeat="ranking in vm.initalHomeData"  ng-if="vm.initalHomeData.length<4">
 			<rank-item rank-object="ranking"></rank-item>
@@ -74,7 +74,7 @@
 			<rank-item rank-object="ranking"></rank-item>
 		</div>
 	</div>	
-	<div class="col-xs-12 col-sm-6 col-md-4 " style="{{vm.sm? 'margin-bottom: 10px; background-color: lightgray; width: calc(100% - 30px); margin-left: 15px; padding: 0px':'padding-right: 0px;padding-left: 0px; background-color: lightgray; height: 410px;'}}">
+	<div class="col-xs-12 col-sm-6 col-md-4 " ng-attr-style="{{vm.sm? 'margin-bottom: 10px; background-color: lightgray; width: calc(100% - 30px); margin-left: 15px; padding: 0px':'padding-right: 0px;padding-left: 0px; background-color: lightgray; height: 410px;'}}">
 		<!--  <rank-block theme="lifestyle" type="basic"></rank-block> -->
 		<userfeed-block ng-if="vm.pageDataLoaded" show-all=false></userfeed-block>
 
@@ -87,13 +87,13 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8" style="{{vm.sm? '':'padding-right: 5px;'}}">
+	<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8" ng-attr-style="{{vm.sm? '':'padding-right: 5px;'}}">
 
 		<div class="col-xs-12  col-md-6" ng-repeat="ranking in vm.initalHomeData.slice(4)"  ng-if="vm.initalHomeData.length>=4">
 			<rank-item rank-object="ranking"></rank-item>
 		</div>
 	</div>
-	<div class="col-xs-12 col-sm-6 col-md-4" style="{{vm.sm? '':'padding-right: 0px;padding-left: 0px;'}}">
+	<div class="col-xs-12 col-sm-6 col-md-4" ng-attr-style="{{vm.sm? '':'padding-right: 0px;padding-left: 0px;'}}">
 		<!--<trend-block></trend-block>-->
 		<!--  <rank-block theme="lifestyle" type="basic"></rank-block> -->
 		<trend-block  ng-if="vm.pageDataLoaded"  show-all=false></trend-block>

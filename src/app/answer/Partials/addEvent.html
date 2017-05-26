@@ -29,7 +29,7 @@
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
         <input class="form-control" ng-model="vm.ev.name" type="text" placeholder="Event Title" ng-change="vm.displayCharLength()"
-        maxlength="45" style="background-color:{{vm.ev.bc}};color:{{vm.ev.fc}}">
+        maxlength="45" ng-attr-style="background-color:{{vm.ev.bc}};color:{{vm.ev.fc}}">
     </div>
     <div class="col-xs-8 hidden-sm hidden-md hidden-lg hidden-xl"> </div>
     <div class="col-xs-6 col-sm-4 col-md-4">
@@ -71,13 +71,13 @@
 <br>
 <div class="row" ng-if="vm.onetime" style="margin:0px;">
     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-        <div style="display:{{vm.onetime ? 'inline':'none'}}">
+        <div ng-attr-style="display:{{vm.onetime ? 'inline':'none'}}">
             <p class="{{vm.sm ? 'text-left':'text-right'}}">Start date:</p>
         </div>
     </div>
 
     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-        <div style="display:{{vm.onetime ? 'inline':'none'}}">
+        <div ng-attr-style="display:{{vm.onetime ? 'inline':'none'}}">
             <datepicker date-format="EEE MMM d y" date-year-title="selected title------">
                 <input ng-model="vm.ev.sdate" type="text" />
             </datepicker>
@@ -86,13 +86,13 @@
 </div>
 <div class="row" ng-if="vm.onetime">
     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-        <div style="display:{{vm.onetime ? 'inline':'none'}}">
+        <div ng-attr-style="display:{{vm.onetime ? 'inline':'none'}}">
             <p class="{{vm.sm ? 'text-left':'text-right'}}">Start time:</p>
         </div>
     </div>
 
     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-        <div style="display:{{vm.onetime ? 'inline':'none'}}">
+        <div ng-attr-style="display:{{vm.onetime ? 'inline':'none'}}">
             <select ng-model="vm.ev.stime" ng-options="x for x in vm.timeDD">
                 <option value="">{{vm.sp.stime}}</option>
             </select>
@@ -101,23 +101,23 @@
 </div>
 <div class="row" ng-if="vm.onetime" style="margin:0px;">
     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-        <div style="display:{{vm.onetime ? 'inline':'none'}}">
+        <div ng-attr-style="display:{{vm.onetime ? 'inline':'none'}}">
             <p class="{{vm.sm ? 'text-left':'text-right'}}">End date:</p>
         </div>
     </div>
 
-    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="display:{{vm.onetime ? 'inline':'none'}}">
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" ng-attr-style="display:{{vm.onetime ? 'inline':'none'}}">
         <datepicker date-format="EEE MMM d y" date-year-title="selected title------">
             <input ng-model="vm.ev.edate" type="text" />
         </datepicker>
     </div>
 </div>
 <div class="row" ng-if="vm.onetime" style="margin:0px;">
-    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="display:{{vm.onetime ? 'inline':'none'}}">
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" ng-attr-style="display:{{vm.onetime ? 'inline':'none'}}">
         <p class="{{vm.sm ? 'text-left':'text-right'}}">End time:</p>
     </div>
 
-    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="display:{{vm.onetime ? 'inline':'none'}}">
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" ng-attr-style="display:{{vm.onetime ? 'inline':'none'}}">
         <select ng-model="vm.ev.etime" ng-options="x for x in vm.timeDD">
             <option value="">{{vm.sp.etime}}</option>
         </select>
@@ -126,7 +126,7 @@
 </div>
 <div class="row" ng-if="vm.weekly" style="margin:0px;">
     <div class="text-center">
-        <div class="col-xs-12 col-sm-12 col-md-12" style="display:{{vm.weekly ? 'inline':'none'}}">
+        <div class="col-xs-12 col-sm-12 col-md-12" ng-attr-style="display:{{vm.weekly ? 'inline':'none'}}">
 
             <label class="checkbox-inline">
                 <input type="checkbox" ng-model="vm.ev.mon" value="">Mon</label>
@@ -148,13 +148,13 @@
 <br>
 <div class="row" ng-if="vm.weekly" style="margin:0px;">
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <div style="display:{{vm.weekly ? 'inline':'none'}}">
+        <div ng-attr-style="display:{{vm.weekly ? 'inline':'none'}}">
             <p class="text-right">Start time:</p>
         </div>
     </div>
 
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <div style="display:{{vm.weekly ? 'inline':'none'}}">
+        <div ng-attr-style="display:{{vm.weekly ? 'inline':'none'}}">
             <select ng-model="vm.ev.stime2" ng-options="x for x in vm.timeDD">
                 <option value="">{{vm.ev.stime2}}</option>
             </select>
@@ -163,13 +163,13 @@
 </div>
 <div class="row" ng-if="vm.weekly" style="margin:0px;">
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <div style="display:{{vm.weekly ? 'inline':'none'}}">
+        <div ng-attr-style="display:{{vm.weekly ? 'inline':'none'}}">
             <p class="text-right">End time:</p>
         </div>
     </div>
 
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <div style="display:{{vm.weekly ? 'inline':'none'}}">
+        <div ng-attr-style="display:{{vm.weekly ? 'inline':'none'}}">
             <select ng-model="vm.ev.etime2" ng-options="x for x in vm.timeDD">
                 <option value="">{{vm.ev.etime2}}</option>
             </select>
@@ -196,7 +196,7 @@
         <!-- <br ng-if="vm.nsm"> -->
         <div class="form-group" style="padding:10px">
             <label class="control-label">Additional Info:</label>
-            <textarea class="form-control" ng-model="vm.ev.addinfo" placeholder="{{vm.ev.addinfo}}" rows="4" style="background-color:{{vm.ev.bc}};color:{{vm.ev.fc}};width:100%"></textarea>
+            <textarea class="form-control" ng-model="vm.ev.addinfo" placeholder="{{vm.ev.addinfo}}" rows="4" ng-attr-style="background-color:{{vm.ev.bc}};color:{{vm.ev.fc}};width:100%"></textarea>
         </div>
     </form>
 
@@ -211,9 +211,9 @@
         <div class="form-group text-right">
             <!--    <button type="submit" class="btn btn-primary" ng-click="vm.searchImage()" ng-disabled="answerForm.$invalid">{{vm.imageCommand}}</button>-->
             <button type="submit" class="btn btn-primary {{vm.searchDisabled}}" ng-click="vm.callSearchImage()" ng-show="{{vm.type != 'Short-Phrase'}}">{{vm.imageCommand}}</button>
-            <button type="submit" class="btn btn-primary" ng-click="vm.viewPrev()" ng-disabled="vm.numLinks === 0" style="display:{{vm.imagefunctions}}">&laquo</button>
-            <button type="submit" class="btn btn-primary" ng-click="vm.viewNext()" ng-disabled="vm.numLinks === 0" style="display:{{vm.imagefunctions}}">&raquo</button>
-            <a style="display:{{vm.imagefunctions}}">{{vm.linkIdx+1}} of {{vm.numLinks}}</a>
+            <button type="submit" class="btn btn-primary" ng-click="vm.viewPrev()" ng-disabled="vm.numLinks === 0" ng-attr-style="display:{{vm.imagefunctions}}">&laquo</button>
+            <button type="submit" class="btn btn-primary" ng-click="vm.viewNext()" ng-disabled="vm.numLinks === 0" ng-attr-style="display:{{vm.imagefunctions}}">&raquo</button>
+            <a ng-attr-style="display:{{vm.imagefunctions}}">{{vm.linkIdx+1}} of {{vm.numLinks}}</a>
         </div>
         <label class="checkbox-inline">
             <input type="checkbox" ng-change='vm.onNoGoodImages(vm.ngi)' ng-model="vm.ngi" ng-show="{{vm.type != 'Short-Phrase'}}">No good images were found
@@ -234,7 +234,7 @@
     <div class="form-group text-center">
         <button type="button" class="btn btn-success" ng-click="vm.goBack()">Back</button>
         <button type="button" class="btn btn-primary" ng-click="vm.showPreview()">Preview</button>
-        <button type="button" class="btn btn-danger" ng-click="vm.deleteSpecial()" style="display:{{vm.isEdit ? 'inline':'none'}}">Delete</button>
+        <button type="button" class="btn btn-danger" ng-click="vm.deleteSpecial()" ng-attr-style="display:{{vm.isEdit ? 'inline':'none'}}">Delete</button>
     </div>
 </div>
 

@@ -29,8 +29,8 @@
 				<td ng-click="vm.gotoanswer(x)">{{x.name}}</td>
 				<!--<td>{{x.promoterObj?x.promoterObj.firstname + ' ' + x.promoterObj.lastname:'None'}}</td>
 				<td class="hidden-custom">{{x.promoterObj?x.promoterObj.code:'None'}}</td>-->
-				<td align="center" style="{{x.style}}" ng-click="vm.gotomanage(x)">{{x.status}}</td>
-				<td align="center" style="{{x.style2}}" ng-click="vm.gotomanage(x)">{{x.status2}}</td>
+				<td align="center" ng-attr-style="{{x.style}}" ng-click="vm.gotomanage(x)">{{x.status}}</td>
+				<td align="center" ng-attr-style="{{x.style2}}" ng-click="vm.gotomanage(x)">{{x.status2}}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -170,7 +170,7 @@
 			</tr>
 			<tr ng-if="vm.business.hasRanks" style="cursor:pointer;">
 				<td style="width:45%">{{vm.business.ranksQty}} Custom Ranks</td>
-				<td style="width:15%">${{vm.business.ranksQty*35}}</td>
+				<td style="width:15%">${{vm.business.ranksQty*vm.CUSTOM_RANK_PRICE}}</td>
 				<td style="width:20%"><button class="btn btn-default" style="width:100%" ng-click="vm.editRanks()">Edit</button></td>
 				<td style="width:20%"><button class="btn btn-default" style="width:100%" ng-click="vm.cancelAllRanks()">Cancel</button></td>
 			</tr>
@@ -206,7 +206,7 @@
 	</div>
 	<div class="well" ng-if="!vm.business.hasRanks">
 		<h2 class="text-center">Purchase Rankings</h2>
-		<h3 class="text-center">$35 / month each </h3>
+		<h3 class="text-center">${{vm.CUSTOM_RANK_PRICE}} / month each </h3>
 		<i class="fa fa-check"></i>&nbspCreate <strong>unique rankings and lists</strong> for your own products and services</br>
 		<i class="fa fa-check"></i>&nbsp<strong>Focus</strong> on each of your products</br>
 		<i class="fa fa-check"></i><strong>&nbspEngage</strong> your audience</br>

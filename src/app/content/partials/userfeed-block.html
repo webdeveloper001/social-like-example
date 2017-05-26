@@ -2,7 +2,7 @@
 	<tbody>
 		<thead>
 			<tr>
-				<th style="{{headerStyle}}">
+				<th ng-attr-style="{{headerStyle}}">
 					Feed
 					<span class="nomargin">
                     		<button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" 
@@ -22,7 +22,7 @@
 		<div class="col-xs-12 media">
 
 			<div ng-if="!x.picture" class="profile-avatar-wrapper media-left">
-				<div class="empty-profile-avatar-wrapper" style="background-color:{{x.bc}};color:{{x.fc}};">{{x.initials}}</div>
+				<div class="empty-profile-avatar-wrapper" ng-attr-style="background-color:{{x.bc}};color:{{x.fc}};">{{x.initials}}</div>
 			</div>
 			<div ng-if="x.picture" class="profile-avatar-wrapper  media-left" align="middle">
 				<img ng-src="{{x.picture}}" class="img-responsive img-circle profile-avatar" />

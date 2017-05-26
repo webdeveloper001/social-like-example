@@ -94,6 +94,13 @@
                 controller: 'payment as vm'               
             },
             {
+                name: 'plan',
+                parent: 'admin',
+                url: '/plan',
+                templateUrl: 'app/admin/Partials/plan.html',
+                controller: 'plan as vm'               
+            },
+            {
                 name: 'rodconsole',
                 url: '/rodconsole',
                 views: {

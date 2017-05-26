@@ -17,7 +17,7 @@
                 ? answer.cityarea : ""}}
                 <br ng-attr-style="display:{{(answer.cityarea) ? 'inline' : 'none'}}">
                 <strong ng-if="answer.phone">Phone:</strong> <a ng-if="answer.phone" href="tel:{{answer.phone}}">{{answer.phone}}</a>
-                <br style="display:{{(answer.phone) ? 'inline' : 'none'}}">
+                <br ng-attr-style="display:{{(answer.phone) ? 'inline' : 'none'}}">
                 <strong ng-if="answer.website">Website:</strong>
                 <a ng-if="answer.website.indexOf('http') >=0" href="{{answer.website}}" target="_blank">{{answer.website}}</a>
                 <a ng-if="answer.website.indexOf('http') == -1" href="http://{{answer.website}}" target="_blank">{{answer.website}}</a>
@@ -105,23 +105,23 @@
             <div class="col-xs-9">
                 <strong ng-if="answer.cityarea">{{(answer.cityarea) ? 'Neighboorhood:' : ""}}</strong> {{(answer.cityarea)
                 ? answer.cityarea : ""}}
-                <br style="display:{{(answer.cityarea) ? 'inline' : 'none'}}">
+                <br ng-attr-style="display:{{(answer.cityarea) ? 'inline' : 'none'}}">
                 <strong ng-if="answer.phone">Phone:</strong> <a ng-if="answer.phone" href="tel:{{answer.phone}}">{{answer.phone}}</a>
-                <br style="display:{{(answer.phone) ? 'inline' : 'none'}}">
+                <br ng-attr-style="display:{{(answer.phone) ? 'inline' : 'none'}}">
                 <strong ng-if="answer.website">Website:</strong>
                 <a ng-if="answer.website.indexOf('http') >=0" href="{{answer.website}}" target="_blank">{{answer.website}}</a>
                 <a ng-if="answer.website.indexOf('http') == -1" href="http://{{answer.website}}" target="_blank">{{answer.website}}</a>
                 <br ng-if="answer.website">
                 <strong ng-if="answer.email">{{(answer.email) ? 'Email:' : ""}}</strong> {{(answer.email) ? answer.email
                 : ""}}
-                <br style="display:{{(answer.email) ? 'inline' : 'none'}}">
+                <br ng-attr-style="display:{{(answer.email) ? 'inline' : 'none'}}">
             </div>
             <div class="col-xs-3 text-left">
                 <a type="button" class="btn btn-default" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;margin-top:15px;"
                     ng-if="!answer.hasOwner || userIsOwner" ng-click="editAnswer()" target="_blank">&nbsp&nbsp<span class="fa fa-pencil"></span></a>
             </div>
         </div>
-        <i style="display:{{hrset ? 'inline':'none'}}">{{hourstr}}</i>        
+        <i ng-attr-style="display:{{hrset ? 'inline':'none'}}">{{hourstr}}</i>        
     </div>
 
     <div class="hidden-sm hidden-md hidden-lg hidden-xl text-center answer_info_buttons" style="padding-top:10px;">
@@ -141,7 +141,7 @@
 </div>
 <div style="padding:5px"></div>
 <!-- Answer Additional Information Text -->
-<div ng-if="!isShortPhrase && !isEvent" style="display:{{answer.addinfo ? 'inline':'none'}};">
+<div ng-if="!isShortPhrase && !isEvent" ng-attr-style="display:{{answer.addinfo ? 'inline':'none'}};">
     <span>{{answer.addinfo_teaser}}</span>
     <span ng-show="completeinfo">{{answer.addinfo_complete}}</span>
     <span ng-if="answer.addinfo.length > 0" ng-click="showcomplete()" style="background-color:lightgray;cursor:pointer">{{moretext}}</span>

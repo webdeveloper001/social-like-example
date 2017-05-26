@@ -12,11 +12,11 @@
 </div>
 
 <div ng-repeat="x in vm.vrows track by $index">
-        <div style="display:{{x.shdr ? 'inline':'none'}}">
+        <div ng-attr-style="display:{{x.shdr ? 'inline':'none'}}">
                 <br>
         </div>
         <div class="row">
-                <div style="display:{{x.shdr ? 'inline':'none'}}">
+                <div ng-attr-style="display:{{x.shdr ? 'inline':'none'}}">
                         <div class="col-xs-10" style="background-color:gray;color:white;">
                                 <p>{{x.gtitle}}</p>
                         </div>
@@ -27,7 +27,7 @@
                         </div>
                 </div>
         </div>
-        <div style="display:{{x.title != '-' ? 'inline':'none'}}">
+        <div ng-attr-style="display:{{x.title != '-' ? 'inline':'none'}}">
                 <div class="row">
                         <div class="col-xs-10" style="background-color:#d9d9d9;padding-top:2px;padding-bottom:2px;">
                                 {{x.title}}
@@ -45,7 +45,7 @@
                         </div>
                 </div>
         </div>
-        <div style="display:{{x.saddr ? 'inline':'none'}}">
+        <div ng-attr-style="display:{{x.saddr ? 'inline':'none'}}">
                 <div class="row">
                         <div class="col-xs-10">
                                 <div class="text-right">

@@ -24,14 +24,14 @@
         /// ui-scroll
         var datasource = {};
         datasource.get = function (index, count, success) {
-                $timeout(function () {
-                    var result = [];
-                    for (var i = index; i <= index + count - 1; i++) {
-                        result.push("item #" + i);
-                    }
-                    success(result);
-                }, 100);
-            };
+            $timeout(function () {
+                var result = [];
+                for (var i = index; i <= index + count - 1; i++) {
+                    result.push("item #" + i);
+                }
+                success(result);
+            }, 100);
+        };
         vm.sm = $rootScope.sm;
         vm.datasource = datasource;
         ///Ui-scroll ends

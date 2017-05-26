@@ -78,7 +78,7 @@
                         <tr ng-repeat="x in vm.currentPromoter.businesses" style="cursor:pointer;">
                             <td ng-click="vm.gotoanswer(x.answerObj)" >{{x.answerObj.name}}</td>
                             <td ng-click="vm.showBusinessDetail(x)">${{x.totalCommission}}</td>
-                            <td align="middle" style="{{x.style}}"  ng-click="vm.showBusinessDetail(x)">{{x.status}}</td>
+                            <td align="middle" ng-attr-style="{{x.style}}"  ng-click="vm.showBusinessDetail(x)">{{x.status}}</td>
                         </tr>
                         
                     </tbody>

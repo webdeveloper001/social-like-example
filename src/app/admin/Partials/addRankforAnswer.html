@@ -41,12 +41,12 @@
         </div>
     </div>
     <div class="row">
-        <div class="container col-xs-6 col-sm-3 col-md-2 col-lg-2" style="background-color:{{vm.bc}};color:{{vm.fc}};height:{{vm.sm ? '120px':'150px'}};margin:0px;padding:0px;border:0px;position:relative;">
+        <div class="container col-xs-6 col-sm-3 col-md-2 col-lg-2" ng-attr-style="background-color:{{vm.bc}};color:{{vm.fc}};height:{{vm.sm ? '120px':'150px'}};margin:0px;padding:0px;border:0px;position:relative;">
             <h2 class=" hidden-xs text-center" style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{vm.rankTitle}}</h2>
             <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{vm.rankTitle}}</h3>
         </div>
         <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2" style="margin:0px;padding:0px;border:0px;">
-            <img src="../../../assets/images/noimage.jpg" style="width:100%;height:{{vm.sm ? '120px':'150px'}};">
+            <img src="../../../assets/images/noimage.jpg" ng-attr-style="width:100%;height:{{vm.sm ? '120px':'150px'}};">
         </div>
     </div>
 </div>

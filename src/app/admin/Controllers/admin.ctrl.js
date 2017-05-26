@@ -16,6 +16,7 @@
         vm.selViews = '';
         vm.selFlags = '';
         vm.selRankings = '';
+        vm.selPlan = '';
 
         vm.goBack = goBack;
         vm.keywords = keywords;
@@ -27,6 +28,7 @@
         vm.update = update;
         vm.foodranks = foodranks;
         vm.payment = payment;
+        vm.plan = plan;
         //vm.fbpost = fbpost;
         
         activate();
@@ -54,6 +56,7 @@
             vm.selUpdate = '';
             vm.selFoodRanks = '';
             vm.selPayment = '';
+            vm.selPlan = '';
 
             $state.go('queries');
 
@@ -68,6 +71,7 @@
             vm.selUpdate = '';
             vm.selFoodRanks = '';
             vm.selPayment = '';
+            vm.selPlan = '';
 
             $state.go('views');
 
@@ -82,6 +86,7 @@
             vm.selUpdate = '';
             vm.selFoodRanks = '';
             vm.selPayment = '';
+            vm.selPlan = '';
 
             $state.go('flags');
 
@@ -97,6 +102,7 @@
             vm.selUpdate = '';
             vm.selFoodRanks = '';
             vm.selPayment = '';
+            vm.selPlan = '';
 
             $state.go('addRank');
 
@@ -112,6 +118,7 @@
             vm.selUpdate = '';
             vm.selFoodRanks = '';
             vm.selPayment = '';
+            vm.selPlan = '';
             
             $state.go('dbMaint');
         }
@@ -126,6 +133,7 @@
             vm.selUpdate = '';
             vm.selFoodRanks = '';
             vm.selPayment = '';
+            vm.selPlan = '';
             
             $state.go('dbQuery');
         }
@@ -140,6 +148,7 @@
             vm.selUpdate = 'active';
             vm.selFoodRanks = '';
             vm.selPayment = '';
+            vm.selPlan = '';
             
             $state.go('updateHeaders');
         }
@@ -154,6 +163,7 @@
             vm.selUpdate = '';
             vm.selFoodRanks = 'active';
             vm.selPayment = '';
+            vm.selPlan = '';
             
             $state.go('foodRanks');
             
@@ -168,12 +178,28 @@
             vm.selQuery = '';
             vm.selUpdate = '';
             vm.selFoodRanks = '';
+            vm.selPlan = '';
             vm.selPayment = 'active';
 
             $state.go('payment');
 
         }
 
+        function plan() {
+            vm.selKeywords = '';
+            vm.selViews = '';
+            vm.selFlags = '';
+            vm.selRankings = '';
+            vm.selDbMaint = '';
+            vm.selQuery = '';
+            vm.selUpdate = '';
+            vm.selFoodRanks = '';
+            vm.selPlan = 'active';
+            vm.selPayment = '';
+
+            $state.go('plan');
+
+        }
         function goBack() {
             //if ($rootScope.cCategory.id == undefined) $state.go('rankSummary', { index: $rootScope.cCategory.id });
             //else $state.go('rankSummary', { index: 1 });

@@ -1,0 +1,48 @@
+<br>
+<div class="row" ng-if="vm.isAdmin">
+    <!-- Navigation Bar -->
+    <div id="veil" ng-hide="vm.dataReady"></div>
+    <div id="feedLoading" ng-hide="vm.dataReady">
+        <div style="text-align: center" ng-if="!vm.dataReady">
+            <div class="loading-pulse"></div>
+            <p style="font-size:large">loading plans information...</p>
+        </div>
+    </div>
+    <div id="veil" ng-hide="!vm.isSaving"></div>
+    <div id="feedLoading" ng-hide="!vm.isSaving">
+        <div style="text-align: center" ng-if="vm.isSaving">
+            <div class="loading-pulse"></div>
+            <p style="font-size:large">saving plan...</p>
+        </div>
+    </div>
+    
+    <div ng-if="vm.dataReady">
+        <div class="container">
+            <h3>Plans</h3>
+            
+			<div ng-if="vm.notifications.length != 0">
+				<notification-block notifications="vm.notifications" />
+			</div>
+            <table class="table">
+                <tbody>
+                    <thead style="border-style:none;">
+                        <tr>
+                            <th>Code</th>
+                            <th>Price</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    
+                    <tr ng-repeat="codeprice in vm.codeprices" style="cursor:pointer;">
+                        <td ng-click="vm.goDetailView(promoter)">{{codeprice.code}}</td>
+                        <td ng-click="vm.goDetailView(promoter)">${{codeprice.price}}</td>
+                        <td ng-click="vm.goDetailView(promoter)">
+                            <button class="btn btn-primary" ng-click="vm.changeCodePrice(codeprice)">Change</button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

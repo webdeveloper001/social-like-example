@@ -12,9 +12,9 @@
 				<tbody>
 					<thead style="border-style:none;">
 						<tr>
-							<th style="background-color:{{vm.bgc2}};color:{{vm.fc2}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc2}};color:{{vm.fc2}};width:50%;">
 								{{vm.headline2}}</th>
-							<th style="background-color:{{vm.bgc2}};color:{{vm.fc2}};width:50%;"></th>	
+							<th ng-attr-style="background-color:{{vm.bgc2}};color:{{vm.fc2}};width:50%;"></th>	
 						</tr>
 					</thead>
 					<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
@@ -22,7 +22,7 @@
 						<td style="width:50%;">
 							{{x.name}}
 						</td>
-						<td style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
 					</tr>
 				</tbody>
 			</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(2)"  ng-if="vm.cb2gt5">&lt;&lt;{{vm.btext2}}&gt;&gt;</p>
@@ -31,9 +31,9 @@
 				<tbody>
 					<thead style="border-style:none;">
 						<tr>
-							<th style="background-color:{{vm.bgc1}};color:{{vm.fc1}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc1}};color:{{vm.fc1}};width:50%;">
 								{{vm.headline1}}</th>
-							<th style="background-color:{{vm.bgc1}};color:{{vm.fc1}};width:50%;"></th>	
+							<th ng-attr-style="background-color:{{vm.bgc1}};color:{{vm.fc1}};width:50%;"></th>	
 						</tr>
 					</thead>
 					<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
@@ -41,7 +41,7 @@
 						<td style="width:50%;">
 							{{x.name}}
 						</td>
-						 <td style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>                    
+						 <td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>                    
 					</tr>
 					
 				</tbody>
@@ -51,9 +51,9 @@
 				<tbody>
 					<thead style="border-style:none;">
 						<tr>
-							<th style="background-color:{{vm.bgc3}};color:{{vm.fc3}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc3}};color:{{vm.fc3}};width:50%;">
 								{{vm.headline3}}</th>
-							<th style="background-color:{{vm.bgc3}};color:{{vm.fc3}};width:50%;"></th>	
+							<th ng-attr-style="background-color:{{vm.bgc3}};color:{{vm.fc3}};width:50%;"></th>	
 						</tr>
 					</thead>
 					<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
@@ -61,7 +61,7 @@
 						<td style="width:50%;">
 							{{x.name}}
 						</td>
-						<td style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
 					</tr>
 				</tbody>
 			</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(3)" ng-if="vm.cb3gt5">&lt;&lt;{{vm.btext3}}&gt;&gt;</p>
@@ -70,9 +70,9 @@
 				<tbody>
 					<thead style="border-style:none;">
 						<tr>
-							<th style="background-color:{{vm.bgc4}};color:{{vm.fc4}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc4}};color:{{vm.fc4}};width:50%;">
 								{{vm.headline4}}</th>
-							<th style="background-color:{{vm.bgc4}};color:{{vm.fc4}};width:50%;"></th>	
+							<th ng-attr-style="background-color:{{vm.bgc4}};color:{{vm.fc4}};width:50%;"></th>	
 						</tr>
 					</thead>
 					<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
@@ -80,7 +80,7 @@
 						<td style="width:50%;">
 							{{x.name}}
 						</td>
-						<td style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
 					</tr>
 				</tbody>
 			</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(4)" ng-if="vm.cb4gt5">&lt;&lt;{{vm.btext4}}&gt;&gt;</p>
@@ -89,9 +89,9 @@
 				<tbody>
 					<thead style="border-style:none;">
 						<tr>
-							<th style="background-color:{{vm.bgc5}};color:{{vm.fc5}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc5}};color:{{vm.fc5}};width:50%;">
 								{{vm.headline5}}</th>
-							<th style="background-color:{{vm.bgc5}};color:{{vm.fc5}};width:50%;"></th>	
+							<th ng-attr-style="background-color:{{vm.bgc5}};color:{{vm.fc5}};width:50%;"></th>	
 						</tr>
 					</thead>
 					<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
@@ -99,7 +99,7 @@
 						<td style="width:50%;">
 							{{x.name}}
 						</td>
-						<td style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
 					</tr>
 				</tbody>
 			</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(5)" ng-if="vm.cb5gt5">&lt;&lt;{{vm.btext5}}&gt;&gt;</p>
@@ -125,12 +125,12 @@
 				<tbody>
 					<thead style="border-style:none;">
 						<tr>
-							<th style="background-color:{{vm.bgc2}};color:{{vm.fc2}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc2}};color:{{vm.fc2}};width:50%;">
 								{{vm.headline2}}</th>
-							<th style="background-color:{{vm.bgc2}};color:{{vm.fc2}};width:50%;"></th>	
-							<th style="background-color:{{vm.bgc2}};color:{{vm.fc2}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc2}};color:{{vm.fc2}};width:50%;"></th>	
+							<th ng-attr-style="background-color:{{vm.bgc2}};color:{{vm.fc2}};width:50%;">
 							</th>
-							<th style="background-color:{{vm.bgc2}};color:{{vm.fc2}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc2}};color:{{vm.fc2}};width:50%;">
 							</th>
 						</tr>
 					</thead>
@@ -139,7 +139,7 @@
 						<td style="width:50%;line-height: 35px" ng-click="vm.answerDetail(2,x)" >
 							{{x.name}}
 						</td>
-						<td style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
 						<td>
 							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " align="middle" style="display: inline" >
 								<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>
@@ -158,12 +158,12 @@
 				<tbody>
 					<thead style="border-style:none;">
 						<tr>
-							<th style="background-color:{{vm.bgc1}};color:{{vm.fc1}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc1}};color:{{vm.fc1}};width:50%;">
 								{{vm.headline1}}</th>
-							<th style="background-color:{{vm.bgc1}};color:{{vm.fc1}};width:50%;"></th>	
-							<th style="background-color:{{vm.bgc1}};color:{{vm.fc1}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc1}};color:{{vm.fc1}};width:50%;"></th>	
+							<th ng-attr-style="background-color:{{vm.bgc1}};color:{{vm.fc1}};width:50%;">
 							</th>
-							<th style="background-color:{{vm.bgc1}};color:{{vm.fc1}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc1}};color:{{vm.fc1}};width:50%;">
 							</th>
 						</tr>
 					</thead>
@@ -172,7 +172,7 @@
 						<td style="width:50%;line-height: 35px" ng-click="vm.answerDetail(1,x)" >
 							{{x.name}}
 						</td>
-						<td style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">	{{x.sp_title}}
+						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">	{{x.sp_title}}
 						</td>    
 						<td>
 							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " align="middle" style="display: inline" >
@@ -193,12 +193,12 @@
 				<tbody>
 					<thead style="border-style:none;">
 						<tr>
-							<th style="background-color:{{vm.bgc3}};color:{{vm.fc3}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc3}};color:{{vm.fc3}};width:50%;">
 								{{vm.headline3}}</th>
-							<th style="background-color:{{vm.bgc3}};color:{{vm.fc3}};width:50%;"></th>	
-							<th style="background-color:{{vm.bgc3}};color:{{vm.fc3}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc3}};color:{{vm.fc3}};width:50%;"></th>	
+							<th ng-attr-style="background-color:{{vm.bgc3}};color:{{vm.fc3}};width:50%;">
 							</th>
-							<th style="background-color:{{vm.bgc3}};color:{{vm.fc3}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc3}};color:{{vm.fc3}};width:50%;">
 							</th>
 						</tr>
 					</thead>
@@ -208,7 +208,7 @@
 
 							{{x.name}}
 						</td>
-						<td style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
 						<td>
 							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " align="middle" style="display: inline" >
 								<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>
@@ -227,12 +227,12 @@
 				<tbody>
 					<thead style="border-style:none;">
 						<tr>
-							<th style="background-color:{{vm.bgc4}};color:{{vm.fc4}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc4}};color:{{vm.fc4}};width:50%;">
 								{{vm.headline4}}</th>
-							<th style="background-color:{{vm.bgc4}};color:{{vm.fc4}};width:50%;"></th>	
-							<th style="background-color:{{vm.bgc4}};color:{{vm.fc4}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc4}};color:{{vm.fc4}};width:50%;"></th>	
+							<th ng-attr-style="background-color:{{vm.bgc4}};color:{{vm.fc4}};width:50%;">
 							</th>
-							<th style="background-color:{{vm.bgc4}};color:{{vm.fc4}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc4}};color:{{vm.fc4}};width:50%;">
 							</th>
 						</tr>
 					</thead>
@@ -241,7 +241,7 @@
 						<td style="width:50%;line-height: 35px" ng-click="vm.answerDetail(4,x)" >
 							{{x.name}}
 						</td>
-						<td style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
 						<td>
 							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " align="middle" style="display: inline" >
 								<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>
@@ -260,12 +260,12 @@
 				<tbody>
 					<thead style="border-style:none;">
 						<tr>
-							<th style="background-color:{{vm.bgc5}};color:{{vm.fc5}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc5}};color:{{vm.fc5}};width:50%;">
 								{{vm.headline5}}</th>
-							<th style="background-color:{{vm.bgc5}};color:{{vm.fc5}};width:50%;"></th>	
-							<th style="background-color:{{vm.bgc5}};color:{{vm.fc5}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc5}};color:{{vm.fc5}};width:50%;"></th>	
+							<th ng-attr-style="background-color:{{vm.bgc5}};color:{{vm.fc5}};width:50%;">
 							</th>
-							<th style="background-color:{{vm.bgc5}};color:{{vm.fc5}};width:50%;">
+							<th ng-attr-style="background-color:{{vm.bgc5}};color:{{vm.fc5}};width:50%;">
 							</th>
 						</tr>
 					</thead>
@@ -274,7 +274,7 @@
 						<td style="width:50%;line-height: 35px" ng-click="vm.answerDetail(5,x)" >
 							{{x.name}}
 						</td>
-						<td style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
 						<td>
 							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " align="middle" style="display: inline" >
 								<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>

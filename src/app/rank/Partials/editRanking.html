@@ -6,7 +6,7 @@
 			    <bg-box bc="{{vm.bc}}" bc2="{{vm.bc2}}" fc="{{vm.fc}}" text="{{vm.rankTitle}}" dir="horizontal" w="100%" h="{{vm.sm ? '200px':'200px'}}"></bg-box>
 			</div>
         <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2" style="margin:0px;padding:0px;border:0px;">
-            <img ng-src="{{vm.image}}" style="width:100%;height:{{vm.sm ? '200px':'200px'}};">
+            <img ng-src="{{vm.image}}" ng-attr-style="width:100%;height:{{vm.sm ? '200px':'200px'}};">
         </div>
         <div class="hidden-xs col-sm-3 col-md-4 col-lg-4"></div>
     </div>    
@@ -34,32 +34,32 @@
 <div class="row">
     <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
     <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(1)"
-    style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c1sel ? 'black':'white'}};">
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c1sel ? 'black':'white'}};">
         <div style="height:30px;background-color:brown"></div>
         <!-- <div style="height:20px;background-color:#f8f8ff"></div>  -->    
     </div>
     <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(2)"
-    style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c2sel ? 'black':'white'}};">
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c2sel ? 'black':'white'}};">
         <div style="height:30px;background-color:#4682b4"></div>
         <!-- <div style="height:20px;background-color:#f8f8ff"></div> -->     
     </div>
     <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(3)"
-    style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c3sel ? 'black':'white'}};">
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c3sel ? 'black':'white'}};">
         <div style="height:30px;background-color:#008080"></div>
         <!-- <div style="height:20px;background-color:#f8f8ff"></div> -->     
     </div>
     <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(4)"
-    style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c4sel ? 'black':'white'}};">
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c4sel ? 'black':'white'}};">
         <div style="height:30px;background-color:gray"></div>
         <!-- <div style="height:20px;background-color:#f8f8ff"></div> -->     
     </div>
     <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(5)"
-    style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c5sel ? 'black':'white'}};">
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c5sel ? 'black':'white'}};">
         <div style="height:30px;background-color:#a3297a"></div>
         <!-- <div style="height:20px;background-color:#f8f8ff"></div> -->      
     </div>
     <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(6)"
-    style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c6sel ? 'black':'white'}};">
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c6sel ? 'black':'white'}};">
         <div style="height:30px;background-color:#c68c53"></div>
         <!-- <div style="height:20px;background-color:black"></div> -->      
     </div>

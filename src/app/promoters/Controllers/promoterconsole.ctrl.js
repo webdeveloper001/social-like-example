@@ -5,9 +5,9 @@
         .module('app')
         .controller('promoterconsole', promoterconsole);
 
-    promoterconsole.$inject = ['$location', '$rootScope', '$state', '$window', 'useraccnt', 'dialog', 'promoter', '$location', 'STRIPE_CLIENT_ID', 'setting'];
+    promoterconsole.$inject = ['$location', '$rootScope', '$state', '$window', 'useraccnt', 'dialog', 'promoter', '$location', 'STRIPE_CLIENT_ID', 'setting', '$q'];
 
-    function promoterconsole(location, $rootScope, $state, $window, useraccnt, dialog, promoter, $location, STRIPE_CLIENT_ID, setting) {
+    function promoterconsole(location, $rootScope, $state, $window, useraccnt, dialog, promoter, $location, STRIPE_CLIENT_ID, setting, $q) {
         /* jshint validthis:true */
         var vm = this;
         vm.notifications = [];        
@@ -28,7 +28,7 @@
 
         vm.overview = true;
         vm.manageview = true;
-        vm.STRIPE_COMMISSION_PERCENTAGE = $rootScope.setting ? $rootScope.setting.STRIPE_COMMISSION_PERCENTAGE : 0.2;
+        
         //Methods
         vm.gotoanswer = gotoanswer;
         vm.gotomanage = gotomanage;
@@ -46,9 +46,12 @@
         retrieveData();
 
         function retrieveData() {
-            promoter.getbyUser($rootScope.user.id).then(function (result) {
-                 $rootScope.userpromoter = result;
-                 activate();
+            $q.all([promoter.getbyUser($rootScope.user.id), setting.getSetting()])
+            .then(function (data) {
+                $rootScope.userpromoter = data[0];
+                vm.STRIPE_COMMISSION_PERCENTAGE = data[1].STRIPE_COMMISSION_PERCENTAGE;
+                vm.CUSTOM_RANK_PRICE = data[1].CUSTOM_RANK_PRICE;
+                activate();
             });
         }
 
@@ -124,7 +127,7 @@
                         if(obj.ispremium)
                             obj.totalCommission += obj.price  * vm.STRIPE_COMMISSION_PERCENTAGE;
                         if(obj.hasranks)
-                            obj.totalCommission += obj.ranksqty* 35 *vm.STRIPE_COMMISSION_PERCENTAGE;
+                            obj.totalCommission += obj.ranksqty* vm.CUSTOM_RANK_PRICE *vm.STRIPE_COMMISSION_PERCENTAGE;
 
                         vm.myaccnts.push(obj);
                     }

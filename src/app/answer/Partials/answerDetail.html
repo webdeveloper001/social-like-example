@@ -20,11 +20,11 @@
     </div>
     <div class="col-xs-6 col-sm-9 col-md-10">
             <div ng-show="{{vm.type == 'Establishment' || vm.type == 'PersonCust' || vm.type == 'Event' }}" class="text-right">
-                <p style="display:{{vm.answer.hasOwner ? 'none':'inline'}};" class="hiw" ng-click="vm.bizRegDialog()">
+                <p ng-attr-style="display:{{vm.answer.hasOwner ? 'none':'inline'}};" class="hiw" ng-click="vm.bizRegDialog()">
                     <u>{{vm.bindtxt}}</u>
                 </p>
-                <!--<br style="display:{{vm.answer.hasOwner ? 'inline':'none'}}">-->
-                <span class="glyphicon glyphicon-lock" style="display:{{vm.answer.hasOwner ? 'inline':'none'}}"></span>
+                <!--<br ng-attr-style="display:{{vm.answer.hasOwner ? 'inline':'none'}}">-->
+                <span class="glyphicon glyphicon-lock" ng-attr-style="display:{{vm.answer.hasOwner ? 'inline':'none'}}"></span>
             </div>
     </div>    
 </div>
@@ -33,7 +33,7 @@
 <!-- Event Information -->
 <div ng-if="vm.type == 'Event'">
     <br>
-    <div ng-bind-html="vm.ehtml" style="{{vm.estyle}}">
+    <div ng-bind-html="vm.ehtml" ng-attr-style="{{vm.estyle}}">
         <br>
     </div>
 </div>
@@ -61,7 +61,7 @@
         </div>
         <p class="text-center" ng-if="vm.type == 'Short-Phrase'"> on {{r.title}}</p>
         <div class="row" ng-if="!vm.votemode" style="padding-bottom:5px; margin-top:0px">
-            <img style="height:55px;width:auto;" class="col-xs-3 col-md-1 col-lg-1" style="margin:0px" ng-src="{{r.icon}}">
+            <img ng-attr-style="height:55px;width:auto;" class="col-xs-3 col-md-1 col-lg-1" ng-attr-style="margin:0px" ng-src="{{r.icon}}">
            <div class="col-xs-6">
                 <p style="padding-top:10px">Ranked <strong>#{{r.rank}}</strong> out of <strong>{{r.answers}}</strong></p>
             </div>
@@ -70,16 +70,16 @@
 
         <div class="row" ng-if="vm.votemode" style="padding-top:3px;padding-left:75px;height:55px">
             <div class="col-xs-2 col-md-2 col-lg-2" style="padding-right:20px">
-                <img style="height:30px;width:auto" class="cursor" ng-src="../../../assets/images/{{r.thumbUp}}" ng-click="vm.UpVote(r)">
+                <img ng-attr-style="height:30px;width:auto" class="cursor" ng-src="../../../assets/images/{{r.thumbUp}}" ng-click="vm.UpVote(r)">
                 <label><font size="4">&nbsp&nbsp&nbsp&nbsp{{r.upV}}</font></label>
             </div>
             <div class="col-xs-2 col-md-2 col-lg-2" style="padding-left:100px">
-                <img style="height:30px;width:auto" class="cursor" ng-src="../../../assets/images/{{r.thumbDn}}" ng-click="vm.DownVote(r)">
+                <img ng-attr-style="height:30px;width:auto" class="cursor" ng-src="../../../assets/images/{{r.thumbDn}}" ng-click="vm.DownVote(r)">
                 <label><font size="4">&nbsp&nbsp&nbsp&nbsp{{r.downV}}</font></label>
             </div>            
         </div>
         
-        <p style="display:{{vm.deleteButton}};color:red" ng-click="vm.deleteThisCatans(r)">&lt;&lt;Delete&gt;&gt;</p>
+        <p ng-attr-style="display:{{vm.deleteButton}};color:red" ng-click="vm.deleteThisCatans(r)">&lt;&lt;Delete&gt;&gt;</p>
         
     </div>
     
@@ -136,7 +136,7 @@
         <a ng-if="vm.igdemo" type="button" class="btn btn-default btn-block" ng-click="vm.getImages()" ng-attr-style="background-color:#cc0099;color:#e6e6e6;display:{{vm.showImageGallery == false ? 'inline':'none'}}">Instagram&nbsp&nbsp
             <img ng-src="/assets/images/1485384923_9_-_Instagram.png" style="width:50px"></img></a>    
     </div>
-    <div style="display:{{vm.showImageGallery == true ? 'inline':'none'}}">
+    <div ng-attr-style="display:{{vm.showImageGallery == true ? 'inline':'none'}}">
 
         <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" ng-repeat="x in vm.images" style="margin:0px;padding:0px;">
             <a ng-click="vm.selectPhoto($index)" class="thumbnail">
@@ -149,11 +149,11 @@
     </div>
 
     <div class="text-right" ng-if="vm.type != 'Short-Phrase'">
-        <div ng-if="vm.showImageGallery && vm.isLoggedIn && vm.userIsOwner" style="display:{{vm.isLoggedIn ? 'inline':'none'}}">
+        <div ng-if="vm.showImageGallery && vm.isLoggedIn && vm.userIsOwner" ng-attr-style="display:{{vm.isLoggedIn ? 'inline':'none'}}">
             <blob-upload>
         </div>
 
-        <a  ng-if="vm.showImageGallery && vm.isLoggedIn && vm.userIsOwner" type="button" class="btn btn-primary pull-right" ng-click="vm.selectInstagramImages()" style="display:{{vm.isLoggedIn ? 'inline':'none'}}">
+        <a  ng-if="vm.showImageGallery && vm.isLoggedIn && vm.userIsOwner" type="button" class="btn btn-primary pull-right" ng-click="vm.selectInstagramImages()" ng-attr-style="display:{{vm.isLoggedIn ? 'inline':'none'}}">
             Select from Instagram Images </a>   
     </div>
 </div>
@@ -201,7 +201,7 @@
 
         <!--
         <div class="row">
-            <!--<div style="display:{{x.shdr ? 'inline':'none'}}"> -->
+            <!--<div ng-attr-style="display:{{x.shdr ? 'inline':'none'}}"> -->
         <!--    <div>
                 <div style="background-color:gray;color:white;">
                     <p>{{x[0].gtitle}}</p>
@@ -218,11 +218,11 @@
             </thead>
             <tbody>
                 <tr ng-repeat="item in x">
-                    <td align="middle" style="width:10%"><img ng-src="../../../assets/images/{{item.upImage}} " style="max-height:30px;margin:0px;" ng-click="vm.vrowVoteUp(item)"></td>
+                    <td align="middle" ng-attr-style="width:10%"><img ng-src="../../../assets/images/{{item.upImage}} " style="max-height:30px;margin:0px;" ng-click="vm.vrowVoteUp(item)"></td>
                     <td align="left" style="width:10%">{{item.upV}}</td>
                     <td align="middle" style="width:60%">{{item.title}}</td>
                     <td align="right" style="width:10%">{{item.downV}}</td>
-                    <td align="middle" style="width:10%"><img ng-src="../../../assets/images/{{item.downImage}}" style="max-height:30px;margin:0px; " ng-click="vm.vrowVoteDown(item)"></td>
+                    <td align="middle" ng-attr-style="width:10%"><img ng-src="../../../assets/images/{{item.downImage}}" style="max-height:30px;margin:0px; " ng-click="vm.vrowVoteDown(item)"></td>
                 </tr>
             </tbody>
         </table>
@@ -310,7 +310,7 @@
         <br>
         <p><small> Endorse one or more answers to leave a comment. </small></p>
     </div>
-    <div style="display:{{(vm.isLoggedIn && vm.commentAllowed) ? 'inline':'none'}}">
+    <div ng-attr-style="display:{{(vm.isLoggedIn && vm.commentAllowed) ? 'inline':'none'}}">
         <div class="media">
             <div ng-if="!user.picture.data.url" class="profile-avatar-wrapper media-left">
                 <div class="empty-profile-avatar-wrapper"  ng-attr-style="background-color:{{x.bc}};color:{{x.fc}};">{{x.initials}}</div>

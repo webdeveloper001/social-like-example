@@ -107,7 +107,16 @@ app.get('/stripeServer/', function(req, res, next) {
 app.get('/settings/', function(req, res, next) {
     var config = jsonfile.readFileSync(configFilePath);
     config.serverDate = moment().format('YYYY-MM-DD');
-    res.json({settings:config});
+    config.CUSTOM_RANK_PRICE = 0;
+    stripe.plans.retrieve("custom-rank")
+    .then(function(plan){
+        config.CUSTOM_RANK_PRICE = plan.amount/100;
+        res.json({settings:config});
+    })
+    .catch(function(err){
+        res.status(500).json({error: 'Error occured.'})
+    })
+    
 });
 
 app.post('/settings/', function(req, res, next) {
@@ -121,6 +130,68 @@ app.post('/settings/', function(req, res, next) {
     res.json({settings:config});
 });
 
+app.post('/codeprice/', function(req, res, next) {
+    if(req.body.codeprice.code !== 'Custom Rank') {
+        var oldcode = '';
+        stripe.plans.retrieve("premium-plan-" + req.body.codeprice.code)
+        .then(function(plan){
+            return stripe.plans.del("premium-plan-" + req.body.codeprice.code)
+            .then(function(confirmation){
+                return stripe.plans.create({
+                    amount: req.body.newPrice * 100,
+                    name: "Premium Plan " + req.body.codeprice.code,
+                    currency: "usd",
+                    interval: "month",
+                    id: "premium-plan-" + req.body.codeprice.code
+                });
+            });
+        })
+        .then(function(plan){
+            writeToDreamFactoryCodePrices('updateCodePrice', req.body.codeprice.id, {newPrice: req.body.newPrice}, {})
+            .end(function(response){
+                res.json({"plan": plan});
+            });
+            
+        })
+        .catch(function(err){
+            if(err.message.indexOf('No such plan') != -1){
+                stripe.plans.create({
+                    amount: req.body.newPrice * 100,
+                    name: "Premium Plan " + req.body.codeprice.code,
+                    interval: "month",
+                    currency: "usd",
+                    id: "premium-plan-" + req.body.codeprice.code
+                }).then(function(plan){
+                    writeToDreamFactoryCodePrices('updateCodePrice', req.body.codeprice.id, {newPrice: req.body.newPrice}, {})
+                    .end(function(response){
+                        res.json({plan: plan});
+                    });
+                    
+                });
+            } else {
+                res.status(500).json({error: err.message});
+            }
+        })
+        
+    } else {
+        stripe.plans.del("custom-rank")
+        .then(function(confirmation){
+            return stripe.plans.create({
+                amount: req.body.newPrice * 100,
+                name: "Custom Ranking",
+                currency: "usd",
+                interval: "month",
+                id: "custom-rank"
+            });
+        })
+        .then(function(plan){
+            res.send({plan: plan});
+        })
+        .catch(function(err){
+            res.status(500).json({error: err.message});
+        })
+    }
+});
 app.get('/stripeServer/:stripeId/invoices', function(req, res, next) {
     var _invoices;
     var stripeInvoices = stripe.invoices.list({
@@ -1102,6 +1173,25 @@ function writeToDreamFactoryPromoters(updateReason, promoterId, callData, res){
     })
     .send(JSON.stringify(param));
 }
+
+
+function writeToDreamFactoryCodePrices(updateReason, codeprice_id, callData, res){
+    var server = 'http://api.rank-x.com';
+    var path = '/api/v2/mysql/_table/codeprice/' + codeprice_id;
+    var param = {};
+    if (updateReason == 'updateCodePrice') {
+        param = {"id":codeprice_id, "price":callData.newPrice }
+    } 
+
+    return unirest.patch(server + path)
+    .headers({
+        'Accepts': 'application/json',
+        'Content-Type': 'application/json',
+        'X-DreamFactory-Api-Key': 'da4f7e05b7afc5beffe8d9d416abec73cf98ef89e3703beeb5144f325be5decc',
+    })
+    .send(JSON.stringify(param));
+}
+
 
 // ------ Image Download and Upload ----- 
 // This code can be moved to a different file with a library, but temporarily here for testing.

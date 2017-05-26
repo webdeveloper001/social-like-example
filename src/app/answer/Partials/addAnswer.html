@@ -57,9 +57,9 @@
             <div class="form-group text-right">
                 <!--    <button type="submit" class="btn btn-primary" ng-click="vm.searchImage()" ng-disabled="answerForm.$invalid">{{vm.imageCommand}}</button>-->
                 <button type="submit" class="btn btn-primary {{vm.searchDisabled}}" ng-click="vm.callSearchImage()" ng-show="{{vm.type != 'Short-Phrase'}}">{{vm.imageCommand}}</button>
-                <button type="submit" class="btn btn-primary" ng-click="vm.viewPrev()" ng-disabled="vm.numLinks === 0" style="display:{{vm.imagefunctions}}">&laquo</button>
-                <button type="submit" class="btn btn-primary" ng-click="vm.viewNext()" ng-disabled="vm.numLinks === 0" style="display:{{vm.imagefunctions}}">&raquo</button>
-                <a style="display:{{vm.imagefunctions}}">{{vm.linkIdx+1}} of {{vm.numLinks}}</a>
+                <button type="submit" class="btn btn-primary" ng-click="vm.viewPrev()" ng-disabled="vm.numLinks === 0" ng-attr-style="display:{{vm.imagefunctions}}">&laquo</button>
+                <button type="submit" class="btn btn-primary" ng-click="vm.viewNext()" ng-disabled="vm.numLinks === 0" ng-attr-style="display:{{vm.imagefunctions}}">&raquo</button>
+                <a ng-attr-style="display:{{vm.imagefunctions}}">{{vm.linkIdx+1}} of {{vm.numLinks}}</a>
             </div>
             <label class="checkbox-inline"  ng-show="{{vm.type != 'Short-Phrase'}}">
                 <input type="checkbox" ng-change='vm.onNoGoodImages(vm.ngi)' ng-model="vm.ngi">No good images were found

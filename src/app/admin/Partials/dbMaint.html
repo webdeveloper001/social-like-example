@@ -28,7 +28,7 @@
 	<br>
 	<p ng-repeat="x in vm.unrefans track by $index">{{x.name}} --- {{x.id}}</p>
 	<div ng-repeat="x in vm.dupAnswers track by $index">
-		<img src="{{x.image1}}" style="width:120px"> <img src="{{x.image2}}" style="width:120px">
+		<img src="{{x.image1}}" ng-attr-style="width:120px"> <img src="{{x.image2}}" style="width:120px">
 		<p> {{x.name1}} --- {{x.idx1}} --- {{x.loc1}} --- {{x.nh1}} --- {{x.add1}} --- {{x.id1}}</p>
 		<p> {{x.name2}} --- {{x.idx2}} --- {{x.loc2}} --- {{x.nh2}} --- {{x.add2}} --- {{x.id2}}</p>
 		<button class="btn btn-default" ng-click="vm.syncToFirst(x)">Sync 1st</button>
@@ -36,7 +36,7 @@
 		<p>-------------------------------------------------------</p>
 	</div>
 	<div ng-repeat="x in vm.dupAnsNames track by $index">
-		<img src="{{x.image1}}" style="width:120px"> <img src="{{x.image2}}" style="width:120px">
+		<img src="{{x.image1}}" ng-attr-style="width:120px"> <img src="{{x.image2}}" style="width:120px">
 		<p> {{x.name1}} --- {{x.idx1}} --- {{x.loc1}} --- {{x.nh1}} --- {{x.add1}} --- {{x.id1}}</p>
 		<p> {{x.name2}} --- {{x.idx2}} --- {{x.loc2}} --- {{x.nh2}} --- {{x.add2}} --- {{x.id2}}</p>
 		<button class="btn btn-default" ng-click="vm.syncToFirst(x)">Sync 1st</button>
