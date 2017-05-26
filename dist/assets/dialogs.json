@@ -74,5 +74,7 @@
     "dialog.rodimageuploadsuccess.title": "Success!",
     "dialog.rodimageuploadsuccess.text": "The image has been uploaded and saved succesfully.",
     "dialog.rodimagedeletesuccess.title": "Success!",
-    "dialog.rodimagedeletesuccess.text": "The featured image has been deleted succesfully."    
+    "dialog.rodimagedeletesuccess.text": "The featured image has been deleted succesfully.",
+    "dialog.whataretags.title": "Info",
+    "dialog.whataretags.text": "Tags are keywords that allow this ranking to be searchable. For instance for the ranking: 'Italian restaurants', appropriate tags could be 'pasta, pizza, lasagna, etc'."    
 }
