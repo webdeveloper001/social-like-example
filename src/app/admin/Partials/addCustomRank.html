@@ -80,7 +80,7 @@
 <div ng-if="vm.step > 4">
 <label><strong>Tags</strong></label>
 <div class="input-group" style="padding-bottom:10px">
-      <input type="text" class="form-control" placeholder="i.e. food seafood" ng-model="vm.tags">
+      <input type="text" class="form-control" placeholder="tags separated by blank space, i.e. food seafood fish" ng-model="vm.tags">
       <span class="input-group-btn">
         <button class="btn btn-secondary" ng-click="vm.tagsOk()" type="button">Ok</button>
       </span>
@@ -195,7 +195,7 @@
 <br>
 <div class="text-right">
     <button type="button" class="btn btn-default" ng-click="vm.goBack()">Cancel</button>
-    <button type="button" class="btn btn-primary" ng-click="vm.addRank()">{{vm.buttonLabel}}</button>
+    <button type="button" class="btn btn-primary" ng-click="vm.addRank()" ng-show="vm.showAddButton">{{vm.buttonLabel}}</button>
 </div>
 <br><br>
 </div>

@@ -117,6 +117,12 @@
                 var answerx = answer;
                 answerx.id = result.data.resource[0].id; 
                 _answers.push(answerx);
+
+                //update slug tag and featured image
+                var slug = answerx.name.toLowerCase(); 
+                slug = slug.replace(/ /g,'-');
+                slug = slug + '-' + result.data.resource[0].id;
+                updateAnswer(result.data.resource[0].id,['slug'],[slug]);
                 
                 //Update current establishment and person names for typeahead
                 if (answerx.type == 'Establishment') {
@@ -164,6 +170,12 @@
                 var answerx = answer;
                 answerx.id = result.data.resource[0].id; 
                 _answers.push(answerx);
+
+                //update slug tag and featured image
+                var slug = answerx.name.toLowerCase(); 
+                slug = slug.replace(/ /g,'-');
+                slug = slug + '-' + result.data.resource[0].id;
+                updateAnswer(result.data.resource[0].id,['slug'],[slug]);
                 
                 //Update current establishment and person names for typeahead
                 if (answerx.type == 'Establishment') {

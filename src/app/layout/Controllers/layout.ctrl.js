@@ -352,7 +352,8 @@
         }
 
         function goAddRank(){
-            $state.go('addCustomRank');
+            if ($rootScope.isLoggedIn) $state.go('addCustomRank');
+            else dialog.loginFacebook();
         }
 
          //*****************Admin Functions************
