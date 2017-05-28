@@ -15,6 +15,7 @@
 
             searchRanks: searchRanks,
             searchAnswers: searchAnswers,
+            searchRanksMainPage: searchRanksMainPage,
         };
 
         return service;
@@ -311,6 +312,62 @@
             }
 
             return results_ans;
+
+        }
+
+        function searchRanksMainPage(isCity, query) {
+
+            //initialize tool variables 
+            var rank = {};
+            var tagCapitalized = '';
+            var tagFirstLowered = '';
+            var rankObj = {};
+            var results = [];
+            var ss = '';
+
+            var input = query;
+            if (input) {
+                var inputVal = input;
+
+                var results_ss = [];
+                var m_ss = true; //match in search string
+                
+                var valTags = inputVal.split(" ");
+                
+                    for (var j = 0; j < $rootScope.content.length; j++) {
+                      //  if ($rootScope.content[j].ismp) {
+                            //console.log("ismp is true");
+                            ss = $rootScope.searchStr[j]; //search String
+                            rank = $rootScope.content[j];
+                            m_ss = true;
+
+                            //check that all tags exist
+                            for (var k = 0; k < valTags.length; k++) {
+
+                                tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
+                                tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
+
+                                //look for input in rank title only        
+                                m_ss = m_ss &&
+                                    (ss.indexOf(valTags[k]) > -1 ||
+                                        ss.indexOf(valTags[k].toUpperCase()) > -1 ||
+                                        ss.indexOf(tagCapitalized) > -1 ||
+                                        ss.indexOf(tagFirstLowered) > -1);
+                            }
+                            
+                            if (m_ss && isCity) {
+                                if ($rootScope.content[j].ismp)
+                                    results_ss.push($rootScope.content[j]);
+                            }
+                            else if (m_ss){
+                                results_ss.push($rootScope.content[j]);
+                            }
+                     //   }
+                    }
+                    results = results_ss;              
+            }
+
+            return results;
 
         }
 
