@@ -6,10 +6,10 @@
         .controller('addCustomRank', addCustomRank);
 
     addCustomRank.$inject = ['$location', '$rootScope', '$state','$stateParams',
-    'dialog','$window','answer','color','pixabay','$http','table','$timeout'];
+    'dialog','$window','answer','color','pixabay','pexels','$http','table','$timeout'];
 
     function addCustomRank(location, $rootScope, $state, $stateParams,
-     dialog, $window, answer, color, pixabay, $http, table, $timeout) {
+     dialog, $window, answer, color, pixabay, pexels, $http, table, $timeout) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'addCustomRank';
@@ -30,6 +30,7 @@
         vm.processImage = processImage;
         vm.whatisrankquestion = whatisrankquestion;
         vm.whataretags = whataretags;
+        vm.selImgBank = selImgBank;
         vm.csel = csel;
         vm.c1sel = true;
         vm.showAlert = false;
@@ -68,6 +69,7 @@
                 vm.shade = 0;
                 setBoxColor(1);
                 vm.buttonLabel = 'Add Rank';
+                selImgBank(1);
             
             //loadData();
             console.log("addCustomRank page Loaded!");
@@ -258,32 +260,51 @@
             }
         }
 
-        function getImages(){
-            var qry = vm.imageQuery.replace(' ','+');
+        function getImages() {
+            var qry = vm.imageQuery.replace(' ', '+');
             vm.images = [];
-            pixabay.search(qry).then(function(result){
-                if ($rootScope.DEBUG_MODE) console.log("Pixabay results - ", result);
-                vm.numResults = result.length;
-                
-                for (var i=0; i<vm.numResults; i++){
-                    vm.images.push(result[i]);
-                    //console.log("image i - ", result[i].previewURL);
 
-                }
-                vm.image = vm.images[vm.i].previewURL;
-            });
+            if (vm.pixabay) {
+                pixabay.search(qry).then(function (result) {
+                    if ($rootScope.DEBUG_MODE) console.log("Pixabay results - ", result);
+                    vm.numResults = result.length;
+
+                    for (var i = 0; i < vm.numResults; i++) {
+                        vm.images.push(result[i]);
+                        //console.log("image i - ", result[i].previewURL);
+
+                    }
+                    vm.image = vm.images[vm.i].previewURL;
+                });
+            }
+            if (vm.pexels) {
+                pexels.search(qry).then(function (result) {
+                    if ($rootScope.DEBUG_MODE) console.log("Pexels results - ", result);
+                    vm.numResults = result.length;
+
+                    for (var i = 0; i < vm.numResults; i++) {
+                        vm.images.push(result[i]);
+                        //console.log("image i - ", result[i].previewURL);
+
+                    }
+                    vm.image = vm.images[vm.i].src.small;
+                });
+            }
         }
 
         function nextImg(){
             vm.i = vm.i + 1;
             if (vm.i > vm.images.length -1) vm.i = vm.images.length-1;
-            vm.image = vm.images[vm.i].previewURL; 
+            if(vm.pixabay) vm.image = vm.images[vm.i].previewURL;
+            if(vm.pexels) vm.image = vm.images[vm.i].src.small; 
         }
 
         function prevImg(){
             vm.i = vm.i - 1;
             if (vm.i < 0) vm.i = 0;
-            vm.image = vm.images[vm.i].previewURL; 
+            
+            if(vm.pixabay) vm.image = vm.images[vm.i].previewURL;
+            if(vm.pexels) vm.image = vm.images[vm.i].src.small; 
         }
 
         function selectImg(){
@@ -322,7 +343,10 @@
 
         function processImage(category){
             var rank = category;
-            var imageurl = vm.images[vm.i].webformatURL;
+            var imageurl = '';
+            
+            if(vm.pixabay) imageurl = vm.images[vm.i].webformatURL;
+            if(vm.pexels) imageurl = vm.images[vm.i].src.medium;
             
             var filename = vm.rankTitle.toLowerCase();; 
             filename = filename.replace(/ /g,'-');
@@ -363,6 +387,17 @@
 
         function goBack(){
             $state.go('cwrapper');
+        }
+
+        function selImgBank(x){
+            if (x == 1){
+                vm.pixabay = true;
+                vm.pexels = false;
+            }
+            if (x == 2){
+                vm.pixabay = false;
+                vm.pexels = true;
+            }
         }
                      
     }

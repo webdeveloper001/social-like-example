@@ -459,8 +459,20 @@
                 vm.showR = false;
             }
 
-            vm.introtext = $rootScope.cCategory.introtext;               
-                
+            //If introtext exist load it, if not, create custom intro text
+            if ($rootScope.cCategory.introtext) vm.introtext = $rootScope.cCategory.introtext;
+            else vm.introtext = 'This is the ranking for ' + $rootScope.cCategory.title + '. Did we get them all?' +
+            ' Are we missing ' + 
+            ($rootScope.cCategory.type == 'Establishment' ? 'any establishment?.':'') +
+            ($rootScope.cCategory.type == 'Organization' ? 'any Company?.':'') +
+            ($rootScope.cCategory.type == 'Person' ? 'anyone?.':'') +
+            ($rootScope.cCategory.type == 'PersonCust' ? 'anyone?.':'') +
+            ($rootScope.cCategory.type == 'Place' ? 'a place?.':'') +
+            ($rootScope.cCategory.type == 'Short-Phrase' ? 'an opinion?.':'') +
+            ($rootScope.cCategory.type == 'Thing' ? 'any item?.':'') +
+            ($rootScope.cCategory.type == 'Event' ? 'any event?.':'') +
+            ' Help shape the ranking by adding those that are missing and by endorsing your favorites!.';
+              
             //vm.url = 'http://rankdev.azurewebsites.net/#/rankSummary/' + $rootScope.cCategory.id;
             //vm.header = "table" + $rootScope.cCategory.id + ".header";
             //vm.body = 'table' + $rootScope.cCategory.id + '.body';

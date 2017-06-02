@@ -239,6 +239,7 @@
                     case "ranksqty": data.ranksqty = val[i]; break;
                     case "ig_image_urls": data.ig_image_urls = val[i]; break;
                     case "slug": data.slug = val[i]; break;
+                    case "type": data.type = val[i]; break;
                 }
             }
             //console.log("data", data);
@@ -272,6 +273,7 @@
                     case "hasranks": $rootScope.answers[idx].hasranks = val[i]; break;
                     case "ranksqty": $rootScope.answers[idx].ranksqty = val[i]; break;
                     case "slug": $rootScope.answers[idx].slug = val[i]; break;
+                    case "type": $rootScope.answers[idx].type = val[i]; break;
                 }
             }                        
             
