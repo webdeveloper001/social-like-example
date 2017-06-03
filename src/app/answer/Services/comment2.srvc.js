@@ -63,7 +63,7 @@
                 newcommentx.id = result.data.resource[0].id; 
                 //_comments.push(newcommentx);
                 
-                uaf.post('commentA',['answer'],[newcomment.answer]); //user activity feed 
+                uaf.post('commentA',['answer', 'comment'],[newcomment.answer, newcomment.body]); //user activity feed 
                 //$rootScope.ccomments.push(newcommentx);
 
                 if ($rootScope.DEBUG_MODE) console.log("Adding new comment succesful", result);

@@ -40,7 +40,8 @@
                                           $rootScope.user.id == 41 ||  
                                           $rootScope.user.id == 42 ||
                                           $rootScope.user.id == 30 ||
-                                          $rootScope.user.id == 187959328383879);
+                                          $rootScope.user.id == 187959328383879 ||
+                                          $rootScope.user.id == 194039991109146);
             
             vm.isAdmin = $rootScope.user.is_sys_admin;
             console.log("admin page Loaded!");

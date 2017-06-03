@@ -11,12 +11,15 @@
   "dependencies": {
     "azure-storage": "^2.1.0",
     "body-parser": "^1.16.1",
+    "dotenv": "^4.0.0",
     "express": "^4.14.1",
     "jsonfile": "^3.0.0",
     "moment": "^2.18.1",
     "request": "^2.81.0",
     "stripe": "^4.15.0",
-    "unirest": "^0.5.1"
+    "unirest": "^0.5.1",
+    "sendgrid": "^4.8.2",
+    "node-schedule": "^1.2.1"
   },
   "directories": {
     "example": "examples"

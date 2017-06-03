@@ -5,9 +5,9 @@
         .module('app')
         .controller('promotersignup', promotersignup);
 
-    promotersignup.$inject = ['$location', '$rootScope', '$state','promoter','dialog'];
+    promotersignup.$inject = ['$location', '$rootScope', '$state','promoter','dialog', 'mailing'];
 
-    function promotersignup(location, $rootScope, $state, promoter, dialog) {
+    function promotersignup(location, $rootScope, $state, promoter, dialog, mailing) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'promote';
@@ -47,7 +47,12 @@
             checkInputData();
             //vm.promoter.user = $rootScope.user.id;
             if (dataOk) promoter.add(vm.promoter).then(function(){
-                dialog.notificationWithCallback('Success','You have successfully registered as a Promoter.',gotoPromoterConsole);
+                mailing.promoterCreated(vm.promoter)
+                .then(function(){
+
+                });
+                dialog.notificationWithCallback('Success','You have successfully registered as a Promoter. ',gotoPromoterConsole);
+
             });
         }
 

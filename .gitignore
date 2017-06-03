@@ -3,3 +3,5 @@ bower_components/
 .sass-cache/
 .idea/
 .tmp/
+server/.env
+server/node_modules

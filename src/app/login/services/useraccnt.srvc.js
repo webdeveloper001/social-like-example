@@ -200,7 +200,7 @@
               data.bizcat = getBizCat(answer.id);
               data.status = 'Basic';
               data.stripeid = '0';
-              data.email = '';
+              data.email = $rootScope.user.email;
               data.username = $rootScope.user.name;
 
               // MINIMUM NEEDED
@@ -252,7 +252,7 @@
                   _useraccnts.push(datax);
 
                   //return the ID of the new account row
-                  return result.data.resource[0].id;
+                  return datax;
                 }
             }
   /*        }

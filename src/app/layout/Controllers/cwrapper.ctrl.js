@@ -6,10 +6,10 @@
         .controller('cwrapper', cwrapper);
 
     cwrapper.$inject = ['$rootScope', '$state', '$http', '$stateParams', '$scope',
-        'query', 'table', 'dialog', 'uaf','$window','userdata','$location','color', 'fbusers', '$q', '$timeout', 'filter', 'search'];
+        'query', 'table', 'dialog', 'uaf','$window','userdata','$location','color', 'fbusers', '$q', '$timeout', 'filter', 'search', 'mailing'];
 
     function cwrapper($rootScope, $state, $http, $stateParams, $scope,
-        query, table, dialog, uaf, $window, userdata, $location, color, fbusers, $q, $timeout, filter, search) {
+        query, table, dialog, uaf, $window, userdata, $location, color, fbusers, $q, $timeout, filter, search, mailing) {
         /* jshint validthis:true */
         var vm = this;
         //-----SEO tags ----
@@ -114,9 +114,22 @@
             vm.pageDataLoaded = true;
             vm.content = $rootScope.content;
             loadInifiniteScroll();
+
+            if(!$rootScope.hasBusiness && !$rootScope.isPromoter) {
+                var time = 2000;
+                if ($rootScope.isLoggedIn){
+                    time = 5000;
+                }
+                $timeout(function(){
+                    dialog.openSubscriptionDlg(execSubscription);
+                }, time);;
+            }
         });
 
 
+        function execSubscription(email){
+            mailing.subscribed(email, $rootScope.user ? $rootScope.user.first_name + ' ' + $rootScope.user.last_name : '');
+        }
         // angular.element($window).bind("scroll", function() {
         //     var height = Math.max( angular.element('body')[0].scrollHeight, angular.element('body')[0].offsetHeight, 
         //                angular.element('html')[0].clientHeight, angular.element('html')[0].scrollHeight, angular.element('html')[0].offsetHeight );
@@ -262,9 +275,7 @@
 
         if ($rootScope.cwrapperLoaded) activate();
         else init();
-
         function activate() {
-
             if ($state.params.main == true) goHome();
             
             $rootScope.inFavMode = false;

@@ -28,7 +28,7 @@
         return service;
         function getMostPopularData(){
             // $rootScope.filterOptions.isCity
-            $http.get(baseURI + '?order=views DESC&offset=0&limit=8')
+            $http.get(baseURI + '?order=views DESC&offset=0&limit=8&filter=ismp=1')
             .then(function(data){
                 $rootScope.initalHomeData = data.data.resource;
                 filter.saveInitalHomeData($rootScope.initalHomeData);

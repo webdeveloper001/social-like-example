@@ -59,7 +59,8 @@
             getIconColors($rootScope.user.id, _colors);
             data.fc = _colors.fc;
             data.bc = _colors.bc;
-            
+            data.date = moment().format('YYYY-MM-DD');
+            data.actorusername = $rootScope.user.first_name + ' ' + $rootScope.user.last_name;
 			for (var i=0; i<field.length; i++){
                 switch (field[i]){
                     case "answer": {

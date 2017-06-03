@@ -28,7 +28,7 @@
                 return $facebook.login('public_profile,email,user_friends')
                     .then(function(res) {
                         if (res.status === 'connected') {
-                            return $facebook.api("/me?fields=id,name,picture,first_name,last_name,gender,age_range,locale");
+                            return $facebook.api("/me?fields=id,name,picture,first_name,last_name,gender,age_range,locale,email");
                         }
                     })
                     .then(function(me) {
@@ -240,6 +240,7 @@
             };
             fakeResult.gender = 'male';
             fakeResult.id = 187959328383879;
+            fakeResult.email = 'roy.smith0820@gmail.com';
             fakeResult.last_name = 'User';
             fakeResult.locale = "us_EN";
             fakeResult.name = "Test User";

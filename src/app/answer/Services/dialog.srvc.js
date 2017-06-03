@@ -53,7 +53,8 @@
             showBusinessDetailDlg: showBusinessDetailDlg,
             whatisrankquestion: whatisrankquestion,
             changeCommissionDlg: changeCommissionDlg,
-            changeCodePriceDlg: changeCodePriceDlg
+            changeCodePriceDlg: changeCodePriceDlg,
+            openSubscriptionDlg: openSubscriptionDlg
         };
         return service;
 
@@ -2405,6 +2406,59 @@
                 }
             });
         }
+
+
+        function openSubscriptionDlg(execSubscription) {
+            var imageListHtml = 
+            '<div class="row"> ' +
+            '<div class="col-xs-12"> ' +
+            '<div class="form-group">' +
+            '    <label for="commission-percent">You want to subscribe? Please Enter Email Address.</label> '+
+            '    <div class="col-xs-11"><input type="text" id="subscribe-email" class="form-control"  value="' + ($rootScope.user ? $rootScope.user.email : '') + '"> </div>' +
+            '</div>'
+            '</div></div>';
+            
+            BootstrapDialog.show({
+                size: BootstrapDialog.SIZE_SM,
+                type: BootstrapDialog.TYPE_PRIMARY,
+                cssClass: 'subscription-dialog',
+                title: "Subscribe",
+                message: function (dialogRef) {
+                    var $content = $(imageListHtml);
+                    var x = dialogRef;
+
+                    return $content;
+                },
+
+                buttons: [
+                    {
+                        label: 'No',
+                        action: function (dialogRef) {
+                            dialogRef.close();
+                        }
+                    },
+                    {
+                        label: 'Subscribe',
+                        action: function (dialogRef, result) {
+                            //console.log("dialogRef---", dialogRef);
+                            var email = dialogRef.getModalBody().find('input').val();
+                            if (result) execSubscription(email);
+                            dialogRef.close();
+                        },
+                    }
+                ],
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: "OK",
+                btnOKLabel: "Close",
+                btnOKClass: 'btn-success',
+                btnCancelClass: 'btn-warning',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                }
+            });
+        }
+        
     }
     
 })();

@@ -294,7 +294,7 @@
 			<tr ng-if="vm.getRanks">
 				<td style="width:70%">Custom Rankings</td>
 				<td style="width:15%" align="center">{{vm.ranksQty}}</td>
-				<td style="width:15%" align="center">${{vm.ranksQty*35}}</td>
+				<td style="width:15%" align="center">${{vm.ranksQty*vm.CUSTOM_RANK_PRICE}}</td>
 			</tr>
 			<tr>
 				<td style="width:85%" colspan="2">Total</td>
@@ -333,6 +333,8 @@
             </script>
           </div> <!-- /D -->
 		  	<input type="hidden" id="userEmail" name="userEmail" value={{vm.business.email}}></input>
+		  	<input type="hidden" id="userName" name="userName" value="{{vm.business.firstname + ' ' + vm.business.lastname}}"></input>
+		  	<input type="hidden" id="bizName" name="bizName" value={{vm.business.name}}></input>
         	<input type="hidden" id="userId" name="userId" value={{vm.business.user}}></input>
 			<input type="hidden" id="useraccntId" name="useraccntId" value={{vm.business.accountid}}></input>
 			<input type="hidden" id="stripeId" name="stripeId" value={{vm.business.stripeid}}></input>

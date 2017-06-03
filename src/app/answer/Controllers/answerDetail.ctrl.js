@@ -8,11 +8,11 @@
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
 
         'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt',
-        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope','$cookies', '$q', 'fbusers', 'InstagramService']; //AM:added user service
+        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope','$cookies', '$q', 'fbusers', 'InstagramService', 'mailing']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
         votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt,
-        $location, vrows, vrowvotes, imagelist, instagram, $scope, $cookies, $q, fbusers, InstagramService) { //AM:added user service
+        $location, vrows, vrowvotes, imagelist, instagram, $scope, $cookies, $q, fbusers, InstagramService, mailing) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
@@ -849,9 +849,12 @@
             var item = {};
             item = vm.answer;
             item.username = $rootScope.user.first_name + ' ' + $rootScope.user.last_name;  
-            
-            useraccnt.adduseraccnt(item).then(function () {
+            item.email = $rootScope.user.email;
+            useraccnt.adduseraccnt(item).then(function (useracc) {
                 //Check if user account has email - if not set warning in navbar
+                mailing.newBizCreated({account: useracc, answer: item}).then(function(data){
+                    // console.log()
+                })
                 var hasEmail = false;
                 for (var i = 0; i < $rootScope.useraccnts.length; i++) {
                     if ($rootScope.useraccnts[i].email != '') hasEmail = true;
