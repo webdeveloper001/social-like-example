@@ -185,14 +185,14 @@ function sendDailyBizMail(){
                     <div style="background-color: white; margin: 10px;border:1px solid black; padding:10px; font-size: 17px;">
                     <ul style="list-style-type: none;">`;
                 for (i = 0; i < upVoteds.length; i++) {
-                    contentHtml += `<li style="padding-bottom: 5px"> <b>` + (upVoteds[i].actorusername ? upVoteds[i].actorusername : '') + `</b> endorse your <b>` + upVoteds[i].text1 + `</b> in the ranking of <b>` + upVoteds[i].text2 + `</b>.</li>`;
+                    contentHtml += `<li style="padding-bottom: 5px"> <b>` + (upVoteds[i].actorusername ? upVoteds[i].actorusername : '') + `</b> endorsed your <b>` + upVoteds[i].text1 + `</b> about <b>` + upVoteds[i].text2 + `</b>.</li>`;
                     if ( i == upVoteds.length - 1 ){
                         contentHtml += '<hr>';
                     }
                 }
                 if (upVotedVrows.length != 0){
                     for (i = 0; i < upVotedVrows.length; i++) { 
-                        contentHtml += `<li style="padding-bottom: 5px"> <b>` + (upVoteds[i].actorusername ? upVoteds[i].actorusername : '') + `</b> endorse your <b>` + upVotedVrows[i].text1 + `</b> about <b>`;
+                        contentHtml += `<li style="padding-bottom: 5px"> <b>` + (upVoteds[i].actorusername ? upVoteds[i].actorusername : '') + `</b> endorsed your <b>` + upVotedVrows[i].text1 + `</b> about <b>`;
                         contentHtml += upVotedVrows[i].text2;
                         contentHtml += `</b>.</li>`;
                     }
