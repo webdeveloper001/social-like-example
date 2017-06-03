@@ -116,9 +116,9 @@
             loadInifiniteScroll();
 
             if(!$rootScope.hasBusiness && !$rootScope.isPromoter) {
-                var time = 2000;
+                var time = 60000 * 2;
                 if ($rootScope.isLoggedIn){
-                    time = 5000;
+                    time = 60000 * 5;
                 }
                 $timeout(function(){
                     dialog.openSubscriptionDlg(execSubscription);
