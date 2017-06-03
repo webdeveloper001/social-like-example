@@ -161,19 +161,18 @@
 
             if($rootScope.filterOptions.isAllTopics && $rootScope.filterOptions.isCity){
                 // uniqueResult = angular.copy($rootScope.content.filter(function(ranking){ return ranking.ismp == 1;}));
-                var res = search.searchRanks('san diego');
+                var res = search.searchRanksMainPage($rootScope.filterOptions.isCity,'san diego');
                 searchResult = searchResult.concat(res);
             } else if($rootScope.filterOptions.isAllTopics && !$rootScope.filterOptions.isCity) {
-                var res = search.searchRanks($rootScope.filterOptions.cnh);
+                var res = search.searchRanksMainPage($rootScope.filterOptions.isCity, $rootScope.filterOptions.cnh);
                 searchResult = searchResult.concat(res);
             } else {
                 for (var i = 0; i < $rootScope.filterOptions.ctopics.length; i++) {
-                    var res = search.searchRanks($rootScope.filterOptions.ctopics[i].toLowerCase() + searchLocation);
-                    searchResult = searchResult.concat(res);
-                
+                    var res = search.searchRanksMainPage($rootScope.filterOptions.isCity, $rootScope.filterOptions.ctopics[i].toLowerCase() + searchLocation);
+                    searchResult = searchResult.concat(res);               
                 }
             }
-
+            
             shuffle(searchResult);
 
             searchResult.forEach(function(ranking){

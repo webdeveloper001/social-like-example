@@ -11,7 +11,23 @@
         <div class="hidden-xs col-sm-3 col-md-4 col-lg-4"></div>
     </div>    
 <br>
+<label><strong>Select Image Bank:</strong></label>
+<div class="row">
+        <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
+        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+            <img src="../../../assets/images/pixabay-logo.png" ng-click="vm.selImgBank(1)" alt="Pixabay"
+            style="width:100%;height:45px;padding:3px;border-style:solid;border-width:1px;border-color:{{vm.pixabay ? 'black':'white'}}">
+             <div class="text-center"><a href="https://www.pixabay.com/">Visit Pixabay</a></div>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+            <img src="../../../assets/images/pexels-logo.png" ng-click="vm.selImgBank(2)" alt="Pexels"
+            style="width:100%;height:45px;padding:3px;border-style:solid;border-width:1px;border-color:{{vm.pexels ? 'black':'white'}}">
+            <div class="text-center"><a href="https://www.pexels.com/">Visit Pexels</a></div>
+        </div>
+        <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
+</div>
 <div>
+<br>
 <label><strong>Image Query:</strong></label>
 <div class="input-group" style="padding-bottom:10px">
       <input type="text" class="form-control" placeholder="Enter what to search for an image, i.e. taco" ng-model="vm.imageQuery">

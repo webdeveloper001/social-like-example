@@ -6,10 +6,10 @@
         .controller('editRanking', editRanking);
 
     editRanking.$inject = ['$location', '$rootScope', '$state','$stateParams', '$window','$http','imagelist',
-    'table','dialog','catans','color','pixabay'];
+    'table','dialog','catans','color','pixabay','pexels'];
 
     function editRanking(location, $rootScope, $state, $stateParams, $window, $http, imagelist,
-    table, dialog, catans, color, pixabay) {
+    table, dialog, catans, color, pixabay, pexels) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'editRanking';
@@ -20,6 +20,7 @@
         vm.getImages = getImages;
         vm.plusShade = plusShade;
         vm.minusShade = minusShade;
+        vm.selImgBank = selImgBank;
         vm.shade = 0;
         vm.nextImg = nextImg;
         vm.prevImg = prevImg;
@@ -51,6 +52,7 @@
             $rootScope.objNumAct = $rootScope.objNum;
             
             loadData();
+            selImgBank(1);
             if ($rootScope.DEBUG_MODE) console.log("editRanking page Loaded!");
 
         }
@@ -77,6 +79,17 @@
         
          function closeRank() {
                $state.go('cwrapper');                            
+        }
+
+        function selImgBank(x){
+            if (x == 1){
+                vm.pixabay = true;
+                vm.pexels = false;
+            }
+            if (x == 2){
+                vm.pixabay = false;
+                vm.pexels = true;
+            }
         }
         
         function goEdit(){
@@ -146,17 +159,24 @@
             }
 
             //if fimage changed
-            if (item.fimage != vm.images[vm.i].webformatURL) {
-                fields.push('fimage');
-                vals.push('https://rankx.blob.core.windows.net/sandiego/featuredImages/'+$rootScope.cCategory.slug+'.jpg');
-                //Delete old image from storage if exists
-                if (item.fimage){
-                    if (item.fimage.indexOf('https://rankx.blob')>-1) imagelist.deleteBlob(item.fimage);
+            if(vm.images){
+                var img = '';
+                console.log("fimage changed");
+                
+                if (vm.pixabay) img = vm.images[vm.i].webformatURL;
+                if (vm.pexels) img = vm.images[vm.i].src.medium; 
+                
+                if (item.fimage != img) {    
+                    fields.push('fimage');
+                    vals.push('https://rankx.blob.core.windows.net/sandiego/featuredImages/' + $rootScope.cCategory.slug + '.jpg');
+                    //Delete old image from storage if exists
+                    if (item.fimage) {
+                        if (item.fimage.indexOf('https://rankx.blob') > -1) imagelist.deleteBlob(item.fimage);
+                    }
+                    //Save new image to azure-storage
+                    processImage();
                 }
-                //Save new image to azure-storage
-                processImage();
             }
-            
             table.update(item.id, fields, vals);
             closeRank();
         }
@@ -171,32 +191,54 @@
             $state.go('cwrapper');
         }
 
-         function getImages(){
-            var qry = vm.imageQuery.replace(' ','+');
+        function getImages() {
+            var qry = vm.imageQuery.replace(' ', '+');
             vm.i = 0;
             vm.images = [];
-            pixabay.search(qry).then(function(result){
-                if ($rootScope.DEBUG_MODE) console.log("Pixabay results - ", result);
-                vm.numResults = result.length;
-                
-                for (var i=0; i<vm.numResults; i++){
-                    vm.images.push(result[i]);
-                    //console.log("image i - ", result[i].previewURL);
-                }
-                vm.image = vm.images[vm.i].previewURL;
-            });
+            //If Image bank is Pixabay
+            if (vm.pixabay) {
+                pixabay.search(qry).then(function (result) {
+                    if ($rootScope.DEBUG_MODE) console.log("Pixabay results - ", result);
+                    vm.numResults = result.length;
+
+                    for (var i = 0; i < vm.numResults; i++) {
+                        vm.images.push(result[i]);
+                        //console.log("image i - ", result[i].previewURL);
+                    }
+                    vm.image = vm.images[vm.i].previewURL;
+                });
+            }
+            //If Image bank is Pexels
+            if (vm.pexels) {
+                pexels.search(qry).then(function (result) {
+                    if ($rootScope.DEBUG_MODE) console.log("Pexels results - ", result);
+                    vm.numResults = result.length;
+
+                    for (var i = 0; i < vm.numResults; i++) {
+                        vm.images.push(result[i]);
+                        //console.log("image i - ", result[i].previewURL);
+                    }
+                    vm.image = vm.images[vm.i].src.small;
+                });
+            }
+
         }
 
         function nextImg(){
             vm.i = vm.i + 1;
             if (vm.i > vm.images.length -1) vm.i = vm.images.length-1;
-            vm.image = vm.images[vm.i].previewURL; 
+            
+            if (vm.pixabay) vm.image = vm.images[vm.i].previewURL;
+            if (vm.pexels) vm.image = vm.images[vm.i].src.small;
+                 
         }
 
         function prevImg(){
             vm.i = vm.i - 1;
             if (vm.i < 0) vm.i = 0;
-            vm.image = vm.images[vm.i].previewURL; 
+
+            if (vm.pixabay) vm.image = vm.images[vm.i].previewURL;
+            if (vm.pexels) vm.image = vm.images[vm.i].src.small;
         }
 
         function csel(x){
@@ -239,7 +281,11 @@
 
         function processImage(){
             var filename = $rootScope.cCategory.slug;
-            var imageurl = vm.images[vm.i].webformatURL;
+            var imageurl = '';
+            
+            if (vm.pixabay) imageurl = vm.images[vm.i].webformatURL;
+            if (vm.pexels) imageurl = vm.images[vm.i].src.medium; 
+            
             var rank = $rootScope.cCategory.id;
             
             if ($rootScope.DEBUG_MODE) console.log("Process Image - ", rank, imageurl, filename);

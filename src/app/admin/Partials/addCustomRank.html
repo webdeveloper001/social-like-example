@@ -80,7 +80,7 @@
 <div ng-if="vm.step > 4">
 <label><strong>Tags</strong></label>
 <div class="input-group" style="padding-bottom:10px">
-      <input type="text" class="form-control" placeholder="i.e. food seafood" ng-model="vm.tags">
+      <input type="text" class="form-control" placeholder="tags separated by blank space, i.e. food seafood fish" ng-model="vm.tags">
       <span class="input-group-btn">
         <button class="btn btn-secondary" ng-click="vm.tagsOk()" type="button">Ok</button>
       </span>
@@ -95,6 +95,22 @@
   1. Enter a query and click the 'Search Images' button. <br>
   2. Navigate the available images using the '<<' and '>>' buttons. <br>
   3. When you find an image you like, click 'Select Image'. <br><br> 
+</div>
+<br>
+<label><strong>Select Image Bank:</strong></label>
+<div class="row">
+        <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
+        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+            <img src="../../../assets/images/pixabay-logo.png" ng-click="vm.selImgBank(1)" alt="Pixabay"
+            style="width:100%;height:45px;padding:3px;border-style:solid;border-width:1px;border-color:{{vm.pixabay ? 'black':'white'}}">
+             <div class="text-center"><a href="https://www.pixabay.com/">Visit Pixabay</a></div>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+            <img src="../../../assets/images/pexels-logo.png" ng-click="vm.selImgBank(2)" alt="Pexels"
+            style="width:100%;height:45px;padding:3px;border-style:solid;border-width:1px;border-color:{{vm.pexels ? 'black':'white'}}">
+            <div class="text-center"><a href="https://www.pexels.com/">Visit Pexels</a></div>
+        </div>
+        <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
 </div>
 <label><strong>Image Query:</strong></label>
 <div class="input-group" style="padding-bottom:10px">
@@ -186,16 +202,11 @@
         </div>
         <div class="hidden-xs col-sm-3 col-md-4 col-lg-4"></div>
     </div>
-    <div class="text-center">
-    <a href="https://pixabay.com/">
-        <img src="https://pixabay.com/static/img/public/leaderboard_b.png" style="width:250px;height:auto" alt="Pixabay">
-    </a>
-    </div>   
 </div>
 <br>
 <div class="text-right">
     <button type="button" class="btn btn-default" ng-click="vm.goBack()">Cancel</button>
-    <button type="button" class="btn btn-primary" ng-click="vm.addRank()">{{vm.buttonLabel}}</button>
+    <button type="button" class="btn btn-primary" ng-click="vm.addRank()" ng-show="vm.showAddButton">{{vm.buttonLabel}}</button>
 </div>
 <br><br>
 </div>

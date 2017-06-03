@@ -352,7 +352,8 @@
         }
 
         function goAddRank(){
-            $state.go('addCustomRank');
+            if ($rootScope.isLoggedIn) $state.go('addCustomRank');
+            else dialog.loginFacebook();
         }
 
          //*****************Admin Functions************
@@ -383,7 +384,7 @@
                     titlex = $rootScope.content[i].title.replace('Hillcrest', '@neighborhood');
                     $rootScope.ctsOptions.push(titlex);
                 }
-                if ($rootScope.content[i].tags.indexOf('isMP') > -1) {
+                if ($rootScope.content[i].tags.indexOf('isMP') > -1 && $rootScope.content[i].isatomic) {
                     $rootScope.ctsOptions.push($rootScope.content[i].title);
                 }
             }

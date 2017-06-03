@@ -334,7 +334,9 @@
             ansObj.imageurl = myEvent.imageurl;
             ansObj.views = 0;
             ansObj.eventstr = eventstr;
-            ansObj.userid = $rootScope.user.id
+            ansObj.userid = $rootScope.user.id;
+            ansObj.ig_image_urls = '';
+            ansObj.slug = '';
             if(vm.bind) ansObj.owner = $rootScope.user.id;
             
             eqRanks();

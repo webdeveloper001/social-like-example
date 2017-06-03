@@ -177,6 +177,8 @@
                 myAnswer.type = vm.type;
                 myAnswer.userid = $rootScope.user.id;
                 myAnswer.views = 0;
+                myAnswer.ig_image_urls = '';
+                myAnswer.slug = '';
 
                 if (duplicateExists) dialog.checkSameAnswer(myAnswer, extAnswer, addAnswerConfirmed, answerIsSame);
                 else dialog.addAnswer(myAnswer, vm.imageURL, addAnswerConfirmed);

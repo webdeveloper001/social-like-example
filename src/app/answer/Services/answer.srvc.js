@@ -117,6 +117,12 @@
                 var answerx = answer;
                 answerx.id = result.data.resource[0].id; 
                 _answers.push(answerx);
+
+                //update slug tag and featured image
+                var slug = answerx.name.toLowerCase(); 
+                slug = slug.replace(/ /g,'-');
+                slug = slug + '-' + result.data.resource[0].id;
+                updateAnswer(result.data.resource[0].id,['slug'],[slug]);
                 
                 //Update current establishment and person names for typeahead
                 if (answerx.type == 'Establishment') {
@@ -164,6 +170,12 @@
                 var answerx = answer;
                 answerx.id = result.data.resource[0].id; 
                 _answers.push(answerx);
+
+                //update slug tag and featured image
+                var slug = answerx.name.toLowerCase(); 
+                slug = slug.replace(/ /g,'-');
+                slug = slug + '-' + result.data.resource[0].id;
+                updateAnswer(result.data.resource[0].id,['slug'],[slug]);
                 
                 //Update current establishment and person names for typeahead
                 if (answerx.type == 'Establishment') {
@@ -227,6 +239,7 @@
                     case "ranksqty": data.ranksqty = val[i]; break;
                     case "ig_image_urls": data.ig_image_urls = val[i]; break;
                     case "slug": data.slug = val[i]; break;
+                    case "type": data.type = val[i]; break;
                 }
             }
             //console.log("data", data);
@@ -260,6 +273,7 @@
                     case "hasranks": $rootScope.answers[idx].hasranks = val[i]; break;
                     case "ranksqty": $rootScope.answers[idx].ranksqty = val[i]; break;
                     case "slug": $rootScope.answers[idx].slug = val[i]; break;
+                    case "type": $rootScope.answers[idx].type = val[i]; break;
                 }
             }                        
             
