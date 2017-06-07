@@ -25,6 +25,15 @@ function (color, $window, $rootScope, $state, dialog) {
             if (scope.answer.type == 'Event') scope.isEvent = true;
             else scope.isEvent = false;
 
+            //User is Owner Flag
+            if ($rootScope.isLoggedIn) {
+                if ($rootScope.user.id == scope.answer.owner) {
+                    scope.userIsOwner = true;
+                }
+                else scope.userIsOwner = false;
+            }
+            else scope.userIsOwner = false;
+
             scope.modeIsImage = true; //Image Mode
             scope.imgmode = 'Show Map';
             scope.imgmodeicon = 'fa fa-globe';

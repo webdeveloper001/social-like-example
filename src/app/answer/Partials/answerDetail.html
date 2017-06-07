@@ -117,11 +117,45 @@
                 <img ng-src="{{n.image}}" ng-attr-style="border-top:3px solid white;border-bottom:3px solid white;width:95%;height:{{vm.sm ? '90px':'120px'}}">
             </div>
         </div>
-    </div>
+    </div>    
     <div class="text-right">
         <a href="" ng-if="vm.userIsOwner" ng-click="vm.addRankforAnswer()">Edit Ranking/List</a>
     </div>
 </div>
+
+<!-- Show potential upgrades for Custom Ranks -->    
+<div class="container col-xs-12" ng-if="vm.userIsOwner&&!vm.answer.hasranks&&!vm.hideCustomRanksMsg">
+    <br>
+    <div class="alert alert-info">
+        This Favorites section contains <strong>Custom Ranks</strong> and it is <strong>only visible to you</strong>.<br><br> 
+        <i class="fa fa-check"></i>&nbspCustom Ranks are <strong>interactive lists</strong> about anything in your business.<br>
+        <i class="fa fa-check"></i>&nbspCustom Ranks <strong>showcase in detail</strong> your products and/or services.<br>
+        <i class="fa fa-check"></i>&nbspCustom Ranks are a great way to <strong>engage your audience</strong>.<br>
+        <i class="fa fa-check"></i>&nbspCustom Ranks can be anything from <i>Food or Drink Items</i>, <i>Newest or Best-selling Products</i>, <i>Popular Services</i>, 
+        <i>Recent Projects</i>, <i>Success Stories</i>, <i>Staff Members</i> or anything you choose.<br><br>
+        Below are some examples on how you can use Custom Ranks to enhance your business profile. 
+        <div class="well-sm" style="background-color:#666666;color:#f8f8ff;">
+            <h3 class="sub-header">The Favorites</h3>
+        </div>
+        <div class="row" style="padding:0px;margin:0px;border:0px">
+            <div ng-repeat="n in vm.myranks">
+                <!-- <div class="clearfix" ng-if="$index % 3 == 0" style="border:0px;padding:0px;margin:0px;"></div> -->
+                <div class="container col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoRank(n)" ng-attr-style="border-top:3px solid white;border-bottom:3px solid white;background-color:{{n.bc}};color:{{n.fc}};height:{{vm.sm ? '90px':'120px'}};margin:0px;padding:0px;position:relative">
+                    <h3 class=" hidden-xs text-center" ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{n.title}}</h2>
+                    <h4 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{n.title}}</h3>
+                </div>
+                <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoRank(n)" style="margin:0px;padding:0px;">
+                    <img ng-src="{{n.image}}" ng-attr-style="border-top:3px solid white;border-bottom:3px solid white;width:95%;height:{{vm.sm ? '90px':'120px'}}">
+                </div>
+            </div>
+        </div>
+        <div class="text-right">
+            <button class="btn btn-default" ng-click="vm.gotoMyBusiness()" style="margin:5px">Purchase Custom Ranks</button>
+            <button class="btn btn-default" ng-click="vm.hideCustomRanks()" style="margin:5px">Hide Message</button>
+        </div>        
+    </div>
+</div>
+
 <div class="col-xs-12" ng-if="true">
     <div class="row" ng-if="vm.type != 'Short-Phrase'">
         <div class="col-xs-12">
@@ -181,6 +215,39 @@
         </div>
     </div>
 </div>
+
+<!-- Show potential upgrades for Custom Ranks -->    
+<div class="container col-xs-12" ng-if="vm.userIsOwner&&!vm.answer.ispremium&&!vm.hideGetPremiumMsg">
+    <br>
+    <div class="alert alert-info">
+        This Specials section below is only visible when you have <strong>Premium Membership</strong>. Premium Membership allows you to: <br><br>
+        <i class="fa fa-check"></i>&nbspCommunicate to users <strong>daily specials, events and deals</strong> real time.<br>
+        <i class="fa fa-check"></i>&nbspOffer special deals and control exactly when to start and stop an offering.<br> 
+        <i class="fa fa-check"></i>&nbspSpecials are shown in the <strong>rankings summary</strong> driving <strong>more customers</strong>
+        to your profile. <br><br>
+        Below are examples on the type of Specials and Promotions you can show with a Premium Membership.
+        
+        <div class="well-sm" style="background-color:#666666;color:#f8f8ff;">
+            <h3 class="sub-header">Specials</h3>
+        </div>
+        <div ng-repeat="x in vm.specialsList">
+            <div ng-bind-html="x.html" ng-attr-style="{{x.style}}">
+                <br>
+            </div>
+            <p ng-if="x.hasimage" style="background-color:lightgray;cursor:pointer" ng-click="vm.showsimage(x)">
+                {{x.showimage ? 'Hide Flyer':'Show Flyer'}}</p>
+            <div class="text-middle" ng-if="x.showimage">
+                <img class="displayed" ng-src="{{x.image}}" ng-attr-style="height:400px;max-width:96%;margin-left:auto;margin-right:auto;">
+                <br>
+            </div>
+        </div>
+        <div class="text-right">
+            <button class="btn btn-default" ng-click="vm.gotoMyBusiness()" style="margin:5px">Purchase Premium Membership</button>
+            <button class="btn btn-default" ng-click="vm.hideGetPremium()" style="margin:5px">Hide Message</button>
+        </div>        
+    </div>
+</div>
+
 <div class="col-xs-12">
     <div ng-show="{{vm.type == 'Establishment' || vm.type == 'PersonCust' }}">
         <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
