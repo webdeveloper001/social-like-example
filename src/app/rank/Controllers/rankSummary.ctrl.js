@@ -199,6 +199,12 @@
                     vm.title1 = vm.answers[0].name;
                     vm.addinfo1 = vm.answers[0].addinfo;
                     vm.image1 = vm.title1 + '##' + vm.addinfo1;
+                    if ($rootScope.cCategory.fimage != null && $rootScope.cCategory.fimage != undefined 
+                     && $rootScope.cCategory.fimage != ''){
+                         vm.hasfimage = true;
+                         vm.fimage = $rootScope.cCategory.fimage;
+                     }
+                     else vm.hasfimage = false;
                 }
                 else {
                     vm.isShortPhrase = false;
@@ -225,6 +231,12 @@
                     vm.title2 = vm.answers[1].name;
                     vm.addinfo2 = vm.answers[1].addinfo;
                     vm.image2 = vm.title2 + '##' + vm.addinfo2;
+                    if ($rootScope.cCategory.fimage != null && $rootScope.cCategory.fimage != undefined 
+                     && $rootScope.cCategory.fimage != ''){
+                         vm.hasfimage = true;
+                         vm.fimage = $rootScope.cCategory.fimage;
+                     }
+                     else vm.hasfimage = false;
 
                 }
                 else {
@@ -261,6 +273,12 @@
                     vm.title3 = vm.answers[2].name;
                     vm.addinfo3 = vm.answers[2].addinfo;
                     vm.image3 = vm.title3 + '##' + vm.addinfo3;
+                    if ($rootScope.cCategory.fimage != null && $rootScope.cCategory.fimage != undefined 
+                     && $rootScope.cCategory.fimage != ''){
+                         vm.hasfimage = true;
+                         vm.fimage = $rootScope.cCategory.fimage;
+                     }
+                     else vm.hasfimage = false;
                     
                 }
                 else {
@@ -295,11 +313,14 @@
                 }
             }
 
-            //Set Feautured Image && box color
+            //Set Feautured Image
             if ($rootScope.cCategory.fimage != undefined && $rootScope.cCategory.fimage != ''){
                 vm.image3 = vm.image2;
                 vm.image2 = vm.image1;
                 vm.image1 = $rootScope.cCategory.fimage;
+            }
+            //Set bgbox color specs
+            if ($rootScope.cCategory.bc != undefined && $rootScope.cCategory.bc != ''){
                 vm.bc = $rootScope.cCategory.bc;
                 vm.fc = $rootScope.cCategory.fc;
                 vm.shade = $rootScope.cCategory.shade;              
@@ -400,6 +421,7 @@
         }
 
         function answerDetail(x) {
+            if (x.slug == vm.rankOwner.slug) $rootScope.cCategory = undefined;
             $state.go("answerDetail", { index: x.slug });
         }
 
@@ -461,22 +483,29 @@
 
             //If introtext exist load it, if not, create custom intro text
             if ($rootScope.cCategory.introtext) vm.introtext = $rootScope.cCategory.introtext;
-            else vm.introtext = 'This is the ranking for ' + $rootScope.cCategory.title + '. Did we get them all?' +
+            else vm.introtext = 'This is the ranking for ' + $rootScope.cCategory.title + '. '+
+            /*'Did we get them all?' +
             ' Are we missing ' + 
             ($rootScope.cCategory.type == 'Establishment' ? 'any establishment?.':'') +
             ($rootScope.cCategory.type == 'Organization' ? 'any Company?.':'') +
             ($rootScope.cCategory.type == 'Person' ? 'anyone?.':'') +
             ($rootScope.cCategory.type == 'PersonCust' ? 'anyone?.':'') +
             ($rootScope.cCategory.type == 'Place' ? 'a place?.':'') +
-            ($rootScope.cCategory.type == 'Short-Phrase' ? 'an opinion?.':'') +
+            ($rootScope.cCategory.type == 'Short-Phrase' ? 'any?.':'') +
             ($rootScope.cCategory.type == 'Thing' ? 'any item?.':'') +
-            ($rootScope.cCategory.type == 'Event' ? 'any event?.':'') +
-            ' Help shape the ranking by adding those that are missing and by endorsing your favorites!.';
+            ($rootScope.cCategory.type == 'Event' ? 'any event?.':'') + */
+            ' Help shape the ranking by endorsing your favorites!.';
               
             //vm.url = 'http://rankdev.azurewebsites.net/#/rankSummary/' + $rootScope.cCategory.id;
             //vm.header = "table" + $rootScope.cCategory.id + ".header";
             //vm.body = 'table' + $rootScope.cCategory.id + '.body';
             //Grab list of fields for the current table
+            if ($rootScope.cCategory.title.indexOf('@')>-1) {
+                vm.isCustomRank = true;
+                vm.rankOwner = $rootScope.rankOwner;
+            }
+            else vm.isCustomRank = false;
+
             
             var fidx = 0;
             switch ($rootScope.cCategory.type) {

@@ -5,9 +5,9 @@
         .module('app')
         .controller('editspecial', editspecial);
 
-    editspecial.$inject = ['$location', '$rootScope', '$state', 'dialog', 'special','datetime'];
+    editspecial.$inject = ['$location', '$rootScope', '$state', 'dialog', 'special','datetime','$scope'];
 
-    function editspecial(location, $rootScope, $state, dialog, special,datetime) {
+    function editspecial(location, $rootScope, $state, dialog, special,datetime, $scope) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'editspecial';

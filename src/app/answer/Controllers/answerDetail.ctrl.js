@@ -67,6 +67,9 @@
         vm.endorseDialog = endorseDialog;
         vm.selectInstagramImages = selectInstagramImages;
         vm.showRanks = showRanks;
+        vm.hideCustomRanks = hideCustomRanks;
+        vm.hideGetPremium = hideGetPremium;
+        vm.gotoMyBusiness = gotoMyBusiness;
 
         //Admin Function adding catans on spot
         vm.addCatans = addCatans;
@@ -111,13 +114,17 @@
         if ($rootScope.answerDetailLoaded) { vm.dataReady = true; activate(); }
         else vm.dataReady = false;
 
+        //Flags to hide advertisement blocks
+        vm.hideCustomRanksMsg = $rootScope.hideCustomRankMsg == undefined ? false:$rootScope.hideCustomRankMsg; 
+        vm.hideGetPremiumMsg = $rootScope.hideGetPremiumMsg == undefined ? false:$rootScope.hideGetPremiumMsg;
+
         //activate();
         window.prerenderReady = false;
 
         function activate() {
 
             //Init variables
-            vm.ranking = $rootScope.title;
+            //vm.ranking = $rootScope.title;
             answers = $rootScope.canswers;
             vm.fields = $rootScope.fields;
             vm.isAdmin = $rootScope.isAdmin;
@@ -183,26 +190,24 @@
             //        getCatAnsId(vm.answer.id);
             getEdits(vm.answer.id);
             deleteButtonAccess();
+            vm.access = false; //use this variable to access editspecials
+            if ($rootScope.isLoggedIn) {
+                if ($rootScope.user.id == vm.answer.owner) {
+                    vm.userIsOwner = true;
+                    if (vm.answer.isactive) vm.access = true;
+                }
+                else vm.userIsOwner = false;
+            }
+            else vm.userIsOwner = false;
+
+            $rootScope.userIsOwner = vm.userIsOwner;
+
             //if (vm.type == 'Establishment') getHours();
             if (vm.type != 'Establishment' && vm.type != 'Event' && false) makeRelativeTable(vm.answer.id);
             if (vm.type == 'Establishment') getSpecials(vm.answer.id);
             if (vm.type == 'Establishment' || vm.type == 'PersonCust') getVRows(vm.answer.id);
-            getAnswerRanks();
+            getAnswerRanks();                        
 
-            //custom ranks 
-            if (vm.answer.hasranks) {
-                var n = 0;
-                vm.myranks = JSON.parse(vm.answer.ranks);
-                if (vm.myranks != undefined && vm.myranks.length > 0){
-                    for (var i=0; i<vm.myranks.length; i++){
-                        n = $rootScope.content.map(function(x) {return x.id; }).indexOf(vm.myranks[i].id);
-                        vm.myranks[i].title = $rootScope.content[n].title.replace(' @ '+vm.answer.name,'');
-                        vm.myranks[i].image = $rootScope.content[n].image1url;
-                        if (vm.myranks[i].image == undefined || vm.myranks[i].image == '')
-                        vm.myranks[i].image = $rootScope.EMPTY_IMAGE;
-                    }
-                }
-            }
             //if user votes are available - do my thing at getAnswerVotes
             //else fetch user votes
             if ($rootScope.cvotes) getAnswerVotes();
@@ -220,18 +225,57 @@
                 vm.estyle = 'background-color:' + vm.answer.bc + ';color:' + vm.answer.fc + ';' + 'white-space:pre;';
             }
 
-            vm.access = false; //use this variable to access editspecials
-            if ($rootScope.isLoggedIn) {
-                if ($rootScope.user.id == vm.answer.owner) {
-                    vm.userIsOwner = true;
-                    if (vm.answer.isactive) vm.access = true;
+            //custom ranks 
+            if (vm.answer.hasranks) {
+                var n = 0;
+                vm.myranks = JSON.parse(vm.answer.ranks);
+                if (vm.myranks != undefined && vm.myranks.length > 0){
+                    for (var i=0; i<vm.myranks.length; i++){
+                        n = $rootScope.content.map(function(x) {return x.id; }).indexOf(vm.myranks[i].id);
+                        vm.myranks[i].title = $rootScope.content[n].title.replace(' @ '+vm.answer.name,'');
+                        vm.myranks[i].image = $rootScope.content[n].image1url;
+                        if (vm.myranks[i].image == undefined || vm.myranks[i].image == '')
+                        vm.myranks[i].image = $rootScope.EMPTY_IMAGE;
+                    }
                 }
-                else vm.userIsOwner = false;
+                $rootScope.rankOwner = {};
+                $rootScope.rankOwner.name = vm.answer.name;
+                $rootScope.rankOwner.id = vm.answer.id;
             }
-            else vm.userIsOwner = false;
+            //Demo custom ranks
+            else if (vm.userIsOwner){
+                vm.myranks = [];
+                //Demo custom rank 1
+                var demorank = {};
+                demorank.id = 11091;
+                demorank.bc = '#027fa8';
+                demorank.fc = 'white';
+                vm.myranks.push(demorank);
+                //Demo custom rank 2
+                demorank={};
+                demorank.id = 11092;
+                demorank.bc = '#027fa8';
+                demorank.fc = 'white';
+                vm.myranks.push(demorank);
+                //Demo custom rank 3
+                demorank={};
+                demorank.id = 11093;
+                demorank.bc = '#027fa8';
+                demorank.fc = 'white';
+                vm.myranks.push(demorank);
 
-            $rootScope.userIsOwner = vm.userIsOwner;
-
+                for (var i=0; i<vm.myranks.length; i++){
+                    n = $rootScope.content.map(function(x) {return x.id; }).indexOf(vm.myranks[i].id);
+                    vm.myranks[i].title = $rootScope.content[n].title.replace(' @ Demo','');
+                    vm.myranks[i].image = $rootScope.content[n].image1url;
+                    if (vm.myranks[i].image == undefined || vm.myranks[i].image == '')
+                    vm.myranks[i].image = $rootScope.EMPTY_IMAGE;
+                }
+                $rootScope.rankOwner = {};
+                $rootScope.rankOwner.name = vm.answer.name;
+                $rootScope.rankOwner.slug = vm.answer.slug;
+            }
+            
             //Determine number of user comments
             if (vm.answer.numcom == undefined) vm.numcom = 0;
             else vm.numcom = vm.answer.numcom;
@@ -355,7 +399,6 @@
             makeRelativeTable(x);
             getSpecials(vm.answer.id);
             getVRows(vm.answer.id);
-            getAnswerRanks();
         }
         
         //Update Records
@@ -717,7 +760,10 @@
             vm.otherRanksExist = true;
         }
 
-        function getSpecials(answerid) {
+        function getSpecials(x) {
+            var answerid = 0;
+            if (!vm.answer.ispremium && vm.userIsOwner) answerid = 1;
+            else answerid = x;
             vm.specialsList = [];
             for (var i = 0; i < $rootScope.specials.length; i++) {
                 if ($rootScope.specials[i].answer == answerid) {
@@ -1129,6 +1175,19 @@
         function showRanks(){
             if (vm.dispRanks <= 3) vm.dispRanks = vm.answerRanks.length;
             else vm.dispRanks = 3; 
+        }
+
+        function hideCustomRanks(){
+            vm.hideCustomRanksMsg = true;
+            $rootScope.hideCustomRankMsg = true;
+        }
+        function hideGetPremium(){
+            vm.hideGetPremiumMsg = true;
+            $rootScope.hideGetPremiumMsg = true;
+        }
+
+        function gotoMyBusiness(){
+            $state.go('mybusiness');
         }
     }
 })();
