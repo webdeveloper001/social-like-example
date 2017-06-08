@@ -116,7 +116,7 @@
             loadInifiniteScroll();
 
             if(!$rootScope.hasBusiness && !$rootScope.isPromoter) {
-                var time = 60000 * 2;
+                var time = 60000 * 5;
                 if ($rootScope.isLoggedIn){
                     time = 60000 * 5;
                 }

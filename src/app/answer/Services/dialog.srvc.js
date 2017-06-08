@@ -2413,7 +2413,9 @@
             '<div class="row"> ' +
             '<div class="col-xs-12"> ' +
             '<div class="form-group">' +
-            '    <label for="commission-percent">You want to subscribe? Please Enter Email Address.</label> '+
+            //'    <label for="commission-percent">You want to subscribe? Please Enter Email Address.</label> '+
+            '    <p>Hey there, enjoying <strong>Rank-X</strong>? <br><br> Let\'s stay in touch!<br><br> Enter your email address' +
+                ' below to subscribe to our newsletter to get <strong>updates</strong> about new and popular rankings and <strong>stay informed</strong> of local deals and events!</p><br>'+
             '    <div class="col-xs-11"><input type="text" id="subscribe-email" class="form-control"  value="' + ($rootScope.user ? $rootScope.user.email : '') + '"> </div>' +
             '</div>'
             '</div></div>';
@@ -2422,7 +2424,7 @@
                 size: BootstrapDialog.SIZE_SM,
                 type: BootstrapDialog.TYPE_PRIMARY,
                 cssClass: 'subscription-dialog',
-                title: "Subscribe",
+                title: "Sign up for our newsletter!",
                 message: function (dialogRef) {
                     var $content = $(imageListHtml);
                     var x = dialogRef;
@@ -2432,7 +2434,7 @@
 
                 buttons: [
                     {
-                        label: 'No',
+                        label: 'Not Now',
                         action: function (dialogRef) {
                             dialogRef.close();
                         }
