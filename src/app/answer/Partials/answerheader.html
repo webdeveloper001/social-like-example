@@ -8,8 +8,8 @@
                 <bg-box bc="{{bc}}" bc2="{{bc2}}" fc="{{fc}}" text="{{idx > 0 ? idx + '. ' + answer.name:answer.name}}" 
                     dir="vertical" w="100%" h="120px"></bg-box>
             </div>
-            <div class="container" ng-attr-style="width:100%; height:{{mxheight-120}}px;background-color:#d8d8d8;">
-                <br ng-if="!sm">
+            <div class="container" ng-attr-style="width:100%; height:{{mxheight-120}}px;background-color:#d8d8d8;padding-top:5px">
+                <!-- <br ng-if="!sm"> -->
                 <strong ng-if="answer.location">Address:</strong>
                 <a ng-if="answer.location" href="http://maps.apple.com/maps?q={{answer.location}}" target="_blank">{{answer.location}}</a>
                 <br ng-if="answer.location">
