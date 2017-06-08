@@ -36,7 +36,7 @@
 
             var p0 = table.getTablesMain();
             var p1 = headline.getheadlines();
-            var p2 = cblock.getcblocksmain();
+            //var p2 = cblock.getcblocksmain();
             var p3 = rankofday.getrankofday();
             var p4 = uaf.getactions();
 
@@ -44,13 +44,13 @@
             userdata.loadUserAccount();     //load user business account
 
             //Minimum Data for Cwrapper
-            return $q.all([p0, p1, p2, p3, p4]).then(function (d) {
+            return $q.all([p0, p1, p3, p4]).then(function (d) {
             
                 $rootScope.content = d[0];
                 $rootScope.headlines = d[1];
-                $rootScope.cblocks = d[2];
-                $rootScope.rankofday = d[3];
-                $rootScope.uafs = d[4];
+                //$rootScope.cblocks = d[2];
+                $rootScope.rankofday = d[2];
+                $rootScope.uafs = d[3];
 
                 $rootScope.pageDataLoaded = true;
                 //loadingDone();
