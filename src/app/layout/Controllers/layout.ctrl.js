@@ -255,7 +255,7 @@
                 table.getMostPopularData();
             dataloader.gethomedata();
             dataloader.getallranks();
-            dataloader.getallcblocks();
+            //dataloader.getallcblocks();
             dataloader.getrankdata();
             dataloader.getanswerdata();
             dataloader.getpagevisitdata();

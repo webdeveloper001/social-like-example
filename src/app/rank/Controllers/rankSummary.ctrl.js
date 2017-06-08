@@ -421,7 +421,11 @@
         }
 
         function answerDetail(x) {
-            if (x.slug == vm.rankOwner.slug) $rootScope.cCategory = undefined;
+            //if rank is Custom Rank and has Owner, clear $rootScope.cCategory
+            //to avoid showing wrong navigation bar
+            if (vm.rankOwner){
+                if (x.slug == vm.rankOwner.slug) $rootScope.cCategory = undefined;
+            }
             $state.go("answerDetail", { index: x.slug });
         }
 
