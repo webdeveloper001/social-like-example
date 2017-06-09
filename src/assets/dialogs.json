@@ -76,5 +76,7 @@
     "dialog.rodimagedeletesuccess.title": "Success!",
     "dialog.rodimagedeletesuccess.text": "The featured image has been deleted succesfully.",
     "dialog.whataretags.title": "Info",
-    "dialog.whataretags.text": "Tags are keywords that allow this ranking to be searchable. For instance for the ranking: 'Italian restaurants', appropriate tags could be 'pasta, pizza, lasagna, etc'."    
+    "dialog.whataretags.text": "Tags are keywords that allow this ranking to be searchable. For instance for the ranking: 'Italian restaurants', appropriate tags could be 'pasta, pizza, lasagna, etc'.",
+    "dialog.neighborhoodsDontMatch.title": "Oops, something doesn't match",
+    "dialog.neighborhoodsDontMatch.text": "The neighborhood of this establishment does not match the scope of the ranking."        
 }
