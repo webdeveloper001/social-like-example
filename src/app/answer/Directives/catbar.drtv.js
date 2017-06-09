@@ -18,11 +18,11 @@ function (color, $window, $rootScope, $state) {
             scope.fc = "white";
             if ($window.innerWidth < 769){
                 scope.ht = 50;
-                if (scope.text.length > 60) scope.ht = 90;            
+                if (scope.text.length > 50) scope.ht = 90;            
             }
             else if ($window.innerWidth < 870){
                 scope.ht = 50;
-                if (scope.text.length > 60) scope.ht = 75;
+                if (scope.text.length > 50) scope.ht = 75;
             }
             else scope.ht = 50;
 
