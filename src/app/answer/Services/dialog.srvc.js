@@ -20,6 +20,7 @@
             editChangeEffective: editChangeEffective,
             checkSameAnswer: checkSameAnswer,
             showSameAnswer: showSameAnswer,
+            confirmSameAnswer: confirmSameAnswer,
             deleteType: deleteType,
             deleteThisCatans: deleteThisCatans,
             deleteRank: deleteRank,
@@ -54,7 +55,9 @@
             whatisrankquestion: whatisrankquestion,
             changeCommissionDlg: changeCommissionDlg,
             changeCodePriceDlg: changeCodePriceDlg,
-            openSubscriptionDlg: openSubscriptionDlg
+            openSubscriptionDlg: openSubscriptionDlg,
+            generateAnswerHtml: generateAnswerHtml,
+            confirmSameAnswerMultiple: confirmSameAnswerMultiple
         };
         return service;
 
@@ -2416,7 +2419,8 @@
             //'    <label for="commission-percent">You want to subscribe? Please Enter Email Address.</label> '+
             '    <p>Hey there, enjoying <strong>Rank-X</strong>? <br><br> Let\'s stay in touch!<br><br> Enter your email address' +
                 ' below to subscribe to our newsletter to get <strong>updates</strong> about new and popular rankings and <strong>stay informed</strong> of local deals and events!</p><br>'+
-            '    <div class="col-xs-11"><input type="text" id="subscribe-email" class="form-control"  value="' + ($rootScope.user ? $rootScope.user.email : '') + '"> </div>' +
+            '    <div class="col-xs-11"><input type="text" id="subscribe-email" class="form-control"  ' + 
+            '    value="' + ($rootScope.user ? $rootScope.user.email : '') + '" placeholder="Enter your email here"> </div>' +
             '</div>'
             '</div></div>';
             
@@ -2441,6 +2445,7 @@
                     },
                     {
                         label: 'Subscribe',
+                        cssClass: 'btn-success',
                         action: function (dialogRef, result) {
                             //console.log("dialogRef---", dialogRef);
                             var email = dialogRef.getModalBody().find('input').val();
@@ -2451,14 +2456,154 @@
                 ],
                 closable: true, // <-- Default value is false
                 draggable: true, // <-- Default value is false
-                btnCancelLabel: "OK",
-                btnOKLabel: "Close",
-                btnOKClass: 'btn-success',
-                btnCancelClass: 'btn-warning',
+            });
+        }
+
+        function confirmSameAnswer(answer1, callback) {
+
+            var answerhtml = generateAnswerHtml(answer1);
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Just checking';
+            btnCancelLabel = 'No, different one';
+            btnOkLabel = 'Yes, that\'s it';
+            message = 'Do you mean this <strong>' + answer1.name + '</strong>? </br></br>' +
+            answerhtml + 
+            '</br>' +
+            '<div class="row">'+
+            '<div class="col-xs-2 col-sm-3 col-md-3"></div>'+
+            '<div class="col-xs-8 col-sm-6 col-md-6"><img src=' + answer1.imageurl + ' class="thumbnail" style="width:100%; max-height:200px;" id="ansimage"></div>' +
+            '<div class="col-xs-2 col-sm-3 col-md-3"></div>'+
+            '</div>';
+
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-primary',
                 btnCancelAction: function (dialogRef) {
                     dialogRef.close();
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) callback();
+                    //else callback1(answer1);
                 }
             });
+       
+        }
+
+        function generateAnswerHtml(answer1){
+            var answerhtml = '';
+            var newline = '';
+            
+            for (var i = 0; i < $rootScope.fields.length; i++) {
+                switch ($rootScope.fields[i].name) {
+                    case "name": {
+                        newline = '<strong class="capitalize">' + 'Name' + '</strong>: ' + answer1.name + '</br>';
+                        break;
+                    }
+                    case "location": {
+                        if (answer1.location) newline = '<strong class="capitalize">' + 'Location' + '</strong>: ' + answer1.location + '</br>';
+                        else newline = '<strong>' + 'Location' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
+                    case "cityarea": {
+                        newline = '<strong class="capitalize">' + 'Neighborhood' + '</strong>: ' + answer1.cityarea + '</br>';
+                        break;
+                    }
+                    case "addinfo": {
+                        if (answer1.addinfo) newline = '<strong class="capitalize">' + 'Additional Info' + '</strong>: ' + answer1.addinfo + '</br>';
+                        else newline = '<strong>' + 'Additional Info' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
+                    case "phone": {
+                        if (answer1.phone) newline = '<strong class="capitalize">' + 'Phone' + '</strong>: ' + answer1.phone + '</br>';
+                        else newline = '<strong>' + 'Phone' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
+                    case "website": {
+                        if (answer1.website) newline = '<strong class="capitalize">' + 'Website' + '</strong>: ' + answer1.website + '</br>';
+                        else newline = '<strong>' + 'Website' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
+                    case "email": {
+                        if (answer1.email) newline = '<strong class="capitalize">' + 'Email' + '</strong>: ' + answer1.email + '</br>';
+                        else newline = '<strong>' + 'Email' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
+                }
+                answerhtml = answerhtml + newline;                
+            }
+            
+            return answerhtml;
+        }
+        function confirmSameAnswerMultiple(answers, callback) {            
+
+            var title = '';
+            var messagehtml = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+            var answerhtml = generateAnswerHtml(answers[0]);
+            var n = 0;
+
+            title = 'Just checking';
+            btnCancelLabel = 'None of the options';
+            btnOkLabel = 'Yes, that\'s it';
+            messagehtml = '<p>We have '+ answers.length + ' records for <strong>' + answers[0].name + '</strong>. Please browse '+
+            'these records to see if the one wish to add to the ranking <strong><i>'+ $rootScope.cCategory.title + '</i></strong> already exists.</p></br>' +
+            '<div class="text-center"><div class="row">'+
+            '<button class="btn btn-default" id="nextbutton">Next</button>'+
+            '<p id="number">&nbsp&nbsp'+(n+1)+'</p>'+
+            '</div></div>'+'<br>'+
+            '<p id="answerinfo">'+answerhtml+'</p>'+
+            '</br>' +
+            '<div class="row">'+
+            '<div class="col-xs-2 col-sm-3 col-md-3"></div>'+
+            '<div class="col-xs-8 col-sm-6 col-md-6"><img src=' + answers[0].imageurl + ' class="thumbnail" style="width:100%; max-height:200px;" id="ansimage"></div>' +
+            '<div class="col-xs-2 col-sm-3 col-md-3"></div>'+
+            '</div>';
+            
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: function (dialogRef) {
+                    var $content = $(messagehtml);
+                    var x = dialogRef;
+                    $content.find('#nextbutton').click({}, function () {
+                        n = n + 1;
+                        if (n > answers.length-1) n = 0;
+                        answerhtml = generateAnswerHtml(answers[n]);
+                        //x.setMessage(messagehtml+answerhtml);
+                        $('#number').html(n+1);
+                        $('#answerinfo').html(answerhtml);
+                        $content.find('#ansimage').attr('src', answers[n].imageurl);
+                    });
+                    return $content;
+                },            
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-primary',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) callback(n);
+                    //else callback1(answer1);
+                }
+            });
+       
         }
         
     }

@@ -127,11 +127,12 @@
 <div class="container col-xs-12" ng-if="vm.userIsOwner&&!vm.answer.hasranks&&!vm.hideCustomRanksMsg">
     <br>
     <div class="alert alert-info">
-        This Favorites section contains <strong>Custom Ranks</strong> and it is <strong>only visible to you</strong>.<br><br> 
-        <i class="fa fa-check"></i>&nbspCustom Ranks are <strong>interactive lists</strong> about anything in your business.<br>
-        <i class="fa fa-check"></i>&nbspCustom Ranks <strong>showcase in detail</strong> your products and/or services.<br>
-        <i class="fa fa-check"></i>&nbspCustom Ranks are a great way to <strong>engage your audience</strong>.<br>
-        <i class="fa fa-check"></i>&nbspCustom Ranks can be anything from <i>Food or Drink Items</i>, <i>Newest or Best-selling Products</i>, <i>Popular Services</i>, 
+        This Favorites section contains <strong>Custom Ranks</strong> and it is <strong>only visible to you</strong>
+        Custom Ranks are:<br><br> 
+        <i class="fa fa-check"></i>&nbsp<strong>Interactive lists</strong> about anything in your business.<br>
+        <i class="fa fa-check"></i>&nbsp<strong>Showcase in detail</strong> your products and/or services.<br>
+        <i class="fa fa-check"></i>&nbspA great way to <strong>engage your audience</strong>.<br>
+        <i class="fa fa-check"></i>&nbspCan be anything from <i>Food or Drink Items</i>, <i>Newest or Best-selling Products</i>, <i>Popular Services</i>, 
         <i>Recent Projects</i>, <i>Success Stories</i>, <i>Staff Members</i> or anything you choose.<br><br>
         Below are some examples on how you can use Custom Ranks to enhance your business profile. 
         <div class="well-sm" style="background-color:#666666;color:#f8f8ff;">
@@ -165,14 +166,14 @@
         </div>
     </div>
     <div class="text-right" ng-if="vm.type != 'Short-Phrase'">
-        <a ng-if="!vm.igdemo" type="button" class="btn btn-success btn-block" ng-click="vm.getImages()" ng-attr-style="display:{{vm.showImageGallery == false ? 'inline':'none'}}">
-            Show Images </a>         
-        <a ng-if="vm.igdemo" type="button" class="btn btn-default btn-block" ng-click="vm.getImages()" ng-attr-style="background-color:#cc0099;color:#e6e6e6;display:{{vm.showImageGallery == false ? 'inline':'none'}}">Instagram&nbsp&nbsp
-            <img ng-src="/assets/images/1485384923_9_-_Instagram.png" style="width:50px"></img></a>    
+        <button ng-if="!vm.igdemo" class="btn btn-success" ng-click="vm.getImages()" ng-attr-style="display:{{vm.showImageGallery == false ? 'inline':'none'}};margin:5px;">
+            Show Images </button>         
+        <button ng-if="vm.igdemo" class="btn btn-default" ng-click="vm.getImages()" ng-attr-style="background-color:#cc0099;color:#e6e6e6;display:{{vm.showImageGallery == false ? 'inline':'none'}}">Instagram&nbsp&nbsp
+            <img ng-src="/assets/images/1485384923_9_-_Instagram.png" style="width:50px"></img></button>    
     </div>
     <div ng-attr-style="display:{{vm.showImageGallery == true ? 'inline':'none'}}">
 
-        <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" ng-repeat="x in vm.images" style="margin:0px;padding:0px;">
+        <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" ng-repeat="x in vm.images">
             <a ng-click="vm.selectPhoto($index)" class="thumbnail">
                 <img ng-src="{{x.url}}" style="width:100%;height:120px">
             </a>

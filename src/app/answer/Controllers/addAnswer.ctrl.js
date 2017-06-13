@@ -6,10 +6,10 @@
         .controller('addAnswer', addAnswer);
 
     addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 
-    'image', 'catans', 'getgps', '$timeout','getwiki','$window'];
+    'image', 'catans', 'getgps', '$timeout','getwiki','$window','$scope'];
 
     function addAnswer(dialog, $state, answer, $rootScope, $modal,
-    image, catans, getgps, $timeout, getwiki, $window) {
+    image, catans, getgps, $timeout, getwiki, $window,$scope) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'addAnswer';
@@ -25,6 +25,8 @@
         var addAnswerExec = false;
         var addAnswerGPSexec = false;
         var answers = $rootScope.answers;
+        var inputLengthMem = 0; //inputLength in Memory
+        var maybeSameAnswers = [];
         
         
         //load public fields
@@ -54,6 +56,7 @@
         var inCity = false;
         var eqRankIdx = 0;
         var eqFound = false;
+        var rankNh = undefined;
         
         // Members
         var myAnswer = {};
@@ -69,19 +72,23 @@
         vm.getWiki = getWiki;
         vm.onNoGoodImages = onNoGoodImages;
         vm.showHowItWorksDialog = showHowItWorksDialog;
+        vm.onSelect = onSelect;
         
         vm.imageURL = $rootScope.EMPTY_IMAGE;
         vm.header = $rootScope.header;
         
         //TODO: Would like to add this abstract template, but dont know how         
-        $rootScope.$on('answerGPSready', function () {
+        var GPSReadyListener = $rootScope.$on('answerGPSready', function () {
             if ($state.current.name == 'addAnswer' && !addAnswerGPSexec) addAnswerGPS();
         });
         
-        $rootScope.$on('wikiReady', function (event,wikiRes) {
+        var WikiReadyListener = $rootScope.$on('wikiReady', function (event,wikiRes) {
             if ($state.current.name == 'addAnswer') loadWiki(wikiRes);
         });
-        
+
+        $scope.$on('$destroy',GPSReadyListener);
+        $scope.$on('$destroy',WikiReadyListener);
+
         //Adjust picture size for very small displays
         if ($window.innerWidth < 512) {vm.sm = true; vm.nsm = false; }
         else {vm.sm = false; vm.nsm = true; }
@@ -90,6 +97,7 @@
 
         function activate() {
             loadPublicFields();
+            detectNeighborhood();
             determineScope(); 
              if ($rootScope.DEBUG_MODE) console.log("Add Answer Activated!");
 
@@ -317,8 +325,9 @@
         function addAnswerConfirmed(myAnswer) {
             //Add new answer, also add new post to catans (inside addAnser)
             
-             if ($rootScope.DEBUG_MODE) console.log("No, different! @addAnswerConfirmed");
-            if (myAnswer.type == 'Establishment' && (myAnswer.location != undefined && myAnswer.location != "" && myAnswer.location != null)) {
+            if ($rootScope.DEBUG_MODE) console.log("No, different! @addAnswerConfirmed");
+            if (myAnswer.type == 'Establishment' && rankNh && rankNh != myAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
+            else if (myAnswer.type == 'Establishment' && (myAnswer.location != undefined && myAnswer.location != "" && myAnswer.location != null)) {
                 var promise = getgps.getLocationGPS(myAnswer);
                 promise.then(function () {
                     //console.log("myAnswer --- ", myAnswer);
@@ -367,12 +376,15 @@
         }
         
          function answerIsSame() {
-             if ($rootScope.DEBUG_MODE) console.log("Yeah Same, @answerIsSame");
+            if ($rootScope.DEBUG_MODE) console.log("Yeah Same, @answerIsSame");
             //Answer already exist in this category, do not add
             if (duplicateSameCategory) dialog.getDialog('answerDuplicated');
+            else if (myAnswer.type == 'Establishment' && rankNh && rankNh != myAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
+            
             //Answer already exist, just post new category-answer record            
             else {
                 eqRanks();
+                console.log("eqFound, inCity, eqRankIdx = ", eqFound, inCity, eqRankIdx);
                 //create 2 catans records one for downtown and then district
                 if (eqFound && !inCity) {
                     if ($rootScope.DEBUG_MODE) console.log("P7 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx);
@@ -393,7 +405,16 @@
 
         function eqRanks() {
             var lookRank = '';
+            var cityarea = '';
+
+            //Determine answer neighborhood
+            if (myAnswer.cityarea == undefined)
+                cityarea = maybeSameAnswers[0].cityarea;
+            else 
+                cityarea = myAnswer.cityarea;
+
             if (inDowntown || inDistrict || inCity) {
+                /*
                 if (inDowntown && myAnswer.cityarea != 'Downtown') {
                     lookRank = $rootScope.cCategory.title.replace('Downtown', myAnswer.cityarea);
                     for (var n = 0; n < $rootScope.content.length; n++) {
@@ -402,7 +423,8 @@
                             eqRankIdx = $rootScope.content[n].id;
                         }
                     }
-                }
+                }*/
+                /*
                 if (inDistrict) {
                     lookRank = $rootScope.cCategory.title.replace(inDistrictName, 'Downtown');
                     for (var n = 0; n < $rootScope.content.length; n++) {
@@ -411,9 +433,10 @@
                             eqRankIdx = $rootScope.content[n].id;
                         }
                     }
-                }               
+                }
+                */               
                 if (inCity){
-                    lookRank = $rootScope.cCategory.title.replace('San Diego', myAnswer.cityarea);
+                    lookRank = $rootScope.cCategory.title.replace('San Diego', cityarea);
                     for (var n = 0; n < $rootScope.content.length; n++) {
                         if ($rootScope.content[n].title == lookRank) {
                             eqFound = true;
@@ -547,6 +570,45 @@
 
         function closeRank() {
             $state.go('cwrapper');
+        }
+
+        function onSelect(x){
+            maybeSameAnswers = [];
+            //console.log("x.val.length, inputLengthMem - ", x.val.length, inputLengthMem);
+            //only use for field name
+            if (x.name == 'name'){
+                if (Math.abs(x.val.length - inputLengthMem)>2 && x.val.length != 0){
+                    //an option was selected from the typeahead
+                    //search for this answer, if single result populate fields, if not
+                    //show dialog with options
+                    inputLengthMem = x.val.length;        
+                    for (var i=0; i<$rootScope.answers.length; i++){
+                        if ($rootScope.answers[i].name == x.val){
+                            if (rankNh){
+                                if ($rootScope.answers[i].cityarea == rankNh)
+                                    maybeSameAnswers.push($rootScope.answers[i]);    
+                            }
+                            else maybeSameAnswers.push($rootScope.answers[i]);
+                        }
+                    }
+                    //console.log("MaybeSameAnswers - ", maybeSameAnswers);
+                    if (maybeSameAnswers.length == 1) {
+                        checkAnswerExists(maybeSameAnswers[0]);
+                        dialog.confirmSameAnswer(maybeSameAnswers[0],answerIsSame);
+                    }
+                    else if (maybeSameAnswers.length > 1) dialog.confirmSameAnswerMultiple(maybeSameAnswers);                 
+                }                
+            }
+            inputLengthMem = x.val.length;                       
+        }
+
+        function detectNeighborhood(){
+            //this function determines if current ranking is for a neighborhood or district
+            for (var i=0; i<$rootScope.allnh.length; i++){
+                if ($rootScope.cCategory.title.indexOf($rootScope.allnh[i])>-1){
+                    rankNh = $rootScope.allnh[i];
+                }
+            }
         }        
         
     }
