@@ -335,7 +335,7 @@
                 });
             }
             else {
-                eqRanks();
+                if (myAnswer.type == 'Establishment' || myAnswer.type == 'PersonCust') eqRanks();
                 //create 2 catans records one for downtown and then district
                 if (eqFound && !inCity) {
                     if ($rootScope.DEBUG_MODE) console.log("P1 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx,myAnswer);
@@ -383,7 +383,7 @@
             
             //Answer already exist, just post new category-answer record            
             else {
-                eqRanks();
+                if (myAnswer.type == 'Establishment' || myAnswer.type == 'PersonCust') eqRanks();
                 console.log("eqFound, inCity, eqRankIdx = ", eqFound, inCity, eqRankIdx);
                 //create 2 catans records one for downtown and then district
                 if (eqFound && !inCity) {
