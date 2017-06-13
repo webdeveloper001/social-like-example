@@ -5,9 +5,9 @@
         .module('app')
         .factory('table', table);
 
-    table.$inject = ['$http', '$q', '$rootScope','answer','$state', 'filter'];
+    table.$inject = ['$http', '$q', '$rootScope','answer','$state', 'filter','uaf'];
 
-    function table($http, $q, $rootScope, answer, $state, filter) {
+    function table($http, $q, $rootScope, answer, $state, filter, uaf) {
 
         // Members
         var _tables = [];
@@ -174,6 +174,9 @@
                 var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/'+slug+'.jpg';
                 update(result.data.resource[0].id,['slug','fimage'],[slug,fimage]);
 
+                //Create user-activity feed record
+                uaf.post('addedRank',['category'],[tablex.id]); //user activity feed
+
                 if ($rootScope.DEBUG_MODE) console.log("result", result);
                 return result.data;
             }
@@ -224,22 +227,26 @@
                 //if there is already a rank
                 if ($rootScope.canswer.ranks != undefined && $rootScope.canswer.ranks != null &&
                     $rootScope.canswer.ranks != '') {
-                        console.log("there is already a rank");
+                        //console.log("there is already a rank");
                         ranksStr = $rootScope.canswer.ranks;
-                        console.log("this is the existing string - ", ranksStr);
+                        //console.log("this is the existing string - ", ranksStr);
                         ranks = JSON.parse(ranksStr);
-                        console.log("ranks", ranks);
+                        //console.log("ranks", ranks);
                         ranks.push(obj);
                         ranksStr = JSON.stringify(ranks);
-                        console.log("this is the new string - ", ranksStr);
+                        //console.log("this is the new string - ", ranksStr);
                         answer.updateAnswer(answerid, ['ranks'], [ranksStr]);
                 }
                 //if this is rank #1
                 else{
                     ranksStr = '[' + JSON.stringify(obj) +']';
-                    console.log("this is the new string - ", ranksStr);
+                    //console.log("this is the new string - ", ranksStr);
                     answer.updateAnswer(answerid, ['ranks'], [ranksStr]);
                 }
+
+                //Create user-activity feed record
+                uaf.post('addedCustomRank',['answer','category'],[$rootScope.canswer.id, tablex.id]); //user activity feed
+
                 //$state.go('answerDetail',{index: answerid});
                 if ($rootScope.DEBUG_MODE) console.log("result", result);
                 return result.data;

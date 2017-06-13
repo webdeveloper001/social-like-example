@@ -41,19 +41,24 @@ angular.module('app').directive('userfeedBlock',
 
             function getFeed(){
             // vm.feeds = angular.copy($rootScope.uafs);
-            console.log("$rootScope.uafs.length - ",$rootScope.uafs.length);
+            //console.log("$rootScope.uafs.length - ",$rootScope.uafs.length);
 
             scope.feeds = [];
-            $q.all($rootScope.uafs.map(function(feed){ 
-                return fbusers.getFBUserById(feed.userid); 
-            }))
-            .then(function (fbUsers){
-                for (var i = 0; i < $rootScope.uafs.length; i++) {
-                    var userWithPic = angular.copy($rootScope.uafs[i]);
-                    userWithPic.picture = fbUsers[i] ? fbUsers[i].picture.data.url : null;
-                    scope.feeds[i] = userWithPic;
-                 }
-            });
+                $q.all($rootScope.uafs.map(function (feed) {
+                    return fbusers.getFBUserById(feed.userid);
+                }))
+                    .then(function (fbUsers) {
+                        scope.feeds = [];
+                        for (var i = 0; i < $rootScope.uafs.length; i++) {
+                            var userWithPic = angular.copy($rootScope.uafs[i]);
+                            userWithPic.picture = fbUsers[i] ? fbUsers[i].picture.data.url : null;
+                            scope.feeds[i] = userWithPic;
+                        }
+                    });
+            
+            //load uafs directly (without facebook) on init
+            if (scope.feeds.length == 0) scope.feeds = $rootScope.uafs;
+
             if(scope.showAll == 'true')
                 scope.fres = 30;
             else

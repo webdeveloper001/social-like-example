@@ -5,6 +5,9 @@ var blobSvc = azure.createBlobService('rankx', process.env.AZURE_KEY);
 var log = require('../log');
 var helpers = require('../helpers');
 
+var fs = require('fs'),
+  request = require('request');
+
 // ------ Image Download and Upload ----- 
 // This code can be moved to a different file with a library, but temporarily here for testing.
 
