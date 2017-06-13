@@ -45,8 +45,17 @@
             return $http.get(url).then(querySucceeded, _queryFailed);
 
             function querySucceeded(result) {
+                if (result.data.resource.length != 0) {
+                    var url = '/api/v2/mysql/_table/ranking/?filter=title=' + result.data.resource[0].main;
 
-                return _rankofday = result.data.resource;
+                    return $http.get(url).then(function(resp) {
+                        if (resp.data.resource.length != 0) 
+                            return _rankofday = resp.data.resource[0];
+                        else
+                            return null;
+
+                    }, _queryFailed);
+                } 
             }
         }
 

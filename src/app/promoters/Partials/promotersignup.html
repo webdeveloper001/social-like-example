@@ -22,6 +22,10 @@
                 Address:</label>
             <input class="form-control" ng-model="vm.promoter.address" placeholder="Your address" style="width:94%;margin-left:10px;margin-right:10px;">
         </div>
+        <label class="checkbox-inline">
+		    <input type="checkbox" ng-model="vm.acceptTOS" value="">I have read and understood the <a href="/terms-of-service/promoters" target="_blank">Terms of Service</a>
+        </label>
+	
     </form>
 
     </br>
@@ -35,12 +39,13 @@
         <div class="col-xs-9 col-sm-9 col-md-10">
             <h3 style="color:blue; margin:2px">{{vm.code}}</h3>
         </div>
+        <br/>
     </div>
     
     </br>
     
     <div class="text-center">
-        <button class="btn btn-success" ng-click="vm.submit()">Submit</button>
+        <button class="btn btn-success" ng-click="vm.submit()" ng-class="vm.acceptTOS ? '' : 'disabled'">Submit</button>
     </div>
     </br>
 </div>

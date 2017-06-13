@@ -4,18 +4,15 @@ const sghelper = require('sendgrid').mail;
 
 var helpers = require('../helpers');
 function format(ranking){
-    var html = `
-    <li style="padding-bottom: 5px; clear: both">
-        <div style="max-width: 100px; display: inline-block">
-            <img  style="width:100%" src="` +   (ranking.fimage ? ranking.fimage : ( ranking.image1url ?  ranking.image1url : 'https://rank-x.com/assets/images/noimage.jpg')) +`" />
-        </div>
-        <div style="display: inline-table">
-            <span style="line-height: 50px;display: table-cell; vertical-align: middle; padding-left: 30px">`+ (ranking.title) +`</span>
-        </div>
-    </li>`;
+    var html = 
+    `<tr>
+        <td>
+            <img  style="max-width:100px" src="` +   (ranking.fimage ? ranking.fimage : ( ranking.image1url ?  ranking.image1url : 'https://rank-x.com/assets/images/noimage.jpg')) +`" />
+        </td>
+        <td style="padding-left: 10px">`+ (ranking.title) +`</td>
+    </tr>`
     return html;
 }
-
 function sendWeeklyNewsJob(){
     var newRankings = [];
     var popularRankings = [];
@@ -82,9 +79,9 @@ function sendWeeklyNewsJob(){
                         
                             Please check the following newest rankings and take some time to see if rankings are accurate. If you have suggestions on better answers please add them:
                             <hr>`;
-                        contentHtml += '<ul  style="list-style-type: none">';
+                        contentHtml += '<table>';
                         contentHtml += newRankingsHtml;
-                        contentHtml += '</ul>';
+                        contentHtml += '</table>';
                         contentHtml += `
                         </div>
                         <p style="font-size: 18px;">`;
@@ -95,18 +92,32 @@ function sendWeeklyNewsJob(){
                         
                             Check out the newest rankings in rank-x!  Do you have great suggestions for this rankings? Let us know and participate in the rankings!
                             <hr>`;
-                        contentHtml += '<ul  style="list-style-type: none">';
+                        contentHtml += '<table>';
                         contentHtml += newRankingsHtml;
                         contentHtml += `
-                                <li>
-                                    <a style="line-height: 50px" href="https://rank-x,com/trends">See More New Rankings</a>
-                                </li><li><hr></li>`;
+                                <tr>
+                                    <td colspan=2>
+                                        <a style="line-height: 50px" href="https://rank-x.com/trends">See More New Rankings</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan=2>
+                                        <hr>
+                                    </td>
+                                </tr>`;
                         contentHtml += popularRankingsHtml;
                         contentHtml += `
-                                <li>
-                                    <a style="line-height: 50px" href="https://rank-x.com/trends">See More Popular Rankings</a>
-                                </li><li><hr></li>`;
-                        contentHtml += '</ul>';
+                                <tr>
+                                    <td colspan=2>
+                                        <a style="line-height: 50px" href="https://rank-x.com/trends">See More Popular Rankings</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan=2>
+                                        <hr>
+                                    </td>
+                                </tr>`;
+                        contentHtml += '</table>';
                         contentHtml += `
                         </div>
                         <p style="font-size: 18px;">`;
@@ -420,7 +431,7 @@ function sendMailTo(toemail, type, data){
         <h2> Hi ` + data.promoter.firstname + `</h2>
         <hr>
         <p style="font-size: 17px;"> 
-        Good news! You have a payment for $` + data.amount/100 + `coming your way! This is for the commissions for all the businesses that have signed up using your account.
+        Good news! You have a payment for $` + Number.toFixed(data.amount/100) + `coming your way! This is for the commissions for all the businesses that have signed up using your account.
         </p>
         <p style="font-size: 17px;"> 
         Let’s keep a good thing going! 
@@ -473,7 +484,7 @@ function sendMailTo(toemail, type, data){
 
     sendgrid.API(request, function(error, response) {
         if(error)
-            console.log('ERROR', err);
+            console.log('ERROR', error);
         else
             console.log('Sent');
     });

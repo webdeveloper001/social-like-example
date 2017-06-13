@@ -366,6 +366,7 @@
                     'stripesub' : vm.business.stripesub,
                     'stripesipremium' : vm.business.stripesipremium,
                     'stripesiranks' : vm.business.stripesiranks,
+                    'answerId': vm.business.id
                     
                 }
             }
@@ -431,6 +432,7 @@
                         'useraccntId': vm.business.accountid,
                         'stripesub': vm.business.stripesub,
                         'stripesiranks': vm.business.stripesiranks,
+                        'answerId': vm.business.id,
                     }
                 }
 

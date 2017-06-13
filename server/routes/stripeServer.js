@@ -74,6 +74,8 @@ function deleteCustomer(req, res, next) {
         if( confirmation.deleted == true ){
             
             writeToDreamFactory('deleteAccount', req.params['useraccntId'], 0, {});
+
+            //helpers.writeToDreamFactoryAnswers('cancelledSubscription', this.answerId, 0, cancelData);
             res.status(204);
         }
     }).catch(function (err){
@@ -148,6 +150,7 @@ function cancelSubscription(req, res, next) {
     var stripesub = req.body.stripesub;
     var stripesipremium = req.body.stripesipremium;
     var stripesiranks = req.body.stripesiranks;
+    this.answerId = req.body.answerId;
 
     var cancelData = req.body;
 
@@ -230,6 +233,7 @@ function cancelSubscription(req, res, next) {
         }
       );*/
     helpers.writeToDreamFactory('cancelledSubscription', this.useraccntId, 0, cancelData);
+    helpers.writeToDreamFactoryAnswers('cancelledSubscription', this.answerId, 0, cancelData);
     log("<<-------   end STRIPE CANCEL via app = express();-------------");
     //res.send(204);
 }
@@ -242,6 +246,7 @@ function editSubscription(req, res, next) {
     var useraccntId = req.body.useraccntId;
     var stripesub = req.body.stripesub;
     var stripesiranks = req.body.stripesiranks;
+    var answerId = req.body.answerId;
 
     var editData = req.body;
 
@@ -265,6 +270,7 @@ function editSubscription(req, res, next) {
     );
 
     helpers.writeToDreamFactory('updateSubscription', useraccntId, 0, editData);
+    helpers.writeToDreamFactoryAnswers('updateSubscription', answerId, 0, editData);
 }
 
 function changeSource(req, res, next) {
@@ -308,6 +314,8 @@ function charge(req, res, next) {
     var stripeToken = req.body.stripeToken;
     var userId = req.body.userId;
     this.useraccntId = req.body.useraccntId;
+    this.answerId = req.body.answerId;
+    
     var userEmail = req.body.userEmail;
     this.couponValid = req.body.couponValid;
     this.bizcat = req.body.bizcat;
@@ -493,6 +501,7 @@ function createStripeSubscription(customerId, stripePlans, userName, bizName) {
             //log(stripePlanDetails);
             //  log("subscriptionData " + JSON.stringify(subscriptionsData));
             helpers.writeToDreamFactory('newSubscription', this.useraccntId, customerId, subscriptionsData, 0, 0, 0);
+            helpers.writeToDreamFactoryAnswers('newSubscription', this.answerId, customerId, subscriptionsData, 0, 0, 0);
             log("back from writing to DreamFactory");
 
             //test moving this to the top if it's non-blocking

@@ -50,6 +50,25 @@
         
         vm.goPrivacyPolicy = goPrivacyPolicy;
         vm.goRankofDayConsole = goRankofDayConsole;
+
+        jQuery(document).ready(function() {
+        var offset = 250; 
+        var duration = 300;
+
+        jQuery(window).scroll(function() {
+            if (jQuery(this).scrollTop() > offset) {
+                jQuery('.back-to-top').fadeIn(duration);
+            } else {
+                jQuery('.back-to-top').fadeOut(duration);
+            }
+        });
+ 
+        jQuery('.back-to-top').click(function(event) {
+            event.preventDefault();
+            jQuery('html, body').animate({scrollTop: 0}, duration);
+                return false;
+            })
+        });
         /* Start Filtering feature by Roy */
         
         vm.showFilters = false;
@@ -148,6 +167,11 @@
             vm.logoimage = "/assets/images/rankxlogosd2_sm.png";
             $rootScope.sm = false;
             vm.sm = false;
+        }
+
+        $rootScope.md = false;
+        if (($window.innerWidth > 768) && ($window.innerWidth < 991)) {
+            $rootScope.md = true;
         }
 
         //TODO: Would like to add this abstract template, but dont know how
@@ -252,6 +276,7 @@
             }
 */
             if(!filter.loadInitalHomeData())
+            // if (!$rootScope.initalHomeData)
                 table.getMostPopularData();
             dataloader.gethomedata();
             dataloader.getallranks();

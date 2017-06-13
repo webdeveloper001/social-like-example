@@ -14,6 +14,7 @@ angular.module('app').directive('bgBox2', ['color',function (color) {
             stats: '@',
             w: '@',
             h: '@',
+            question: '@'
         },
         link: function (scope) {
 

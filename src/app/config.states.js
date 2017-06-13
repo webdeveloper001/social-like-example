@@ -198,6 +198,36 @@
                 }
             },
 
+            {
+                name: 'cutomertos',
+                url: '/terms-of-service/customers',
+                views: {
+                    "@": {
+                        templateUrl: 'app/layout/Partials/customertos.html',
+                        controller: 'customertos as vm'
+                    },
+                    "navbar@cutomertos": {
+                        templateUrl: 'app/layout/Partials/navbar.html',
+                        controller: 'navbar as vm'
+                    }
+                }
+            },
+
+            {
+                name: 'promotertos',
+                url: '/terms-of-service/promoters',
+                views: {
+                    "@": {
+                        templateUrl: 'app/layout/Partials/promotertos.html',
+                        controller: 'promotertos as vm'
+                    },
+                    "navbar@promotertos": {
+                        templateUrl: 'app/layout/Partials/navbar.html',
+                        controller: 'navbar as vm'
+                    }
+                }
+            },
+
           {
                 name: 'mybusiness',
                 url: '/mybusiness',

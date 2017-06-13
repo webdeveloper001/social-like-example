@@ -10,6 +10,7 @@
 
     function cwrapper($rootScope, $state, $http, $stateParams, $scope,
         query, table, dialog, uaf, $window, userdata, $location, color, fbusers, $q, $timeout, filter, search, mailing) {
+
         /* jshint validthis:true */
         var vm = this;
         //-----SEO tags ----
@@ -33,8 +34,52 @@
             }, 100);
         };
         vm.sm = $rootScope.sm;
+        vm.md = $rootScope.md;
         vm.datasource = datasource;
         ///Ui-scroll ends
+
+        $timeout(function(){
+            
+            var height = 70;
+            if (vm.md) {
+                height = 400;
+            }
+            var width = $('#facebook-container').width();
+            
+            $('#facebook-display').html('<div class="fb-page" \
+                ng-if="vm.pageDataLoaded"           \
+                data-href="https://www.facebook.com/rankxsandiego/"  \
+                data-tabs="timeline"  \
+                data-height="' + height + '" \
+                data-width="' + width + '" \
+                data-small-header="false"  \
+                data-adapt-container-width="true"  \
+                data-hide-cover="false" \
+                data-show-facepile="true"> \
+                    <blockquote cite="https://www.facebook.com/rankxsandiego/" class="fb-xfbml-parse-ignore">\
+                    <a href="https://www.facebook.com/rankxsandiego/">Rank-X San Diego</a></blockquote>\
+            </div>');
+
+
+            window.fbAsyncInit = function() {
+                FB.init({appId: '1102409523140826', status: true, cookie: true,
+                xfbml: true, version: 'v2.8'});
+            };
+            (function() {
+                var e = document.createElement('script'); e.async = true;
+                e.src = document.location.protocol +
+                '//connect.facebook.net/en_US/all.js';
+                document.getElementById('fb-root').appendChild(e);
+            }());
+            (function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=1102409523140826";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+            
+        }, 2000);
 
         vm.title = 'cwrapper';
 
@@ -79,9 +124,16 @@
         vm.loadMore = loadMore;
         vm.showLess = showLess;
 
+
+        vm.initialDataCount = 8;
+        if ($rootScope.md) {
+            vm.initialDataCount = 4;
+        }
         vm.pageDataLoaded = $rootScope.pageDataLoaded;
         vm.initalHomeData = $rootScope.initalHomeData;
         
+        vm.initalHomeData = vm.initalHomeData.splice(0, vm.initalHomeData.length > vm.initialDataCount ? vm.initialDataCount : vm.initalHomeData.length);
+
         vm.currentIndex = 0;
             vm.startIndex = 0;
         if($rootScope.sm){
@@ -102,7 +154,7 @@
         vm.uniqueResult = [];
         if($rootScope.pageDataLoaded){
             vm.content = $rootScope.content;
-            loadInifiniteScroll(false);
+            loadInifiniteScroll(true);
         }
 
         $rootScope.$on('filterOptionChanged', function () {
@@ -113,7 +165,8 @@
         $rootScope.$on('homeDataLoaded', function () {
             vm.pageDataLoaded = true;
             vm.content = $rootScope.content;
-            loadInifiniteScroll();
+            loadInifiniteScroll(false);
+
 
             if(!$rootScope.hasBusiness && !$rootScope.isPromoter) {
                 var time = 60000 * 5;
@@ -181,18 +234,17 @@
                 }
             });
 
-            uniqueResult.sort(function(ranking1, ranking2){
-                var view1 = ranking1.views ? ranking1.views : 0;
-                var view2 = ranking2.views ? ranking2.views : 0;
-                if( ranking1.id == ranking2.id )
-                    return 0;
+            // uniqueResult.sort(function(ranking1, ranking2){
+            //     var view1 = ranking1.views ? ranking1.views : 0;
+            //     var view2 = ranking2.views ? ranking2.views : 0;
+            //     if( ranking1.id == ranking2.id )
+            //         return 0;
 
-                return view1 < view2 ? 1 : -1;
-            })
-
+            //     return view1 < view2 ? 1 : -1;
+            // })
             if(reloading) {
-                if( uniqueResult.length >= 8 ) {
-                    vm.initalHomeData = uniqueResult.splice(0, 8);
+                if( uniqueResult.length >= vm.initialDataCount ) {
+                    vm.initalHomeData = uniqueResult.splice(0, vm.initialDataCount);
                     filter.saveInitalHomeData(vm.initalHomeData);
                 } else {
                     vm.initalHomeData = uniqueResult;

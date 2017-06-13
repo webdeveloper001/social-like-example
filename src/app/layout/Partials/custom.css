@@ -1,3 +1,6 @@
+a {
+  cursor: pointer;
+}
 		.carousel-inner > .item > img,
 .carousel-inner > .item > a > img
 {
@@ -363,4 +366,43 @@ a.navbar-profile-picture-wrapper span{
 .trend-tab-single-page{
     max-height: 320px;
     overflow-y: scroll;
+}
+
+/*.fb-page, 
+.fb-page span, 
+.fb-page span iframe[style] { 
+    width: 100% !important; 
+}
+.fb_iframe_widget, .fb_iframe_widget span, .fb_iframe_widget span iframe[style] {
+width: 100% !important;
+}*/
+
+
+
+
+.back-to-top {
+  background: none;
+  margin: 0;
+  position: fixed;
+  bottom: 70px;
+  right: 10px;
+  width: 60px;
+  height: 60px;
+  z-index: 100;
+  display: none;
+  text-decoration: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.back-to-top:hover {
+}
+.back-to-top i {
+  font-size: 50px;
+  background: #ececec;
+  color: #222222;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 60px;
 }

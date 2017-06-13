@@ -308,15 +308,15 @@
 	</p>
 	<p>You can log in and cancel or make modifications to your account at any time.</p>
 	<label class="checkbox-inline">
-					<input type="checkbox" ng-model="vm.acceptTOS" value="">I have read and understood the <a href="">Terms of Service</a></label>
+		<input type="checkbox" ng-model="vm.acceptTOS" value="">I have read and understood the <a href="/terms-of-service/customers" target="_blank">Terms of Service</a></label>
 	<div class="text-center"> <!-- B -->
 		<!-- <button class="btn btn-success" ng-click="vm.goCheckout()">Pay with Card</button> -->
 		<br>
-		<button id="checkoutButton" name="checkoutButton" class="btn btn-success" onClick="clickStripeButton()">Pay with Card</button>
+		<button id="checkoutButton" name="checkoutButton" class="btn btn-success"  ng-class="vm.acceptTOS ? '' : 'disabled'" onClick="clickStripeButton()">Pay with Card</button>
 		<br>
 		<div ng-show="!vm.showCurrentPlan" > <!-- C -->
 
-        <form action="https://server.rank-x.com/StripeServer/charge" method="POST">
+        <form action="http://localhost:3000/StripeServer/charge" method="POST">
 
           <div style="display:none"> <!-- D -->
             <script
@@ -337,6 +337,7 @@
 		  	<input type="hidden" id="bizName" name="bizName" value={{vm.business.name}}></input>
         	<input type="hidden" id="userId" name="userId" value={{vm.business.user}}></input>
 			<input type="hidden" id="useraccntId" name="useraccntId" value={{vm.business.accountid}}></input>
+			<input type="hidden" id="answerId" name="answerId" value={{vm.business.id}}></input>
 			<input type="hidden" id="stripeId" name="stripeId" value={{vm.business.stripeid}}></input>
 			<input type="hidden" id="getPremiumPlan" name="getPremiumPlan" value={{vm.getPremium}}></input>
 			<input type="hidden" id="getCustomRanks" name="getCustomRanks" value={{vm.getRanks}}></input>

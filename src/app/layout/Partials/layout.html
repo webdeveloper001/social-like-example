@@ -1,10 +1,10 @@
 ﻿<!--<city-selection-modal></city-selection-modal> -->
 <!--<user-detail-modal></user-detail-modal>-->
 <!-- Navigation Bar -->
-<div ui-view="navbar"></div>
+<div ui-view="navbar" style="position: fixed; z-index: 1000; width: 100%"></div>
 
-<div class="container" style="padding-left:5px;padding-right:5px;">
-
+<div class="container" style="padding-left:5px;padding-right:5px; margin-bottom: 20px;">
+    
     <div id="veil" ng-show="vm.isLoading"></div>
     <div id="feedLoading" ng-show="vm.isLoading">
         <div style="text-align: center" ng-if="vm.isLoading">
@@ -29,7 +29,7 @@
             <br ng-attr-style="display:{{vm.isAdmin ? 'inline':'none'}}">
         </div>
 
-        <div class="container"> <!-- style="padding-left:5px;padding-right:5px;"> -->
+        <div class="container" style="margin-top: 70px"> <!-- style="padding-left:5px;padding-right:5px;"> -->
             <div class="row" style="padding-bottom:10px">
                 <div class="col-xs-7 col-sm-9 col-md-10 col-lg-10">
                     <div class="input-group">
@@ -119,14 +119,23 @@
         <div ng-show="vm.searchActive">	
 	        <search-block ng-click="vm.hideSearch()" query="{{vm.val}}" ans="true" ranks="true" length="vm.slen"></search-block>
         </div> 
-        <div ui-view ng-if="!vm.isLoading&&!vm.searchActive" class="container"></div>
+        <div ui-view ng-if="!vm.isLoading&&!vm.searchActive" class="container" id="page-containter" style=""></div>
     </div>
 
+    <a href="#" class="back-to-top" style="display: inline;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+
+    </a>
 </div>
 <br>
 <br>
 
-<footer class="footer">
+<footer class="footer"  
+    style=" position: fixed;
+            bottom: 0px;
+            background: white;
+            width: 100%;
+            padding-top: 20px;">
     <div class="container">
         <p class="text-muted">
             Rank-X is a registered trademark property of Rank-X LLC. San Diego, CA - 2017

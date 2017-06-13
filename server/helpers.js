@@ -6,6 +6,127 @@ var moment = require('moment');
 
 var stripe = require('stripe')(process.env.STRIPE_API_KEY);
 
+function writeToDreamFactoryAnswers(updateReason, answerId, stripeCustomerId, callData) {
+    log("----  writeToDreamFactory via UniRest: ----" + updateReason);
+
+    var path = '/api/v2/mysql/_table/answers/' + answerId;
+
+    var url = server + path;
+
+    var params = {};
+    if (updateReason == 'newSubscription') {
+
+        var stripePlan = callData;
+        log("stripePlan " + JSON.stringify(stripePlan));
+
+        var stripeSub = stripePlan.sub;
+        var stripesipremium = '';
+        var stripesiranks = '';
+        var gotPremium = false;
+        var gotRanks = false;
+        var ranksQuantity = 0;
+
+        for (var i = 0; i < stripePlan.items.length; i++) {
+            log("stripePlan[i] " + JSON.stringify(stripePlan.items[i]));
+            if (stripePlan.items[i].plan == 'premium-plan-REB') {
+                gotPremium = true;
+                stripesipremium = stripePlan.items[i].id;
+            }
+            if (stripePlan.items[i].plan == 'custom-rank') {
+                gotRanks = true;
+                stripesiranks = stripePlan.items[i].id;
+                ranksQuantity = stripePlan.items[i].quantity;
+            }
+        }
+
+        if (gotPremium && !gotRanks) { //if only purchased premium
+            params = {
+                "id": answerId,
+                "ispremium": gotPremium
+            };
+        }
+        if (!gotPremium && gotRanks) { //if only purchased ranks
+            params = {
+                "id": answerId,
+                "hasranks": gotRanks,
+                "ranksqty": ranksQuantity
+            };
+        }
+        if (gotPremium && gotRanks) { //if purchased both premium and ranks
+            params = {
+                "id": answerId,
+                "ispremium": gotPremium,
+                "hasranks": gotRanks,
+                "ranksqty": ranksQuantity
+            };
+        }
+    }
+    if (updateReason == 'cancelledSubscription') {
+        var cancelData = callData;
+        if (cancelData.cancelAll) {
+            params = {
+                "id": answerId,
+                "ispremium": false,
+                "hasranks": false,
+                "ranksqty": 0
+            };
+        } else if (cancelData.cancelPremium) {
+            params = {
+                "id": this.answerId,
+                "ispremium": false
+            };
+        } else if (cancelData.cancelRanks) {
+            params = {
+                "id": this.answerId,
+                "hasranks": false
+            };
+        }
+    }
+    if (updateReason == 'updateInvoiceChargeInfo') {
+        var customerData = callData;
+        params = {
+            "id": answerId,
+            "ispremium": customerData.ispremium,
+            "hasranks": customerData.hasranks,
+            "ranksqty": customerData.ranksqty,
+        };
+    }
+    if (updateReason == 'updateSubscription') {
+        var editData = callData;
+        params = {
+            "id": useraccntId,
+            "hasranks": true,
+            "ranksqty": editData.numRanks,
+        };
+    }
+    if (updateReason == 'deleteAccount') {
+        params = {
+            "id": answerId,
+            "ranksqty": 0,
+            "hasranks": false,
+            "ispremium": false,
+
+        };
+    }
+
+    log("using UniRest, patch df via url: " + url + " with params: " + JSON.stringify(params));
+    unirest.patch(url)
+        .headers({
+            'Accepts': 'application/json',
+            'Content-Type': 'application/json',
+            'X-DreamFactory-Api-Key': process.env.DREAMFACTORY_API_KEY,
+        })
+        .send(JSON.stringify(params))
+        .end(function(response) {
+            log("response from DreamFactory: " + JSON.stringify(response.body));
+            log("response from DreamFactory: " + JSON.stringify(response));
+        });
+
+    
+
+    log("<<-------   end STRIPE SUBSCRIBE via app = express();-------------");
+}
+
 function writeToDreamFactory(updateReason, useraccntId, stripeCustomerId, callData) {
     log("----  writeToDreamFactory via UniRest: ----" + updateReason);
 
@@ -248,7 +369,7 @@ function writeToDreamFactoryCodePrices(updateReason, codeprice_id, callData, res
 
 
 function getNewRankingThisWeek(){
-    var path = '/api/v2/mysql/_table/ranking?order=timestmp DESC&limit=3&offset=0';
+    var path = '/api/v2/mysql/_table/ranking?order=timestmp DESC&limit=3&offset=0&filter=ismp=1';
     var param = {};
 
     return unirest.get(server + path)
@@ -261,7 +382,7 @@ function getNewRankingThisWeek(){
 }
 
 function getPopularRankingThisWeek(){
-    var path = '/api/v2/mysql/_table/ranking?order=views DESC&limit=3&offset=0';
+    var path = '/api/v2/mysql/_table/ranking?order=views DESC&limit=3&offset=0&filter=ismp=1';
     var param = {};
 
     return unirest.get(server + path)
@@ -663,5 +784,6 @@ module.exports = {
     getAnswerById: getAnswerById,
     getPromoterById: getPromoterById,
     getPopularRankingThisWeek: getPopularRankingThisWeek,
-    getSubscribers: getSubscribers
+    getSubscribers: getSubscribers,
+    writeToDreamFactoryAnswers: writeToDreamFactoryAnswers
 }
