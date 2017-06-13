@@ -2,6 +2,9 @@
     <!-- Basic Layout -->
     <div class="row" ng-click="rankSel(resultsTop[0],false)" ng-if="isBasic" >
         <div class="container-bgbox col-xs-12 col-sm-12 " ng-if="part=='title'">
+            <div style="position:absolute;background-color:red; z-index: 50; padding: 5px; font-size: 20px; color: #fff">
+                Ranking of the day
+            </div>
             <bg-box2 bc="{{bc}}" shade="{{shade}}" fc="{{fc}}" text="{{title}}" dir="horizontal" 
             w="100%" h="{{sm ? '150':'200'}}" stats="{{stats}}" question="{{rankObject.question}}"></bg-box>
         </div>

@@ -64,23 +64,23 @@
 	<br ng-if="vm.sm">
 <div class="row">
 
-	<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8"  ng-attr-style="{{vm.sm? '':'padding-right: 5px;'}}">
-		<div class="col-xs-12 col-md-6">
+	<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8"  ng-attr-style="{{vm.sm? '':'padding-right: 5px;'}}">
+		<div class="col-xs-12 col-md-6 col-sm-6">
 			<rank-of-day part="'title'"></rank-of-day>
 		</div>
-		<div class="col-xs-12 col-md-6">
+		<div class="col-xs-12 col-md-6 col-sm-6">
 			<rank-of-day part="'image'"></rank-of-day>
 		</div>
 	</div>
-	<div class="col-xs-12 col-sm-6 col-md-4"   ng-attr-style="{{vm.sm? 'margin-bottom: 10px':'height: 200px;  padding: 0px'}};display: flex;" id="facebook-container">
-		<div style="{{vm.md? 'margin-top:200px':''}}; text-align: center; align-self: center; width:800px"  id="facebook-display">
+	<div class="col-xs-12 col-sm-12 col-md-4"   ng-attr-style="{{vm.sm? 'margin-bottom: 10px':'height: 200px;  padding: 0px'}};display: flex;" id="facebook-container">
+		<div style="text-align: center; align-self: center; width:800px"  id="facebook-display">
 		</div>
 	</div>
 </div>
 <div class="row">
 	<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8" ng-attr-style="{{vm.sm? '':'padding-right: 5px;'}}">
 
-		<div class="col-xs-12 col-md-6"  ng-repeat="ranking in <vm></vm>.initalHomeData"  ng-if="vm.initalHomeData.length<(vm.initialDataCount/2)">
+		<div class="col-xs-12 col-md-6"  ng-repeat="ranking in vm.initalHomeData"  ng-if="vm.initalHomeData.length<(vm.initialDataCount/2)">
 			<rank-item rank-object="ranking"></rank-item>
 
 		</div>

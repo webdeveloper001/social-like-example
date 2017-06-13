@@ -41,11 +41,11 @@
         $timeout(function(){
             
             var height = 70;
-            if (vm.md) {
-                height = 400;
-            }
+            // if (vm.md) {
+            //     height = 400;
+            // }
             var width = $('#facebook-container').width();
-            
+            $('#facebook-display').html('');
             $('#facebook-display').html('<div class="fb-page" \
                 ng-if="vm.pageDataLoaded"           \
                 data-href="https://www.facebook.com/rankxsandiego/"  \
@@ -60,25 +60,8 @@
                     <a href="https://www.facebook.com/rankxsandiego/">Rank-X San Diego</a></blockquote>\
             </div>');
 
-
-            window.fbAsyncInit = function() {
-                FB.init({appId: '1102409523140826', status: true, cookie: true,
-                xfbml: true, version: 'v2.8'});
-            };
-            (function() {
-                var e = document.createElement('script'); e.async = true;
-                e.src = document.location.protocol +
-                '//connect.facebook.net/en_US/all.js';
-                document.getElementById('fb-root').appendChild(e);
-            }());
-            (function(d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) return;
-                js = d.createElement(s); js.id = id;
-                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=1102409523140826";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
             
+            FB.XFBML.parse();    
         }, 2000);
 
         vm.title = 'cwrapper';
