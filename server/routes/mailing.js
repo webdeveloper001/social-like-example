@@ -52,7 +52,11 @@ function sendWeeklyNewsJob(){
 
                         <div style="background-color: white; margin: 10px;border:1px solid black; padding:10px; font-size: 17px;">
                         
-                            To ensure businesses stay subscribed, we must have a steady flow of traffic to the app, you can help by logging into the app and keeping an eye that the information there is accurate and useful.
+                            Thank you for being a promoter for Rank-X. To ensure you keep receiving commissions and businesses stay subscribed, 
+                            you can help by keeping logging into the app regularly and keeping an eye that all information there is accurate and 
+                            useful; as well as letting us know when you experience any problems so we can fix them. Below are more suggestions 
+                            that will help Rank-X and will make it easier to sign up businesses and get more commissions.
+
                             <hr>
                             <ul>
                                 <li style="padding-bottom: 5px;">

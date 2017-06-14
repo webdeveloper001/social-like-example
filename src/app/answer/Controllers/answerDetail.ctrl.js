@@ -413,7 +413,15 @@
                 var voteRecordExists = vm.answerRanks[i].voteRecordExists;
                 var userHasRank = false;
                 var useractivityrec = {};
-                var idx = $rootScope.thisuseractivity.map(function (x) { return x.category; }).indexOf(vm.answerRanks[i].id);
+                //console.log("$rootScope.thisuseractivity - ", $rootScope.thisuseractivity);
+                try {
+                    var idx = $rootScope.thisuseractivity.map(function (x) { return x.category; }).indexOf(vm.answerRanks[i].id);
+                }
+                catch (err) {
+                    console.log("Error: ", err);
+                    console.log("$rootScope.thisuseractivity - ", $rootScope.thisuseractivity);
+                    var idx = -1;                    
+                }
                 if (idx >= 0) {
                     userHasRank = true;
                     useractivityrec = $rootScope.thisuseractivity[idx];
