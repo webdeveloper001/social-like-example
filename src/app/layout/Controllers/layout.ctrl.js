@@ -279,7 +279,7 @@
             // if (!$rootScope.initalHomeData)
                 table.getMostPopularData();
             dataloader.gethomedata();
-            dataloader.getallranks();
+            // dataloader.getallranks();
             //dataloader.getallcblocks();
             dataloader.getrankdata();
             dataloader.getanswerdata();

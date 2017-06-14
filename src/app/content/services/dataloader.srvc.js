@@ -34,7 +34,7 @@
         }
         function gethomedata() {
 
-            var p0 = table.getTablesMain();
+            var p0 = table.getTables();
             var p1 = headline.getheadlines();
             //var p2 = cblock.getcblocksmain();
             var p3 = rankofday.getrankofday();

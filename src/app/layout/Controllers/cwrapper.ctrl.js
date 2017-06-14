@@ -136,7 +136,7 @@
         vm.scrollingData = [];
         vm.uniqueResult = [];
         if($rootScope.pageDataLoaded){
-            vm.content = $rootScope.content;
+            vm.content = angular.copy($rootScope.content);
             loadInifiniteScroll(true);
         }
 
@@ -147,7 +147,7 @@
 
         $rootScope.$on('homeDataLoaded', function () {
             vm.pageDataLoaded = true;
-            vm.content = $rootScope.content;
+            vm.content = angular.copy($rootScope.content);
             loadInifiniteScroll(false);
 
 
