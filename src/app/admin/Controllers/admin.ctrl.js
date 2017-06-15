@@ -288,14 +288,14 @@
         
                     /*//  3.Use this to correct the title of a group of ranks
                     for (var i=0; i < $rootScope.content.length; i++){
-                        if ($rootScope.content[i].title.includes('Mexican food restaurants')) {
-                            var titlex = $rootScope.content[i].title.replace("Mexican food restaurants","Casual Mexican restaurants");
+                        if ($rootScope.content[i].title.includes("Places for vegetarians")) {
+                            var titlex = $rootScope.content[i].title.replace("Places for vegetarians","Restaurants vegetarians love");
                             //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
-                            console.log("titlex ", titlex);
-                            //table.update($rootScope.content[i].id, ['title'],[titlex]);
+                            //console.log("titlex ", titlex);
+                            table.update($rootScope.content[i].id, ['title'],[titlex]);
                         }
                     } 
-                    */ //End of 3
+                    *///End of 3
             
                     /*//  4.Use this to add a neighborhood
                     //var nhs = ["Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
@@ -834,13 +834,12 @@
                     } 
                    */  //End of 25
 
-                   //26. Apply fimage and bgbox format to atomic ranks from non-atomic
+                   /*//26. Apply fimage and bgbox format to atomic ranks from non-atomic
                    var str = '';
                    var fimage = '';
                    var bc = '';
                    var fc = '';
                    var shade = 0;
-
                    for (var i=0; i<$rootScope.content.length; i++){
                        //if rank not atomic, look into all its atoms and format them equal
                        if ($rootScope.content[i].isatomic == false){
@@ -862,10 +861,7 @@
                             }
                        }
                    }
-
-                   //End of 26
-
+                   *///End of 26
                 } 
-
     }
 })();

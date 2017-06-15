@@ -132,6 +132,7 @@
 
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
+            myAnswer.type = vm.type;
                        
             //Add extra info
             vm.fields.opts = [];
@@ -384,7 +385,7 @@
             //Answer already exist, just post new category-answer record            
             else {
                 if (myAnswer.type == 'Establishment' || myAnswer.type == 'PersonCust') eqRanks();
-                console.log("eqFound, inCity, eqRankIdx = ", eqFound, inCity, eqRankIdx);
+                if ($rootScope.DEBUG_MODE) console.log("eqFound, inCity, eqRankIdx = ", eqFound, inCity, eqRankIdx);
                 //create 2 catans records one for downtown and then district
                 if (eqFound && !inCity) {
                     if ($rootScope.DEBUG_MODE) console.log("P7 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx);
@@ -406,9 +407,8 @@
         function eqRanks() {
             var lookRank = '';
             var cityarea = '';
-
             //Determine answer neighborhood
-            if (myAnswer.cityarea == undefined)
+            if (myAnswer.cityarea == undefined && myAnswer.type == 'Establishment')
                 cityarea = maybeSameAnswers[0].cityarea;
             else 
                 cityarea = myAnswer.cityarea;
