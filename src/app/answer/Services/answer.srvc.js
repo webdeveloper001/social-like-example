@@ -141,7 +141,7 @@
                 catans.postRec(answerx.id);
                 vrows.postVrows4Answer(answerx);
                 
-                uaf.post('addedAnswer',['answer','category'],[answerx.id, $rootScope.cCategory.id]); //user activity feed
+                //uaf.post('addedAnswer',['answer','category'],[answerx.id, $rootScope.cCategory.id]); //user activity feed
                 
                 if ($rootScope.DEBUG_MODE) console.log("created catans for a new answer");
                 if ($rootScope.DEBUG_MODE) console.log("result", result);
@@ -191,7 +191,7 @@
                     $rootScope.plaAnswers.push(answerx);
                 }
                 
-                uaf.post('addedAnswer',['answer','category'],[answerx.id, category[0]]); //user activity feed
+                //uaf.post('addedAnswer',['answer','category'],[answerx.id, category[0]]); //user activity feed
                                 
                 for (var n=0; n<category.length; n++){
                     if (n == 0) catans.postRec2(answerx.id, category[n], false);

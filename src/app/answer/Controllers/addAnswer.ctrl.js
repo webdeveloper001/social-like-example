@@ -380,11 +380,13 @@
             if ($rootScope.DEBUG_MODE) console.log("Yeah Same, @answerIsSame");
             //Answer already exist in this category, do not add
             if (duplicateSameCategory) dialog.getDialog('answerDuplicated');
-            else if (myAnswer.type == 'Establishment' && rankNh && rankNh != myAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
+            
+            else if (myAnswer.type == 'Establishment' && rankNh && rankNh != extAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
             
             //Answer already exist, just post new category-answer record            
             else {
-                if (myAnswer.type == 'Establishment' || myAnswer.type == 'PersonCust') eqRanks();
+                if (extAnswer.type == 'Establishment' || extAnswer.type == 'PersonCust' || extAnswer.type == 'Place'
+                 || extAnswer.type == 'Event') eqRanks();
                 if ($rootScope.DEBUG_MODE) console.log("eqFound, inCity, eqRankIdx = ", eqFound, inCity, eqRankIdx);
                 //create 2 catans records one for downtown and then district
                 if (eqFound && !inCity) {
@@ -408,8 +410,8 @@
             var lookRank = '';
             var cityarea = '';
             //Determine answer neighborhood
-            if (myAnswer.cityarea == undefined && myAnswer.type == 'Establishment')
-                cityarea = maybeSameAnswers[0].cityarea;
+            if (myAnswer.cityarea == undefined)
+                cityarea = extAnswer.cityarea;
             else 
                 cityarea = myAnswer.cityarea;
 
