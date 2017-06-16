@@ -308,7 +308,7 @@
 	</p>
 	<p>You can log in and cancel or make modifications to your account at any time.</p>
 	<label class="checkbox-inline">
-		<input type="checkbox" ng-model="vm.acceptTOS" value="">I have read and understood the <a href="/terms-of-service/customers" target="_blank">Terms of Service</a></label>
+		<input type="checkbox" ng-model="vm.acceptTOS" value="">I have read and understood the <a ng-click="vm.showTOSCustomersDlg()" target="_blank">Terms of Service</a></label>
 	<div class="text-center"> <!-- B -->
 		<!-- <button class="btn btn-success" ng-click="vm.goCheckout()">Pay with Card</button> -->
 		<br>

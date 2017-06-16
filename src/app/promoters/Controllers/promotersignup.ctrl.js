@@ -18,7 +18,7 @@
         var dataOk = false;
         
         activate();
-
+        vm.showTOSPromotersDlg = showTOSPromotersDlg;
         function activate() {
 
             //initialize
@@ -106,7 +106,9 @@
             vm.code = text+nums;
         }
         
-
+        function showTOSPromotersDlg(){
+            dialog.showTOSPromotersDlg();
+        }
     }
 
 })();

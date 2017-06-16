@@ -68,10 +68,10 @@ app.post('/mailing/userSubscribed', mailing.userSubscribed);
 
 var rule = new schedule.RecurrenceRule();
 rule.second = 1;
-schedule.scheduleJob({hour: 30, minute: 23, dayOfWeek: 0}, () => {
+schedule.scheduleJob({hour: 23, minute: 55, dayOfWeek: 0}, () => {
     mailing.sendWeeklyNewsJob();
 });
-schedule.scheduleJob({hour: 30, minute: 23}, () => {
+schedule.scheduleJob({hour: 23, minute: 55}, () => {
     mailing.sendDailyBizMail();
 });
 

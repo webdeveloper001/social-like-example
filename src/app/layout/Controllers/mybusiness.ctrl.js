@@ -53,6 +53,7 @@
         vm.changeCardNumber = changeCardNumber;
         vm.GetFormattedDate = GetFormattedDate;
         vm.hideInvoices = hideInvoices;
+        vm.showTOSCustomersDlg = showTOSCustomersDlg;
         vm.mybizs = [];
         activate();
         vm.noAns = false;
@@ -498,7 +499,13 @@
                         if (missionAccomplished) {
                             //update local copy
                             var idx = $rootScope.useraccnts.map(function (x) { return x.id; }).indexOf(result[0].id);
+                            
                             $rootScope.useraccnts[idx] = result[0];
+                            idx = $rootScope.content.map(function (x) { return x.id; }).indexOf(result[0].answer);
+                            $rootScope.content[idx].ispremium = result[0].ispremium;
+                            $rootScope.content[idx].hasranks = result[0].hasranks;
+                            $rootScope.content[idx].ranksqty = result[0].ranksqty;
+                            
                             loadData();
                             console.log(vm.mybiz);
                             vm.overview = true;
@@ -543,5 +550,8 @@
             })
         }        
 
-    }
+        function showTOSCustomersDlg() {
+            dialog.showTOSCustomersDlg();
+        }
+    }   
 })();

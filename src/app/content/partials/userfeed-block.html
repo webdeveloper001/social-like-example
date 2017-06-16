@@ -26,42 +26,44 @@
 			</div>
 			<div ng-if="x.picture" class="profile-avatar-wrapper  media-left" align="middle">
 				<img ng-src="{{x.picture}}" class="img-responsive img-circle profile-avatar" />
+				
 			</div>
+			
 			<div ng-if="x.action == 'addedAnswer'" class="media-body" style="vertical-align: middle;">
-				added <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a> to
+				{{x.actorusername}} added <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a> to
 				<a ng-click="gotoRank(x)" style="cursor:pointer">{{x.text2}}</a>.
 			</div>
 			<div ng-if="x.action == 'upVoted'" class="media-body" style="vertical-align: middle;">
-				endorsed <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a> in
+				{{x.actorusername}} endorsed <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a> in
 				<a ng-click="gotoRank(x)" style="cursor:pointer">{{x.text2}}</a>.
 			</div>
 			<div ng-if="x.action == 'downVoted'" class="media-body" style="vertical-align: middle;">
-				voted down <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a> in
+				{{x.actorusername}} voted down <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a> in
 				<a ng-click="gotoRank(x)" style="cursor:pointer">{{x.text2}}</a>.
 			</div>
 			<div ng-if="x.action == 'commentR'" class="media-body" style="vertical-align: middle;">
-				posted a comment in <a ng-click="gotoRank(x)" style="cursor:pointer">{{x.text2}}</a>.
+				{{x.actorusername}} posted a comment in <a ng-click="gotoRank(x)" style="cursor:pointer">{{x.text2}}</a>.
 			</div>
 			<div ng-if="x.action == 'commentA'" class="media-body" style="vertical-align: middle;">
-				posted a comment for <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
+				{{x.actorusername}} posted a comment for <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
 			</div>
 			<div ng-if="x.action == 'editA'" class="media-body" style="vertical-align: middle;">
-				edited the information of <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
+				{{x.actorusername}} edited the information of <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
 			</div>
 			<div ng-if="x.action == 'upVotedVrow'" class="media-body" style="vertical-align: middle;">
-				endorsed the <em>{{x.text2}}</em> of <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
+				{{x.actorusername}} endorsed the <em>{{x.text2}}</em> of <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
 			</div>
 			<div ng-if="x.action == 'downVotedVrow'" class="media-body" style="vertical-align: middle;">
-				voted down the <em>{{x.text2}}</em> of <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
+				{{x.actorusername}} voted down the <em>{{x.text2}}</em> of <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
 			</div>
 			<div ng-if="x.action == 'binded'" class="media-body" style="vertical-align: middle;">
-				bound account to <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
+				{{x.actorusername}} bound account to <a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
 			</div>
 			<div ng-if="x.action == 'addedRank'" class="media-body" style="vertical-align: middle;">
-				added a new ranking <a ng-click="gotoRank(x)" style="cursor:pointer">{{x.text2}}</a>.
+				{{x.actorusername}} added a new ranking <a ng-click="gotoRank(x)" style="cursor:pointer">{{x.text2}}</a>.
 			</div>
 			<div ng-if="x.action == 'addedCustomRank'" class="media-body" style="vertical-align: middle;">
-				created the ranking <a ng-click="gotoRank(x)" style="cursor:pointer">{{x.text2}}</a> for 
+				{{x.actorusername}} created the ranking <a ng-click="gotoRank(x)" style="cursor:pointer">{{x.text2}}</a> for 
 				<a ng-click="gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
 			</div>
 		</div>

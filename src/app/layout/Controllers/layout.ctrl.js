@@ -142,10 +142,10 @@
         });
         $rootScope.$on('homeDataLoaded', function () {
             loadingDone();
+            prepareNewCatansOptions();
         });
         $rootScope.$on('rankDataLoaded', function () {
             loadingDone();
-            prepareNewCatansOptions();
         });
         $rootScope.$on('answerDataLoaded', function () {
             loadingDone();

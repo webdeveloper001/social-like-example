@@ -88,7 +88,7 @@ function sendWeeklyNewsJob(){
                         contentHtml += '</table>';
                         contentHtml += `
                         </div>
-                        <p style="font-size: 18px;">`;
+                        <p style="font-size: 17px;">`;
                     } else if(subscriber.subgroup == 1) {
                         subject = 'Rank-X weekly mail';
                         contentHtml += `<h2> Hi ` + (subscriber.username != '' ? subscriber.username.split(' ')[0] : 'there') + `</h2>`;
@@ -124,7 +124,7 @@ function sendWeeklyNewsJob(){
                         contentHtml += '</table>';
                         contentHtml += `
                         </div>
-                        <p style="font-size: 18px;">`;
+                        <p style="font-size: 17px;">`;
                     }
 
 
@@ -133,7 +133,7 @@ function sendWeeklyNewsJob(){
                             Best regards,
                         </p>
                         <hr>
-                        <center> <p style="font-size: 20px">Rank-X team</p> </center>
+                        <center> <p style="font-size: 17px">Rank-X team</p> </center>
                         </div>`;
                     
                     var content = new sghelper.Content('text/html', contentHtml);
@@ -226,7 +226,7 @@ function sendDailyBizMail(){
 
                 contentHtml += `</ul>
                 </div>
-                <p style="font-size: 18px;">
+                <p style="font-size: 17px;">
                     To visit your business profile, <a href="https://rank-x.com/mybusiness">click here</a>. <br/>`;
                 
                 contentHtml += `
@@ -234,7 +234,7 @@ function sendDailyBizMail(){
                         Best regards,
                     </p>
                     <hr>
-                    <center> <p style="font-size: 20px">Rank-X team</p> </center>
+                    <center> <p style="font-size: 17px">Rank-X team</p> </center>
                     </div>`;
                 
                 var content = new sghelper.Content('text/html', contentHtml);
@@ -311,8 +311,8 @@ function sendMailTo(toemail, type, data){
                 </li>
             </ul>
         </div>
-        <p style="font-size: 18px;">
-            To visit your business profile, <a href="https://rank-x.com/mybusiness">click here</a>. <br/>`;
+        <p style="font-size: 17px;">
+            To visit your business profile, <a href="https://rank-x.com/answerDetail/` + data.answer.slug + `">click here</a>. <br/>`;
     } else if ( type == 'planPurchased' ){
 
         subject = 'Confirmation of Purchase';
@@ -333,7 +333,7 @@ function sendMailTo(toemail, type, data){
             To visit your business profile, <a href="https://rank-x.com/mybusiness">click here</a>.
             </p>
         </div>
-        <p style="font-size: 18px;">`;
+        <p style="font-size: 17px;">`;
     } else if ( type == 'promoterCreated' ){
 
         subject = 'You successfully signed up to be a Rank-X promoter';
@@ -354,7 +354,7 @@ function sendMailTo(toemail, type, data){
             You can check details of your progress at <a href="https://rank-x.com/promoterconsole">Promoter Console</a><br/>
             </p>
         </div>
-        <p style="font-size: 18px;">`;
+        <p style="font-size: 17px;">`;
     } else if( type == 'codeSignupSubscription' ) {
         subject = 'You got a new account credited to you in Rank-X!';
         contentHtml += `
@@ -392,7 +392,7 @@ function sendMailTo(toemail, type, data){
             </ul>
             </div>
         </div>
-        <p style="font-size: 18px;">`;
+        <p style="font-size: 17px;">`;
     } else if( type == 'codeCancelSubscription' ) {
         subject = 'An account has cancel their subscription';
         contentHtml += `
@@ -428,7 +428,7 @@ function sendMailTo(toemail, type, data){
             </ul>
             </div>
         </div>
-        <p style="font-size: 18px;">`;
+        <p style="font-size: 17px;">`;
     } else if( type == 'paymentProceed' ) {
         subject = 'You have a payment coming up!';
         contentHtml += `
@@ -466,7 +466,7 @@ function sendMailTo(toemail, type, data){
             </ul>
             </div>
         </div>
-        <p style="font-size: 18px;">`;
+        <p style="font-size: 17px;">`;
     }
 
     contentHtml += `
@@ -474,7 +474,7 @@ function sendMailTo(toemail, type, data){
             Best regards,
         </p>
         <hr>
-        <center> <p style="font-size: 20px">Rank-X team</p> </center>
+        <center> <p style="font-size: 17px">Rank-X team</p> </center>
         </div>`;
     
     var content = new sghelper.Content('text/html', contentHtml);
@@ -612,6 +612,7 @@ function paymentProceed(amount, promoterId){
 
 module.exports = {
     sendWeeklyNewsJob: sendWeeklyNewsJob,
+    sendDailyBizMail: sendDailyBizMail,
     userSubscribed: userSubscribed,
     promoterCreated: promoterCreated,
     newBizCreated: newBizCreated,

@@ -38,6 +38,9 @@
     </div>
 </div>
 
+<div class="pull-right btn-group text-right" style="margin-right:20px">
+    <button class="btn btn-default" ng-click="vm.share()" style="padding-right:5px">Share&nbsp&nbsp<span class="glyphicon glyphicon-share"></span></button>
+</div>
 <div class="col-xs-12">
     <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
         <h3 class="sub-header">Endorsements</h3>        
@@ -98,7 +101,7 @@
 		<label class="checkbox-inline" ng-if="vm.addctsactive"><input type="checkbox" ng-model="vm.catisdup">Is Dup</label>
     </div>
 </div>
-<div class="container col-xs-12" ng-if="vm.answer.hasranks">
+<div class="col-xs-12" ng-if="vm.answer.hasranks">
     <div class="row" ng-if="vm.type != 'Short-Phrase'">
         <div class="col-xs-12">
             <div class="well-sm" style="background-color:#666666;color:#f8f8ff;">
@@ -124,7 +127,7 @@
 </div>
 
 <!-- Show potential upgrades for Custom Ranks -->    
-<div class="container col-xs-12" ng-if="vm.userIsOwner&&!vm.answer.hasranks&&!vm.hideCustomRanksMsg">
+<div class="col-xs-12" ng-if="vm.userIsOwner&&!vm.answer.hasranks&&!vm.hideCustomRanksMsg">
     <br>
     <div class="alert alert-info">
         This Favorites section contains <strong>Custom Ranks</strong> and it is <strong>only visible to you</strong>
@@ -141,7 +144,7 @@
         <div class="row" style="padding:0px;margin:0px;border:0px">
             <div ng-repeat="n in vm.myranks">
                 <!-- <div class="clearfix" ng-if="$index % 3 == 0" style="border:0px;padding:0px;margin:0px;"></div> -->
-                <div class="container col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoRank(n)" ng-attr-style="border-top:3px solid white;border-bottom:3px solid white;background-color:{{n.bc}};color:{{n.fc}};height:{{vm.sm ? '90px':'120px'}};margin:0px;padding:0px;position:relative">
+                <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoRank(n)" ng-attr-style="border-top:3px solid white;border-bottom:3px solid white;background-color:{{n.bc}};color:{{n.fc}};height:{{vm.sm ? '90px':'120px'}};margin:0px;padding:0px;position:relative">
                     <h3 class=" hidden-xs text-center" ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{n.title}}</h2>
                     <h4 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{n.title}}</h3>
                 </div>
@@ -227,7 +230,7 @@
 </div>
 
 <!-- Show potential upgrades for Custom Ranks -->    
-<div class="container col-xs-12" ng-if="vm.userIsOwner&&!vm.answer.ispremium&&!vm.hideGetPremiumMsg">
+<div class="" ng-if="vm.userIsOwner&&!vm.answer.ispremium&&!vm.hideGetPremiumMsg">
     <div class="alert alert-info">
         This Specials section below is only visible when you have <strong>Premium Membership</strong>. Premium Membership allows you to: <br><br>
         <i class="fa fa-check"></i>&nbspCommunicate to users <strong>daily specials, events and deals</strong> real time.<br>
@@ -257,7 +260,7 @@
     </div>
 </div>
 
-<div class="col-xs-12">
+<div class="">
     <div ng-show="{{vm.type == 'Establishment' || vm.type == 'PersonCust' }}">
         <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
             <h3 class="sub-header">How do we do?</h3>
@@ -309,7 +312,7 @@
         </div>
     </div>
 </div>
-<div class="col-xs-12" ng-if="false">
+<div class="" ng-if="false">
 
     <div ng-show="{{vm.type != 'Establishment' && vm.type != 'PersonCust' && vm.type != 'Event' }}">
         <div class="well-sm" style="background-color:#666666;color:#f8f8ff">

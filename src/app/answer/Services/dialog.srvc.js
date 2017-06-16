@@ -57,7 +57,9 @@
             changeCodePriceDlg: changeCodePriceDlg,
             openSubscriptionDlg: openSubscriptionDlg,
             generateAnswerHtml: generateAnswerHtml,
-            confirmSameAnswerMultiple: confirmSameAnswerMultiple
+            confirmSameAnswerMultiple: confirmSameAnswerMultiple,
+            showTOSPromotersDlg: showTOSPromotersDlg,
+            showTOSCustomersDlg: showTOSPromotersDlg
         };
         return service;
 
@@ -2606,6 +2608,34 @@
        
         }
         
+        function showTOSCustomersDlg() {
+
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: "Terms of Service",
+                message: $('<div></div>').load('/assets/partials/toscustomer.tem'),
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnOKLabel: "Back",
+                btnOKClass: 'btn-primary',
+                size: BootstrapDialog.SIZE_WIDE,
+            });
+        }
+
+
+        function showTOSPromotersDlg() {
+
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: "Terms of Service",
+                message: $('<div></div>').load('/assets/partials/tospromoter.tem'),
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnOKLabel: "Back",
+                btnOKClass: 'btn-primary',
+                size: BootstrapDialog.SIZE_WIDE,
+            });
+        }
     }
     
 })();

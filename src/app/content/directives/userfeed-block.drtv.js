@@ -52,6 +52,7 @@ angular.module('app').directive('userfeedBlock',
                         for (var i = 0; i < $rootScope.uafs.length; i++) {
                             var userWithPic = angular.copy($rootScope.uafs[i]);
                             userWithPic.picture = fbUsers[i] ? fbUsers[i].picture.data.url : null;
+                            
                             scope.feeds[i] = userWithPic;
                         }
                     });

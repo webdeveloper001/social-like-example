@@ -23,7 +23,7 @@
             <input class="form-control" ng-model="vm.promoter.address" placeholder="Your address" style="width:94%;margin-left:10px;margin-right:10px;">
         </div>
         <label class="checkbox-inline">
-		    <input type="checkbox" ng-model="vm.acceptTOS" value="">I have read and understood the <a href="/terms-of-service/promoters" target="_blank">Terms of Service</a>
+		    <input type="checkbox" ng-model="vm.acceptTOS" value="">I have read and understood the <a ng-click="vm.showTOSPromotersDlg()" target="_blank">Terms of Service</a>
         </label>
 	
     </form>
