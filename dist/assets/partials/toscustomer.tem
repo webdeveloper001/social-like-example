@@ -34,7 +34,7 @@
     }
 </style>
 
-<div class="container">
+<div style="margin: 30px">
     </br>
     <div id='ppHeader'><span><img src="/assets/images/logo_sq.png" style="width:80px"></span> Rank-X Terms of Use</div>
     <div id='ppBody'>
