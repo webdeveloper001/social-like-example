@@ -12,7 +12,7 @@
         .constant('DEBUG_MODE', false)
         .constant('EMPTY_IMAGE','../../../assets/images/noimage.jpg')
         .constant('INSTAGRAM_CLIENT_ID', "c46745e083b7451a99461240e01da20b")
-        // .constant('SERVER_URL', "https://server.rank-x.com/")
-        .constant('SERVER_URL', "http://localhost:3000/")
+        .constant('SERVER_URL', "https://server.rank-x.com/")
+        // .constant('SERVER_URL', "http://localhost:3000/")
         .constant('STRIPE_CLIENT_ID', "ca_AdOtLByD0cfx8W3d76nnKqLjruvHmGlh")
 })();
