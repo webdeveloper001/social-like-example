@@ -5,9 +5,9 @@
         .module('app')
         .factory('catans', catans);
 
-    catans.$inject = ['$http', '$q','$rootScope','votes'];
+    catans.$inject = ['$http', '$q','$rootScope','votes','uaf'];
 
-    function catans($http, $q, $rootScope, votes) {
+    function catans($http, $q, $rootScope, votes, uaf) {
 
         // Members
         var _allcatans = [];
@@ -114,6 +114,9 @@
                 //update local copies
                 var id = result.data.resource[0].id; 
                 _allcatans[_allcatans.length-1].id = id;
+
+                //Create user activity feed
+                uaf.post('addedAnswer',['answer','category'],[data.answer, data.category]); //user activity feed
                 
                 if ($rootScope.DEBUG_MODE) console.log("creating catans record was succesful");
                 return result.data;
@@ -151,6 +154,9 @@
                 //update local copies
                 var id = result.data.resource[0].id; 
                 _allcatans[_allcatans.length-1].id = id;
+
+                //Create user activity feed
+                uaf.post('addedAnswer',['answer','category'],[answer, category]); //user activity feed
                 
                 if ($rootScope.DEBUG_MODE) console.log("creating catans record was succesful");
                 return result.data;

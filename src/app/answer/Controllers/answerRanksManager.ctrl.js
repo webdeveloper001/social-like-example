@@ -33,6 +33,7 @@
 
             var n=0;
             vm.ranks = JSON.parse($rootScope.canswer.ranks);
+            if (vm.ranks == undefined) vm.ranks = [];
             for (var i=0; i<vm.ranks.length; i++){
                 n = $rootScope.content.map(function(x) {return x.id; }).indexOf(vm.ranks[i].id);
                 vm.ranks[i].title = $rootScope.content[n].title.replace(' @ '+$rootScope.canswer.name,'');
