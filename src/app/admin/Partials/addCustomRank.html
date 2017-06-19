@@ -53,9 +53,13 @@
 </div>
 
 <div class="alert alert-warning" ng-if="vm.showAlert&&vm.resLength>0" style="padding-bottom:0px;margin-bottom:0px;">
-  <strong>Error!</strong> You can not add this ranking because there are similar rankings to the one you are trying to create. 
-  Please enter a unique ranking title and validate again.
-  <div class="text-right"><button class="btn btn-default" ng-click="vm.alertOk()">Got it</button></div>
+  <strong>Please confirm.</strong> There are similar rankings to the one you are trying to create. 
+  If this ranking is different to any of the existing rankings below, click 'Continue'. 
+  If not, please cancel and expand on the already existing rankings.
+  <div class="text-right btn-group">
+      <button class="btn btn-default" ng-click="vm.alertOk()">Continue</button>
+      <button class="btn btn-default" ng-click="vm.goBack()">Cancel</button>
+  </div>
 </div>
 <div class="alert alert-success" ng-if="vm.showAlert&&vm.resLength==0">
   <strong>Good one!</strong> This ranks does not have any duplicates.<br>

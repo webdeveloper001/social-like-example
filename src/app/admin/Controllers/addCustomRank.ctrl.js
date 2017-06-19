@@ -314,7 +314,8 @@
 
         function alertOk(){
             vm.showAlert = false;
-            if (vm.resLength == 0) vm.step = 4;
+            //if (vm.resLength == 0) 
+            vm.step = 4;
         }
 
         function tagsOk(){

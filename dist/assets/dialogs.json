@@ -8,7 +8,7 @@
     "dialog.missingDataImage.title": "Missing Data for Image",
     "dialog.missingDataImage.text": "Before you can load an image you need to complete all fields marked with **.",
     "dialog.missingDataAnswer.title": "Missing Data",
-    "dialog.missingDataAnswer.text": "Before you can load an image you need to complete all fields marked with ** and load an image",
+    "dialog.missingDataAnswer.text": "Before you can load an image you need to complete all fields marked with ** and load an image. If there aren't any images check the 'No good images were found' checkbox.",
     "dialog.editFieldExists.title": "An edit for this field already exists",
     "dialog.editFieldExists.text": "An edit for this field is already in place. Only one edit can be active at a time. Please vote on the current edits so they can be approved or rejected.",    
     "dialog.rankComplete.title": "Rank Complete",
