@@ -412,9 +412,9 @@
                                //console.log("2");
                                var catstr = '';
                                var fcatstr = '';
-                               //DISTRICT 
-                               var genRank = $rootScope.content[i].title.replace("Hillcrest", "Downtown");
-                               //CITY var genRank = $rootScope.content[i].title.replace("Hillcrest", "San Diego");
+                               //DISTRICT var genRank = $rootScope.content[i].title.replace("Hillcrest", "Downtown");
+                               // CITY
+                               var genRank = $rootScope.content[i].title.replace("Hillcrest", "San Diego");
                                for (var j=0; j<$rootScope.content.length; j++){
                                    if (genRank == $rootScope.content[j].title){
                                        if ($rootScope.content[j].catstr == null || //comment these 3
@@ -429,24 +429,27 @@
                                           cid != 3124 && cid != 3163 && cid !=3202){
                                       
                                         console.log("Found gen rank --- ", $rootScope.content[j].title,' ',$rootScope.content[j].id);
-                                        //DISTRICT 
-                                        var srchStr = $rootScope.content[j].title.replace("Downtown","");
-                                        //CITY var srchStr = $rootScope.content[j].title.replace("San Diego","");
+                                        //DISTRICT var srchStr = $rootScope.content[j].title.replace("Downtown","");
+                                        //CITY 
+                                        var srchStr = $rootScope.content[j].title.replace("San Diego","");
                                            for (var k=0; k<$rootScope.content.length; k++){
 
                                                if ($rootScope.content[k].title.includes(srchStr) && k!=j ){
                                                    //console.log("Found sub rank --- ", $rootScope.content[k].title);
                                                     
-                                                    //DISTRICT 
-                                                    isDistrictRanking = false;
-                                                    for (var n=0; n<$rootScope.districts.length; n++){
-                                                        if ($rootScope.content[k].title.includes($rootScope.districts[n])){
-                                                            isDistrictRanking = true;
-                                                        }     
-                                                     }
-                                                    if (isDistrictRanking) catstr = catstr + ':' + $rootScope.content[k].id;
+                                                    //DISTRICT
+                                                    // 
+                                                    //isDistrictRanking = false;
+                                                    //for (var n=0; n<$rootScope.districts.length; n++){
+                                                    //    if ($rootScope.content[k].title.includes($rootScope.districts[n])){
+                                                    //        isDistrictRanking = true;
+                                                    //    }     
+                                                    // }
+                                                    //if (isDistrictRanking) catstr = catstr + ':' + $rootScope.content[k].id;
+                                                    
                                                     //End DISTRICT
-                                                    //catstr = catstr + ':' + $rootScope.content[k].id;
+                                                    //CITY
+                                                    catstr = catstr + ':' + $rootScope.content[k].id;
                                                }
 
                                            }
@@ -832,9 +835,9 @@
                             table.update(cat, ['type'],['Place']);
                         }
                     } 
-                   */  //End of 25
+                  */ //End of 25
 
-                   /*//26. Apply fimage and bgbox format to atomic ranks from non-atomic
+                   //26. Apply fimage and bgbox format to atomic ranks from non-atomic
                    var str = '';
                    var fimage = '';
                    var bc = '';
@@ -854,14 +857,14 @@
                                 for (var j = 0; j < $rootScope.content.length; j++) {
                                     if ($rootScope.content[j].title.indexOf(str) > -1) {
                                         //Found an atom
-                                        //console.log($rootScope.content[j].title, fimage, bc, fc, shade);
+                                        console.log($rootScope.content[j].title, fimage, bc, fc, shade);
                                         table.update($rootScope.content[j].id,['fimage','bc','fc','shade'],[fimage,bc,fc,shade]);
                                     }
                                 }
                             }
                        }
                    }
-                   *///End of 26
+                   //End of 26
                 } 
     }
 })();
