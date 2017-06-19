@@ -406,3 +406,10 @@ width: 100% !important;
   text-align: center;
   line-height: 60px;
 }
+
+
+userfeed-block {
+    overflow-y: auto;
+    display: block;
+    height: 400px;
+}

@@ -8,9 +8,15 @@
 	<!--<h2 class=" hidden-xs text-center" 
     style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{text}}</h2>
 	-->
-    <h3 class="text-center" 
+    <h3 ng-if="!isRankOfDay" class="text-center" 
     ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{text}}</h3>
-	<p ng-attr-style="padding:3px; margin:0px; position:absolute; bottom:0px; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
+	<p  ng-if="!isRankOfDay" ng-attr-style="padding:3px; margin:0px; position:absolute; bottom:0px; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
+		{{question}}
+	</p>
+
+	<h3 ng-if="isRankOfDay" class="text-center" 
+    ng-attr-style="padding:3px; margin:0px; position:absolute; top:50px; left: 0px">{{text}}</h3>
+	<p  ng-if="isRankOfDay" ng-attr-style="padding:3px; margin:0px; position:absolute; bottom:0px; width: 100% ">
 		{{question}}
 	</p>
 </div>

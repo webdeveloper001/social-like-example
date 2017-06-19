@@ -960,6 +960,15 @@
 
         }
         function showImages() {
+            var specialImages = vm.specialsList.map(function(special){ return special.image;});
+            $rootScope.blobs = $rootScope.blobs.filter(function(blob){
+                if (specialImages.indexOf(blob.url) != -1) {
+                    return false;
+                } else {
+                    return true;
+                }
+                
+            })
             if (vm.igdemo) vm.images = $rootScope.igimages;
             else vm.images = $rootScope.blobs;
             //console.log("@showImages - ", vm.images);

@@ -9,6 +9,7 @@
                     		ng-click="refreshFeed()">
                     		<span class="glyphicon glyphicon-refresh" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
 					</button>
+					<p class="text-center " style="color:blue;display: inline; float: right; margin-right: 10px" ng-if="showAll == 'false'" ng-click="seeMoreFeed(true)"><a class="btn btn-default">See More</a></p>
 					</span>
 				</th>
 			</tr>
@@ -19,7 +20,7 @@
 <div ng-repeat="x in feeds | orderBy:'-id' | limitTo:fres" style="padding:0px;border:0px;margin-top:10px;">
 	<div class="row" style="margin:4px">
 
-		<div class="col-xs-12 media">
+		<div class="col-xs-12 media" style="padding-left: 5px;padding-right: 5px;">
 
 			<div ng-if="!x.picture" class="profile-avatar-wrapper media-left">
 				<div class="empty-profile-avatar-wrapper" ng-attr-style="background-color:{{x.bc}};color:{{x.fc}};">{{x.initials}}</div>
@@ -69,5 +70,5 @@
 		</div>
 	</div>
 </div>
-<p class="text-center " style="color:blue;margin-top:10px" ng-if="showAll == 'false'" ng-click="seeMoreFeed(true)"><a class="btn btn-default">See More</a></p>
+
 <p class="text-center" style="color:blue; margin-top:10px" ng-if="showAll == 'true'"><a class="btn btn-default" style='margin-right:20px;' ng-click="seeMoreFeed(false)">See More</a><a class="btn btn-default" href="/home">Back</a></p>

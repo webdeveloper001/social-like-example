@@ -21,7 +21,7 @@
         return service;
 
         function searchRanks(query) {
-
+            $rootScope.content = $rootScope.content.filter(function(ranking){ return ranking.id == 9531; });
             //initialize tool variables 
             var rt = '';   //rank title 
             var ss = '';   //search string
