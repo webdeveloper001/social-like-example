@@ -211,7 +211,7 @@
         </tbody>
 </table>
 
-<div class="row" style="margin:0px;">
+<div class="row" style="margin:0px;" ng-if="!vm.hasAnswerParent || vm.userIsOwner">
     <div class="col-xs-2" style="padding:0px">
         <a class="btn btn-primary" ng-click="vm.addAnswer()" class="btn btn-primary">+</a>
     </div>
@@ -230,6 +230,7 @@
             <span ng-if="vm.type == 'Short-Phrase'">Answer.</span>
             <span ng-if="vm.type == 'Thing'">Item.</span>
             <span ng-if="vm.type == 'Event'">Event.</span>
+            <span ng-if="vm.type == 'Simple'">Item.</span>
         </div>
     </div>
 </div>

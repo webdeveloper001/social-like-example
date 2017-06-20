@@ -23,6 +23,7 @@
         <span ng-if="vm.type == 'Short-Phrase'"><em>Answer</em> to this list.</span>
         <span ng-if="vm.type == 'Thing'"><em>Item</em> to this list.</span>
         <span ng-if="vm.type == 'Event'"><em>Event</em> to this list.</span>
+        <span ng-if="vm.type == 'Simple'"><em>Item</em> to this list.</span>
     </h4>
 
 </div>
@@ -32,7 +33,7 @@
 </br>
 
 <div class="row" style="margin:0px;">
-    <div class="col-sm-12 col-md-5">
+    <div class="col-sm-12 col-md-5" ng-if="!vm.userIsOwner">
         <div class="" ng-show="{{vm.type != 'Short-Phrase'}}">
             <!--   <a href="{{vm.imageURL}}" class="thumbnail"> -->
             <img src="{{vm.imageURL}}" alt="{{image.errorLoading}}" style="width:100%; max-height:300px">
@@ -65,8 +66,12 @@
                 <input type="checkbox" ng-change='vm.onNoGoodImages(vm.ngi)' ng-model="vm.ngi">No good images were found
             </label>
         </div>
-
-
+    </div>
+    <div class="col-sm-12 col-md-5" ng-if="vm.userIsOwner">
+        <img src="{{vm.imageURL}}" alt="{{image.errorLoading}}" style="width:100%; max-height:300px">
+        <div ng-attr-style="display:{{vm.userIsOwner ? 'inline':'none'}}">
+            <blob-upload>
+        </div>
     </div>
     
     <br ng-if="vm.sm">
