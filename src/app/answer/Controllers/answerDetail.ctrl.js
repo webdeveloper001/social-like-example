@@ -244,10 +244,7 @@
                         vm.myranks[i].image = $rootScope.EMPTY_IMAGE;
                     }
                 }
-                $rootScope.rankOwner = {};
-                $rootScope.rankOwner.name = vm.answer.name;
-                $rootScope.rankOwner.id = vm.answer.id;
-            }
+           }
             //Demo custom ranks
             else if (vm.userIsOwner){
                 vm.myranks = [];
@@ -316,6 +313,7 @@
                     case "Establishment": { fidx = 6; break; }
                     case "Thing": { fidx = 7; break; }
                     case "PersonCust": { fidx = 8; break; }
+                    case "Simple": { fidx = 9; break; }
                 }
 
                 var fields = $rootScope.typeSchema[fidx].fields;

@@ -77,7 +77,7 @@
             item.title = vm.rankTitle +' @ ' + $rootScope.canswer.name;
             item.tags = '';
             item.keywords = '';
-            item.type = 'Thing';
+            item.type = 'Simple';
             item.question = vm.question;
             item.views = 0;
             item.answers = 0;

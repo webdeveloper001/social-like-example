@@ -5,10 +5,10 @@
         .module('app')
         .controller('editAnswer', editAnswer);
 
-    editAnswer.$inject = ['dialog', '$stateParams', '$state', '$rootScope', 'catans', 
+    editAnswer.$inject = ['dialog', '$stateParams', '$state', '$rootScope', 'catans', '$scope',
     '$modal', 'edit', 'editvote', 'answer', 'image','getgps','$window','getwiki', '$http'];
 
-    function editAnswer(dialog, $stateParams, $state, $rootScope, catans, 
+    function editAnswer(dialog, $stateParams, $state, $rootScope, catans, $scope, 
     $modal, edit, editvote, answer, image, getgps, $window, getwiki, $http) {
         /* jshint validthis:true */
         var vm = this;
@@ -92,7 +92,7 @@
                 }
             });
 
-        $rootScope.$on('fileUploaded', function (event, data){
+        var fileUploadedListener = $rootScope.$on('fileUploaded', function (event, data){
                 $rootScope.cmd1exe = $rootScope.cmd1exe ? $rootScope.cmd1exe : false;        
             if ($state.current.name == 'editAnswer' && !$rootScope.cmd1exe) {
                 $rootScope.cmd1exe = true;
@@ -101,13 +101,17 @@
             }
         });
         
-        $rootScope.$on('answerGPSready', function () {
+        var answerGPSreadyListener = $rootScope.$on('answerGPSready', function () {
             if ($state.current.name == 'editAnswer' && !editAnswerGPSexec) editAnswerGPS();
         });
         
-        $rootScope.$on('wikiReady', function (event,wikiRes) {
+        var wikiReadyListener = $rootScope.$on('wikiReady', function (event,wikiRes) {
             if ($state.current.name == 'editAnswer') loadWiki(wikiRes);
         });
+
+        $scope.$on('$destroy',fileUploadedListener);
+        $scope.$on('$destroy', answerGPSreadyListener);
+        $scope.$on('$destroy',wikiReadyListener);
         
         //Adjust picture size for very small displays
         if ($window.innerWidth < 512) {vm.sm = true; vm.nsm=false;}
