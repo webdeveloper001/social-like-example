@@ -611,10 +611,15 @@
                         checkAnswerExists(maybeSameAnswers[0]);
                         dialog.confirmSameAnswer(maybeSameAnswers[0],answerIsSame);
                     }
-                    else if (maybeSameAnswers.length > 1) dialog.confirmSameAnswerMultiple(maybeSameAnswers);                 
+                    else if (maybeSameAnswers.length > 1) dialog.confirmSameAnswerMultiple(maybeSameAnswers,answerChosen);                 
                 }                
             }
             inputLengthMem = x.val.length;                       
+        }
+
+        function answerChosen(n){
+            extAnswer = maybeSameAnswers[n];
+            answerIsSame();
         }
 
         function detectNeighborhood(){

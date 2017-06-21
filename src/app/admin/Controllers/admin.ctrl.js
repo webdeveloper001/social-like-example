@@ -357,17 +357,19 @@
                     */ //End 4
         
                     /*//  5.Use this for batch DELETE
-                    for (var i=0; i < vm.results.length; i++){
-             //           if (vm.results[i].title.includes("in Core")){
-                             //for (var j=0; j<$rootScope.catansrecs.length; j++){
-                                 //if ($rootScope.catansrecs[j].category == vm.resultsT[i].id){
-                                   //  catans.deleteRec($rootScope.catansrecs[j].answer,$rootScope.catansrecs[j].category);
-                                 //}
-                             //}
-                             table.deleteTable(vm.results[i].id);      
-             //           }                   
+                    for (var i=0; i < $rootScope.content.length; i++){
+                        if ($rootScope.content[i].title.includes("International restaurants")){
+                             for (var j=0; j<$rootScope.catansrecs.length; j++){
+                                 if ($rootScope.catansrecs[j].category == $rootScope.content[i].id){
+                                     console.log("Deleting catans");
+                                     catans.deleteRec($rootScope.catansrecs[j].answer,$rootScope.catansrecs[j].category);
+                                 }
+                             }
+                             console.log("Deleting table - ", $rootScope.content[i].title);
+                             table.deleteTable($rootScope.content[i].id);      
+                        }                   
                    }
-                    *///End 5
+                   *///End 5
       
                     /*//6. Use this to add a ranking to all neighborhoods 
                      for (var i=0; i < vm.resultsT.length; i++){            
@@ -837,7 +839,7 @@
                     } 
                   */ //End of 25
 
-                   //26. Apply fimage and bgbox format to atomic ranks from non-atomic
+                   /*//26. Apply fimage and bgbox format to atomic ranks from non-atomic
                    var str = '';
                    var fimage = '';
                    var bc = '';
@@ -864,7 +866,7 @@
                             }
                        }
                    }
-                   //End of 26
+                   *///End of 26
                 } 
     }
 })();
