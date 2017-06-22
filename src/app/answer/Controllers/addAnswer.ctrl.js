@@ -17,6 +17,7 @@
         vm.body = 'table' + $rootScope.cCategory.id + '.body';
         vm.searchDisabled = 'disabled';
         vm.modalEnable = true;
+        vm.userIsOwner = false;
         vm.publicfields = [];
         vm.ranking = $rootScope.cCategory.title;
         var publicfield_obj = {};
@@ -86,8 +87,18 @@
             if ($state.current.name == 'addAnswer') loadWiki(wikiRes);
         });
 
+        var fileUploadedListener = $rootScope.$on('fileUploaded', function (event, data){
+            if ($state.current.name == 'addAnswer') {
+                $rootScope.blobimage = data;
+                showUploadedImage();                
+            }
+        });
+
         $scope.$on('$destroy',GPSReadyListener);
         $scope.$on('$destroy',WikiReadyListener);
+        $scope.$on('$destroy', fileUploadedListener);
+
+        checkUserCredentials();
 
         //Adjust picture size for very small displays
         if ($window.innerWidth < 512) {vm.sm = true; vm.nsm = false; }
@@ -188,6 +199,7 @@
                 myAnswer.views = 0;
                 myAnswer.ig_image_urls = '';
                 myAnswer.slug = '';
+                if (vm.userIsOwner) myAnswer.owner = $rootScope.user.id;
 
                 if (duplicateExists) dialog.checkSameAnswer(myAnswer, extAnswer, addAnswerConfirmed, answerIsSame);
                 else dialog.addAnswer(myAnswer, vm.imageURL, addAnswerConfirmed);
@@ -229,7 +241,8 @@
             }
             
             //loadImageDataOk = loadImageDataOk && countryIsValid;
-            if ($rootScope.cCategory.type == 'Short-Phrase' || $rootScope.cCategory.type == 'PersonCust' ) addAnswerDataOk = loadImageDataOk;
+            if ($rootScope.cCategory.type == 'Short-Phrase' || $rootScope.cCategory.type == 'PersonCust' 
+            || $rootScope.cCategory.type == 'Simple' ) addAnswerDataOk = loadImageDataOk;
             else addAnswerDataOk = (loadImageDataOk && (vm.numLinks > 0 || vm.ngi));
 
         }
@@ -598,10 +611,15 @@
                         checkAnswerExists(maybeSameAnswers[0]);
                         dialog.confirmSameAnswer(maybeSameAnswers[0],answerIsSame);
                     }
-                    else if (maybeSameAnswers.length > 1) dialog.confirmSameAnswerMultiple(maybeSameAnswers);                 
+                    else if (maybeSameAnswers.length > 1) dialog.confirmSameAnswerMultiple(maybeSameAnswers,answerChosen);                 
                 }                
             }
             inputLengthMem = x.val.length;                       
+        }
+
+        function answerChosen(n){
+            extAnswer = maybeSameAnswers[n];
+            answerIsSame();
         }
 
         function detectNeighborhood(){
@@ -611,8 +629,25 @@
                     rankNh = $rootScope.allnh[i];
                 }
             }
-        }        
-        
+        }
+
+        function checkUserCredentials(){
+            if ($rootScope.isLoggedIn){
+                //if $rootScope.cCategoryExists
+                var answerParent = $rootScope.cCategory.owner;
+                if (answerParent != undefined && answerParent != 0){
+                    //look for answerParent and see who is its owner
+                     var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(Number(answerParent));
+                     var owner = $rootScope.answers[idx].owner;
+                     if ($rootScope.user.id == owner) vm.userIsOwner = true;  
+                }
+            }
+        }
+
+        function showUploadedImage(){
+            vm.imageURL = $rootScope.blobimage;
+        }
+                     
     }
 
 })();

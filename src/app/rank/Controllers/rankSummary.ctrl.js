@@ -43,6 +43,9 @@
         vm.selRank = 'active';
         vm.selDistance = '';
         vm.commLoaded = false;
+        vm.userIsOwner = false;
+        vm.hasAnswerParent = false;
+        vm.isCustomRank = false;
         vm.user = $rootScope.user;
         //var myParent = $rootScope.parentNum;
 
@@ -135,6 +138,8 @@
             $rootScope.objNumAct = $rootScope.objNum;
 
             loadData(); //load data and write to $rootScope
+
+            checkUserCredentials();
 
             //-----SEO tags ----
             $scope.$parent.$parent.$parent.seo = { 
@@ -488,28 +493,13 @@
             //If introtext exist load it, if not, create custom intro text
             if ($rootScope.cCategory.introtext) vm.introtext = $rootScope.cCategory.introtext;
             else vm.introtext = 'This is the ranking for ' + $rootScope.cCategory.title + '. '+
-            /*'Did we get them all?' +
-            ' Are we missing ' + 
-            ($rootScope.cCategory.type == 'Establishment' ? 'any establishment?.':'') +
-            ($rootScope.cCategory.type == 'Organization' ? 'any Company?.':'') +
-            ($rootScope.cCategory.type == 'Person' ? 'anyone?.':'') +
-            ($rootScope.cCategory.type == 'PersonCust' ? 'anyone?.':'') +
-            ($rootScope.cCategory.type == 'Place' ? 'a place?.':'') +
-            ($rootScope.cCategory.type == 'Short-Phrase' ? 'any?.':'') +
-            ($rootScope.cCategory.type == 'Thing' ? 'any item?.':'') +
-            ($rootScope.cCategory.type == 'Event' ? 'any event?.':'') + */
             ' Help shape the ranking by endorsing your favorites!.';
               
-            //vm.url = 'http://rankdev.azurewebsites.net/#/rankSummary/' + $rootScope.cCategory.id;
-            //vm.header = "table" + $rootScope.cCategory.id + ".header";
-            //vm.body = 'table' + $rootScope.cCategory.id + '.body';
-            //Grab list of fields for the current table
-            if ($rootScope.cCategory.title.indexOf('@')>-1) {
+            if ($rootScope.cCategory.owner != 0 && $rootScope.cCategory.owner != undefined){
                 vm.isCustomRank = true;
-                vm.rankOwner = $rootScope.rankOwner;
+                var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(Number($rootScope.cCategory.owner));
+                vm.rankOwner = $rootScope.answers[idx]; 
             }
-            else vm.isCustomRank = false;
-
             
             var fidx = 0;
             switch ($rootScope.cCategory.type) {
@@ -522,6 +512,7 @@
                 case "Establishment": { fidx = 6; break; }
                 case "Thing": { fidx = 7; break; }
                 case "PersonCust": { fidx = 8; break; }
+                case "Simple": { fidx = 9; break; }
             }
 
             var fields = $rootScope.typeSchema[fidx].fields;
@@ -1019,6 +1010,18 @@
 
         function callGetLocation() {
             $rootScope.$emit('getLocation');
+        }
+
+        function checkUserCredentials() {
+            if ($rootScope.cCategory.owner != 0 && $rootScope.cCategory.owner != undefined)
+                    vm.hasAnswerParent = true;
+            if ($rootScope.isLoggedIn) {
+                if (vm.hasAnswerParent) {
+                    var idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf(Number($rootScope.cCategory.owner));
+                    var owner = $rootScope.answers[idx].owner;
+                    if ($rootScope.user.id == owner) vm.userIsOwner = true;
+                }
+            }
         }
 
         function mergeObject(x, y) {
