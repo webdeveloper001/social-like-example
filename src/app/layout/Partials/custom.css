@@ -413,3 +413,7 @@ userfeed-block {
     display: block;
     height: 400px;
 }
+
+userfeed-block.show-all {
+    overflow: initial;
+}

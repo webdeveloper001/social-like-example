@@ -287,12 +287,22 @@
                             tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
                             tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
 
-                            //look for input in answer names
+                            //look for input in answer names ||
+
+                            var caseInsensitive = false;
+                            var equals = an.toLowerCase().split(' ').filter(function(antag){
+                                return antag == valTags[k].toLowerCase();
+                            });
+                        
+                            if (equals.length >= 1) {
+                                caseInsensitive = true;
+                            } 
                             m = m &&
                                (an.indexOf(valTags[k]) > -1 ||
                                 an.indexOf(valTags[k].toUpperCase()) > -1 ||
                                 an.indexOf(tagCapitalized) > -1 ||
-                                an.indexOf(tagFirstLowered) > -1);
+                                an.indexOf(tagFirstLowered) > -1 ||
+                                caseInsensitive);   // If one splited by space and lowercased answer name tags is same as tag then return
 
                         }
 
