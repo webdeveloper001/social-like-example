@@ -140,6 +140,7 @@
             vm.establishmentNames = $rootScope.estNames;
             vm.peopleNames = $rootScope.pplNames;
             vm.placesNames = $rootScope.plaNames;
+            vm.organizationNames = $rootScope.orgNames;
 
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
@@ -167,9 +168,14 @@
                     vm.fields[i].opts = "c for c in vm.peopleNames";
                 }
                 
-                //Typeahead check for current Persons
+                //Typeahead check for current Places
                 if (vm.fields[i].name == "name" && $rootScope.cCategory.type == 'Place') {
                     vm.fields[i].opts = "c for c in vm.placesNames";
+                }
+
+                //Typeahead check for current Companies
+                if (vm.fields[i].name == "name" && $rootScope.cCategory.type == 'Organization') {
+                    vm.fields[i].opts = "c for c in vm.organizationNames";
                 }
                 
                 //When neighborhood is implied put it in the input field right away
@@ -540,6 +546,22 @@
 
                         for (var j = 0; j < $rootScope.catansrecs.length; j++) {
                             if ($rootScope.catansrecs[j].answer == $rootScope.plaAnswers[i].id &&
+                                $rootScope.catansrecs[j].category == $rootScope.cCategory.id) {
+                                duplicateSameCategory = true;
+                            }
+                        }
+                    }
+                }
+            }
+            else if (vm.type == 'Organization') {
+                for (var i = 0; i < $rootScope.orgAnswers.length; i++) {
+                    if (answer.name == $rootScope.orgAnswers[i].name) {
+
+                        duplicateExists = true;
+                        extAnswer = $rootScope.orgAnswers[i];
+
+                        for (var j = 0; j < $rootScope.catansrecs.length; j++) {
+                            if ($rootScope.catansrecs[j].answer == $rootScope.orgAnswers[i].id &&
                                 $rootScope.catansrecs[j].category == $rootScope.cCategory.id) {
                                 duplicateSameCategory = true;
                             }

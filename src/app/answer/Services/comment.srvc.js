@@ -15,6 +15,7 @@
 
         var service = {
             getcomments: getcomments,
+            getcommentsbyrank: getcommentsbyrank,
             addcomment: addcomment,
             updatecomment: updatecomment,
             deletecomment: deletecomment,
@@ -32,6 +33,18 @@
             }
 
             var url = baseURI +'/?filter=category='+ $rootScope.cCategory.id;
+
+            return $http.get(url).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+
+                return _comments = result.data.resource;
+            }
+
+        }
+
+        function getcommentsbyrank(category) {
+            var url = baseURI +'/?filter=category='+ category;
 
             return $http.get(url).then(querySucceeded, _queryFailed);
 

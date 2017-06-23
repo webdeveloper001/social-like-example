@@ -5,17 +5,18 @@
         .module('app')
         .controller('dbMaint', dbMaint);
 
-    dbMaint.$inject = ['$location', '$rootScope', '$state', '$stateParams', 'Upload', '$q',
+    dbMaint.$inject = ['$location', '$rootScope', '$state', '$stateParams', 'Upload', '$q','getgps',
         'table', 'dialog', 'answer', 'catans', 'votes', '$http','categorycode','codeprice'];
 
-    function dbMaint(location, $rootScope, $state, $stateParams, Upload, $q,
+    function dbMaint(location, $rootScope, $state, $stateParams, Upload, $q, getgps,
         table, dialog, answer, catans, votes, $http, categorycode, codeprice) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'dbMaint';
 
         vm.showUrefAns = showUrefAns;
-        vm.deleteAnswers = deleteAnswers;
+        vm.delAnswer = delAnswer;
+        vm.selAns = selAns;
         vm.showPossibleDuplicated = showPossibleDuplicated;
         vm.syncToFirst = syncToFirst;
         vm.syncToSecond = syncToSecond;
@@ -33,6 +34,10 @@
         vm.updateUrls = updateUrls;
         vm.goMerge = goMerge;
         vm.getSlugs = getSlugs;
+        vm.delAnswer = delAnswer;
+        vm.addcts = addcts;
+        vm.selEditAddress = selEditAddress;
+        vm.editAddress = editAddress;
 
         vm.isAdmin = $rootScope.isAdmin;
         
@@ -47,11 +52,15 @@
         }
 
         function showUrefAns() {
-            var cans = 0;
+            var cans = {};
             var ansIsRef = false;
             var resObj = {};
             vm.unrefans = [];
+            vm.addctsopts = [];
+            vm.ans = -1;
             for (var i = 0; i < $rootScope.answers.length; i++) {
+                resObj = {};
+                cans = {};
                 cans = $rootScope.answers[i];
                 ansIsRef = false;
                 for (var j = 0; j < $rootScope.catansrecs.length; j++) {
@@ -61,20 +70,45 @@
                     }
                 }
                 if (ansIsRef == false) {
-                    resObj.name = cans.name;
-                    resObj.id = cans.id
-                    vm.unrefans.push(resObj);
+                    vm.unrefans.push(cans);
                 }
             }
-            if (vm.unrefans.length > 0) vm.showDelete = true;
-            else vm.showDelete = false;
-
+            
+            //if unreference answer prepare catans options
+            if (vm.unrefans.length > 0) {
+                for (var n=0; n<$rootScope.content.length; n++){
+                    vm.addctsopts.push($rootScope.content[n].title);
+                }
+            };
+            
         }
 
-        function deleteAnswers() {
-            for (var i = 0; i < vm.unrefans.length; i++) {
-                answer.deleteAnswer(vm.unrefans[i].id);
+        function delAnswer(x) {
+                answer.deleteAnswer(x.id).then(function(){
+                    showUrefAns();
+                });             
+        }
+
+        function selAns(x) {
+            vm.ans = x.id;
+        }
+
+        function addcts(x) {
+            var title = '';
+            var category = 0;
+            
+            title = vm.addctsval;
+            
+            for (var i = 0; i < $rootScope.content.length; i++) {
+                if ($rootScope.content[i].title == title) {
+                    category = $rootScope.content[i].id;
+                    break;
+                }
             }
+            //console.log("postRec catans -",myAnswer.id,category,isDup);
+            catans.postRec2(vm.ans, category, false).then(function(){
+                showUrefAns();
+            });
         }
 
         function showPossibleDuplicated() {
@@ -366,6 +400,7 @@
 
         function estDistances() {
             console.log("@estDistances, need to have GPS location stored-", $rootScope.answers.length);
+            vm.ans = -1;
             vm.answerdist = [];
             //Calculate distances to user
             var p = 0.017453292519943295;    // Math.PI / 180
@@ -468,7 +503,8 @@
                                     if (rank.title.indexOf($rootScope.catcodes[k].category) > -1) {
                                         if ($rootScope.answers[i].bizcat == undefined) {
                                             //console.log($rootScope.answers[i].name, " is ", $rootScope.catcodes[k].code);
-                                            console.log('---------- undefined!!------');
+                                            console.log($rootScope.answers[i].name, " is ", $rootScope.answers[i].bizcat);
+                                            //console.log('---------- undefined!!------');
                                             //answer.updateAnswer($rootScope.answers[i].id,['bizcat'],[$rootScope.catcodes[k].code]);
                                         }
                                         else {
@@ -483,7 +519,7 @@
                                             }
                                             if (scale_this > scale_current){
                                                 //console.log($rootScope.answers[i].name, " is ", $rootScope.catcodes[k].code);
-                                                answer.updateAnswer($rootScope.answers[i].id,['bizcat'],[$rootScope.catcodes[k].code]);
+                                                //answer.updateAnswer($rootScope.answers[i].id,['bizcat'],[$rootScope.catcodes[k].code]);
                                             } 
                                         }
                                     }
@@ -495,6 +531,21 @@
                 }
 
             });
+        }
+
+        function selEditAddress(x){
+            console.log("selEditAddess - ", x);
+            vm.ans = x.id;
+        }
+
+        function editAddress(x){
+            getgps.getLocationGPS(x).then(function(){
+                answer.updateAnswer(x.id,['location','lat','lng'],[x.location, x.lat, x.lng]).then(function(){
+                    estDistances();
+                });
+
+            });
+            
         }
 
         function getSlugs(){

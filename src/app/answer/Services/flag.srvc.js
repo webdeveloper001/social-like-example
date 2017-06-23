@@ -17,7 +17,8 @@
 
         var service = {
             flagAnswer: flagAnswer,
-            getFlags: getFlags
+            getFlags: getFlags,
+            deleteFlag: deleteFlag,
             
         };
 
@@ -62,6 +63,32 @@
             function querySucceeded(result) {
 
                 return _flags = result.data.resource;
+            }
+        }
+
+        function deleteFlag(flag_id) {
+           
+            //form match record
+            var obj = {};
+            obj.resource = [];
+
+            var data = {};
+            data.id = flag_id;
+
+            obj.resource.push(data);
+
+            var url = baseURI + '/' + flag_id;
+            
+            return $http.delete(url, data, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                body: obj
+            }).then(querySucceeded, _queryFailed);
+            function querySucceeded(result) {
+
+                if ($rootScope.DEBUG_MODE) console.log("Deleting flag was succesful");
+                return result.data;
             }
         }
 

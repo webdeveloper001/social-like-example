@@ -2,21 +2,54 @@
 <br>
 <button class="btn btn-danger" ng-click="vm.getFlags()">Get Flags</button>
 
-<table class="table table-hover cursor">
+<table class="table table-hover cursor" ng-if="vm.viewTable">
 	<tbody>
 		<thead>
 			<tr>
+				<th>No.</th>
 				<th>Type</th>
 				<th>Flag</th>
+				<th>Details</th>
 				<th>Go To</th>
+				<th>Dismiss</th>
 			</tr>
 		</thead>
 		<tbody>
 			<!--<tr ng-repeat="x in vm.relativetable | orderBy:'-Rank'" ng-click="vm.refresh(x.id)">-->
 			<tr ng-repeat="x in vm.flags">
+				<td>{{x.id}}</td>
 				<td>{{x.type}}</td>
 				<td>{{x.desc}}</td>
-				<td>{{x.number}}</td>
+				<td><button class="btn btn-default" ng-click="vm.seeDetails(x)">Details</button></td>
+				<td><button class="btn btn-success" ng-click="vm.gotoView(x)">Go to</button></td>
+				<td><button class="btn btn-warning" ng-click="vm.deleteFlag(x)">Delete Flag</button></td>
 			</tr>
 		</tbody>
 </table>
+
+<div ng-if="vm.viewDetails">
+	<h4>{{vm.data.id}} - {{vm.data.type}} - Reason:&nbsp{{vm.data.desc}}</h4>
+	<div ng-if="vm.data.imageurl"> <img src="{{vm.data.imageurl}}" style="width:120px"> <br></div>
+	<div ng-if="vm.data.name"> Name: {{vm.data.name}} <br></div>
+	<div ng-if="vm.data.location">Address: {{vm.data.location}} <br></div>
+	<div ng-if="vm.data.cityarea"> Neighborhood: {{vm.data.cityarea}} <br></div>
+	<div ng-if="vm.data.phone"> Phone: {{vm.data.phone}} <br></div>
+	<div ng-if="vm.data.website"> Website: {{vm.data.website}} <br></div>
+
+	<div ng-if="vm.data.title">Title: {{vm.data.title}} <br></div>
+
+	<div ng-if="vm.catans">
+		Categories</br>
+		<div ng-repeat="y in vm.catans">
+			{{y.rank}} --- {{y.id}} --- {{y.category}} --- {{y.answer}} <button class="btn btn-warning" ng-click="vm.delCatans(y)">Delete Catans</button><br>
+		</div>
+	</div>
+	<div ng-if="vm.comments">
+	Comments</br>
+	<div ng-repeat="x in vm.comments">
+		{{x.user}} --- {{x.username}} --- {{x.body}} <button class="btn btn-warning" ng-click="vm.delComment(x)">Delete Comment</button><br>
+	</div>
+	</div>
+
+	<button class="btn btn default" ng-click="vm.seeFlags()">Back to Flags</button>
+</div>
