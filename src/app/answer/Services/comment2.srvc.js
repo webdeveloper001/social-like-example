@@ -15,6 +15,7 @@
 
         var service = {
             getcomments: getcomments,
+            getcommentsbyanswer: getcommentsbyanswer,
             addcomment: addcomment,
             updatecomment: updatecomment,
             deletecomment: deletecomment,
@@ -32,6 +33,19 @@
             }
 
             var url = baseURI +'/?filter=answer='+ $rootScope.canswer.id;
+
+            return $http.get(url).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+
+                return _comments = result.data.resource;
+            }
+
+        }
+
+        function getcommentsbyanswer(answer) {
+            
+            var url = baseURI +'/?filter=answer='+ answer;
 
             return $http.get(url).then(querySucceeded, _queryFailed);
 

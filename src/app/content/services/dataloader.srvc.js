@@ -203,6 +203,8 @@
             $rootScope.pplNames = [];
             $rootScope.plaAnswers = [];
             $rootScope.plaNames = [];
+            $rootScope.orgAnswers = [];
+            $rootScope.orgNames = [];
             for (var i = 0; i < $rootScope.answers.length; i++) {
                 if ($rootScope.answers[i].type == 'Establishment') {
                     $rootScope.estNames.push($rootScope.answers[i].name);
@@ -215,6 +217,10 @@
                 if ($rootScope.answers[i].type == 'Place') {
                     $rootScope.plaNames.push($rootScope.answers[i].name);
                     $rootScope.plaAnswers.push($rootScope.answers[i]);
+                }
+                if ($rootScope.answers[i].type == 'Organization') {
+                    $rootScope.orgNames.push($rootScope.answers[i].name);
+                    $rootScope.orgAnswers.push($rootScope.answers[i]);
                 }
             }
         }
