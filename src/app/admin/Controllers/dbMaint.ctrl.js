@@ -6,10 +6,10 @@
         .controller('dbMaint', dbMaint);
 
     dbMaint.$inject = ['$location', '$rootScope', '$state', '$stateParams', 'Upload', '$q','getgps',
-        'table', 'dialog', 'answer', 'catans', 'votes', '$http','categorycode','codeprice'];
+        'table', 'dialog', 'answer', 'catans', 'votes', '$http','categorycode','codeprice','useraccnt'];
 
     function dbMaint(location, $rootScope, $state, $stateParams, Upload, $q, getgps,
-        table, dialog, answer, catans, votes, $http, categorycode, codeprice) {
+        table, dialog, answer, catans, votes, $http, categorycode, codeprice, useraccnt) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'dbMaint';
@@ -38,6 +38,7 @@
         vm.addcts = addcts;
         vm.selEditAddress = selEditAddress;
         vm.editAddress = editAddress;
+        vm.addcatcode = addcatcode;
 
         vm.isAdmin = $rootScope.isAdmin;
         
@@ -483,7 +484,12 @@
             var catcodes = [];
             var scale_current = 0;
             var scale_this = 0;
-
+            var ansObj = {};
+            var bizcat = '';
+            vm.codes = [];
+            vm.catcode = {};
+            vm.ans = -1;
+            
             var p0 = categorycode.get();
             var p1 = codeprice.get();
 
@@ -491,45 +497,45 @@
                 $rootScope.catcodes = d[0];
                 $rootScope.codeprices = d[1];
 
+                for (var m=0; m<$rootScope.codeprices.length; m++){
+                    vm.codes.push($rootScope.codeprices[m].code);
+                }
+
                 console.log('Category-codes loaded...');
+
+                vm.ansNoCode = [];
                 for (var i = 0; i < $rootScope.answers.length; i++) {
-                    if ($rootScope.answers[i].type == 'Establishment') {
-                        for (var j = 0; j < $rootScope.catansrecs.length; j++) {
-                            if ($rootScope.catansrecs[j].answer == $rootScope.answers[i].id) {
-                                category = $rootScope.catansrecs[j].category;
-                                var idx = $rootScope.content.map(function (x) { return x.id; }).indexOf(category);
-                                rank = $rootScope.content[idx];
-                                for (var k = 0; k < $rootScope.catcodes.length; k++) {
-                                    if (rank.title.indexOf($rootScope.catcodes[k].category) > -1) {
-                                        if ($rootScope.answers[i].bizcat == undefined) {
-                                            //console.log($rootScope.answers[i].name, " is ", $rootScope.catcodes[k].code);
-                                            console.log($rootScope.answers[i].name, " is ", $rootScope.answers[i].bizcat);
-                                            //console.log('---------- undefined!!------');
-                                            //answer.updateAnswer($rootScope.answers[i].id,['bizcat'],[$rootScope.catcodes[k].code]);
-                                        }
-                                        else {
-                                            //find current value of answer bizcat
-                                            for (var l=0; l < $rootScope.codeprices.length; l++){
-                                                if ($rootScope.codeprices[l].code == $rootScope.answers[i].bizcat){
-                                                    scale_current = $rootScope.codeprices[l].scale;
-                                                }
-                                                if ($rootScope.codeprices[l].code == $rootScope.catcodes[k].code){
-                                                    scale_this = $rootScope.codeprices[l].scale;
-                                                }
-                                            }
-                                            if (scale_this > scale_current){
-                                                //console.log($rootScope.answers[i].name, " is ", $rootScope.catcodes[k].code);
-                                                //answer.updateAnswer($rootScope.answers[i].id,['bizcat'],[$rootScope.catcodes[k].code]);
-                                            } 
+                    if ($rootScope.answers[i].type == 'Establishment' ||
+                        $rootScope.answers[i].type == 'PersonCust'){
+                        ansObj = {};
+                        ansObj = $rootScope.answers[i];
+                        bizcat = useraccnt.getBizCat(ansObj.id);
+                        if (bizcat == undefined || bizcat == '' || bizcat == null){
+                            //ansObj.bizcat = bizcat;
+                            //vm.ansNoCode.push(ansObj);
+                            //look categories of answer that dont have category codeprice
+                            ansObj.cats = [];
+                            for (var k=0; k<$rootScope.catansrecs.length; k++){
+                                if ($rootScope.catansrecs[k].answer == ansObj.id){
+                                    for (var n=0; n<$rootScope.content.length; n++){
+                                        if ($rootScope.content[n].id == $rootScope.catansrecs[k].category){
+                                            ansObj.cats.push($rootScope.content[n].title);
                                         }
                                     }
                                 }
                             }
+                            vm.ansNoCode.push(ansObj);                            
                         }
+                        //else console.log(ansObj.name,"-",bizcat);
                     }
-                    if (i%100 == 0) console.log(i,' of ',$rootScope.answers.length);
                 }
+            });
+        }
 
+        function addcatcode(){
+            categorycode.post(vm.catcode).then(function(){
+                console.log("Added category code pair");
+                getAnswerBizCode();
             });
         }
 

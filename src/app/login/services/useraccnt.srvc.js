@@ -18,7 +18,8 @@
             updateuseraccnt: updateuseraccnt,
             getuseraccntInvoicesAndCustomer: getuseraccntInvoicesAndCustomer,
             deleteAccount: deleteAccount,
-            payPromoter: payPromoter
+            payPromoter: payPromoter,
+            getBizCat: getBizCat,
     };
     return service;
 
