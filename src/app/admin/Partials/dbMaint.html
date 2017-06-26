@@ -27,24 +27,42 @@
 	<br>
 	<br>
 	<div ng-if="vm.unrefans">
-	<div ng-repeat="x in vm.unrefans" ng-click="vm.selAns(x)">
-	<h4 class="text-left">{{$index+1}}. {{x.name}}</h4>
-	<img src="{{x.imageurl}}" style="width:120px"></br>
-		Id: {{x.id}} Added by User: {{x.userid}} </br>
-		Neighborhood: {{x.cityarea}} </br>
-		Address: {{x.location}} </br>
-		Website: {{x.website}} </br>
-		Phone: {{x.phone}} </br>
-		Additional Info: {{x.addinfo}} </br>
-		<button class="btn btn-danger" ng-click="vm.delAnswer(x)">Delete Answer</button><br>
-		<div ng-if="vm.ans == x.id">
-		<label>Add Catans</label>	
-		<input type="text" class="form-control" ng-model="vm.addctsval" bs-options="c for c in vm.addctsopts" bs-typeahead>
-        <span class="input-group-btn text-right">
-            <button class="btn btn-success" type="button" ng-click="vm.addcts()">Add</button>
-        </span>
+		<div ng-repeat="x in vm.unrefans" ng-click="vm.selAns(x)">
+			<h4 class="text-left">{{$index+1}}. {{x.name}}</h4>
+			<img src="{{x.imageurl}}" style="width:120px"></br>
+			Id: {{x.id}} Added by User: {{x.userid}} </br>
+			Neighborhood: {{x.cityarea}} </br>
+			Address: {{x.location}} </br>
+			Website: {{x.website}} </br>
+			Phone: {{x.phone}} </br>
+			Additional Info: {{x.addinfo}} </br>
+			<button class="btn btn-danger" ng-click="vm.delAnswer(x)">Delete Answer</button><br>
+			<div ng-if="vm.ans == x.id">
+				<label>Add Catans</label>	
+				<input type="text" class="form-control" ng-model="vm.addctsval" bs-options="c for c in vm.addctsopts" bs-typeahead>
+        		<span class="input-group-btn text-right">
+            		<button class="btn btn-success" type="button" ng-click="vm.addcts()">Add</button>
+        		</span>
+			</div>
 		</div>
 	</div>
+	<!-- Business Code  -->
+	<div ng-if="vm.ansNoCode">
+		<div ng-repeat="x in vm.ansNoCode" ng-click="vm.selAns(x)">
+			<p class="text-left"><strong>{{$index}}.&nbsp{{x.name}}&nbsp-&nbsp{{x.bizcat}}</strong></p>
+			<div ng-repeat="y in x.cats">
+				<p class="text-left">{{y}}</p>
+			</div>
+			<div ng-if="vm.ans == x.id">
+				<label>Category</label>	
+				<input type="text" class="form-control" ng-model="vm.catcode.category">
+        		<label>Code</label>	
+				<input type="text" class="form-control" ng-model="vm.catcode.code" bs-options="c for c in vm.codes" bs-typeahead>
+        		<span class="input-group-btn text-right">
+            		<button class="btn btn-success" type="button" ng-click="vm.addcatcode()">Add Category-Code Pair</button>
+        		</span>
+			</div>	
+		</div>
 	</div>
 	<div ng-repeat="x in vm.dupAnswers track by $index">
 		<img src="{{x.image1}}" ng-attr-style="width:120px"> <img src="{{x.image2}}" style="width:120px">

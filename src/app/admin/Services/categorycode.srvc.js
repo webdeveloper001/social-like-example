@@ -15,9 +15,33 @@
 
         var service = {
             get: get,
+            post:post,
         };
 
         return service;
+
+        function post(item){
+            
+            var url = baseURI;
+            var resource = [];
+
+            resource.push(item);
+
+            //update local copy
+            _categorycodes.push(item);
+            
+            return $http.post(url, resource, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                body: resource
+            }).then(querySucceeded, _categorycodeFailed);
+
+            function querySucceeded(result) {
+                if ($rootScope.DEBUG_MODE) console.log("created new category-code paire");
+                return result.data;
+            }
+        }
 
         function get(forceRefresh) {
             

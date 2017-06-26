@@ -245,6 +245,17 @@
                     break;
                 }
             }
+
+            //For freelancer type 'PersonCust' data required is either email or website, not necessarily both
+            if ($rootScope.cCategory.type == 'PersonCust'){
+                for (var i = 0; i < vm.fields.length; i++) {
+                    if ((vm.fields[i].name == 'email' && vm.fields[i].val.length > 3 ) || 
+                        (vm.fields[i].name == 'website' && vm.fields[i].val.length > 3)){
+                        loadImageDataOk = true;
+                        break;
+                    }
+                } 
+            }
             
             //loadImageDataOk = loadImageDataOk && countryIsValid;
             if ($rootScope.cCategory.type == 'Short-Phrase' || $rootScope.cCategory.type == 'PersonCust' 
