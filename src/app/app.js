@@ -31,6 +31,7 @@
         'ngFacebook',
         
         'ui.select',
-        'infinite-scroll'
+        'infinite-scroll',
+        'datatables'
     ]);
 })();

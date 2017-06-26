@@ -1,0 +1,67 @@
+<br>
+<div class="row" ng-if="vm.isAdmin">
+    <!-- Navigation Bar -->
+    <div id="veil" ng-hide="vm.dataReady"></div>
+    <div id="feedLoading" ng-hide="vm.dataReady">
+        <div style="text-align: center" ng-if="!vm.dataReady">
+            <div class="loading-pulse"></div>
+            <p style="font-size:large">loading your business information...</p>
+        </div>
+    </div>
+    <div ng-if="vm.dataReady">
+        <div style="margin-left:40px; margin-right:40px">
+            <h3>Businesses</h3>
+            <div class="pull-right">
+                <button class="btn btn-default" ng-class="vm.showFilter == 0 ? 'active' : ''" ng-click="vm.setShowAll()">Show All</button>
+                <button class="btn btn-default" ng-class="vm.showFilter == 1 ? 'active' : ''" ng-click="vm.setShowPurchases()">Show Only Purchaces</button>
+                <button class="btn btn-default" ng-class="vm.showFilter == 2 ? 'active' : ''" ng-click="vm.setShowNonPurchases()">Show Only Non-Purchaces</button>
+                <button class="btn btn-default" ng-class="vm.showUserFilter ? 'active' : ''" ng-click="vm.showUser()">Show User</button>
+            </div>
+            <div class="clearfix"></div>
+            <table datatable="ng"  class="table"  dt-options="vm.dtOptions" dt-columns="vm.dtColumns" dt-instance="vm.dtInstance" class="row-border hover">
+                <thead style="border-style:none;">
+                    <tr>
+                        <th>Business Name</th>
+                        <th>Type</th>
+                        <th>Activity</th>
+                        <th ng-if="vm.showUserFilter">User</th>
+                        <th ng-if="vm.showUserFilter">Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr ng-repeat="biz in vm.getFiltered(vm.businesses)" style="cursor:pointer;">
+                        <td>{{biz.answerObj.name}}</td>
+                        <td>{{biz.bizcat}}</td>
+                        
+                        <td style="padding: 0px;display: inline; height: 100%">
+                            <div  ng-if="!biz.ispreminum && !biz.hasranks" style=" background-color: #ffe699; padding:10px 18px; min-width: 160px" class="text-center">
+                                Account Bind
+                            </div>
+
+                            <div ng-if="biz.ispreminum || biz.hasranks" class="text-center" style="min-width:200px ; min-width: 160px" >
+                                <div  ng-if="biz.ispreminum" style=" background-color: #a9d18e; float:left; width:50%; padding:10px 18px" class="text-center">
+                                    Preminum
+                                </div>
+                                <div  ng-if="!biz.ispreminum" style=" background-color: 
+                                #d9d9d9;float:left; width:50%; padding:10px 18px" class="text-center">
+                                    No Preminum
+                                </div>
+                                
+                                <div  ng-if="biz.hasranks" style=" background-color: #a9d18e; float:left; width:50%; padding:10px 18px" class="text-center">
+                                    {{biz.ranksqty}} Ranks
+                                </div>
+                                <div  ng-if="!biz.hasranks" style=" background-color: #d9d9d9; float:left; width:50%; padding:10px 18px" class="text-center">
+                                    No Ranks
+                                </div>
+                            </div>
+                        </td>
+
+                        <td ng-if="vm.showUserFilter">{{biz.username}}</td>
+                        <td ng-if="vm.showUserFilter">{{biz.email}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

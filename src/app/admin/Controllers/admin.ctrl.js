@@ -29,6 +29,7 @@
         vm.foodranks = foodranks;
         vm.payment = payment;
         vm.plan = plan;
+        vm.bizAdmin = bizAdmin;
         vm.applyRule = applyRule;
         //vm.fbpost = fbpost;
         
@@ -60,6 +61,7 @@
             vm.selFoodRanks = '';
             vm.selPayment = '';
             vm.selPlan = '';
+            vm.selBizAdmin = '';
 
             $state.go('queries');
 
@@ -75,6 +77,7 @@
             vm.selFoodRanks = '';
             vm.selPayment = '';
             vm.selPlan = '';
+            vm.selBizAdmin = '';
 
             $state.go('views');
 
@@ -90,6 +93,7 @@
             vm.selFoodRanks = '';
             vm.selPayment = '';
             vm.selPlan = '';
+            vm.selBizAdmin = '';
 
             $state.go('flags');
 
@@ -106,6 +110,7 @@
             vm.selFoodRanks = '';
             vm.selPayment = '';
             vm.selPlan = '';
+            vm.selBizAdmin = '';
 
             $state.go('addRank');
 
@@ -122,6 +127,7 @@
             vm.selFoodRanks = '';
             vm.selPayment = '';
             vm.selPlan = '';
+            vm.selBizAdmin = '';
             
             $state.go('dbMaint');
         }
@@ -137,6 +143,7 @@
             vm.selFoodRanks = '';
             vm.selPayment = '';
             vm.selPlan = '';
+            vm.selBizAdmin = '';
             
             $state.go('dbQuery');
         }
@@ -152,6 +159,7 @@
             vm.selFoodRanks = '';
             vm.selPayment = '';
             vm.selPlan = '';
+            vm.selBizAdmin = '';
             
             $state.go('updateHeaders');
         }
@@ -167,6 +175,7 @@
             vm.selFoodRanks = 'active';
             vm.selPayment = '';
             vm.selPlan = '';
+            vm.selBizAdmin = '';
             
             $state.go('foodRanks');
             
@@ -183,6 +192,7 @@
             vm.selFoodRanks = '';
             vm.selPlan = '';
             vm.selPayment = 'active';
+            vm.selBizAdmin = '';
 
             $state.go('payment');
 
@@ -199,10 +209,29 @@
             vm.selFoodRanks = '';
             vm.selPlan = 'active';
             vm.selPayment = '';
+            vm.selBizAdmin = '';
 
             $state.go('plan');
 
         }
+
+        function bizAdmin() {
+            vm.selKeywords = '';
+            vm.selViews = '';
+            vm.selFlags = '';
+            vm.selRankings = '';
+            vm.selDbMaint = '';
+            vm.selQuery = '';
+            vm.selUpdate = '';
+            vm.selFoodRanks = '';
+            vm.selPlan = '';
+            vm.selPayment = '';
+            vm.selBizAdmin = 'active';
+
+            $state.go('bizadmin');
+
+        }
+
         function goBack() {
             //if ($rootScope.cCategory.id == undefined) $state.go('rankSummary', { index: $rootScope.cCategory.id });
             //else $state.go('rankSummary', { index: 1 });

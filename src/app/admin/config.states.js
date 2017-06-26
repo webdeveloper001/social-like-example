@@ -101,6 +101,13 @@
                 controller: 'plan as vm'               
             },
             {
+                name: 'bizadmin',
+                parent: 'admin',
+                url: '/bizadmin',
+                templateUrl: 'app/admin/Partials/bizadmin.html',
+                controller: 'bizadmin as vm'               
+            },
+            {
                 name: 'rodconsole',
                 url: '/rodconsole',
                 views: {
