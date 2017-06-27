@@ -88,7 +88,8 @@
             var accntExists = false;
             var bizObj = {};
             for (var i=0; i<$rootScope.answers.length; i++){
-                if ($rootScope.answers[i].owner == $rootScope.user.id){
+                if ($rootScope.answers[i].owner == $rootScope.user.id  && 
+                    ($rootScope.answers[i].type == 'Establishment' || $rootScope.answers[i].type == 'PersonCust')){
                     accntExists = false;
                     bizObj = {};
                     bizObj = $rootScope.answers[i];
@@ -139,7 +140,8 @@
                             break;
                         }                        
                     }
-                    if (!accntExists) useraccnt.adduseraccnt($rootScope.answers[i]);
+                    if (!accntExists) 
+                        useraccnt.adduseraccnt($rootScope.answers[i]);
                     bizObj.loadingInvoices = true;
                     bizObj.invoices = [];
                     loadInvoicesAndCustomer(bizObj);

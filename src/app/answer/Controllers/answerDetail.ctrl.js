@@ -1155,7 +1155,7 @@
             vm.votemode = true;
             vm.voteonstyle = "background-color:#3277b3;color:#e6e6e6";
             vm.voteoffstyle = "background-color:#e6e6e6;color:black";
-            if ($rootScope.endorseDialogShown == undefined) endorseDialog();
+            //if ($rootScope.endorseDialogShown == undefined) endorseDialog();
             
         }
         function votemodeOFF(){
