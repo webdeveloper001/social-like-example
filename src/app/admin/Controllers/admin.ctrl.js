@@ -317,8 +317,8 @@
         
                     /*//  3.Use this to correct the title of a group of ranks
                     for (var i=0; i < $rootScope.content.length; i++){
-                        if ($rootScope.content[i].title.includes("Places for vegetarians")) {
-                            var titlex = $rootScope.content[i].title.replace("Places for vegetarians","Restaurants vegetarians love");
+                        if ($rootScope.content[i].title.includes("Fine dining ")) {
+                            var titlex = $rootScope.content[i].title.replace("Fine dining restaurants in  ","Fine dining restaurants in ");
                             //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
                             //console.log("titlex ", titlex);
                             table.update($rootScope.content[i].id, ['title'],[titlex]);

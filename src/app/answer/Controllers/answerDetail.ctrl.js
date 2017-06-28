@@ -1123,12 +1123,12 @@
             isDup = vm.catisdup == undefined ? false : vm.catisdup;
 
             for (var i = 0; i < $rootScope.content.length; i++) {
+
                 if ($rootScope.content[i].title == title) {
                     category = $rootScope.content[i].id;
                     break;
                 }
             }
-            //console.log("postRec catans -",myAnswer.id,category,isDup);
             catans.postRec2(vm.answer.id, category, isDup);
 
             vm.addctsactive = false;
