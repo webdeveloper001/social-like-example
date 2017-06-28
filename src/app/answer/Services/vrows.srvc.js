@@ -58,6 +58,8 @@
             var url21 = baseURI + '?offset=' + 21 * 1000;
             var url22 = baseURI + '?offset=' + 22 * 1000;
             var url23 = baseURI + '?offset=' + 23 * 1000;
+            var url24 = baseURI + '?offset=' + 24 * 1000;
+            var url25 = baseURI + '?offset=' + 25 * 1000;
 
             var p0 = $http.get(url0);
             var p1 = $http.get(url1);
@@ -83,15 +85,17 @@
             var p21 = $http.get(url21);
             var p22 = $http.get(url22);
             var p23 = $http.get(url23);
+            var p24 = $http.get(url24);
+            var p25 = $http.get(url25);
 
             return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, 
-            p16, p17, p18, p19, p20, p21, p22, p23]).then(function (d) {
+            p16, p17, p18, p19, p20, p21, p22, p23, p24, p25]).then(function (d) {
                 _allvrows = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource,
                     d[4].data.resource, d[5].data.resource, d[6].data.resource, d[7].data.resource, d[8].data.resource,
                     d[9].data.resource, d[10].data.resource, d[11].data.resource, d[12].data.resource,
                     d[13].data.resource, d[14].data.resource, d[15].data.resource, d[16].data.resource, d[17].data.resource,
                     d[18].data.resource, d[19].data.resource, d[20].data.resource, d[21].data.resource,
-                    d[22].data.resource, d[23].data.resource);
+                    d[22].data.resource, d[23].data.resource, d[24].data.resource, d[25].data.resource);
                 if ($rootScope.DEBUG_MODE) console.log("No. Vrows: ", _allvrows.length);
                 return _allvrows;
             }, _queryFailed);

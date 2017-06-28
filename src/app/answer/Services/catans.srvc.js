@@ -42,6 +42,8 @@
             var url5 = baseURI + '?offset=' + 5 * 1000;
             var url6 = baseURI + '?offset=' + 6 * 1000;
             var url7 = baseURI + '?offset=' + 7 * 1000;
+            var url8 = baseURI + '?offset=' + 8 * 1000;
+            var url9 = baseURI + '?offset=' + 9 * 1000;
 
             var p0 = $http.get(url0);
             var p1 = $http.get(url1);
@@ -51,10 +53,12 @@
             var p5 = $http.get(url5);
             var p6 = $http.get(url6);
             var p7 = $http.get(url7);
+            var p8 = $http.get(url8);
+            var p9 = $http.get(url9);
 
-            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7]).then(function (d){
+            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9]).then(function (d){
                 _allcatans = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource, d[4].data.resource,
-                d[5].data.resource, d[6].data.resource, d[7].data.resource);
+                d[5].data.resource, d[6].data.resource, d[7].data.resource, d[8].data.resource, d[9].data.resource);
                 if ($rootScope.DEBUG_MODE) console.log("No. Cat-Ans: ", _allcatans.length);
                 return _allcatans;            
             }, _queryFailed);  
@@ -154,7 +158,6 @@
                 //update local copies
                 var id = result.data.resource[0].id; 
                 _allcatans[_allcatans.length-1].id = id;
-
                 //Create user activity feed
                 uaf.post('addedAnswer',['answer','category'],[answer, category]); //user activity feed
                 
