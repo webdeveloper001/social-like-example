@@ -5,6 +5,8 @@
      {"name":"name","isrequired":true,"onlybyowner":false,"label":"Name of Place"},
 	   {"name":"location","isrequired":false,"onlybyowner":false,"label":"Location"},
 	   {"name":"cityarea","isrequired":false,"onlybyowner":false,"label":"Neighborhood"},
+     {"name":"website","isrequired":false,"onlybyowner":false,"label":"Website"},
+     {"name":"phone","isrequired":false,"onlybyowner":false,"label":"Phone Number"},
      {"name":"addinfo","isrequired":false,"onlybyowner":false,"label":"Additional Info"}   
    ]   
  },
@@ -23,6 +25,7 @@
      {"name":"cityarea","isrequired":false,"onlybyowner":false,"label":"Neighborhood"},
      {"name":"location","isrequired":false,"onlybyowner":false,"label":"Location"},     
      {"name":"website","isrequired":false,"onlybyowner":false,"label":"Website"},
+     {"name":"phone","isrequired":false,"onlybyowner":false,"label":"Phone Number"},
 	   {"name":"addinfo","isrequired":false,"onlybyowner":false,"label":"Additional Info"}
    ]   
  },

@@ -94,7 +94,7 @@
             vm.isMobile = true;
         
         //TODO: Would like to add this abstract template, but dont know how                           
-        $rootScope.$on('$stateChangeStart',
+        var updateRecordsListener = $rootScope.$on('$stateChangeStart',
             function (ev, to, toParams, from, fromParams) {
                 if (from.name == 'answerDetail' && to.name != 'answerDetail') {
                     if (!recordsUpdated && $rootScope.isLoggedIn) updateRecords();
@@ -116,6 +116,7 @@
         $scope.$on('$destroy',refreshImagesListener);
         $scope.$on('$destroy',fileUploadedListener);
         $scope.$on('$destroy',answerDataLoadedListener);
+        $scope.$on('$destroy',updateRecordsListener);
     
         if ($rootScope.answerDetailLoaded) { vm.dataReady = true; activate(); }
         else vm.dataReady = false;
@@ -227,7 +228,7 @@
                 var eventObj = JSON.parse(vm.answer.eventstr);
                 //Object.assign(vm.answer, eventObj);
                 mergeObject(vm.answer, eventObj);
-                vm.ehtml = htmlops.eventHtml(vm.answer, vm.sm);
+                vm.ehtml = htmlops.eventHtml(vm.answer);
                 vm.estyle = 'background-color:' + vm.answer.bc + ';color:' + vm.answer.fc + ';' + 'white-space:pre;';
             }
 
@@ -783,7 +784,7 @@
                     datetime.formatdatetime($rootScope.specials[i]);
                     $rootScope.specials[i].name = vm.answer.name;
 
-                    var htmlmsg = htmlops.specialHtml($rootScope.specials[i], vm.sm);
+                    var htmlmsg = htmlops.specialHtml($rootScope.specials[i]);
                     $rootScope.specials[i].html = htmlmsg;
                     //Separate style (not working with ng-bind-html)
                     var spStyle = 'background-color:' + $rootScope.specials[i].bc + ';color:' + $rootScope.specials[i].fc + ';' +
