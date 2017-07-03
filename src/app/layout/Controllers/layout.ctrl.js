@@ -154,6 +154,7 @@
             $rootScope.initalHomeDataLoaded = true;
             loadingDone();
         });
+
         /*
         if ($window.innerWidth < 512) vm.logoimage = "../../../assets/images/rankxlogosd_sm.png";
         else vm.logoimage = "../../../assets/images/rankxlogosd.png";
@@ -162,6 +163,7 @@
             vm.logoimage = "/assets/images/rankxlogosd2_sm.png";
             $rootScope.sm = true;
             vm.sm = true;
+            $rootScope.DISPLAY_XSMALL = true;
         }
         else {
             vm.logoimage = "/assets/images/rankxlogosd2_sm.png";
@@ -169,9 +171,17 @@
             vm.sm = false;
         }
 
+        if (($window.innerWidth >= 512) && ($window.innerWidth < 768)) {
+            $rootScope.DISPLAY_SMALL = true;
+        }
+
         $rootScope.md = false;
-        if (($window.innerWidth > 768) && ($window.innerWidth < 991)) {
+        if (($window.innerWidth >= 768) && ($window.innerWidth < 991)) {
             $rootScope.md = true;
+            $rootScope.DISPLAY_MEDIUM = true;
+        }
+        if ($window.innerWidth > 991) {
+            $rootScope.DISPLAY_LARGE = true;
         }
 
         //TODO: Would like to add this abstract template, but dont know how
@@ -244,7 +254,7 @@
 
             $rootScope.districts = [
                 "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
-                "Marina", "Bankers Hill"];
+                "Marina", "Bankers Hill","Balboa Park"];
 
             vm.nhs = [];
             vm.nhs = vm.nhs.concat($rootScope.neighborhoods,$rootScope.districts);

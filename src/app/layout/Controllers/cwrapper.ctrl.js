@@ -15,8 +15,9 @@
         var vm = this;
         //-----SEO tags ----
         $scope.$parent.$parent.$parent.seo = { 
-            pageTitle : 'Home ', 
-            metaDescription: 'Home | Rank-X creates collective rankings on everything in your city.' 
+            pageTitle : '', 
+            metaDescription: 'Rank-X creates collective rankings on everything in your city. '+ 
+            'Find the best restaurants, services, activities, events, places, events and more.' 
         };
         
         //if ($location.absUrl().indexOf('code=')>-1) $window.location.search = '';

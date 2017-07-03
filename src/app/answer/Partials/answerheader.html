@@ -10,6 +10,9 @@
             </div>
             <div class="container" ng-attr-style="width:100%; height:{{mxheight-120}}px;background-color:#d8d8d8;padding-top:5px">
                 <!-- <br ng-if="!sm"> -->
+                <strong ng-if="answer.eventloc">Location:</strong>
+                <a ng-if="answer.eventloc" ng-click="gotoLocationAnswer()" target="_blank">{{answer.eventloc}}</a>
+                <br ng-if="answer.eventloc">
                 <strong ng-if="answer.location">Address:</strong>
                 <a ng-if="answer.location" href="http://maps.apple.com/maps?q={{answer.location}}" target="_blank">{{answer.location}}</a>
                 <br ng-if="answer.location">
@@ -95,8 +98,13 @@
 </div>
 
 <!-- Answer Info and Buttons - for SMALL DISPLAYS -->
-<div class="answer_info row" ng-if="!isShortPhrase&&!isEvent" style="padding:0px;margin:0px;border:0px;">
+<div class="answer_info row" ng-if="!isShortPhrase" style="padding:0px;margin:0px;border:0px;">
     <div class="container hidden-sm hidden-md hidden-lg hidden-xl">
+        
+        <br ng-if="answer.eventloc">
+        <strong ng-if="answer.eventloc">Location:</strong>
+        <a ng-if="answer.eventloc" ng-click="gotoLocationAnswer()" target="_blank">{{answer.eventloc}}</a>
+                
         <br ng-if="answer.location">
         <strong ng-if="answer.location">Address:</strong>
         <a ng-if="answer.location" href="http://maps.apple.com/maps?q={{answer.location}}" target="_blank">{{answer.location}}</a>

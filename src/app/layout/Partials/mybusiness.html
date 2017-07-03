@@ -302,11 +302,12 @@
 			</tr>
 		</tbody>
 	</table>
-	<p>You have a valid code to try the above subscriptions free for 60 days. You will not be charged
+	<p ng-if="vm.codeOk">You have a valid code to try the above subscriptions free for 60 days. You will not be charged
 		until the 60 day trial period expires. Afterwards your card will be charged <strong>${{vm.total}}</strong>
-		monthly. 
+		monthly. You can log in to cancel or make modifications to your account at any time.
 	</p>
-	<p>You can log in and cancel or make modifications to your account at any time.</p>
+	<p ng-if="!vm.codeOk">Your card will be charged <strong>${{vm.total}}</strong> monthly. You can log in to cancel or make modifications 
+	to your account at any time.</p>
 	<label class="checkbox-inline">
 		<input type="checkbox" ng-model="vm.acceptTOS" value="">I have read and understood the <a ng-click="vm.showTOSCustomersDlg()" target="_blank">Terms of Service</a></label>
 	<div class="text-center"> <!-- B -->
