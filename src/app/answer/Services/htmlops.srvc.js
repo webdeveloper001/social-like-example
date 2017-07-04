@@ -17,33 +17,19 @@
 
         return service;
 
-        function specialHtml(x, sm) {
+        function specialHtml(x) {
             var htmlmsg = '';
             var sch_str = '';
             if (x.freq == 'weekly') {
-                var days_str = 'Every: ' +
+                var days_str = strLimit('Every: ' +
                     (x.mon ? ' - Monday' : '') +
                     (x.tue ? ' - Tuesday' : '') +
                     (x.wed ? ' - Wednesday' : '') +
                     (x.thu ? ' - Thursday' : '') +
                     (x.fri ? ' - Friday' : '') +
                     (x.sat ? ' - Saturday' : '') +
-                    (x.sun ? ' - Sunday' : '');
+                    (x.sun ? ' - Sunday' : ''));
                 sch_str = days_str + '<br>From: ' + x.stime2 + ' to ' + x.etime2;
-
-                if (sm && days_str.length > 45) {
-
-                    var lp = 0;
-                    var newstr = '';
-                    for (var n = 0; n < sch_str.length; n++) {
-                        if (sch_str[n] == '-' && n < 45) lp = n;
-                        if (sch_str[n] == '-' && n > 45) {
-                            newstr = sch_str.substring(0, lp) + '<br>' + sch_str.substring(lp);
-                            break;
-                        }
-                    }
-                    sch_str = newstr;
-                }
             }
             if (x.freq == 'onetime') {
                 var sameday = (x.sdate == x.edate);
@@ -55,40 +41,35 @@
                 }
             }
 
-            var cc = 0; //char count
-            var newstr2 = '';
-            if (x.details == undefined) x.details = '';
-            if (sm && x.details.length > 45) {
-                for (var n = 0; n < x.details.length; n++) {
-                     if (cc > 42 && x.details[n] == ' ') {
-                        newstr2 = newstr2 + '<br>';
-                        cc = 0;
-                     }
-                        newstr2 = newstr2 + x.details[n];
-                        cc++;
-                }
-            }
-            else newstr2 = x.details;
+            var newstr = strLimit(x.details);
 
-            htmlmsg = '<div class="text-center">' + '<h3>' + x.stitle +
-            '</h3><p>' + sch_str + '</p><p>' + newstr2 + '</p></div>';
+            htmlmsg = '<div style="background-color:' + x.bc + ';color:' + x.fc + ';">' +
+            '<div class="text-center">' + '<h3>' + x.stitle +
+            '</h3><p>' + sch_str + '</p><p>' + newstr + '</p></div>'+
+            '</div>';
+
             return htmlmsg;
         }
         
-        function eventHtml(x, sm) {
+        function eventHtml(x) {
             var htmlmessage = '';
+            
+            var addinfomessage = '';
             var sch_str = '';
 
             if (x.freq == 'weekly') {
-                sch_str = 'Every: ' +
+                sch_str = x.sdate + ' to ' + x.edate + '<br>'+ 
+                strLimit('Every: ' +
                 (x.mon ? ' - Monday' : '') +
                 (x.tue ? ' - Tuesday' : '') +
                 (x.wed ? ' - Wednesday' : '') +
                 (x.thu ? ' - Thursday' : '') +
                 (x.fri ? ' - Friday' : '') +
                 (x.sat ? ' - Saturday' : '') +
-                (x.sun ? ' - Sunday' : '') +
-                '<br>From: ' + x.stime2 + ' to ' + x.etime2;
+                (x.sun ? ' - Sunday' : '')) +
+                '<br>' + (x.stime2 == undefined ? '' : 'From: ' + x.stime2 ) +  
+                 (x.etime2 == undefined ? '' : ' to ' +  x.etime2 );
+                
             }
             if (x.freq == 'onetime') {
                 var sameday = (x.sdate == x.edate);
@@ -96,36 +77,57 @@
                     sch_str = x.sdate + ' from ' + x.stime + ' to ' + x.etime;
                 }
                 else {
-                    sch_str = (x.edate == undefined ? '':'Starts: ') + x.sdate + ' at ' + x.stime +  
-                              (x.edate == undefined ? '':('<br>Ends: ' + x.edate + ' at ' + x.etime)); 
+                    sch_str = (x.edate == undefined ? '' : 'Starts: ') + x.sdate + 
+                    (x.stime == undefined ? '' : ' at ' + x.stime ) +
+                    (x.edate == undefined ? '' : '<br>Ends: ' + x.edate) + 
+                    (x.etime == undefined ? '' : ' at ' + x.etime );
                 }
             }
+         
+            addinfomessage = '<div style="background-color:' + x.bc + ';color:' + x.fc + ';">' +
+            /*'<p><strong>' + 
+            strLimit(x.name + (x.eventloc != undefined ? (' @ ' + x.eventloc) : '')) + 
+            '</strong></p>' +
+            '<p>' + (x.location != undefined ? (x.location + '<br>') : '') +
+            (x.cityarea != undefined ? ('in ' + x.cityarea) : '') + '</p>' +*/
+            '<p>' + sch_str + '</p>' +
+            (x.addinfo != undefined ? ('<p>' + strLimit(x.addinfo) + '</p>') : ('')) +
+            //(x.website != undefined ? ('<p>For more information visit: <br><a href="' + x.website + '">' + x.website + '</a></p>') : ('')) +
+            '</div>';
+                        
+            htmlmessage = addinfomessage;
             
+            return htmlmessage;
+            //return '<p>'+sch_str+'</p>';
+        }
+
+        //This function takes a string and add a '<br>' every so many characters
+        //This is so that the text do not overflow bigger than the screen size.
+
+        function strLimit(x){
+            var charlim = 0;
+            if ($rootScope.DISPLAY_XSMALL) charlim = 45;
+            if ($rootScope.DISPLAY_SMALL) charlim = 60;
+            if ($rootScope.DISPLAY_MEDIUM) charlim = 90;
+            if ($rootScope.DISPLAY_LARGE) charlim = 150;
+
             var cc = 0; //char count
             var newstr = '';
-            if (x.addinfo == undefined) x.addinfo = '';
-            if (sm && x.addinfo.length > 45) {
-                for (var n = 0; n < x.addinfo.length; n++) {
+            if (x == undefined) return '';
+            if (x.length > charlim) {
+                for (var n = 0; n < x.length; n++) {
 
-                    if (cc > 42 && x.addinfo[n] == ' ') {
+                    if (cc > (charlim-5) && x[n] == ' ') {
                         newstr = newstr + '<br>';
                         cc = 0;
                     }
-                    newstr = newstr + x.addinfo[n];
+                    newstr = newstr + x[n];
                     cc++;
                 }
             }
-            
+            else newstr = x;
 
-            htmlmessage = '<p><strong>' + x.name + '</strong></p>' + 
-            '<p><strong>' + (x.location != undefined ? (' @ ' + x.location):('')) + '</strong></p>' + 
-            (x.cityarea != undefined ? ('<p>in ' + x.cityarea+'</p>'):'') +
-            '<p>' + sch_str + '</p>' + 
-            (x.addinfo != undefined ? ('<p>' + newstr + '</p>'):(''))+
-            (x.website != undefined ? ('<p>For more information: <a href="' + x.website + '">'+ x.website +'</a></p>'):(''))+
-            '</div>';
-            
-            return htmlmessage;
+            return newstr;
         }
 
     }

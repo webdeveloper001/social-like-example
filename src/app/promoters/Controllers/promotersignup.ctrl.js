@@ -29,6 +29,8 @@
             vm.promoter.address = '';
             vm.promoter.code = '';
             vm.promoter.email = '';
+
+            vm.code = '';
             
             if ($rootScope.user) {
                 vm.promoter.firstname = $rootScope.user.first_name;
@@ -61,6 +63,7 @@
         }
         function checkInputData(){
             dataOk = true;
+            if ($rootScope.DEBUG_MODE) console.log("vm.promoter ", vm.promoter);
 
             if (vm.promoter.firstname.length < 1) {
                 dialog.getDialog('firstnameisinvalid');

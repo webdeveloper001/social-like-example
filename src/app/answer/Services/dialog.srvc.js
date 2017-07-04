@@ -6,9 +6,9 @@
         .factory('dialog', dialog);
 
     dialog.$inject = ['$q', '$rootScope', 'useraccnt', 'imagelist', 'answer', 'login',
-        '$window','$cookies', '$state', '$compile']
+        '$window','$cookies', '$state', '$compile','htmlops']
     function dialog($q, $rootScope, useraccnt, imagelist, answer, login,
-        $window, $cookies, $state, $compile) {
+        $window, $cookies, $state, $compile, htmlops) {
 
         var service = {
             editConfirm: editConfirm,
@@ -510,6 +510,9 @@
             title = 'Special Preview';
             btnCancelLabel = 'Back';
             btnOkLabel = 'Save Special';
+
+            var specialhtml = htmlops.specialHtml(x);
+            /*
             if (x.freq == 'weekly') {
                 sch_str = 'Every: ' +
                 (x.mon ? ' - Monday' : '') +
@@ -529,15 +532,14 @@
                 else {
                     sch_str = 'Starts: ' + x.sdate + ' at ' + x.stime + '<br>Ends: ' + x.edate + ' at ' + x.etime;
                 }
-            }
+            }*/
 
             message = 'This is how this special will look: </br></br>In the ranking summary:<br>' +
             '<table class="table table-hover cursor ">' +
             '<thead><tr><th>Rank</th><th>Name</th><th>Distance</th><th>Specials</th>' +
             '</tr></thead><tbody><tr><td>1</td><td>' + x.name + '</td><td>1.5</td>' +
             '<td style="background-color:' + x.bc + ';color:' + x.fc + ';">' + x.stitle + '<td></tr></tbody></table><br>' +
-            'Inside your business profile:<br><br><div style="background-color:' + x.bc + ';color:' + x.fc + ';">' +
-            '<p><strong>' + x.stitle + ' @ ' + x.name + '</strong></p><p>' + sch_str + '</p><p>' + x.details + '</p></div>' +
+            'Inside your business profile:<br>' + specialhtml +
             '</br>' +
             'With the following image:' +
             '<img src=' + x.image + ' class="thumbnail" style="width:70%; max-height:150px">';
@@ -893,98 +895,57 @@
             });
         }
 
-        function createEventPreview(event, callback) {
+        function createEventPreview(event, mode, callback) {
 
             var answerhtml = '';
-            var newline = '';
-            //var header = "table" + $rootScope.cCategory.id + ".header";
-            for (var i = 0; i < $rootScope.fields.length; i++) {
-                switch ($rootScope.fields[i].name) {
-                    case "name": {
-                        newline = '<strong class="capitalize">' + 'Name' + '</strong>: ' + event.name + '</br>';
-                        break;
-                    }
-                    case "location": {
-                        if (event.location) newline = '<strong class="capitalize">' + 'Location' + '</strong>: ' + event.location + '</br>';
-                        else newline = '<strong>' + 'Location' + '</strong>: ' + '' + '</br>';
-                        break;
-                    }
-                    case "cityarea": {
-                        newline = '<strong class="capitalize">' + 'City Area' + '</strong>: ' + event.cityarea + '</br>';
-                        break;
-                    }
-                    case "addinfo": {
-                        if (event.addinfo) newline = '<strong class="capitalize">' + 'Additional Info' + '</strong>: ' + event.addinfo + '</br>';
-                        else newline = '<strong>' + 'Additional Info' + '</strong>: ' + '' + '</br>';
-                        break;
-                    }
-                    case "website": {
-                        if (event.website) newline = '<strong class="capitalize">' + 'Website' + '</strong>: ' + event.website + '</br>';
-                        else newline = '<strong>' + 'Website' + '</strong>: ' + '' + '</br>';
-                        break;
-                    }
-                    case "date": {
-                        if (event.date) newline = '<strong class="capitalize">' + 'Date' + '</strong>: ' + event.sdate + '</br>';
-                        else newline = '<strong>' + 'Date' + '</strong>: ' + '' + '</br>';
-                        break;
-                    }
+            var newline = '<p style="text-align:left">';
+            
+              if (event.name)
+                    newline = newline + '<strong class="capitalize">' + 'Name' + '</strong>: ' + event.name + '</br>';       
+              if (event.eventloc) 
+                    newline = newline + '<strong class="capitalize">' + 'Venue' + '</strong>: ' + event.eventloc + '</br>';
+              if (event.location) 
+                    newline = newline + '<strong class="capitalize">' + 'Address' + '</strong>: ' + event.location + '</br>';
+              if (event.cityarea)
+                    newline = newline + '<strong class="capitalize">' + 'Neighborhood' + '</strong>: ' + event.cityarea + '</br>';
+              if (event.phone) 
+                    newline = newline + '<strong class="capitalize">' + 'Phone Number' + '</strong>: ' + event.phone + '</br>';
+              if (event.website) 
+                    newline = newline + '<strong class="capitalize">' + 'Website' + '</strong>: ' + event.website + '</br>';
+            
+            answerhtml = newline + '</p>';
 
-                }
-                answerhtml = answerhtml + newline;
-            }
-
-            var addinfomessage = '';
-            var sch_str = '';
-
-            if (event.freq == 'weekly') {
-                sch_str = 'Every: ' +
-                (event.mon ? ' - Monday' : '') +
-                (event.tue ? ' - Tuesday' : '') +
-                (event.wed ? ' - Wednesday' : '') +
-                (event.thu ? ' - Thursday' : '') +
-                (event.fri ? ' - Friday' : '') +
-                (event.sat ? ' - Saturday' : '') +
-                (event.sun ? ' - Sunday' : '') +
-                '<br>From: ' + event.stime2 + ' to ' + event.etime2;
-            }
-            if (event.freq == 'onetime') {
-                var sameday = (event.sdate == event.edate);
-                if (sameday) {
-                    sch_str = event.sdate + ' from ' + event.stime + ' to ' + event.etime;
-                }
-                else {
-                    sch_str = (event.edate == undefined ? '' : 'Starts: ') + event.sdate + ' at ' + event.stime +
-                    (event.edate == undefined ? '' : ('<br>Ends: ' + event.edate + ' at ' + event.etime));
-                }
-            }
-
-            addinfomessage = '<div style="background-color:' + event.bc + ';color:' + event.fc + ';">' +
-            '<p><strong>' + event.name +
-            (event.location != undefined ? (' @ ' + event.location) : ('')) + '</strong></p>' +
-            (event.cityarea != undefined ? ('<p>in ' + event.cityarea + '</p>') : '') +
-            '<p>' + sch_str + '</p>' +
-            (event.addinfo != undefined ? ('<p>' + event.addinfo + '</p>') : ('')) +
-            (event.website != undefined ? ('<p>For more information: <a href="' + event.website + '">' + event.website + '</a></p>') : ('')) +
-            '</div>';
-
-            showAddEvent(event, answerhtml, addinfomessage, event.imageurl, callback);
-            //console.log("headline ", categoryhtml)
-       
+            console.log("answerhtml - ", answerhtml);
+            
+            var addinfomessage = htmlops.eventHtml(event);
+            showAddEvent(event, answerhtml, addinfomessage, event.imageurl, mode, callback);
+            
         }
-        function showAddEvent(event, answerhtml, addinfomessage, imageurl, callback) {
+        function showAddEvent(event, answerhtml, addinfomessage, imageurl, mode, callback) {
 
             var title = '';
             var message = '';
             var btnCancelLabel = '';
             var btnOkLabel = '';
 
+            console.log("answerhtml - ", answerhtml);
+
+            if (mode == 'add') 
+                message = 'You want to add the following event to <strong>' + $rootScope.cCategory.title + '</strong>. </br><p></p>' +
+                    answerhtml + 
+                    addinfomessage + '</br>' +
+                    'With the following image:' +
+                    '<img src=' + imageurl + ' class="thumbnail" style="width:60%; max-height:150px">'; 
+            else if (mode == 'edit')
+                message = 'Please confirm the new information. </br><p></p>' +
+                    answerhtml +
+                    addinfomessage + '</br>' +
+                    'With the following image:' +
+                    '<img src=' + imageurl + ' class="thumbnail" style="width:60%; max-height:150px">';
+
             title = 'Please Confirm';
             btnCancelLabel = 'Cancel';
             btnOkLabel = 'Confirm';
-            message = 'You want to add the following event to <strong>' + $rootScope.cCategory.title + '</strong>. </br><p></p>' +
-            addinfomessage + '</br>' +
-            'With the following image:' +
-            '<img src=' + imageurl + ' class="thumbnail" style="width:60%; max-height:150px">';
 
             BootstrapDialog.confirm({
                 type: BootstrapDialog.TYPE_PRIMARY,
@@ -1006,34 +967,6 @@
             });
 
         }
-        /*
-        function askPermissionToLocate() {
-
-            var title = '';
-            var message = ''
-            var btnCancelLabel = 'No, I don\'t approve';
-            var btnOkLabel = 'Yes, locate me';
-
-            title = 'Please Confirm';
-            message = 'Is it ok if we locate your position?';
-            BootstrapDialog.confirm({
-                type: BootstrapDialog.TYPE_PRIMARY,
-                title: title,
-                message: message,
-                closable: true, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                btnCancelLabel: btnCancelLabel,
-                btnOKLabel: btnOkLabel,
-                btnOKClass: 'btn-success',
-                btnCancelClass: 'btn-warning',
-                btnCancelAction: function (dialogRef) {
-                    dialogRef.close();
-                },
-                 callback: function (result) {
-                    if (result) $rootScope.$emit('getLocation');                                     
-                }                          
-              });
-        }*/
 
         function askPermissionToLocate() {
 

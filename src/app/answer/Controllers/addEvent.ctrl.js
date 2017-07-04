@@ -6,24 +6,25 @@
         .controller('addEvent', addEvent);
 
     addEvent.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 'datetime',
-     'image', 'catans', 'getgps', '$timeout','getwiki','$window'];
+     'image', 'catans', 'getgps', '$timeout','getwiki','$window','$scope'];
 
     function addEvent(dialog, $state, answer, $rootScope, $modal, datetime,
-    image, catans, getgps, $timeout, getwiki, $window) {
+    image, catans, getgps, $timeout, getwiki, $window, $scope) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'addEvent';
-        vm.header = "table" + $rootScope.cCategory.id + ".header";
-        vm.body = 'table' + $rootScope.cCategory.id + '.body';
+        //vm.header = "table" + $rootScope.cCategory.id + ".header";
+        //vm.body = 'table' + $rootScope.cCategory.id + '.body';
         vm.searchDisabled = 'disabled';
         vm.modalEnable = true;
         vm.publicfields = [];
-        vm.ranking = $rootScope.cCategory.title;
+        //vm.ranking = $rootScope.cCategory.title;
         var publicfield_obj = {};
         var loadImageDataOk = false;
         var addEventDataOk = false;
         var addEventExec = false;
         var events = $rootScope.events;
+        var nhChanged = false;
         
         //load public fields
         var fieldreq = [];
@@ -46,9 +47,11 @@
         var inCity = false;
         var eqRankIdx = 0;
         var eqFound = false;
+        var inputLengthMem = 0; //inputLength in Memory
+        var maybeLocations = [];
         
         // Members
-        var myAnswer = {};
+        //var myAnswer = {};
         
         // Methods
         vm.calladdEvent = calladdEvent;
@@ -63,6 +66,7 @@
         vm.frequencySel = frequencySel;
         vm.showPreview = showPreview;
         vm.deleteSpecial = deleteSpecial;
+        vm.onSelect = onSelect;
         vm.goBack = goBack;
         
         vm.imageURL = $rootScope.EMPTY_IMAGE;
@@ -77,13 +81,23 @@
         activate();
 
         function activate() {
-            loadPublicFields();
-            determineScope();
+
+            //Concatenate Establishments and Places to show venue options
+            vm.locations = $rootScope.estNames.concat($rootScope.plaNames);
+
+            //Load neighborhoods
+            vm.neighborhoods = $rootScope.neighborhoods.concat($rootScope.districts);
+            
             //$rootScope.eventmode = 'add';
              if ($rootScope.eventmode == 'edit') {
                 
                 //Copy object without reference
                 vm.ev = JSON.parse(JSON.stringify($rootScope.canswer));
+                
+                //Check if this event is bind to user
+                if (vm.ev.owner != 0 && vm.ev.owner != undefined) vm.bind = true;
+                else vm.bind = false;
+                
                 datetime.formatdatetime(vm.ev);
                 
                 vm.isEdit = true;
@@ -91,21 +105,22 @@
                 if (vm.ev.freq == 'weekly') frequencySel(2);
                 //vm.ev.bc = vm.sp.bc;
                 //vm.ev.fc = vm.sp.fc;
-                console.log("vm.ev --- ", vm.ev);
+                if ($rootScope.DEBUG_MODE) console.log("vm.ev --- ", vm.ev);
                 vm.imageURL = vm.ev.imageurl;
 
             }
 
             if ($rootScope.eventmode == 'add') {
 
+                determineScope();
                 vm.char = 45;
                 vm.ev.fc = "hsl(0, 100%, 0%)"; //black
                 vm.ev.bc = "hsl(0, 0%, 100%)"; //white
+                vm.ev.eventlocid = -1;
                 frequencySel(1);
             }
 
-            createTimeDropdown();
-            
+            createTimeDropdown();            
             console.log("Add Event Activated!");
 
         }
@@ -124,63 +139,6 @@
                 }
             }
         }
-
-        function loadPublicFields() {
-            vm.emptyarray = [];
-            
-            vm.neighborhoods = $rootScope.neighborhoods.concat($rootScope.districts);
-
-            vm.fields = $rootScope.fields;
-            vm.type = $rootScope.cCategory.type;
-                       
-            //Add extra info
-            vm.fields.opts = [];
-            vm.fields.val = [];
-            vm.fields.textstyle = [];
-
-            for (var i = 0; i < vm.fields.length; i++) {
-                vm.fields[i].val = '';
-                
-                //Typeahead for neighborhoods
-                if (vm.fields[i].name == "cityarea") vm.fields[i].opts = "c for c in vm.neighborhoods";
-                else vm.fields[i].opts = "c for c in vm.emptyarray";
-                
-                //When neighborhood is implied put it in the input field right away
-                if (vm.fields[i].name == "cityarea" && $rootScope.cCategory.type == 'Establishment' && $rootScope.NhImplied == true) {
-                    vm.fields[i].val = $rootScope.NhValue;
-                }
-
-                if (vm.fields[i].name == "addinfo") vm.fields[i].textstyle = "textarea";
-                else vm.fields[i].textstyle = "text";
-                
-                //console.log("name, opts -- ", vm.fields[i].name, vm.fields[i].opts);
-            }
-
-        }
-
-        /*
-        function addEvent() {
-
-            if (!addEventExec) {
-                myEvent.imageurl = vm.imageURL;
-                
-                myEvent.upV = 0;
-                myEvent.downV = 0;
-                myEvent.type = vm.type;
-                myEvent.userid = $rootScope.user.id;
-                myEvent.views = 0;
-
-                dialog.addEvent(myEvent, vm.imageURL, addEventConfirmed);
-
-                addEventExec = true;
-                
-                //This is to prevent double pulses and have two answers get submitted by hardware glitch
-                $timeout(function () {
-                    addEventExec = false;
-                }, 1000)
-            }
-        }
-        */
         
         function loadFormData() {
             //initialize form
@@ -191,9 +149,8 @@
                     myEvent.addinfo = vm.ev.addinfo;
                     myEvent.cityarea = vm.ev.cityarea;
                     myEvent.website = vm.ev.website;
-
-              //  }
-            //}
+                    myEvent.eventloc = vm.ev.eventloc;
+                    
         }
 
         function validateData() {
@@ -329,6 +286,10 @@
             ansObj.addinfo = myEvent.addinfo;
             ansObj.cityarea = myEvent.cityarea;
             ansObj.location = myEvent.location;
+            ansObj.eventloc = myEvent.eventloc;
+            ansObj.eventlocid = myEvent.eventlocid;
+            ansObj.lat = myEvent.lat;
+            ansObj.lng = myEvent.lng;
             ansObj.type = 'Event';
             ansObj.website = myEvent.website;
             ansObj.imageurl = myEvent.imageurl;
@@ -338,18 +299,19 @@
             ansObj.ig_image_urls = '';
             ansObj.slug = '';
             if(vm.bind) ansObj.owner = $rootScope.user.id;
+
+            console.log("ansObj - ", ansObj);
             
             eqRanks();
             if (eqFound && !inCity) answer.addAnswer2(ansObj, [$rootScope.cCategory.id, eqRankIdx]).then(rankSummary);
             else if (eqFound && inCity) answer.addAnswer2(ansObj, [eqRankIdx]).then(rankSummary);
             else answer.addAnswer(ansObj).then(rankSummary); 
             
-            //answer.addAnswer(ansObj).then(rankSummary); 
-            //console.log("adding myEvent", eventStr);
-            //console.log("adding answer", ansObj);
-        }
+         }
         
         function updateEventConfirmed(){
+
+            console.log("updateEventComfirmed");
             
             var eventObj = {};
             eventObj.bc = myEvent.bc;
@@ -370,23 +332,66 @@
             eventObj.sun = myEvent.sun;
             
             var eventstrNew = JSON.stringify(eventObj);
+            if(!vm.bind) vm.ev.owner = 0;
             
             var fields = [];
             var vals = []; 
             
             if($rootScope.canswer.name != vm.ev.name) {fields.push('name'); vals.push(vm.ev.name);}
             if($rootScope.canswer.addinfo != vm.ev.addinfo) {fields.push('addinfo'); vals.push(vm.ev.addinfo);}
-            if($rootScope.canswer.cityarea != vm.ev.cityarea) {fields.push('cityarea'); vals.push(vm.ev.cityarea);}
+            if($rootScope.canswer.cityarea != vm.ev.cityarea) {fields.push('cityarea'); vals.push(vm.ev.cityarea); nhChanged = true;}
             if($rootScope.canswer.location != vm.ev.location) {fields.push('location'); vals.push(vm.ev.location);}
             if($rootScope.canswer.website != vm.ev.website) {fields.push('website'); vals.push(vm.ev.website);}
-            if($rootScope.canswer.imageurl != vm.imageURL) {fields.push('imageurl'); vals.push(vm.imageURL);}
+            if($rootScope.canswer.phone != vm.ev.phone) {fields.push('phone'); vals.push(vm.ev.phone);}
+            if($rootScope.canswer.imageurl != vm.imageURL) {fields.push('image'); vals.push(vm.imageURL);}
             if($rootScope.canswer.eventstr != eventstrNew) {fields.push('eventstr'); vals.push(eventstrNew);}
             if($rootScope.canswer.owner != vm.ev.owner) {fields.push('owner'); vals.push(vm.ev.owner);}
+            if($rootScope.canswer.eventloc != vm.ev.eventloc) {fields.push('eventloc'); vals.push(vm.ev.eventloc);}
+            if($rootScope.canswer.eventlocid != vm.ev.eventlocid) {fields.push('eventlocid'); vals.push(vm.ev.eventlocid);}
+            if($rootScope.canswer.lat != vm.ev.lat) {fields.push('lat'); vals.push(vm.ev.lat);}
+            if($rootScope.canswer.lng != vm.ev.lng) {fields.push('lng'); vals.push(vm.ev.lng);}
             
-            console.log("fields - ", fields);
-            console.log("vals - ", vals);
+            if ($rootScope.DEBUG_MODE) console.log("fields - ", fields);
+            if ($rootScope.DEBUG_MODE) console.log("vals - ", vals);
+
+            if (nhChanged) updateCatans();
             
-            answer.updateAnswer(vm.ev.id, fields, vals);
+            answer.updateAnswer(vm.ev.id, fields, vals).then(function(){
+                $state.go('answerDetail',{index: vm.ev.id});
+            });
+        }
+
+        function updateCatans(){
+                //if change neighborhood, modify catans as well
+                //---Search catans with this answer
+                var cidx = 0;
+                var cObj = {};
+                var sTitle = ''; //searched title
+                var rec2change = []; //store id of catans to change
+                var change2cat = []; //store category to change to
+                
+                for (var i=0; i<$rootScope.catansrecs.length; i++){
+                    if ($rootScope.catansrecs[i].answer == vm.ev.id){
+                        cidx = $rootScope.content.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[i].category);
+                        cObj = $rootScope.content[cidx];
+                        //if category for catans includes old nh, see if category for new nh exists
+                        if (cObj.title.indexOf($rootScope.canswer.cityarea) > -1){
+                            sTitle = cObj.title.replace($rootScope.canswer.cityarea,vm.ev.cityarea);
+                            for (var k=0; k<$rootScope.content.length; k++){
+                                //if searched title is found, store catans rec and category
+                                if ($rootScope.content[k].title == sTitle){
+                                    //console.log($rootScope.content[k].title);
+                                    rec2change.push($rootScope.catansrecs[i].id);
+                                    change2cat.push($rootScope.content[k].id);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                for (var i=0; i<rec2change.length; i++){
+                    catans.updateRec(rec2change[i],['category'],[change2cat[i]]);
+                }
         }
         
         function showHowItWorksDialog() {
@@ -453,32 +458,14 @@
             myEvent.imageurl = vm.imageURL;
             myEvent.date = myEvent.sdate;
             
-            //myEvent.freq = (vm.onetime ? 'onetime' : 'weekly');
-            if ($rootScope.eventmode == 'add') dialog.createEventPreview(myEvent, addEventConfirmed);
-            else dialog.createEventPreview(myEvent, updateEventConfirmed);
-        }
-        
-         function addSpecial() {
-            if (vm.isEdit == false) {
-                if (vm.sp.freq == 'onetime'){
-                    myEvent.stime2 = null;
-                    myEvent.etime2 = null;
-                }
-                if (vm.sp.freq == 'weekly'){
-                    myEvent.stime = null; myEvent.sdate = null;
-                    myEvent.etime = null; myEvent.edate = null;
-                }
-                event.addSpecial(myEvent).then();
-                
-            }
-            else event.updateEvent(myEvent);
-            $state.go('specials');
+            if ($rootScope.eventmode == 'add') dialog.createEventPreview(myEvent, 'add', addEventConfirmed);
+            else dialog.createEventPreview(myEvent, 'edit', updateEventConfirmed);
         }
         
         function eqRanks() {
             var lookRank = '';
             if (inDowntown || inDistrict || inCity) {
-                if (inDowntown && myAnswer.cityarea != 'Downtown') {
+                if (inDowntown && myEvent.cityarea != 'Downtown') {
                     lookRank = $rootScope.cCategory.title.replace('Downtown', vm.ev.cityarea);
                     for (var n = 0; n < $rootScope.content.length; n++) {
                         if ($rootScope.content[n].title == lookRank) {
@@ -507,6 +494,48 @@
                 }
             }
         }
+
+        function onSelect(){
+            maybeLocations = [];
+            //only use for field name
+                if (Math.abs(vm.ev.eventloc.length - inputLengthMem)>2 && vm.ev.eventloc.length != 0){
+                    //an option was selected from the typeahead
+                    //search for this answer, if single result populate fields, if not
+                    //show dialog with options
+                    inputLengthMem = vm.ev.eventloc.length;        
+                    for (var i=0; i<$rootScope.answers.length; i++){
+                        if ($rootScope.answers[i].name == vm.ev.eventloc){
+                            maybeLocations.push($rootScope.answers[i]);
+                        }
+                    }
+                    //console.log("MaybeSameAnswers - ", maybeSameAnswers);
+                    if (maybeLocations.length == 1) {
+                        //checkAnswerExists(maybeLocations[0]);
+                        dialog.confirmSameAnswer(maybeLocations[0],locationSelected);
+                    }
+                    else if (maybeLocations.length > 1) dialog.confirmSameAnswerMultiple(maybeSameAnswers,locationSelected);                 
+                }                
+            inputLengthMem = vm.ev.eventloc.length;                       
+        }
+
+        function locationSelected(x){
+            var n = 0;
+            if (x != undefined) n = x;
+                console.log("n ", maybeLocations[n], n);
+                for (var i=0; i< $rootScope.answers.length; i++){
+                        if ($rootScope.answers[i].name == maybeLocations[n].name){
+                            vm.ev.location = $rootScope.answers[i].location;
+                            vm.ev.cityarea = $rootScope.answers[i].cityarea;
+                            vm.ev.eventloc = $rootScope.answers[i].name;
+                            vm.ev.eventlocid = $rootScope.answers[i].id;
+                            vm.ev.phone = $rootScope.answers[i].phone;
+                            vm.ev.website = $rootScope.answers[i].website;
+                            vm.ev.lat = $rootScope.answers[i].lat;
+                            vm.ev.lng = $rootScope.answers[i].lng;
+                            $scope.$apply();
+                        }
+                }
+        }
         
        function deleteSpecial() {
             event.deleteEvent(myEvent.id);
@@ -515,7 +544,7 @@
 
         function goBack() {
             //$state.go('specials');
-            $state.go("rankSummary", { index: $rootScope.cCategory.id });
+            $state.go("answerDetail", { index: $rootScope.canswer.id });
         }
 
         function createTimeDropdown() {

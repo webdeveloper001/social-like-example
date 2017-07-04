@@ -125,6 +125,35 @@
 
 </div>
 <div class="row" ng-if="vm.weekly" style="margin:0px;">
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div ng-attr-style="display:{{vm.weekly ? 'inline':'none'}}">
+            <p class="{{vm.sm ? 'text-left':'text-right'}}">Start date:</p>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div ng-attr-style="display:{{vm.weekly ? 'inline':'none'}}">
+            <datepicker date-format="EEE MMM d y" date-year-title="selected title------">
+                <input ng-model="vm.ev.sdate" type="text" />
+            </datepicker>
+        </div>
+    </div>
+</div>
+<div class="row" ng-if="vm.weekly" style="margin:0px;">
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div ng-attr-style="display:{{vm.weekly ? 'inline':'none'}}">
+            <p class="{{vm.sm ? 'text-left':'text-right'}}">End date:</p>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" ng-attr-style="display:{{vm.weekly ? 'inline':'none'}}">
+        <datepicker date-format="EEE MMM d y" date-year-title="selected title------">
+            <input ng-model="vm.ev.edate" type="text" />
+        </datepicker>
+    </div>
+</div>
+
+<div class="row" ng-if="vm.weekly" style="margin:0px;">
     <div class="text-center">
         <div class="col-xs-12 col-sm-12 col-md-12" ng-attr-style="display:{{vm.weekly ? 'inline':'none'}}">
 
@@ -179,18 +208,25 @@
 
 <div class="row" style="margin:0px;">
     <form class="form-horizontal col-xs-12 col-sm-12 col-md-6" role="form" name="answerForm">
+        <!-- <br ng-if="vm.nsm"> -->
+        <div class="form-group" style="padding:10px">
+            <label class="control-label">Venue / Location:</label>
+            <input class="form-control" ng-model="vm.ev.eventloc" bs-typeahead bs-options="c for c in vm.locations" 
+                type="text" placeholder="{{vm.ev.eventloc.str}}" ng-change="vm.onSelect()">
+        </div>
+        <!-- <br ng-if="vm.nsm"> -->
+        <div class="form-group" style="padding:10px">
+            <label class="control-label">Address:</label>
+            <input class="form-control" ng-model="vm.ev.location" type="text" placeholder="{{vm.ev.location}}">
+        </div>
+        <!-- <br ng-if="vm.nsm"> -->
         <div class="form-group" style="padding:10px">
             <label class="control-label">Neighborhood:</label>
             <input class="form-control" ng-model="vm.ev.cityarea" bs-typeahead bs-options="c for c in vm.neighborhoods" type="text" placeholder="{{vm.ev.cityarea}}">
         </div>
         <!-- <br ng-if="vm.nsm"> -->
         <div class="form-group" style="padding:10px">
-            <label class="control-label">Location:</label>
-            <input class="form-control" ng-model="vm.ev.location" type="text" placeholder="{{vm.ev.location}}">
-        </div>
-        <!-- <br ng-if="vm.nsm"> -->
-        <div class="form-group" style="padding:10px">
-            <label class="control-label">Website:</label>
+            <label class="control-label">Event Website:</label>
             <input class="form-control" ng-model="vm.ev.website" type="text" placeholder="{{vm.ev.website}}">
         </div>
         <!-- <br ng-if="vm.nsm"> -->

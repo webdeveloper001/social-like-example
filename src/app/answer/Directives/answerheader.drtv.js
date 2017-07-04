@@ -170,6 +170,11 @@ function (color, $window, $rootScope, $state, dialog) {
             }
         }
 
+        scope.gotoLocationAnswer = function(){
+            console.log("eventlocid - ", scope.answer.eventlocid);
+            $state.go('answerDetail',{index: scope.answer.eventlocid})
+        }
+
 
         },
     }

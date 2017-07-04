@@ -76,7 +76,10 @@
     </div>
 </div> -->
 <div class="text-left" ng-if="vm.isCustomRank">
-    <button class="btn btn-default" ng-click="vm.answerDetail(vm.rankOwner)" style="margin:5px">Return to {{vm.rankOwner.name}}</button>
+    <button class="btn btn-default" ng-click="vm.answerDetail(vm.rankOwner)" style="margin:5px; width:100%">Return to {{vm.rankOwner.name}}</button>
+</div>
+<div class="text-left" ng-if="vm.hasParent">
+    <button class="btn btn-default" ng-click="vm.gotoParentRank()" style="margin:5px; width:100%">{{vm.parentRank.title}}</button>
 </div>
 
 <div class="container">

@@ -43,7 +43,7 @@
         vm.DownVote = DownVote;
         vm.sortbyHelpDialog = sortbyHelpDialog;
         
-        
+        vm.gotoParentRank = gotoParentRank;
         
         vm.selOverall = 'active';
         vm.selPersonal = '';
@@ -584,6 +584,17 @@
                     }
                 }
             }
+
+            //Load parent is rank is atomic for better navigation
+            if ($rootScope.cCategory.isatomic && $rootScope.NhImplied){
+                var ss = $rootScope.cCategory.title.replace($rootScope.NhValue,'San Diego');
+                for (var n=0; n<$rootScope.content.length; n++){
+                    if ($rootScope.content[n].title == ss){
+                        vm.hasParent = true;
+                        vm.parentRank = $rootScope.content[n];
+                    }
+                }
+            }
             
             //Load current answers
             $rootScope.answers = answers;
@@ -742,7 +753,7 @@
                                             //if (eventObj.edate != undefined && eventObj.edate != '') obj.date = answers[k].edate.slice(4);
                                             //else obj.date = answers[k].sdate.slice(4);
                                             eventIsCurrent = datetime.eventIsCurrent(obj, answers[k]);
-
+                                            
                                             if (eventIsCurrent) {
                                                 $rootScope.canswers.push(obj);
                                                 $rootScope.ccatans.push(catansrecs[i]);
@@ -1089,6 +1100,10 @@
 
         function whyNoDistance() {
             dialog.getLocation(callGetLocation);
+        }
+
+        function gotoParentRank(){
+            $state.go('rankSummary',{index: vm.parentRank.id});
         }
 
         function callGetLocation() {

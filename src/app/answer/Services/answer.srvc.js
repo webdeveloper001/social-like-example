@@ -44,6 +44,7 @@
             var url4 = baseURI + '?offset=' + 4 * 1000;
             var url5 = baseURI + '?offset=' + 5 * 1000;
             var url6 = baseURI + '?offset=' + 6 * 1000;
+            var url7 = baseURI + '?offset=' + 7 * 1000;
 
 
             var p0 = $http.get(url0);
@@ -53,10 +54,11 @@
             var p4 = $http.get(url4);
             var p5 = $http.get(url5);
             var p6 = $http.get(url6);
+            var p7 = $http.get(url7);
 
-            return $q.all([p0, p1, p2, p3, p4, p5, p6]).then(function (d){
+            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7]).then(function (d){
                 _answers = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource, 
-                d[4].data.resource, d[5].data.resource, d[6].data.resource);
+                d[4].data.resource, d[5].data.resource, d[6].data.resource, d[7].data.resource);
                 if ($rootScope.DEBUG_MODE) console.log("No. Answers: ", _answers.length);
                 return _answers;            
             }, _queryFailed);  
@@ -240,6 +242,8 @@
                     case "ig_image_urls": data.ig_image_urls = val[i]; break;
                     case "slug": data.slug = val[i]; break;
                     case "type": data.type = val[i]; break;
+                    case "eventloc": data.eventloc = val[i]; break;
+                    case "eventlocid": data.eventlocid = val[i]; break;
                 }
             }
             //console.log("data", data);
@@ -274,6 +278,8 @@
                     case "ranksqty": $rootScope.answers[idx].ranksqty = val[i]; break;
                     case "slug": $rootScope.answers[idx].slug = val[i]; break;
                     case "type": $rootScope.answers[idx].type = val[i]; break;
+                    case "eventloc": $rootScope.answers[idx].eventloc = val[i]; break;
+                    case "eventlocid": $rootScope.answers[idx].eventlocid = val[i]; break;
                 }
             }                        
             

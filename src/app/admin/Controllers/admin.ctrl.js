@@ -317,10 +317,10 @@
         
                     /*//  3.Use this to correct the title of a group of ranks
                     for (var i=0; i < $rootScope.content.length; i++){
-                        if ($rootScope.content[i].title.includes("Fine dining ")) {
-                            var titlex = $rootScope.content[i].title.replace("Fine dining restaurants in  ","Fine dining restaurants in ");
+                        if ($rootScope.content[i].title.includes("Hookah lounges")) {
+                            var titlex = $rootScope.content[i].title.replace("Hookah lounges","Hookah Lounges");
                             //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
-                            //console.log("titlex ", titlex);
+                            console.log("titlex ", titlex);
                             table.update($rootScope.content[i].id, ['title'],[titlex]);
                         }
                     } 
