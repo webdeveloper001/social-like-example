@@ -26,12 +26,16 @@
         vm.maxRes3 = 5; vm.btext3 = 'See more';
         vm.maxRes4 = 5; vm.btext4 = 'See more';
         vm.maxRes5 = 5; vm.btext5 = 'See more';
+        vm.maxRes6 = 5; vm.btext6 = 'See more';
+        vm.maxRes7 = 5; vm.btext7 = 'See more';
 
         vm.cb1gt5 = false;
         vm.cb2gt5 = false;
         vm.cb3gt5 = false;
         vm.cb4gt5 = false;
         vm.cb5gt5 = false;
+        vm.cb6gt5 = false;
+        vm.cb7gt5 = false;
 
         activate();
 
@@ -91,6 +95,25 @@
                     break;
                 }
             }
+
+            for (var i = 0; i < $rootScope.headlines.length; i++) {
+                if ($rootScope.headlines[i].type == 'social') {
+                    vm.bgc6 = $rootScope.headlines[i].bc;
+                    vm.fc6 = $rootScope.headlines[i].fc;
+                    vm.headline6 = 'My ' + $rootScope.headlines[i].title;
+                    break;
+                }
+            }
+
+
+            for (var i = 0; i < $rootScope.headlines.length; i++) {
+                if ($rootScope.headlines[i].type == 'family') {
+                    vm.bgc7 = $rootScope.headlines[i].bc;
+                    vm.fc7 = $rootScope.headlines[i].fc;
+                    vm.headline7 = 'My ' + $rootScope.headlines[i].title;
+                    break;
+                }
+            }
         }
 
         function loadData() {
@@ -102,6 +125,8 @@
             vm.myservicesans = [];
             vm.myhealthans = [];
             vm.mybeautyans = [];
+            vm.mysocialans = [];
+            vm.myfamilyans = [];
 
             var tmap = [];
 
@@ -160,6 +185,24 @@
                                         vm.mybeautyans.push(answer);
                                     }
                                 }
+
+
+                                if (category.title.indexOf('social') > -1 || category.tags.indexOf('social') > -1) {
+                                    tmap = vm.mysocialans.map(function (x) { return x.id; });
+                                    if (tmap.indexOf(answer.id) < 0) {
+                                        getSpecials(answer);
+                                        vm.mysocialans.push(answer);
+                                    }
+                                }
+
+
+                                if (category.title.indexOf('family') > -1 || category.tags.indexOf('family') > -1) {
+                                    tmap = vm.myfamilyans.map(function (x) { return x.id; });
+                                    if (tmap.indexOf(answer.id) < 0) {
+                                        getSpecials(answer);
+                                        vm.myfamilyans.push(answer);
+                                    }
+                                }
                             }
                         }
 
@@ -172,6 +215,8 @@
             if (vm.myservicesans.length > 5) vm.cb3gt5 = true;
             if (vm.myhealthans.length > 5) vm.cb4gt5 = true;
             if (vm.mybeautyans.length > 5) vm.cb5gt5 = true;
+            if (vm.mysocialans.length > 5) vm.cb6gt5 = true;
+            if (vm.myfamilyans.length > 5) vm.cb7gt5 = true;
 
             if (vm.myfoodans.length > 0) vm.answerExist1 = true;
             else vm.answerExist1 = false;
@@ -187,9 +232,15 @@
 
             if (vm.mybeautyans.length > 0) vm.answerExist5 = true;
             else vm.answerExist5 = false;
+
+            if (vm.mysocialans.length > 0) vm.answerExist6 = true;
+            else vm.answerExist6 = false;
+
+            if (vm.myfamilyans.length > 0) vm.answerExist7 = true;
+            else vm.answerExist7 = false;
             
             if (vm.myfoodans.length == 0 && vm.myservicesans.length == 0 && vm.mylifestyleans.length == 0 &&
-            vm.myhealthans.length == 0 && vm.mybeautyans.length == 0){
+            vm.myhealthans.length == 0 && vm.mybeautyans.length == 0 && vm.mysocialans.length == 0 && vm.myfamilyans.length == 0){
                 vm.noAns = true;
             }
 
@@ -232,6 +283,10 @@
                           $rootScope.myfavs.title = 'My Health';  break; }
                 case 5: { $rootScope.canswers = vm.mybeautyans; 
                           $rootScope.myfavs.title = 'My Beauty';  break; }
+                case 6: { $rootScope.canswers = vm.mysocialans; 
+                          $rootScope.myfavs.title = 'My Social';  break; }
+                case 7: { $rootScope.canswers = vm.myfamilyans; 
+                          $rootScope.myfavs.title = 'My Family';  break; }
             }
             $state.go("answerDetail", { index: x.id });
         }
@@ -256,6 +311,14 @@
             if (x == 5) {
                 if (vm.maxRes5 == 5) { vm.btext5 = 'See less'; vm.maxRes5 = 100; }
                 else { vm.btext5 = 'See more'; vm.maxRes5 = 5; }
+            }
+            if (x == 6) {
+                if (vm.maxRes6 == 5) { vm.btext6 = 'See less'; vm.maxRes6 = 100; }
+                else { vm.btext6 = 'See more'; vm.maxRes6 = 5; }
+            }
+            if (x == 7) {
+                if (vm.maxRes7 == 5) { vm.btext7 = 'See less'; vm.maxRes7 = 100; }
+                else { vm.btext7 = 'See more'; vm.maxRes7 = 5; }
             }
         }
 

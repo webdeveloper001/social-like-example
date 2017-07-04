@@ -7,17 +7,17 @@
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope'
-        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', '$location', '$q', 'fbusers'];
+        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', '$location', '$q', 'fbusers', 'useractivity'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime, color
         , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope
-        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, $location, $q, fbusers) {
+        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, $location, $q, fbusers, useractivity) {
         /* jshint validthis:true */
 
         var vm = this;
         vm.title = 'rankSummary';
         vm.addAnswerDisabled = '';
-        
+        vm.mode = "specials";
         //if ($location.absUrl().indexOf('code=')>-1)$window.location.search = '';
         
         // Methods
@@ -33,10 +33,17 @@
         vm.sortByDistance = sortByDistance;
         vm.sortByUpV = sortByUpV;
         vm.sortByDate = sortByDate;
+        vm.sortByTrending = sortByTrending;
         vm.loadComments = loadComments;
         vm.postComment = postComment;
         vm.cmFlag = cmFlag;
         vm.share = share;
+        vm.changeMode =  changeMode;
+        vm.UpVote = UpVote;
+        vm.DownVote = DownVote;
+        vm.sortbyHelpDialog = sortbyHelpDialog;
+        
+        
         
         vm.selOverall = 'active';
         vm.selPersonal = '';
@@ -49,11 +56,11 @@
         vm.user = $rootScope.user;
         //var myParent = $rootScope.parentNum;
 
-        var votetable = [];
-        var editvotetable = [];
-        $rootScope.cvotes = [];
-        $rootScope.ceditvotes = [];
-        $rootScope.cmrecs_user = [];
+        // var votetable = [];
+        // var editvotetable = [];
+        // $rootScope.cvotes = [];
+        // $rootScope.ceditvotes = [];
+        // $rootScope.cmrecs_user = [];
         
         //For readability
         var answers = [];
@@ -98,7 +105,15 @@
 
         $scope.$on('$destroy',updateVoteTableListener);
         $scope.$on('$destroy',rankDataLoadedListener);
-        
+                               
+        // $rootScope.$on('$stateChangeStart',
+        //     function (ev, to, toParams, from, fromParams) {
+        //         if (from.name == 'rankSummary' && to.name != 'rankSummary') {
+        //             if ($rootScope.isLoggedIn) updateRecords();
+        //         }
+        //     });
+
+
         vm.isMobile = false; 
         // device detection
         if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) 
@@ -138,7 +153,16 @@
             $rootScope.objNumAct = $rootScope.objNum;
 
             loadData(); //load data and write to $rootScope
+            var answerIDs = vm.answers.map(function(answer){return answer.id;});
 
+            votes.loadLastMonthVoting(answerIDs)
+            .then(function(resp){
+                resp.forEach(function(vote){
+                    var idx = answerIDs.indexOf(vote.answer);
+                    vm.answers[idx].trendUpV ++;
+                });
+                console.log(vm.answers);
+            });
             checkUserCredentials();
 
             //-----SEO tags ----
@@ -152,6 +176,12 @@
             else vm.noAnswers = false;
 
             getUserData(); //if user is logged in, get user data (vote record, etc)
+
+            if ($rootScope.cvotes) getAnswerVotes();
+            else {
+                $rootScope.cvotes = [];
+                $rootScope.ceditvotes = [];
+            }
             createAnswerStatus(); //enables/disables 'Create Answer' button
             
             //Sort first by upV, then execute ranking algorithm
@@ -630,6 +660,18 @@
                                     obj.catansrank = catansrecs[i].rank;
                                     obj.upV = catansrecs[i].upV;
 
+                                    obj.upV = catansrecs[i].upV;
+                                    obj.downV = catansrecs[i].downV;
+                                    obj.catans = catansrecs[i].id;
+                                    obj.rank = catansrecs[i].rank;
+                                    obj.uservote = {};
+                                    obj.upVi = catansrecs[i].upV;
+                                    obj.downVi = catansrecs[i].downV;
+
+                                    obj.trendUpV = 0;
+
+                                    displayVote(obj);
+
                                     if (vm.type == 'Event') {
 
                                         eventObj = JSON.parse(answers[k].eventstr);
@@ -679,6 +721,16 @@
                                         obj.catansrank = catansrecs[i].rank;
                                         obj.upV = catansrecs[i].upV;
 
+                                        obj.upV = catansrecs[i].upV;
+                                        obj.downV = catansrecs[i].downV;
+                                        obj.catans = catansrecs[i].id;
+                                        obj.rank = catansrecs[i].rank;
+                                        obj.uservote = {};
+                                        obj.upVi = catansrecs[i].upV;
+                                        obj.downVi = catansrecs[i].downV;
+
+                                        displayVote(obj);
+
                                         if (vm.type == 'Event') {
 
                                             eventObj = JSON.parse(answers[k].eventstr);
@@ -710,6 +762,7 @@
                                             $rootScope.B.push(catansrecs[i].id);
                                             break;
                                         }
+
                                     }
                                 }
                             }
@@ -897,6 +950,7 @@
             vm.selDistance = '';
             vm.selUpV = '';
             vm.selDate = '';
+            vm.selTrending = '';
 
             vm.showR = true || (!vm.sm);
         }
@@ -915,6 +969,7 @@
                 vm.selDistance = 'active';
                 vm.selUpV = '';
                 vm.selDate = '';
+                vm.selTrending = '';
 
                 if (foodNearMe) vm.answers = vm.answers.slice(0, 99);
             }
@@ -938,6 +993,33 @@
             vm.selDistance = '';
             vm.selUpV = 'active';
             vm.selDate = '';
+            vm.selTrending = '';
+
+            if (!foodNearMe && !vm.isE) vm.showR = false || (!vm.sm);
+
+        }
+
+
+        function sortByTrending() {
+            function compare(a, b) {
+                
+                if((a.trendUpV == 0) && (b.trendUpV == 0))
+                    return b.upV - a.upV;
+                else
+                    return b.trendUpV - a.trendUpV;
+
+            }
+            
+            vm.answers = vm.answers.sort(compare);
+            getDisplayImages();
+
+            $rootScope.canswers = vm.answers;
+            //vm.answers = $filter('orderBy')(vm.answers, 'dist');
+            vm.selRank = '';
+            vm.selDistance = '';
+            vm.selUpV = '';
+            vm.selDate = '';
+            vm.selTrending = 'active';
 
             if (!foodNearMe && !vm.isE) vm.showR = false || (!vm.sm);
 
@@ -961,6 +1043,7 @@
             vm.selDistance = '';
             vm.selUpV = '';
             vm.selDate = 'active';
+            vm.selTrending = '';
 
             //if (!vm.isE) vm.showR = false || (!vm.sm);
         }
@@ -1192,5 +1275,189 @@
                     // }
                 } 
             }
+        function changeMode(mode){
+            vm.mode = mode;
+        }
+
+        function displayVote(x) {
+
+            if (x.dV == 1) {
+                x.thumbUp = "#0070c0";//"thumbs_up_blue.png";//
+                x.thumbDn = "#bfbfbf";//"thumbs_down_gray.png";
+            }
+
+            if (x.dV == 0) {
+                x.thumbUp = "#bfbfbf";//"thumbs_up_gray.png";
+                x.thumbDn = "#bfbfbf";//"thumbs_down_gray.png";
+            }
+            if (x.dV == -1) {
+                x.thumbUp = "#bfbfbf";//"thumbs_up_gray.png";
+                x.thumbDn = "#0070c0";//"thumbs_down_blue.png";
+            }
+        }
+        
+        function UpVote(x, event) {
+            if ($rootScope.isLoggedIn) {
+
+                switch (x.dV) {
+                    case -1: { x.dV = 1; x.upV++; x.downV--; break; }
+                    case 0: { x.dV = 1; x.upV++; break; }
+                    case 1: { x.dV = 0; x.upV--; break; }
+                }
+
+                displayVote(x);
+                if ($rootScope.DEBUG_MODE) console.log("UpVote");
+            }
+            else {
+                dialog.loginFacebook();
+                //dialog.getDialog('notLoggedIn');
+                return;
+            }
+        }
+        
+        function DownVote(x,event) {
+            if ($rootScope.isLoggedIn) {
+                switch (x.dV) {
+                    case -1: { x.dV = 0; x.downV--; break; }
+                    case 0: { x.dV = -1; x.downV++; break; }
+                    case 1: { x.dV = -1; x.upV--; x.downV++; break; }
+                }
+
+                displayVote(x);
+                if ($rootScope.DEBUG_MODE) console.log("DownVote");
+            }
+            else {
+                dialog.loginFacebook();
+                //dialog.getDialog('notLoggedIn');
+                return;
+            }
+
+        }
+
+
+        function getAnswerVotes() {
+            //look for user vote for this catans
+            for (var i = 0; i < vm.answers.length; i++) {
+                vm.answers[i].voteRecordExists = false;
+                
+                for (var j = 0; j < $rootScope.cvotes.length; j++) {
+                    if ($rootScope.cvotes[j].catans == vm.answers[i].catans) {
+                        vm.answers[i].uservote = $rootScope.cvotes[j];
+                        vm.answers[i].uservote.ansvidx = i;
+                        //ansvidx = i;
+                        vm.answers[i].voteRecordExists = true;
+                        break;
+                    }
+
+                }
+                if (vm.answers[i].voteRecordExists) {
+                    vm.answers[i].dV = vm.answers[i].uservote.vote;
+                    //catansid = uservote.catans;
+                }
+                else {
+                    vm.answers[i].dV = 0;
+                    //catansid = x;
+                }
+                displayVote(vm.answers[i]);
+            }
+
+        }
+
+        //Update Records
+        function updateRecords() {
+            
+            //update vote record if necessary
+            if ($rootScope.DEBUG_MODE) console.log("UpdateRecords @answerDetail");
+            
+            //TODO Need to pass table id
+            for (var i = 0; i < vm.answers.length; i++) {
+
+                var voteRecordExists = vm.answers[i].voteRecordExists;
+                var userHasRank = false;
+                var useractivityrec = {};
+                //console.log("$rootScope.thisuseractivity - ", $rootScope.thisuseractivity);
+                try {
+                    var idx = $rootScope.thisuseractivity.map(function (x) { return x.category; }).indexOf($rootScope.cCategory.id);
+                }
+                catch (err) {
+                    console.log("Error: ", err);
+                    console.log("$rootScope.thisuseractivity - ", $rootScope.thisuseractivity);
+                    var idx = -1;                    
+                }
+                if (idx >= 0) {
+                    userHasRank = true;
+                    useractivityrec = $rootScope.thisuseractivity[idx];
+                }
+                else userHasRank = false;  
+                //if vote is changed to non-zero
+                if (voteRecordExists && vm.answers[i].uservote.vote != vm.answers[i].dV && vm.answers[i].dV != 0) {
+                    //update vote
+                    if ($rootScope.DEBUG_MODE) console.log("UR-1");
+                    votes.patchRec(vm.answers[i].uservote.id, vm.answers[i].dV);
+                }
+                //if vote is changed to zero
+                if (voteRecordExists && vm.answers[i].uservote.vote != vm.answers[i].dV && vm.answers[i].dV == 0) {
+                    //Delete vote
+                    if ($rootScope.DEBUG_MODE) console.log("UR-2");
+                    votes.deleteRec(vm.answers[i].uservote.id);
+                    //Decrease vote counter from user activity. If counter is 1, also delete user activiy record (since there is no more votes
+                    //from this user)
+                    if (useractivityrec.votes < 2) {
+                        if ($rootScope.DEBUG_MODE) console.log("UR-3");
+                        useractivity.deleteRec(useractivityrec.id);
+                    }
+                    else {
+                        if ($rootScope.DEBUG_MODE) console.log("UR-4");
+                        useractivity.patchRec(useractivityrec.id, useractivityrec.votes - 1);
+                        //$rootScope.userActRec.votes--;
+                    }
+                }
+                if (!voteRecordExists && vm.answers[i].dV != 0) {
+                    //Post a new vote and create useractivity record
+                    if ($rootScope.DEBUG_MODE) console.log("UR-5");
+                    votes.postRec(vm.answers[i].catans, vm.answers[i].id, $rootScope.cCategory.id, vm.answers[i].dV);
+                    if (userHasRank) {
+                        if ($rootScope.DEBUG_MODE) console.log("UR-6");
+                        useractivity.patchRec(useractivityrec.id, useractivityrec.votes + 1);
+                        //$rootScope.userActRec.votes++;
+                    }
+                    else {
+                        if ($rootScope.DEBUG_MODE) console.log("UR-7");
+                        useractivity.postRec($rootScope.cCategory.id);
+                        //$rootScope.thisuseractivity.push();
+                    }
+                }
+            
+                //update answer record (vote count) if necessary
+                //TODO Need to pass table id
+                if ((vm.answers[i].upV != vm.answers[i].upVi) || (vm.answers[i].downV != vm.answers[i].downVi)) {
+                    if ($rootScope.DEBUG_MODE) console.log("UR-8");
+                    catans.updateRec(vm.answers[i].catans, ["upV", "downV"], [vm.answers[i].upV, vm.answers[i].downV]);
+                }
+            }
+
+            if (vm.type == 'Establishment' || vm.type == 'PersonCust') {
+                for (var i = 0; i < vm.vrows.length; i++) {
+                    var voteRecExists = vm.vrows[i].voteExists;
+                    if (voteRecExists && vm.vrows[i].dVi != vm.vrows[i].dV) {
+                        if ($rootScope.DEBUG_MODE) console.log("UR-9");
+                        $rootScope.cvrowvotes[vm.vrows[i].vidx].val = vm.vrows[i].dV;
+                        vrowvotes.patchRec(vm.vrows[i].voteid, vm.vrows[i].dV);
+                    }
+                    if (!voteRecExists && vm.vrows[i].dV != 0) {
+                        if ($rootScope.DEBUG_MODE) console.log("UR-10");
+                        vrowvotes.postRec(vm.vrows[i].id, vm.vrows[i].dV);
+                    }
+
+                    if ((vm.vrows[i].upV != vm.vrows[i].upVi) || (vm.vrows[i].downV != vm.vrows[i].downVi)) {
+                        if ($rootScope.DEBUG_MODE) console.log("UR-11");
+                        vrows.updateRec(vm.vrows[i].id, ["upV", "downV"], [vm.vrows[i].upV, vm.vrows[i].downV]);
+                    }
+                }
+            }
+        }
+        function sortbyHelpDialog() {
+            dialog.sortbyHelpDialog();
+        }
     }
 })();

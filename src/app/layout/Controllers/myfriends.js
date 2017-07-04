@@ -33,12 +33,16 @@
         vm.maxRes3 = 5; vm.btext3 = 'See more';
         vm.maxRes4 = 5; vm.btext4 = 'See more';
         vm.maxRes5 = 5; vm.btext5 = 'See more';
+        vm.maxRes6 = 5; vm.btext6 = 'See more';
+        vm.maxRes7 = 5; vm.btext7 = 'See more';
 
         vm.cb1gt5 = false;
         vm.cb2gt5 = false;
         vm.cb3gt5 = false;
         vm.cb4gt5 = false;
         vm.cb5gt5 = false;
+        vm.cb6gt5 = false;
+        vm.cb7gt5 = false;
 
 
         function showAllFriendsList(userObjs, answername){
@@ -105,6 +109,24 @@
                     break;
                 }
             }
+
+            for (var i = 0; i < $rootScope.headlines.length; i++) {
+                if ($rootScope.headlines[i].type == 'social') {
+                    vm.bgc6 = $rootScope.headlines[i].bc;
+                    vm.fc6 = $rootScope.headlines[i].fc;
+                    vm.headline6 = $rootScope.headlines[i].title;
+                    break;
+                }
+            }
+
+            for (var i = 0; i < $rootScope.headlines.length; i++) {
+                if ($rootScope.headlines[i].type == 'family') {
+                    vm.bgc7 = $rootScope.headlines[i].bc;
+                    vm.fc7 = $rootScope.headlines[i].fc;
+                    vm.headline7 = $rootScope.headlines[i].title;
+                    break;
+                }
+            }
         }
 
         function formatData() {
@@ -116,6 +138,8 @@
             vm.servicesans = [];
             vm.healthans = [];
             vm.beautyans = [];
+            vm.socialans = [];
+            vm.familyans = [];
 
             var tmap = [];
 
@@ -158,6 +182,18 @@
  
                                     addRecord(vm.beautyans, answer, i);
                                 }
+
+
+                                if (category.title.indexOf('social') > -1 || category.tags.indexOf('social') > -1) {
+                                    
+                                    addRecord(vm.socialans, answer, i);
+                                }
+
+
+                                if (category.title.indexOf('family') > -1 || category.tags.indexOf('family') > -1) {
+                                    
+                                    addRecord(vm.familyans, answer, i);
+                                }
                             }
                         }
                     }   
@@ -169,6 +205,8 @@
             if (vm.servicesans.length > 5) vm.cb3gt5 = true;
             if (vm.healthans.length > 5) vm.cb4gt5 = true;
             if (vm.beautyans.length > 5) vm.cb5gt5 = true;
+            if (vm.socialans.length > 5) vm.cb6gt5 = true;
+            if (vm.familyans.length > 5) vm.cb7gt5 = true;
 
             if (vm.foodans.length > 0) vm.answerExist1 = true;
             else vm.answerExist1 = false;
@@ -184,9 +222,16 @@
 
             if (vm.beautyans.length > 0) vm.answerExist5 = true;
             else vm.answerExist5 = false;
+
+            if (vm.socialans.length > 0) vm.answerExist6 = true;
+            else vm.answerExist6 = false;
+
+            if (vm.familyans.length > 0) vm.answerExist7 = true;
+            else vm.answerExist7 = false;
+            
             
             if (vm.foodans.length == 0 && vm.servicesans.length == 0 && vm.lifestyleans.length == 0 &&
-            vm.healthans.length == 0 && vm.beautyans.length == 0){
+            vm.healthans.length == 0 && vm.beautyans.length == 0 && vm.socialans.length == 0 && vm.familyans.length == 0){
                 vm.noAns = true;
             }
 
@@ -263,6 +308,10 @@
                           $rootScope.myfavs.title = 'My Health';  break; }
                 case 5: { $rootScope.canswers = vm.beautyans; 
                           $rootScope.myfavs.title = 'My Beauty';  break; }
+                case 6: { $rootScope.canswers = vm.socialans; 
+                          $rootScope.myfavs.title = 'My Social';  break; }
+                case 7: { $rootScope.canswers = vm.familyans; 
+                          $rootScope.myfavs.title = 'My Family';  break; }
             }
             $state.go("answerDetail", { index: x.slug });
         }
@@ -287,6 +336,14 @@
             if (x == 5) {
                 if (vm.maxRes5 == 5) { vm.btext5 = 'See less'; vm.maxRes5 = 100; }
                 else { vm.btext5 = 'See more'; vm.maxRes5 = 5; }
+            }
+            if (x == 6) {
+                if (vm.maxRes6 == 5) { vm.btext6 = 'See less'; vm.maxRes6 = 100; }
+                else { vm.btext6 = 'See more'; vm.maxRes6 = 5; }
+            }
+            if (x == 7) {
+                if (vm.maxRes7 == 5) { vm.btext7 = 'See less'; vm.maxRes7 = 100; }
+                else { vm.btext7 = 'See more'; vm.maxRes7 = 5; }
             }
         }
 

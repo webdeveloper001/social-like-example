@@ -1,6 +1,6 @@
 <div class="">
     <div class="">
-        <div class="col-xs-12 " style=" padding: 0px;">
+        <div class="col-xs-12 " style=" padding: 0px; background-color: #d3d3d3" >
 
 
             <ul class="nav nav-tabs">
@@ -8,7 +8,7 @@
                 <li style="cursor: pointer"><a data-toggle="tab" href="#newest">Newest</a></li>
             </ul>
 
-            <div class="tab-content" >
+            <div class="tab-content" style="">
                 <div class="tab-pane in active fade" style="padding-top:10px;padding-bottom:10px;  " ng-class="showAll =='true' ?'':'trend-tab-single-page'" id="popular">
                         
                     <div class="col-xs-12 media ranking-blog-item" ng-repeat="ranking in popularOrder  | limitTo:popularLimit" style="cursor: pointer;" ng-click="rankSel(ranking)">

@@ -40,8 +40,8 @@
             var p3 = rankofday.getrankofday();
             var p4 = uaf.getactions();
 
-            userdata.loadUserData();        //load user data (votes and activities)
-            userdata.loadUserAccount();     //load user business account
+            // userdata.loadUserData();        //load user data (votes and activities)
+            // userdata.loadUserAccount();     //load user business account
 
             //Minimum Data for Cwrapper
             return $q.all([p0, p1, p3, p4]).then(function (d) {

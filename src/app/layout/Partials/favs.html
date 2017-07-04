@@ -104,6 +104,44 @@
 				</tbody>
 			</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(5)" ng-if="vm.cb5gt5">&lt;&lt;{{vm.btext5}}&gt;&gt;</p>
 
+			<table class="table" ng-if="vm.answerExist6">
+				<tbody>
+					<thead style="border-style:none;">
+						<tr>
+							<th ng-attr-style="background-color:{{vm.bgc6}};color:{{vm.fc6}};width:50%;">
+								{{vm.headline6}}</th>
+							<th ng-attr-style="background-color:{{vm.bgc6}};color:{{vm.fc6}};width:50%;"></th>	
+						</tr>
+					</thead>
+					<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
+					<tr ng-repeat="x in vm.mysocialans | limitTo:vm.maxRes6" ng-click="vm.answerDetail(6,x)" style="cursor:pointer;">
+						<td style="width:50%;">
+							{{x.name}}
+						</td>
+						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+					</tr>
+				</tbody>
+			</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(6)" ng-if="vm.cb6gt5">&lt;&lt;{{vm.btext6}}&gt;&gt;</p>
+
+			<table class="table" ng-if="vm.answerExist7">
+				<tbody>
+					<thead style="border-style:none;">
+						<tr>
+							<th ng-attr-style="background-color:{{vm.bgc7}};color:{{vm.fc7}};width:50%;">
+								{{vm.headline7}}</th>
+							<th ng-attr-style="background-color:{{vm.bgc7}};color:{{vm.fc7}};width:50%;"></th>	
+						</tr>
+					</thead>
+					<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
+					<tr ng-repeat="x in vm.myfamilyans | limitTo:vm.maxRes7" ng-click="vm.answerDetail(7,x)" style="cursor:pointer;">
+						<td style="width:50%;">
+							{{x.name}}
+						</td>
+						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+					</tr>
+				</tbody>
+			</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(7)" ng-if="vm.cb7gt5">&lt;&lt;{{vm.btext7}}&gt;&gt;</p>
+
 			<div ng-if="vm.noAns">
 			</br>
 			<p>You have not endorsed any Establishments yet. Places that you endorse will show up 
@@ -289,6 +327,45 @@
 				</tbody>
 			</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(5)" ng-if="vm.cb5gt5">&lt;&lt;{{vm.btext5}}&gt;&gt;</p>
 
+
+			<table class="table" ng-if="vm.answerExist6">
+				<tbody>
+					<thead style="border-style:none;">
+						<tr>
+							<th ng-attr-style="background-color:{{vm.bgc6}};color:{{vm.fc6}};width:50%;">
+								{{vm.headline6}}</th>
+							<th ng-attr-style="background-color:{{vm.bgc6}};color:{{vm.fc6}};width:50%;"></th>	
+						</tr>
+					</thead>
+					<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
+					<tr ng-repeat="x in vm.socialans | limitTo:vm.maxRes6" ng-click="vm.answerDetail(6,x)" style="cursor:pointer;">
+						<td style="width:50%;">
+							{{x.name}}
+						</td>
+						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+					</tr>
+				</tbody>
+			</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(6)" ng-if="vm.cb6gt5">&lt;&lt;{{vm.btext6}}&gt;&gt;</p>
+
+			<table class="table" ng-if="vm.answerExist7">
+				<tbody>
+					<thead style="border-style:none;">
+						<tr>
+							<th ng-attr-style="background-color:{{vm.bgc7}};color:{{vm.fc7}};width:50%;">
+								{{vm.headline7}}</th>
+							<th ng-attr-style="background-color:{{vm.bgc7}};color:{{vm.fc7}};width:50%;"></th>	
+						</tr>
+					</thead>
+					<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
+					<tr ng-repeat="x in vm.familyans | limitTo:vm.maxRes7" ng-click="vm.answerDetail(7,x)" style="cursor:pointer;">
+						<td style="width:50%;">
+							{{x.name}}
+						</td>
+						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+					</tr>
+				</tbody>
+			</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(7)" ng-if="vm.cb7gt5">&lt;&lt;{{vm.btext7}}&gt;&gt;</p>
+			
 			<div ng-if="vm.noAns">
 			</br>
 			<p>You have not endorsed any Establishments yet. Places that you endorse will show up 

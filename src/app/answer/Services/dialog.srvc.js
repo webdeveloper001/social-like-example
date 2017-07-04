@@ -59,7 +59,8 @@
             generateAnswerHtml: generateAnswerHtml,
             confirmSameAnswerMultiple: confirmSameAnswerMultiple,
             showTOSPromotersDlg: showTOSPromotersDlg,
-            showTOSCustomersDlg: showTOSPromotersDlg
+            showTOSCustomersDlg: showTOSPromotersDlg,
+            sortbyHelpDialog: sortbyHelpDialog
         };
         return service;
 
@@ -2634,6 +2635,31 @@
                 btnOKLabel: "Back",
                 btnOKClass: 'btn-primary',
                 size: BootstrapDialog.SIZE_WIDE,
+            });
+        }
+
+
+        function sortbyHelpDialog(type) {
+
+            var title = 'Sorting Options';
+            var message = "<p style='text-align:left'>Rank. Sorts list by rank points, which are a mix of endorsements and rank matches.</p>" +
+                "<p style='text-align:left'><strong>Popular</strong>. Sorts list by votes (endorsements) in this ranking.</p>" +
+                "<p style='text-align:left'><strong>Distance</strong>. Sorts list by distance closest to you. </p>" +
+                "<p style='text-align:left'><strong>Trending</strong>. Sorts list by votes (endorsements) in the last month.</p>";
+
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'Got it',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }]
             });
         }
     }

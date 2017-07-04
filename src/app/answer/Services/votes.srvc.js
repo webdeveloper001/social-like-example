@@ -20,7 +20,8 @@
 			postRec: postRec,
             deleteVotesbyCatans: deleteVotesbyCatans,
             deleteRec: deleteRec,
-			loadVotesByMyFriends: loadVotesByMyFriends
+			loadVotesByMyFriends: loadVotesByMyFriends,
+            loadLastMonthVoting: loadLastMonthVoting
             //    addTable: addTable
         };
 
@@ -204,5 +205,29 @@
             throw error;
         }
 
+        function loadLastMonthVoting(answerIDs) {
+            var filterQuery = "(";
+            
+            for (var i = 0; i < answerIDs.length; i++) {
+                filterQuery += '(answer=';
+                filterQuery += answerIDs[i];
+                filterQuery += ')';
+                if( i != answerIDs.length - 1 )
+                    filterQuery += ' or ';
+            }
+            filterQuery += ' and (timestmp > ' + moment().subtract(1, 'month').startOf('month').format('YYYY-MM-DD') + ')';
+            filterQuery += ' and (vote = 1))';
+            
+            //Get all vote records for current user
+            var url = baseURI + '/?filter=' + filterQuery;
+             
+            return $http.get(url).then(querySucceeded, _queryFailed);
+            
+            function querySucceeded(result) {
+
+                return result.data.resource;
+            }
+                 
+        }
     }
 })();
