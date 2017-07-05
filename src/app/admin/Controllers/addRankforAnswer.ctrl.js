@@ -47,6 +47,7 @@
                 idx = $rootScope.content.map(function(x) {return x.id; }).indexOf(ranks[$rootScope.rankIdx].id);
                 vm.rankTitle = $rootScope.content[idx].title.replace(' @ '+$rootScope.canswer.name,'');
                 vm.question = $rootScope.content[idx].question;
+                vm.introtext = $rootScope.content[idx].introtext;
                 vm.bc = ranks[$rootScope.rankIdx].bc;
                 vm.fc = ranks[$rootScope.rankIdx].fc;
                 vm.buttonLabel = 'Edit';              
@@ -58,6 +59,7 @@
                 vm.bc = 'gray';
                 vm.fc = 'lightgray';
                 vm.buttonLabel = 'Add';
+                vm.introtext = 'Tell us what your rank is about...';
             }
             //loadData();
             console.log("addRankforAnswer page Loaded!");
@@ -81,6 +83,7 @@
             item.question = vm.question;
             item.views = 0;
             item.answers = 0;
+            item.introtext = vm.introtext;
             item.ismp = false;
             item.owner = $rootScope.canswer.id;
             
@@ -109,6 +112,10 @@
                         if ($rootScope.content[idx].question != vm.question){
                             tfields.push('question');
                             tvals.push(vm.question);                            
+                        }
+                        if ($rootScope.content[idx].intro != vm.introtext){
+                            tfields.push('introtext');
+                            tvals.push(vm.intro);                            
                         }
                         if (tfields.length > 0) 
                         table.update($rootScope.content[idx].id, tfields, tvals).then(function(){

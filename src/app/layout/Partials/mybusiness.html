@@ -9,9 +9,8 @@
         </div>
     </div>
 <div ng-if="vm.dataReady">
-
-<div class="container">
-<div class="container" ng-if="!vm.noAns&&vm.overview" id="mybiztable-container">
+<div>
+<div ng-if="!vm.noAns&&vm.overview" id="mybiztable-container">
 	<h3>My Business</h3>
 
 	<table class="table" id="mybiztable">
@@ -21,16 +20,21 @@
 					<th class="text-center">Name</th>
 					<!--<th>Promoter</th>
 					<th class="hidden-custom">Code</th>-->
-					<th colspan=2 text-align="center" class="text-center">Memberships</th>
+					<th text-align="center" class="text-center">Premium Membership</th>
+					<th text-align="center" class="text-center">Custom Ranks</th>
+					<th></th>
+					<th></th>
 				</tr>
 			</thead>
 			<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
 			<tr ng-repeat="x in vm.mybizs" style="cursor:pointer;">
-				<td ng-click="vm.gotoanswer(x)">{{x.name}}</td>
+				<td>{{x.name}}</td>
 				<!--<td>{{x.promoterObj?x.promoterObj.firstname + ' ' + x.promoterObj.lastname:'None'}}</td>
 				<td class="hidden-custom">{{x.promoterObj?x.promoterObj.code:'None'}}</td>-->
-				<td align="center" ng-attr-style="{{x.style}}" ng-click="vm.gotomanage(x)">{{x.status}}</td>
-				<td align="center" ng-attr-style="{{x.style2}}" ng-click="vm.gotomanage(x)">{{x.status2}}</td>
+				<td align="center" ng-attr-style="{{x.style}}">{{x.status}}</td>
+				<td align="center" ng-attr-style="{{x.style2}}">{{x.status2}}</td>
+				<td><a href="" ng-click="vm.gotomanage(x)">Purchase Feautures</a></td>
+				<td><a href="" ng-click="vm.gotoanswer(x)">Go to Listing</a></td>
 			</tr>
 		</tbody>
 	</table>
@@ -41,7 +45,7 @@
 			you can manage its account.</p>
 	</div>
 </div>
-<div class="container" ng-if="vm.manageview">
+<div ng-if="vm.manageview">
 	<h3>{{vm.business.name}}</h3>
 	<h4 align="center" style="background-color:#b3b3b3;padding:5px">Contact Info</h4>
 	<div>
@@ -216,11 +220,11 @@
 			<a href="" ng-click="">Learn More</a>
 		</div>
 		<div class="row">
-			<div class="col-xs-7 col-sm-9 col-md-10 col-lg-10">
+			<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
 				<label class="checkbox-inline">
 					<input type="checkbox" ng-model="vm.getRanks" value="">Purchase Ranks</label>
 			</div>
-			<div class="col-xs-5 col-sm-3 col-md-2 col-lg-2">
+			<div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
 				<div class="input-group" ng-if="vm.getRanks">
 					<span class="input-group-btn">
 					<button class="btn btn-primary" ng-click="vm.minusQty()"><i class="fa fa-minus"></i></button>
@@ -234,24 +238,13 @@
 		</div>
 	</div>
 
-	<!--
-		<div class="well">
-			<h2 class="text-center">Care Free Package</h2>
-			<h3 class="text-center">$45 / month</h3>
-			<i class="fa fa-check"></i><strong>&nbspMake the most</strong> of your Premium Membership.</br>
-			<i class="fa fa-check"></i><strong>&nbspWe create</strong> up to 5 specials and promo banners for you.</br>
-			<i class="fa fa-check"></i><strong>&nbspWeekly sync </strong>of all your specials with other media.</strong></br>
-        	<i class="fa fa-check"></i>&nbspKeep your information on Rank-X <strong>accurate</strong> at all times.</br>
-			<div class="text-center">
-				<button class="btn btn-primary">Learn More</button>
-			</div>
-		</div>-->
-	
 	<div class="row" ng-if="vm.sell">
 		<br>
-		<div class="col-xs-12">
+		<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+				<label>Promo Code:</label>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
 			<div class="input-group">
-				<span class="input-group-addon" style="color:red">Promo Code:</span>
 				<input class="form-control" style="color:red;" ng-model="vm.promocode" type="text" placeholder="Enter code...">
 				<span class="input-group-btn">
 					<button class="btn btn-default" ng-click="vm.checkcode()">Check Code</button>
@@ -269,7 +262,7 @@
 	</div>
 </div>
 
-<div class="container" ng-if="vm.checkout"> <!-- A -->
+<div ng-if="vm.checkout"> <!-- A -->
 	<h3>Checkout</h3>
 	<br>
 	<p style="text-align:center">You are purchasing the following subscriptions for the business 
@@ -348,7 +341,7 @@
 			<input type="hidden" id="bizcat" name="bizcat" value={{vm.business.bizcat}}></input>
         </form>
 	</div> <!-- /C -->
-	</div> <!-- /B -->				
+	 </div><!-- /B -->				
 </div><!-- /A -->
 <div class="text-right" role="group">
 	<button type="button" ng-click="vm.goBack()" class="btn btn-default">Back</button>

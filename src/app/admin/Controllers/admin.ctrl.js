@@ -5,9 +5,9 @@
         .module('app')
         .controller('admin', admin);
 
-    admin.$inject = ['$location', '$rootScope', '$state','table','answer'];
+    admin.$inject = ['$location', '$rootScope', '$state','table','answer','categorycode','$q'];
 
-    function admin(location, $rootScope, $state, table, answer) {
+    function admin(location, $rootScope, $state, table, answer, categorycode, $q) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'admin';
@@ -316,12 +316,25 @@
                     *///End of 2
         
                     /*//  3.Use this to correct the title of a group of ranks
+                    var exec = true;
                     for (var i=0; i < $rootScope.content.length; i++){
-                        if ($rootScope.content[i].title.includes("Hookah lounges")) {
-                            var titlex = $rootScope.content[i].title.replace("Hookah lounges","Hookah Lounges");
+                        if ($rootScope.content[i].title.includes("Places to learn pole dancing")) {
+                            var titlex = $rootScope.content[i].title.replace("Places to learn pole dancing","Places to Learn Pole Dancing");
                             //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
                             console.log("titlex ", titlex);
-                            table.update($rootScope.content[i].id, ['title'],[titlex]);
+                            if (exec) table.update($rootScope.content[i].id, ['title'],[titlex]);
+                        }
+                        if ($rootScope.content[i].title.includes("Restaurants with great views")) {
+                            var titlex = $rootScope.content[i].title.replace("Restaurants with great views","Restaurants with Great Views in San Diego");
+                            //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
+                            console.log("titlex ", titlex);
+                            if (exec) table.update($rootScope.content[i].id, ['title'],[titlex]);
+                        }
+                        if ($rootScope.content[i].title.includes("Event planners")) {
+                            var titlex = $rootScope.content[i].title.replace("Event planners","Event Planners");
+                            //var tagsx = vm.resultsT[i].tags.replace("tea","coffee shops internet tea quiet");
+                            console.log("titlex ", titlex);
+                            if (exec) table.update($rootScope.content[i].id, ['title'],[titlex]);
                         }
                     } 
                     *///End of 3
@@ -896,6 +909,32 @@
                        }
                    }
                    *///End of 26
+                   /* //27. Use this to capitalize category code tags
+                        var p0 = categorycode.get();
+                        var catstr = '';
+                        var tags = [];
+                        vm.codes = [];
+            
+                        return $q.all([p0]).then(function (d) {
+                            $rootScope.catcodes = d[0];
+                
+                            for (var m=0; m<$rootScope.catcodes.length; m++){
+                                tags = $rootScope.catcodes[m].category.split(" ");
+                                for (var n=0; n<tags.length; n++){
+                                    if (tags[n] != 'to' && tags[n] != 'and' && tags[n] != 'from' && tags[n] != 'a')
+                                        tags[n] = tags[n].charAt(0).toUpperCase() + tags[n].slice(1);
+                                }
+                                catstr = '';
+                                for (var n=0; n < tags.length; n++){
+                                    catstr = catstr + ' ' + tags[n];
+                                }
+                                catstr = catstr.slice(1);
+                                //console.log("catstr - ", catstr);
+                                categorycode.update($rootScope.catcodes[m].id,['category'],[catstr]);
+                            }
+                        });
+
+                    *///End of 27.
                 } 
     }
 })();
