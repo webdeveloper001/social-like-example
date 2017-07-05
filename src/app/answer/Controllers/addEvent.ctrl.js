@@ -292,6 +292,7 @@
             ansObj.lng = myEvent.lng;
             ansObj.type = 'Event';
             ansObj.website = myEvent.website;
+            ansObj.phone = myEvent.phone;
             ansObj.imageurl = myEvent.imageurl;
             ansObj.views = 0;
             ansObj.eventstr = eventstr;
@@ -544,7 +545,8 @@
 
         function goBack() {
             //$state.go('specials');
-            $state.go("answerDetail", { index: $rootScope.canswer.id });
+            if ($rootScope.eventmode == 'edit') $state.go("answerDetail", { index: $rootScope.canswer.slug });
+            if ($rootScope.eventmode == 'add') $state.go("rankSummary", { index: $rootScope.cCategory.slug });
         }
 
         function createTimeDropdown() {

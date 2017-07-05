@@ -119,15 +119,15 @@
                             bizObj.promocode = $rootScope.useraccnts[j].promocode;
                                 
                             if (bizObj.isPremium) {
-                                bizObj.status = 'Premium'; bizObj.style = 'background-color:#009900';
+                                bizObj.status = 'Premium'; bizObj.style = 'background-color:#47d147';
                             }
-                            else {bizObj.status = 'Basic'; bizObj.style = 'background-color:#bfbfbf';}
+                            else {bizObj.status = 'Basic'; bizObj.style = 'background-color:#ffffff';}
 
                             if (bizObj.hasRanks) {
                                 bizObj.status2 = bizObj.ranksQty + ' Custom Ranks';
-                                    bizObj.style2 = 'background-color:#009900';
+                                    bizObj.style2 = 'background-color:#47d147';
                             }
-                            else {bizObj.status2 = 'No Custom Ranks'; bizObj.style2 = 'background-color:#bfbfbf';}
+                            else {bizObj.status2 = 'No Custom Ranks'; bizObj.style2 = 'background-color:#ffffff';}
 
                             //get monthly price
                             for (var k=0; k<$rootScope.codeprices.length; k++){
