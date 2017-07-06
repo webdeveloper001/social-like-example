@@ -202,6 +202,7 @@
             //****TEMP CODE, ENable for Admin Functions*****************
             $rootScope.isAdmin = false;
             vm.isAdmin = false;
+            //console.log("$rootScope.isLoggedIn - ", $rootScope.isLoggedIn);
             /*
             $rootScope.isLoggedIn = true;
             $rootScope.user = {};
@@ -225,12 +226,10 @@
                 //if (!tourviewed && !$rootScope.isLoggedIn) dialog.tour();
             }
 
-            //If user is logged in, get data of this user
-            if ($rootScope.isLoggedIn){
+            //Call userdata functions, If user is not logged in, functions do not execute.
                 userdata.loadUserData();        //load user data (votes and activities)
                 userdata.loadUserAccount();     //load user business account
-            }
-
+            
             //Determine if user is using Facebook browser
             $rootScope.isFacebookApp = isFacebookApp();
 
@@ -301,6 +300,7 @@
         function loadingDone() {
             if ($rootScope.pageDataLoaded == undefined) $rootScope.pageDataLoaded = false;
             if ($rootScope.userDataLoaded == undefined) $rootScope.userDataLoaded = false;
+            
 
             if (window.location.href.indexOf('rankSummary')>-1)
                 $rootScope.dataIsLoaded = $rootScope.rankSummaryDataLoaded && $rootScope.pageDataLoaded && $rootScope.userDataLoaded;

@@ -33,8 +33,8 @@
 				<td class="hidden-custom">{{x.promoterObj?x.promoterObj.code:'None'}}</td>-->
 				<td align="center" ng-attr-style="{{x.style}}">{{x.status}}</td>
 				<td align="center" ng-attr-style="{{x.style2}}">{{x.status2}}</td>
-				<td><a href="" ng-click="vm.gotomanage(x)">Purchase Feautures</a></td>
-				<td><a href="" ng-click="vm.gotoanswer(x)">Go to Listing</a></td>
+				<td align="center"><a href="" ng-click="vm.gotomanage(x)">{{(x.isPremium || x.hasRanks) ? 'Manage':'Purchase Feautures'}}</a></td>
+				<td align="center"><a href="" ng-click="vm.gotoanswer(x)">Go to Listing</a></td>
 			</tr>
 		</tbody>
 	</table>

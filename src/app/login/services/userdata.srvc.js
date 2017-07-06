@@ -112,23 +112,25 @@
             }
         }
 
-        function syncDatatoAnswers(){
-            if ($rootScope.DEBUG_MODE) console.log("Syncing useraccnt data to answers");
-            var idx = 0;
-            var fields = [];
-            var vals = [];
-            for (var i=0; i< $rootScope.useraccnts.length; i++){
-                idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf($rootScope.useraccnts[i].answer);
-                if ($rootScope.answers[idx].ispremium != $rootScope.useraccnts[i].ispremium){
-                    fields.push('ispremium'); vals.push($rootScope.useraccnts[i].ispremium);
+        function syncDatatoAnswers() {
+            if ($rootScope.isLoggedIn) {
+                if ($rootScope.DEBUG_MODE) console.log("Syncing useraccnt data to answers");
+                var idx = 0;
+                var fields = [];
+                var vals = [];
+                for (var i = 0; i < $rootScope.useraccnts.length; i++) {
+                    idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf($rootScope.useraccnts[i].answer);
+                    if ($rootScope.answers[idx].ispremium != $rootScope.useraccnts[i].ispremium) {
+                        fields.push('ispremium'); vals.push($rootScope.useraccnts[i].ispremium);
+                    }
+                    if ($rootScope.answers[idx].hasranks != $rootScope.useraccnts[i].hasranks) {
+                        fields.push('hasranks'); vals.push($rootScope.useraccnts[i].hasranks);
+                    }
+                    if ($rootScope.answers[idx].ranksqty != $rootScope.useraccnts[i].ranksqty) {
+                        fields.push('ranksqty'); vals.push($rootScope.useraccnts[i].ranksqty);
+                    }
+                    if (fields.length > 0) answer.updateAnswer($rootScope.answers[idx].id, fields, vals);
                 }
-                if ($rootScope.answers[idx].hasranks != $rootScope.useraccnts[i].hasranks){
-                    fields.push('hasranks'); vals.push($rootScope.useraccnts[i].hasranks);
-                }
-                if ($rootScope.answers[idx].ranksqty != $rootScope.useraccnts[i].ranksqty){
-                    fields.push('ranksqty'); vals.push($rootScope.useraccnts[i].ranksqty);
-                }
-                if (fields.length > 0) answer.updateAnswer($rootScope.answers[idx].id,fields,vals);
             }
         }
     }

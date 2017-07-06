@@ -78,5 +78,7 @@
     "dialog.whataretags.title": "Info",
     "dialog.whataretags.text": "Tags are keywords that allow this ranking to be searchable. For instance for the ranking: 'Italian restaurants', appropriate tags could be 'pasta, pizza, lasagna, etc'.",
     "dialog.neighborhoodsDontMatch.title": "Oops, something doesn't match",
-    "dialog.neighborhoodsDontMatch.text": "The neighborhood of this establishment does not match the scope of the ranking."        
+    "dialog.neighborhoodsDontMatch.text": "The neighborhood of this establishment does not match the scope of the ranking.",
+    "dialog.opinionsLimit.title": "Too many opinions",
+    "dialog.opinionsLimit.text": "You have already entered the maximum number of opinions. A single user can add up to 3 opinions. Instead endorse or disaprove existing opinions."         
 }

@@ -5,9 +5,9 @@
         .module('app')
         .controller('admin', admin);
 
-    admin.$inject = ['$location', '$rootScope', '$state','table','answer','categorycode','$q'];
+    admin.$inject = ['$location', '$rootScope', '$state','table','answer','categorycode','$q','vrows'];
 
-    function admin(location, $rootScope, $state, table, answer, categorycode, $q) {
+    function admin(location, $rootScope, $state, table, answer, categorycode, $q, vrows) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'admin';
@@ -935,6 +935,12 @@
                         });
 
                     *///End of 27.
+                    /*//28. Delete all vrows
+                    console.log("$rootScope.cvrows.length - ", $rootScope.cvrows.length);
+                        for (var i=0; i<$rootScope.cvrows.length; i++){
+                            vrows.deleteVrow($rootScope.cvrows[i].id);
+                        }
+                    *///end of 28
                 } 
     }
 })();
