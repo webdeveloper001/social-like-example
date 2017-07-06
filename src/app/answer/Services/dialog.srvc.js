@@ -60,7 +60,8 @@
             confirmSameAnswerMultiple: confirmSameAnswerMultiple,
             showTOSPromotersDlg: showTOSPromotersDlg,
             showTOSCustomersDlg: showTOSPromotersDlg,
-            sortbyHelpDialog: sortbyHelpDialog
+            sortbyHelpDialog: sortbyHelpDialog,
+            maybeRepeatVrows: maybeRepeatVrows,
         };
         return service;
 
@@ -1330,7 +1331,7 @@
             var btnOkLabel = '';
 
             title = 'Login required';
-            message = 'You must be logged in to add rankings, answers, endorse establishments and participate in the rankings.' +
+            message = 'You must be logged in to add rankings, answers, opinions, endorse establishments and participate in the rankings.' +
             '</br></br>' +
             'Do you want to log in?';
 
@@ -2482,6 +2483,7 @@
             
             return answerhtml;
         }
+
         function confirmSameAnswerMultiple(answers, callback) {            
 
             var title = '';
@@ -2594,6 +2596,48 @@
                     }
                 }]
             });
+        }
+
+        function maybeRepeatVrows(newop, vrows, callback) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Just checking';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'My opinion is different, add it';
+            message = 'Your opinion:' +
+            '<br><p class="text-center"><i>' + newop + '</i></p>' +
+            'might be similar to these already existing opinions: <br><br><p class="text-center">'; 
+
+            for (var i=0; i< vrows.length; i++){
+                message = message + '<i>' + vrows[i].title + '</i><br>';
+            }
+
+            message = message + '</p>Double check you are not adding an opinion that is essentially same as one already there.<br>';
+            
+            //message = message;
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-primary',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) callback();
+                    //else callback1(answer1);
+                }
+            });
+       
         }
     }
     

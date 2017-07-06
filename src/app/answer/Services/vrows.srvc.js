@@ -98,7 +98,9 @@
                     d[22].data.resource, d[23].data.resource, d[24].data.resource, d[25].data.resource);
                 if ($rootScope.DEBUG_MODE) console.log("No. Vrows: ", _allvrows.length);
                 return _allvrows;
-            }, _queryFailed);
+            }, _queryFailed); 
+
+            //return _allvrows;
         }
 
         function postVrows4Answer(answer) {
@@ -182,7 +184,12 @@
         function postRec(x) {
            
             //form match record
-            var data = x;
+            var data = {};
+            data.title = x;
+            data.answer = $rootScope.canswer.id;
+            data.gtitle = '';
+            data.user = $rootScope.user.id;
+            data.gnum = 0;
             data.upV = 0;
             data.downV = 0;
             data.timestmp = Date.now();
