@@ -106,12 +106,12 @@
         $scope.$on('$destroy',updateVoteTableListener);
         $scope.$on('$destroy',rankDataLoadedListener);
                                
-        // $rootScope.$on('$stateChangeStart',
-        //     function (ev, to, toParams, from, fromParams) {
-        //         if (from.name == 'rankSummary' && to.name != 'rankSummary') {
-        //             if ($rootScope.isLoggedIn) updateRecords();
-        //         }
-        //     });
+        $rootScope.$on('$stateChangeStart',
+            function (ev, to, toParams, from, fromParams) {
+                if (from.name == 'rankSummary' && to.name != 'rankSummary') {
+                    if ($rootScope.isLoggedIn) updateRecords();
+                }
+            });
 
 
         vm.isMobile = false; 

@@ -1,4 +1,4 @@
-﻿<div id="veil" ng-hide="vm.dataReady"></div>
+<div id="veil" ng-hide="vm.dataReady"></div>
     <div id="feedLoading" ng-hide="vm.dataReady">
         <div style="text-align: center" ng-if="!vm.dataReady">
             <div class="loading-pulse"></div>
@@ -214,7 +214,7 @@
     <tbody>
         <thead>
             <tr>
-                <th>{{vm.showR ? 'Rank' : 'Votes'}}</th>
+                <th ng-if="vm.mode=='specials'">{{vm.showR ? 'Rank' : 'Votes'}}</th>
                 <th ng-show="{{!vm.sm && !vm.fnm && !vm.isE}}" ng-if="vm.mode=='specials'">Votes</th>
                 <th class="capitalize " ng-repeat="h in vm.fields | filter:{isrequired:true}">{{h.label}}</th>
                 <th ng-show="{{vm.type == 'Establishment' && vm.haveLocation}}" ng-if="vm.mode=='specials'">Distance (mi)</th>
@@ -230,7 +230,7 @@
         <tbody>
             <!--| orderBy: '-Rank' -->
             <tr ng-repeat="x in vm.answers track by $index">
-                <td  ng-click="vm.answerDetail(x)" >{{vm.showR ? x.Rank : x.upV}}</td>
+                <td  ng-click="vm.answerDetail(x)" ng-if="vm.mode=='specials'">{{vm.showR ? x.Rank : x.upV}}</td>
                 <td ng-show="{{!vm.sm && !vm.fnm && !vm.isE}}" ng-if="vm.mode=='specials'" ng-click="vm.answerDetail(x)">{{x.upV}}</td>
                 <!--<td>{{x.Rank}}</td>-->
                 <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
@@ -246,7 +246,7 @@
                     <div>
                         <span  ng-click="vm.UpVote(x,$event)"  ng-attr-style="color:{{x.thumbUp}};margin-right: 20px;font-size: 18px;" >
                             <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                            <i style="color:black">&nbsp;{{x.upV}}&nbsp;&nbsp;</i>
+                            <i style="color:black;font-size: 18px;">&nbsp;{{x.upV}}&nbsp;&nbsp;</i>
                         </span>
                         <div ng-if="vm.sm">
                             <br/>
