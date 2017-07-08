@@ -6,9 +6,9 @@
         .factory('dialog', dialog);
 
     dialog.$inject = ['$q', '$rootScope', 'useraccnt', 'imagelist', 'answer', 'login',
-        '$window','$cookies', '$state', '$compile','htmlops']
+        '$window','$cookies', '$state', '$compile','htmlops','datetime']
     function dialog($q, $rootScope, useraccnt, imagelist, answer, login,
-        $window, $cookies, $state, $compile, htmlops) {
+        $window, $cookies, $state, $compile, htmlops, datetime) {
 
         var service = {
             editConfirm: editConfirm,
@@ -62,6 +62,7 @@
             showTOSCustomersDlg: showTOSPromotersDlg,
             sortbyHelpDialog: sortbyHelpDialog,
             maybeRepeatVrows: maybeRepeatVrows,
+            showSpecial: showSpecial,
         };
         return service;
 
@@ -2638,6 +2639,56 @@
                 }
             });
        
+        }
+
+        function showSpecial(x) {
+
+            var title = 'Special Details';
+            var message = '';
+            var imageStyle = '';
+
+            datetime.formatdatetime(x);
+            //$rootScope.specials[i].name = vm.answer.name;
+            var htmlmsg = htmlops.specialHtml(x);
+            //$rootScope.specials[i].html = htmlmsg;
+            //Separate style (not working with ng-bind-html)
+            var spStyle = 'background-color:' + x.bc + ';color:' + x.fc + ';' +
+                'white-space:pre;';
+            x.style = spStyle;
+            if (x.image != undefined &&
+                x.image != $rootScope.EMPTY_IMAGE) {
+                x.hasimage = true;
+            }
+            else x.hasimage = false;
+
+            if ($rootScope.DISPLAY_XSMALL) imageStyle = 'width:100%;height:auto;';
+            if ($rootScope.DISPLAY_SMALL)  imageStyle = 'width:100%;height:auto;max-height:300px;'; 
+            if ($rootScope.DISPLAY_MEDIUM) imageStyle = 'width:100%;height:auto;max-height:350px;';
+            if ($rootScope.DISPLAY_LARGE)  imageStyle = 'width:100%;height:auto;max-height:400px;';
+
+            //console.log("x.image, x.hasimage - ", x.image, x.hasimage);
+
+            message = '<div ng-attr-style="'+ x.style +'">' + htmlmsg  + '</div>' +
+            (x.hasimage ? '<div class="text-middle">' +
+            '<img class="displayed" src=' + x.image + ' style="' + imageStyle + 'margin-left:auto;margin-right:auto;">'+
+            '</div><br>' : '<br>');
+            
+            console.log("message ", message);
+
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'OK',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef, result) {
+                        dialogRef.close();
+                    }
+                }]
+            });
         }
     }
     
