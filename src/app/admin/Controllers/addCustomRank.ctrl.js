@@ -72,7 +72,7 @@
                 selImgBank(1);
             
             //loadData();
-            console.log("addCustomRank page Loaded!");
+            if ($rootScope.DEBUG_MODE) console.log("addCustomRank page Loaded!");
         }
         
         function validateData(){

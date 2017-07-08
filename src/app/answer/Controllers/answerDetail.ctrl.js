@@ -6,7 +6,6 @@
         .controller('answerDetail', answerDetail);
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
-
         'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt',
         '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope','$cookies', '$q', 'fbusers', 'InstagramService', 'mailing', 'Socialshare']; //AM:added user service
 
@@ -24,7 +23,10 @@
         var downVi = 0; //downVotes initial value
         var answers = [];
         var recordsUpdated = false;
+        var vrowsByUserCounter = 0;
         vm.numEdits = 0;
+        var numImages = 0;
+        var numImagesPage = 0;
         
         // Members
         vm.relativetable = [];
@@ -42,7 +44,7 @@
         vm.goNext = goNext;
         vm.deleteAnswer = deleteAnswer;
         vm.flagAnswer = flagAnswer;
-        vm.deleteButton = 'none';
+        vm.deleteButton = false;
         vm.showUrl = showUrl;
         vm.closeRank = closeRank;
         vm.closeAnswerDetail = closeAnswerDetail;
@@ -71,6 +73,11 @@
         vm.hideGetPremium = hideGetPremium;
         vm.gotoMyBusiness = gotoMyBusiness;
         vm.share = share;
+        vm.addvrow = addvrow;
+        vm.moreImagesRev = moreImagesRev;
+        vm.moreImagesFwd = moreImagesFwd;
+        vm.showSpecial = showSpecial;
+
         //Admin Function adding catans on spot
         vm.addCatans = addCatans;
         vm.addctsactive = false;
@@ -138,6 +145,8 @@
             $rootScope.isLoggedIn = $rootScope.isLoggedIn ? $rootScope.isLoggedIn : false;
             vm.isLoggedIn = $rootScope.isLoggedIn;
 
+            $rootScope.cansvrows = undefined;
+
             //vm.userIsOwner = $rootScope.userIsOwner;
             if ($stateParams.index) {
                 var isnum = /^\d+$/.test($stateParams.index);
@@ -156,8 +165,15 @@
                 metaDescription: vm.answer.addinfo 
             };
 
+            if (vm.answer.isprivate == undefined) vm.answer.isprivate = false;            
+
             $rootScope.canswer = vm.answer;
             vm.type = vm.answer.type;
+            vm.i = -1;
+            if ($rootScope.DISPLAY_XSMALL || $rootScope.DISPLAY_SMALL) numImagesPage = 4;
+            if ($rootScope.DISPLAY_MEDIUM) numImagesPage = 6;
+            if ($rootScope.DISPLAY_LARGE) numImagesPage = 12;
+            getImages();
             //vm.isShortPhrase = vm.type == 'Short-Phrase';
             
             //if there is no category, look for it in cookies
@@ -190,13 +206,13 @@
 
             if ($rootScope.previousState != 'answerDetail') $window.scrollTo(0, 0);
 
-            vm.showImageGallery = false;
+            //vm.showImageGallery = false;
             $rootScope.$emit('showLogo');
 
             getHeader();
             //        getCatAnsId(vm.answer.id);
             getEdits(vm.answer.id);
-            deleteButtonAccess();
+            
             vm.access = false; //use this variable to access editspecials
             if ($rootScope.isLoggedIn) {
                 if ($rootScope.user.id == vm.answer.owner) {
@@ -208,11 +224,13 @@
             else vm.userIsOwner = false;
 
             $rootScope.userIsOwner = vm.userIsOwner;
+            deleteButtonAccess();
 
             //if (vm.type == 'Establishment') getHours();
             if (vm.type != 'Establishment' && vm.type != 'Event' && false) makeRelativeTable(vm.answer.id);
             if (vm.type == 'Establishment') getSpecials(vm.answer.id);
-            if (vm.type == 'Establishment' || vm.type == 'PersonCust') getVRows(vm.answer.id);
+            //if (vm.type == 'Establishment' || vm.type == 'PersonCust') 
+            getVRows(vm.answer.id);
             getAnswerRanks();                        
 
             //if user votes are available - do my thing at getAnswerVotes
@@ -781,23 +799,14 @@
             for (var i = 0; i < $rootScope.specials.length; i++) {
                 if ($rootScope.specials[i].answer == answerid) {
                     //format date, load name and html msg
-                    datetime.formatdatetime($rootScope.specials[i]);
-                    $rootScope.specials[i].name = vm.answer.name;
-
-                    var htmlmsg = htmlops.specialHtml($rootScope.specials[i]);
-                    $rootScope.specials[i].html = htmlmsg;
-                    //Separate style (not working with ng-bind-html)
-                    var spStyle = 'background-color:' + $rootScope.specials[i].bc + ';color:' + $rootScope.specials[i].fc + ';' +
-                        'white-space:pre;';
-                    $rootScope.specials[i].style = spStyle;
-                    if ($rootScope.specials[i].image != undefined &&
-                        $rootScope.specials[i].image != $rootScope.EMPTY_IMAGE) {
-                        $rootScope.specials[i].hasimage = true;
-                    }
-                    else $rootScope.specials[i].hasimage = false;
                     vm.specialsList.push($rootScope.specials[i]);
                 }
             }
+        }
+
+        function showSpecial(x){
+            console.log("showspecial");
+            dialog.showSpecial(x);
         }
 
         function showsimage(x) {
@@ -808,72 +817,101 @@
         }
 
         function getVRows(answerid) {
-            $rootScope.cansvrows = [];
-            //Load vrows for this answer           
-            for (var i = 0; i < $rootScope.cvrows.length; i++) {
-                if ($rootScope.cvrows[i].answer == answerid) {
-                    var obj = $rootScope.cvrows[i];
-                    obj.idx = i; //Store object but store index in main local copy
-                    obj.voteExists = false;
-                    obj.dV = 0;
-                    obj.upVi = $rootScope.cvrows[i].upV;
-                    obj.downVi = $rootScope.cvrows[i].downV;
-                    obj.upImage = 'thumbs_up_gray_table.png';
-                    obj.downImage = 'thumbs_down_gray_table.png';
-                    $rootScope.cansvrows.push(obj);
-                }
-            }
-            getVRowVotes();
+            var objExists = false;
+            var obj = {};
+            var callgetVotes = false;
 
+            if ($rootScope.cansvrows == undefined) {
+                $rootScope.cansvrows = [];
+                callgetVotes = true;
+            }
+            
+            //Load vrows for this answer
+            if ($rootScope.cvrows) {
+                for (var i = 0; i < $rootScope.cvrows.length; i++) {
+                    if ($rootScope.cvrows[i].answer == answerid) {
+                        objExists = false;
+                        //Check vrow is not already added
+                        for (var j=0; j < $rootScope.cansvrows.length; j++){
+                            if ($rootScope.cansvrows[j].id == $rootScope.cvrows[i].id)
+                                objExists = true;
+                        }
+                        
+                        if (!objExists) {
+                            obj = {};
+                            obj = $rootScope.cvrows[i];
+                            obj.idx = i; //Store object but store index in main local copy
+                            obj.voteExists = false;
+                            obj.dV = 0;
+                            obj.upVi = $rootScope.cvrows[i].upV;
+                            obj.downVi = $rootScope.cvrows[i].downV;
+                            obj.upImage = 'thumbs_up_gray_table.png';
+                            obj.downImage = 'thumbs_down_gray_table.png';
+                            if ($rootScope.isLoggedIn){
+                                if (obj.user == $rootScope.user.id) vrowsByUserCounter++;
+                            }
+                            $rootScope.cansvrows.push(obj);
+                        }
+                    }
+                }
+                if (callgetVotes) getVRowVotes();
+                else (vm.newop = '');
+                if (vrowsByUserCounter >= 3 || !$rootScope.isLoggedIn) vm.addvrowbutton = 'disabled';
+                //if (!callgetVotes) displayVRows();                
+            }
         }
 
         function displayVRows() {
+            vm.vrows = $rootScope.cansvrows;
+        }
 
-            vm.vrows = [];
-            function compare(a, b) {
-                return a.gnum - b.gnum;
-            }
-            if ($rootScope.cansvrows.length > 0) {
-                vm.vrows = $rootScope.cansvrows.sort(compare);
-                vm.vrows[0].shdr = true;
-                for (var i = 1; i < vm.vrows.length; i++) {
-                    if (vm.vrows[i].gnum == vm.vrows[i - 1].gnum) vm.vrows[i].shdr = false;
-                    else vm.vrows[i].shdr = true;
-                }
-                vm.vrows[vm.vrows.length - 1].saddr = true;
-                for (var i = 0; i < vm.vrows.length - 1; i++) {
-                    if (vm.vrows[i].gnum != vm.vrows[i + 1].gnum) vm.vrows[i].saddr = true;
-                    else vm.vrows[i].saddr = false;
-                }
-
-                vm.vrowgroups = [];
-                var vrowgroup = [];
-                var tgroup = vm.vrows[0].gnum;
-                for (var i = 0; i < vm.vrows.length; i++) {
-
-                    if (tgroup != vm.vrows[i].gnum) {
-                        //console.log("vrowgroup --- ", vrowgroup);
-                        vm.vrowgroups.push(vrowgroup);
-                        vrowgroup = [];
-                        vrowgroup.push(vm.vrows[i]);
-                        tgroup = vm.vrows[i].gnum;
-
+        function validateNewVrow(){
+            vm.maybeRepeatedVrows = [];
+            var tags = [];
+            var vrowtitle = '';
+            var newop = vm.newop;
+            var foundMatch = false;
+            newop = newop.toLowerCase();
+            newop = newop.replace(',',' ');
+            newop = newop.replace('!',' ');
+            var tagsnewop = newop.split(" ");
+            for (var i=0; i < vm.vrows.length ; i++){
+                foundMatch = false;
+                vrowtitle = vm.vrows[i].title;
+                vrowtitle = vrowtitle.toLowerCase();
+                vrowtitle = vrowtitle.replace(',',' ');
+                vrowtitle = vrowtitle.replace('!',' ');
+                tags = vrowtitle.split(" ");
+                for (var j=0; j < tags.length; j++){
+                    for (var k=0; k < tagsnewop.length; k++){
+                        
+                        if (tags[j].length > 3 && tagsnewop[k].length > 3 ){
+                            //if tags from vrow bigger than opinion
+                            if (tags[j].length >= tagsnewop[k].length){
+                                if(tags[j].indexOf(tagsnewop[k])>-1){
+                                    vm.maybeRepeatedVrows.push(vm.vrows[i]);
+                                    foundMatch = true;
+                                    break;
+                                }
+                            }
+                            else {
+                                if(tagsnewop[k].indexOf(tags[j])>-1){
+                                    vm.maybeRepeatedVrows.push(vm.vrows[i]);
+                                    foundMatch = true;
+                                    break;
+                                }
+                            }
+                        }
+                        //if (newop.indexOf(tags[j])>-1)                    
                     }
-                    else {
-                        vrowgroup.push(vm.vrows[i]);
-                    }
-                    //for last element
-                    if (i == vm.vrows.length - 1) {
-                        vm.vrowgroups.push(vrowgroup);
-                    }
+                    if (foundMatch) break;                    
                 }
-
             }
         }
 
         function deleteButtonAccess() {
-            if ($rootScope.isAdmin) vm.deleteButton = 'inline';
-            else vm.deleteButton = 'none';
+            if ($rootScope.isAdmin || (vm.userIsOwner && vm.answer.isprivate)) vm.deleteButton = true;
+            else vm.deleteButton = false;
         }
 
         function showUrl() {
@@ -931,7 +969,7 @@
         }
 
         function editVRows() {
-            $state.go('editvrows');
+           // $state.go('editvrows');
         }
 
         function addRankforAnswer() {
@@ -939,6 +977,7 @@
         }
 
         function getImages() {
+            vm.showImageGallery = true;
             if (vm.igdemo) instagram.getImages().then(showImages);
             else {
                 $rootScope.blobs = [];
@@ -954,12 +993,10 @@
                 }
                 imagelist.getImageList().then(showImages);
             }
-
-            vm.showImageGallery = true;
-
         }
         function showImages() {
-            var specialImages = vm.specialsList.map(function(special){ return special.image;});
+            var specialImages = [];
+            if (vm.specialsList) specialImages = vm.specialsList.map(function(special){ return special.image;});
             $rootScope.blobs = $rootScope.blobs.filter(function(blob){
                 if (specialImages.indexOf(blob.url) != -1) {
                     return false;
@@ -970,8 +1007,42 @@
             })
             if (vm.igdemo) vm.images = $rootScope.igimages;
             else vm.images = $rootScope.blobs;
+
+            numImages = vm.images.length;
+            vm.i = 0;
+            imageNav();
             //console.log("@showImages - ", vm.images);
         }
+
+        function imageNav(){
+            console.log("numImages ", numImages);
+            if ((vm.i + (numImagesPage-1)) <= numImages) vm.e = vm.i+numImagesPage;
+            else vm.e = numImages;
+            console.log("vm.i, vm.e - ", vm.i, vm.e);
+            if (numImages <= 4) { vm.showFwd = false; vm.showRev = false; }
+            else {
+                if (vm.i == 0) vm.showRev = false;
+                else vm.showRev = true;
+                if (vm.e == vm.images.length-1) vm.showFwd = false;
+                else vm.showFwd = true;
+            }
+            if (vm.e >= (numImages-1)) vm.showFwd = false;    
+        }
+
+        function moreImagesFwd(){
+            if (vm.showFwd){
+                vm.i = vm.i+numImagesPage;
+                imageNav();
+            }
+        }
+
+        function moreImagesRev(){
+            if (vm.showRev){
+                vm.i = vm.i-numImagesPage;
+                imageNav();
+            }
+        }
+
         /*
         function showMap(){
           google.maps.event.addDomListener(window, "load", initMap);
@@ -1165,10 +1236,27 @@
             vm.voteonstyle = "background-color:#e6e6e6;color:black";
         }
 
-
         function endorseDialog(){
             dialog.endorse(vm.type);
             $rootScope.endorseDialogShown = true;
+        }
+
+        function addvrow(){
+            if (vrowsByUserCounter < 3 && $rootScope.isLoggedIn){
+                validateNewVrow();
+                if (vm.maybeRepeatedVrows.length > 0 ) 
+                    dialog.maybeRepeatVrows(vm.newop, vm.maybeRepeatedVrows, addvrowexec);
+                else
+                    addvrowexec();
+            }
+            else if (!$rootScope.isLoggedIn) dialog.loginFacebook();
+            else dialog.getDialog('opinionsLimit'); 
+                           
+        }
+        function addvrowexec(){
+            vrows.postRec(vm.newop).then(function(){
+                    getVRows($rootScope.canswer.id);
+             });
         }
 
 

@@ -225,12 +225,10 @@
                 //if (!tourviewed && !$rootScope.isLoggedIn) dialog.tour();
             }
 
-            //If user is logged in, get data of this user
-            if ($rootScope.isLoggedIn){
+            //Call userdata functions, If user is not logged in, functions do not execute.
                 userdata.loadUserData();        //load user data (votes and activities)
                 userdata.loadUserAccount();     //load user business account
-            }
-
+            
             //Determine if user is using Facebook browser
             $rootScope.isFacebookApp = isFacebookApp();
 
@@ -301,6 +299,7 @@
         function loadingDone() {
             if ($rootScope.pageDataLoaded == undefined) $rootScope.pageDataLoaded = false;
             if ($rootScope.userDataLoaded == undefined) $rootScope.userDataLoaded = false;
+            
 
             if (window.location.href.indexOf('rankSummary')>-1)
                 $rootScope.dataIsLoaded = $rootScope.rankSummaryDataLoaded && $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
@@ -396,7 +395,7 @@
             $rootScope.editMode = true;
             vm.selEditRank = 'active';
             vm.selViewRank = '';
-            console.log("$rootScope.editMode -- ", $rootScope.editMode);
+            if ($rootScope.DEBUG_MODE) console.log("$rootScope.editMode -- ", $rootScope.editMode);
 
         }
         function viewRank() {
@@ -411,7 +410,7 @@
 
         function prepareNewCatansOptions() {
             
-            console.log("@prepareNewCatansOptions - $rootScope.content.length ", $rootScope.content.length);
+            if ($rootScope.DEBUG_MODE) console.log("@prepareNewCatansOptions - $rootScope.content.length ", $rootScope.content.length);
             $rootScope.ctsOptions = [];
             var titlex = '';
             for (var i = 0; i < $rootScope.content.length; i++) {

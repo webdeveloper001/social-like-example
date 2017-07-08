@@ -6,9 +6,9 @@
         .factory('dialog', dialog);
 
     dialog.$inject = ['$q', '$rootScope', 'useraccnt', 'imagelist', 'answer', 'login',
-        '$window','$cookies', '$state', '$compile','htmlops']
+        '$window','$cookies', '$state', '$compile','htmlops','datetime']
     function dialog($q, $rootScope, useraccnt, imagelist, answer, login,
-        $window, $cookies, $state, $compile, htmlops) {
+        $window, $cookies, $state, $compile, htmlops, datetime) {
 
         var service = {
             editConfirm: editConfirm,
@@ -60,7 +60,9 @@
             confirmSameAnswerMultiple: confirmSameAnswerMultiple,
             showTOSPromotersDlg: showTOSPromotersDlg,
             showTOSCustomersDlg: showTOSPromotersDlg,
-            sortbyHelpDialog: sortbyHelpDialog
+            sortbyHelpDialog: sortbyHelpDialog,
+            maybeRepeatVrows: maybeRepeatVrows,
+            showSpecial: showSpecial,
         };
         return service;
 
@@ -1330,7 +1332,7 @@
             var btnOkLabel = '';
 
             title = 'Login required';
-            message = 'You must be logged in to add rankings, answers, endorse establishments and participate in the rankings.' +
+            message = 'You must be logged in to add rankings, answers, opinions, endorse establishments and participate in the rankings.' +
             '</br></br>' +
             'Do you want to log in?';
 
@@ -2482,6 +2484,7 @@
             
             return answerhtml;
         }
+
         function confirmSameAnswerMultiple(answers, callback) {            
 
             var title = '';
@@ -2590,6 +2593,98 @@
                     cssClass: 'btn-primary',
                     autospin: false,
                     action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }]
+            });
+        }
+
+        function maybeRepeatVrows(newop, vrows, callback) {
+
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Just checking';
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'My opinion is different, add it';
+            message = 'Your opinion:' +
+            '<br><p class="text-center"><i>' + newop + '</i></p>' +
+            'might be similar to these already existing opinions: <br><br><p class="text-center">'; 
+
+            for (var i=0; i< vrows.length; i++){
+                message = message + '<i>' + vrows[i].title + '</i><br>';
+            }
+
+            message = message + '</p>Double check you are not adding an opinion that is essentially same as one already there.<br>';
+            
+            //message = message;
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'btn-primary',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) callback();
+                    //else callback1(answer1);
+                }
+            });
+       
+        }
+
+        function showSpecial(x) {
+
+            var title = 'Special Details';
+            var message = '';
+            var imageStyle = '';
+
+            datetime.formatdatetime(x);
+            //$rootScope.specials[i].name = vm.answer.name;
+            var htmlmsg = htmlops.specialHtml(x);
+            //$rootScope.specials[i].html = htmlmsg;
+            //Separate style (not working with ng-bind-html)
+            var spStyle = 'background-color:' + x.bc + ';color:' + x.fc + ';' +
+                'white-space:pre;';
+            x.style = spStyle;
+            if (x.image != undefined &&
+                x.image != $rootScope.EMPTY_IMAGE) {
+                x.hasimage = true;
+            }
+            else x.hasimage = false;
+
+            if ($rootScope.DISPLAY_XSMALL) imageStyle = 'width:100%;height:auto;';
+            if ($rootScope.DISPLAY_SMALL)  imageStyle = 'width:100%;height:auto;max-height:300px;'; 
+            if ($rootScope.DISPLAY_MEDIUM) imageStyle = 'width:100%;height:auto;max-height:350px;';
+            if ($rootScope.DISPLAY_LARGE)  imageStyle = 'width:100%;height:auto;max-height:400px;';
+
+            //console.log("x.image, x.hasimage - ", x.image, x.hasimage);
+
+            message = '<div ng-attr-style="'+ x.style +'">' + htmlmsg  + '</div>' +
+            (x.hasimage ? '<div class="text-middle">' +
+            '<img class="displayed" src=' + x.image + ' style="' + imageStyle + 'margin-left:auto;margin-right:auto;">'+
+            '</div><br>' : '<br>');
+            
+            console.log("message ", message);
+
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'OK',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef, result) {
                         dialogRef.close();
                     }
                 }]

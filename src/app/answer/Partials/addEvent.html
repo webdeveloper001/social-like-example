@@ -209,28 +209,32 @@
 <div class="row" style="margin:0px;">
     <form class="form-horizontal col-xs-12 col-sm-12 col-md-6" role="form" name="answerForm">
         <!-- <br ng-if="vm.nsm"> -->
-        <div class="form-group" style="padding:10px">
+        <div class="form-group" style="padding:5px">
             <label class="control-label">Venue / Location:</label>
             <input class="form-control" ng-model="vm.ev.eventloc" bs-typeahead bs-options="c for c in vm.locations" 
                 type="text" placeholder="{{vm.ev.eventloc.str}}" ng-change="vm.onSelect()">
         </div>
         <!-- <br ng-if="vm.nsm"> -->
-        <div class="form-group" style="padding:10px">
+        <div class="form-group" style="padding:5px">
             <label class="control-label">Address:</label>
             <input class="form-control" ng-model="vm.ev.location" type="text" placeholder="{{vm.ev.location}}">
         </div>
         <!-- <br ng-if="vm.nsm"> -->
-        <div class="form-group" style="padding:10px">
+        <div class="form-group" style="padding:5px">
             <label class="control-label">Neighborhood:</label>
             <input class="form-control" ng-model="vm.ev.cityarea" bs-typeahead bs-options="c for c in vm.neighborhoods" type="text" placeholder="{{vm.ev.cityarea}}">
         </div>
+        <div class="form-group" style="padding:5px">
+            <label class="control-label">Phone Number:</label>
+            <input class="form-control" ng-model="vm.ev.phone" type="text" placeholder="{{vm.ev.phone}}">
+        </div>
         <!-- <br ng-if="vm.nsm"> -->
-        <div class="form-group" style="padding:10px">
+        <div class="form-group" style="padding:5px">
             <label class="control-label">Event Website:</label>
             <input class="form-control" ng-model="vm.ev.website" type="text" placeholder="{{vm.ev.website}}">
         </div>
         <!-- <br ng-if="vm.nsm"> -->
-        <div class="form-group" style="padding:10px">
+        <div class="form-group" style="padding:5px">
             <label class="control-label">Additional Info:</label>
             <textarea class="form-control" ng-model="vm.ev.addinfo" placeholder="{{vm.ev.addinfo}}" rows="4" ng-attr-style="background-color:{{vm.ev.bc}};color:{{vm.ev.fc}};width:100%"></textarea>
         </div>

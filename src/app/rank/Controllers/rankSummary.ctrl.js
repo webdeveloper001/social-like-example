@@ -154,15 +154,17 @@
 
             loadData(); //load data and write to $rootScope
             var answerIDs = vm.answers.map(function(answer){return answer.id;});
-
-            votes.loadLastMonthVoting(answerIDs)
-            .then(function(resp){
-                resp.forEach(function(vote){
-                    var idx = answerIDs.indexOf(vote.answer);
-                    vm.answers[idx].trendUpV ++;
+            if (answerIDs.length > 0){
+                votes.loadLastMonthVoting(answerIDs)
+                    .then(function(resp){
+                        resp.forEach(function(vote){
+                            var idx = answerIDs.indexOf(vote.answer);
+                            vm.answers[idx].trendUpV ++;
+                        });
+                //console.log(vm.answers);
                 });
-                console.log(vm.answers);
-            });
+            }
+
             checkUserCredentials();
 
             //-----SEO tags ----

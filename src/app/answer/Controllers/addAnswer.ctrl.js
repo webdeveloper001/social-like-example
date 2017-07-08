@@ -137,10 +137,10 @@
             
             vm.neighborhoods = $rootScope.neighborhoods.concat($rootScope.districts);
 
-            vm.establishmentNames = $rootScope.estNames;
+            vm.establishmentNames = $rootScope.estNames.concat($rootScope.plaNames, $rootScope.orgNames);
             vm.peopleNames = $rootScope.pplNames;
-            vm.placesNames = $rootScope.plaNames;
-            vm.organizationNames = $rootScope.orgNames;
+            //vm.placesNames = $rootScope.plaNames;
+            //vm.organizationNames = $rootScope.orgNames;
 
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
@@ -170,12 +170,14 @@
                 
                 //Typeahead check for current Places
                 if (vm.fields[i].name == "name" && $rootScope.cCategory.type == 'Place') {
-                    vm.fields[i].opts = "c for c in vm.placesNames";
+                    //vm.fields[i].opts = "c for c in vm.placesNames";
+                    vm.fields[i].opts = "c for c in vm.establishmentNames";
                 }
 
                 //Typeahead check for current Companies
                 if (vm.fields[i].name == "name" && $rootScope.cCategory.type == 'Organization') {
-                    vm.fields[i].opts = "c for c in vm.organizationNames";
+                    //vm.fields[i].opts = "c for c in vm.organizationNames";
+                    vm.fields[i].opts = "c for c in vm.establishmentNames";
                 }
                 
                 //When neighborhood is implied put it in the input field right away
@@ -357,8 +359,12 @@
             //Add new answer, also add new post to catans (inside addAnser)
             
             if ($rootScope.DEBUG_MODE) console.log("No, different! @addAnswerConfirmed");
-            if (myAnswer.type == 'Establishment' && rankNh && rankNh != myAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
-            else if (myAnswer.type == 'Establishment' && (myAnswer.location != undefined && myAnswer.location != "" && myAnswer.location != null)) {
+            //***** if (myAnswer.type == 'Establishment' && rankNh && rankNh != myAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
+            if (rankNh && rankNh != myAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
+            
+            //****else if (myAnswer.type == 'Establishment' && (myAnswer.location != undefined && myAnswer.location != "" && myAnswer.location != null)) {
+            else if ((myAnswer.location != undefined && myAnswer.location != "" && myAnswer.location != null)) {
+              
                 var promise = getgps.getLocationGPS(myAnswer);
                 promise.then(function () {
                     //console.log("myAnswer --- ", myAnswer);
@@ -366,7 +372,8 @@
                 });
             }
             else {
-                if (myAnswer.type == 'Establishment' || myAnswer.type == 'PersonCust') eqRanks();
+                //**** if (myAnswer.type == 'Establishment' || myAnswer.type == 'PersonCust') eqRanks();
+                eqRanks();
                 //create 2 catans records one for downtown and then district
                 if (eqFound && !inCity) {
                     if ($rootScope.DEBUG_MODE) console.log("P1 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx,myAnswer);
@@ -411,12 +418,14 @@
             //Answer already exist in this category, do not add
             if (duplicateSameCategory) dialog.getDialog('answerDuplicated');
             
-            else if (myAnswer.type == 'Establishment' && rankNh && rankNh != extAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
+            //**** else if (myAnswer.type == 'Establishment' && rankNh && rankNh != extAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
+            else if (rankNh && rankNh != extAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
             
             //Answer already exist, just post new category-answer record            
             else {
-                if (extAnswer.type == 'Establishment' || extAnswer.type == 'PersonCust' || extAnswer.type == 'Place'
-                 || extAnswer.type == 'Event') eqRanks();
+                //**** if (extAnswer.type == 'Establishment' || extAnswer.type == 'PersonCust' || extAnswer.type == 'Place'
+                // || extAnswer.type == 'Event') eqRanks();
+                eqRanks();
                 if ($rootScope.DEBUG_MODE) console.log("eqFound, inCity, eqRankIdx = ", eqFound, inCity, eqRankIdx);
                 //create 2 catans records one for downtown and then district
                 if (eqFound && !inCity) {
@@ -441,7 +450,7 @@
             var cityarea = '';
             //Determine answer neighborhood
             if (myAnswer.cityarea == undefined)
-                cityarea = extAnswer.cityarea;
+                if (extAnswer.cityarea) cityarea = extAnswer.cityarea;
             else 
                 cityarea = myAnswer.cityarea;
 
@@ -515,7 +524,7 @@
 
         function checkAnswerExists(answer) {
             //Check if answer about to be added exists already among establishments
-            if (vm.type == 'Establishment') {
+            if (vm.type == 'Establishment' || vm.type == 'Place' || vm.type == 'Organization') {
                 for (var i = 0; i < $rootScope.estAnswers.length; i++) {
                     if (answer.name == $rootScope.estAnswers[i].name &&
                         answer.cityarea == $rootScope.estAnswers[i].cityarea) {
@@ -548,7 +557,7 @@
                     }
                 }
             }
-            else if (vm.type == 'Place') {
+            else if (vm.type == 'Establishment' || vm.type == 'Place' || vm.type == 'Organization') {
                 for (var i = 0; i < $rootScope.plaAnswers.length; i++) {
                     if (answer.name == $rootScope.plaAnswers[i].name) {
 
@@ -564,7 +573,7 @@
                     }
                 }
             }
-            else if (vm.type == 'Organization') {
+            else if (vm.type == 'Establishment' || vm.type == 'Place' || vm.type == 'Organization') {
                 for (var i = 0; i < $rootScope.orgAnswers.length; i++) {
                     if (answer.name == $rootScope.orgAnswers[i].name) {
 
@@ -642,7 +651,7 @@
                     //console.log("MaybeSameAnswers - ", maybeSameAnswers);
                     if (maybeSameAnswers.length == 1) {
                         checkAnswerExists(maybeSameAnswers[0]);
-                        dialog.confirmSameAnswer(maybeSameAnswers[0],answerIsSame);
+                        dialog.confirmSameAnswer(maybeSameAnswers[0],answerChosen);
                     }
                     else if (maybeSameAnswers.length > 1) dialog.confirmSameAnswerMultiple(maybeSameAnswers,answerChosen);                 
                 }                
@@ -651,7 +660,9 @@
         }
 
         function answerChosen(n){
-            extAnswer = maybeSameAnswers[n];
+            console.log("answerChosen - ", extAnswer);
+            if (n == undefined ) extAnswer = maybeSameAnswers[0];
+            else extAnswer = maybeSameAnswers[n];
             answerIsSame();
         }
 

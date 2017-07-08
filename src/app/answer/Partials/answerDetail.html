@@ -42,7 +42,7 @@
 </div>
 <div class="col-xs-12">
     <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
-        <h3 class="sub-header">Endorsements</h3>        
+        <h3 class="sub-header text-center">Endorsements</h3>        
     </div>
     <div class="text-right" style="padding-bottom:5px">
         Vote:&nbsp
@@ -81,7 +81,7 @@
             </div>            
         </div>
         
-        <p ng-attr-style="display:{{vm.deleteButton}};color:red" ng-click="vm.deleteThisCatans(r)">&lt;&lt;Delete&gt;&gt;</p>
+        <p ng-attr-style="display:{{vm.deleteButton ? 'inline':'none'}};color:red" ng-click="vm.deleteThisCatans(r)">&lt;&lt;Delete&gt;&gt;</p>
         
     </div>
     
@@ -104,19 +104,20 @@
     <div class="row" ng-if="vm.type != 'Short-Phrase'">
         <div class="col-xs-12">
             <div class="well-sm" style="background-color:#666666;color:#f8f8ff;">
-                <h3 class="sub-header">The Favorites</h3>
+                <h3 class="sub-header text-center">The Favorites</h3>
             </div>
         </div>
     </div>
     <div class="row" style="padding:0px;margin:0px;border:0px">
         <div ng-repeat="n in vm.myranks">
             <!-- <div class="clearfix" ng-if="$index % 3 == 0" style="border:0px;padding:0px;margin:0px;"></div> -->
-            <div class="container col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoRank(n)" ng-attr-style="border-top:3px solid white;border-bottom:3px solid white;background-color:{{n.bc}};color:{{n.fc}};height:{{vm.sm ? '90px':'120px'}};margin:0px;padding:0px;position:relative">
-                <h3 class=" hidden-xs text-center" ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{n.title}}</h2>
-                    <h4 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{n.title}}</h3>
+            <div class="container col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoRank(n)" 
+            ng-attr-style="border-top:3px solid white;border-bottom:3px solid white;background-color:{{n.bc}};color:{{n.fc}};height:{{vm.sm ? '90px':'150px'}};margin:0px;padding:0px;position:relative;">
+                <h3 class=" hidden-xs text-center" ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%);cursor:pointer;">{{n.title}}</h2>
+                <h4 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%);cursor:pointer;">{{n.title}}</h3>
             </div>
             <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoRank(n)" style="margin:0px;padding:0px;">
-                <img ng-src="{{n.image}}" ng-attr-style="border-top:3px solid white;border-bottom:3px solid white;width:95%;height:{{vm.sm ? '90px':'120px'}}">
+                <img ng-src="{{n.image}}" ng-attr-style="border-top:3px solid white;border-bottom:3px solid white;width:95%;height:{{vm.sm ? '90px':'150px'}};cursor:pointer;">
             </div>
         </div>
     </div>    
@@ -126,7 +127,7 @@
 </div>
 
 <!-- Show potential upgrades for Custom Ranks -->    
-<div class="container col-xs-12" ng-if="vm.userIsOwner&&!vm.answer.hasranks&&!vm.hideCustomRanksMsg">
+<div class="container col-xs-12" ng-if="vm.userIsOwner&&!vm.answer.hasranks&&!vm.hideCustomRanksMsg&&!vm.answer.isprivate">
     <br>
     <div class="alert alert-info">
         This Favorites section contains <strong>Custom Ranks</strong> and it is <strong>only visible to you</strong>
@@ -138,17 +139,20 @@
         <i>Recent Projects</i>, <i>Success Stories</i>, <i>Staff Members</i> or anything you choose.<br><br>
         Below are some examples on how you can use Custom Ranks to enhance your business profile. 
         <div class="well-sm" style="background-color:#666666;color:#f8f8ff;">
-            <h3 class="sub-header">The Favorites</h3>
+            <h3 class="sub-header text-center">The Favorites</h3>
         </div>
         <div class="row" style="padding:0px;margin:0px;border:0px">
             <div ng-repeat="n in vm.myranks">
                 <!-- <div class="clearfix" ng-if="$index % 3 == 0" style="border:0px;padding:0px;margin:0px;"></div> -->
-                <div class="container col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoRank(n)" ng-attr-style="border-top:3px solid white;border-bottom:3px solid white;background-color:{{n.bc}};color:{{n.fc}};height:{{vm.sm ? '90px':'120px'}};margin:0px;padding:0px;position:relative">
-                    <h3 class=" hidden-xs text-center" ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{n.title}}</h2>
-                    <h4 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{n.title}}</h3>
+                <div class="container col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoRank(n)"
+                ng-attr-style="border-top:3px solid #D9EDF7;border-bottom:3px solid #D9EDF7;background-color:{{n.bc}};color:{{n.fc}};height:{{vm.sm ? '90px':'150px'}};margin:0px;padding:0px;position:relative;">
+                    <h3 class="hidden-xs text-center" 
+                    ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%);cursor:pointer;">{{n.title}}</h2>
+                    <h4 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" 
+                    ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%);cursor:pointer;">{{n.title}}</h3>
                 </div>
                 <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoRank(n)" style="margin:0px;padding:0px;">
-                    <img ng-src="{{n.image}}" ng-attr-style="border-top:3px solid white;border-bottom:3px solid white;width:95%;height:{{vm.sm ? '90px':'120px'}}">
+                    <img ng-src="{{n.image}}" ng-attr-style="border-top:3px solid #D9EDF7;border-bottom:3px solid #D9EDF7;width:95%;height:{{vm.sm ? '90px':'150px'}};cursor:pointer;">
                 </div>
             </div>
         </div>
@@ -160,13 +164,14 @@
 </div>
 
 <div class="col-xs-12" ng-if="true">
-    <div class="row" ng-if="vm.type != 'Short-Phrase'">
-        <div class="col-xs-12">
-            <div class="well-sm" style="background-color:#666666;color:#f8f8ff;">
-                <h3 class="sub-header">Photo Gallery</h3>
-            </div>
-        </div>
-    </div>
+       <div class="well-sm" style="background-color:#666666;color:#f8f8ff;">
+    <h3 class="sub-header" style="justify-content:space-between;display:flex">
+        <span class="alignleft" style="cursor:pointer" ng-click="vm.moreImagesRev()">&nbsp{{vm.showRev?'&lt':' '}}&nbsp</span>
+        <span class="aligncenter">Photo Gallery</span>
+        <span class="alignright" style="cursor:pointer" ng-click="vm.moreImagesFwd()">&nbsp{{vm.showFwd?'&gt':' '}}&nbsp</span>
+    </h3>
+</div>
+
     <div class="text-right" ng-if="vm.type != 'Short-Phrase'">
         <button ng-if="!vm.igdemo" class="btn btn-success" ng-click="vm.getImages()" ng-attr-style="display:{{vm.showImageGallery == false ? 'inline':'none'}};margin:5px;">
             Show Images </button>
@@ -177,7 +182,7 @@
     </div>
     <div ng-attr-style="display:{{vm.showImageGallery == true ? 'inline':'none'}}">
 
-        <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" ng-repeat="x in vm.images">
+        <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" ng-repeat="x in vm.images.slice(vm.i,vm.e)">
             <a ng-click="vm.selectPhoto($index)" class="thumbnail">
                 <img ng-src="{{x.url}}" style="width:100%;height:120px">
             </a>
@@ -191,12 +196,12 @@
     <!-- <br ng-if="vm.showImageGallery && vm.isLoggedIn && vm.userIsOwner"> -->
     <div class="row">
         <div class="col-xs-6" style="padding-top:20px;">
-            <div class="text-center" ng-if="vm.showImageGallery && vm.isLoggedIn && vm.userIsOwner" ng-attr-style="display:{{vm.isLoggedIn ? 'inline':'none'}};">
+            <div class="text-center" ng-if="vm.showImageGallery && vm.isLoggedIn" ng-attr-style="display:{{vm.isLoggedIn ? 'inline':'none'}};">
                 <blob-upload>
             </div>
         </div>
         <div class="col-xs-6">
-            <div class="text-center" ng-if="vm.showImageGallery && vm.isLoggedIn && vm.userIsOwner">
+            <div class="text-center" ng-if="vm.showImageGallery && vm.isLoggedIn">
                 Get from Instagram&nbsp&nbsp&nbsp
                 <img ng-src="/assets/images/glyph-logo_May2016.png" ng-click="vm.selectInstagramImages()" ng-attr-style="width:80px;display:{{vm.isLoggedIn ? 'inline':'none'}};cursor:pointer"/>
             </div>
@@ -207,12 +212,12 @@
     <!--<div ui-view></div>-->
     <div ng-show="{{vm.type == 'Establishment' || vm.type == 'PersonCust' }}">
         <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
-            <h3 class="sub-header">Specials</h3>
+            <h3 class="sub-header text-center">Specials</h3>
         </div>
-
+<!--
         <div ng-repeat="x in vm.specialsList">
             <div ng-bind-html="x.html" ng-attr-style="{{x.style}}">
-                <br>
+                <br ng-if="vm.specialsList">
             </div>
             <p ng-if="x.hasimage" style="background-color:lightgray;cursor:pointer" ng-click="vm.showsimage(x)">
                 {{x.showimage ? 'Hide Flyer':'Show Flyer'}}</p>
@@ -221,6 +226,15 @@
                 <br>
             </div>
         </div>
+-->
+
+<div class="row" style="border-left:5px solid white;border-right:5px solid white;">
+    <div ng-repeat="x in vm.specialsList">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-click="vm.showSpecial(x)" ng-attr-style="background-color:{{x.bc}};color:{{x.fc}};cursor:pointer;border:5px solid white;">
+            <h4 class="text-center">{{x.stitle}}</h4>
+        </div>
+    </div>
+</div>
 
         <div class="text-right">
             <a href="" ng-if="vm.userIsOwner" ng-click="vm.openSpecials()">Edit Specials</a>
@@ -229,8 +243,10 @@
 </div>
 
 <!-- Show potential upgrades for Custom Ranks -->    
-<div class="container col-xs-12" ng-if="vm.userIsOwner&&!vm.answer.ispremium&&!vm.hideGetPremiumMsg">
-    <div class="alert alert-info">
+<div class="container col-xs-12" ng-if="vm.userIsOwner&&!vm.answer.ispremium&&!vm.hideGetPremiumMsg&&!vm.answer.isprivate">
+    <!-- <div style="background-color:#D9EDF7; color:#31708B; border-color:#BCE8F1"> -->
+        <div class="alert alert-info">
+        
         This Specials section below is only visible when you have <strong>Premium Membership</strong>. Premium Membership allows you to: <br><br>
         <i class="fa fa-check"></i>&nbspCommunicate to users <strong>daily specials, events and deals</strong> real time.<br>
         <i class="fa fa-check"></i>&nbspOffer special deals and control exactly when to start and stop an offering.<br> 
@@ -239,11 +255,20 @@
         Below are examples on the type of Specials and Promotions you can show with a Premium Membership.
         
         <div class="well-sm" style="background-color:#666666;color:#f8f8ff;">
-            <h3 class="sub-header">Specials</h3>
+            <h3 class="sub-header text-center">Specials</h3>
         </div>
+
+        <div class="row" style="border-left:5px solid #D9EDF7;border-right:5px solid #D9EDF7;">
+    <div ng-repeat="x in vm.specialsList">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-click="vm.showSpecial(x)" ng-attr-style="background-color:{{x.bc}};color:{{x.fc}};cursor:pointer;border:5px solid #D9EDF7;">
+            <h4 class="text-center" style="padding-top:10px">{{x.stitle}}</h4>
+        </div>
+    </div>
+</div>
+        <!--
         <div ng-repeat="x in vm.specialsList">
             <div ng-bind-html="x.html" ng-attr-style="{{x.style}}">
-                <br>
+                <br ng-if="vm.specialsList">
             </div>
             <p ng-if="x.hasimage" style="background-color:lightgray;cursor:pointer" ng-click="vm.showsimage(x)">
                 {{x.showimage ? 'Hide Flyer':'Show Flyer'}}</p>
@@ -252,6 +277,7 @@
                 <br>
             </div>
         </div>
+        -->
         <div class="text-right">
             <button class="btn btn-default" ng-click="vm.gotoMyBusiness()" style="margin:5px">Purchase Premium Membership</button>
             <button class="btn btn-default" ng-click="vm.hideGetPremium()" style="margin:5px">Hide Message</button>
@@ -260,9 +286,9 @@
 </div>
 
 <div class="col-xs-12">
-    <div ng-show="{{vm.type == 'Establishment' || vm.type == 'PersonCust' }}">
+    <div>
         <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
-            <h3 class="sub-header">How do we do?</h3>
+            <h3 class="sub-header text-center">Opinions</h3>
         </div>
         <!--
 <table class="table table-hover cursor">
@@ -287,28 +313,61 @@
             </div>
         </div>  -->
 
-        <table class="table table-hover cursor" ng-repeat="x in vm.vrowgroups track by $index">
-
+        <table class="table table-hover cursor">  
+       <!--  <table class="table table-hover cursor"> -->
+            <!--
             <thead class="thead-inverse">
                 <tr>
                     <th colspan="5" class="text-center" style="background-color:#d9d9d9;width:100%">{{x[0].gtitle}}</th>
                 </tr>
             </thead>
+            -->
             <tbody>
-                <tr ng-repeat="item in x">
+                <tr ng-repeat="item in vm.vrows track by $index">
                     <td align="middle" ng-attr-style="width:10%"><img ng-src="../../../assets/images/{{item.upImage}} " style="max-height:30px;margin:0px;" ng-click="vm.vrowVoteUp(item)"></td>
                     <td align="left" style="width:10%">{{item.upV}}</td>
                     <td align="middle" style="width:60%">{{item.title}}</td>
                     <td align="right" style="width:10%">{{item.downV}}</td>
                     <td align="middle" ng-attr-style="width:10%"><img ng-src="../../../assets/images/{{item.downImage}}" style="max-height:30px;margin:0px; " ng-click="vm.vrowVoteDown(item)"></td>
                 </tr>
+                <!-- <tr> -->
+                    <!--
+                    <td align="middle" ng-attr-style="width:10%"><img ng-src="../../../assets/images/thumbs_up_gray_table.png" style="max-height:30px;margin:0px;" ng-click="vm.vrowVoteUp(item)"></td>
+                    <td align="left" style="width:10%">0</td>
+                    <!-- <td align="middle" style="width:60%">{{item.title}}</td> -->
+                    <!--
+                    <td colspan="5" align="middle" style="width:100%">
+                        <div class="input-group" style="padding:0px;margin:0px;">
+                            <input type="text" class="form-control" ng-model="x.val" placeholder="Enter a different opinion...">
+                            <span class="input-group-btn text-right">
+                                <button class="btn btn-primary" type="button" ng-click="vm.addVRow(x)">Add Opinion</button>
+                            </span>
+                        </div>
+                    </td> -->
+                    <!-- 
+                    <td align="right" style="width:10%">0</td>
+                    <td align="middle" ng-attr-style="width:10%"><img ng-src="../../../assets/images/thumbs_down_gray_table.png" style="max-height:30px;margin:0px; " ng-click="vm.vrowVoteDown(item)"></td>
+                    -->
+                <!-- </tr>  -->
             </tbody>
         </table>
-
-        <!--</table>-->
-        <div class="text-right">
-            <a href="" ng-if="vm.userIsOwner&&false" ng-click="vm.editVRows()">Edit VoteRows</a>
+        <div class="input-group" style="padding:0px;margin:0px;">
+            <input type="text" class="form-control" ng-model="vm.newop" maxlength="30" placeholder="{{'Write an opinion of '+ vm.answer.name}}">
+                <span class="input-group-btn text-right">
+                    <button class="btn btn-primary {{vm.addvrowbutton}}" type="button" ng-click="vm.addvrow()">Add Opinion</button>
+                </span>
         </div>
+        <div class="text-center" style="padding-top:5px">
+            {{30 - vm.newop.length + ' characters left'}}
+        </div>    
+        <br>
+
+        <!--</table>  ng-if="vm.userIsOwner&&false" -->
+        <!--
+        <div class="text-right">
+            <a href="" ng-click="vm.editVRows()">Add Opinion</a>
+        </div>
+        -->
     </div>
 </div>
 <div class="col-xs-12" ng-if="false">
@@ -341,6 +400,7 @@
     </div>
 </div>
 <br>
+<!-- abcd
 <div class="text-center">
     <button ng-click="vm.loadComments()" class="btn btn-default" ng-class="vm.cm.commLoaded ? 'disabled' : ''" style="background-color:#e6e6e6;width:100%">COMMENTS ({{vm.numcom}})</button>
 </div>
@@ -400,6 +460,7 @@
                 <!--
                 <input type="text" class="form-control" ng-model="vm.comment" placeholder="Leave a comment" 
                 style="margin-left:0px;margin-right:0px;">-->
+<!-- abcd                
                 <textarea class="form-control" ng-model="vm.cm.newComment" placeholder="Leave a comment" style="margin-left:0px;margin-right:0px;"></textarea>
             </div>
         </div>
@@ -409,9 +470,11 @@
         </div>
     </div>
 </div>
+-->
 <br>
 <div class="btn-group" role="group">
     <button type="button" ng-click="vm.goBack()" class="btn btn-default">Back</button>
+    <!--
     <div class="btn-group" role="group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Flag</button>
             <ul class="dropdown-menu dropdown-menu-left" role="menu">
@@ -421,8 +484,10 @@
                 <li><a ng-click="vm.flagAnswer(4)">Spam</a></li>
             </ul>
     </div>
-    <button type="button" ng-click="vm.deleteAnswer()" class="btn btn-danger" ng-attr-style="display:{{vm.deleteButton}}">Delete</button>
-</div>    
+    -->
+</div>
+<button type="button" ng-click="vm.deleteAnswer()" class="btn btn-danger" 
+    ng-if="vm.deleteButton">Delete</button>    
 <br>
 <br>
 </div>

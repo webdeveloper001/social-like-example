@@ -16,6 +16,7 @@
         var service = {
             get: get,
             post:post,
+            update: update,
         };
 
         return service;
@@ -59,6 +60,45 @@
                 return _categorycodes = result.data.resource;
             }
 
+        }
+
+        function update(rec_id, field, val) {
+           
+            //form match record
+            var obj = {};
+            obj.resource = [];
+
+            var data = {};
+            data.id = rec_id;
+            
+            for (var i=0; i<field.length; i++){
+                switch (field[i]){
+                    case "category": data.category = val[i]; break;
+                }
+            }
+            //console.log("data", data);
+            obj.resource.push(data);
+
+            var url = baseURI;
+            
+            var idx = _categorycodes.map(function(x) {return x.id; }).indexOf(rec_id);  
+            for (var i=0; i<field.length; i++){
+                switch (field[i]){
+                    case "category": _categorycodes[idx].category = val[i]; break;
+                }
+            }                        
+            
+            return $http.patch(url, obj, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                body: obj
+            }).then(querySucceeded, _categorycodeFailed);
+            function querySucceeded(result) {
+                
+                if ($rootScope.DEBUG_MODE) console.log("updating category code succesful");
+                return result.data;
+            }
         }
         
         

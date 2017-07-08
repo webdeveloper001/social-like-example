@@ -18,7 +18,6 @@ angular.module('app').directive('rankOfDay',
                 if (!$rootScope.rankofday) {
                     rankofday.getrankofday().then(function(rankofday){
                         $scope.rankObject = $rootScope.rankofday = rankofday;
-
                         loadContent();
                     });
                 } else {

@@ -104,6 +104,10 @@
             var url = baseURI;
             var resource = [];
 
+            //the isprivate flag is to distinghish answers that are for custom ranks
+            if ($rootScope.cCategory.owner != undefined && $rootScope.cCategory.owner != 0 ) answer.isprivate = true;
+            else answer.isprivate = false;
+            
             resource.push(answer);
             
             return $http.post(url, resource, {
@@ -156,6 +160,10 @@
 
             var url = baseURI;
             var resource = [];
+
+            //the isprivate flag is to distinghish answers that are for custom ranks
+            if (category.owner != undefined && category.owner != 0 ) answer.isprivate = true;
+            else answer.isprivate = false;
 
             resource.push(answer);
 
