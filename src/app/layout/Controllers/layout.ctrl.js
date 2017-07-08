@@ -42,7 +42,12 @@
         vm.hideSearch = hideSearch;
         vm.gotoHome = gotoHome;
         vm.goAddRank = goAddRank;
-
+        vm.foodNearMe = false;
+        if ($window.location.href.indexOf('rankSummary/food-near-me-9521') != -1 ) {
+            vm.foodNearMe = true;
+            vm.veilMsg = 'On rankSummary, there is special rank called ‘Food Near Me’.. this rank is more complicated than other ranks because it looks at all answers that are in ‘food related rankings’. The rankings are saved offline in JSON, foodranks.json. With these rankings we simplify a bit of the processing necessary to find all the answers. Problem is still there few seconds of a processing time needed. The task is to add a loading indication while this data is loaded.';
+        }
+        
         //Admin Methods
         vm.editRank = editRank;
         vm.viewRank = viewRank;

@@ -1,11 +1,27 @@
-<div id="veil" ng-hide="vm.dataReady"></div>
+
+
+<div ng-if="!vm.foodNearMe">
+    <div id="veil" ng-hide="vm.dataReady"></div>
     <div id="feedLoading" ng-hide="vm.dataReady">
         <div style="text-align: center" ng-if="!vm.dataReady">
             <div class="loading-pulse"></div>
             <p style="font-size:large">loading rank...</p>
         </div>
     </div>
-<div ng-if="vm.dataReady">
+
+</div>
+<div ng-if="vm.foodNearMe">
+    <div id="veil" ng-show="vm.loadingAnswers"></div>
+    <div id="feedLoading" ng-show="vm.loadingAnswers">
+        <div style="text-align: center" >
+            <div class="loading-pulse"></div>
+            <p style="font-size:large">On rankSummary, there is special rank called ‘Food Near Me’.. this rank is more complicated than other ranks because it looks at all answers that are in ‘food related rankings’. The rankings are saved offline in JSON, foodranks.json. With these rankings we simplify a bit of the processing necessary to find all the answers. Problem is still there few seconds of a processing time needed. The task is to add a loading indication while this data is loaded.</p>
+        </div>
+    </div>
+
+</div>
+
+<div ng-if="vm.dataReady && !vm.loadingAnswers">
     <!--
 <div class="text-right">
         <button type="button" style="font-size:medium;" 

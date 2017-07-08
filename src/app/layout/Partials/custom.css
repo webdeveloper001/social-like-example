@@ -417,3 +417,11 @@ userfeed-block {
 userfeed-block.show-all {
     overflow: initial;
 }
+
+
+.trend-tab ul li a{
+    background-color: #fff;
+}
+.trend-tab ul li.active a{
+    background-color: #d3d3d3;
+}

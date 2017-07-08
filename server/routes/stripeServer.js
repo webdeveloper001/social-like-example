@@ -317,11 +317,12 @@ function charge(req, res, next) {
     this.answerId = req.body.answerId;
     
     var userEmail = req.body.userEmail;
-    this.couponValid = req.body.couponValid;
+    this.couponValid =   req.body.couponValid;
     this.bizcat = req.body.bizcat;
     this.getPremium = req.body.getPremiumPlan;
     this.getRanks = req.body.getCustomRanks;
     this.ranksQuantity = req.body.ranksQuantity; 
+
 
     log("useraccntId " + this.useraccntId + " this.getPremium " + this.getPremium + " this.getRanks " + this.getRanks + " this.ranksQuantity " + this.ranksQuantity);
 
@@ -359,7 +360,20 @@ function charge(req, res, next) {
 
     var description = "useraccount:" + this.useraccntId + ", user:" + userId;
 
-    mailing.sendMailTo(req.body.userEmail, 'planPurchased', {userName: req.body.userName, bizName: req.body.bizName});
+    mailing.sendMailTo(req.body.userEmail, 'planPurchased', {
+        userName: req.body.userName, 
+        bizName: req.body.bizName,
+        getPremiumPlan: req.body.getPremiumPlan,
+        getCustomRanks: req.body.getCustomRanks,
+        ranksQuantity: req.body.ranksQuantity}
+    );
+    mailing.sendReportEmail('planPurchased', {
+        userName: req.body.userName, 
+        bizName: req.body.bizName,
+        getPremiumPlan: req.body.getPremiumPlan,
+        getCustomRanks: req.body.getCustomRanks,
+        ranksQuantity: req.body.ranksQuantity}
+    );
     if (createNewCustomer == true) {
         log("YES going to create a stripe customer");
         log("coupon code: " + this.couponCode);

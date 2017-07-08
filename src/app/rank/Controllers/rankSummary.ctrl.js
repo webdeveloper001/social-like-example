@@ -7,11 +7,11 @@
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope'
-        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', '$location', '$q', 'fbusers', 'useractivity'];
+        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', '$location', '$q', 'fbusers', 'useractivity', '$timeout'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime, color
         , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope
-        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, $location, $q, fbusers, useractivity) {
+        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, $location, $q, fbusers, useractivity, $timeout) {
         /* jshint validthis:true */
 
         var vm = this;
@@ -54,6 +54,7 @@
         vm.hasAnswerParent = false;
         vm.isCustomRank = false;
         vm.user = $rootScope.user;
+        vm.loadingAnswers = false;
         //var myParent = $rootScope.parentNum;
 
         // var votetable = [];
@@ -70,6 +71,7 @@
 
         var answersFull = false;
         var updateExec = false;
+        vm.foodNearMe = false;
         var foodNearMe = false;
         var rankIsNearMe = false;
         vm.fnm = false;
@@ -100,7 +102,31 @@
         });
         var rankDataLoadedListener = $rootScope.$on('rankDataLoaded', function () {
             vm.dataReady = true;
-            activate();
+
+            //Load current category
+            $rootScope.cCategory = {};
+            for (var i = 0; i < $rootScope.content.length; i++) {
+                if (($rootScope.content[i].id == $stateParams.index) || ($rootScope.content[i].slug == $stateParams.index)){
+                    $rootScope.cCategory = $rootScope.content[i];
+                    break;
+                }
+            }
+
+            vm.ranking = $rootScope.cCategory.title;
+            if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego','close to me');
+
+            if ($rootScope.cCategory.id == 9521) {
+                vm.foodNearMe = true;
+                foodNearMe = true;
+                vm.fnm = true;
+                vm.showR = false;
+            }
+            
+            vm.loadingAnswers = true;
+            $timeout(function(){
+                activate();
+                vm.loadingAnswers = false
+            });
         });
 
         $scope.$on('$destroy',updateVoteTableListener);
@@ -132,11 +158,38 @@
         
         window.prerenderReady = false;
         
-        if ($rootScope.rankSummaryDataLoaded) { vm.dataReady = true; activate(); }
+        if ($rootScope.rankSummaryDataLoaded) { 
+            vm.dataReady = true; 
+
+            //Load current category
+            $rootScope.cCategory = {};
+            for (var i = 0; i < $rootScope.content.length; i++) {
+                if (($rootScope.content[i].id == $stateParams.index) || ($rootScope.content[i].slug == $stateParams.index)){
+                    $rootScope.cCategory = $rootScope.content[i];
+                    break;
+                }
+            }
+
+            vm.ranking = $rootScope.cCategory.title;
+            if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego','close to me');
+
+            if ($rootScope.cCategory.id == 9521) {
+                vm.foodNearMe = true;
+                foodNearMe = true;
+                vm.fnm = true;
+                vm.showR = false;
+            }
+            
+            vm.loadingAnswers = true;
+            $timeout(function(){
+            
+                activate();
+                vm.loadingAnswers = false;
+            });
+        }
         else vm.dataReady = false;
 
         function activate() {
-
             answers = $rootScope.answers;
             catansrecs = $rootScope.catansrecs;
             useractivities = $rootScope.alluseractivity;
@@ -503,24 +556,6 @@
         }
 
         function loadData() {
-            
-            //Load current category
-            $rootScope.cCategory = {};
-            for (var i = 0; i < $rootScope.content.length; i++) {
-                if (($rootScope.content[i].id == $stateParams.index) || ($rootScope.content[i].slug == $stateParams.index)){
-                    $rootScope.cCategory = $rootScope.content[i];
-                    break;
-                }
-            }
-
-            vm.ranking = $rootScope.cCategory.title;
-            if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego','close to me');
-
-            if ($rootScope.cCategory.id == 9521) {
-                foodNearMe = true;
-                vm.fnm = true;
-                vm.showR = false;
-            }
 
             //If introtext exist load it, if not, create custom intro text
             if ($rootScope.cCategory.introtext) vm.introtext = $rootScope.cCategory.introtext;
