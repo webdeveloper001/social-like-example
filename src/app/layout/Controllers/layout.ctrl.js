@@ -202,7 +202,6 @@
             //****TEMP CODE, ENable for Admin Functions*****************
             $rootScope.isAdmin = false;
             vm.isAdmin = false;
-            //console.log("$rootScope.isLoggedIn - ", $rootScope.isLoggedIn);
             /*
             $rootScope.isLoggedIn = true;
             $rootScope.user = {};
@@ -396,7 +395,7 @@
             $rootScope.editMode = true;
             vm.selEditRank = 'active';
             vm.selViewRank = '';
-            console.log("$rootScope.editMode -- ", $rootScope.editMode);
+            if ($rootScope.DEBUG_MODE) console.log("$rootScope.editMode -- ", $rootScope.editMode);
 
         }
         function viewRank() {
@@ -411,7 +410,7 @@
 
         function prepareNewCatansOptions() {
             
-            console.log("@prepareNewCatansOptions - $rootScope.content.length ", $rootScope.content.length);
+            if ($rootScope.DEBUG_MODE) console.log("@prepareNewCatansOptions - $rootScope.content.length ", $rootScope.content.length);
             $rootScope.ctsOptions = [];
             var titlex = '';
             for (var i = 0; i < $rootScope.content.length; i++) {

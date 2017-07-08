@@ -113,7 +113,7 @@
         }
 
         function syncDatatoAnswers() {
-            if ($rootScope.isLoggedIn) {
+            if ($rootScope.isLoggedIn && $rootScope.rankSummaryDataLoaded) {
                 if ($rootScope.DEBUG_MODE) console.log("Syncing useraccnt data to answers");
                 var idx = 0;
                 var fields = [];

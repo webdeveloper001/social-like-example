@@ -25,6 +25,8 @@
         var recordsUpdated = false;
         var vrowsByUserCounter = 0;
         vm.numEdits = 0;
+        var numImages = 0;
+        var numImagesPage = 0;
         
         // Members
         vm.relativetable = [];
@@ -42,7 +44,7 @@
         vm.goNext = goNext;
         vm.deleteAnswer = deleteAnswer;
         vm.flagAnswer = flagAnswer;
-        vm.deleteButton = 'none';
+        vm.deleteButton = false;
         vm.showUrl = showUrl;
         vm.closeRank = closeRank;
         vm.closeAnswerDetail = closeAnswerDetail;
@@ -72,6 +74,10 @@
         vm.gotoMyBusiness = gotoMyBusiness;
         vm.share = share;
         vm.addvrow = addvrow;
+        vm.moreImagesRev = moreImagesRev;
+        vm.moreImagesFwd = moreImagesFwd;
+        vm.showSpecial = showSpecial;
+
         //Admin Function adding catans on spot
         vm.addCatans = addCatans;
         vm.addctsactive = false;
@@ -130,7 +136,7 @@
         window.prerenderReady = false;
 
         function activate() {
-            
+
             //Init variables
             //vm.ranking = $rootScope.title;
             answers = $rootScope.canswers;
@@ -163,6 +169,11 @@
 
             $rootScope.canswer = vm.answer;
             vm.type = vm.answer.type;
+            vm.i = -1;
+            if ($rootScope.DISPLAY_XSMALL || $rootScope.DISPLAY_SMALL) numImagesPage = 4;
+            if ($rootScope.DISPLAY_MEDIUM) numImagesPage = 6;
+            if ($rootScope.DISPLAY_LARGE) numImagesPage = 12;
+            getImages();
             //vm.isShortPhrase = vm.type == 'Short-Phrase';
             
             //if there is no category, look for it in cookies
@@ -195,7 +206,7 @@
 
             if ($rootScope.previousState != 'answerDetail') $window.scrollTo(0, 0);
 
-            vm.showImageGallery = false;
+            //vm.showImageGallery = false;
             $rootScope.$emit('showLogo');
 
             getHeader();
@@ -788,23 +799,14 @@
             for (var i = 0; i < $rootScope.specials.length; i++) {
                 if ($rootScope.specials[i].answer == answerid) {
                     //format date, load name and html msg
-                    datetime.formatdatetime($rootScope.specials[i]);
-                    $rootScope.specials[i].name = vm.answer.name;
-
-                    var htmlmsg = htmlops.specialHtml($rootScope.specials[i]);
-                    $rootScope.specials[i].html = htmlmsg;
-                    //Separate style (not working with ng-bind-html)
-                    var spStyle = 'background-color:' + $rootScope.specials[i].bc + ';color:' + $rootScope.specials[i].fc + ';' +
-                        'white-space:pre;';
-                    $rootScope.specials[i].style = spStyle;
-                    if ($rootScope.specials[i].image != undefined &&
-                        $rootScope.specials[i].image != $rootScope.EMPTY_IMAGE) {
-                        $rootScope.specials[i].hasimage = true;
-                    }
-                    else $rootScope.specials[i].hasimage = false;
                     vm.specialsList.push($rootScope.specials[i]);
                 }
             }
+        }
+
+        function showSpecial(x){
+            console.log("showspecial");
+            dialog.showSpecial(x);
         }
 
         function showsimage(x) {
@@ -853,8 +855,9 @@
                     }
                 }
                 if (callgetVotes) getVRowVotes();
+                else (vm.newop = '');
                 if (vrowsByUserCounter >= 3 || !$rootScope.isLoggedIn) vm.addvrowbutton = 'disabled';
-                //if (!callgetVotes) displayVRows();
+                //if (!callgetVotes) displayVRows();                
             }
         }
 
@@ -907,8 +910,8 @@
         }
 
         function deleteButtonAccess() {
-            if ($rootScope.isAdmin || vm.userIsOwner ) vm.deleteButton = 'inline';
-            else vm.deleteButton = 'none';
+            if ($rootScope.isAdmin || (vm.userIsOwner && vm.answer.isprivate)) vm.deleteButton = true;
+            else vm.deleteButton = false;
         }
 
         function showUrl() {
@@ -974,6 +977,7 @@
         }
 
         function getImages() {
+            vm.showImageGallery = true;
             if (vm.igdemo) instagram.getImages().then(showImages);
             else {
                 $rootScope.blobs = [];
@@ -989,12 +993,10 @@
                 }
                 imagelist.getImageList().then(showImages);
             }
-
-            vm.showImageGallery = true;
-
         }
         function showImages() {
-            var specialImages = vm.specialsList.map(function(special){ return special.image;});
+            var specialImages = [];
+            if (vm.specialsList) specialImages = vm.specialsList.map(function(special){ return special.image;});
             $rootScope.blobs = $rootScope.blobs.filter(function(blob){
                 if (specialImages.indexOf(blob.url) != -1) {
                     return false;
@@ -1005,8 +1007,42 @@
             })
             if (vm.igdemo) vm.images = $rootScope.igimages;
             else vm.images = $rootScope.blobs;
+
+            numImages = vm.images.length;
+            vm.i = 0;
+            imageNav();
             //console.log("@showImages - ", vm.images);
         }
+
+        function imageNav(){
+            console.log("numImages ", numImages);
+            if ((vm.i + (numImagesPage-1)) <= numImages) vm.e = vm.i+numImagesPage;
+            else vm.e = numImages;
+            console.log("vm.i, vm.e - ", vm.i, vm.e);
+            if (numImages <= 4) { vm.showFwd = false; vm.showRev = false; }
+            else {
+                if (vm.i == 0) vm.showRev = false;
+                else vm.showRev = true;
+                if (vm.e == vm.images.length-1) vm.showFwd = false;
+                else vm.showFwd = true;
+            }
+            if (vm.e >= (numImages-1)) vm.showFwd = false;    
+        }
+
+        function moreImagesFwd(){
+            if (vm.showFwd){
+                vm.i = vm.i+numImagesPage;
+                imageNav();
+            }
+        }
+
+        function moreImagesRev(){
+            if (vm.showRev){
+                vm.i = vm.i-numImagesPage;
+                imageNav();
+            }
+        }
+
         /*
         function showMap(){
           google.maps.event.addDomListener(window, "load", initMap);
