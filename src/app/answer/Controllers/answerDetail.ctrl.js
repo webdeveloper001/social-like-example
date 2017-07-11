@@ -847,6 +847,7 @@
                             obj.downVi = $rootScope.cvrows[i].downV;
                             obj.upImage = 'thumbs_up_gray_table.png';
                             obj.downImage = 'thumbs_down_gray_table.png';
+                            obj.delta = obj.upV - obj.downV;
                             if ($rootScope.isLoggedIn){
                                 if (obj.user == $rootScope.user.id) vrowsByUserCounter++;
                             }
@@ -1094,7 +1095,7 @@
                     case 0: { x.dV = 1; x.upV++; break; }
                     case 1: { x.dV = 0; x.upV--; break; }
                 }
-
+                x.delta = x.upV - x.downV;
                 displayVRowVote(x);
                 if ($rootScope.DEBUG_MODE) console.log("VRow UpVote");
             }
@@ -1114,7 +1115,7 @@
                     case 0: { x.dV = -1; x.downV++; break; }
                     case 1: { x.dV = -1; x.upV--; x.downV++; break; }
                 }
-
+                x.delta = x.upV - x.downV;
                 displayVRowVote(x);
                 if ($rootScope.DEBUG_MODE) console.log("DownVote");
             }

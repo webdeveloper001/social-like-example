@@ -323,7 +323,7 @@
             </thead>
             -->
             <tbody>
-                <tr ng-repeat="item in vm.vrows track by $index">
+                <tr ng-repeat="item in vm.vrows | orderBy:'-delta'">
                     <td align="middle" ng-attr-style="width:10%"><img ng-src="../../../assets/images/{{item.upImage}} " style="max-height:30px;margin:0px;" ng-click="vm.vrowVoteUp(item)"></td>
                     <td align="left" style="width:10%">{{item.upV}}</td>
                     <td align="middle" style="width:60%">{{item.title}}</td>
