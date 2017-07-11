@@ -55,6 +55,7 @@
         vm.isCustomRank = false;
         vm.user = $rootScope.user;
         vm.loadingAnswers = false;
+        vm.sortByName = '';
         //var myParent = $rootScope.parentNum;
 
         // var votetable = [];
@@ -999,6 +1000,7 @@
             vm.selUpV = '';
             vm.selDate = '';
             vm.selTrending = '';
+            vm.sortByName = 'Rank';
 
             vm.showR = true || (!vm.sm);
         }
@@ -1020,11 +1022,13 @@
                 vm.selTrending = '';
 
                 if (foodNearMe) vm.answers = vm.answers.slice(0, 99);
+                vm.sortByName = 'Distance';
             }
             else {
                 $rootScope.loadRankWhenCoordsRdy = true;
                 $rootScope.rankIsNearMe = true;
                 dialog.askPermissionToLocate();
+                vm.sortByName = 'Distance';
             }
         }
 
@@ -1042,6 +1046,7 @@
             vm.selUpV = 'active';
             vm.selDate = '';
             vm.selTrending = '';
+            vm.sortByName = 'Popular';
 
             if (!foodNearMe && !vm.isE) vm.showR = false || (!vm.sm);
 
@@ -1068,6 +1073,7 @@
             vm.selUpV = '';
             vm.selDate = '';
             vm.selTrending = 'active';
+            vm.sortByName = 'Trending';
 
             if (!foodNearMe && !vm.isE) vm.showR = false || (!vm.sm);
 
@@ -1092,6 +1098,7 @@
             vm.selUpV = '';
             vm.selDate = 'active';
             vm.selTrending = '';
+            vm.sortByName = 'rankDataLoaded';
 
             //if (!vm.isE) vm.showR = false || (!vm.sm);
         }
