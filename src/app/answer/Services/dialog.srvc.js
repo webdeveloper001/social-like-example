@@ -63,6 +63,9 @@
             sortbyHelpDialog: sortbyHelpDialog,
             maybeRepeatVrows: maybeRepeatVrows,
             showSpecial: showSpecial,
+            typemismatch: typemismatch,
+            confirmAddRank: confirmAddRank,
+            confirmRemoveRank: confirmRemoveRank,
         };
         return service;
 
@@ -135,10 +138,10 @@
 
         }
 
-        function addAnswer(answer, url, callback) {
+        function addAnswer(answer, ranks, url, callback) {
 
             var answerhtml = '';
-            var categoryhtml = '';
+            var rankshtml = '';
             var newline = '';
             var header = "table" + $rootScope.cCategory.id + ".header";
 
@@ -182,11 +185,17 @@
                 answerhtml = answerhtml + newline;
             }
 
-            showAddAnswer(answer, categoryhtml, answerhtml, url, callback);
+            for (var j=0; j < ranks.length; j++){
+                if (ranks[j].sel){
+                    rankshtml = rankshtml + '<em>' + ranks[j].title + '</em></br>';
+                }
+            }
+            
+            showAddAnswer(answer, rankshtml, answerhtml, url, callback);
             //console.log("headline ", categoryhtml)
        
         }
-        function showAddAnswer(answer, categoryhtml, answerhtml, imageurl, callback) {
+        function showAddAnswer(answer, rankshtml, answerhtml, imageurl, callback) {
 
             var title = '';
             var message = '';
@@ -196,10 +205,11 @@
             title = 'Please Confirm';
             btnCancelLabel = 'Cancel';
             btnOkLabel = 'Confirm';
-            message = 'You want to add the following answer to <strong>' + $rootScope.cCategory.title + '</strong>. </br></br>' +
+            message = 'You want to add the following: </br></br>' +
             answerhtml + '</br>' +
             'With the following image:' +
-            '<img src=' + imageurl + ' class="thumbnail" style="width:60%; max-height:150px">';
+            '<div class="text-center"><img src=' + imageurl + ' class="thumbnail" style="width:60%; max-height:150px"></div>'+
+            'to the rankings:<br><div class="text-center" style="padding-top:10px">'+ rankshtml + '</div>';
 
             BootstrapDialog.confirm({
                 type: BootstrapDialog.TYPE_PRIMARY,
@@ -2578,7 +2588,7 @@
         function sortbyHelpDialog(type) {
 
             var title = 'Sorting Options';
-            var message = "<p style='text-align:left'>Rank. Sorts list by rank points, which are a mix of endorsements and rank matches.</p>" +
+            var message = "<p style='text-align:left'><strong>Rank</strong>. Sorts list by rank points, which are a mix of endorsements and rank matches.</p>" +
                 "<p style='text-align:left'><strong>Popular</strong>. Sorts list by votes (endorsements) in this ranking.</p>" +
                 "<p style='text-align:left'><strong>Distance</strong>. Sorts list by distance closest to you. </p>" +
                 "<p style='text-align:left'><strong>Trending</strong>. Sorts list by votes (endorsements) in the last month.</p>";
@@ -2673,7 +2683,42 @@
             '<img class="displayed" src=' + x.image + ' style="' + imageStyle + 'margin-left:auto;margin-right:auto;">'+
             '</div><br>' : '<br>');
             
-            console.log("message ", message);
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'OK',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef, result) {
+                        dialogRef.close();
+                    }
+                }]
+            });
+        }
+
+        function typemismatch(y,x) {
+
+            var title = 'Type MisMatch';
+            var message = '';
+            
+            message = 'Can not add an answer of type <em>' +
+            ((x == 'Establishment' || x == 'Place' || x == 'Organization')  ? 'Establishment or Place':'') +
+            (x == 'PersonCust' ? 'Freelancer':'') + 
+            (x == 'Short-Phrase' ? 'Opinion':'') +
+            (x == 'Event' ? 'Event':'') +
+            (x == 'Thing' ? 'Item':'') +
+            (x == 'Simple' ? 'Private Item':'') + 
+            '</em> to a ranking of type <em>'+
+            ((y == 'Establishment' || y == 'Place' || y == 'Organization')  ? 'Establishment or Place':'') +
+            (y == 'PersonCust' ? 'Freelancer':'') + 
+            (y == 'Short-Phrase' ? 'Opinion':'') +
+            (y == 'Event' ? 'Event':'') +
+            (y == 'Thing' ? 'Item':'') +
+            (y == 'Simple' ? 'Private Item':'') + 
+            '</em>.';
 
             BootstrapDialog.show({
                 type: BootstrapDialog.TYPE_PRIMARY,
@@ -2690,6 +2735,69 @@
                 }]
             });
         }
+
+         function confirmAddRank(category,answer,callback){
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Please Confirm';
+            message = 'This will add '+ answer.name + ' to ' + '<em>' + category.title +'</em>.';
+
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Ok';
+            
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'default',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) callback(category,answer);
+                }
+            });
+        }
+
+        function confirmRemoveRank(category,answer,callback){
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+
+            title = 'Please Confirm';
+            message = 'This will remove '+ answer.name + ' from ' + '<em>' + category.title +'</em>.';
+
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Yes, delete';
+            
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'default',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) callback(category,answer);
+                }
+            });
+        }
+
     }
     
 })();

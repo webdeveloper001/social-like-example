@@ -847,6 +847,7 @@
                             obj.downVi = $rootScope.cvrows[i].downV;
                             obj.upImage = 'thumbs_up_gray_table.png';
                             obj.downImage = 'thumbs_down_gray_table.png';
+                            obj.delta = obj.upV - obj.downV;
                             if ($rootScope.isLoggedIn){
                                 if (obj.user == $rootScope.user.id) vrowsByUserCounter++;
                             }
@@ -1015,10 +1016,8 @@
         }
 
         function imageNav(){
-            console.log("numImages ", numImages);
             if ((vm.i + (numImagesPage-1)) <= numImages) vm.e = vm.i+numImagesPage;
             else vm.e = numImages;
-            console.log("vm.i, vm.e - ", vm.i, vm.e);
             if (numImages <= 4) { vm.showFwd = false; vm.showRev = false; }
             else {
                 if (vm.i == 0) vm.showRev = false;
@@ -1096,7 +1095,7 @@
                     case 0: { x.dV = 1; x.upV++; break; }
                     case 1: { x.dV = 0; x.upV--; break; }
                 }
-
+                x.delta = x.upV - x.downV;
                 displayVRowVote(x);
                 if ($rootScope.DEBUG_MODE) console.log("VRow UpVote");
             }
@@ -1116,7 +1115,7 @@
                     case 0: { x.dV = -1; x.downV++; break; }
                     case 1: { x.dV = -1; x.upV--; x.downV++; break; }
                 }
-
+                x.delta = x.upV - x.downV;
                 displayVRowVote(x);
                 if ($rootScope.DEBUG_MODE) console.log("DownVote");
             }
@@ -1189,11 +1188,9 @@
         function addcts(x) {
             var title = '';
             var category = 0;
-            var isDup = false;
-
+            
             title = vm.addctsval;
-            isDup = vm.catisdup == undefined ? false : vm.catisdup;
-
+            
             for (var i = 0; i < $rootScope.content.length; i++) {
 
                 if ($rootScope.content[i].title == title) {
@@ -1201,7 +1198,7 @@
                     break;
                 }
             }
-            catans.postRec2(vm.answer.id, category, isDup);
+            catans.postRec2(vm.answer.id, category);
 
             vm.addctsactive = false;
 

@@ -15,7 +15,7 @@
     <div id="feedLoading" ng-show="vm.loadingAnswers">
         <div style="text-align: center" >
             <div class="loading-pulse"></div>
-            <p style="font-size:large">On rankSummary, there is special rank called ‘Food Near Me’.. this rank is more complicated than other ranks because it looks at all answers that are in ‘food related rankings’. The rankings are saved offline in JSON, foodranks.json. With these rankings we simplify a bit of the processing necessary to find all the answers. Problem is still there few seconds of a processing time needed. The task is to add a loading indication while this data is loaded.</p>
+            <p style="font-size:large">Just a moment, looking for some delicious food near by...</p>
         </div>
     </div>
 
@@ -102,14 +102,14 @@
 
     <div class="row">
 
-        <div class="container-bgbox col-xs-6 col-sm-6 col-md-4 col-lg-3">
+        <div class="container-bgbox col-xs-6 col-sm-4 col-md-4 col-lg-3">
             <bg-box bc="{{vm.bc}}" shade="{{vm.shade}}" fc="{{vm.fc}}" text="{{vm.ranking}}" dir="horizontal" w="100%" h="{{vm.sm ? '200px':'200px'}}"></bg-box>
         </div>
         <div ng-if="!vm.isShortPhrase">
-            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
+            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
                 <img ng-src="{{vm.image1}}" ng-attr-style="display:{{vm.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '200px':'200px'}};">
             </div>
-            <div class="hidden-xs hidden-sm col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
+            <div class="hidden-xs col-sm-4 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
                 <img ng-src="{{vm.image2}}" ng-attr-style="display:{{vm.image2 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '200px':'200px'}};">
             </div>
             <div class="hidden-xs hidden-sm hidden-md col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
@@ -118,10 +118,10 @@
         </div>
         <!-- Short-Phrase with Featured Image -->
         <div ng-if="vm.isShortPhrase&&vm.hasfimage">
-            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;">
+            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;">
                 <img ng-src="{{vm.fimage}}" ng-attr-style="display:{{vm.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '200px':'200px'}};">
             </div>
-            <div class="container hidden-xs hidden-sm col-md-4 col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+            <div class="container hidden-xs col-sm-4 col-md-4 col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
                 <div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
                     <h2 class="hidden-xs text-center">{{vm.title1}}</h2>
                     <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.title1}}</h3>
@@ -136,13 +136,13 @@
         </div>
         <!-- Short-Phrase without Featured Image -->
         <div ng-if="vm.isShortPhrase&&!vm.hasfimage">
-             <div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+             <div class="container col-xs-6 col-sm-4 col-md-4 col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
                 <div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
                     <h2 class="hidden-xs text-center">{{vm.title1}}</h2>
                     <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.title1}}</h3>
                 </div>
             </div>
-             <div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+             <div class="container hidden-xs col-sm-4 col-md-4 col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
                 <div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
                     <h2 class="hidden-xs text-center">{{vm.title2}}</h2>
                     <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.title2}}</h3>
@@ -211,9 +211,16 @@
         <button class="btn btn-default" ng-click="vm.share()" style="padding-right:5px">Share&nbsp&nbsp<span class="glyphicon glyphicon-share"></span></button>
     </div>
 </div>
+<<<<<<< HEAD
 <div style="margin:0px; margin-top: 10px; " class="text-center">
         <button ng-click="vm.changeMode('endorse') " class="btn btn-primary" ng-if="vm.mode=='specials'">Endorse</button>
         <button ng-click="vm.changeMode('specials') " class="btn btn-primary" ng-if="vm.mode=='endorse'">Special</button>
+=======
+<div class="row" style="margin:0px;">
+    <div class="col-xs-6 text-center" style="padding: 0px">
+            <button ng-click="vm.changeMode('endorse') " class="btn btn-primary" ng-if="vm.mode=='specials'">Endorse</button>
+            <button ng-click="vm.changeMode('specials') " class="btn btn-primary" ng-if="vm.mode=='endorse'">Specials</button>
+>>>>>>> 862a23b5131ae46b8e5b27ff3034bde1b114469f
 
         <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">Rank</button>
         <span style="line-height: 32px">&nbsp;&nbsp;&nbsp;Contributors: <b style="color:blue; "><i>{{vm.numContributors}}&nbsp&nbsp</i></b></span>
@@ -370,4 +377,5 @@
         </div>
     </div> 
 </div>
+<br>
 </div>

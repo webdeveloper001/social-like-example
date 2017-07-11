@@ -5,11 +5,11 @@
         .module('app')
         .controller('addAnswer', addAnswer);
 
-    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', 
-    'image', 'catans', 'getgps', '$timeout','getwiki','$window','$scope'];
+    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', '$q',
+    'image', 'catans', 'getgps', '$timeout','getwiki','$window','$scope','search'];
 
-    function addAnswer(dialog, $state, answer, $rootScope, $modal,
-    image, catans, getgps, $timeout, getwiki, $window,$scope) {
+    function addAnswer(dialog, $state, answer, $rootScope, $modal, $q, 
+    image, catans, getgps, $timeout, getwiki, $window,$scope, search) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'addAnswer';
@@ -27,6 +27,7 @@
         var addAnswerGPSexec = false;
         var answers = $rootScope.answers;
         var inputLengthMem = 0; //inputLength in Memory
+        var inputLengthMemNh = 0; //inputLength in Memory
         var maybeSameAnswers = [];
         
         
@@ -58,6 +59,8 @@
         var eqRankIdx = 0;
         var eqFound = false;
         var rankNh = undefined;
+        var answerNeighborhood = undefined;
+        var rankObj = {};
         
         // Members
         var myAnswer = {};
@@ -74,7 +77,10 @@
         vm.onNoGoodImages = onNoGoodImages;
         vm.showHowItWorksDialog = showHowItWorksDialog;
         vm.onSelect = onSelect;
-        
+        vm.addCatans = addCatans;
+        vm.addcts = addcts;
+        vm.selRank = selRank;
+
         vm.imageURL = $rootScope.EMPTY_IMAGE;
         vm.header = $rootScope.header;
         
@@ -107,9 +113,21 @@
         activate();
 
         function activate() {
-            loadPublicFields();
+
+            $window.scrollTo(0, 0);
             detectNeighborhood();
+            loadPublicFields();
             determineScope(); 
+
+            vm.addToRanks = [];
+            if ($rootScope.cCategory.isatomic){
+                vm.nhrdy = true;
+                prepareCatansOptions();
+                rankObj = $rootScope.cCategory;
+                rankObj.sel = true;
+                //vm.addToRanks.push(rankObj);
+            }
+            
              if ($rootScope.DEBUG_MODE) console.log("Add Answer Activated!");
 
         }
@@ -210,7 +228,7 @@
                 if (vm.userIsOwner) myAnswer.owner = $rootScope.user.id;
 
                 if (duplicateExists) dialog.checkSameAnswer(myAnswer, extAnswer, addAnswerConfirmed, answerIsSame);
-                else dialog.addAnswer(myAnswer, vm.imageURL, addAnswerConfirmed);
+                else dialog.addAnswer(myAnswer, vm.addToRanks, vm.imageURL, addAnswerConfirmed);
 
                 addAnswerExec = true;
                 
@@ -385,7 +403,17 @@
                 }
                 else { 
                     if ($rootScope.DEBUG_MODE) console.log("P3 - ", myAnswer);
-                    answer.addAnswer(myAnswer).then(rankSummary);
+                    /*
+                    var prms = []
+                    for (var i=0; i<vm.addToRanks.length; i++){
+                        if (vm.addToRanks[i].sel)
+                        prms.push(answer.addAnswer2(myAnswer,vm.addToRanks[i].id));
+                    }
+
+                    console.log("prms - ", prms);
+
+                    $q.all(prms).then(rankSummary);*/  
+                    answer.addAnswer(myAnswer, vm.addToRanks).then(rankSummary);
                 }
                 myAnswer = undefined; 
             }
@@ -407,7 +435,20 @@
                 }
                 else {
                     if ($rootScope.DEBUG_MODE) console.log("P6",myAnswer);
-                    if (myAnswer) answer.addAnswer(myAnswer).then(rankSummary);
+                    if (myAnswer) {
+                        /*
+                        console.log("vm.ranksToAdd - ", vm.ranksToAdd);
+                        var prms = []
+                        for (var i = 0; i < vm.addToRanks.length; i++) {
+                            if (vm.addToRanks[i].sel)
+                                prms.push(answer.addAnswer2(myAnswer, vm.addToRanks[i].id));
+                        }
+
+                        console.log("prms - ", prms);
+
+                        $q.all(prms).then(rankSummary);*/  
+                        answer.addAnswer(myAnswer, vm.addToRanks).then(rankSummary);
+                    }
                 }
                 myAnswer = undefined;                                 
             }
@@ -430,12 +471,12 @@
                 //create 2 catans records one for downtown and then district
                 if (eqFound && !inCity) {
                     if ($rootScope.DEBUG_MODE) console.log("P7 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx);
-                    catans.postRec2(extAnswer.id, eqRankIdx, false);
-                    catans.postRec2(extAnswer.id, $rootScope.cCategory.id, true).then(rankSummary);
+                    catans.postRec2(extAnswer.id, eqRankIdx);
+                    catans.postRec2(extAnswer.id, $rootScope.cCategory.id).then(rankSummary);
                 }
                 else if (eqFound && inCity) {
                     if ($rootScope.DEBUG_MODE) console.log("P8 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx);
-                    catans.postRec2(extAnswer.id, eqRankIdx, false).then(rankSummary);
+                    catans.postRec2(extAnswer.id, eqRankIdx).then(rankSummary);
                 }
                 else {
                     if ($rootScope.DEBUG_MODE) console.log("P9");
@@ -491,6 +532,89 @@
         function showHowItWorksDialog() {
             if ($rootScope.cCategory.type == 'Short-Phrase') dialog.howItWorks('shortPhrase');
             else dialog.howItWorks('addAnswer');
+        }
+
+        function selRank(x, idx){
+            if (x.sel) {
+                if (idx != 0) x.sel = false;
+            }
+            else x.sel = true;
+            vm.addToRanks = vm.addToRanks.sort(compare);
+        }
+
+        function prepareCatansOptions(){
+
+            if ($rootScope.DEBUG_MODE) console.log("prepareCatansOptions");
+
+            if (vm.addToRanks) vm.addToRanks = vm.addToRanks.concat(search.sibblingRanks($rootScope.cCategory, answerNeighborhood)); 
+            else vm.addToRanks = search.sibblingRanks($rootScope.cCategory, answerNeighborhood);
+
+            if (!answerNeighborhood && vm.addToRanks.length == 0) vm.addToRanks.push($rootScope.cCategory);
+            if (vm.addToRanks.length > 0) vm.addToRanks[0].sel = true;
+            
+            for (var i=1; i<vm.addToRanks.length; i++){
+                vm.addToRanks[i].sel = false;
+            }
+
+            vm.addToRanks = vm.addToRanks.sort(compare);
+
+            //search.sibblingRanks($rootScope.cCategory.id);
+            vm.addctsopts = [];
+            var opt = '';
+            //if (answerNeighborhood == undefined || answerNeighborhood == '') answerNeighborhood = 'San Diego';
+            for (var i = 0; i < $rootScope.ctsOptions.length; i++) {
+                if ($rootScope.ctsOptions[i].indexOf('@neighborhood') > -1) {
+                    if (answerNeighborhood){
+                        opt = $rootScope.ctsOptions[i].replace('@neighborhood', answerNeighborhood);
+                        vm.addctsopts.push(opt);
+                    }
+                }
+                else vm.addctsopts.push($rootScope.ctsOptions[i]);
+            }
+        }
+
+        function compare(a,b) {
+                //console.log("sort.compare");
+                if (a.sel == b.sel) return (b.ctr - a.ctr);
+                else if (b.sel) return 1;
+                else return -1;
+        }
+
+        function addCatans(){            
+            vm.addctsactive = true;
+        }
+
+        function addcts(){
+            var typemismatch = false;
+            var rankObj = {};
+            var idx = $rootScope.content.map(function(x) {return x.title; }).indexOf(vm.addctsval);  
+            //Check types match
+            if ($rootScope.cCategory.type == 'Person' && 
+                $rootScope.content[idx].type != 'Person') typemismatch = true;
+            if ($rootScope.cCategory.type == 'Event' && 
+                $rootScope.content[idx].type != 'Event') typemismatch = true;
+            if ($rootScope.cCategory.type == 'Thing' && 
+                $rootScope.content[idx].type != 'Thing') typemismatch = true;
+            if ($rootScope.cCategory.type == 'PersonCust' && 
+                $rootScope.content[idx].type != 'PersonCust') typemismatch = true;        
+            if (($rootScope.cCategory.type == 'Place' || 
+                $rootScope.cCategory.type == 'Establishment' || 
+                $rootScope.cCategory.type == 'Organization') &&  
+                ($rootScope.content[idx].type != 'Place' &&
+                $rootScope.content[idx].type != 'Establishment' &&
+                $rootScope.content[idx].type != 'Organization')) typemismatch = true;
+            
+            if (typemismatch) dialog.typemismatch($rootScope.content[idx].type,$rootScope.cCategory.type);
+            else {
+                rankObj = $rootScope.content[idx];
+                rankObj.sel = true;
+                vm.addToRanks.push(rankObj);
+                vm.addToRanks = vm.addToRanks.sort(compare);
+
+                //console.log("vm.addToRanks - ", vm.addToRanks);
+                vm.addctsval = '';
+                vm.addctsactive = false;
+            }
         }
 
         function testImageUrl(url, callback, timeout) {
@@ -654,9 +778,23 @@
                         dialog.confirmSameAnswer(maybeSameAnswers[0],answerChosen);
                     }
                     else if (maybeSameAnswers.length > 1) dialog.confirmSameAnswerMultiple(maybeSameAnswers,answerChosen);                 
-                }                
+                }
+                inputLengthMem = x.val.length;                
             }
-            inputLengthMem = x.val.length;                       
+            if (x.name == 'cityarea'){
+                if (Math.abs(x.val.length - inputLengthMemNh)>2 && x.val.length != 0){
+                    //an option was selected from the typeahead
+                    inputLengthMemNh = x.val.length;
+                    for (var i=0; i < $rootScope.allnh.length; i++){
+                        if ($rootScope.allnh[i] == x.val){
+                            vm.nhrdy = true;
+                            answerNeighborhood = x.val;
+                            prepareCatansOptions();
+                        }
+                    }                
+                }
+                inputLengthMemNh = x.val.length;                
+            }                             
         }
 
         function answerChosen(n){
@@ -671,6 +809,9 @@
             for (var i=0; i<$rootScope.allnh.length; i++){
                 if ($rootScope.cCategory.title.indexOf($rootScope.allnh[i])>-1){
                     rankNh = $rootScope.allnh[i];
+                    answerNeighborhood = rankNh;
+                    prepareCatansOptions();
+                    break;
                 }
             }
         }

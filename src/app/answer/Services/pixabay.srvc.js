@@ -42,6 +42,9 @@
                 $http.defaults.headers.common['X-DreamFactory-Session-Token'] = $cookies.session_token;
                 return _results;
             }, function (){
+                
+                $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
+                $http.defaults.headers.common['X-DreamFactory-Session-Token'] = $cookies.session_token;
                 console.log("Problem getting Pixabay Images");
             });
 

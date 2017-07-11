@@ -151,7 +151,7 @@
                 titlex = $rootScope.content[i].title.replace('Hillcrest', '@neighborhood');
                 ctsOptions.push(titlex);
             }
-            if ($rootScope.content[i].tags.indexOf('isMP')>-1){
+            if ($rootScope.content[i].ismp){
                 ctsOptions.push($rootScope.content[i].title);
             }
         }
@@ -181,7 +181,7 @@
             }
         }
         //console.log("postRec catans -",myAnswer.id,category,isDup);
-        catans.postRec2(myAnswer.id, category, isDup);
+        catans.postRec2(myAnswer.id, category);
         
         if (x==1) vm.addcts1active=false;
         if (x==2) vm.addcts2active=false;

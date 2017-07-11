@@ -475,7 +475,7 @@
             
             while(!rankFound){
              rn = Math.floor(Math.random() * (N - 0 + 1)) + 0;
-                if ($rootScope.content[rn].tags.indexOf('isMP') > -1){
+                if ($rootScope.content[rn].ismp){
                     rankFound=true;
                 }   
             }
