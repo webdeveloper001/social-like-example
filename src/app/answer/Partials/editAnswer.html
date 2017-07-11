@@ -23,8 +23,8 @@
 <br>
 
 <div class="row" style="margin:0px">
-
-    <form class="form-horizontal col-sm-12 col-md-7" role="form" name="answerForm" ng-repeat="x in vm.fields">
+    <div class="col-sm-12 col-md-7">
+    <form class="form-horizontal" role="form" name="answerForm" ng-repeat="x in vm.fields">
         <!--  <div class="form-group" ng-repeat="x in vm.fields"> -->
         <!--   <div ng-repeat="x in vm.fields">  -->
        
@@ -53,13 +53,14 @@
             </span>
         </div>
     </form>
+    </div>
 
     <div class="col-sm-12 col-md-5">
-        <div class="" ng-show="{{vm.type != 'Short-Phrase'}}">
+        <div class="" ng-if="vm.type!='Short-Phrase'">
             <img class="displayed-uc" src="{{vm.imageURL}}" alt="{{image.errorLoading}}" ng-attr-style="width:100%; max-height:300px" ng-show="{{vm.type != 'Short-Phrase'}}">
             <img src="../../../assets/images/powered_by_google_on_white.png" ng-if="vm.type!='PersonCust' && !vm.userIsOwner">
         </div>
-        <div class="container-answer" ng-attr-style="width:100%; max-height:300px;" ng-show="{{vm.type == 'Short-Phrase'}}">
+        <div class="container-answer" ng-attr-style="width:100%; max-height:300px;" ng-if="vm.type == 'Short-Phrase'">
             <br>
             <h2 style="text-align:center"><strong>{{vm.answer.name}}</strong></h2>
             <br>
@@ -85,6 +86,7 @@
     </div>
 
 </div>
+<div class="row">
 <div class="col-sm-12 col-md-7" style="padding-top:10px">
     <label>Ranks:</label>
     <ul class="list-group">
@@ -103,6 +105,7 @@
         </span>
 		</div>
 	</div>
+</div>
 </div>
 <br>
 <div class="well well-light-edit" ng-repeat="x in vm.edits">

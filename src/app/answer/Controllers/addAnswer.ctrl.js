@@ -115,6 +115,9 @@
         function activate() {
 
             $window.scrollTo(0, 0);
+            detectNeighborhood();
+            loadPublicFields();
+            determineScope(); 
 
             vm.addToRanks = [];
             if ($rootScope.cCategory.isatomic){
@@ -124,10 +127,7 @@
                 rankObj.sel = true;
                 //vm.addToRanks.push(rankObj);
             }
-
-            loadPublicFields();
-            detectNeighborhood();
-            determineScope(); 
+            
              if ($rootScope.DEBUG_MODE) console.log("Add Answer Activated!");
 
         }

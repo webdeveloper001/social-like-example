@@ -263,6 +263,7 @@
         function getImages() {
             var qry = vm.imageQuery.replace(' ', '+');
             vm.images = [];
+            vm.i = 0;
 
             if (vm.pixabay) {
                 pixabay.search(qry).then(function (result) {
