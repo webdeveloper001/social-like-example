@@ -36,10 +36,6 @@
 
         function activate() {
 
-            console.log("@addRankforAnswer");
-            console.log("$rootScope.rankIdx ", $rootScope.rankIdx);
-            console.log("$rootScope.canswer.ranks ", $rootScope.canswer.ranks);
-
             if ($rootScope.rankforAnswerMode == undefined) $state.go('cwrapper');
 
             if ($rootScope.rankforAnswerMode == 'edit'){
@@ -62,9 +58,8 @@
                 vm.introtext = 'Tell us what your rank is about...';
             }
             //loadData();
-            console.log("addRankforAnswer page Loaded!");
-            console.log("$rootScope.canswer - ", $rootScope.canswer);
-
+            if ($rootScope.DEBUG_MODE) console.log("addRankforAnswer page Loaded!");
+            
         }
         
         function validateData(){
@@ -115,13 +110,13 @@
                         }
                         if ($rootScope.content[idx].intro != vm.introtext){
                             tfields.push('introtext');
-                            tvals.push(vm.intro);                            
+                            tvals.push(vm.introtext);                            
                         }
                         if (tfields.length > 0) 
-                        table.update($rootScope.content[idx].id, tfields, tvals).then(function(){
+                            table.update($rootScope.content[idx].id, tfields, tvals).then(function(){
                             $state.go('answerRanksManager');
                         });
-
+                        
                         if (vm.bc != ranks[$rootScope.rankIdx].bc || vm.fc != ranks[$rootScope.rankIdx].fc){
                             ranks[$rootScope.rankIdx].bc = vm.bc;
                             ranks[$rootScope.rankIdx].fc = vm.fc;

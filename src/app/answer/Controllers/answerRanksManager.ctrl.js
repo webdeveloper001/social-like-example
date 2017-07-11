@@ -48,8 +48,7 @@
                     vm.ranks.push(emptyObj);
                 }
             }
-            console.log("vm.ranks - ", vm.ranks);                     
-
+            if ($rootScope.DEBUG_MODE) console.log("vm.ranks - ", vm.ranks);                     
             if ($rootScope.DEBUG_MODE) console.log("Answer rankings manager activated!");
         }
 
