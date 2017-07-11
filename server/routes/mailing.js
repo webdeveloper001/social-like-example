@@ -94,6 +94,14 @@ function sendWeeklyNewsJob(){
                         contentHtml += `
                         </div>
                         <p style="font-size: 17px;">`;
+
+                        contentHtml += `
+                                Again, thanks for being a Rank-X promoter. Like always, we are available and happy to answer any questions you may have about your accounts or the Promoter Console. We also invite your suggestions and recommendations!<br/>
+                                Best regards,
+                            </p>
+                            <hr>
+                            <center> <p style="font-size: 17px">Rank-X team</p> </center>
+                            </div>`;
                     } else if(subscriber.subgroup == 1) {
                         subject = 'Rank-X weekly mail';
                         contentHtml += `<h2> Hi ` + (subscriber.username != '' ? subscriber.username.split(' ')[0] : 'there') + `</h2>`;
@@ -130,17 +138,18 @@ function sendWeeklyNewsJob(){
                         contentHtml += `
                         </div>
                         <p style="font-size: 17px;">`;
+
+                        contentHtml += `
+                                Best regards,
+                            </p>
+                            <hr>
+                            <center> <p style="font-size: 17px">Rank-X team</p> </center>
+                            </div>`;
+                        
                     }
 
 
-                    contentHtml += `
-                            Again, thanks for being a Rank-X promoter. Like always, we are available and happy to answer any questions you may have about your accounts or the Promoter Console. We also invite your suggestions and recommendations!<br/>
-                            Best regards,
-                        </p>
-                        <hr>
-                        <center> <p style="font-size: 17px">Rank-X team</p> </center>
-                        </div>`;
-                    
+
                     var content = new sghelper.Content('text/html', contentHtml);
 
                     var mail = new sghelper.Mail(from_email, subject, to_email, content);
@@ -414,6 +423,29 @@ function sendMailTo(toemail, type, data){
             </p>
         </div>
         <p style="font-size: 17px;">`;
+    } else if ( type == 'userSubscribed' ){
+
+        subject = 'Welcome to Rank-X.';
+        contentHtml += `
+        <h2> Hi there!`;
+        contentHtml += 
+        `</h2>
+        <div style="background-color: white; margin: 10px;border:1px solid black; padding:10px; font-size: 17px;">
+            <p style="font-size: 17px;"> 
+            Thank you for subscribing to the Rank-X newsletter. <br/>
+            </p>
+            
+            <p style="font-size: 17px;"> 
+            It’s great to have you! Every once in a while we will send you updates on new and popular rankings as well as some interesting results and trends of rankings in your city.  
+            All rankings in Rank-X are created collectively, which means they are formed by endorsements of people, just like you! 
+            </p>
+            <p style="font-size: 17px;"> 
+            We invite you to participate and help shape the rankings, by endorsing all your favorite businesses and places in our city.
+            </p>
+        </div>
+        <p style="font-size: 17px;">`;
+
+        
     } else if( type == 'codeSignupSubscription' ) {
         subject = 'You got a new account credited to you in Rank-X!';
         contentHtml += `
@@ -579,7 +611,7 @@ function userSubscribed(req, res, next) {
         res.json({response: resp.body});
     })
 
-    sendMailTo(req.body.email, 'promoterCreated', req.body);
+    sendMailTo(req.body.email, 'userSubscribed', req.body);
 }
 
 function promoterCreated(req, res, next) {
@@ -690,6 +722,5 @@ module.exports = {
     codeSignupSubscription: codeSignupSubscription,
     codeCancelSubscription: codeCancelSubscription,
     paymentProceed: paymentProceed,
-    userSubscribed: userSubscribed,
     sendReportEmail: sendReportEmail
 }
