@@ -107,7 +107,7 @@
                 }
             }
             //console.log("postRec catans -",myAnswer.id,category,isDup);
-            catans.postRec2(vm.ans, category, false).then(function(){
+            catans.postRec2(vm.ans, category).then(function(){
                 showUrefAns();
             });
         }

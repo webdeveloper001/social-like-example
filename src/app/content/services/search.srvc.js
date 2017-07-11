@@ -16,6 +16,7 @@
             searchRanks: searchRanks,
             searchAnswers: searchAnswers,
             searchRanksMainPage: searchRanksMainPage,
+            sibblingRanks: sibblingRanks, 
         };
 
         return service;
@@ -167,7 +168,7 @@
 
                             }
                             
-                            if (m_rt && rank.tags.indexOf('isMP') > -1) {
+                            if (m_rt && rank.ismp) {
                                 results_rt.push($rootScope.content[j]);
                                 rte = true;
                             }
@@ -380,5 +381,79 @@
 
         }
 
+        function sibblingRanks(catObj,neighborhood) {
+
+            function compare(a, b) {
+                return b.ctr - a.ctr;
+            }
+            //console.log("@sibblingRanks", catObj);
+            var sibblingRanksX = [];
+            var sibblingRanks = [];
+            var catArr = [];
+            var sibExists = false;
+            var searchtitle = '';
+            var ansLim = 50;
+            var ansCtr = 0;
+            var rankObj = {};
+            if (catObj.isatomic) catArr.push(catObj.id)
+            else catArr = catObj.catstr.split(':').map(Number);
+
+            var idx = 0;
+            //Determine suggestions for answers in this category
+            for (var i = 0; i < $rootScope.catansrecs.length; i++) {
+                //found answers in this category
+                for (var n = 0; n < catArr.length; n++) {
+                    if ($rootScope.catansrecs[i].category == catArr[n]) {
+                        for (var j = 0; j < $rootScope.catansrecs.length; j++) {
+                            //find answers in other categories
+                            if ($rootScope.catansrecs[j].answer == $rootScope.catansrecs[i].answer) {
+                                idx = $rootScope.content.map(function (x) { return x.id; }).indexOf($rootScope.catansrecs[j].category);
+                                
+                                sibExists = false;
+                                for (var k=0; k < sibblingRanksX.length; k++){
+                                    if (sibblingRanksX[k].title.substr(0,6) == $rootScope.content[idx].title.substr(0,6)) {
+                                        sibblingRanksX[k].ctr++; 
+                                        sibExists = true;
+                                    }                                     
+                                }
+                                if (!sibExists) {
+                                    rankObj = $rootScope.content[idx];
+                                    rankObj.ctr = 1;
+                                    sibblingRanksX.push(rankObj);
+                                }                                                                    
+                            }
+                        }
+                        ansCtr++;
+                        if (ansCtr >= ansLim) break;
+                    }
+                }
+            }
+            //Change to approprate neighborhood
+            for (var i=0; i < sibblingRanksX.length; i++){
+                if (sibblingRanksX[i].isatomic && sibblingRanksX[i].ismp) sibblingRanks.push(sibblingRanksX[i]);
+                else if (sibblingRanksX[i].isatomic && !sibblingRanksX[i].ismp){
+                    for (var j=0; j < $rootScope.allnh.length; j++){
+                        if (sibblingRanksX[i].title.indexOf($rootScope.allnh[j])>-1){
+                            searchtitle = sibblingRanksX[i].title.replace($rootScope.allnh[j],neighborhood);
+                            for (var k=0; k<$rootScope.content.length; k++){
+                                if ($rootScope.content[k].title == searchtitle){
+                                    rankObj = $rootScope.content[k];
+                                    rankObj.ctr = sibblingRanksX[i].ctr;
+                                    sibblingRanks.push(rankObj);
+                                }
+                            }
+                        }
+                    }                    
+                }
+            }
+            /*
+            for (var m=0; m<sibblingRanks.length; m++){
+                console.log(sibblingRanks[m].title, sibblingRanks[m].ctr);
+            }
+            */
+            sibblingRanks = sibblingRanks.sort(compare);
+            if (sibblingRanks.length > 8) return sibblingRanks.slice(0,8);
+            else return sibblingRanks;
+        }
     }
 })();

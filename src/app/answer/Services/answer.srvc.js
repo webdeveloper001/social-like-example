@@ -99,7 +99,7 @@
             }
         }
 
-        function addAnswer(answer) {
+        function addAnswer(answer, ranks) {
 
             var url = baseURI;
             var resource = [];
@@ -144,8 +144,10 @@
                     $rootScope.plaAnswers.push(answerx);
                 }
                                 
-                catans.postRec(answerx.id);
-                vrows.postVrows4Answer(answerx);
+                for (var i=0; i<ranks.length; i++){
+                    catans.postRec2(answerx.id, ranks[i].id);
+                }
+                //vrows.postVrows4Answer(answerx);
                 
                 //uaf.post('addedAnswer',['answer','category'],[answerx.id, $rootScope.cCategory.id]); //user activity feed
                 
@@ -160,6 +162,8 @@
 
             var url = baseURI;
             var resource = [];
+
+            answer.user = $rootScope.user.id;
 
             //the isprivate flag is to distinghish answers that are for custom ranks
             if (category.owner != undefined && category.owner != 0 ) answer.isprivate = true;
@@ -204,11 +208,11 @@
                 //uaf.post('addedAnswer',['answer','category'],[answerx.id, category[0]]); //user activity feed
                                 
                 for (var n=0; n<category.length; n++){
-                    if (n == 0) catans.postRec2(answerx.id, category[n], false);
-                    else catans.postRec2(answerx.id, category[n], true);    
+                    if (n == 0) catans.postRec2(answerx.id, category[n]);
+                    else catans.postRec2(answerx.id, category[n]);    
                 }
                 
-                vrows.postVrows4Answer(answerx);
+                //vrows.postVrows4Answer(answerx);
                 
                 if ($rootScope.DEBUG_MODE) console.log('created '+ category.length + 'catans records for the new answer');
                 if ($rootScope.DEBUG_MODE) console.log("result", result);

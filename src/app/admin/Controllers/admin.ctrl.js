@@ -941,6 +941,38 @@
                             vrows.deleteVrow($rootScope.cvrows[i].id);
                         }
                     *///end of 28
-                } 
+                    /*//29. Show answers that have no owner but ispremium and hasranks flags
+                    var user = '';
+                    for (var i=0; i< $rootScope.answers.length; i++){
+                        if (!($rootScope.answers[i].owner == 0 || 
+                            $rootScope.answers[i].owner == null || 
+                            $rootScope.answers[i].owner == undefined )){
+                                //if ($rootScope.answers[i].ispremium || 
+                                //    $rootScope.answers[i].hasranks ||
+                                //    ($rootScope.answers[i].ranksqty != undefined && $rootScope.answers[i].ranksqty != 0 )){
+                                if ($rootScope.answers[i].owner == '1638806919478345') user = 'Roy';
+                                else if ($rootScope.answers[i].owner == '10104518570729893') user = 'Andres';
+                                else if ($rootScope.answers[i].owner == '194039991109146') user = 'Jash';
+                                else if ($rootScope.answers[i].owner == '1395314397177816') user = 'Roy';
+                                else if ($rootScope.answers[i].owner == '42') user = 'Andres';
+                                else if ($rootScope.answers[i].owner == '31') user = 'Aaron';
+                                else if ($rootScope.answers[i].owner == '48') user = 'Felipe';
+                                else user = 'other';    
+                                        console.log($rootScope.answers[i].name,
+                                                $rootScope.answers[i].owner,
+                                                $rootScope.answers[i].ispremium,
+                                                $rootScope.answers[i].hasranks,
+                                                $rootScope.answers[i].ranksqty,
+                                                user);
+                                        //answer.updateAnswer($rootScope.answers[i].id,
+                                        //                ['ispremium','hasranks','ranksqty'],
+                                        //                [false,false,0]);
+                                 //   }
+                            }
+                    }
+                }
+                    */// End of 29.
+            }
+                 
     }
 })();
