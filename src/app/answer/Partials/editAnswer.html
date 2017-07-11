@@ -23,37 +23,8 @@
 <br>
 
 <div class="row" style="margin:0px">
-    <div class="col-sm-12 col-md-6">
-        <div class="" ng-show="{{vm.type != 'Short-Phrase'}}">
-            <img class="displayed-uc" src="{{vm.imageURL}}" alt="{{image.errorLoading}}" ng-attr-style="width:100%; max-height:300px" ng-show="{{vm.type != 'Short-Phrase'}}">
-            <img src="../../../assets/images/powered_by_google_on_white.png" ng-if="vm.type!='PersonCust' && !vm.userIsOwner">
-        </div>
-        <div class="container-answer" ng-attr-style="width:100%; max-height:300px;" ng-show="{{vm.type == 'Short-Phrase'}}">
-            <br>
-            <h2 style="text-align:center"><strong>{{vm.answer.name}}</strong></h2>
-            <br>
-            <h4 style="text-align:center">{{vm.answer.addinfo}}</h4>
-        </div>
-        <br>
-        <div ng-if="vm.userIsOwner" ng-attr-style="display:{{vm.userIsOwner ? 'inline':'none'}}">
-        <!-- <div> -->    
-            <blob-upload>
-        </div>
-        <div ng-attr-style="display:{{vm.userIsOwner ? 'none':'inline'}}" ng-if="vm.type!='PersonCust'"> 
-        <!-- <div ng-if="vm.type!='PersonCust'"> -->    
-            <button type="submit" class="btn btn-primary" ng-click="vm.editImage()">{{vm.imageCommand}}</button>
-            <button type="submit" class="btn btn-primary" ng-click="vm.viewPrev()" ng-attr-style="display:{{vm.imagefunctions}}">&laquo</button>
-            <button type="submit" class="btn btn-primary" ng-click="vm.viewNext()" ng-attr-style="display:{{vm.imagefunctions}}">&raquo</button>
-            <a ng-attr-style="display:{{vm.imagefunctions}}">{{vm.linkIdx+1}} of {{vm.numLinks}}</a>
-            <button type="submit" class="btn btn-success" ng-click="vm.selectImage()" ng-attr-style="display:{{vm.imagefunctions}}">Select</button>
-        </div>
-        </br>
-        <label class="checkbox-inline"  ng-show="{{vm.type != 'Short-Phrase'}}">
-                <input type="checkbox" ng-change='vm.onNoGoodImages(vm.ngi)' ng-model="vm.ngi">No good images were found
-        </label>
-    </div>
 
-    <form class="form-horizontal col-sm-12 col-md-6" role="form" name="answerForm" ng-repeat="x in vm.fields">
+    <form class="form-horizontal col-sm-12 col-md-7" role="form" name="answerForm" ng-repeat="x in vm.fields">
         <!--  <div class="form-group" ng-repeat="x in vm.fields"> -->
         <!--   <div ng-repeat="x in vm.fields">  -->
        
@@ -83,6 +54,55 @@
         </div>
     </form>
 
+    <div class="col-sm-12 col-md-5">
+        <div class="" ng-show="{{vm.type != 'Short-Phrase'}}">
+            <img class="displayed-uc" src="{{vm.imageURL}}" alt="{{image.errorLoading}}" ng-attr-style="width:100%; max-height:300px" ng-show="{{vm.type != 'Short-Phrase'}}">
+            <img src="../../../assets/images/powered_by_google_on_white.png" ng-if="vm.type!='PersonCust' && !vm.userIsOwner">
+        </div>
+        <div class="container-answer" ng-attr-style="width:100%; max-height:300px;" ng-show="{{vm.type == 'Short-Phrase'}}">
+            <br>
+            <h2 style="text-align:center"><strong>{{vm.answer.name}}</strong></h2>
+            <br>
+            <h4 style="text-align:center">{{vm.answer.addinfo}}</h4>
+        </div>
+        <br>
+        <div ng-if="vm.userIsOwner" ng-attr-style="display:{{vm.userIsOwner ? 'inline':'none'}}">
+        <!-- <div> -->    
+            <blob-upload>
+        </div>
+        <div ng-attr-style="display:{{vm.userIsOwner ? 'none':'inline'}}" ng-if="vm.type!='PersonCust'"> 
+        <!-- <div ng-if="vm.type!='PersonCust'"> -->    
+            <button type="submit" class="btn btn-primary" ng-click="vm.editImage()">{{vm.imageCommand}}</button>
+            <button type="submit" class="btn btn-primary" ng-click="vm.viewPrev()" ng-attr-style="display:{{vm.imagefunctions}}">&laquo</button>
+            <button type="submit" class="btn btn-primary" ng-click="vm.viewNext()" ng-attr-style="display:{{vm.imagefunctions}}">&raquo</button>
+            <a ng-attr-style="display:{{vm.imagefunctions}}">{{vm.linkIdx+1}} of {{vm.numLinks}}</a>
+            <button type="submit" class="btn btn-success" ng-click="vm.selectImage()" ng-attr-style="display:{{vm.imagefunctions}}">Select</button>
+        </div>
+        </br>
+        <label class="checkbox-inline"  ng-show="{{vm.type != 'Short-Phrase'}}">
+                <input type="checkbox" ng-change='vm.onNoGoodImages(vm.ngi)' ng-model="vm.ngi">No good images were found
+        </label>
+    </div>
+
+</div>
+<div class="col-sm-12 col-md-7" style="padding-top:10px">
+    <label>Ranks:</label>
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="x in vm.answerRanks" 
+            style="cursor:pointer;">{{x.title}}
+        <i ng-if="$index>0" class="glyphicon glyphicon-remove pull-right" ng-click="vm.remRank(x)"></i></li>
+    </ul>
+
+    <div ng-if="true" style="padding-top:10px">
+        <div class="text-left"><button class="btn btn-primary" ng-if="!vm.addctsactive" ng-click="vm.addCatans()">Add More Ranks</button></div>
+		<div class="input-group" ng-if="vm.addctsactive">
+        <!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
+        <input type="text" class="form-control" ng-model="vm.addctsval" bs-options="c for c in vm.addctsopts" bs-typeahead>
+        <span class="input-group-btn text-right">
+            <button class="btn btn-success" type="button" ng-click="vm.addcts()">Add</button>
+        </span>
+		</div>
+	</div>
 </div>
 <br>
 <div class="well well-light-edit" ng-repeat="x in vm.edits">

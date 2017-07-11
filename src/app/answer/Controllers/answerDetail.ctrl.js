@@ -1015,10 +1015,8 @@
         }
 
         function imageNav(){
-            console.log("numImages ", numImages);
             if ((vm.i + (numImagesPage-1)) <= numImages) vm.e = vm.i+numImagesPage;
             else vm.e = numImages;
-            console.log("vm.i, vm.e - ", vm.i, vm.e);
             if (numImages <= 4) { vm.showFwd = false; vm.showRev = false; }
             else {
                 if (vm.i == 0) vm.showRev = false;
@@ -1189,11 +1187,9 @@
         function addcts(x) {
             var title = '';
             var category = 0;
-            var isDup = false;
-
+            
             title = vm.addctsval;
-            isDup = vm.catisdup == undefined ? false : vm.catisdup;
-
+            
             for (var i = 0; i < $rootScope.content.length; i++) {
 
                 if ($rootScope.content[i].title == title) {
@@ -1201,7 +1197,7 @@
                     break;
                 }
             }
-            catans.postRec2(vm.answer.id, category, isDup);
+            catans.postRec2(vm.answer.id, category);
 
             vm.addctsactive = false;
 

@@ -34,6 +34,9 @@
         vm.updateHours = updateHours;
         vm.onNoGoodImages = onNoGoodImages;
         vm.getWiki = getWiki;
+        vm.remRank = remRank;
+        vm.addCatans = addCatans;
+        vm.addcts = addcts;
         
         vm.ranking = $rootScope.title;
         vm.userIsOwner = $rootScope.userIsOwner;
@@ -120,10 +123,14 @@
         activate();
 
         function activate() {
+
+            $window.scrollTo(0, 0);
             
             //country.loadCountries();
             //vm.countries = $rootScope.cCountries;
             loadAnswerData();
+            loadAnswerRanks();
+            prepareCatansOptions();
             if (vm.userIsOwner && vm.type == 'Establishment') loadHoursData();
             
             vm.access = vm.userIsOwner && vm.answer.isactive;
@@ -162,6 +169,85 @@
                 vm.fields[i].val = vm.fields[i].cval; 
             }
             
+        }
+
+        function loadAnswerRanks(){
+            //Create arrays one for initial value, other one that will be used for comparison 
+            vm.answerRanks = [];
+            var idx = 0;
+            for (var i=0; i < $rootScope.catansrecs.length; i++){
+                if ($rootScope.catansrecs[i].answer == vm.answer.id){
+                    idx = $rootScope.content.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[i].category);
+                    vm.answerRanks.push($rootScope.content[idx]);
+                }
+            }
+        }
+
+        function prepareCatansOptions(){
+
+            if ($rootScope.DEBUG_MODE) console.log("prepareCatansOptions");
+
+            //search.sibblingRanks($rootScope.cCategory.id);
+            vm.addctsopts = [];
+            var opt = '';
+            //if (answerNeighborhood == undefined || answerNeighborhood == '') answerNeighborhood = 'San Diego';
+            for (var i = 0; i < $rootScope.ctsOptions.length; i++) {
+                if ($rootScope.ctsOptions[i].indexOf('@neighborhood') > -1) {
+                    if (vm.answer.cityarea){
+                        opt = $rootScope.ctsOptions[i].replace('@neighborhood', vm.answer.cityarea);
+                        vm.addctsopts.push(opt);
+                    }
+                }
+                else vm.addctsopts.push($rootScope.ctsOptions[i]);
+            }
+        }
+
+        function addCatans(){            
+            vm.addctsactive = true;
+        }
+
+        function addcts(){
+            var typemismatch = false;
+            var rankObj = {};
+            var idx = $rootScope.content.map(function(x) {return x.title; }).indexOf(vm.addctsval);  
+            //Check types match
+            if (vm.answer.type == 'Person' && 
+                $rootScope.content[idx].type != 'Person') typemismatch = true;
+            if (vm.answer.type == 'Event' && 
+                $rootScope.content[idx].type != 'Event') typemismatch = true;
+            if (vm.answer.type == 'Thing' && 
+                $rootScope.content[idx].type != 'Thing') typemismatch = true;
+            if (vm.answer.type == 'PersonCust' && 
+                $rootScope.content[idx].type != 'PersonCust') typemismatch = true;        
+            if ((vm.answer.type == 'Place' || 
+                vm.answer.type == 'Establishment' || 
+                vm.answer.type == 'Organization') &&  
+                ($rootScope.content[idx].type != 'Place' &&
+                $rootScope.content[idx].type != 'Establishment' &&
+                $rootScope.content[idx].type != 'Organization')) typemismatch = true;
+            
+            if (typemismatch) dialog.typemismatch($rootScope.content[idx].type,vm.answer.type);
+            else  dialog.confirmAddRank($rootScope.content[idx],vm.answer,addRank);     
+
+        }
+
+        function addRank(category,answer){
+            catans.postRec2(answer.id, category.id).then(loadAnswerRanks);
+            vm.addctsval = '';
+            vm.addctsactive = false;
+        }
+
+        function remRank(x){
+            dialog.confirmRemoveRank(x, vm.answer, remRankConfirmed);    
+        }
+
+        function remRankConfirmed(category,answer){
+            for (var i=0; i<$rootScope.catansrecs.length; i++){
+                if ($rootScope.catansrecs[i].answer == answer.id && 
+                    $rootScope.catansrecs[i].category == category.id){
+                        catans.deleteRec(answer.id, category.id).then(loadAnswerRanks);
+                    }
+            }
         }
 
         function getEdits(answer_id) {
