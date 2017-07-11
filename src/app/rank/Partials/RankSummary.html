@@ -164,25 +164,29 @@
 <p class="text-left">{{vm.introtext}}</p>
 <br>
 <div class="row" style="margin:0px;padding:0px;">
+
+    
     <div class="col-sm-10 col-md-10 col-lg-10 hidden-xs" >
         <div class="btn-group text-left">
-            <p>{{vm.sm ? '':'Sort by:'}}<span>        
-        <button class="btn btn-default {{vm.selRank}} " ng-click="vm.sortByRank()" ng-if="vm.type != 'Event' && !vm.fnm">Rank</button>
-        <button class="btn btn-default {{vm.selUpV}} " ng-click="vm.sortByUpV()">Popular</button>
-        <button class="btn btn-default {{vm.selDistance}} " ng-click="vm.sortByDistance()"
-            ng-show="{{vm.type == 'Establishment'}}">Distance</button>
-            
-        <button class="btn btn-default {{vm.selDate}} " ng-click="vm.sortByDate()"
-            ng-show="{{vm.type == 'Event'}}">Date</button>               
+            <button class="btn btn-default" ng-click="vm.sortbyHelpDialog()"><i class="fa fa-question-circle"></i></button>
+            <span style="float: left;margin-left: 10px; margin-right: 10px;line-height: 32px">{{vm.sm ? '':'Sort by:'}}</span>
+            <button class="btn btn-default {{vm.selRank}} " ng-click="vm.sortByRank()" ng-if="vm.type != 'Event' && !vm.fnm">Rank</button>
+            <button class="btn btn-default {{vm.selUpV}} " ng-click="vm.sortByUpV()">Popular</button>
+            <button class="btn btn-default {{vm.selDistance}} " ng-click="vm.sortByDistance()"
+                ng-show="{{vm.type == 'Establishment' || vm.type == 'Event'}}">Distance</button>
+                
+            <button class="btn btn-default {{vm.selDate}} " ng-click="vm.sortByDate()"
+                ng-show="{{vm.type == 'Event'}}">Date</button>               
 
-        <button class="btn btn-default {{vm.selTrending}} " ng-click="vm.sortByTrending()">Trending</button>
-        <!--  <button type="button " class="btn btn-primary ">{{"rankSummary.Filtered " | translate}}</button> -->
-        </span></p>
+            <button class="btn btn-default {{vm.selTrending}} " ng-click="vm.sortByTrending()">Trending</button>
+            <!--  <button type="button " class="btn btn-primary ">{{"rankSummary.Filtered " | translate}}</button> -->
+        
         </div>
     </div>
     <div class="col-xs-9 visible-xs" style="margin-bottom: 20px">
 
         <div class="dropdown">
+            <button class="btn btn-default" ng-click="vm.sortbyHelpDialog()"><i class="fa fa-question-circle"></i></button>
             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Sort By
                 <span class="caret"></span>
             </button>
@@ -196,8 +200,6 @@
             ng-show="{{vm.type == 'Event'}}">Date</a></li>
                 <li><a class="btn btn-default {{vm.selTrending}} " ng-click="vm.sortByTrending()">Trending</a></li>
             </ul>
-
-            <button class="btn btn-default" ng-click="vm.sortbyHelpDialog()"><i class="fa fa-question-circle"></i></button>
         </div>
 
     </div>
@@ -207,13 +209,13 @@
     </div>
 </div>
 <div class="row" style="margin:0px;">
-    <div class="col-xs-6 text-right">
+    <div class="col-xs-12 col-sm-6 text-right">
             <button ng-click="vm.changeMode('endorse') " class="btn btn-primary" ng-if="vm.mode=='specials'">Endorse</button>
             <button ng-click="vm.changeMode('specials') " class="btn btn-primary" ng-if="vm.mode=='endorse'">Special</button>
 
             <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">Rank</button>
     </div>
-    <div class="col-xs-6 btn-group text-right">
+    <div class="col-xs-12 col-sm-6 btn-group text-right">
         <h4>Contributors: <b style="color:blue; "><i>{{vm.numContributors}}&nbsp&nbsp</i></b></h4>
     </div>
 </div>    
@@ -260,14 +262,12 @@
                 <td ng-if="vm.mode=='endorse'">
 
                     <div>
-                        <span  ng-click="vm.UpVote(x,$event)"  ng-attr-style="color:{{x.thumbUp}};margin-right: 20px;font-size: 18px;" >
+                        <span  ng-click="vm.UpVote(x,$event)"  ng-attr-style="color:{{x.thumbUp}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 18px;" >
                             <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                             <i style="color:black;font-size: 18px;">&nbsp;{{x.upV}}&nbsp;&nbsp;</i>
                         </span>
-                        <div ng-if="vm.sm">
-                            <br/>
-                        </div>
-                        <span  ng-click="vm.DownVote(x,$event)" ng-attr-style="color:{{x.thumbDn}};margin-right: 20px;font-size: 20px;" >
+                        
+                        <span  ng-click="vm.DownVote(x,$event)" ng-attr-style="color:{{x.thumbDn}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 20px;" >
                             <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                             <i style="color:black">&nbsp;{{x.downV}}</i>
                         </span>

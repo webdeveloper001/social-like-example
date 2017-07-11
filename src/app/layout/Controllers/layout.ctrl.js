@@ -80,6 +80,10 @@
         vm.toggleFilterBox = function(){
             vm.showFilters = !vm.showFilters;
         }
+
+        vm.hideFilterBox = function(){
+            vm.showFilters = false;
+        }
         
         vm.selectNh = function(item, data){
             vm.filterOptions.isCity = false;
@@ -191,7 +195,9 @@
 
         //TODO: Would like to add this abstract template, but dont know how
         $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
+            vm.hideFilterBox();
             $rootScope.previousState = from.name;
+
         });
 
         var nidx = 0;
@@ -370,6 +376,7 @@
             }
             vm.searchActive = $rootScope.searchActive;
             $window.scroll(0,0);                    
+            vm.hideFilterBox();
         }
 
         function hideSearch(){
