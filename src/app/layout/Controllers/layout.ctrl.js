@@ -430,7 +430,7 @@
                     titlex = $rootScope.content[i].title.replace('Hillcrest', '@neighborhood');
                     $rootScope.ctsOptions.push(titlex);
                 }
-                if ($rootScope.content[i].tags.indexOf('isMP') > -1 && $rootScope.content[i].isatomic) {
+                if ($rootScope.content[i].ismp && $rootScope.content[i].isatomic) {
                     $rootScope.ctsOptions.push($rootScope.content[i].title);
                 }
             }

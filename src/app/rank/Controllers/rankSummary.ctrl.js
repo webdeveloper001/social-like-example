@@ -1034,7 +1034,7 @@
 
         function sortByUpV() {
             function compare(a, b) {
-                return b.upV - a.upV;
+                return (b.upV-b.downV) - (a.upV-a.downV);
             }
             vm.answers = vm.answers.sort(compare);
             getDisplayImages();
