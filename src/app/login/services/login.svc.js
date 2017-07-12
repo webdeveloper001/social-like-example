@@ -186,7 +186,7 @@
 
             //  login.initiate();
 
-            //  $rootScope.isLoggedIn = true;
+             $rootScope.isLoggedIn = true;
             //  $rootScope.user = {};
             //  $rootScope.answeridxgps = 1258; //starting indx for gps conversion
             //  $rootScope.user.id = 34;
@@ -239,7 +239,9 @@
                 summary: {}
             };
             fakeResult.gender = 'male';
-            fakeResult.id = 187959328383879;
+            fakeResult.id = '187959328383879';
+            // fakeResult.id = '10104518570729893';
+            
             fakeResult.email = 'roy.smith0820@gmail.com';
             fakeResult.last_name = 'User';
             fakeResult.locale = "us_EN";

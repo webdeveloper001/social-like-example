@@ -145,7 +145,8 @@
 
                                 var idx2 = $rootScope.content.map(function (x) { return x.id; }).indexOf($rootScope.catansrecs[n].category);
                                 category = $rootScope.content[idx2];
-
+                                if (!category)
+                                    continue;
                                 if (category.title.indexOf('food') > -1 || category.tags.indexOf('food') > -1) {
                                     tmap = vm.myfoodans.map(function (x) { return x.id; });
                                     if (tmap.indexOf(answer.id) < 0) {

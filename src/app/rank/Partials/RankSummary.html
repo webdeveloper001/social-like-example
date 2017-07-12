@@ -211,20 +211,12 @@
         <button class="btn btn-default" ng-click="vm.share()" style="padding-right:5px">Share&nbsp&nbsp<span class="glyphicon glyphicon-share"></span></button>
     </div>
 </div>
-<<<<<<< HEAD
 <div style="margin:0px; margin-top: 10px; " class="text-center">
-        <button ng-click="vm.changeMode('endorse') " class="btn btn-primary" ng-if="vm.mode=='specials'">Endorse</button>
-        <button ng-click="vm.changeMode('specials') " class="btn btn-primary" ng-if="vm.mode=='endorse'">Special</button>
-=======
-<div class="row" style="margin:0px;">
-    <div class="col-xs-6 text-center" style="padding: 0px">
-            <button ng-click="vm.changeMode('endorse') " class="btn btn-primary" ng-if="vm.mode=='specials'">Endorse</button>
-            <button ng-click="vm.changeMode('specials') " class="btn btn-primary" ng-if="vm.mode=='endorse'">Specials</button>
->>>>>>> 862a23b5131ae46b8e5b27ff3034bde1b114469f
+    <button ng-click="vm.changeMode('endorse') " class="btn btn-primary" ng-if="vm.mode=='specials'">Endorse</button>
+    <button ng-click="vm.changeMode('specials') " class="btn btn-primary" ng-if="vm.mode=='endorse'">Special</button>
 
-        <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">Rank</button>
-        <span style="line-height: 32px">&nbsp;&nbsp;&nbsp;Contributors: <b style="color:blue; "><i>{{vm.numContributors}}&nbsp&nbsp</i></b></span>
-    </div>
+    <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">Rank</button>
+    <span style="line-height: 32px">&nbsp;&nbsp;&nbsp;Contributors: <b style="color:blue; "><i>{{vm.numContributors}}&nbsp&nbsp</i></b></span>
 </div>    
 <!--
 <div ng-show="{{vm.type == 'Establishment'}}">
