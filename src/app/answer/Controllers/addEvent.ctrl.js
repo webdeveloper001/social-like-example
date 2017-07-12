@@ -306,7 +306,7 @@
             eqRanks();
             if (eqFound && !inCity) answer.addAnswer2(ansObj, [$rootScope.cCategory.id, eqRankIdx]).then(rankSummary);
             else if (eqFound && inCity) answer.addAnswer2(ansObj, [eqRankIdx]).then(rankSummary);
-            else answer.addAnswer(ansObj).then(rankSummary); 
+            else answer.addAnswer(ansObj,[$rootScope.cCategory]).then(rankSummary); 
             
          }
         

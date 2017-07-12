@@ -412,8 +412,12 @@
 
                     console.log("prms - ", prms);
 
-                    $q.all(prms).then(rankSummary);*/  
-                    answer.addAnswer(myAnswer, vm.addToRanks).then(rankSummary);
+                    $q.all(prms).then(rankSummary);*/
+                    var ranks = [];
+                    for (var i=0; i<vm.addToRanks.length; i++){
+                        if (vm.addToRanks[i].sel) ranks.push(vm.addToRanks[i]);
+                    }  
+                    answer.addAnswer(myAnswer, ranks).then(rankSummary);
                 }
                 myAnswer = undefined; 
             }
@@ -446,8 +450,12 @@
 
                         console.log("prms - ", prms);
 
-                        $q.all(prms).then(rankSummary);*/  
-                        answer.addAnswer(myAnswer, vm.addToRanks).then(rankSummary);
+                        $q.all(prms).then(rankSummary);*/
+                        var ranks = [];
+                        for (var i = 0; i < vm.addToRanks.length; i++) {
+                            if (vm.addToRanks[i].sel) ranks.push(vm.addToRanks[i]);
+                        }    
+                        answer.addAnswer(myAnswer, ranks).then(rankSummary);
                     }
                 }
                 myAnswer = undefined;                                 
