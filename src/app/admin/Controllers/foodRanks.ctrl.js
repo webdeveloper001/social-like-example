@@ -26,10 +26,9 @@
             console.log("getRanks");
             
             var str = '';
+            var title = '';
             for (var i=0; i<$rootScope.content.length; i++){
-                if ($rootScope.content[i].title.indexOf('restaurant') > -1 ||  //restaurant
-                    $rootScope.content[i].title.indexOf('food') > -1 ||
-                    $rootScope.content[i].tags.indexOf('food') > -1){            //food
+                if ($rootScope.content[i].tags.indexOf('food') > -1){            //food
                         str = str + ':' + $rootScope.content[i].id;  
                     }
             }
@@ -43,6 +42,7 @@
             var foodAnswers = [];
             var foodAnswersMap = [];
             var isDup = false;
+            var strAns = '';
             for (var i=0; i<$rootScope.catansrecs.length; i++){
                 catansrec = $rootScope.catansrecs[i];
                 for (var j=0; j< catArr.length; j++){
@@ -69,7 +69,10 @@
                             }
                         }
                       }
-                      if (!isDup) foodAnswers.push($rootScope.answers[idx]);                         
+                      if (!isDup) {
+                          strAns = strAns + ':' + $rootScope.answers[idx].id;
+                          foodAnswers.push($rootScope.answers[idx]);
+                      }                         
                     }
                 } 
             }
@@ -77,7 +80,8 @@
             //console.log("foodAnswers - ", foodAnswers.length);
             console.log("Food ranks: - ", fstr);
             console.log("Food ranks length: - ", catArr.length);
-            //console.log("Food answers length: - ", foodAnswers.length);
+            console.log("Answers Ids: - ", strAns.substring(1));
+            console.log("Food answers length: - ", foodAnswers.length);
            
         }
     }
