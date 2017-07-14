@@ -211,9 +211,9 @@
         <button class="btn btn-default" ng-click="vm.share()" style="padding-right:5px">Share&nbsp&nbsp<span class="glyphicon glyphicon-share"></span></button>
     </div>
 </div>
-<div style="margin:0px; margin-top: 10px; " class="text-center">
+<div style="margin:0px; margin-top: 10px; " class="text-center" ng-if="!vm.fnm">
     <button ng-click="vm.changeMode('endorse') " class="btn btn-primary" ng-if="vm.mode=='specials'">Endorse</button>
-    <button ng-click="vm.changeMode('specials') " class="btn btn-primary" ng-if="vm.mode=='endorse'">Special</button>
+    <button ng-click="vm.changeMode('specials') " class="btn btn-primary" ng-if="vm.mode=='endorse'">Specials</button>
 
     <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">Rank</button>
     <span style="line-height: 32px">&nbsp;&nbsp;&nbsp;Contributors: <b style="color:blue; "><i>{{vm.numContributors}}&nbsp&nbsp</i></b></span>

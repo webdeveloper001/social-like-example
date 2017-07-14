@@ -497,7 +497,7 @@
                 }
             }
 
-            if (vm.type == 'Establishment' || vm.type == 'PersonCust') {
+            if (vm.vrows) {
                 for (var i = 0; i < vm.vrows.length; i++) {
                     var voteRecExists = vm.vrows[i].voteExists;
                     if (voteRecExists && vm.vrows[i].dVi != vm.vrows[i].dV) {

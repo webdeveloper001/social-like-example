@@ -102,43 +102,20 @@
             updateExec = true;
         });
         var rankDataLoadedListener = $rootScope.$on('rankDataLoaded', function () {
-            vm.dataReady = true;
-
-            //Load current category
-            $rootScope.cCategory = {};
-            for (var i = 0; i < $rootScope.content.length; i++) {
-                if (($rootScope.content[i].id == $stateParams.index) || ($rootScope.content[i].slug == $stateParams.index)){
-                    $rootScope.cCategory = $rootScope.content[i];
-                    break;
-                }
-            }
-
-            vm.ranking = $rootScope.cCategory.title;
-            if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego','close to me');
-
-            if ($rootScope.cCategory.id == 9521) {
-                vm.foodNearMe = true;
-                foodNearMe = true;
-                vm.fnm = true;
-                vm.showR = false;
-            }
-            
-            vm.loadingAnswers = true;
-            $timeout(function(){
-                activate();
-                vm.loadingAnswers = false
-            });
+            prepareRankSummary();
         });
 
         $scope.$on('$destroy',updateVoteTableListener);
         $scope.$on('$destroy',rankDataLoadedListener);
                                
-        $rootScope.$on('$stateChangeStart',
+        var stateChangeListener = $rootScope.$on('$stateChangeStart',
             function (ev, to, toParams, from, fromParams) {
                 if (from.name == 'rankSummary' && to.name != 'rankSummary') {
                     if ($rootScope.isLoggedIn) updateRecords();
                 }
             });
+        
+        $scope.$on('$destroy', stateChangeListener);
 
 
         vm.isMobile = false; 
@@ -160,6 +137,11 @@
         window.prerenderReady = false;
         
         if ($rootScope.rankSummaryDataLoaded) { 
+            prepareRankSummary();
+        }
+        else vm.dataReady = false;
+
+        function prepareRankSummary(){
             vm.dataReady = true; 
 
             //Load current category
@@ -179,16 +161,18 @@
                 foodNearMe = true;
                 vm.fnm = true;
                 vm.showR = false;
+                if ($rootScope.coordsRdy == undefined || $rootScope.coordsRdy == false ){
+                    sortByDistance();
+                }
             }
             
             vm.loadingAnswers = true;
-            $timeout(function(){
-            
-                activate();
+            $timeout(function(){           
+                if (!foodNearMe) activate();
+                else if ($rootScope.coordsRdy) activate();
                 vm.loadingAnswers = false;
             });
         }
-        else vm.dataReady = false;
 
         function activate() {
             answers = $rootScope.answers;
@@ -207,16 +191,18 @@
             $rootScope.objNumAct = $rootScope.objNum;
 
             loadData(); //load data and write to $rootScope
-            var answerIDs = vm.answers.map(function(answer){return answer.id;});
-            if (answerIDs.length > 0){
-                votes.loadLastMonthVoting(answerIDs)
-                    .then(function(resp){
-                        resp.forEach(function(vote){
-                            var idx = answerIDs.indexOf(vote.answer);
-                            vm.answers[idx].trendUpV ++;
+            if (!foodNearMe){
+                var answerIDs = vm.answers.map(function (answer) { return answer.id; });
+                if (answerIDs.length > 0) {
+                    votes.loadLastMonthVoting(answerIDs)
+                        .then(function (resp) {
+                            resp.forEach(function (vote) {
+                                var idx = answerIDs.indexOf(vote.answer);
+                                vm.answers[idx].trendUpV++;
+                            });
+                            //console.log(vm.answers);
                         });
-                //console.log(vm.answers);
-                });
+                }
             }
 
             checkUserCredentials();
@@ -593,7 +579,9 @@
 
             $rootScope.NhImplied = false;
             $rootScope.NhValue = '';
-            if ($rootScope.cCategory.type == 'Establishment' || $rootScope.cCategory.type == 'Event') {
+            if ($rootScope.cCategory.type == 'Establishment' ||
+            $rootScope.cCategory.type == 'Place' ||
+            $rootScope.cCategory.type == 'Event') {
                 //Determine if title already contains neighboorhood
                 var nhs = $rootScope.neighborhoods.concat($rootScope.districts);
                 for (var i = 0; i < nhs.length; i++) {
@@ -623,7 +611,7 @@
                 }
             }
 
-            //Load parent is rank is atomic for better navigation
+            //Create button to link to parent rank if rank is atomic for better navigation
             if ($rootScope.cCategory.isatomic && $rootScope.NhImplied){
                 var ss = $rootScope.cCategory.title.replace($rootScope.NhValue,'San Diego');
                 for (var n=0; n<$rootScope.content.length; n++){
@@ -646,35 +634,23 @@
             
             //Rank is 'Food Near Me' - first time only
             if (foodNearMe && $rootScope.fanswers == undefined) {
-                for (var i = 0; i < catansrecs.length; i++) {
-                    var catansrec = catansrecs[i];
                     var answerid = 0;
                     var idx = 0;
                     var isDup = false;
                     var ansObj = {};
-                    var nidx = 0;
+                    
+                    var ansArr = $rootScope.foodans.cats.split(':').map(Number);
 
-                    var catArr2 = $rootScope.foodranks.cats.split(':').map(Number);
-
-                    for (var j = 0; j < catArr2.length; j++) {
-                        if (catansrec.category == catArr2[j]) {
-                            answerid = catansrec.answer;
-                            //foodAnswersMap = [];
-                            //if (foodAnswers.length > 0) {
-                            //foodAnswersMap = foodAnswers.map(function(x) {return x.id;});
-                            //}
-                            idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf(answerid);
-                            if (idx < 0) {
-                                console.log("idx - ", answerid, "catansrec - ", catansrec.id, catansrec.answer, catansrec.category);
-                                catans.deleteRec(catansrec.answer, catansrec.category);
-                            }
+                    for (var j = 0; j < ansArr.length; j++) {
+                        idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf(ansArr[j]);
+                        if ($rootScope.answers[idx]) {
                             //only add if its not already added
                             isDup = false;
                             if (fanswers.length > 0 && idx > 0) {
                                 for (var n = 0; n < fanswers.length; n++) {
                                     if (fanswers[n].id == $rootScope.answers[idx].id) {
                                         isDup = true;
-                                        nidx = n;
+                                        //nidx = n;
                                         break;
                                     }
                                 }
@@ -682,16 +658,15 @@
                             //if not duplicated, add to answer array. upV is init to first catans record
                             if (!isDup) {
                                 ansObj = $rootScope.answers[idx];
-                                ansObj.upV = catansrec.upV;
-                                fanswers.push(ansObj);
-                            }
-                            //if duplicated, add upV from new catan
-                            if (isDup) {
-                                fanswers[nidx].upV = fanswers[nidx].upV + catansrec.upV;
+                                //We have user coordinates, so we check that both lat and lng are within approx a mile
+                                //1 degree ~ 69 miles, so 1 miles ~ 0.0145 degrees
+                                if (Math.abs($rootScope.currentUserLatitude - $rootScope.answers[idx].lat) < 0.0145 &&
+                                    Math.abs($rootScope.currentUserLongitude - $rootScope.answers[idx].lng) < 0.0145)
+                                    fanswers.push(ansObj);
                             }
                         }
                     }
-                }
+                
                 $rootScope.canswers = fanswers;
                 $rootScope.fanswers = fanswers;
             }
@@ -853,6 +828,8 @@
                 }
                 else vm.haveLocation = true;
             }
+
+            //Specials
             var cdate = new Date();
             var dayOfWeek = cdate.getDay();
             var isToday = false;
@@ -1495,7 +1472,7 @@
                 }
             }
 
-            if (vm.type == 'Establishment' || vm.type == 'PersonCust') {
+            if (vm.vrows) {
                 for (var i = 0; i < vm.vrows.length; i++) {
                     var voteRecExists = vm.vrows[i].voteExists;
                     if (voteRecExists && vm.vrows[i].dVi != vm.vrows[i].dV) {
