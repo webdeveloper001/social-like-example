@@ -642,8 +642,8 @@
                     var ansArr = $rootScope.foodans.cats.split(':').map(Number);
 
                     for (var j = 0; j < ansArr.length; j++) {
-                            idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf(ansArr[j]);
-                            
+                        idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf(ansArr[j]);
+                        if ($rootScope.answers[idx]) {
                             //only add if its not already added
                             isDup = false;
                             if (fanswers.length > 0 && idx > 0) {
@@ -660,11 +660,12 @@
                                 ansObj = $rootScope.answers[idx];
                                 //We have user coordinates, so we check that both lat and lng are within approx a mile
                                 //1 degree ~ 69 miles, so 1 miles ~ 0.0145 degrees
-                                if (Math.abs($rootScope.currentUserLatitude-$rootScope.answers[idx].lat) < 0.0145 &&
-                                Math.abs($rootScope.currentUserLongitude-$rootScope.answers[idx].lng) < 0.0145)
-                                fanswers.push(ansObj);
-                            }                           
+                                if (Math.abs($rootScope.currentUserLatitude - $rootScope.answers[idx].lat) < 0.0145 &&
+                                    Math.abs($rootScope.currentUserLongitude - $rootScope.answers[idx].lng) < 0.0145)
+                                    fanswers.push(ansObj);
+                            }
                         }
+                    }
                 
                 $rootScope.canswers = fanswers;
                 $rootScope.fanswers = fanswers;
