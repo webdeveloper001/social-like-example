@@ -27,6 +27,7 @@
         vm.dbQuery = dbQuery;
         vm.update = update;
         vm.foodranks = foodranks;
+        vm.sibLocs = sibLocs;
         vm.payment = payment;
         vm.plan = plan;
         vm.bizAdmin = bizAdmin;
@@ -62,6 +63,7 @@
             vm.selPayment = '';
             vm.selPlan = '';
             vm.selBizAdmin = '';
+            vm.selSibLocks = '';
 
             $state.go('queries');
 
@@ -78,6 +80,7 @@
             vm.selPayment = '';
             vm.selPlan = '';
             vm.selBizAdmin = '';
+            vm.selSibLocks = '';
 
             $state.go('views');
 
@@ -94,6 +97,7 @@
             vm.selPayment = '';
             vm.selPlan = '';
             vm.selBizAdmin = '';
+            vm.selSibLocks = '';
 
             $state.go('flags');
 
@@ -111,6 +115,7 @@
             vm.selPayment = '';
             vm.selPlan = '';
             vm.selBizAdmin = '';
+            vm.selSibLocks = '';
 
             $state.go('addRank');
 
@@ -128,6 +133,7 @@
             vm.selPayment = '';
             vm.selPlan = '';
             vm.selBizAdmin = '';
+            vm.selSibLocks = '';
             
             $state.go('dbMaint');
         }
@@ -144,6 +150,7 @@
             vm.selPayment = '';
             vm.selPlan = '';
             vm.selBizAdmin = '';
+            vm.selSibLocks = '';
             
             $state.go('dbQuery');
         }
@@ -160,6 +167,7 @@
             vm.selPayment = '';
             vm.selPlan = '';
             vm.selBizAdmin = '';
+            vm.selSibLocks = '';
             
             $state.go('updateHeaders');
         }
@@ -176,9 +184,27 @@
             vm.selPayment = '';
             vm.selPlan = '';
             vm.selBizAdmin = '';
+            vm.selSibLocks = '';
             
             $state.go('foodRanks');
             
+        }
+
+        function sibLocs(){
+            vm.selKeywords = '';
+            vm.selViews = '';
+            vm.selFlags = '';
+            vm.selRankings = '';
+            vm.selDbMaint = '';
+            vm.selQuery = '';
+            vm.selUpdate = '';
+            vm.selFoodRanks = '';
+            vm.selSibLocks = 'active';
+            vm.selPayment = '';
+            vm.selPlan = '';
+            vm.selBizAdmin = '';
+            
+            $state.go('sibLocs');
         }
 
         function payment() {
@@ -193,6 +219,7 @@
             vm.selPlan = '';
             vm.selPayment = 'active';
             vm.selBizAdmin = '';
+            vm.selSibLocks = '';
 
             $state.go('payment');
 
@@ -210,6 +237,7 @@
             vm.selPlan = 'active';
             vm.selPayment = '';
             vm.selBizAdmin = '';
+            vm.selSibLocks = '';
 
             $state.go('plan');
 
@@ -227,6 +255,7 @@
             vm.selPlan = '';
             vm.selPayment = '';
             vm.selBizAdmin = 'active';
+            vm.selSibLocks = '';
 
             $state.go('bizadmin');
 

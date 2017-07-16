@@ -256,6 +256,7 @@
                     case "type": data.type = val[i]; break;
                     case "eventloc": data.eventloc = val[i]; break;
                     case "eventlocid": data.eventlocid = val[i]; break;
+                    case "family": data.family = val[i]; break;
                 }
             }
             //console.log("data", data);
@@ -292,6 +293,7 @@
                     case "type": $rootScope.answers[idx].type = val[i]; break;
                     case "eventloc": $rootScope.answers[idx].eventloc = val[i]; break;
                     case "eventlocid": $rootScope.answers[idx].eventlocid = val[i]; break;
+                    case "family": $rootScope.answers[idx].family = val[i]; break;
                 }
             }                        
             
