@@ -1,0 +1,35 @@
+<div class="container">
+<br>
+<h1>Sibbling Locations</h1>
+<br>
+<input type="text" class="form-control" ng-model="vm.answername" bs-options="c for c in vm.ansOpts" bs-typeahead>
+<span class="input-group-btn text-right">
+   <button class="btn btn-success" type="button" ng-click="vm.selAns()">Add</button>
+</span>
+<br>
+<div ng-if"vm.answer.ansLocs">
+    <h2>{{vm.answer.name}}</h2>
+    <h4>{{vm.answer.location}}</h4>
+</div>
+<br>
+<strong>Sibbling Locations</strong>
+
+<ul class="list-group">
+        <li class="list-group-item" ng-repeat="x in vm.locations" 
+            style="cursor:pointer;">{{x.name}},&nbsp{{x.location}}
+        <i class="glyphicon glyphicon-remove pull-right" ng-click="vm.remAns(x)"></i></li>
+</ul>
+
+<br>
+<input type="text" class="form-control" ng-model="vm.brothername" bs-options="c for c in vm.ansOpts" bs-typeahead>
+<span class="input-group-btn text-right">
+   <button class="btn btn-primary" type="button" ng-click="vm.addBrother()">Add Brother</button>
+</span>
+<br>
+<div class="text-center">
+    <button class="btn btn-success" type="button" ng-click="vm.confirm()">Add Sibbling Locations</button>
+</div>
+<br>
+
+</div>
+<!--<button class="btn btn-primary" ng-click="vm.getRanks()">Get Food Ranks</buttons>-->
