@@ -78,7 +78,8 @@
         vm.moreImagesFwd = moreImagesFwd;
         vm.showSpecial = showSpecial;
         vm.showLocations = showLocations;
-
+        vm.navigateTowards = navigateTowards;
+      
         //Admin Function adding catans on spot
         vm.addCatans = addCatans;
         vm.addctsactive = false;
@@ -1265,14 +1266,14 @@
 
 
 
-            function selectInstagramImages(){
+        function selectInstagramImages(){
             if(InstagramService.access_token() == null) {
                 InstagramService.login();
             }
             else {
                 InstagramService.getMyRecentImages()
-                .then(function(response){
-                    dialog.chooseImgFromIgDlg(response.data.data, vm.answer, vm.userIsOwner);
+                .then(function(data){
+                    dialog.chooseImgFromIgDlg(data, vm.answer, vm.userIsOwner, vm.navigateTowards);
                 })
                 .catch(function(err){
                     console.log(err);
@@ -1280,13 +1281,33 @@
             }
             $rootScope.$on("instagramLoggedIn", function (evt, args) {
                 InstagramService.getMyRecentImages()
-                .then(function(response){
-                    console.log(response);
-                    dialog.chooseImgFromIgDlg(response.data.data, vm.answer, vm.userIsOwner);
+                .then(function(data){
+                    dialog.chooseImgFromIgDlg(data, vm.answer, vm.userIsOwner, vm.navigateTowards);
                 }).catch(function(err){
                     console.log(err);
                 });
             });
+        }
+
+        function navigateTowards(direction) {
+            if(direction == 'next') {
+                InstagramService.getNextPage()
+                .then(function(data){
+                    dialog.chooseImgFromIgDlg(data, vm.answer, vm.userIsOwner, vm.navigateTowards);
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+            } else if (direction == 'previous') {
+                InstagramService.getPreviousPage()
+                .then(function(data){
+                    dialog.chooseImgFromIgDlg(data, vm.answer, vm.userIsOwner, vm.navigateTowards);
+                })
+                .catch(function(err){
+                    console.log(err);
+                });    
+            }
+            
         }
 
         function showRanks(){

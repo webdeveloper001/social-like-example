@@ -6,9 +6,9 @@
         .factory('dialog', dialog);
 
     dialog.$inject = ['$q', '$rootScope', 'useraccnt', 'imagelist', 'answer', 'login',
-        '$window','$cookies', '$state', '$compile','htmlops','datetime']
+        '$window','$cookies', '$state', '$compile','htmlops','datetime', 'InstagramService']
     function dialog($q, $rootScope, useraccnt, imagelist, answer, login,
-        $window, $cookies, $state, $compile, htmlops, datetime) {
+        $window, $cookies, $state, $compile, htmlops, datetime, InstagramService) {
 
         var service = {
             editConfirm: editConfirm,
@@ -1988,7 +1988,7 @@
         function setInstagramImageUrl(id, urls){
             return answer.updateAnswer(id, ['ig_image_urls'], [urls]);
         }
-        function chooseImgFromIgDlg(blobList,  answer, isOwner) {
+        function chooseImgFromIgDlg(blobList,  answer, isOwner, navigateTowards) {
 
             var title = '';
             var messagehtml = ''
@@ -2014,7 +2014,15 @@
             
             m1 =
             '<div class="row">' +
+                '<div class="row">';
+            if (InstagramService.isPreviousAvailable())
+                m1 += '<button class="btn btn-default pull-left" id="previgpage">Previous</button>';
+                
+            if (InstagramService.isNextAvailable())
+                m1 += '<button class="btn btn-default pull-right" id="nextigpage">Next</button>';
+                
 
+            m1 += '</div>';
             '</div>';
             m4 =
             '<div class="text-right">' +
@@ -2062,6 +2070,17 @@
                 message: function (dialogRef) {
                     var $content = $(messagehtml);
                     var x = dialogRef;
+                    
+
+                    $content.find('#previgpage').click({}, function () {
+                        dialogRef.close();
+                        navigateTowards('previous');
+                    });
+                    $content.find('#nextigpage').click({}, function () {
+                        dialogRef.close();
+                        navigateTowards('next');
+                    });
+
                     $content.find('#add_photo').click({}, function () {
                         console.log(answer.ig_image_urls);
                         var url = $(this).parent().children('#image').attr('src');

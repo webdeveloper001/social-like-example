@@ -5,9 +5,9 @@
         .module('app')
         .factory('special', special);
 
-    special.$inject = ['$http', '$q', '$rootScope'];
+    special.$inject = ['$http', '$q', '$rootScope', 'imagelist'];
 
-    function special($http, $q, $rootScope) {
+    function special($http, $q, $rootScope, imagelist) {
 
         //Members
         var _specials = [];
@@ -271,10 +271,12 @@
             obj.resource.push(data);
 
             var url = baseURI + '/' + special_id;
-            
+            var blobImage;
+
             //update (delete special) local copy of specials
             if (_specials.length > 0) {
                 var i = _specials.map(function (x) { return x.id; }).indexOf(special_id);
+                blobImage = _specials[i].image;
                 if (i > -1) _specials.splice(i, 1);
             }
             
@@ -291,9 +293,11 @@
                 body: obj
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
-
+                if(blobImage.indexOf('https://rankx.blob') != -1){
+                    imagelist.deleteBlob(blobImage);
+                }
                 console.log("Deleting special was succesful");
-                return result.data;
+                return result.data;   
             }
         }
 
