@@ -6,9 +6,9 @@
         .factory('dialog', dialog);
 
     dialog.$inject = ['$q', '$rootScope', 'useraccnt', 'imagelist', 'answer', 'login',
-        '$window','$cookies', '$state', '$compile','htmlops','datetime']
+        '$window','$cookies', '$state', '$compile','htmlops','datetime', 'InstagramService']
     function dialog($q, $rootScope, useraccnt, imagelist, answer, login,
-        $window, $cookies, $state, $compile, htmlops, datetime) {
+        $window, $cookies, $state, $compile, htmlops, datetime, InstagramService) {
 
         var service = {
             editConfirm: editConfirm,
@@ -66,6 +66,8 @@
             typemismatch: typemismatch,
             confirmAddRank: confirmAddRank,
             confirmRemoveRank: confirmRemoveRank,
+            confirmSiblings: confirmSiblings,
+            showLocations: showLocations,
         };
         return service;
 
@@ -1986,7 +1988,7 @@
         function setInstagramImageUrl(id, urls){
             return answer.updateAnswer(id, ['ig_image_urls'], [urls]);
         }
-        function chooseImgFromIgDlg(blobList,  answer, isOwner) {
+        function chooseImgFromIgDlg(blobList,  answer, isOwner, navigateTowards) {
 
             var title = '';
             var messagehtml = ''
@@ -2012,7 +2014,15 @@
             
             m1 =
             '<div class="row">' +
+                '<div class="row">';
+            if (InstagramService.isPreviousAvailable())
+                m1 += '<button class="btn btn-default pull-left" id="previgpage">Previous</button>';
+                
+            if (InstagramService.isNextAvailable())
+                m1 += '<button class="btn btn-default pull-right" id="nextigpage">Next</button>';
+                
 
+            m1 += '</div>';
             '</div>';
             m4 =
             '<div class="text-right">' +
@@ -2060,6 +2070,17 @@
                 message: function (dialogRef) {
                     var $content = $(messagehtml);
                     var x = dialogRef;
+                    
+
+                    $content.find('#previgpage').click({}, function () {
+                        dialogRef.close();
+                        navigateTowards('previous');
+                    });
+                    $content.find('#nextigpage').click({}, function () {
+                        dialogRef.close();
+                        navigateTowards('next');
+                    });
+
                     $content.find('#add_photo').click({}, function () {
                         console.log(answer.ig_image_urls);
                         var url = $(this).parent().children('#image').attr('src');
@@ -2795,6 +2816,116 @@
                 callback: function (result) {
                     if (result) callback(category,answer);
                 }
+            });
+        }
+
+        function confirmSiblings(answer,callback){
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+            var siblingshtml = '<div class="text-center">';
+
+            var idx = 0;
+            for (var i=0; i<answer.ansLocs.length; i++){
+                idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(answer.ansLocs[i]);  
+                siblingshtml = siblingshtml + $rootScope.answers[idx].name + '</br>';
+            }
+            siblingshtml = siblingshtml + '</div>'; 
+
+            title = 'Please Confirm';
+            message = 'This will add the following sibling Establishments: <br>' + siblingshtml + '<br> to ' + '<strong>' + answer.name +'</strong>.';
+
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Ok';
+            
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'default',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) callback();
+                }
+            }); 
+        }
+
+        function showLocations(locs){
+            var title = 'Additional Locations';
+            var message = '' ;
+            var list = '';
+
+            list = '<ul class="list-group">';
+            for (var i=0; i< locs.length; i++){
+
+                list = list +
+                '<li id="item' + i +'"class="list-group-item"'+ 
+                    ' style="cursor:pointer;"><strong>' + locs[i].name + '</strong>,&nbsp'+ locs[i].location + ',&nbsp'+ locs[i].cityarea + 
+                '</li>';
+            }
+            list = list + '</ul>';
+
+            message = list;
+
+            console.log("@dialog showLocations");
+
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: function (dialogRef) {
+                    var $content = $(message);
+                    var x = dialogRef;
+                    console.log("inside dialog locs--->", locs);
+                    $content.find('#item0').click({}, function () {
+                            console.log("click, 0");
+                            $window.scrollTo(0, 0);
+                            $state.go('answerDetail',{index: locs[0].id});
+                            dialogRef.close();
+                    });
+                    $content.find('#item1').click({}, function () {
+                            console.log("click, 1");
+                            $window.scrollTo(0, 0);
+                            $state.go('answerDetail',{index: locs[1].id});
+                            dialogRef.close();
+                    });
+                    $content.find('#item2').click({}, function () {
+                            console.log("click, 2");
+                            $window.scrollTo(0, 0);
+                            $state.go('answerDetail',{index: locs[2].id});
+                            dialogRef.close();
+                    });
+                    $content.find('#item3').click({}, function () {
+                            console.log("click, 3");
+                            $window.scrollTo(0, 0);
+                            $state.go('answerDetail',{index: locs[3].id});
+                            dialogRef.close();
+                    });
+                    $content.find('#item4').click({}, function () {
+                            console.log("click, 4");
+                            $window.scrollTo(0, 0);
+                            $state.go('answerDetail',{index: locs[4].id});
+                            dialogRef.close();
+                    });
+                    
+                    return $content;
+                },
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'OK',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef, result) {
+                        dialogRef.close();
+                    }
+                }]
             });
         }
 

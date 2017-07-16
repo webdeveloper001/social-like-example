@@ -45,7 +45,7 @@
         vm.foodNearMe = false;
         if ($window.location.href.indexOf('rankSummary/food-near-me-9521') != -1 ) {
             vm.foodNearMe = true;
-            vm.veilMsg = 'On rankSummary, there is special rank called ‘Food Near Me’.. this rank is more complicated than other ranks because it looks at all answers that are in ‘food related rankings’. The rankings are saved offline in JSON, foodranks.json. With these rankings we simplify a bit of the processing necessary to find all the answers. Problem is still there few seconds of a processing time needed. The task is to add a loading indication while this data is loaded.';
+            vm.veilMsg = 'Just a moment, finding some delicious food...';
         }
         
         //Admin Methods
@@ -254,7 +254,7 @@
                 "Ocean Beach", "North Park", "Mission Hills", "Barrio Logan", "City Heights", "Clairemont", "La Mesa", "Point Loma",
                 "South Park", "Scripps Ranch", "Mission Beach", "Mission Valley", "Kensington", "Cardiff by the Sea", "Coronado",
                 "Leucadia", "Oceanside", "National City", "Rancho Santa Fe", "Solana Beach", "Poway", "El Cajon",
-                "Escondido", "Carlsbad", "San Ysidro", "Otay Mesa", "Linda Vista", "Chula Vista", "Encinitas", "Golden Hills",
+                "Escondido", "Carlsbad", "San Ysidro", "Otay Mesa", "Linda Vista", "Chula Vista", "Encinitas", "Golden Hill",
                 "Spring Valley", "Rancho San Diego", "Mira Mesa",
                 "Torrey Pines", "Carmel Valley", "Miramar", "Kearny Mesa", "Rancho Penasquitos",
                 "Sorrento Valley", "Tierra Santa", "Logan Heights", "Serra Mesa", "Normal Heights", "Talmadge",
@@ -282,8 +282,11 @@
                 $rootScope.dialogs = response.data;
             });
 
-            $http.get('../../../assets/foodranks.json').then(function (response) {
+            /*$http.get('../../../assets/foodranks.json').then(function (response) {
                 $rootScope.foodranks = response.data;
+            });*/
+            $http.get('../../../assets/foodans.json').then(function (response) {
+                $rootScope.foodans = response.data;
             });
 /*
             if (window.location.href.indexOf('rankSummary')>-1){

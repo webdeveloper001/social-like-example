@@ -87,6 +87,13 @@
                 controller: 'foodRanks as vm'               
             },
             {
+                name: 'sibLocs',
+                parent: 'admin',
+                url: '/sibLocs',
+                templateUrl: 'app/admin/Partials/sibLocs.html',
+                controller: 'sibLocs as vm'               
+            },
+            {
                 name: 'payment',
                 parent: 'admin',
                 url: '/payment',

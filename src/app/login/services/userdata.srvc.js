@@ -116,9 +116,9 @@
             if ($rootScope.isLoggedIn && $rootScope.rankSummaryDataLoaded) {
                 if ($rootScope.DEBUG_MODE) console.log("Syncing useraccnt data to answers");
                 var idx = 0;
-                var fields = [];
-                var vals = [];
                 for (var i = 0; i < $rootScope.useraccnts.length; i++) {
+                    var fields = [];
+                    var vals = [];
                     idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf($rootScope.useraccnts[i].answer);
                     if ($rootScope.answers[idx].ispremium != $rootScope.useraccnts[i].ispremium) {
                         fields.push('ispremium'); vals.push($rootScope.useraccnts[i].ispremium);

@@ -77,7 +77,9 @@
         vm.moreImagesRev = moreImagesRev;
         vm.moreImagesFwd = moreImagesFwd;
         vm.showSpecial = showSpecial;
-
+        vm.showLocations = showLocations;
+        vm.navigateTowards = navigateTowards;
+      
         //Admin Function adding catans on spot
         vm.addCatans = addCatans;
         vm.addctsactive = false;
@@ -497,7 +499,7 @@
                 }
             }
 
-            if (vm.type == 'Establishment' || vm.type == 'PersonCust') {
+            if (vm.vrows) {
                 for (var i = 0; i < vm.vrows.length; i++) {
                     var voteRecExists = vm.vrows[i].voteExists;
                     if (voteRecExists && vm.vrows[i].dVi != vm.vrows[i].dV) {
@@ -601,17 +603,23 @@
         function displayVote(x) {
 
             if (x.dV == 1) {
-                x.thumbUp = "thumbs_up_blue_table.png";//"thumbs_up_blue.png";//
-                x.thumbDn = "thumbs_down_gray_table.png";//"thumbs_down_gray.png";
+                //x.thumbUp = "thumbs_up_blue_table.png";//"thumbs_up_blue.png";//
+                //x.thumbDn = "thumbs_down_gray_table.png";//"thumbs_down_gray.png";
+                x.thumbUp = '#0070c0';
+                x.thumbDn = 'grey';
             }
 
             if (x.dV == 0) {
-                x.thumbUp = "thumbs_up_gray_table.png";//"thumbs_up_gray.png";
-                x.thumbDn = "thumbs_down_gray_table.png";//"thumbs_down_gray.png";
+                //x.thumbUp = "thumbs_up_gray_table.png";//"thumbs_up_gray.png";
+                //x.thumbDn = "thumbs_down_gray_table.png";//"thumbs_down_gray.png";
+                x.thumbUp = 'grey';
+                x.thumbDn = 'grey';
             }
             if (x.dV == -1) {
-                x.thumbUp = "thumbs_up_gray_table.png";//"thumbs_up_gray.png";
-                x.thumbDn = "thumbs_down_blue_table.png";//"thumbs_down_blue.png";
+                //x.thumbUp = "thumbs_up_gray_table.png";//"thumbs_up_gray.png";
+                //x.thumbDn = "thumbs_down_blue_table.png";//"thumbs_down_blue.png";
+                x.thumbUp = 'grey';
+                x.thumbDn = '#0070c0';
             }
         }
         
@@ -1258,14 +1266,14 @@
 
 
 
-            function selectInstagramImages(){
+        function selectInstagramImages(){
             if(InstagramService.access_token() == null) {
                 InstagramService.login();
             }
             else {
                 InstagramService.getMyRecentImages()
-                .then(function(response){
-                    dialog.chooseImgFromIgDlg(response.data.data, vm.answer, vm.userIsOwner);
+                .then(function(data){
+                    dialog.chooseImgFromIgDlg(data, vm.answer, vm.userIsOwner, vm.navigateTowards);
                 })
                 .catch(function(err){
                     console.log(err);
@@ -1273,13 +1281,33 @@
             }
             $rootScope.$on("instagramLoggedIn", function (evt, args) {
                 InstagramService.getMyRecentImages()
-                .then(function(response){
-                    console.log(response);
-                    dialog.chooseImgFromIgDlg(response.data.data, vm.answer, vm.userIsOwner);
+                .then(function(data){
+                    dialog.chooseImgFromIgDlg(data, vm.answer, vm.userIsOwner, vm.navigateTowards);
                 }).catch(function(err){
                     console.log(err);
                 });
             });
+        }
+
+        function navigateTowards(direction) {
+            if(direction == 'next') {
+                InstagramService.getNextPage()
+                .then(function(data){
+                    dialog.chooseImgFromIgDlg(data, vm.answer, vm.userIsOwner, vm.navigateTowards);
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+            } else if (direction == 'previous') {
+                InstagramService.getPreviousPage()
+                .then(function(data){
+                    dialog.chooseImgFromIgDlg(data, vm.answer, vm.userIsOwner, vm.navigateTowards);
+                })
+                .catch(function(err){
+                    console.log(err);
+                });    
+            }
+            
         }
 
         function showRanks(){
@@ -1298,6 +1326,18 @@
 
         function gotoMyBusiness(){
             $state.go('mybusiness');
+        }
+
+        function showLocations(){
+            var locsIdx = vm.answer.family.split(':').map(Number);
+            var locs = [];
+            var idx = 0;
+            for (var i=0; i<locsIdx.length; i++){
+                idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(locsIdx[i]);
+                locs.push($rootScope.answers[idx]);  
+            }
+
+            dialog.showLocations(locs);
         }
 
         function share(){
