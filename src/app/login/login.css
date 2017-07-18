@@ -169,7 +169,7 @@
   border-width: .5rem;
 }
 
-.loading-pulse {
+.<div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div> {
   position: relative;
   width: 6px;
   height: 24px;
@@ -182,7 +182,7 @@
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.loading-pulse:before, .loading-pulse:after {
+.<div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>:before, .<div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>:after {
   content: '';
   position: absolute;
   display: block;
@@ -195,10 +195,10 @@
   -webkit-animation: pulse 750ms infinite;
   animation: pulse 750ms infinite;
 }
-.loading-pulse:before {
+.<div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>:before {
   left: -12px;
 }
-.loading-pulse:after {
+.<div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>:after {
   left: 12px;
   -webkit-animation-delay: 500ms;
   animation-delay: 500ms;

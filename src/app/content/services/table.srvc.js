@@ -170,6 +170,7 @@
                 //update slug tag and featured image
                 var slug = tablex.title.toLowerCase(); 
                 slug = slug.replace(/ /g,'-');
+                slug = slug.replace('/','at');
                 slug = slug + '-' + result.data.resource[0].id;
                 var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/'+slug+'.jpg';
                 update(result.data.resource[0].id,['slug','fimage'],[slug,fimage]);
@@ -212,6 +213,7 @@
                 //update slug tag and featured image
                 var slug = tablex.title.toLowerCase(); 
                 slug = slug.replace(/ /g,'-');
+                slug = slug.replace('/','at');
                 slug = slug + '-' + result.data.resource[0].id;
                 //var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/'+slug+'.jpg';
                 update(result.data.resource[0].id,['slug'],[slug]);

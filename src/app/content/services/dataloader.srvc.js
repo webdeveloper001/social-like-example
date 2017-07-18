@@ -7,11 +7,11 @@
 
     dataloader.$inject = ['$http', '$q','$rootScope','pvisits', 
         'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata',
-        'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans'];
+        'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans','categories', 'locations'];
 
     function dataloader($http, $q, $rootScope, pvisits, 
         rankofday, answer, table, special, datetime, uaf, userdata,
-        matchrec, edit, useractivity, vrows, headline, cblock, catans) {
+        matchrec, edit, useractivity, vrows, headline, cblock, catans, categories, locations) {
 
         // Members
         var service = {
@@ -39,18 +39,26 @@
             //var p2 = cblock.getcblocksmain();
             var p3 = rankofday.getrankofday();
             var p4 = uaf.getactions();
+            var q5 = categories.getAllCategories();
+            var q6 = locations.getAllLocations();
 
             // userdata.loadUserData();        //load user data (votes and activities)
             // userdata.loadUserAccount();     //load user business account
 
             //Minimum Data for Cwrapper
-            return $q.all([p0, p1, p3, p4]).then(function (d) {
+            return $q.all([p0, p1, p3, p4, q5, q6]).then(function (d) {
             
                 $rootScope.content = d[0];
+
                 $rootScope.headlines = d[1];
                 //$rootScope.cblocks = d[2];
                 $rootScope.rankofday = d[2];
                 $rootScope.uafs = d[3];
+
+                $rootScope.categories = d[4];
+                $rootScope.locations = d[5];
+
+                syncCatNh();
 
                 $rootScope.pageDataLoaded = true;
                 //loadingDone();
@@ -236,5 +244,33 @@
             }
         }
 
+        function syncCatNh() {
+            var categoryAddList = [];
+            var locationAddList = [];
+            $rootScope.content.forEach(function(ranking){
+                var splited = ranking.title.split(' in ');
+                if(splited.length >= 1) {
+                    var ind = ranking.title.lastIndexOf(' in ');
+                    var categoryName = ranking.title.slice(0, ind);
+                    var locationName = ranking.title.slice(ind + 4); 
+                    if($rootScope.categories.map(function(cat){return cat.category.toLowerCase();}).indexOf(categoryName.toLowerCase()) == -1) {
+                        if(categoryAddList.map(function(cat){return cat.category.toLowerCase();}).indexOf(categoryName.toLowerCase()) == -1) {
+                            var capitalized = categoryName.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+                            categoryAddList.push({category: capitalized});
+                        }
+                    }
+                    if($rootScope.locations.map(function(cat){return cat.nh_name.toLowerCase();}).indexOf(locationName.toLowerCase()) == -1) {
+                        if(locationAddList.map(function(cat){return cat.nh_name.toLowerCase();}).indexOf(locationName.toLowerCase()) == -1) {
+                            locationAddList.push({nh_name: locationName, sub_areas: '', title:ranking.title});
+                        }
+                    }
+                } else {
+                    console.log('not good', ranking.title)
+                }
+                
+            });
+            console.log(categoryAddList);
+            console.log(locationAddList);
+        }
     }
 })();

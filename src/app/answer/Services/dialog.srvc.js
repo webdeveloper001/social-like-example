@@ -1013,7 +1013,7 @@
             '</div>' +
             '</div>';
 
-            messageLoading = '<div class="loading-pulse"></div>' +
+            messageLoading = '<div class="<div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>"></div>' +
             '<p>Just a moment, finding your location...</p>';
 
             BootstrapDialog.show({
@@ -1391,28 +1391,28 @@
             title = 'Share Options';
             rendercode =
             '<div class="row">' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center" style="cursor: pointer">' +
             '<img src="/assets/images/1485385043_mail.png" id="email" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center" style="cursor: pointer">' +
             '<img src="/assets/images/1485384809_2_-_Facebook.png" id="facebook" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center" style="cursor: pointer">' +
             '<img src="/assets/images/1485384868_1_-_Twitter.png" id="twitter" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center" style="cursor: pointer">' +
             '<img src="/assets/images/1485384841_13_-_Pintrest.png" id="pinterest" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center" style="cursor: pointer">' +
             '<img src="/assets/images/1485384824_6_-_Google_Plus.png" id="gplus" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center" style="cursor: pointer">' +
             '<img src="/assets/images/1485384853_5_-_Tumbler.png" id="tumblr" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center" style="cursor: pointer">' +
             '<img src="/assets/images/1485425301_reddit.png" id="reddit" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +    
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center style="cursor: pointer"">' +    
             '<a href="#" socialshare ' +
                 'socialshare-provider="whatsapp" ' +
                 'socialshare-text="'+ text + '" ' +
@@ -1421,7 +1421,7 @@
             ' style="width:50px;margin-bottom:20px;display:'+ (isMobile ? 'inline':'none') + '">' +
             ' </a>' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center style="cursor: pointer"">' +
             '<a href="#" socialshare ' +
                 'socialshare-provider="facebook-messenger" ' +
                 'socialshare-url="' + link + '">' +
@@ -1429,7 +1429,7 @@
             ' style="width:50px;margin-bottom:20px;display:'+ (isMobile ? 'inline':'none') + '">' +
             ' </a>' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center style="cursor: pointer"">' +
             '<a href="#" socialshare ' +
                 'socialshare-provider="sms" ' +
                 'socialshare-text="'+ text + '" ' +
@@ -2012,7 +2012,7 @@
             
             m1 =
             '<div class="row">' +
-                '<div class="row">';
+                '<div class="col-xs-12">';
             if (InstagramService.isPreviousAvailable())
                 m1 += '<button class="btn btn-default pull-left" id="previgpage">Previous</button>';
                 

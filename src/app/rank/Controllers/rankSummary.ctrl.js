@@ -853,6 +853,14 @@
                                 break;
                             }
                         }
+                        if ($rootScope.specials[i].freq == 'onetime') {
+                            if(moment().isBetween(moment($rootScope.specials[i].sdate), moment($rootScope.specials[i].edate), 'day', '[]')) {
+                                vm.answers[j].sp_bc = $rootScope.specials[i].bc;
+                                vm.answers[j].sp_fc = $rootScope.specials[i].fc;
+                                vm.answers[j].sp_title = $rootScope.specials[i].stitle;
+                                break;
+                            }
+                        }
                     }
                 }
                 /*
@@ -1075,7 +1083,7 @@
             vm.selUpV = '';
             vm.selDate = 'active';
             vm.selTrending = '';
-            vm.sortByName = 'rankDataLoaded';
+            vm.sortByName = 'Date';
 
             //if (!vm.isE) vm.showR = false || (!vm.sm);
         }
@@ -1177,7 +1185,7 @@
                 vm.linkurl = 'https://rank-x.com/rankSummary/' + $rootScope.cCategory.slug; 
                 vm.tweet = $rootScope.cCategory.title + ', endorse your favorite ones at: ';
 
-                var imageurl = "https://rank-x.com/" + $rootScope.cCategory.image1url;
+                var imageurl = $rootScope.cCategory.image1url;
                 if ($rootScope.cCategory.type == 'Short-Phrase')
                     imageurl = 'https://rank-x.com/assets/images/rankxlogosd2_sm.png';
 

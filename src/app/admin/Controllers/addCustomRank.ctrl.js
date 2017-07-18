@@ -160,6 +160,7 @@
                     //Create and update slug
                     var slug = item.title.toLowerCase();; 
                     slug = slug.replace(/ /g,'-');
+                    slug = slug.replace('/','at');
                     slug = slug + '-' + rankid;
                     table.update(rankid,['slug'],[slug]);
                     processImage(rankid);
