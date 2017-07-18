@@ -296,29 +296,9 @@
             data.id = id;
 
             for (var i = 0; i < field.length; i++) {
-                switch (field[i]) {
-                    case "views": data.views = val[i]; break;
-                    case "answers": data.answers = val[i]; break;
-                    case "title": data.title = val[i]; break;
-                    case "tags": data.tags = val[i]; break;
-                    case "keywords": data.keywords = val[i]; break;
-                    case "type": data.type = val[i]; break;
-                    case "question": data.question = val[i]; break;
-                    case "image1url": data.image1url = val[i]; break;
-                    case "image2url": data.image2url = val[i]; break;
-                    case "image3url": data.image3url = val[i]; break;
-                    case "answertags": data.answertags = val[i]; break;
-                    case "isatomic": data.isatomic = val[i]; break;
-                    case "catstr": data.catstr = val[i]; break;
-                    case "numcom": data.numcom = val[i]; break;
-                    case "ismp": data.ismp = val[i]; break;
-                    case "fimage": data.fimage = val[i]; break;
-                    case "bc": data.bc = val[i]; break;
-                    case "fc": data.fc = val[i]; break;
-                    case "shade": data.shade = val[i]; break;
-                    case "slug": data.slug = val[i]; break;
-                    case "introtext": data.introtext = val[i]; break;                     
-                }
+                
+                data[field[i]] = val[i];                
+                
             }
             //console.log("data", data);
             obj.resource.push(data);
@@ -334,29 +314,7 @@
                 }
             }
             for (var i = 0; i < field.length; i++) {
-                switch (field[i]) {
-                    case "answers": $rootScope.content[idx].answers = val[i]; break;
-                    case "views": $rootScope.content[idx].views = val[i]; break;
-                    case "title": $rootScope.content[idx].title = val[i]; break;
-                    case "tags": $rootScope.content[idx].tags = val[i]; break;
-                    case "keywords": $rootScope.content[idx].keywords = val[i]; break;
-                    case "type": $rootScope.content[idx].type = val[i]; break;
-                    case "question": $rootScope.content[idx].question = val[i]; break;
-                    case "image1url": $rootScope.content[idx].image1url = val[i]; break;
-                    case "image2url": $rootScope.content[idx].image2url = val[i]; break;
-                    case "image3url": $rootScope.content[idx].image3url = val[i]; break;
-                    case "answertags": $rootScope.content[idx].answertags = val[i]; break;
-                    case "isatomic": $rootScope.content[idx].isatomic = val[i]; break;
-                    case "catstr": $rootScope.content[idx].catstr = val[i]; break;
-                    case "numcom": $rootScope.content[idx].numcom = val[i]; break;
-                    case "ismp": $rootScope.content[idx].ismp = val[i]; break;
-                    case "fimage": $rootScope.content[idx].fimage = val[i]; break;
-                    case "bc": $rootScope.content[idx].bc = val[i]; break;
-                    case "fc": $rootScope.content[idx].fc = val[i]; break;
-                    case "shade": $rootScope.content[idx].shade = val[i]; break;
-                    case "slug": $rootScope.content[idx].slug = val[i]; break;
-                    case "introtext": $rootScope.content[idx].introtext = val[i]; break;                   
-                }
+                $rootScope.content[idx][field[i]] = val[i];              
             }
 
             return $http.patch(url, obj, {

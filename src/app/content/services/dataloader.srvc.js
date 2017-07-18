@@ -245,32 +245,103 @@
         }
 
         function syncCatNh() {
-            var categoryAddList = [];
-            var locationAddList = [];
+
             $rootScope.content.forEach(function(ranking){
-                var splited = ranking.title.split(' in ');
-                if(splited.length >= 1) {
-                    var ind = ranking.title.lastIndexOf(' in ');
-                    var categoryName = ranking.title.slice(0, ind);
-                    var locationName = ranking.title.slice(ind + 4); 
-                    if($rootScope.categories.map(function(cat){return cat.category.toLowerCase();}).indexOf(categoryName.toLowerCase()) == -1) {
-                        if(categoryAddList.map(function(cat){return cat.category.toLowerCase();}).indexOf(categoryName.toLowerCase()) == -1) {
-                            var capitalized = categoryName.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-                            categoryAddList.push({category: capitalized});
-                        }
-                    }
-                    if($rootScope.locations.map(function(cat){return cat.nh_name.toLowerCase();}).indexOf(locationName.toLowerCase()) == -1) {
-                        if(locationAddList.map(function(cat){return cat.nh_name.toLowerCase();}).indexOf(locationName.toLowerCase()) == -1) {
-                            locationAddList.push({nh_name: locationName, sub_areas: '', title:ranking.title});
-                        }
-                    }
-                } else {
-                    console.log('not good', ranking.title)
-                }
                 
+                if(ranking.isatomic && ranking.ismp) {
+                    var categoryName = ranking.title;
+
+                    var index = $rootScope.categories.map(function(cat){return cat.category.toLowerCase().trim();}).indexOf(ranking.title.toLowerCase().trim());
+                    // if (index == -1)
+                    //     console.log('No Category', categoryName, ranking);
+                    if (index != -1)
+                        table.update(ranking.id, ['cat'], [$rootScope.categories[index].id]);
+
+                } else {
+                    var ind = ranking.title.lastIndexOf(' in ');
+
+                    var categoryName = ranking.title.slice(0, ind);
+                    categoryName += ' in @nh';
+
+                    var location = ranking.title.slice(ind+4);
+
+                    var index = $rootScope.categories.map(function(cat){return cat.category.toLowerCase().trim();}).indexOf(categoryName.toLowerCase().trim());
+
+                    // if (index == -1)
+                    //     console.log('No Category', categoryName, ranking);
+
+                    var indexlocation = $rootScope.locations.map(function(loc){return loc.nh_name.toLowerCase().trim();}).indexOf(location.toLowerCase().trim()); 
+
+                    // if (indexlocation == -1)
+                    //     console.log('No Location', location, ranking);
+                    table.update(ranking.id, ['cat','nh'], [$rootScope.categories[index].id, $rootScope.locations[indexlocation].id]);
+
+                }
             });
-            console.log(categoryAddList);
-            console.log(locationAddList);
+
+            // Uncomment when generating categories from title of rankings
+            // var categoryAddList = [];
+
+            // $rootScope.content.forEach(function(ranking){
+                
+
+            //     if(ranking.isatomic && ranking.ismp) {
+            //         var categoryName = ranking.title;
+            //         categoryAddList.push({
+            //             category: ranking.title,
+            //             type: ranking.type,
+            //             tags: ranking.tags,
+            //             keywords: ranking.keywords,
+            //             question: ranking.question,
+            //             fimage: ranking.fimage,
+            //             bc: ranking.bc,
+            //             fc: ranking.fc,
+            //             shade: ranking.shade,
+            //             introtext: ranking.introtext,
+            //             user: ranking.user 
+            //         });
+
+            //     } else {
+            //         var ind = ranking.title.lastIndexOf(' in ');
+            //         var location = ranking.title.slice(ind+4);
+
+
+            //         var categoryName = ranking.title.slice(0, ind);
+            //         categoryName += ' in @nh';
+
+            //         if( ind != -1){
+
+            //             if(categoryAddList.map(function(cat){return cat.category.toLowerCase();}).indexOf(categoryName.toLowerCase()) == -1) {
+
+            //                 var capitalized = categoryName.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+
+            //                 categoryAddList.push({
+            //                     category: capitalized,
+            //                     type: ranking.type,
+            //                     tags: ranking.tags,
+            //                     keywords: ranking.keywords,
+            //                     question: ranking.question,
+            //                     fimage: ranking.fimage,
+            //                     bc: ranking.bc,
+            //                     fc: ranking.fc,
+            //                     shade: ranking.shade,
+            //                     introtext: ranking.introtext,
+            //                     user: ranking.user
+            //                 });
+            //             }
+            //         } else {
+
+            //         }
+            //     }
+            // });
+            //     // console.log(categoryAddList);
+            // $q.all(categoryAddList.map(function(nh){
+            //     return categories.addCategory(nh);
+            // })).then(function(responses){
+            //     console.log(responses);
+            // }).catch(function(err){
+            //     console.log(err);
+            // })
         }
     }
 })();
