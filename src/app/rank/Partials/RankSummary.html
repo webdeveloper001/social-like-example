@@ -168,7 +168,7 @@
 <div class="row" style="margin:0px;padding:0px;">
 
     
-    <div class="col-sm-10 col-md-10 col-lg-10 hidden-xs" >
+    <div class="col-sm-9 col-md-9 col-lg-10 hidden-xs" >
         <div class="btn-group text-left">
             <button class="btn btn-default" ng-click="vm.sortbyHelpDialog()"><i class="fa fa-question-circle"></i></button>
             <span style="float: left;margin-left: 10px; margin-right: 10px;line-height: 32px">{{vm.sm ? '':'Sort by:'}}</span>
@@ -185,7 +185,7 @@
         
         </div>
     </div>
-    <div class="col-xs-9 visible-xs" style="margin-bottom: 20px">
+    <div class="col-xs-8 visible-xs" style="margin-bottom: 20px">
 
         <div class="dropdown">
             <button class="btn btn-default" ng-click="vm.sortbyHelpDialog()"><i class="fa fa-question-circle"></i></button>
@@ -209,8 +209,9 @@
 
     </div>
 
-    <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2 btn-group text-right">
-        <button class="btn btn-default" ng-click="vm.share()" style="padding-right:5px">Share&nbsp&nbsp<span class="glyphicon glyphicon-share"></span></button>
+    <div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 btn-group text-center">
+        <a type="button" class="btn btn-default" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;" ng-if="true" 
+        ng-click="vm.share()" target="_blank"> Share&nbsp&nbsp<span class="fa fa-share"></span></a>
     </div>
 </div>
 <div style="margin:0px; margin-top: 10px; " class="text-center" ng-if="!vm.fnm">
@@ -233,13 +234,13 @@
     <tbody>
         <thead>
             <tr>
-                <th ng-if="vm.mode=='specials'">{{vm.showR ? 'Rank' : 'Votes'}}</th>
-                <th ng-show="{{!vm.sm && !vm.fnm && !vm.isE}}" ng-if="vm.mode=='specials'">Votes</th>
-                <th class="capitalize " ng-repeat="h in vm.fields | filter:{isrequired:true}">{{h.label}}</th>
-                <th ng-show="{{vm.type == 'Establishment' && vm.haveLocation}}" ng-if="vm.mode=='specials'">Distance (mi)</th>
-                <th ng-show="{{vm.type == 'Event'}}" ng-if="vm.mode=='specials'">Date</th>
-                <th ng-show="{{vm.type == 'Establishment'}}" ng-if="vm.mode=='specials'">Specials</th>
-                <th ng-if="vm.mode == 'endorse'">
+                <th ng-if="vm.mode=='specials'" align="middle">{{vm.showR ? 'Rank' : 'Votes'}}</th>
+                <th ng-show="{{!vm.sm && !vm.fnm && !vm.isE}}" ng-if="vm.mode=='specials'" align="middle">Votes</th>
+                <th class="capitalize " ng-repeat="h in vm.fields | filter:{isrequired:true}" align="middle">{{h.label}}</th>
+                <th ng-show="{{vm.type == 'Establishment' && vm.haveLocation}}" ng-if="vm.mode=='specials'" align="middle">Distance (mi)</th>
+                <th ng-show="{{vm.type == 'Event'}}" ng-if="vm.mode=='specials'" align="middle">Date</th>
+                <th ng-show="{{vm.type == 'Establishment'}}" ng-if="vm.mode=='specials'" align="middle">Specials</th>
+                <th ng-if="vm.mode == 'endorse'" align="middle">
                     Endorsements
                 </th>
 
@@ -263,14 +264,17 @@
                 <td ng-if="vm.mode=='endorse'">
 
                     <div>
-                        <span  ng-click="vm.UpVote(x,$event)"  ng-attr-style="color:{{x.thumbUp}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 18px;" >
+                        <span  ng-click="vm.UpVote(x,$event)"  ng-attr-style="color:{{x.thumbUp}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 18px;" 
+                        class="pull-left">&nbsp&nbsp
                             <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                            <i style="color:black;font-size: 18px;">&nbsp;{{x.upV}}&nbsp;&nbsp;</i>
+                            <span style="color:black;font-size: 14px;">&nbsp;{{x.upV}}&nbsp;&nbsp;</span>
                         </span>
                         
-                        <span  ng-click="vm.DownVote(x,$event)" ng-attr-style="color:{{x.thumbDn}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 20px;" >
+                        <span  ng-click="vm.DownVote(x,$event)" ng-attr-style="color:{{x.thumbDn}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 18px;" 
+                        class="pull-right">
                             <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-                            <i style="color:black">&nbsp;{{x.downV}}</i>
+                            <span style="color:black;font-size: 14px;">&nbsp;{{x.downV}}</span>
+                            &nbsp&nbsp
                         </span>
                         
                     </div>          

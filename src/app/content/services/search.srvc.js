@@ -679,6 +679,19 @@
             return results;
 
         }
+
+        function checkNoDupThenPush(x,array){
+            var isdup = false;
+            for (var i=0; i<array.length; i++){
+                if (x == array[i]){
+                    isdup = false;
+                    break;
+                }
+            }
+            if (!isdup) array.push(x);
+        }
+        
         */
+        
     }
 })();

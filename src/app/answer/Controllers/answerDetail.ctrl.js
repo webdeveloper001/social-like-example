@@ -77,7 +77,9 @@
         vm.moreImagesRev = moreImagesRev;
         vm.moreImagesFwd = moreImagesFwd;
         vm.showSpecial = showSpecial;
+        vm.showLocations = showLocations;
         vm.navigateTowards = navigateTowards;
+      
         //Admin Function adding catans on spot
         vm.addCatans = addCatans;
         vm.addctsactive = false;
@@ -601,17 +603,23 @@
         function displayVote(x) {
 
             if (x.dV == 1) {
-                x.thumbUp = "thumbs_up_blue_table.png";//"thumbs_up_blue.png";//
-                x.thumbDn = "thumbs_down_gray_table.png";//"thumbs_down_gray.png";
+                //x.thumbUp = "thumbs_up_blue_table.png";//"thumbs_up_blue.png";//
+                //x.thumbDn = "thumbs_down_gray_table.png";//"thumbs_down_gray.png";
+                x.thumbUp = '#0070c0';
+                x.thumbDn = 'grey';
             }
 
             if (x.dV == 0) {
-                x.thumbUp = "thumbs_up_gray_table.png";//"thumbs_up_gray.png";
-                x.thumbDn = "thumbs_down_gray_table.png";//"thumbs_down_gray.png";
+                //x.thumbUp = "thumbs_up_gray_table.png";//"thumbs_up_gray.png";
+                //x.thumbDn = "thumbs_down_gray_table.png";//"thumbs_down_gray.png";
+                x.thumbUp = 'grey';
+                x.thumbDn = 'grey';
             }
             if (x.dV == -1) {
-                x.thumbUp = "thumbs_up_gray_table.png";//"thumbs_up_gray.png";
-                x.thumbDn = "thumbs_down_blue_table.png";//"thumbs_down_blue.png";
+                //x.thumbUp = "thumbs_up_gray_table.png";//"thumbs_up_gray.png";
+                //x.thumbDn = "thumbs_down_blue_table.png";//"thumbs_down_blue.png";
+                x.thumbUp = 'grey';
+                x.thumbDn = '#0070c0';
             }
         }
         
@@ -1318,6 +1326,18 @@
 
         function gotoMyBusiness(){
             $state.go('mybusiness');
+        }
+
+        function showLocations(){
+            var locsIdx = vm.answer.family.split(':').map(Number);
+            var locs = [];
+            var idx = 0;
+            for (var i=0; i<locsIdx.length; i++){
+                idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(locsIdx[i]);
+                locs.push($rootScope.answers[idx]);  
+            }
+
+            dialog.showLocations(locs);
         }
 
         function share(){
