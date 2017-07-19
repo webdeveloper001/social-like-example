@@ -54,6 +54,7 @@
         vm.GetFormattedDate = GetFormattedDate;
         vm.hideInvoices = hideInvoices;
         vm.showTOSCustomersDlg = showTOSCustomersDlg;
+        vm.showLearnMore = showLearnMore;
         vm.mybizs = [];
         activate();
         vm.noAns = false;
@@ -554,6 +555,11 @@
 
         function showTOSCustomersDlg() {
             dialog.showTOSCustomersDlg();
+        }
+
+        function showLearnMore() {
+            dialog.showLearnMore();
+            
         }
     }   
 })();

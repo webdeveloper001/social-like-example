@@ -68,6 +68,7 @@
             confirmRemoveRank: confirmRemoveRank,
             confirmSiblings: confirmSiblings,
             showLocations: showLocations,
+            showLearnMore: showLearnMore
         };
         return service;
 
@@ -2927,6 +2928,38 @@
                     }
                 }]
             });
+
+
+        }
+
+
+        function showLearnMore(locs){
+            var title = 'Learn More';
+            var message = '<div class="text-center"><iframe width="' + ($rootScope.sm ? '300' : '500') + '" height="' + ($rootScope.sm ? '200' : '350') + '" src="https://www.youtube.com/embed/IpUNM4Okb0U?autoplay=1"' +
+                        ' frameborder="0" allowfullscreen></iframe></div>' ;
+
+
+            BootstrapDialog.show({
+                size: BootstrapDialog.SIZE_WIDE,
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: function (dialogRef) {
+                    var $content = $(message);
+                    
+                    return $content;
+                },
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'I got it.',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef, result) {
+                        dialogRef.close();
+                    }
+                }]
+            });
+
+            
         }
 
     }
