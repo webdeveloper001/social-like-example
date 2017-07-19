@@ -79,6 +79,7 @@
         vm.showSpecial = showSpecial;
         vm.showLocations = showLocations;
         vm.navigateTowards = navigateTowards;
+        vm.gotoCustomRank = gotoCustomRank;
       
         //Admin Function adding catans on spot
         vm.addCatans = addCatans;
@@ -258,9 +259,9 @@
                 vm.myranks = JSON.parse(vm.answer.ranks);
                 if (vm.myranks != undefined && vm.myranks.length > 0){
                     for (var i=0; i<vm.myranks.length; i++){
-                        n = $rootScope.content.map(function(x) {return x.id; }).indexOf(vm.myranks[i].id);
-                        vm.myranks[i].title = $rootScope.content[n].title.replace(' @ '+vm.answer.name,'');
-                        vm.myranks[i].image = $rootScope.content[n].image1url;
+                        n = $rootScope.customranks.map(function(x) {return x.id; }).indexOf(vm.myranks[i].id);
+                        vm.myranks[i].title = $rootScope.customranks[n].title.replace(' @ '+vm.answer.name,'');
+                        vm.myranks[i].image = $rootScope.customranks[n].image1url;
                         if (vm.myranks[i].image == undefined || vm.myranks[i].image == '')
                         vm.myranks[i].image = $rootScope.EMPTY_IMAGE;
                     }
@@ -1069,6 +1070,13 @@
         function gotoRank(x) {
             //var nViews = vm.answer.views + 1;
             //answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
+            $state.go('rankSummary', { index: x.id });
+        }
+
+        function gotoCustomRank(x) {
+            //var nViews = vm.answer.views + 1;
+            //answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
+            $rootScope.isCustomRank = true;
             $state.go('rankSummary', { index: x.id });
         }
 
