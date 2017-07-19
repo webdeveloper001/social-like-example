@@ -48,8 +48,6 @@
             //Minimum Data for Cwrapper
             return $q.all([p0, p1, p3, p4, q5, q6]).then(function (d) {
             
-                $rootScope.content = d[0];
-
                 $rootScope.headlines = d[1];
                 //$rootScope.cblocks = d[2];
                 $rootScope.rankofday = d[2];
@@ -58,6 +56,47 @@
                 $rootScope.categories = d[4];
                 $rootScope.locations = d[5];
 
+                $rootScope.content = [];
+                $rootScope.content = d[0].map(function(ranking){
+                    ranking.title = '';
+                    delete ranking.type;
+                    delete ranking.tags;
+                    delete ranking.keywords;
+                    delete ranking.question;
+                    delete ranking.fimage;
+                    delete ranking.fc;
+                    delete ranking.bc;
+                    delete ranking.shade;
+                    delete ranking.introtext;
+                    delete ranking.user;
+
+                    if(ranking.cat){
+                        var catind = $rootScope.categories.map(function(cat){ return cat.id;}).indexOf(ranking.cat);
+                        if(catind != -1)
+                            ranking.title = $rootScope.categories[catind].category;
+                            ranking.type = $rootScope.categories[catind].type;
+                            ranking.tags = $rootScope.categories[catind].tags;
+                            ranking.keywords = $rootScope.categories[catind].keywords;
+                            ranking.question = $rootScope.categories[catind].question;
+                            ranking.fimage = $rootScope.categories[catind].fimage;
+                            ranking.fc = $rootScope.categories[catind].fc;
+                            ranking.bc = $rootScope.categories[catind].bc;
+                            ranking.shade = $rootScope.categories[catind].shade;
+                            ranking.introtext = $rootScope.categories[catind].introtext;
+                            ranking.user = $rootScope.categories[catind].user;
+
+                    }
+
+                    if (ranking.nh) {
+                        var locationind = $rootScope.locations.map(function(nh){ return nh.id;}).indexOf(ranking.nh);
+                        if (locationind != -1 && ranking.title) {
+                            ranking.title = ranking.title.replace('/@Nh/g', $rootScope.locations[locationind].nh_name)
+                        }
+
+                    }
+                    return ranking;
+                });
+                
                 syncCatNh();
                 createSearchStrings();
 
@@ -249,38 +288,53 @@
 
         function syncCatNh() {
 
-            $rootScope.content.forEach(function(ranking){
-                
-                if(ranking.isatomic && ranking.ismp) {
-                    var categoryName = ranking.title;
+            // $rootScope.content.forEach(function(ranking){
+            //     if (ranking.nh)
+            //         return;
+            //     if(ranking.isatomic && ranking.ismp) {
+            //         // var categoryName = ranking.title;
 
-                    var index = $rootScope.categories.map(function(cat){return cat.category.toLowerCase().trim();}).indexOf(ranking.title.toLowerCase().trim());
-                    // if (index == -1)
-                    //     console.log('No Category', categoryName, ranking);
-                    //if (index != -1)
-                        //table.update(ranking.id, ['cat'], [$rootScope.categories[index].id]);
 
-                } else {
-                    var ind = ranking.title.lastIndexOf(' in ');
+            //         // var index = $rootScope.categories.map(function(cat){return cat.category.toLowerCase().trim();}).indexOf(ranking.title.toLowerCase().trim());
+            //         // // if (index == -1)
+            //         // //     console.log('No Category', categoryName, ranking);
+            //         // if (index != -1)
+            //         //     table.update(ranking.id, ['cat'], [$rootScope.categories[index].id]);
 
-                    var categoryName = ranking.title.slice(0, ind);
-                    categoryName += ' in @nh';
 
-                    var location = ranking.title.slice(ind+4);
+            //     } else {
+            //         var ind = ranking.title.lastIndexOf(' in ');
 
-                    var index = $rootScope.categories.map(function(cat){return cat.category.toLowerCase().trim();}).indexOf(categoryName.toLowerCase().trim());
+            //         var categoryName = ranking.title.slice(0, ind);
+            //         categoryName += ' in @nh';
 
-                    // if (index == -1)
-                    //     console.log('No Category', categoryName, ranking);
+            //         var location = ranking.title.slice(ind+4);
 
-                    var indexlocation = $rootScope.locations.map(function(loc){return loc.nh_name.toLowerCase().trim();}).indexOf(location.toLowerCase().trim()); 
+            //         var index = $rootScope.categories.map(function(cat){return cat.category.toLowerCase().trim();}).indexOf(categoryName.toLowerCase().trim());
+
+            //         // if (index == -1)
+            //         //     console.log('No Category', categoryName, ranking);
+
+            //         var indexlocation = $rootScope.locations.map(function(loc){return loc.nh_name.toLowerCase().trim();}).indexOf(location.toLowerCase().trim()); 
+
+            //         // if (indexlocation == -1)
+            //         //     console.log('No Location', location, ranking);
+            //         // if (index != -1)
+            //         //     table.update(ranking.id, ['cat'], [$rootScope.categories[index].id]);
+            //         if (indexlocation != -1) 
+            //             table.update(ranking.id, ['nh'], [$rootScope.locations[indexlocation].id]);
+                         
+
+            //     }
+            // });
+
+
+
 
                     // if (indexlocation == -1)
                     //     console.log('No Location', location, ranking);
                     //table.update(ranking.id, ['cat','nh'], [$rootScope.categories[index].id, $rootScope.locations[indexlocation].id]);
 
-                }
-            });
 
             // Uncomment when generating categories from title of rankings
             // var categoryAddList = [];

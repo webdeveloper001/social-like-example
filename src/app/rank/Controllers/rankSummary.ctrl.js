@@ -1511,7 +1511,12 @@
                 //TODO Need to pass table id
                 if ((vm.answers[i].upV != vm.answers[i].upVi) || (vm.answers[i].downV != vm.answers[i].downVi)) {
                     if ($rootScope.DEBUG_MODE) console.log("UR-8");
-                    catans.updateRec(vm.answers[i].catans, ["upV", "downV"], [vm.answers[i].upV, vm.answers[i].downV]);
+                    catans.getCatan(vm.answerRanks[i].catans).then(function(catan){
+                        var updV = vm.answerRanks[i].upV + vm.answerRanks[i].upVi;
+                        var downdV = vm.answerRanks[i].downV + vm.answerRanks[i].downVi;
+                        
+                        catans.updateRec(vm.answerRanks[i].catans, ["upV", "downV"], [vm.answerRanks[i].upV, vm.answerRanks[i].downV]);    
+                    });
                 }
             }
 
