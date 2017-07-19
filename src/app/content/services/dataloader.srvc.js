@@ -48,8 +48,6 @@
             //Minimum Data for Cwrapper
             return $q.all([p0, p1, p3, p4, q5, q6]).then(function (d) {
             
-                $rootScope.content = d[0];
-
                 $rootScope.headlines = d[1];
                 //$rootScope.cblocks = d[2];
                 $rootScope.rankofday = d[2];
@@ -58,6 +56,47 @@
                 $rootScope.categories = d[4];
                 $rootScope.locations = d[5];
 
+                $rootScope.content = [];
+                $rootScope.content = d[0].map(function(ranking){
+                    ranking.title = '';
+                    delete ranking.type;
+                    delete ranking.tags;
+                    delete ranking.keywords;
+                    delete ranking.question;
+                    delete ranking.fimage;
+                    delete ranking.fc;
+                    delete ranking.bc;
+                    delete ranking.shade;
+                    delete ranking.introtext;
+                    delete ranking.user;
+
+                    if(ranking.cat){
+                        var catind = $rootScope.categories.map(function(cat){ return cat.id;}).indexOf(ranking.cat);
+                        if(catind != -1)
+                            ranking.title = $rootScope.categories[catind].category;
+                            ranking.type = $rootScope.categories[catind].type;
+                            ranking.tags = $rootScope.categories[catind].tags;
+                            ranking.keywords = $rootScope.categories[catind].keywords;
+                            ranking.question = $rootScope.categories[catind].question;
+                            ranking.fimage = $rootScope.categories[catind].fimage;
+                            ranking.fc = $rootScope.categories[catind].fc;
+                            ranking.bc = $rootScope.categories[catind].bc;
+                            ranking.shade = $rootScope.categories[catind].shade;
+                            ranking.introtext = $rootScope.categories[catind].introtext;
+                            ranking.user = $rootScope.categories[catind].user;
+
+                    }
+
+                    if (ranking.nh) {
+                        var locationind = $rootScope.locations.map(function(nh){ return nh.id;}).indexOf(ranking.nh);
+                        if (locationind != -1 && ranking.title) {
+                            ranking.title = ranking.title.replace('/@Nh/g', $rootScope.locations[locationind].nh_name)
+                        }
+
+                    }
+                    return ranking;
+                });
+                
                 syncCatNh();
 
                 $rootScope.pageDataLoaded = true;
