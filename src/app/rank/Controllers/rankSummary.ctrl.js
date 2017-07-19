@@ -7,11 +7,13 @@
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope'
-        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', '$location', '$q', 'fbusers', 'useractivity', '$timeout'];
+        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', 
+        '$location', '$q', 'fbusers', 'useractivity', '$timeout','table2'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime, color
         , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope
-        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, $location, $q, fbusers, useractivity, $timeout) {
+        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, 
+        $location, $q, fbusers, useractivity, $timeout, table2) {
         /* jshint validthis:true */
 
         var vm = this;
@@ -146,10 +148,20 @@
 
             //Load current category
             $rootScope.cCategory = {};
-            for (var i = 0; i < $rootScope.content.length; i++) {
-                if (($rootScope.content[i].id == $stateParams.index) || ($rootScope.content[i].slug == $stateParams.index)){
-                    $rootScope.cCategory = $rootScope.content[i];
-                    break;
+            if ($rootScope.isCustomRank){
+                for (var i = 0; i < $rootScope.customranks.length; i++) {
+                    if (($rootScope.customranks[i].id == $stateParams.index) || ($rootScope.customranks[i].slug == $stateParams.index)){
+                        $rootScope.cCategory = $rootScope.customranks[i];
+                        break;
+                    }
+                }
+            }
+            else{
+                for (var i = 0; i < $rootScope.content.length; i++) {
+                    if (($rootScope.content[i].id == $stateParams.index) || ($rootScope.content[i].slug == $stateParams.index)){
+                        $rootScope.cCategory = $rootScope.content[i];
+                        break;
+                    }
                 }
             }
 
@@ -264,7 +276,12 @@
                 vm.numAns = 0;
 
                 if (!foodNearMe) {
+                    if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
+                        ['views', 'answers','image1url', 'image2url', 'image3url'],
+                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,'','','']);
+                    else
+                    table2.update($rootScope.cCategory.id,
                         ['views', 'answers','image1url', 'image2url', 'image3url'],
                         [$rootScope.cCategory.views + 1, $rootScope.canswers.length,'','','']);
                 }
@@ -292,7 +309,13 @@
                     else vm.image1ok = false;
                 }
                 if (!foodNearMe) {
+                    if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
+                        ['views', 'answers', 'image1url','image2url', 'image3url'],
+                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                            vm.image1,'','']);
+                    else
+                    table2.update($rootScope.cCategory.id,
                         ['views', 'answers', 'image1url','image2url', 'image3url'],
                         [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
                             vm.image1,'','']);
@@ -330,7 +353,13 @@
                     else vm.image2ok = false;
                 }
                 if (!foodNearMe) {
+                    if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
+                        ['views', 'answers', 'image1url', 'image2url', 'image3url'],
+                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                            vm.image1, vm.image2,'']);
+                    else
+                    table2.update($rootScope.cCategory.id,
                         ['views', 'answers', 'image1url', 'image2url', 'image3url'],
                         [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
                             vm.image1, vm.image2,'']);
@@ -383,10 +412,16 @@
                     }                    
                 }
                 if (!foodNearMe) {
+                    if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
                         ['views', 'answers', 'image1url', 'image2url', 'image3url'],
                         [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
                             vm.image1, vm.image2, vm.image3]);
+                    else
+                    table2.update($rootScope.cCategory.id,
+                        ['views', 'answers', 'image1url', 'image2url', 'image3url'],
+                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                            vm.image1, vm.image2,'']);
                 }
             }
 

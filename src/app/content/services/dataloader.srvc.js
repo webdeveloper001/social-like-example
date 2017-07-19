@@ -5,11 +5,11 @@
         .module('app')
         .factory('dataloader', dataloader);
 
-    dataloader.$inject = ['$http', '$q','$rootScope','pvisits', 
+    dataloader.$inject = ['$http', '$q','$rootScope','pvisits', 'table2',
         'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata',
         'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans','categories', 'locations'];
 
-    function dataloader($http, $q, $rootScope, pvisits, 
+    function dataloader($http, $q, $rootScope, pvisits, table2,
         rankofday, answer, table, special, datetime, uaf, userdata,
         matchrec, edit, useractivity, vrows, headline, cblock, catans, categories, locations) {
 
@@ -98,6 +98,7 @@
                 });
                 
                 syncCatNh();
+                createSearchStrings();
 
                 $rootScope.pageDataLoaded = true;
                 //loadingDone();
@@ -170,11 +171,13 @@
             //Requirement for answerDetail
             var r0 = edit.getEdits();
             var r1 = vrows.getAllvrows();
+            var r2 = table2.getTables();
             
-            return $q.all([r0, r1]).then(function (d) {
+            return $q.all([r0, r1, r2]).then(function (d) {
                 
                 $rootScope.edits = d[0];
                 $rootScope.cvrows = d[1];
+                $rootScope.customranks = d[2];
                 
                 $rootScope.answerDetailLoaded = true;
                 if ($rootScope.DEBUG_MODE) console.log("answerdetail data ready!");
@@ -275,10 +278,10 @@
         function createSearchStrings(){
             $rootScope.searchStr = [];
             //Create seach strings combination of tags, title and answers            
-            for (var i = 0; i < $rootScope.content.length; i++) {                
+            for (var i = 0; i < $rootScope.categories.length; i++) {                
                 //Create single string for search
                 //$rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title + " " + $rootScope.content[i].answertags;
-                $rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title;
+                $rootScope.searchStr[i] = $rootScope.categories[i].tags + " " + $rootScope.categories[i].title;
             
             }
         }
@@ -291,11 +294,13 @@
             //     if(ranking.isatomic && ranking.ismp) {
             //         // var categoryName = ranking.title;
 
+
             //         // var index = $rootScope.categories.map(function(cat){return cat.category.toLowerCase().trim();}).indexOf(ranking.title.toLowerCase().trim());
             //         // // if (index == -1)
             //         // //     console.log('No Category', categoryName, ranking);
             //         // if (index != -1)
             //         //     table.update(ranking.id, ['cat'], [$rootScope.categories[index].id]);
+
 
             //     } else {
             //         var ind = ranking.title.lastIndexOf(' in ');
@@ -325,6 +330,10 @@
 
 
 
+
+                    // if (indexlocation == -1)
+                    //     console.log('No Location', location, ranking);
+                    //table.update(ranking.id, ['cat','nh'], [$rootScope.categories[index].id, $rootScope.locations[indexlocation].id]);
 
 
             // Uncomment when generating categories from title of rankings

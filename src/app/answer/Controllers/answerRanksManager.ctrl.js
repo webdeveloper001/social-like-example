@@ -6,10 +6,10 @@
         .controller('answerRanksManager', answerRanksManager);
 
     answerRanksManager.$inject = ['dialog', '$stateParams', '$state', '$rootScope', 'catans', 
-    '$modal', 'edit', 'editvote', 'answer', 'table','$window'];
+    '$modal', 'edit', 'editvote', 'answer', 'table2','$window'];
 
     function answerRanksManager(dialog, $stateParams, $state, $rootScope, catans, 
-    $modal, edit, editvote, answer, table, $window) {
+    $modal, edit, editvote, answer, table2, $window) {
         /* jshint validthis:true */
         var vm = this;
 
@@ -35,8 +35,8 @@
             vm.ranks = JSON.parse($rootScope.canswer.ranks);
             if (vm.ranks == undefined) vm.ranks = [];
             for (var i=0; i<vm.ranks.length; i++){
-                n = $rootScope.content.map(function(x) {return x.id; }).indexOf(vm.ranks[i].id);
-                vm.ranks[i].title = $rootScope.content[n].title.replace(' @ '+$rootScope.canswer.name,'');
+                n = $rootScope.customranks.map(function(x) {return x.id; }).indexOf(vm.ranks[i].id);
+                vm.ranks[i].title = $rootScope.customranks[n].title.replace(' @ '+$rootScope.canswer.name,'');
                 vm.ranks[i].used = true;
             }
 
@@ -64,13 +64,13 @@
         }
 
         function deleteRank(x){
-            var idx = $rootScope.content.map(function(x) {return x.id; }).indexOf(vm.ranks[x].id);
+            var idx = $rootScope.customranks.map(function(x) {return x.id; }).indexOf(vm.ranks[x].id);
             selRank = x;
-            dialog.deleteRank($rootScope.content[idx],execDeleteRank);           
+            dialog.deleteRank($rootScope.customranks[idx],execDeleteRank);           
         }
 
         function execDeleteRank(){
-            table.deleteTable(vm.ranks[selRank].id);
+            table2.deleteTable(vm.ranks[selRank].id);
             vm.ranks.splice(selRank,1);
             //Clear title fields and scope variables
             var ranksArr = [];

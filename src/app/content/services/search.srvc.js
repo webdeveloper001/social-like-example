@@ -20,7 +20,7 @@
         };
 
         return service;
-
+/*
         function searchRanks(query) {
             //initialize tool variables 
             var rt = '';   //rank title 
@@ -258,6 +258,7 @@
             return results;
 
         }
+        */
 
         function searchAnswers(query) {
 
@@ -456,7 +457,7 @@
             else return sibblingRanks;
         }
 
-        /*
+        
  function searchRanks(query) {
             //initialize tool variables 
             var rt = '';   //rank title 
@@ -548,12 +549,12 @@
                 var sc = false; //special case
                     
                     var valTags = inputVal.split(" ");
-                      for (var j = 0; j < $rootScope.ranksTemps.length; j++) {  
+                      for (var j = 0; j < $rootScope.categories.length; j++) {  
                         if (true) {    
                             
-                            ss = $rootScope.searchStr2[j]; //Search string
-                            rt = $rootScope.ranksTemps[j].title; // title
-                            rank = $rootScope.ranksTemps[j];
+                            ss = $rootScope.searchStr[j]; //Search string
+                            rt = $rootScope.categories[j].category; // title
+                            rank = $rootScope.categories[j];
 
                             m_ss = true;
                             m_rt = true;
@@ -572,7 +573,7 @@
                                             $rootScope.allnh[q].indexOf(tagCapitalized) > -1 ||
                                             $rootScope.allnh[q].indexOf(tagFirstLowered) > -1) {
                                             //console.log("found neighborhood!", $rootScope.allnh[q]);
-                                            checkNoDupThenPush(nh,$rootScope.allnh[q]);
+                                            checkNoDupThenPush($rootScope.allnh[q],nh);
                                             m_nh = true;
                                             ignoreTagsIdx.push(k);
                                         }
@@ -585,7 +586,7 @@
                                             short[q].indexOf(valTags[k].toUpperCase()) > -1 ||
                                             short[q].indexOf(tagCapitalized) > -1 ||
                                             short[q].indexOf(tagFirstLowered) > -1) {
-                                            checkNoDupThenPush(nh,corrnh[q]);
+                                            checkNoDupThenPush(corrnh[q],nh);
                                             m_nh = true;
                                             ignoreTagsIdx.push(k);
                                         }
@@ -621,17 +622,17 @@
                             
                             if (m_rt){
                                 rObj = {};
-                                rObj = JSON.parse(JSON.stringify($rootScope.ranksTemps[j]));
+                                rObj = JSON.parse(JSON.stringify($rootScope.categories[j]));
                                 if (m_nh) {
                                     for (var n=0; n < nh.length; n++){
                                         rObj = {};
-                                        rObj = JSON.parse(JSON.stringify($rootScope.ranksTemps[j]));
-                                        rObj.title = rObj.title.replace('@neighborhood', nh[n]);
+                                        rObj = JSON.parse(JSON.stringify($rootScope.categories[j]));
+                                        rObj.title = rObj.category.replace('@Nh', nh[n]);
                                         results_rt.push(rObj);
                                     }
                                 }
                                 else {
-                                    rObj.title = rObj.title.replace('@neighborhood', 'San Diego');
+                                    rObj.title = rObj.category.replace('@Nh', 'San Diego');
                                     results_rt.push(rObj);
                                 }
                                 
@@ -640,28 +641,22 @@
                             
                             else if (m_ss){
                                 rObj = {};
-                                rObj = JSON.parse(JSON.stringify($rootScope.ranksTemps[j]));
+                                rObj = JSON.parse(JSON.stringify($rootScope.categories[j]));
                                 if (m_nh) {
                                     for (var n=0; n < nh.length; n++){
                                         rObj = {};
-                                        rObj = JSON.parse(JSON.stringify($rootScope.ranksTemps[j]));
-                                        rObj.title = rObj.title.replace('@neighborhood', nh[n]);
+                                        rObj = JSON.parse(JSON.stringify($rootScope.categories[j]));
+                                        rObj.title = rObj.category.replace('@Nh', nh[n]);
                                         results_ss.push(rObj);
                                     }
                                 }
                                 else {
-                                    rObj.title = rObj.title.replace('@neighborhood', 'San Diego');
+                                    rObj.title = rObj.category.replace('@Nh', 'San Diego');
                                     results_ss.push(rObj);
                                 }
                             }
                         }
                     }
-
-                    
-                    
-                    console.log('valTags', valTags);
-                    console.log("results_rt ", results_rt);
-                    console.log("results_ss ", results_ss);
 
                     if (nhe) results = results.concat(results_nh);
                     //if (rt_nme) results = results.concat(results_rt_nm);
@@ -684,14 +679,14 @@
             var isdup = false;
             for (var i=0; i<array.length; i++){
                 if (x == array[i]){
-                    isdup = false;
+                    isdup = true;
                     break;
                 }
             }
             if (!isdup) array.push(x);
         }
         
-        */
+        
         
     }
 })();
