@@ -246,38 +246,47 @@
 
         function syncCatNh() {
 
-            $rootScope.content.forEach(function(ranking){
-                
-                if(ranking.isatomic && ranking.ismp) {
-                    var categoryName = ranking.title;
+            // $rootScope.content.forEach(function(ranking){
+            //     if (ranking.nh)
+            //         return;
+            //     if(ranking.isatomic && ranking.ismp) {
+            //         // var categoryName = ranking.title;
 
-                    var index = $rootScope.categories.map(function(cat){return cat.category.toLowerCase().trim();}).indexOf(ranking.title.toLowerCase().trim());
-                    // if (index == -1)
-                    //     console.log('No Category', categoryName, ranking);
-                    if (index != -1)
-                        table.update(ranking.id, ['cat'], [$rootScope.categories[index].id]);
+            //         // var index = $rootScope.categories.map(function(cat){return cat.category.toLowerCase().trim();}).indexOf(ranking.title.toLowerCase().trim());
+            //         // // if (index == -1)
+            //         // //     console.log('No Category', categoryName, ranking);
+            //         // if (index != -1)
+            //         //     table.update(ranking.id, ['cat'], [$rootScope.categories[index].id]);
 
-                } else {
-                    var ind = ranking.title.lastIndexOf(' in ');
+            //     } else {
+            //         var ind = ranking.title.lastIndexOf(' in ');
 
-                    var categoryName = ranking.title.slice(0, ind);
-                    categoryName += ' in @nh';
+            //         var categoryName = ranking.title.slice(0, ind);
+            //         categoryName += ' in @nh';
 
-                    var location = ranking.title.slice(ind+4);
+            //         var location = ranking.title.slice(ind+4);
 
-                    var index = $rootScope.categories.map(function(cat){return cat.category.toLowerCase().trim();}).indexOf(categoryName.toLowerCase().trim());
+            //         var index = $rootScope.categories.map(function(cat){return cat.category.toLowerCase().trim();}).indexOf(categoryName.toLowerCase().trim());
 
-                    // if (index == -1)
-                    //     console.log('No Category', categoryName, ranking);
+            //         // if (index == -1)
+            //         //     console.log('No Category', categoryName, ranking);
 
-                    var indexlocation = $rootScope.locations.map(function(loc){return loc.nh_name.toLowerCase().trim();}).indexOf(location.toLowerCase().trim()); 
+            //         var indexlocation = $rootScope.locations.map(function(loc){return loc.nh_name.toLowerCase().trim();}).indexOf(location.toLowerCase().trim()); 
 
-                    // if (indexlocation == -1)
-                    //     console.log('No Location', location, ranking);
-                    table.update(ranking.id, ['cat','nh'], [$rootScope.categories[index].id, $rootScope.locations[indexlocation].id]);
+            //         // if (indexlocation == -1)
+            //         //     console.log('No Location', location, ranking);
+            //         // if (index != -1)
+            //         //     table.update(ranking.id, ['cat'], [$rootScope.categories[index].id]);
+            //         if (indexlocation != -1) 
+            //             table.update(ranking.id, ['nh'], [$rootScope.locations[indexlocation].id]);
+                         
 
-                }
-            });
+            //     }
+            // });
+
+
+
+
 
             // Uncomment when generating categories from title of rankings
             // var categoryAddList = [];
