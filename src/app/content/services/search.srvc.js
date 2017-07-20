@@ -142,13 +142,13 @@
 
                                 //look if input makes reference to specific neighborhood
                                 if (valTags[k].length >= 3) {
-                                    for (var q = 0; q < $rootScope.allnh.length; q++) {
-                                        if ($rootScope.allnh[q].indexOf(valTags[k]) > -1 ||
-                                            $rootScope.allnh[q].indexOf(valTags[k].toUpperCase()) > -1 ||
-                                            $rootScope.allnh[q].indexOf(tagCapitalized) > -1 ||
-                                            $rootScope.allnh[q].indexOf(tagFirstLowered) > -1) {
-                                            //console.log("found neighborhood!", $rootScope.allnh[q]);
-                                            nh = $rootScope.allnh[q];
+                                    for (var q = 0; q < $rootScope.locations.length; q++) {
+                                        if ($rootScope.locations[q].indexOf(valTags[k]) > -1 ||
+                                            $rootScope.locations[q].indexOf(valTags[k].toUpperCase()) > -1 ||
+                                            $rootScope.locations[q].indexOf(tagCapitalized) > -1 ||
+                                            $rootScope.locations[q].indexOf(tagFirstLowered) > -1) {
+                                            //console.log("found neighborhood!", $rootScope.locations[q]);
+                                            nh = $rootScope.locations[q];
                                             m_nh = true;
                                         }
                                     }
@@ -348,7 +348,7 @@
                     for (var j = 0; j < $rootScope.content.length; j++) {
                       //  if ($rootScope.content[j].ismp) {
                             //console.log("ismp is true");
-                            ss = $rootScope.searchStr[j]; //search String
+                            ss = $rootScope.searchStrContent[j]; //search String
                             rank = $rootScope.content[j];
                             m_ss = true;
 
@@ -357,7 +357,8 @@
 
                                 tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
                                 tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
-
+                                if(!ss)
+                                    console.log(j);
                                 //look for input in rank title only        
                                 m_ss = m_ss &&
                                     (ss.indexOf(valTags[k]) > -1 ||
@@ -433,9 +434,9 @@
             for (var i=0; i < sibblingRanksX.length; i++){
                 if (sibblingRanksX[i].isatomic && sibblingRanksX[i].ismp) sibblingRanks.push(sibblingRanksX[i]);
                 else if (sibblingRanksX[i].isatomic && !sibblingRanksX[i].ismp){
-                    for (var j=0; j < $rootScope.allnh.length; j++){
-                        if (sibblingRanksX[i].title.indexOf($rootScope.allnh[j])>-1){
-                            searchtitle = sibblingRanksX[i].title.replace($rootScope.allnh[j],neighborhood);
+                    for (var j=0; j < $rootScope.locations.length; j++){
+                        if (sibblingRanksX[i].title.indexOf($rootScope.locations[j].nh_name)>-1){
+                            searchtitle = sibblingRanksX[i].title.replace($rootScope.locations[j].nh_name,neighborhood);
                             for (var k=0; k<$rootScope.content.length; k++){
                                 if ($rootScope.content[k].title == searchtitle){
                                     rankObj = $rootScope.content[k];
@@ -467,8 +468,22 @@
             var tagCapitalized = '';
             var tagFirstLowered = '';
             var rankObj = {};
-            var short = ['pb', 'ob', 'dt', 'mb'];
+            var short = [];
+            var shortnames = ['pb', 'ob', 'dt', 'mb'];
             var corrnh = ['Pacific Beach', 'Ocean Beach', 'Downtown', 'Mission Beach'];
+            if(!$rootScope.locations)
+                return;
+            var nh_names = $rootScope.locations.map(function(loc){ return loc.nh_name; });
+            for (var i = 0; i < corrnh.length; i++) {
+                var ind = nh_names.indexOf(shortnames[i]);
+                if(ind != -1) {
+                    var loc = angular.copy($rootScope.locations[ind]);
+                    loc.nh_short_name =  shortnames[i];
+                    short.push(loc);
+                }
+            }
+
+            if(nh_names.indexOf('Pacific Beach') != -1)
 
             var nme = false;  //near me
             var rte = false;
@@ -567,13 +582,13 @@
 
                                 //look if input makes reference to specific neighborhood
                                 if (valTags[k].length >= 3) {
-                                    for (var q = 0; q < $rootScope.allnh.length; q++) {
-                                        if ($rootScope.allnh[q].indexOf(valTags[k]) > -1 ||
-                                            $rootScope.allnh[q].indexOf(valTags[k].toUpperCase()) > -1 ||
-                                            $rootScope.allnh[q].indexOf(tagCapitalized) > -1 ||
-                                            $rootScope.allnh[q].indexOf(tagFirstLowered) > -1) {
-                                            //console.log("found neighborhood!", $rootScope.allnh[q]);
-                                            checkNoDupThenPush($rootScope.allnh[q],nh);
+                                    for (var q = 0; q < $rootScope.locations.length; q++) {
+                                        if ($rootScope.locations[q].nh_name.indexOf(valTags[k]) > -1 ||
+                                            $rootScope.locations[q].nh_name.indexOf(valTags[k].toUpperCase()) > -1 ||
+                                            $rootScope.locations[q].nh_name.indexOf(tagCapitalized) > -1 ||
+                                            $rootScope.locations[q].nh_name.indexOf(tagFirstLowered) > -1) {
+                                            //console.log("found neighborhood!", $rootScope.locations[q]);
+                                            checkNoDupThenPush($rootScope.locations[q],nh);
                                             m_nh = true;
                                             ignoreTagsIdx.push(k);
                                         }
@@ -582,11 +597,11 @@
                                 //Special cases for neighborhoods
                                 if (valTags[k].length == 2) {
                                     for (var q = 0; q < short.length; q++) {
-                                        if (short[q].indexOf(valTags[k]) > -1 ||
-                                            short[q].indexOf(valTags[k].toUpperCase()) > -1 ||
-                                            short[q].indexOf(tagCapitalized) > -1 ||
-                                            short[q].indexOf(tagFirstLowered) > -1) {
-                                            checkNoDupThenPush(corrnh[q],nh);
+                                        if (short[q].nh_short_name.indexOf(valTags[k]) > -1 ||
+                                            short[q].nh_short_name.indexOf(valTags[k].toUpperCase()) > -1 ||
+                                            short[q].nh_short_name.indexOf(tagCapitalized) > -1 ||
+                                            short[q].nh_short_name.indexOf(tagFirstLowered) > -1) {
+                                            checkNoDupThenPush(short[q],nh);
                                             m_nh = true;
                                             ignoreTagsIdx.push(k);
                                         }
@@ -604,6 +619,8 @@
                                      tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
 
                                      //look for input in whole search string
+                                     if(!ss)
+                                        console.log(j);
                                      m_ss = m_ss &&
                                          (ss.indexOf(valTags[k]) > -1 ||
                                              ss.indexOf(valTags[k].toUpperCase()) > -1 ||
@@ -627,12 +644,14 @@
                                     for (var n=0; n < nh.length; n++){
                                         rObj = {};
                                         rObj = JSON.parse(JSON.stringify($rootScope.categories[j]));
-                                        rObj.title = rObj.category.replace('@Nh', nh[n]);
+                                        rObj.title = rObj.category.replace('@Nh', nh[n].nh_namme);
+                                        rObj.locationId = nh[n].id;
                                         results_rt.push(rObj);
                                     }
                                 }
                                 else {
                                     rObj.title = rObj.category.replace('@Nh', 'San Diego');
+                                    rObj.locationId = 1;
                                     results_rt.push(rObj);
                                 }
                                 
@@ -646,12 +665,14 @@
                                     for (var n=0; n < nh.length; n++){
                                         rObj = {};
                                         rObj = JSON.parse(JSON.stringify($rootScope.categories[j]));
-                                        rObj.title = rObj.category.replace('@Nh', nh[n]);
+                                        rObj.title = rObj.category.replace('@Nh', nh[n].nh_namme);
+                                        rObj.locationId = nh[n].id;
                                         results_ss.push(rObj);
                                     }
                                 }
                                 else {
                                     rObj.title = rObj.category.replace('@Nh', 'San Diego');
+                                    rObj.locationId = 1;
                                     results_ss.push(rObj);
                                 }
                             }
@@ -678,7 +699,7 @@
         function checkNoDupThenPush(x,array){
             var isdup = false;
             for (var i=0; i<array.length; i++){
-                if (x == array[i]){
+                if (x.hn_name == array[i]){
                     isdup = true;
                     break;
                 }

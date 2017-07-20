@@ -19,9 +19,57 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
             scope.rankSel = function (x,nm) {
                 if (nm) $rootScope.rankIsNearMe = true;
                 else $rootScope.rankIsNearMe = false;
-                if ($rootScope.editMode) $state.go('editRanking', { index: x.slug });
-                else {
-                    $state.go('rankSummary', { index: x.slug });
+                var selectedRank = $rootScope.content.filter(function(ranking){
+                    if(x.locationId == 1)
+                        return (!ranking.nh || !x.id == 1)  && ranking.cat == x.id;
+                    else {
+                        return ranking.nh == ranking.nh  && ranking.cat == x.id;
+                    }
+                });
+                if(selectedRank.length == 0){
+                    var maxId = 0;
+                    $rootScope.content.forEach(function(ranking){
+                        if(ranking.id > maxId)
+                            maxId = ranking.id;
+                    });
+                    maxId ++;
+                    var slug = x.title.toLowerCase();; 
+                    slug = slug.replace(/ /g,'-');
+                    slug = slug.replace('/','at');
+                    slug = slug + '-' + rankid;
+
+                    $rootScope.content.push({
+                        id: maxId,  //TODO when add to db, should delete id and update slug.
+                        slug: slug,
+                        isGhost: true,
+                        category: x.title,
+                        type: x.type,
+                        tags: x.tags,
+                        keywords: x.keywords,
+                        question: x.question,
+                        fimage: x.fimage,
+                        bc: x.bc,
+                        fc: x.fc,
+                        shade: x.shade,
+                        introtext: x.introtext,
+                        user: x.user ,
+                        views: 0,
+                        answers: 0,
+                        image1url: '../../../assets/images/noimage.jpg',
+                        image2url: '../../../assets/images/noimage.jpg',
+                        image3url: '../../../assets/images/noimage.jpg',
+                        answertags: '',
+                        isatomic: 1, //TODO decide isatomic, numcom, ismp, owner, 
+                        timestmp: new Date(),
+                        cat: x.id,
+                        nh: x.locationId,
+                    });
+                    $state.go('rankSummary', { index: slug });
+                } else {
+                    if ($rootScope.editMode) $state.go('editRanking', { index: selectedRank[0].slug });
+                    else {
+                        $state.go('rankSummary', { index: selectedRank[0].slug });
+                    }
                 }
             };
             scope.ansSel = function (x) {
@@ -62,7 +110,7 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
             
         },
     }
-}
     /*angular.module('app').directive('contentBlock', function() {
         */
+}
 ]);

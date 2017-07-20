@@ -281,9 +281,19 @@
             for (var i = 0; i < $rootScope.categories.length; i++) {                
                 //Create single string for search
                 //$rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title + " " + $rootScope.content[i].answertags;
-                $rootScope.searchStr[i] = $rootScope.categories[i].tags + " " + $rootScope.categories[i].title;
-            
+                $rootScope.searchStr[i] = ($rootScope.categories[i].tags ? $rootScope.categories[i].tags : '') + " " + ($rootScope.categories[i].title ? $rootScope.categories[i].title : '');
+
             }
+
+            $rootScope.searchStrContent = [];
+            //Create seach strings combination of tags, title and answers            
+            for (var i = 0; i < $rootScope.content.length; i++) {                
+                //Create single string for search
+                //$rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title + " " + $rootScope.content[i].answertags;
+                $rootScope.searchStrContent[i] = ($rootScope.content[i].tags ? $rootScope.content[i].tags : '') + " " + ($rootScope.content[i].title ? $rootScope.content[i].title : '');
+
+            }
+            
         }
 
         function syncCatNh() {
