@@ -374,6 +374,7 @@
         }
 
         function addAnswerConfirmed(myAnswer) {
+
             //Add new answer, also add new post to catans (inside addAnser)
             
             if ($rootScope.DEBUG_MODE) console.log("No, different! @addAnswerConfirmed");

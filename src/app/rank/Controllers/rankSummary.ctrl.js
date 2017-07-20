@@ -147,7 +147,7 @@
             vm.dataReady = true; 
 
             //Load current category
-            $rootScope.cCategory = {};
+            $rootScope.cCategory = null;
             if ($rootScope.isCustomRank){
                 for (var i = 0; i < $rootScope.customranks.length; i++) {
                     if (($rootScope.customranks[i].id == $stateParams.index) || ($rootScope.customranks[i].slug == $stateParams.index)){
@@ -165,6 +165,8 @@
                 }
             }
 
+            if(!$rootScope.cCategory)
+                $state.go('cwrapper');
             vm.ranking = $rootScope.cCategory.title;
             if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego','close to me');
 
@@ -563,11 +565,53 @@
                     return;
                 }
                 else {
-                    if (vm.type == 'Event') {
-                        $rootScope.eventmode = 'add';
-                        $state.go("addEvent");
+
+                    if($rootScope.cCategory.isGhost) {
+
+                        var item = {
+                            title: $rootScope.cCategory.title,
+                            type: $rootScope.cCategory.type,
+                            tags: $rootScope.cCategory.tags,
+                            keywords: $rootScope.cCategory.keywords,
+                            question: $rootScope.cCategory.question,
+                            fimage: $rootScope.cCategory.fimage,
+                            bc: $rootScope.cCategory.bc,
+                            fc: $rootScope.cCategory.fc,
+                            shade: $rootScope.cCategory.shade,
+                            introtext: $rootScope.cCategory.introtext,
+                            user: $rootScope.cCategory.user ,
+
+                            views: 0,
+                            answers: 0,
+                            image1url: '../../../assets/images/noimage.jpg',
+                            image2url: '../../../assets/images/noimage.jpg',
+                            image3url: '../../../assets/images/noimage.jpg',
+                            answertags: '',
+                            isatomic: 1, //TODO decide isatomic, numcom, ismp, owner, 
+                            timestmp: new Date(),
+                            cat: $rootScope.cCategory.cat,
+                            nh: $rootScope.cCategory.locationId,
+                        };
+
+                        table.addTable(item).then(function(result){
+                            if ($rootScope.DEBUG_MODE) console.log("table added --- ", result);
+                            var rankid = result.resource[0].id;
+                            //Create and update slug
+                            var slug = item.title.toLowerCase();; 
+                            slug = slug.replace(/ /g,'-');
+                            slug = slug.replace('/','at');
+                            slug = slug + '-' + rankid;
+                            table.update(rankid,['slug'],[slug]);
+
+                            
+                            if (vm.type == 'Event') {
+                                $rootScope.eventmode = 'add';
+                                $state.go("addEvent");
+                            }
+                            else $state.go("addAnswer");
+                        });
                     }
-                    else $state.go("addAnswer");
+
                 }
             }
             else {

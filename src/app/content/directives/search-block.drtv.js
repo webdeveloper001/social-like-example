@@ -23,7 +23,7 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
                     if(x.locationId == 1)
                         return (!ranking.nh || !x.id == 1)  && ranking.cat == x.id;
                     else {
-                        return ranking.nh == ranking.nh  && ranking.cat == x.id;
+                        return ranking.nh == x.locationId  && ranking.cat == x.id;
                     }
                 });
                 if(selectedRank.length == 0){
@@ -36,13 +36,13 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
                     var slug = x.title.toLowerCase();; 
                     slug = slug.replace(/ /g,'-');
                     slug = slug.replace('/','at');
-                    slug = slug + '-' + rankid;
+                    slug = slug + '-' + maxId;
 
                     $rootScope.content.push({
                         id: maxId,  //TODO when add to db, should delete id and update slug.
                         slug: slug,
                         isGhost: true,
-                        category: x.title,
+                        title: x.title,
                         type: x.type,
                         tags: x.tags,
                         keywords: x.keywords,
