@@ -608,7 +608,7 @@
                                     }
                                 }
                             }
-
+                            ignoreTagsIdx.push(valTags.indexOf('la'));
 
                              //check that all tags exist exept those that are for neighborhood
                              for (var k = 0; k < valTags.length; k++) {
