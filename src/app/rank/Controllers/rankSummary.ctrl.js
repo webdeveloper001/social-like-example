@@ -279,7 +279,7 @@
             if (vm.answers.length == 0) {
                 vm.numAns = 0;
 
-                if (!foodNearMe) {
+                if (!foodNearMe && !$rootScope.cCategory.isGhost) {
                     if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
                         ['views', 'answers','image1url', 'image2url', 'image3url'],
@@ -312,7 +312,7 @@
                     }
                     else vm.image1ok = false;
                 }
-                if (!foodNearMe) {
+                if (!foodNearMe && !$rootScope.cCategory.isGhost) {
                     if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
                         ['views', 'answers', 'image1url','image2url', 'image3url'],
@@ -356,7 +356,7 @@
                     }
                     else vm.image2ok = false;
                 }
-                if (!foodNearMe) {
+                if (!foodNearMe && !$rootScope.cCategory.isGhost) {
                     if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
                         ['views', 'answers', 'image1url', 'image2url', 'image3url'],
@@ -415,7 +415,7 @@
                         }
                     }                    
                 }
-                if (!foodNearMe) {
+                if (!foodNearMe && !$rootScope.cCategory.isGhost) {
                     if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
                         ['views', 'answers', 'image1url', 'image2url', 'image3url'],

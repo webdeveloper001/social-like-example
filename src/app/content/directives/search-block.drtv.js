@@ -35,7 +35,6 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
                 });
                 */
                 if(selectedRank.id == undefined){
-                    console.log("is ghost");
                     var maxId = 0;
                     $rootScope.content.forEach(function(ranking){
                         if(ranking.id > maxId)
