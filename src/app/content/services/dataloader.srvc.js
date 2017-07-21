@@ -35,28 +35,36 @@
         function gethomedata() {
 
             var p0 = table.getTables();
-            var p1 = headline.getheadlines();
+            //var p1 = headline.getheadlines();
             //var p2 = cblock.getcblocksmain();
-            var p3 = rankofday.getrankofday();
-            var p4 = uaf.getactions();
-            var q5 = categories.getAllCategories();
-            var q6 = locations.getAllLocations();
+            var p1 = rankofday.getrankofday();
+            var p2 = uaf.getactions();
+            var p3 = categories.getAllCategories();
+            var p4 = locations.getAllLocations();
 
             // userdata.loadUserData();        //load user data (votes and activities)
             // userdata.loadUserAccount();     //load user business account
 
             //Minimum Data for Cwrapper
-            return $q.all([p0, p1, p3, p4, q5, q6]).then(function (d) {
+            return $q.all([p0, p1, p2, p3, p4]).then(function (d) {
             
-                $rootScope.headlines = d[1];
+                //$rootScope.headlines = d[1];
                 //$rootScope.cblocks = d[2];
-                $rootScope.rankofday = d[2];
-                $rootScope.uafs = d[3];
+                $rootScope.rankofday = d[1];
+                $rootScope.uafs = d[2];
 
-                $rootScope.categories = d[4];
-                $rootScope.locations = d[5];
+                $rootScope.categories = d[3];
+                $rootScope.locations = d[4];
 
-                $rootScope.content = [];
+                $rootScope.content = d[0];
+
+                //console.time('unwrap');
+
+                unwrap(); // run whatever needs to be timed in between the statements
+
+                //console.timeEnd('unwrap');
+                
+                /*
                 $rootScope.content = d[0].map(function(ranking){
                     ranking.title = '';
                     delete ranking.type;
@@ -84,7 +92,6 @@
                             ranking.shade = $rootScope.categories[catind].shade;
                             ranking.introtext = $rootScope.categories[catind].introtext;
                             ranking.user = $rootScope.categories[catind].user;
-
                     }
 
                     if (ranking.nh) {
@@ -92,11 +99,11 @@
                         if (locationind != -1 && ranking.title) {
                             ranking.title = ranking.title.replace('/@Nh/g', $rootScope.locations[locationind].nh_name)
                         }
-
                     }
                     return ranking;
                 });
-                
+                */
+
                 syncCatNh();
                 createSearchStrings();
 
@@ -107,6 +114,31 @@
                 $rootScope.$emit('homeDataLoaded');
 
             });
+        }
+
+        function unwrap(){
+            var nhObj = {};
+            var catObj = {};
+            var idx = -1;
+            var idx2 = -1;
+            var idx = 0;
+                for (var i=0; i < $rootScope.content.length; i++){
+                    idx = $rootScope.locations.map(function (x) { return x.id; }).indexOf($rootScope.content[i].nh);
+                    nhObj = $rootScope.locations[idx];
+                    idx2 = $rootScope.categories.map(function (x) { return x.id; }).indexOf($rootScope.content[i].cat);
+                    catObj = $rootScope.categories[idx2];
+                    $rootScope.content[i].title = catObj.category.replace('@Nh',nhObj.nh_name);
+                    $rootScope.content[i].fimage = catObj.fimage;
+                    $rootScope.content[i].bc = catObj.bc;
+                    $rootScope.content[i].fc = catObj.fc;
+                    $rootScope.content[i].tags = catObj.tags;
+                    $rootScope.content[i].keywords = catObj.keywords;
+                    $rootScope.content[i].type = catObj.type;
+                    $rootScope.content[i].question = catObj.question;
+                    $rootScope.content[i].shade = catObj.shade;
+                    $rootScope.content[i].introtext = catObj.introtext;
+                    $rootScope.content[i].user = catObj.user;
+                }
         }
 
         function getallranks(){

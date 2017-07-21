@@ -19,6 +19,13 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
             scope.rankSel = function (x,nm) {
                 if (nm) $rootScope.rankIsNearMe = true;
                 else $rootScope.rankIsNearMe = false;
+                var selectedRank = {};
+                for (var i=0; i<$rootScope.content.length; i++){
+                    if (x.id == $rootScope.content[i].cat){
+                        if (x.locationId == $rootScope.content[i].nh) selectedRank = $rootScope.content[i];
+                    }
+                }
+                /*
                 var selectedRank = $rootScope.content.filter(function(ranking){
                     if(x.locationId == 1)
                         return (!ranking.nh || !x.id == 1)  && ranking.cat == x.id;
@@ -26,7 +33,9 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
                         return ranking.nh == x.locationId  && ranking.cat == x.id;
                     }
                 });
-                if(selectedRank.length == 0){
+                */
+                if(selectedRank.id == undefined){
+                    console.log("is ghost");
                     var maxId = 0;
                     $rootScope.content.forEach(function(ranking){
                         if(ranking.id > maxId)
@@ -40,6 +49,7 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
 
                     $rootScope.content.push({
                         id: maxId,  //TODO when add to db, should delete id and update slug.
+                        catstr: '' + maxId,
                         slug: slug,
                         isGhost: true,
                         title: x.title,
@@ -66,9 +76,9 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
                     });
                     $state.go('rankSummary', { index: slug });
                 } else {
-                    if ($rootScope.editMode) $state.go('editRanking', { index: selectedRank[0].slug });
+                    if ($rootScope.editMode) $state.go('editRanking', { index: selectedRank.slug });
                     else {
-                        $state.go('rankSummary', { index: selectedRank[0].slug });
+                        $state.go('rankSummary', { index: selectedRank.slug });
                     }
                 }
             };
