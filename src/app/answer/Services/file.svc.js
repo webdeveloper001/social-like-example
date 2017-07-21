@@ -32,7 +32,7 @@
 
             function querySucceeded(result) {
 
-                console.log("result", result);
+                if ($rootScope.DEBUG_MODE) console.log("result", result);
                 return result.data;
             }
         }

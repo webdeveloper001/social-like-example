@@ -101,7 +101,7 @@
                 if (_specials.length > 0) _specials.push(specialx);
                 if (_specialsByAnswer.length > 0) _specialsByAnswer.push(specialx);                
                 
-                console.log("result", result);
+                if ($rootScope.DEBUG_MODE) console.log("result", result);
                 return result.data;
             }
 

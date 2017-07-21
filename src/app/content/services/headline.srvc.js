@@ -62,7 +62,7 @@
                 headlinex.id = result.data.resource[0].id;
                 _headlines.push(headlinex);
 
-                console.log("result", result);
+                if ($rootScope.DEBUG_MODE) console.log("result", result);
                 return result.data;
             }
 
