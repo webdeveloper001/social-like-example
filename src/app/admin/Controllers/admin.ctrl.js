@@ -1001,6 +1001,93 @@
                     }
                 }
                     */// End of 29.
+                    /*
+                    var hasNhOne = false;
+                    var rankObj = {};
+                    for (var i=0; i< $rootScope.categories.length; i++){
+                        hasNhOne = false;
+                        if ($rootScope.categories[i].category.indexOf('@Nh')>-1){
+                            for (var j=0; j<$rootScope.content.length; j++){
+
+                                if ($rootScope.content[j].cat == $rootScope.categories[i].id){
+                                    if ($rootScope.content[j].nh == 64) hasNhOne = true;
+                                }
+                            }
+                        
+                        if (!hasNhOne) {
+                            rankObj = {};
+                            rankObj.cat = $rootScope.categories[i].id;
+                            rankObj.nh = 64;
+                            rankObj.views = 0;
+                            rankObj.image1url = '';
+                            rankObj.image2url = '';
+                            rankObj.image3url = '';
+                            rankObj.owner = 0;
+                            rankObj.numcom = 0;
+                            rankObj.answers = 0;
+                            rankObj.ismp = false;
+                            rankObj.isatomic = false;
+                            console.log($rootScope.categories[i].category);
+                            table.addTable(rankObj);
+                        }
+                        }
+                    }*/
+                    
+                    /*
+                    for (var i=0; i<$rootScope.content.length; i++){
+                        if ($rootScope.content[i].nh == null || 
+                        $rootScope.content[i].nh == undefined || 
+                        $rootScope.content[i].nh == 0 ){
+                            console.log($rootScope.content[i].title);
+                            //table.update($rootScope.content[i].id,['nh'],[1]);
+                        }
+                    }*/
+                    /* //Populate catstr field 
+                    var catstr = '';
+                    var idx = -1;
+                    var nhObj = {};
+                    var nhArr = [];
+                    var nhSub = [];
+                    var catArr = [];
+
+                    for (var i=0; i < $rootScope.content.length; i++){
+                        nhObj = {};
+                        nhArr = [];
+                        nhSub = [];
+                        idx = $rootScope.locations.map(function (x) { return x.id; }).indexOf($rootScope.content[i].nh);
+                        nhObj = $rootScope.locations[idx];
+                        nhArr.push(nhObj.id);
+                        nhSub = nhObj.sub_areas.split(',').map(Number);
+                        if (nhSub && nhSub[0] != 0) nhArr = nhArr.concat(nhSub);
+                        //console.log("length nhArr ", nhArr.length);
+                        //console.log("nhArr ", nhArr);
+                        catArr = [];
+                        for (var j=0; j < $rootScope.content.length; j++){
+                            if ($rootScope.content[i].cat == $rootScope.content[j].cat){
+                                for (var n=0; n < nhArr.length; n++){
+                                    if (nhArr[n] == $rootScope.content[j].nh) {
+                                        catArr.push($rootScope.content[j].id);
+                                        //console.log($rootScope.content[j].slug);
+                                    }
+                                }
+                            }
+                        }
+                        //console.log("length catArr ", catArr.length);
+                        catstr = '';
+                        for (var m=0; m < catArr.length; m++){
+                            catstr = catstr + ':'+ catArr[m];
+                        }
+                        catstr = catstr.substring(1);
+                        //console.log("catstr - ", catstr);
+                        table.update($rootScope.content[i].id,['catstr'],[catstr]);
+                        
+                    }
+                    */
+                    /*
+                    for (var i=0; i<$rootScope.content.length; i++){
+                        if ($rootScope.content[i].cat == null) console.log($rootScope.content[i].slug);
+                    }*/
+
             }
                  
     }

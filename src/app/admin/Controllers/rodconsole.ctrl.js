@@ -24,6 +24,7 @@
         vm.goSaveImage = goSaveImage;
         vm.goSaveText = goSaveText;
         vm.goDeleteImage = goDeleteImage;
+        vm.addCategory = addCategory;
 
         vm.dataReady = false;
         var rods = [];
@@ -66,11 +67,48 @@
             var dateStr = pad(datenow.getMonth()+1)+"/"+pad(datenow.getDate())+"/"+datenow.getFullYear();
             todaydatenum = datetime.date2number(dateStr);
 
-            loadData();
+            loadData2();
             if ($rootScope.DEBUG_MODE) console.log("rodconsole page Loaded!");
             
         }
-    
+
+        function loadData2(){
+            vm.rods = [];
+            rankofday.getall().then(function(result){
+                vm.rods = result;
+                vm.rods.forEach(function(obj){
+                    obj.datenum = datetime.date2number(obj.date);
+                    if (obj.category){
+                        var idx = $rootScope.categories.map(function(x) {return x.id; }).indexOf(obj.category);
+                        obj.title = $rootScope.categories[idx].category.replace('@Nh','San Diego');
+                        obj.fimage = $rootScope.categories[idx].fimage;
+                        obj.webtext = $rootScope.categories[idx].introtext;
+                    }
+
+                    if (obj.fimage != undefined && obj.fimage != '') obj.imageok = true;
+                    else obj.imageok = false;
+
+                    if (obj.introtext != undefined && obj.introtext != '') obj.textok = true;
+                    else obj.textok = false;
+                    
+                });
+                vm.dataReady = true;
+            });
+            vm.addopts = [];
+            for (var i=0; i< $rootScope.categories.length; i++){
+                vm.addopts.push($rootScope.categories[i].category);
+            }
+        }
+
+        function addCategory(){
+            for (var i=0; i< $rootScope.categories.length; i++){
+                if (vm.addval == $rootScope.categories[i].category){
+                    console.log(vm.rank.id, vm.addval);
+                    rankofday.update(vm.rank.id,['category'],[$rootScope.categories[i].id]);
+                }
+            }
+        }
+    /*
         function loadData(){
 
             var res = [];
@@ -119,7 +157,7 @@
                 vm.dataReady = true;
             });
 
-        }
+        }*/
 
         function filterData(x){
             if (x == "all"){
@@ -172,6 +210,7 @@
         function selRank(x){
             vm.overview = false;
             vm.detail = true;
+            vm.addval = '';
             vm.rank = x;
             if (vm.rank.fimage != undefined && vm.rank.fimage != ''){
                 vm.rank.image3 = vm.rank.image2;

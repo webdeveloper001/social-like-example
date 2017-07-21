@@ -71,6 +71,8 @@
         var catansrecs = [];
         var useractivities = [];
         var mrecs = [];
+        var catArr = [];
+        var nhObj = {};
 
         var answersFull = false;
         var updateExec = false;
@@ -138,7 +140,7 @@
         
         window.prerenderReady = false;
         
-        if ($rootScope.rankSummaryDataLoaded) { 
+        if ($rootScope.rankSummaryDataLoaded) {
             prepareRankSummary();
         }
         else vm.dataReady = false;
@@ -753,6 +755,7 @@
             if (!foodNearMe) {
                 for (var i = 0; i < catansrecs.length; i++) {
                     //if rank is atomic 
+                    /*
                     if ($rootScope.cCategory.isatomic) {
                         if (catansrecs[i].category == $rootScope.cCategory.id) {
                             for (var k = 0; k < answers.length; k++) {
@@ -812,8 +815,10 @@
                     }
                     //if rank is not atomic
                     else {
+                        */
                         //Puts numbers into array. Pretty sweet!
-                        var catArr = $rootScope.cCategory.catstr.split(':').map(Number);
+                        catArr = $rootScope.cCategory.catstr.split(':').map(Number);
+
                         for (var n = 0; n < catArr.length; n++) {
                             if (catansrecs[i].category == catArr[n]) {
                                 for (var k = 0; k < answers.length; k++) {
@@ -869,7 +874,7 @@
                                     }
                                 }
                             }
-                        }                                     
+                      //  }                                     
                     }
 
                 }
@@ -1001,10 +1006,10 @@
             }
             //else if rank is not atomic ('near me', 'San Diego', etc)
             else {
-                var catArr2 = $rootScope.cCategory.catstr.split(':').map(Number);
+                //var catArr2 = $rootScope.cCategory.catstr.split(':').map(Number);
                 for (var i = 0; i < useractivities.length; i++) {
-                    for (var j = 0; j < catArr2.length; j++) {
-                        if (useractivities[i].category == catArr2[j]) {
+                    for (var j = 0; j < catArr.length; j++) {
+                        if (useractivities[i].category == catArr[j]) {
                             $rootScope.cuseractivity.push(useractivities[i]);
                             break;
                         }

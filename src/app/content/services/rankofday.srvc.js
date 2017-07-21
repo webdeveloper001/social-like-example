@@ -46,16 +46,52 @@
 
             function querySucceeded(result) {
                 if (result.data.resource.length != 0) {
-                    var url = '/api/v2/mysql/_table/ranking/?filter=title=' + result.data.resource[0].main;
 
+                    var rodObj = result.data.resource[0];
+
+                    //once we get rankofday record, we find record with that category.
+                    /*$rootScope.content.forEach(function(x){
+                        if (x.cat == result.data.resource[0].category && x.nh == 1) _rankofday = x;
+                    });
+                    console.log("-rankofday - ", _rankofday);
+                    return _rankofday; */
+                    var url1 = '/api/v2/mysql/_table/categories/?filter=id=' + rodObj.category;
+                    var url2 = '/api/v2/mysql/_table/ranking/?filter=(cat=' + rodObj.category +') AND (nh=1)'; 
+
+                    var p1 = $http.get(url1);
+                    var p2 = $http.get(url2);
+
+                     return $q.all([p1, p2]).then(function (d) {
+                     
+                        var rankObj = d[1].data.resource[0];
+                        var catObj = d[0].data.resource[0];
+                        rankObj.title = catObj.category.replace('@Nh','San Diego');
+                        rankObj.fimage = catObj.fimage;
+                        rankObj.introtext = catObj.introtext;
+                        rankObj.tags = catObj.tags;
+                        rankObj.type = catObj.type;
+                        rankObj.fc = catObj.fc;
+                        rankObj.bc = catObj.bc;
+                        rankObj.shade = catObj.shade;
+                        _rankofday = rankObj;
+                        return _rankofday;
+                    },function(err){
+                        console.log("Error getting rank of day data: ", err);
+                    });
+/*
                     return $http.get(url).then(function(resp) {
-                        if (resp.data.resource.length != 0) 
+                        if (resp.data.resource.length != 0){ 
+                            var obj = {};
+                            obj = resp.data.resource[0];
+                            var idx = _answers.map(function(x) {return x.id; }).indexOf(answer_id);
+                            
                             return _rankofday = resp.data.resource[0];
+                        }
                         else
                             return null;
 
-                    }, _queryFailed);
-                } 
+                    }, _queryFailed); */
+                }
             }
         }
 
@@ -79,9 +115,7 @@
             data.id = id;
             
             for (var i=0; i<field.length; i++){
-                switch (field[i]){
-                    case "introtext": data.introtext = val[i]; break;                    
-                }
+                 data[field[i]] = val[i]; 
             }
             //console.log("data", data);
             obj.resource.push(data);
@@ -91,9 +125,7 @@
             //update local copy
             var idx = _allranks.map(function(x) {return x.id; }).indexOf(id);  
             for (var i=0; i<field.length; i++){
-                switch (field[i]){
-                    case "name": _allranks[idx].introtext = val[i]; break;                    
-                }
+                _allranks[idx][field[i]] = val[i];
             }                        
             
             return $http.patch(url, obj, {
