@@ -572,9 +572,9 @@
             var opt = '';
             //if (answerNeighborhood == undefined || answerNeighborhood == '') answerNeighborhood = 'San Diego';
             for (var i = 0; i < $rootScope.ctsOptions.length; i++) {
-                if ($rootScope.ctsOptions[i].indexOf('@neighborhood') > -1) {
+                if ($rootScope.ctsOptions[i].indexOf('@Nh') > -1) {
                     if (answerNeighborhood){
-                        opt = $rootScope.ctsOptions[i].replace('@neighborhood', answerNeighborhood);
+                        opt = $rootScope.ctsOptions[i].replace('@Nh', answerNeighborhood);
                         vm.addctsopts.push(opt);
                     }
                 }

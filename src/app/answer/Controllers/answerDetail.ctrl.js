@@ -496,12 +496,12 @@
                 //TODO Need to pass table id
                 if ((vm.answerRanks[i].upV != vm.answerRanks[i].upVi) || (vm.answerRanks[i].downV != vm.answerRanks[i].downVi)) {
                     if ($rootScope.DEBUG_MODE) console.log("UR-8");
-                    catans.getCatan(vm.answerRanks[i].catans).then(function(catan){
-                        var updV = vm.answerRanks[i].upV + vm.answerRanks[i].upVi;
-                        var downdV = vm.answerRanks[i].downV + vm.answerRanks[i].downVi;
+                    //catans.getCatan(vm.answerRanks[i].catans).then(function(catan){
+                      //  var updV = vm.answerRanks[i].upV + vm.answerRanks[i].upVi;
+                      //  var downdV = vm.answerRanks[i].downV + vm.answerRanks[i].downVi;
                         
                         catans.updateRec(vm.answerRanks[i].catans, ["upV", "downV"], [vm.answerRanks[i].upV, vm.answerRanks[i].downV]);    
-                    })
+                    //})
                     
                 }
             }

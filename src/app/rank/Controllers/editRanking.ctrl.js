@@ -6,10 +6,10 @@
         .controller('editRanking', editRanking);
 
     editRanking.$inject = ['$location', '$rootScope', '$state','$stateParams', '$window','$http','imagelist',
-    'table','dialog','catans','color','pixabay','pexels'];
+    'table','dialog','catans','color','pixabay','pexels','categories'];
 
     function editRanking(location, $rootScope, $state, $stateParams, $window, $http, imagelist,
-    table, dialog, catans, color, pixabay, pexels) {
+    table, dialog, catans, color, pixabay, pexels, categories) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'editRanking';
@@ -69,6 +69,7 @@
             vm.isatomic = $rootScope.cCategory.isatomic;
             vm.catstr = $rootScope.cCategory.catstr;
             vm.ismp = $rootScope.cCategory.ismp;
+            vm.image = $rootScope.cCategory.fimage;
             if ($rootScope.cCategory.bc) vm.bc = $rootScope.cCategory.bc;
             if ($rootScope.cCategory.fc) vm.fc = $rootScope.cCategory.fc;
             if ($rootScope.cCategory.shade) vm.shade = $rootScope.cCategory.shade;
@@ -97,41 +98,56 @@
             var item = JSON.parse(JSON.stringify($rootScope.cCategory));
             var fields = [];
             var vals = [];
+            var fieldsc = [];
+            var valsc = [];
             //if title change
             if (item.title != vm.rankTitle) {
-                fields.push('title');
-                vals.push(vm.rankTitle);
+
+                //Determine original title of category
+                var idx = $rootScope.categories.map(function(x) {return x.id; }).indexOf(item.cat);
+                var titleo = $rootScope.categories[idx].category;
+                var titlex = vm.rankTitle;
+                //if this was a generic ranking
+                if (titleo.indexOf('@Nh')>-1){
+                    var idx2 = $rootScope.locations.map(function(x) {return x.id; }).indexOf(item.nh);
+                    var location = $rootScope.locations[idx2].nh_name;
+                    titlex = vm.rankTitle.replace(location, '@Nh');
+                }
+                fieldsc.push('category');
+                valsc.push(titlex);
+                console.log("tablex - ", titlex);
+
             }
             //if tags change
             if (item.tags != vm.tags) {
-                fields.push('tags');
-                vals.push(vm.tags);
+                fieldsc.push('tags');
+                valsc.push(vm.tags);
             }
             //if keywords change
             if (item.keywords != vm.keywords) {
-                fields.push('keywords');
-                vals.push(vm.keywords);
+                fieldsc.push('keywords');
+                valsc.push(vm.keywords);
             }
             //if type change
             if (item.type != vm.type) {
-                fields.push('type');
-                vals.push(vm.type);
+                fieldsc.push('type');
+                valsc.push(vm.type);
             }
             //if type change
             if (item.question != vm.question) {
-                fields.push('question');
-                vals.push(vm.question);
+                fieldsc.push('question');
+                valsc.push(vm.question);
             }
             //if type change
-            if (item.answertags != vm.answertags) {
-                fields.push('answertags');
-                vals.push(vm.answertags);
-            }
+            //if (item.answertags != vm.answertags) {
+            //    fields.push('answertags');
+            //    vals.push(vm.answertags);
+            //}
             //if isatomic changes
-            if (item.isatomic != vm.isatomic) {
-                fields.push('isatomic');
-                vals.push(vm.isatomic);
-            }
+            //if (item.isatomic != vm.isatomic) {
+            //    fields.push('isatomic');
+            //    vals.push(vm.isatomic);
+            //}
             //if category-string changes
             if (item.catstr != vm.catstr) {
                 fields.push('catstr');
@@ -139,23 +155,28 @@
             }
             //if isatomic changes
             if (item.ismp != vm.ismp) {
-                fields.push('ismp');
-                vals.push(vm.ismp);
+                fieldsc.push('ismp');
+                valsc.push(vm.ismp);
             }
             //if bc changes
             if (item.bc != vm.bc) {
-                fields.push('bc');
-                vals.push(vm.bc);
+                fieldsc.push('bc');
+                valsc.push(vm.bc);
             }
             //if fc changes
             if (item.fc != vm.fc) {
-                fields.push('fc');
-                vals.push(vm.fc);
+                fieldsc.push('fc');
+                valsc.push(vm.fc);
             }
             //if shade changes
             if (item.shade != vm.shade) {
-                fields.push('shade');
-                vals.push(vm.shade);
+                fieldsc.push('shade');
+                valsc.push(vm.shade);
+            }
+            //if image changed via form
+            if (item.fimage != vm.image) {
+                fieldsc.push('fimage');
+                valsc.push(vm.image);
             }
 
             //if fimage changed
@@ -164,11 +185,15 @@
                 console.log("fimage changed");
                 
                 if (vm.pixabay) img = vm.images[vm.i].webformatURL;
-                if (vm.pexels) img = vm.images[vm.i].src.medium; 
+                if (vm.pexels) img = vm.images[vm.i].src.medium;
+
+                var ext = '';
+                if (img.indexOf('.jpeg')>-1) ext = '.jpeg';
+                else ext = '.jpg'; 
                 
                 if (item.fimage != img) {    
-                    fields.push('fimage');
-                    vals.push('https://rankx.blob.core.windows.net/sandiego/featuredImages/' + $rootScope.cCategory.slug + '.jpg');
+                    fieldsc.push('fimage');1
+                    valsc.push('https://rankx.blob.core.windows.net/sandiego/featuredImages/' + $rootScope.cCategory.slug + ext);
                     //Delete old image from storage if exists
                     if (item.fimage) {
                         if (item.fimage.indexOf('https://rankx.blob') > -1) imagelist.deleteBlob(item.fimage);
@@ -177,7 +202,14 @@
                     processImage();
                 }
             }
-            table.update(item.id, fields, vals);
+            if (fields) {
+                //console.log("fields - ", fields, vals);
+                table.update(item.id, fields, vals);
+            }
+            if (fieldsc) {
+                //console.log("fieldsc - ", fieldsc, valsc);
+                categories.update(item.cat, fieldsc, valsc);
+            }
             closeRank();
         }
         

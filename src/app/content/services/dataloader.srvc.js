@@ -117,6 +117,23 @@
         }
 
         function unwrap(){
+/*
+            for (var i=0; i < $rootScope.content.length; i++){
+                    $rootScope.content[i].title = '';
+                    $rootScope.content[i].fimage = '';
+                    $rootScope.content[i].bc = '';
+                    $rootScope.content[i].fc = '';
+                    $rootScope.content[i].tags = '';
+                    $rootScope.content[i].keywords = '';
+                    $rootScope.content[i].type = '';
+                    $rootScope.content[i].question = '';
+                    $rootScope.content[i].shade = '';
+                    $rootScope.content[i].introtext = '';
+                    $rootScope.content[i].user = '';
+                    //$rootScope.content[i].ismp = undefined;
+                    $rootScope.content[i].isatomic = undefined;
+                }
+*/
             var nhObj = {};
             var catObj = {};
             var idx = -1;
@@ -138,6 +155,9 @@
                     $rootScope.content[i].shade = catObj.shade;
                     $rootScope.content[i].introtext = catObj.introtext;
                     $rootScope.content[i].user = catObj.user;
+                    if (nhObj.sub_areas.split(',').map(Number).length > 1) $rootScope.content[i].isatomic = false;
+                    else $rootScope.content[i].isatomic = true;
+                    $rootScope.content[i].ismp = nhObj.id == 1 ? true:false;
                 }
         }
 
