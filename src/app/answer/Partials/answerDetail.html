@@ -1,7 +1,7 @@
 ﻿<div id="veil" ng-hide="vm.dataReady"></div>
     <div id="feedLoading" ng-hide="vm.dataReady">
         <div style="text-align: center" ng-if="!vm.dataReady">
-            <div class="loading-pulse"></div>
+            <div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>
             <p style="font-size:large">loading details...</p>
         </div>
     </div>
@@ -133,12 +133,12 @@
     <div class="row" style="padding:0px;margin:0px;border:0px">
         <div ng-repeat="n in vm.myranks">
             <!-- <div class="clearfix" ng-if="$index % 3 == 0" style="border:0px;padding:0px;margin:0px;"></div> -->
-            <div class="container col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoRank(n)" 
+            <div class="container col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoCustomRank(n)" 
             ng-attr-style="border-top:3px solid white;border-bottom:3px solid white;background-color:{{n.bc}};color:{{n.fc}};height:{{vm.sm ? '90px':'150px'}};margin:0px;padding:0px;position:relative;">
                 <h3 class=" hidden-xs text-center" ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%);cursor:pointer;">{{n.title}}</h2>
                 <h4 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%);cursor:pointer;">{{n.title}}</h3>
             </div>
-            <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoRank(n)" style="margin:0px;padding:0px;">
+            <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoCustomRank(n)" style="margin:0px;padding:0px;">
                 <img ng-src="{{n.image}}" ng-attr-style="border-top:3px solid white;border-bottom:3px solid white;width:95%;height:{{vm.sm ? '90px':'150px'}};cursor:pointer;">
             </div>
         </div>
@@ -166,14 +166,14 @@
         <div class="row" style="padding:0px;margin:0px;border:0px">
             <div ng-repeat="n in vm.myranks">
                 <!-- <div class="clearfix" ng-if="$index % 3 == 0" style="border:0px;padding:0px;margin:0px;"></div> -->
-                <div class="container col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoRank(n)"
+                <div class="container col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoCustomRank(n)"
                 ng-attr-style="border-top:3px solid #D9EDF7;border-bottom:3px solid #D9EDF7;background-color:{{n.bc}};color:{{n.fc}};height:{{vm.sm ? '90px':'150px'}};margin:0px;padding:0px;position:relative;">
                     <h3 class="hidden-xs text-center" 
                     ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%);cursor:pointer;">{{n.title}}</h2>
                     <h4 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" 
                     ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%);cursor:pointer;">{{n.title}}</h3>
                 </div>
-                <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoRank(n)" style="margin:0px;padding:0px;">
+                <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoCustomRank(n)" style="margin:0px;padding:0px;">
                     <img ng-src="{{n.image}}" ng-attr-style="border-top:3px solid #D9EDF7;border-bottom:3px solid #D9EDF7;width:95%;height:{{vm.sm ? '90px':'150px'}};cursor:pointer;">
                 </div>
             </div>

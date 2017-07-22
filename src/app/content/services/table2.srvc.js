@@ -3,15 +3,15 @@
 
     angular
         .module('app')
-        .factory('table', table);
+        .factory('table2', table2);
 
-    table.$inject = ['$http', '$q', '$rootScope','answer','$state', 'filter','uaf'];
+    table2.$inject = ['$http', '$q', '$rootScope','answer','$state', 'filter'];
 
-    function table($http, $q, $rootScope, answer, $state, filter, uaf) {
+    function table2($http, $q, $rootScope, answer, $state, filter) {
 
         // Members
         var _tables = [];
-        var baseURI = '/api/v2/mysql/_table/ranking';
+        var baseURI = '/api/v2/mysql/_table/customranks';
 
         var service = {
             getTables: getTables,
@@ -47,19 +47,12 @@
             //var url = baseURI;
             //Get all match records
             var url0 = baseURI + '?offset=' + 0 * 1000;
-            var url1 = baseURI + '?offset=' + 1 * 1000;
-            var url2 = baseURI + '?offset=' + 2 * 1000;
-            var url3 = baseURI + '?offset=' + 3 * 1000;
             
-
             var p0 = $http.get(url0);
-            var p1 = $http.get(url1);
-            var p2 = $http.get(url2);
-            var p3 = $http.get(url3);
             
 
-            return $q.all([p0, p1, p2, p3]).then(function (d){
-                _tables = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource);
+            return $q.all([p0]).then(function (d){
+                _tables = d[0].data.resource;
                 if ($rootScope.DEBUG_MODE) console.log("tables length: ", _tables.length);
                 return _tables;            
             }, _queryFailed);  
@@ -94,13 +87,11 @@
             var url2 = baseURI + '/?filter=ismp=false'+'&offset=' + 2 * 1000;
             var url3 = baseURI + '/?filter=ismp=false'+'&offset=' + 3 * 1000;
             
-            
             var p0 = $http.get(url0);
             var p1 = $http.get(url1);
             var p2 = $http.get(url2);
             var p3 = $http.get(url3);
             
-
             return $q.all([p0, p1, p2, p3]).then(function (d){
                 _tables = _tables.concat(d[0].data.resource, d[1].data.resource, d[2].data.resource, d[3].data.resource);
                 if ($rootScope.DEBUG_MODE) console.log("tables length: ", _tables.length);
@@ -128,7 +119,7 @@
 
         function addTable(table) {
             
-            //table.isatomic = true;
+            table.isatomic = true;
 
             var url = baseURI;
             var resource = [];
@@ -147,28 +138,8 @@
                 //update local copy
                 var tablex = table;
                 tablex.id = result.data.resource[0].id;
-                
-
-                //Unwrap category & neighborhood
-                var idx = $rootScope.categories.map(function(x) {return x.id; }).indexOf(tablex.cat);
-                var catObj = $rootScope.categories[idx]; 
-                var idx2 = $rootScope.locations.map(function(x) {return x.id; }).indexOf(tablex.nh);
-                var nhObj = $rootScope.locations[idx2];
-
-                var title = catObj.category.replace('@Nh',nhObj.nh_name);
-                tablex.title = title;
-                tablex.fimage = catObj.fimage;
-                tablex.tags = catObj.tags;
-                tablex.keywords = catObj.keywords;
-                tablex.fc = catObj.fc;
-                tablex.bc = catObj.bc;
-                tablex.shade = catObj.shade;
-                tablex.type = catObj.type;
-                tablex.user = $rootScope.user.id;
-                tablex.introtext = catObj.introtext;
-
                 _tables.push(tablex);
-                
+
                 //push to search String array
                 var searchStr = tablex.tags + " " + tablex.title;
                 $rootScope.searchStr.push(searchStr);
@@ -182,7 +153,7 @@
                 update(result.data.resource[0].id,['slug','fimage'],[slug,fimage]);
 
                 //Create user-activity feed record
-                uaf.post('addedRank',['category'],[tablex.id]); //user activity feed
+                //uaf.post('addedRank',['category'],[tablex.id]); //user activity feed
 
                 if ($rootScope.DEBUG_MODE) console.log("result", result);
                 return result.data;
@@ -253,7 +224,7 @@
                 }
 
                 //Create user-activity feed record
-                uaf.post('addedCustomRank',['answer','category'],[$rootScope.canswer.id, tablex.id]); //user activity feed
+                //uaf.post('addedCustomRank',['answer','category'],[$rootScope.canswer.id, tablex.id]); //user activity feed
 
                 //$state.go('answerDetail',{index: answerid});
                 if ($rootScope.DEBUG_MODE) console.log("result", result);

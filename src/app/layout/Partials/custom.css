@@ -169,7 +169,7 @@ img.cursor
     cursor: not-allowed;
 
     opacity: .6;
-    background: #000 no-repeat center;
+    color: black;
 
     filter: alpha(opacity=60);
 }
@@ -184,8 +184,8 @@ img.cursor
 
     text-align: center;
 
-    color: white;
-    text-shadow: 2px 2px 2px #021124;
+    color: gray;
+    text-shadow: 2px 2px 2px gray;
 }
 .container-blue
 {

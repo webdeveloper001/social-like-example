@@ -7,11 +7,13 @@
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope'
-        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', '$location', '$q', 'fbusers', 'useractivity', '$timeout'];
+        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', 
+        '$location', '$q', 'fbusers', 'useractivity', '$timeout','table2'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime, color
         , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope
-        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, $location, $q, fbusers, useractivity, $timeout) {
+        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, 
+        $location, $q, fbusers, useractivity, $timeout, table2) {
         /* jshint validthis:true */
 
         var vm = this;
@@ -69,6 +71,8 @@
         var catansrecs = [];
         var useractivities = [];
         var mrecs = [];
+        var catArr = [];
+        var nhObj = {};
 
         var answersFull = false;
         var updateExec = false;
@@ -136,7 +140,7 @@
         
         window.prerenderReady = false;
         
-        if ($rootScope.rankSummaryDataLoaded) { 
+        if ($rootScope.rankSummaryDataLoaded) {
             prepareRankSummary();
         }
         else vm.dataReady = false;
@@ -145,14 +149,26 @@
             vm.dataReady = true; 
 
             //Load current category
-            $rootScope.cCategory = {};
-            for (var i = 0; i < $rootScope.content.length; i++) {
-                if (($rootScope.content[i].id == $stateParams.index) || ($rootScope.content[i].slug == $stateParams.index)){
-                    $rootScope.cCategory = $rootScope.content[i];
-                    break;
+            $rootScope.cCategory = null;
+            if ($rootScope.isCustomRank){
+                for (var i = 0; i < $rootScope.customranks.length; i++) {
+                    if (($rootScope.customranks[i].id == $stateParams.index) || ($rootScope.customranks[i].slug == $stateParams.index)){
+                        $rootScope.cCategory = $rootScope.customranks[i];
+                        break;
+                    }
+                }
+            }
+            else{
+                for (var i = 0; i < $rootScope.content.length; i++) {
+                    if (($rootScope.content[i].id == $stateParams.index) || ($rootScope.content[i].slug == $stateParams.index)){
+                        $rootScope.cCategory = $rootScope.content[i];
+                        break;
+                    }
                 }
             }
 
+            if(!$rootScope.cCategory)
+                $state.go('cwrapper');
             vm.ranking = $rootScope.cCategory.title;
             if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego','close to me');
 
@@ -263,8 +279,13 @@
             if (vm.answers.length == 0) {
                 vm.numAns = 0;
 
-                if (!foodNearMe) {
+                if (!foodNearMe && !$rootScope.cCategory.isGhost) {
+                    if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
+                        ['views', 'answers','image1url', 'image2url', 'image3url'],
+                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,'','','']);
+                    else
+                    table2.update($rootScope.cCategory.id,
                         ['views', 'answers','image1url', 'image2url', 'image3url'],
                         [$rootScope.cCategory.views + 1, $rootScope.canswers.length,'','','']);
                 }
@@ -291,8 +312,14 @@
                     }
                     else vm.image1ok = false;
                 }
-                if (!foodNearMe) {
+                if (!foodNearMe && !$rootScope.cCategory.isGhost) {
+                    if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
+                        ['views', 'answers', 'image1url','image2url', 'image3url'],
+                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                            vm.image1,'','']);
+                    else
+                    table2.update($rootScope.cCategory.id,
                         ['views', 'answers', 'image1url','image2url', 'image3url'],
                         [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
                             vm.image1,'','']);
@@ -329,8 +356,14 @@
                     }
                     else vm.image2ok = false;
                 }
-                if (!foodNearMe) {
+                if (!foodNearMe && !$rootScope.cCategory.isGhost) {
+                    if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
+                        ['views', 'answers', 'image1url', 'image2url', 'image3url'],
+                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                            vm.image1, vm.image2,'']);
+                    else
+                    table2.update($rootScope.cCategory.id,
                         ['views', 'answers', 'image1url', 'image2url', 'image3url'],
                         [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
                             vm.image1, vm.image2,'']);
@@ -382,11 +415,17 @@
                         }
                     }                    
                 }
-                if (!foodNearMe) {
+                if (!foodNearMe && !$rootScope.cCategory.isGhost) {
+                    if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
                         ['views', 'answers', 'image1url', 'image2url', 'image3url'],
                         [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
                             vm.image1, vm.image2, vm.image3]);
+                    else
+                    table2.update($rootScope.cCategory.id,
+                        ['views', 'answers', 'image1url', 'image2url', 'image3url'],
+                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                            vm.image1, vm.image2,'']);
                 }
             }
 
@@ -528,11 +567,59 @@
                     return;
                 }
                 else {
-                    if (vm.type == 'Event') {
-                        $rootScope.eventmode = 'add';
-                        $state.go("addEvent");
+
+                    if($rootScope.cCategory.isGhost) {
+
+                        var item = {
+                            title: $rootScope.cCategory.title,
+                            type: $rootScope.cCategory.type,
+                            tags: $rootScope.cCategory.tags,
+                            keywords: $rootScope.cCategory.keywords,
+                            question: $rootScope.cCategory.question,
+                            fimage: $rootScope.cCategory.fimage,
+                            bc: $rootScope.cCategory.bc,
+                            fc: $rootScope.cCategory.fc,
+                            shade: $rootScope.cCategory.shade,
+                            introtext: $rootScope.cCategory.introtext,
+                            user: $rootScope.cCategory.user ,
+
+                            views: 0,
+                            answers: 0,
+                            image1url: '../../../assets/images/noimage.jpg',
+                            image2url: '../../../assets/images/noimage.jpg',
+                            image3url: '../../../assets/images/noimage.jpg',
+                            answertags: '',
+                            isatomic: 1, //TODO decide isatomic, numcom, ismp, owner, 
+                            timestmp: new Date(),
+                            cat: $rootScope.cCategory.cat,
+                            nh: $rootScope.cCategory.locationId,
+                        };
+
+                        table.addTable(item).then(function(result){
+                            if ($rootScope.DEBUG_MODE) console.log("table added --- ", result);
+                            var rankid = result.resource[0].id;
+                            //Create and update slug
+                            var slug = item.title.toLowerCase();; 
+                            slug = slug.replace(/ /g,'-');
+                            slug = slug.replace('/','at');
+                            slug = slug + '-' + rankid;
+                            table.update(rankid,['slug'],[slug]);
+
+                            
+                            if (vm.type == 'Event') {
+                                $rootScope.eventmode = 'add';
+                                $state.go("addEvent");
+                            }
+                            else $state.go("addAnswer");
+                        });
                     }
-                    else $state.go("addAnswer");
+                    else{
+                        if (vm.type == 'Event') {
+                            $rootScope.eventmode = 'add';
+                            $state.go("addEvent");
+                        }
+                        else $state.go("addAnswer");
+                    }
                 }
             }
             else {
@@ -674,6 +761,7 @@
             if (!foodNearMe) {
                 for (var i = 0; i < catansrecs.length; i++) {
                     //if rank is atomic 
+                    /*
                     if ($rootScope.cCategory.isatomic) {
                         if (catansrecs[i].category == $rootScope.cCategory.id) {
                             for (var k = 0; k < answers.length; k++) {
@@ -733,8 +821,10 @@
                     }
                     //if rank is not atomic
                     else {
+                        */
                         //Puts numbers into array. Pretty sweet!
-                        var catArr = $rootScope.cCategory.catstr.split(':').map(Number);
+                        catArr = $rootScope.cCategory.catstr.split(':').map(Number);
+
                         for (var n = 0; n < catArr.length; n++) {
                             if (catansrecs[i].category == catArr[n]) {
                                 for (var k = 0; k < answers.length; k++) {
@@ -790,7 +880,7 @@
                                     }
                                 }
                             }
-                        }                                     
+                      //  }                                     
                     }
 
                 }
@@ -847,6 +937,14 @@
                             if (dayOfWeek == 5 && $rootScope.specials[i].fri) isToday = true;
                             if (dayOfWeek == 6 && $rootScope.specials[i].sat) isToday = true;
                             if (isToday) {
+                                vm.answers[j].sp_bc = $rootScope.specials[i].bc;
+                                vm.answers[j].sp_fc = $rootScope.specials[i].fc;
+                                vm.answers[j].sp_title = $rootScope.specials[i].stitle;
+                                break;
+                            }
+                        }
+                        if ($rootScope.specials[i].freq == 'onetime') {
+                            if(moment().isBetween(moment($rootScope.specials[i].sdate), moment($rootScope.specials[i].edate), 'day', '[]')) {
                                 vm.answers[j].sp_bc = $rootScope.specials[i].bc;
                                 vm.answers[j].sp_fc = $rootScope.specials[i].fc;
                                 vm.answers[j].sp_title = $rootScope.specials[i].stitle;
@@ -914,10 +1012,10 @@
             }
             //else if rank is not atomic ('near me', 'San Diego', etc)
             else {
-                var catArr2 = $rootScope.cCategory.catstr.split(':').map(Number);
+                //var catArr2 = $rootScope.cCategory.catstr.split(':').map(Number);
                 for (var i = 0; i < useractivities.length; i++) {
-                    for (var j = 0; j < catArr2.length; j++) {
-                        if (useractivities[i].category == catArr2[j]) {
+                    for (var j = 0; j < catArr.length; j++) {
+                        if (useractivities[i].category == catArr[j]) {
                             $rootScope.cuseractivity.push(useractivities[i]);
                             break;
                         }
@@ -1075,7 +1173,7 @@
             vm.selUpV = '';
             vm.selDate = 'active';
             vm.selTrending = '';
-            vm.sortByName = 'rankDataLoaded';
+            vm.sortByName = 'Date';
 
             //if (!vm.isE) vm.showR = false || (!vm.sm);
         }
@@ -1124,6 +1222,7 @@
         }
 
         function gotoParentRank(){
+            updateRecords();
             $state.go('rankSummary',{index: vm.parentRank.id});
         }
 
@@ -1177,7 +1276,7 @@
                 vm.linkurl = 'https://rank-x.com/rankSummary/' + $rootScope.cCategory.slug; 
                 vm.tweet = $rootScope.cCategory.title + ', endorse your favorite ones at: ';
 
-                var imageurl = "https://rank-x.com/" + $rootScope.cCategory.image1url;
+                var imageurl = $rootScope.cCategory.image1url;
                 if ($rootScope.cCategory.type == 'Short-Phrase')
                     imageurl = 'https://rank-x.com/assets/images/rankxlogosd2_sm.png';
 
@@ -1468,7 +1567,13 @@
                 //TODO Need to pass table id
                 if ((vm.answers[i].upV != vm.answers[i].upVi) || (vm.answers[i].downV != vm.answers[i].downVi)) {
                     if ($rootScope.DEBUG_MODE) console.log("UR-8");
-                    catans.updateRec(vm.answers[i].catans, ["upV", "downV"], [vm.answers[i].upV, vm.answers[i].downV]);
+                    //console.log("vm.answerRanks[i] - ",vm.answerRanks[i]);
+                    //catans.getCatan(vm.answers[i].catans).then(function(catan){
+                     //   var updV = vm.answerRanks[i].upV + vm.answerRanks[i].upVi;
+                     //   var downdV = vm.answerRanks[i].downV + vm.answerRanks[i].downVi;
+                        
+                    catans.updateRec(vm.answers[i].catans, ["upV", "downV"], [vm.answers[i].upV, vm.answers[i].downV]);    
+                    //});
                 }
             }
 

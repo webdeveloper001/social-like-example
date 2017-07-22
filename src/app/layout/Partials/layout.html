@@ -8,7 +8,9 @@
     <div id="veil" ng-show="vm.isLoading"></div>
     <div id="feedLoading" ng-show="vm.isLoading">
         <div style="text-align: center" ng-if="vm.isLoading">
-            <div class="loading-pulse"></div>
+            <!-- <div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div> -->
+            
+            <div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>
             <p style="font-size:large">{{vm.veilMsg}}</p>
         </div>
     </div>
@@ -113,9 +115,11 @@
                     <button class="btn btn-primary {{vm.selViewRank}} " ng-click="vm.viewRank() ">View Mode</button>
                 </div>
             </div>
+            <!--
             <br ng-attr-style="display:{{vm.isAdmin ? 'inline':'none'}}">
             <br ng-attr-style="display:{{vm.isAdmin ? 'inline':'none'}}">
             <br ng-attr-style="display:{{vm.isAdmin ? 'inline':'none'}}">
+            -->
         </div>
         
         <div ng-show="vm.searchActive">	

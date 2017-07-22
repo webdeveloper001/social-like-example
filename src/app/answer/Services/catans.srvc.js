@@ -21,11 +21,25 @@
             deleteRec: deleteRec,
             deleteAnswer: deleteAnswer,
             updateRec: updateRec,
-            deletebyCategory: deletebyCategory            
+            deletebyCategory: deletebyCategory,
+            getCatan: getCatan
         };
 
         return service;
 
+        function getCatan(id) {
+
+
+            var url = baseURI + '/' + id;
+
+            return $http.get(url).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+
+                return result.data;
+            }
+        }
+        
         function getAllcatans(forceRefresh) {
 
             if (_areAllcatansLoaded() && !forceRefresh) {

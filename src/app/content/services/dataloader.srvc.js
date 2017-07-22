@@ -5,13 +5,13 @@
         .module('app')
         .factory('dataloader', dataloader);
 
-    dataloader.$inject = ['$http', '$q','$rootScope','pvisits', 
+    dataloader.$inject = ['$http', '$q','$rootScope','pvisits', 'table2',
         'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata',
-        'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans'];
+        'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans','categories', 'locations'];
 
-    function dataloader($http, $q, $rootScope, pvisits, 
+    function dataloader($http, $q, $rootScope, pvisits, table2,
         rankofday, answer, table, special, datetime, uaf, userdata,
-        matchrec, edit, useractivity, vrows, headline, cblock, catans) {
+        matchrec, edit, useractivity, vrows, headline, cblock, catans, categories, locations) {
 
         // Members
         var service = {
@@ -35,22 +35,77 @@
         function gethomedata() {
 
             var p0 = table.getTables();
-            var p1 = headline.getheadlines();
+            //var p1 = headline.getheadlines();
             //var p2 = cblock.getcblocksmain();
-            var p3 = rankofday.getrankofday();
-            var p4 = uaf.getactions();
+            var p1 = rankofday.getrankofday();
+            var p2 = uaf.getactions();
+            var p3 = categories.getAllCategories();
+            var p4 = locations.getAllLocations();
 
             // userdata.loadUserData();        //load user data (votes and activities)
             // userdata.loadUserAccount();     //load user business account
 
             //Minimum Data for Cwrapper
-            return $q.all([p0, p1, p3, p4]).then(function (d) {
+            return $q.all([p0, p1, p2, p3, p4]).then(function (d) {
             
-                $rootScope.content = d[0];
-                $rootScope.headlines = d[1];
+                //$rootScope.headlines = d[1];
                 //$rootScope.cblocks = d[2];
-                $rootScope.rankofday = d[2];
-                $rootScope.uafs = d[3];
+                $rootScope.rankofday = d[1];
+                $rootScope.uafs = d[2];
+
+                $rootScope.categories = d[3];
+                $rootScope.locations = d[4];
+
+                $rootScope.content = d[0];
+
+                //console.time('unwrap');
+
+                unwrap(); // run whatever needs to be timed in between the statements
+
+                //console.timeEnd('unwrap');
+                
+                /*
+                $rootScope.content = d[0].map(function(ranking){
+                    ranking.title = '';
+                    delete ranking.type;
+                    delete ranking.tags;
+                    delete ranking.keywords;
+                    delete ranking.question;
+                    delete ranking.fimage;
+                    delete ranking.fc;
+                    delete ranking.bc;
+                    delete ranking.shade;
+                    delete ranking.introtext;
+                    delete ranking.user;
+
+                    if(ranking.cat){
+                        var catind = $rootScope.categories.map(function(cat){ return cat.id;}).indexOf(ranking.cat);
+                        if(catind != -1)
+                            ranking.title = $rootScope.categories[catind].category;
+                            ranking.type = $rootScope.categories[catind].type;
+                            ranking.tags = $rootScope.categories[catind].tags;
+                            ranking.keywords = $rootScope.categories[catind].keywords;
+                            ranking.question = $rootScope.categories[catind].question;
+                            ranking.fimage = $rootScope.categories[catind].fimage;
+                            ranking.fc = $rootScope.categories[catind].fc;
+                            ranking.bc = $rootScope.categories[catind].bc;
+                            ranking.shade = $rootScope.categories[catind].shade;
+                            ranking.introtext = $rootScope.categories[catind].introtext;
+                            ranking.user = $rootScope.categories[catind].user;
+                    }
+
+                    if (ranking.nh) {
+                        var locationind = $rootScope.locations.map(function(nh){ return nh.id;}).indexOf(ranking.nh);
+                        if (locationind != -1 && ranking.title) {
+                            ranking.title = ranking.title.replace('/@Nh/g', $rootScope.locations[locationind].nh_name)
+                        }
+                    }
+                    return ranking;
+                });
+                */
+
+                syncCatNh();
+                createSearchStrings();
 
                 $rootScope.pageDataLoaded = true;
                 //loadingDone();
@@ -59,6 +114,51 @@
                 $rootScope.$emit('homeDataLoaded');
 
             });
+        }
+
+        function unwrap(){
+/*
+            for (var i=0; i < $rootScope.content.length; i++){
+                    $rootScope.content[i].title = '';
+                    $rootScope.content[i].fimage = '';
+                    $rootScope.content[i].bc = '';
+                    $rootScope.content[i].fc = '';
+                    $rootScope.content[i].tags = '';
+                    $rootScope.content[i].keywords = '';
+                    $rootScope.content[i].type = '';
+                    $rootScope.content[i].question = '';
+                    $rootScope.content[i].shade = '';
+                    $rootScope.content[i].introtext = '';
+                    $rootScope.content[i].user = '';
+                    //$rootScope.content[i].ismp = undefined;
+                    $rootScope.content[i].isatomic = undefined;
+                }
+*/
+            var nhObj = {};
+            var catObj = {};
+            var idx = -1;
+            var idx2 = -1;
+            var idx = 0;
+                for (var i=0; i < $rootScope.content.length; i++){
+                    idx = $rootScope.locations.map(function (x) { return x.id; }).indexOf($rootScope.content[i].nh);
+                    nhObj = $rootScope.locations[idx];
+                    idx2 = $rootScope.categories.map(function (x) { return x.id; }).indexOf($rootScope.content[i].cat);
+                    catObj = $rootScope.categories[idx2];
+                    $rootScope.content[i].title = catObj.category.replace('@Nh',nhObj.nh_name);
+                    $rootScope.content[i].fimage = catObj.fimage;
+                    $rootScope.content[i].bc = catObj.bc;
+                    $rootScope.content[i].fc = catObj.fc;
+                    $rootScope.content[i].tags = catObj.tags;
+                    $rootScope.content[i].keywords = catObj.keywords;
+                    $rootScope.content[i].type = catObj.type;
+                    $rootScope.content[i].question = catObj.question;
+                    $rootScope.content[i].shade = catObj.shade;
+                    $rootScope.content[i].introtext = catObj.introtext;
+                    $rootScope.content[i].user = catObj.user;
+                    if (nhObj.sub_areas.split(',').map(Number).length > 1) $rootScope.content[i].isatomic = false;
+                    else $rootScope.content[i].isatomic = true;
+                    $rootScope.content[i].ismp = nhObj.id == 1 ? true:false;
+                }
         }
 
         function getallranks(){
@@ -123,11 +223,13 @@
             //Requirement for answerDetail
             var r0 = edit.getEdits();
             var r1 = vrows.getAllvrows();
+            var r2 = table2.getTables();
             
-            return $q.all([r0, r1]).then(function (d) {
+            return $q.all([r0, r1, r2]).then(function (d) {
                 
                 $rootScope.edits = d[0];
                 $rootScope.cvrows = d[1];
+                $rootScope.customranks = d[2];
                 
                 $rootScope.answerDetailLoaded = true;
                 if ($rootScope.DEBUG_MODE) console.log("answerdetail data ready!");
@@ -228,13 +330,137 @@
         function createSearchStrings(){
             $rootScope.searchStr = [];
             //Create seach strings combination of tags, title and answers            
+            for (var i = 0; i < $rootScope.categories.length; i++) {                
+                //Create single string for search
+                //$rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title + " " + $rootScope.content[i].answertags;
+                $rootScope.searchStr[i] = ($rootScope.categories[i].tags ? $rootScope.categories[i].tags : '') + " " + ($rootScope.categories[i].title ? $rootScope.categories[i].title : '');
+
+            }
+
+            $rootScope.searchStrContent = [];
+            //Create seach strings combination of tags, title and answers            
             for (var i = 0; i < $rootScope.content.length; i++) {                
                 //Create single string for search
                 //$rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title + " " + $rootScope.content[i].answertags;
-                $rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title;
-            
+                $rootScope.searchStrContent[i] = ($rootScope.content[i].tags ? $rootScope.content[i].tags : '') + " " + ($rootScope.content[i].title ? $rootScope.content[i].title : '');
+
             }
+            
         }
 
+        function syncCatNh() {
+
+            // $rootScope.content.forEach(function(ranking){
+            //     if (ranking.nh)
+            //         return;
+            //     if(ranking.isatomic && ranking.ismp) {
+            //         // var categoryName = ranking.title;
+
+
+            //         // var index = $rootScope.categories.map(function(cat){return cat.category.toLowerCase().trim();}).indexOf(ranking.title.toLowerCase().trim());
+            //         // // if (index == -1)
+            //         // //     console.log('No Category', categoryName, ranking);
+            //         // if (index != -1)
+            //         //     table.update(ranking.id, ['cat'], [$rootScope.categories[index].id]);
+
+
+            //     } else {
+            //         var ind = ranking.title.lastIndexOf(' in ');
+
+            //         var categoryName = ranking.title.slice(0, ind);
+            //         categoryName += ' in @nh';
+
+            //         var location = ranking.title.slice(ind+4);
+
+            //         var index = $rootScope.categories.map(function(cat){return cat.category.toLowerCase().trim();}).indexOf(categoryName.toLowerCase().trim());
+
+            //         // if (index == -1)
+            //         //     console.log('No Category', categoryName, ranking);
+
+            //         var indexlocation = $rootScope.locations.map(function(loc){return loc.nh_name.toLowerCase().trim();}).indexOf(location.toLowerCase().trim()); 
+
+            //         // if (indexlocation == -1)
+            //         //     console.log('No Location', location, ranking);
+            //         // if (index != -1)
+            //         //     table.update(ranking.id, ['cat'], [$rootScope.categories[index].id]);
+            //         if (indexlocation != -1) 
+            //             table.update(ranking.id, ['nh'], [$rootScope.locations[indexlocation].id]);
+                         
+
+            //     }
+            // });
+
+
+
+
+                    // if (indexlocation == -1)
+                    //     console.log('No Location', location, ranking);
+                    //table.update(ranking.id, ['cat','nh'], [$rootScope.categories[index].id, $rootScope.locations[indexlocation].id]);
+
+
+            // Uncomment when generating categories from title of rankings
+            // var categoryAddList = [];
+
+            // $rootScope.content.forEach(function(ranking){
+                
+
+            //     if(ranking.isatomic && ranking.ismp) {
+            //         var categoryName = ranking.title;
+            //         categoryAddList.push({
+            //             category: ranking.title,
+            //             type: ranking.type,
+            //             tags: ranking.tags,
+            //             keywords: ranking.keywords,
+            //             question: ranking.question,
+            //             fimage: ranking.fimage,
+            //             bc: ranking.bc,
+            //             fc: ranking.fc,
+            //             shade: ranking.shade,
+            //             introtext: ranking.introtext,
+            //             user: ranking.user 
+            //         });
+
+            //     } else {
+            //         var ind = ranking.title.lastIndexOf(' in ');
+            //         var location = ranking.title.slice(ind+4);
+
+
+            //         var categoryName = ranking.title.slice(0, ind);
+            //         categoryName += ' in @nh';
+
+            //         if( ind != -1){
+
+            //             if(categoryAddList.map(function(cat){return cat.category.toLowerCase();}).indexOf(categoryName.toLowerCase()) == -1) {
+
+            //                 var capitalized = categoryName.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+
+            //                 categoryAddList.push({
+            //                     category: capitalized,
+            //                     type: ranking.type,
+            //                     tags: ranking.tags,
+            //                     keywords: ranking.keywords,
+            //                     question: ranking.question,
+            //                     fimage: ranking.fimage,
+            //                     bc: ranking.bc,
+            //                     fc: ranking.fc,
+            //                     shade: ranking.shade,
+            //                     introtext: ranking.introtext,
+            //                     user: ranking.user
+            //                 });
+            //             }
+            //         } else {
+
+            //         }
+            //     }
+            // });
+            //     // console.log(categoryAddList);
+            // $q.all(categoryAddList.map(function(nh){
+            //     return categories.addCategory(nh);
+            // })).then(function(responses){
+            //     console.log(responses);
+            // }).catch(function(err){
+            //     console.log(err);
+            // })
+        }
     }
 })();

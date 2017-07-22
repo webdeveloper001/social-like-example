@@ -39,12 +39,12 @@
             //'&redirect_uri='+ redirecturi +'&response_type=token&scope=public_content';
             
             //return $http.get(url);
-            console.log(url);
+            if ($rootScope.DEBUG_MODE) console.log(url);
             
             return $http.jsonp(url)
                 .success(function(data){
                     var myObj = {};
-                console.log(data);
+                if ($rootScope.DEBUG_MODE) console.log(data);
                 for (var i=0; i<data.data.length; i++){
                     myObj = {};
                     myObj.url = data.data[i].images.standard_resolution.url;
@@ -52,7 +52,7 @@
                     myObj.from = data.data[i].user.username;
                     $rootScope.igimages.push(myObj);
                     //$rootScope.igimages[i].Name = data.data[i].images.standard_resolution.url;
-                    console.log(data.data[i].images.standard_resolution.url);
+                    if ($rootScope.DEBUG_MODE) console.log(data.data[i].images.standard_resolution.url);
                 }
             });
             /*

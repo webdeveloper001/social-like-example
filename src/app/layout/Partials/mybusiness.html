@@ -4,7 +4,7 @@
 <div id="veil" ng-hide="vm.dataReady"></div>
     <div id="feedLoading" ng-hide="vm.dataReady">
         <div style="text-align: center" ng-if="!vm.dataReady">
-            <div class="loading-pulse"></div>
+            <div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>
             <p style="font-size:large">loading your business accounts...</p>
         </div>
     </div>
@@ -203,7 +203,7 @@
 		<i class="fa fa-check"></i><strong>&nbspBe the best</strong> at what you do.</br>
 
 		<div class="text-center">
-			<a href="" ng-click="">Learn More</a>
+			<a href="" ng-click="vm.showLearnMore()">Learn More</a>
 		</div>
 		<label class="checkbox-inline">
 					<input type="checkbox" ng-model="vm.getPremium" value="">Get Premium Membership</label>
@@ -217,7 +217,7 @@
 		<i class="fa fa-check"></i><strong>&nbspGet feedback</strong> from your customers.</br>
 
 		<div class="text-center">
-			<a href="" ng-click="">Learn More</a>
+			<a href="" ng-click="vm.showLearnMore()">Learn More</a>
 		</div>
 		<div class="row">
 			<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">

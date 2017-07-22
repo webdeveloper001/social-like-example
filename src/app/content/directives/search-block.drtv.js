@@ -19,9 +19,66 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
             scope.rankSel = function (x,nm) {
                 if (nm) $rootScope.rankIsNearMe = true;
                 else $rootScope.rankIsNearMe = false;
-                if ($rootScope.editMode) $state.go('editRanking', { index: x.slug });
-                else {
-                    $state.go('rankSummary', { index: x.slug });
+                var selectedRank = {};
+                for (var i=0; i<$rootScope.content.length; i++){
+                    if (x.id == $rootScope.content[i].cat){
+                        if (x.locationId == $rootScope.content[i].nh) selectedRank = $rootScope.content[i];
+                    }
+                }
+                /*
+                var selectedRank = $rootScope.content.filter(function(ranking){
+                    if(x.locationId == 1)
+                        return (!ranking.nh || !x.id == 1)  && ranking.cat == x.id;
+                    else {
+                        return ranking.nh == x.locationId  && ranking.cat == x.id;
+                    }
+                });
+                */
+                if(selectedRank.id == undefined){
+                    var maxId = 0;
+                    $rootScope.content.forEach(function(ranking){
+                        if(ranking.id > maxId)
+                            maxId = ranking.id;
+                    });
+                    maxId ++;
+                    var slug = x.title.toLowerCase();; 
+                    slug = slug.replace(/ /g,'-');
+                    slug = slug.replace('/','at');
+                    slug = slug + '-' + maxId;
+
+                    $rootScope.content.push({
+                        id: maxId,  //TODO when add to db, should delete id and update slug.
+                        catstr: '' + maxId,
+                        slug: slug,
+                        isGhost: true,
+                        title: x.title,
+                        type: x.type,
+                        tags: x.tags,
+                        keywords: x.keywords,
+                        question: x.question,
+                        fimage: x.fimage,
+                        bc: x.bc,
+                        fc: x.fc,
+                        shade: x.shade,
+                        introtext: x.introtext,
+                        user: x.user ,
+                        views: 0,
+                        answers: 0,
+                        image1url: '../../../assets/images/noimage.jpg',
+                        image2url: '../../../assets/images/noimage.jpg',
+                        image3url: '../../../assets/images/noimage.jpg',
+                        answertags: '',
+                        isatomic: 1, //TODO decide isatomic, numcom, ismp, owner, 
+                        timestmp: new Date(),
+                        cat: x.id,
+                        nh: x.locationId,
+                    });
+                    $state.go('rankSummary', { index: slug });
+                } else {
+                    if ($rootScope.editMode) $state.go('editRanking', { index: selectedRank.slug });
+                    else {
+                        $state.go('rankSummary', { index: selectedRank.slug });
+                    }
                 }
             };
             scope.ansSel = function (x) {
@@ -62,7 +119,7 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
             
         },
     }
-}
     /*angular.module('app').directive('contentBlock', function() {
         */
+}
 ]);

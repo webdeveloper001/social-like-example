@@ -127,6 +127,7 @@
                 //update slug tag and featured image
                 var slug = answerx.name.toLowerCase(); 
                 slug = slug.replace(/ /g,'-');
+                slug = slug.replace('/','at');
                 slug = slug + '-' + result.data.resource[0].id;
                 updateAnswer(result.data.resource[0].id,['slug'],[slug]);
                 
@@ -188,6 +189,7 @@
                 //update slug tag and featured image
                 var slug = answerx.name.toLowerCase(); 
                 slug = slug.replace(/ /g,'-');
+                slug = slug.replace('/','at');
                 slug = slug + '-' + result.data.resource[0].id;
                 updateAnswer(result.data.resource[0].id,['slug'],[slug]);
                 

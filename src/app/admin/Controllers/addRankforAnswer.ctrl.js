@@ -5,9 +5,9 @@
         .module('app')
         .controller('addRankforAnswer', addRankforAnswer);
 
-    addRankforAnswer.$inject = ['$location', '$rootScope', '$state','$stateParams', 'table','dialog','$window','answer'];
+    addRankforAnswer.$inject = ['$location', '$rootScope', '$state','$stateParams', 'table2','dialog','$window','answer'];
 
-    function addRankforAnswer(location, $rootScope, $state, $stateParams, table, dialog, $window, answer) {
+    function addRankforAnswer(location, $rootScope, $state, $stateParams, table2, dialog, $window, answer) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'addRankforAnswer';
@@ -95,7 +95,7 @@
 
                 if (rankTitleOk && rankTypeOk && rankQuestionOk) {
                     if ($rootScope.rankforAnswerMode == 'add'){
-                        table.addTableforAnswer(item,colors,$rootScope.canswer.id).then(function(){
+                        table2.addTableforAnswer(item,colors,$rootScope.canswer.id).then(function(){
                             $state.go('answerRanksManager');
                         });
                     }
@@ -113,7 +113,7 @@
                             tvals.push(vm.introtext);                            
                         }
                         if (tfields.length > 0) 
-                            table.update($rootScope.content[idx].id, tfields, tvals).then(function(){
+                            table2.update($rootScope.content[idx].id, tfields, tvals).then(function(){
                             $state.go('answerRanksManager');
                         });
                         

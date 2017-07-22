@@ -36,7 +36,7 @@
                 _results = [];
                 _results = result.data.hits;
 
-                console.log("pixabay results success! - ", result);
+                if ($rootScope.DEBUG_MODE) console.log("pixabay results success! - ", result);
                 
                 $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
                 $http.defaults.headers.common['X-DreamFactory-Session-Token'] = $cookies.session_token;
@@ -45,7 +45,7 @@
                 
                 $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
                 $http.defaults.headers.common['X-DreamFactory-Session-Token'] = $cookies.session_token;
-                console.log("Problem getting Pixabay Images");
+                if ($rootScope.DEBUG_MODE) console.log("Problem getting Pixabay Images");
             });
 
         }
