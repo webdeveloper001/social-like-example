@@ -427,15 +427,15 @@
             
             if ($rootScope.DEBUG_MODE) console.log("@prepareNewCatansOptions - $rootScope.content.length ", $rootScope.content.length);
             $rootScope.ctsOptions = [];
-            var titlex = '';
-            for (var i = 0; i < $rootScope.content.length; i++) {
-                if ($rootScope.content[i].title.indexOf('in Hillcrest') > -1) {
-                    titlex = $rootScope.content[i].title.replace('Hillcrest', '@neighborhood');
-                    $rootScope.ctsOptions.push(titlex);
-                }
-                if ($rootScope.content[i].ismp && $rootScope.content[i].isatomic) {
-                    $rootScope.ctsOptions.push($rootScope.content[i].title);
-                }
+            //var titlex = '';
+            for (var i = 0; i < $rootScope.categories.length; i++) {
+                //if ($rootScope.content[i].title.indexOf('in Hillcrest') > -1) {
+                    //titlex = $rootScope.content[i].title.replace('Hillcrest', '@neighborhood');
+                    //$rootScope.ctsOptions.push(titlex);
+                //}
+                //if ($rootScope.content[i].ismp && $rootScope.content[i].isatomic) {
+                    $rootScope.ctsOptions.push($rootScope.categories[i].category);
+                //}
             }
         }
 /*

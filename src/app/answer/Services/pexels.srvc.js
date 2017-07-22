@@ -35,7 +35,7 @@
                 _results = [];
                 _results = result.data.photos;
 
-                console.log("pexels results success! - ", result);
+                if ($rootScope.DEBUG_MODE) console.log("pexels results success! - ", result);
                 
                 delete $http.defaults.headers.common['Authorization'];
                 $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
@@ -46,7 +46,7 @@
                 delete $http.defaults.headers.common['Authorization'];
                 $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
                 $http.defaults.headers.common['X-DreamFactory-Session-Token'] = $cookies.session_token;
-                console.log("Problem getting pexels Images");
+                if ($rootScope.DEBUG_MODE) console.log("Problem getting pexels Images");
             });
 
         }
