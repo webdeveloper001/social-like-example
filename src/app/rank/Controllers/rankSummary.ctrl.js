@@ -632,7 +632,12 @@
         function loadData() {
 
             //If introtext exist load it, if not, create custom intro text
-            if ($rootScope.cCategory.introtext) vm.introtext = $rootScope.cCategory.introtext;
+            if ($rootScope.cCategory.introtext) {
+                var start = $rootScope.cCategory.introtext.indexOf('++');
+                var end = $rootScope.cCategory.introtext.indexOf('--');
+                if (start > -1 && end > -1) vm.introtext = $rootScope.cCategory.introtext.substring(start+2,end);
+                else vm.introtext = $rootScope.cCategory.introtext;
+            }
             else vm.introtext = 'This is the ranking for ' + $rootScope.cCategory.title + '. '+
             ' Help shape the ranking by endorsing your favorites!.';
               
@@ -823,7 +828,8 @@
                     else {
                         */
                         //Puts numbers into array. Pretty sweet!
-                        catArr = $rootScope.cCategory.catstr.split(':').map(Number);
+                        if ($rootScope.cCategory.catstr) catArr = $rootScope.cCategory.catstr.split(':').map(Number);
+                        else catArr = [$rootScope.cCategory.id];
 
                         for (var n = 0; n < catArr.length; n++) {
                             if (catansrecs[i].category == catArr[n]) {

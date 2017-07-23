@@ -6,10 +6,10 @@
         .controller('rodconsole', rodconsole);
 
     rodconsole.$inject = ['$location', '$rootScope', '$state','rankofday','color',
-    'datetime','dialog','$q','table','imagelist'];
+    'datetime','dialog','$q','table','imagelist','categories'];
 
     function rodconsole(location, $rootScope, $state, rankofday, color,
-     datetime, dialog, $q, table, imagelist) {
+     datetime, dialog, $q, table, imagelist, categories) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'rodconsole';
@@ -56,7 +56,7 @@
         dialog.enterPassword(activate,goHome);
         
         //activate();
-
+        
         function activate() {
 
             //get todays date
@@ -73,16 +73,26 @@
         }
 
         function loadData2(){
-            vm.rods = [];
+            rods = [];
             rankofday.getall().then(function(result){
-                vm.rods = result;
-                vm.rods.forEach(function(obj){
+                rods = result;
+                rods.forEach(function(obj){
                     obj.datenum = datetime.date2number(obj.date);
                     if (obj.category){
                         var idx = $rootScope.categories.map(function(x) {return x.id; }).indexOf(obj.category);
                         obj.title = $rootScope.categories[idx].category.replace('@Nh','San Diego');
                         obj.fimage = $rootScope.categories[idx].fimage;
-                        obj.webtext = $rootScope.categories[idx].introtext;
+                        
+                        if (!obj.introtext){
+                        if ($rootScope.categories[idx].introtext != null &&
+                            $rootScope.categories[idx].introtext != undefined &&
+                            $rootScope.categories[idx].introtext != '' ) 
+                        
+                            obj.introtext = $rootScope.categories[idx].introtext;
+                        }
+                        obj.fc = $rootScope.categories[idx].fc;
+                        obj.bc = $rootScope.categories[idx].bc;
+                        obj.shade = $rootScope.categories[idx].shade;
                     }
 
                     if (obj.fimage != undefined && obj.fimage != '') obj.imageok = true;
@@ -93,11 +103,13 @@
                     
                 });
                 vm.dataReady = true;
+                vm.rods = rods;
             });
             vm.addopts = [];
             for (var i=0; i< $rootScope.categories.length; i++){
                 vm.addopts.push($rootScope.categories[i].category);
             }
+           
         }
 
         function addCategory(){
@@ -217,12 +229,19 @@
                 vm.rank.image2 = vm.rank.image1;
                 vm.rank.image1 = vm.rank.fimage;
             }
-            console.log(vm.rank.bc);
-            if (vm.rank.bc.charAt(0) != 'h') hexcolor = vm.rank.bc;
-            else hexcolor = color.hsl2rgb(vm.rank.bc);
-            vm.rank.bc2 = color.shadeColor(hexcolor, vm.rank.shade/10);
-            $rootScope.cmd1exe = false;
             console.log("selRank", vm.rank);
+            console.log(vm.rank.bc);
+            if (vm.rank.bc != null){
+                if (vm.rank.bc.charAt(0) != 'h') hexcolor = vm.rank.bc;
+                else hexcolor = color.hsl2rgb(vm.rank.bc);
+                vm.rank.bc2 = color.shadeColor(hexcolor, vm.rank.shade/10);
+            }
+            else{
+                vm.rank.bc = 'hsl(240, 100%, 99%)';
+                vm.rank.bc2 = color.shadeColor(vm.rank.bc, -3/10);
+            }
+            $rootScope.cmd1exe = false;
+            
 
         }
 
@@ -320,16 +339,20 @@
         }
 
         function goSaveText(){
-            //Save post for social media
-            rankofday.update(vm.rank.id,['introtext'],[vm.rank.introtext]).then(function(){
+            
+            //Save intro text in category record
+            categories.update(vm.rank.category,['introtext'],[vm.rank.introtext]).then(function(){
                 dialog.getDialog('introTextSaved');
-                loadData();
+                loadData2();
             });
-            //Save intro text for ranking
-            table.update(vm.rank.rankid,['introtext'],[vm.rank.webtext]).then(function(){
-                //dialog.getDialog('introTextSaved');
-                //loadData();
+
+            //temporarily flush records from rank of day. Field 'introtext' in rankofday table will be deleted
+            var texthold = vm.rank.introtext;
+            rankofday.update(vm.rank.id,['introtext'],['']).then(function(){
+            //    dialog.getDialog('introTextSaved');
+            //    loadData();
             });
+            if (vm.rank.introtext == '') vm.rank.introtext = texthold;
         }
 
         function goDeleteImage(){
