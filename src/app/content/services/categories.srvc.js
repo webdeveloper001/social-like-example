@@ -89,21 +89,6 @@
 
             var url = baseURI;
             
-            //update local copy
-            var idx = _categories.map(function(x) {return x.id; }).indexOf(id);  
-            for (var i = 0; i < field.length; i++) {
-            	_categories[idx][field[i]] = val[i];
-            }
-            
-            //unwrap to local copy of $rootScope.content
-            for (var i=0; i<$rootScope.content.length; i++){
-                if ($rootScope.content[i].cat == _categories[idx].id){
-                    for (var j = 0; j < field.length; j++) {
-            	        $rootScope.content[i][field[j]] = val[j];
-                    }
-                }
-            }
-
             return $http.patch(url, obj, {
                 headers: {
                     "Content-Type": "multipart/form-data"
@@ -111,6 +96,21 @@
                 body: obj
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
+
+                //update local copy
+                var idx = _categories.map(function (x) { return x.id; }).indexOf(id);
+                for (var i = 0; i < field.length; i++) {
+                    _categories[idx][field[i]] = val[i];
+                }
+
+                //unwrap to local copy of $rootScope.content
+                for (var i = 0; i < $rootScope.content.length; i++) {
+                    if ($rootScope.content[i].cat == _categories[idx].id) {
+                        for (var j = 0; j < field.length; j++) {
+                            $rootScope.content[i][field[j]] = val[j];
+                        }
+                    }
+                }
 
                 console.log("updating categoryx succesful");
                 return result.data;

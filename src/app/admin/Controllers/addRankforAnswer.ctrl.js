@@ -40,10 +40,10 @@
 
             if ($rootScope.rankforAnswerMode == 'edit'){
                 ranks = JSON.parse($rootScope.canswer.ranks);
-                idx = $rootScope.content.map(function(x) {return x.id; }).indexOf(ranks[$rootScope.rankIdx].id);
-                vm.rankTitle = $rootScope.content[idx].title.replace(' @ '+$rootScope.canswer.name,'');
-                vm.question = $rootScope.content[idx].question;
-                vm.introtext = $rootScope.content[idx].introtext;
+                idx = $rootScope.customranks.map(function(x) {return x.id; }).indexOf(ranks[$rootScope.rankIdx].id);
+                vm.rankTitle = $rootScope.customranks[idx].title.replace(' @ '+$rootScope.canswer.name,'');
+                vm.question = $rootScope.customranks[idx].question;
+                vm.introtext = $rootScope.customranks[idx].introtext;
                 vm.bc = ranks[$rootScope.rankIdx].bc;
                 vm.fc = ranks[$rootScope.rankIdx].fc;
                 vm.buttonLabel = 'Edit';              
@@ -100,22 +100,23 @@
                         });
                     }
                     else{
-                        if ($rootScope.content[idx].title != vm.rankTitle +' @ ' + $rootScope.canswer.name){
+                        if ($rootScope.customranks[idx].title != vm.rankTitle +' @ ' + $rootScope.canswer.name){
                             tfields.push('title');
                             tvals.push(vm.rankTitle +' @ ' + $rootScope.canswer.name);                            
                         }
-                        if ($rootScope.content[idx].question != vm.question){
+                        if ($rootScope.customranks[idx].question != vm.question){
                             tfields.push('question');
                             tvals.push(vm.question);                            
                         }
-                        if ($rootScope.content[idx].intro != vm.introtext){
+                        if ($rootScope.customranks[idx].intro != vm.introtext){
                             tfields.push('introtext');
                             tvals.push(vm.introtext);                            
                         }
-                        if (tfields.length > 0) 
-                            table2.update($rootScope.content[idx].id, tfields, tvals).then(function(){
+                        if (tfields.length > 0) {
+                            table2.update($rootScope.customranks[idx].id, tfields, tvals).then(function(){
                             $state.go('answerRanksManager');
                         });
+                        }
                         
                         if (vm.bc != ranks[$rootScope.rankIdx].bc || vm.fc != ranks[$rootScope.rankIdx].fc){
                             ranks[$rootScope.rankIdx].bc = vm.bc;

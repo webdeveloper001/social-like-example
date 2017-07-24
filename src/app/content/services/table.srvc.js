@@ -177,9 +177,10 @@
                 var slug = tablex.title.toLowerCase(); 
                 slug = slug.replace(/ /g,'-');
                 slug = slug.replace('/','at');
+                slug = slug.replace('?','');
                 slug = slug + '-' + result.data.resource[0].id;
-                var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/'+slug+'.jpg';
-                update(result.data.resource[0].id,['slug','fimage'],[slug,fimage]);
+                //var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/' + slug + fext;
+                update(result.data.resource[0].id,['slug'],[slug]);
 
                 //Create user-activity feed record
                 uaf.post('addedRank',['category'],[tablex.id]); //user activity feed

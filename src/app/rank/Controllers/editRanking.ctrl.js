@@ -6,10 +6,10 @@
         .controller('editRanking', editRanking);
 
     editRanking.$inject = ['$location', '$rootScope', '$state','$stateParams', '$window','$http','imagelist',
-    'table','dialog','catans','color','pixabay','pexels','categories'];
+    'table','dialog','catans','color','pixabay','pexels','categories', '$cookies','APP_API_KEY'];
 
     function editRanking(location, $rootScope, $state, $stateParams, $window, $http, imagelist,
-    table, dialog, catans, color, pixabay, pexels, categories) {
+    table, dialog, catans, color, pixabay, pexels, categories, $cookies, APP_API_KEY) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'editRanking';
@@ -26,6 +26,8 @@
         vm.prevImg = prevImg;
         vm.csel = csel;
         vm.goBack = goBack;
+
+        var item = {};
         
         vm.typeList = ["Person", "Establishment", "Place", "Activity", "Short-Phrase", "Organization", "Event","Thing","PersonCust"];
 
@@ -45,6 +47,8 @@
                     break;
                 }
             }
+
+            item = JSON.parse(JSON.stringify($rootScope.cCategory));
             console.log("$rootScope.cCategory - ", $rootScope.cCategory);
             vm.ranking = $rootScope.cCategory.title;
             
@@ -95,7 +99,7 @@
         
         function goEdit(){
                         
-            var item = JSON.parse(JSON.stringify($rootScope.cCategory));
+           
             var fields = [];
             var vals = [];
             var fieldsc = [];
@@ -181,26 +185,8 @@
 
             //if fimage changed
             if(vm.images){
-                var img = '';
-                console.log("fimage changed");
-                
-                if (vm.pixabay) img = vm.images[vm.i].webformatURL;
-                if (vm.pexels) img = vm.images[vm.i].src.medium;
-
-                var ext = '';
-                if (img.indexOf('.jpeg')>-1) ext = '.jpeg';
-                else ext = '.jpg'; 
-                
-                if (item.fimage != img) {    
-                    fieldsc.push('fimage');1
-                    valsc.push('https://rankx.blob.core.windows.net/sandiego/featuredImages/' + $rootScope.cCategory.slug + ext);
-                    //Delete old image from storage if exists
-                    if (item.fimage) {
-                        if (item.fimage.indexOf('https://rankx.blob') > -1) imagelist.deleteBlob(item.fimage);
-                    }
                     //Save new image to azure-storage
                     processImage();
-                }
             }
             if (fields) {
                 //console.log("fields - ", fields, vals);
@@ -218,8 +204,12 @@
         }
         
         function confirmDelete(){
-            table.deleteTable($rootScope.cCategory.id);
+            //Delete image if stored in azure
+            if (vm.image.indexOf('https://rankx.blob') > -1) imagelist.deleteBlob(vm.image);
+            if ($rootScope.cCategory.nh == 1) categories.deleteRec($rootScope.cCategory.cat);
             catans.deletebyCategory($rootScope.cCategory.id);
+            table.deleteTable($rootScope.cCategory.id);
+            
             $state.go('cwrapper');
         }
 
@@ -312,16 +302,42 @@
         }
 
         function processImage(){
-            var filename = $rootScope.cCategory.slug;
-            var imageurl = '';
+
+            var img = '';
+            if ($rootScope.DEBUG_MODE) console.log("fimage changed");
+
+            if (vm.pixabay) img = vm.images[vm.i].webformatURL;
+            if (vm.pexels) img = vm.images[vm.i].src.medium;
+
+            if (item.fimage != img) {
+
+            var ext = '';
+            if (img.indexOf('.jpeg') > -1) ext = '.jpeg';
+            if (img.indexOf('.jpg') > -1) ext = '.jpg';
+            if (img.indexOf('.png') > -1) ext = '.png';
+
+            var imagefilename = $rootScope.cCategory.title.toLowerCase(); 
+                imagefilename = imagefilename.replace(/ /g,'-');
+                imagefilename = imagefilename.replace('/','at');
+                imagefilename = imagefilename.replace('?','');
+       
+                //fieldsc.push('fimage');
+                //valsc.push('https://rankx.blob.core.windows.net/sandiego/featuredImages/' + imagefilename + ext);
+                //Delete old image from storage if exists
+                if (item.fimage) {
+                    if (item.fimage.indexOf('https://rankx.blob') > -1) {
+
+                        try { imagelist.deleteBlob(item.fimage); }
+                        catch (err) { console.log('Error deleting existing image: ', (err)); }
+                    }
+                }
+
+            var cat = $rootScope.cCategory.cat;
             
-            if (vm.pixabay) imageurl = vm.images[vm.i].webformatURL;
-            if (vm.pexels) imageurl = vm.images[vm.i].src.medium; 
-            
-            var rank = $rootScope.cCategory.id;
-            
-            if ($rootScope.DEBUG_MODE) console.log("Process Image - ", rank, imageurl, filename);
-            processImageExec(imageurl, filename, rank);
+            if ($rootScope.DEBUG_MODE) console.log("Process Image - ", cat, img, imagefilename);
+            processImageExec(img, imagefilename, cat);
+            }
+
         }
 
         function processImageExec(imageurl, filename, rank){
@@ -336,7 +352,7 @@
                 data: {
                     'imageurl': imageurl,
                     'filename': filename,
-                    'rank': rank,                  
+                    'category': rank,                  
                 }
             }
 
@@ -344,6 +360,8 @@
                 if ($rootScope.DEBUG_MODE) console.log("Processing Image Success", result);
                 
             }, function (error) {
+                $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
+                $http.defaults.headers.common['X-DreamFactory-Session-Token'] = $cookies.session_token;
                 if ($rootScope.DEBUG_MODE) console.log("Error Processing Image - ", error);
             });
         }

@@ -16,7 +16,7 @@ function saveImage(req, res, next) {
 
     var imageurl = req.body.imageurl;
     var filename = req.body.filename;
-    var rank = req.body.rank;
+    var category = req.body.category;
 
     var fext = '';
 
@@ -38,7 +38,7 @@ function saveImage(req, res, next) {
                         if (!error) {
                             log("image " + filename + "uploaded Succesfully");
                             //after upload succesful
-                            helpers.updateImageUrlDreamFactory(rank, filename + '.' + fext);
+                            helpers.updateImageUrlDreamFactory(category, filename + '.' + fext);
                         } else {
                             log("Error uploading image " + filename + " error: " + error);
                             res.send(500, "Error uploading image " + filename + " error: " + error);
