@@ -158,7 +158,7 @@
                     time = 60000 * 5;
                 }
                 $timeout(function(){
-                    dialog.openSubscriptionDlg(execSubscription);
+                    //dialog.openSubscriptionDlg(execSubscription);
                 }, time);;
             }
         });

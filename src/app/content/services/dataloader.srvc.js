@@ -155,7 +155,8 @@
                     $rootScope.content[i].shade = catObj.shade;
                     $rootScope.content[i].introtext = catObj.introtext;
                     $rootScope.content[i].user = catObj.user;
-                    if (nhObj.sub_areas.split(',').map(Number).length > 1) $rootScope.content[i].isatomic = false;
+                    if (nhObj.sub_areas.split(',').map(Number).length > 1 && catObj.category.indexOf('@Nh')>-1) 
+                        $rootScope.content[i].isatomic = false;
                     else $rootScope.content[i].isatomic = true;
                     $rootScope.content[i].ismp = nhObj.id == 1 ? true:false;
                 }

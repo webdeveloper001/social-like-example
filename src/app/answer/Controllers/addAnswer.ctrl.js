@@ -118,7 +118,6 @@
             detectNeighborhood();
             loadPublicFields();
             determineScope(); 
-
             vm.addToRanks = [];
             if ($rootScope.cCategory.isatomic){
                 vm.nhrdy = true;
@@ -560,7 +559,6 @@
 
             if (!answerNeighborhood && vm.addToRanks.length == 0) vm.addToRanks.push($rootScope.cCategory);
             if (vm.addToRanks.length > 0) vm.addToRanks[0].sel = true;
-            
             for (var i=1; i<vm.addToRanks.length; i++){
                 vm.addToRanks[i].sel = false;
             }

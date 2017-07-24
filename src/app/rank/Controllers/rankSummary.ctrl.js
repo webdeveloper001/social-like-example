@@ -108,19 +108,17 @@
         var rankDataLoadedListener = $rootScope.$on('rankDataLoaded', function () {
             prepareRankSummary();
         });
-
-        $scope.$on('$destroy',updateVoteTableListener);
-        $scope.$on('$destroy',rankDataLoadedListener);
                                
         var stateChangeListener = $rootScope.$on('$stateChangeStart',
             function (ev, to, toParams, from, fromParams) {
                 if (from.name == 'rankSummary' && to.name != 'rankSummary') {
-                    if ($rootScope.isLoggedIn) updateRecords();
+                     if ($rootScope.isLoggedIn) updateRecords();
                 }
             });
         
         $scope.$on('$destroy', stateChangeListener);
-
+        $scope.$on('$destroy',updateVoteTableListener);
+        $scope.$on('$destroy',rankDataLoadedListener);
 
         vm.isMobile = false; 
         // device detection
@@ -167,8 +165,7 @@
                 }
             }
 
-            if(!$rootScope.cCategory)
-                $state.go('cwrapper');
+            if(!$rootScope.cCategory) $state.go('cwrapper');
             vm.ranking = $rootScope.cCategory.title;
             if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego','close to me');
 
@@ -464,7 +461,8 @@
             
             if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
             
-            window.prerenderReady = true; 
+            window.prerenderReady = true;
+            $rootScope.isCustomRank = false; 
         }
 
         function getRankAnswers() {
@@ -540,7 +538,7 @@
             //if rank is Custom Rank and has Owner, clear $rootScope.cCategory
             //to avoid showing wrong navigation bar
             if (vm.rankOwner){
-                if (x.slug == vm.rankOwner.slug) $rootScope.cCategory = undefined;
+                if (x.slug == vm.rankOwner.slug) $rootScope.cCategory = $rootScope.oCategory;
             }
             $state.go("answerDetail", { index: x.slug });
         }
