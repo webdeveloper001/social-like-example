@@ -394,10 +394,10 @@ function getPopularRankingThisWeek(){
     .send();
 }
 
-function updateImageUrlDreamFactory(rank, filename) {
+function updateImageUrlDreamFactory(category, filename) {
     log("----  updateImageUrlDreamFactory ----");
 
-    var path = '/api/v2/mysql/_table/ranking/' + rank;
+    var path = '/api/v2/mysql/_table/categories/' + category;
     var url = server + path;
 
     var params = {};

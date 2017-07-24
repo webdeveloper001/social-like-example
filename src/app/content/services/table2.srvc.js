@@ -148,9 +148,10 @@
                 var slug = tablex.title.toLowerCase(); 
                 slug = slug.replace(/ /g,'-');
                 slug = slug.replace('/','at');
+                slug = slug.replace('?','');
                 slug = slug + '-' + result.data.resource[0].id;
-                var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/'+slug+'.jpg';
-                update(result.data.resource[0].id,['slug','fimage'],[slug,fimage]);
+                //var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/'+slug+'.jpg';
+                update(result.data.resource[0].id,['slug'],[slug]);
 
                 //Create user-activity feed record
                 //uaf.post('addedRank',['category'],[tablex.id]); //user activity feed
@@ -284,14 +285,14 @@
             
             //update local copy
             var idx = 0;
-            for (var i = 0; i < $rootScope.content.length; i++) {
-                if ($rootScope.content[i].id == id) {
+            for (var i = 0; i < $rootScope.customranks.length; i++) {
+                if ($rootScope.customranks[i].id == id) {
                     idx = i;
                     break;
                 }
             }
             for (var i = 0; i < field.length; i++) {
-                $rootScope.content[idx][field[i]] = val[i];              
+                $rootScope.customranks[idx][field[i]] = val[i];              
             }
 
             return $http.patch(url, obj, {

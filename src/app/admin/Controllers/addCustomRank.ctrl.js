@@ -5,10 +5,10 @@
         .module('app')
         .controller('addCustomRank', addCustomRank);
 
-    addCustomRank.$inject = ['$location', '$rootScope', '$state','$stateParams',
+    addCustomRank.$inject = ['$location', '$rootScope', '$state','$stateParams','categories',
     'dialog','$window','answer','color','pixabay','pexels','$http','table','$timeout'];
 
-    function addCustomRank(location, $rootScope, $state, $stateParams,
+    function addCustomRank(location, $rootScope, $state, $stateParams, categories,
      dialog, $window, answer, color, pixabay, pexels, $http, table, $timeout) {
         /* jshint validthis:true */
         var vm = this;
@@ -36,6 +36,7 @@
         vm.showAlert = false;
         vm.showAddButton = false;    
         
+        var itemt = {};
         var item = {};
         var rankTitleOk = true;
         var rankTypeOk = true;
@@ -140,12 +141,13 @@
 
             if (dataOk){
 
-                item.title = vm.rankTitle;
+                itemt = {};
+                item = {};
+
+                item.category = vm.rankTitle;
+                item.type = vm.type;
                 item.tags = vm.tags;
                 item.question = vm.question;
-                item.views = 0;
-                item.answers = 0;
-                item.ismp = true;
                 item.user = $rootScope.user.id;
                 item.timestmp = Date.now();
                 item.bc = vm.bc;
@@ -153,17 +155,30 @@
                 item.shade = vm.shade;
                 item.keywords = '';
                 item.fimage = vm.image;
-            
-                table.addTable(item).then(function(result){
-                    if ($rootScope.DEBUG_MODE) console.log("table added --- ", result);
-                    var rankid = result.resource[0].id;
+
+                categories.addCategory(item).then(function(result){
+                    
+                    itemt = {};
+                    itemt.views = 0;
+                    itemt.answers = 0;
+                    itemt.numcom = 0;
+                    itemt.ismp = true;
+                    itemt.isatomic = true;
+                    itemt.cat = result.resource[0].id;
+                    itemt.nh = 1;
+
                     //Create and update slug
-                    var slug = item.title.toLowerCase();; 
-                    slug = slug.replace(/ /g,'-');
-                    slug = slug.replace('/','at');
-                    slug = slug + '-' + rankid;
-                    table.update(rankid,['slug'],[slug]);
-                    processImage(rankid);
+                    //Create table record
+                    table.addTable(itemt).then(function(resultx){
+                        //$timeout(function(){
+                        //console.log("result ---> ", resultx.resource[0].id);
+                        processImage(itemt.cat);
+                        dialog.getDialog('newRank');
+                        $state.go('rankSummary',{index: resultx.resource[0].id}); //slug matches filename
+                        //},2000);
+                    });
+
+                    if ($rootScope.DEBUG_MODE) console.log("category added --- ", result);
                 });
             }
         }
@@ -345,26 +360,37 @@
         }
 
         function processImage(category){
-            var rank = category;
+
+            var fext = '';       
+            var cat = category;
             var imageurl = '';
             
             if(vm.pixabay) imageurl = vm.images[vm.i].webformatURL;
             if(vm.pexels) imageurl = vm.images[vm.i].src.medium;
+
+            if (imageurl.indexOf('jpg') > -1) fext = '.jpg';
+            if (imageurl.indexOf('png') > -1) fext = '.png';
+            if (imageurl.indexOf('jpeg') > -1) fext = '.jpeg';
             
-            var filename = vm.rankTitle.toLowerCase();; 
+            var filename = vm.rankTitle.toLowerCase(); 
             filename = filename.replace(/ /g,'-');
-            filename = filename + '-' + rank;
+            filename = filename.replace('?','');
+            filename = filename + '-' + cat;
 
-            if ($rootScope.DEBUG_MODE) console.log("Process Image - ", rank, imageurl, filename);
-            processImageExec(imageurl, filename, rank);
-
+            var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/' + filename + fext;
+            
+            processImageExec(imageurl, filename, cat);
+            
+            /*
             $timeout(function(){
-                dialog.getDialog('newRank');
-                $state.go('rankSummary',{index: filename}); //slug matches filename
-            },2000);
+                categories.update(category, ['fimage'], [fimage]);
+            },2000);*/
+            
+            if ($rootScope.DEBUG_MODE) console.log("Process Image - ", cat, imageurl, filename);
+            
         }
 
-        function processImageExec(imageurl, filename, rank){
+        function processImageExec(imageurl, filename, category){
             var url = 'https://server.rank-x.com/ImageServer/SaveImage';
             var req = {
                 method: 'POST',
@@ -376,7 +402,7 @@
                 data: {
                     'imageurl': imageurl,
                     'filename': filename,
-                    'rank': rank,                  
+                    'category': category,                  
                 }
             }
 
