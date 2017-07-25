@@ -213,6 +213,9 @@
             //****TEMP CODE, ENable for Admin Functions*****************
             $rootScope.isAdmin = false;
             vm.isAdmin = false;
+            if ($rootScope.isLoggedIn){
+                if ($rootScope.user.id == '1599427743409374') $rootScope.dataAdmin = true;
+            }
             /*
             $rootScope.isLoggedIn = true;
             $rootScope.user = {};
