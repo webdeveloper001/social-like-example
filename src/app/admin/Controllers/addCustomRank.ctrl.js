@@ -197,14 +197,14 @@
         }
 
         function selType(x){
-            if (x == 1) {vm.rankType = 'ESTABLISHMENTS'; item.type='Establishment';}
-            if (x == 2) {vm.rankType = 'PEOPLE'; item.type='Person';}
-            if (x == 3) {vm.rankType = 'ORGANIZATIONS'; item.type='Organization';}
-            if (x == 4) {vm.rankType = 'PLACES'; item.type='Place';}
-            if (x == 5) {vm.rankType = 'OPINIONS'; item.type='Short-Phrase';}
-            if (x == 6) {vm.rankType = 'CONTRACTORS'; item.type='PersonCust';}
-            if (x == 7) {vm.rankType = 'ITEM / OBJECTS'; item.type='Thing';}
-            if (x == 8) {vm.rankType = 'EVENTS'; item.type='Event';}
+            if (x == 1) {vm.rankType = 'ESTABLISHMENTS'; vm.type='Establishment';}
+            if (x == 2) {vm.rankType = 'PEOPLE'; vm.type='Person';}
+            if (x == 3) {vm.rankType = 'ORGANIZATIONS'; vm.type='Organization';}
+            if (x == 4) {vm.rankType = 'PLACES'; vm.type='Place';}
+            if (x == 5) {vm.rankType = 'OPINIONS'; vm.type='Short-Phrase';}
+            if (x == 6) {vm.rankType = 'CONTRACTORS'; vm.type='PersonCust';}
+            if (x == 7) {vm.rankType = 'ITEM / OBJECTS'; vm.type='Thing';}
+            if (x == 8) {vm.rankType = 'EVENTS'; vm.type='Event';}
             vm.step = 3;
         }
 

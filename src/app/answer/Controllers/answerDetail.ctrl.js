@@ -144,7 +144,7 @@
             //vm.ranking = $rootScope.title;
             answers = $rootScope.canswers;
             vm.fields = $rootScope.fields;
-            vm.isAdmin = $rootScope.isAdmin;
+            vm.isAdmin = $rootScope.isAdmin || $rootScope.dataAdmin;
             $rootScope.isLoggedIn = $rootScope.isLoggedIn ? $rootScope.isLoggedIn : false;
             vm.isLoggedIn = $rootScope.isLoggedIn;
 
@@ -929,7 +929,7 @@
         }
 
         function deleteButtonAccess() {
-            if ($rootScope.isAdmin || (vm.userIsOwner && vm.answer.isprivate)) vm.deleteButton = true;
+            if ($rootScope.dataAdmin || $rootScope.isAdmin || (vm.userIsOwner && vm.answer.isprivate)) vm.deleteButton = true;
             else vm.deleteButton = false;
         }
 
@@ -1237,8 +1237,8 @@
             vm.addctsopts = [];
             var opt = '';
             for (var i = 0; i < $rootScope.ctsOptions.length; i++) {
-                if ($rootScope.ctsOptions[i].indexOf('@neighborhood') > -1) {
-                    opt = $rootScope.ctsOptions[i].replace('@neighborhood', vm.answer.cityarea);
+                if ($rootScope.ctsOptions[i].indexOf('@Nh') > -1) {
+                    opt = $rootScope.ctsOptions[i].replace('@Nh', vm.answer.cityarea);
                     vm.addctsopts.push(opt);
                 }
                 else vm.addctsopts.push($rootScope.ctsOptions[i]);
