@@ -3,7 +3,7 @@
 			<tr ng-repeat="x in resRanks track by $index | limitTo:maxRes " ng-click="rankSel(x,false)" style="cursor:pointer;">
 				<td style="width:50%;">
 					<i class="fa fa-list-ol" aria-hidden="true"></i> - {{x.title}}
-					<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;{{x.answers}}&nbspanswers-{{x.views}}&nbspviews</small>
+					<!--<small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;{{x.answers}}&nbspanswers-{{x.views}}&nbspviews</small>-->
 				</td>
 			</tr>
 			<tr ng-repeat="x in resAnswers track by $index | limitTo:maxRes " ng-click="ansSel(x,false)" style="cursor:pointer;">

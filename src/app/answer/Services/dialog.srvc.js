@@ -1016,7 +1016,8 @@
             '</div>' +
             '</div>';
 
-            messageLoading = '<div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>' +
+            messageLoading = '<div style="height:80px;position:relative"><img src="/assets/images/loading.gif" class="img" ' + 
+            'style="width:50px;height:50px;position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)"/></div>' +
             '<p>Just a moment, finding your location...</p>';
 
             BootstrapDialog.show({
