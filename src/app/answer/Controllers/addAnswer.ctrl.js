@@ -61,6 +61,7 @@
         var rankNh = undefined;
         var answerNeighborhood = undefined;
         var rankObj = {};
+        var rankNhObj = {};
         
         // Members
         var myAnswer = {};
@@ -372,14 +373,36 @@
             testImageUrl(imageLinks[vm.linkIdx], showImageNotOk);
         }
 
+        function neighborhoodOk(answer){
+            var nhOk = true;
+            if (rankNh && rankNh != answer.cityarea) {
+                //Do this in case rankNh is non-atomic
+                var subAreas = rankNhObj.sub_areas.split(',').map(Number);
+                if (subAreas.length == 0) nhOk = false; 
+                else {
+                    var nhIsIncluded = false;
+                    var idx = 0;
+                    for (var j=0; j < subAreas.length; j++){
+                         idx = $rootScope.locations.map(function(x) {return x.id; }).indexOf(subAreas[j]);
+                         if ($rootScope.locations[idx].nh_name == answer.cityarea) nhIsIncluded = true;  
+                    }
+                    if (nhIsIncluded) nhOk = true;
+                    else nhOk = false;
+                }                
+            }
+            return nhOk;
+        }
+
         function addAnswerConfirmed(myAnswer) {
 
             //Add new answer, also add new post to catans (inside addAnser)
             
             if ($rootScope.DEBUG_MODE) console.log("No, different! @addAnswerConfirmed");
             //***** if (myAnswer.type == 'Establishment' && rankNh && rankNh != myAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
-            if (rankNh && rankNh != myAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
-            
+            console.log("rankNh - ", rankNh);
+            console.log("myAnswer.cityarea - ", myAnswer.cityarea);
+            var nhIsValid = neighborhoodOk(myAnswer); 
+            if (!nhIsValid) dialog.getDialog('neighborhoodsDontMatch');
             //****else if (myAnswer.type == 'Establishment' && (myAnswer.location != undefined && myAnswer.location != "" && myAnswer.location != null)) {
             else if ((myAnswer.location != undefined && myAnswer.location != "" && myAnswer.location != null)) {
               
@@ -464,11 +487,18 @@
         
          function answerIsSame() {
             if ($rootScope.DEBUG_MODE) console.log("Yeah Same, @answerIsSame");
+            var nhIsValid = neighborhoodOk(extAnswer);
             //Answer already exist in this category, do not add
             if (duplicateSameCategory) dialog.getDialog('answerDuplicated');
             
             //**** else if (myAnswer.type == 'Establishment' && rankNh && rankNh != extAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
-            else if (rankNh && rankNh != extAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
+             
+            else if (!nhIsValid) dialog.getDialog('neighborhoodsDontMatch');
+            
+            
+            //else if (rankNh && rankNh != extAnswer.cityarea) {
+            //    dialog.getDialog('neighborhoodsDontMatch');
+            //}
             
             //Answer already exist, just post new category-answer record            
             else {
@@ -813,9 +843,10 @@
 
         function detectNeighborhood(){
             //this function determines if current ranking is for a neighborhood or district
-            for (var i=0; i<$rootScope.allnh.length; i++){
-                if ($rootScope.cCategory.title.indexOf($rootScope.allnh[i])>-1){
-                    rankNh = $rootScope.allnh[i];
+            for (var i=0; i<$rootScope.locations.length; i++){
+                if ($rootScope.cCategory.title.indexOf($rootScope.locations[i].nh_name)>-1){
+                    rankNh = $rootScope.locations[i].nh_name;
+                    rankNhObj = $rootScope.locations[i];
                     answerNeighborhood = rankNh;
                     prepareCatansOptions();
                     break;
