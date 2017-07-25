@@ -424,7 +424,7 @@ userfeed-block.show-all {
     cursor: pointer;
 }
 .trend-tab ul li.active a{
-    background-color: #d3d3d3;
+    background-color: #e6e6e6;
     cursor: pointer;
 }
 .trend-tab ul li.active a:hover{
