@@ -5,9 +5,9 @@
         .module('app')
         .controller('admin', admin);
 
-    admin.$inject = ['$location', '$rootScope', '$state','table','answer','categorycode','$q','vrows'];
+    admin.$inject = ['$location', '$rootScope', '$state','table','answer','categorycode','$q','vrows','catans'];
 
-    function admin(location, $rootScope, $state, table, answer, categorycode, $q, vrows) {
+    function admin(location, $rootScope, $state, table, answer, categorycode, $q, vrows, catans) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'admin';
@@ -46,8 +46,7 @@
                                           $rootScope.user.id == 187959328383879 ||
                                           $rootScope.user.id == 194039991109146);
             
-            vm.isAdmin = $rootScope.user.is_sys_admin;
-            //vm.isAdmin = $rootScope.isAdmin;
+            vm.isAdmin = $rootScope.user.is_sys_admin || $rootScope.isAdmin;
             console.log("admin page Loaded!");
             
         }
@@ -1042,7 +1041,7 @@
                             //table.update($rootScope.content[i].id,['nh'],[1]);
                         }
                     }*/
-                    /* //Populate catstr field 
+                    /*// 32.*****Populate catstr field **** 
                     var catstr = '';
                     var idx = -1;
                     var nhObj = {};
@@ -1082,12 +1081,64 @@
                         table.update($rootScope.content[i].id,['catstr'],[catstr]);
                         
                     }
-                    */
                     /*
                     for (var i=0; i<$rootScope.content.length; i++){
                         if ($rootScope.content[i].cat == null) console.log($rootScope.content[i].slug);
+                    }
+                    //End of 32 */
+                    /*//33. Adjust db, create ranking of tables needed, move catans
+                    var aidx = 0;
+                    var nidx = 0;
+                    var answer = {};
+                    var nhObj = {};
+                    var nh = '';
+                    var foundRank = false;
+                    for (var k = 0; k < $rootScope.categories.length; k++) {
+                        if ($rootScope.categories[k].category.indexOf('@Nh') > -1) {
+                            for (var i = 0; i < $rootScope.content.length; i++) {
+                                if ($rootScope.content[i].cat == $rootScope.categories[k].id &&
+                                    $rootScope.content[i].nh == 1) {
+                                    for (var j = 0; j < $rootScope.catansrecs.length; j++) {
+                                        if ($rootScope.catansrecs[j].category == $rootScope.content[i].id) {
+                                            aidx = $rootScope.answers.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[j].answer);  
+                                            answer = $rootScope.answers[aidx];
+                                            nh = answer.cityarea;
+                                            nidx = $rootScope.locations.map(function(x) {return x.nh_name; }).indexOf(nh);  
+                                            if (nidx > -1){
+                                            //console.log("nh, nidx,", nh, nidx);
+                                            foundRank = false;
+                                            nhObj = $rootScope.locations[nidx];
+                                            for (var n=0; n <$rootScope.content.length; n++){
+                                                if ($rootScope.content[n].cat == $rootScope.categories[k].id &&
+                                                    $rootScope.content[n].nh == nhObj.id){ 
+                                                        foundRank = true;
+                                                        console.log("Found ", $rootScope.content[n].title, answer.name);
+                                                        //catans.updateRec($rootScope.catansrecs[j].id,['category'],[$rootScope.content[n].id]);
+                                                    }
+                                            }
+                                            if (!foundRank) {
+                                                console.log("Not Found ", $rootScope.categories[k].category, nh, answer.name);
+                                                var itemt = {};
+                                                itemt.views = 0;
+                                                itemt.answers = 0;
+                                                itemt.numcom = 0;
+                                                itemt.ismp = true;
+                                                itemt.isatomic = true;
+                                                itemt.cat = $rootScope.categories[k].id;
+                                                itemt.nh = nhObj.id;
+                                                //Create and update slug
+                                                //Create table record
+                                                //table.addTable(itemt);
+                                            }
+                                            //console.log("$rootScope.content[i].title - ", $rootScope.content[i].title);
+                                        }
+                                        else console.log("nh, ", nh);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }*/
-
             }
                  
     }
