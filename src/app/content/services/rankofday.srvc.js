@@ -69,6 +69,7 @@
                         rankObj.fimage = catObj.fimage;
                         rankObj.introtext = catObj.introtext;
                         rankObj.tags = catObj.tags;
+                        rankObj.question = catObj.question;
                         rankObj.type = catObj.type;
                         rankObj.fc = catObj.fc;
                         rankObj.bc = catObj.bc;
