@@ -147,8 +147,7 @@
                 //update local copy
                 var tablex = table;
                 tablex.id = result.data.resource[0].id;
-                
-
+                                
                 //Unwrap category & neighborhood
                 var idx = $rootScope.categories.map(function(x) {return x.id; }).indexOf(tablex.cat);
                 var catObj = $rootScope.categories[idx]; 
