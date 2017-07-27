@@ -65,6 +65,7 @@ angular.module('app').directive('trendBlock',
                         } else {
                             ranking.realimage = '../../../assets/images/noimage.jpg';
                         }
+                        ranking.humanized = moment(ranking.timestmp).fromNow();
                     })
                     scope.popularOrder = res;
 
@@ -86,6 +87,7 @@ angular.module('app').directive('trendBlock',
                         } else {
                             ranking.realimage = '../../../assets/images/noimage.jpg';
                         }
+                        ranking.humanized = moment(ranking.timestmp).fromNow();
                     })
                     scope.newestOrder = res;
                 }
@@ -108,6 +110,10 @@ angular.module('app').directive('trendBlock',
             scope.$on('$destroy',function(){
                 scope.isDestroyed = true;
             });
+
+            scope.getHumanized = function(timstamp) {
+                return moment(timstamp).fromNow();
+            }
              
         },
     }

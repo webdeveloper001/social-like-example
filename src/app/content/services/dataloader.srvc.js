@@ -22,7 +22,8 @@
             getrankdata: getrankdata,
             getanswerdata: getanswerdata,
             getpagevisitdata: getpagevisitdata,
-            getInitalHomeData: getInitalHomeData
+            getInitalHomeData: getInitalHomeData,
+            unwrap: unwrap
         };
 
         return service;
@@ -37,8 +38,10 @@
             var p0 = table.getTables();
             //var p1 = headline.getheadlines();
             //var p2 = cblock.getcblocksmain();
+            $rootScope.uafs = [];
             var p1 = rankofday.getrankofday();
-            var p2 = uaf.getactions();
+            // var p2 = uaf.getactions();
+            var p2 = uaf.getnext10actions();
             var p3 = categories.getAllCategories();
             var p4 = locations.getAllLocations();
 
@@ -144,6 +147,8 @@
                     nhObj = $rootScope.locations[idx];
                     idx2 = $rootScope.categories.map(function (x) { return x.id; }).indexOf($rootScope.content[i].cat);
                     catObj = $rootScope.categories[idx2];
+                    if(!catObj)
+                        console.log($rootScope.content[i].cat);
                     $rootScope.content[i].title = catObj.category.replace('@Nh',nhObj.nh_name);
                     $rootScope.content[i].fimage = catObj.fimage;
                     $rootScope.content[i].bc = catObj.bc;

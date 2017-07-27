@@ -271,7 +271,7 @@
 
         function exec_unbind(){
             answer.updateAnswer(vm.business.id,['owner'],[0]);
-            useraccnt.deleteAccount(vm.business.stripeid)
+            useraccnt.deleteAccount(vm.business.stripeid, vm.business.accountid, vm.business.answer)
             .then(function(res){
                 vm.mybizs = [];
                 loadData();

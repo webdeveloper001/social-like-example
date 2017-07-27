@@ -22,7 +22,8 @@
             deleteAnswer: deleteAnswer,
             updateRec: updateRec,
             deletebyCategory: deletebyCategory,
-            getCatan: getCatan
+            getCatan: getCatan,
+            deleteCatan: deleteCatan
         };
 
         return service;
@@ -77,6 +78,32 @@
                 return _allcatans;            
             }, _queryFailed);  
             
+        }
+
+        
+        function deleteCatan(catan_id) {
+            
+            //delete records from local copy
+            for (var i=0; i<_allcatans.length;i++){
+                if (_allcatans[i].id == catan_id){
+                    _allcatans.splice(i,1);
+                    break;
+                } 
+            }
+            
+           var url = baseURI + '?filter=id=' + catan_id; 
+            
+            return $http.delete(url).then(querySucceeded, _queryFailed);
+            
+            function querySucceeded(result) {
+                
+                //Everytime a CatAns record is deleted, delete associated user votes with it
+                for (var i=0; i<result.data.resource.length; i++){
+                    votes.deleteVotesbyCatans(result.data.resource[i].id);
+                }
+                if ($rootScope.DEBUG_MODE) console.log("Deleting catans records was succesful");
+                return result.data;
+            }
         }
 /*
         function getbyCategory(catarr) {

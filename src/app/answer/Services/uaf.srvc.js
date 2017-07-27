@@ -17,7 +17,7 @@
             getactions: getactions,
             post: post,
 			deletebyId: deletebyId,
-			           
+			getnext10actions: getnext10actions
         };
 
         return service;
@@ -41,6 +41,23 @@
                 _actions = d[0].data.resource.concat();
                 if ($rootScope.DEBUG_MODE) console.log("No. user actions: ", _actions.length);
                 return _actions;            
+            }, _queryFailed);  
+
+        }
+
+
+        function getnext10actions(forceRefresh) {
+            //Get all uaf  records
+            var url0 = baseURI + '?limit=20&order=id%20DESC&offset=' + $rootScope.uafs.length ;
+            //var url1 = baseURI + '?offset=' + 1 * 1000;
+
+            var p0 = $http.get(url0);
+            //var p1 = $http.get(url1);
+
+            return $q.all([p0]).then(function (d){
+                _actions = _actions.concat(d[0].data.resource);
+                if ($rootScope.DEBUG_MODE) console.log("No. user actions: ", _actions.length);
+                return $rootScope.uafs = _actions;
             }, _queryFailed);  
 
         }
