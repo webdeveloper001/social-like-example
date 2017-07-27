@@ -582,15 +582,19 @@
 
                                 //look if input makes reference to specific neighborhood
                                 if (valTags[k].length >= 3) {
-                                    for (var q = 0; q < $rootScope.locations.length; q++) {
-                                        if ($rootScope.locations[q].nh_name.toLowerCase().indexOf(valTags[k]) > -1 ||
-                                            $rootScope.locations[q].nh_name.toLowerCase().indexOf(valTags[k].toUpperCase()) > -1 ||
-                                            $rootScope.locations[q].nh_name.indexOf(tagCapitalized) > -1 ||
-                                            $rootScope.locations[q].nh_name.indexOf(tagFirstLowered) > -1) {
-                                            //console.log("found neighborhood!", $rootScope.locations[q]);
-                                            checkNoDupThenPush($rootScope.locations[q],nh);
-                                            m_nh = true;
-                                            ignoreTagsIdx.push(k);
+
+                                    if (valTags[k] != 'car' && 
+                                        valTags[k] != 'del' ){
+                                        for (var q = 0; q < $rootScope.locations.length; q++) {
+                                            if ($rootScope.locations[q].nh_name.toLowerCase().indexOf(valTags[k]) > -1 ||
+                                                $rootScope.locations[q].nh_name.toLowerCase().indexOf(valTags[k].toUpperCase()) > -1 ||
+                                                $rootScope.locations[q].nh_name.indexOf(tagCapitalized) > -1 ||
+                                                $rootScope.locations[q].nh_name.indexOf(tagFirstLowered) > -1) {
+                                                //console.log("found neighborhood!", $rootScope.locations[q]);
+                                                checkNoDupThenPush($rootScope.locations[q], nh);
+                                                m_nh = true;
+                                                ignoreTagsIdx.push(k);
+                                            }
                                         }
                                     }
                                 }

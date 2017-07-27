@@ -55,12 +55,15 @@
         var inDistrict = false;
         var inDistrictName = '';
         var inDowntown = false;
-        var inCity = false;
+        //var inCity = false;
+        var hasSubAreas = false;
+        var needCreateRec = false;
         var eqRankIdx = 0;
         var eqFound = false;
         var rankNh = undefined;
         var answerNeighborhood = undefined;
         var rankObj = {};
+        var rankNhObj = {};
         
         // Members
         var myAnswer = {};
@@ -132,19 +135,13 @@
         }
 
         function determineScope() {
-            if ($rootScope.cCategory.title.indexOf('San Diego') > -1) {
-                inCity = true;
-            }
-            /*
-            if ($rootScope.cCategory.title.indexOf('Downtown') > -1) {
-                inDowntown = true;
-            }
-            for (var j = 0; j < $rootScope.districts.length; j++) {
-                if ($rootScope.cCategory.title.indexOf($rootScope.districts[j]) > -1) {
-                    inDistrict = true;
-                    inDistrictName = $rootScope.districts[j];
-                }
-            }*/
+
+            if (!$rootScope.cCategory.isatomic) hasSubAreas = true; 
+            
+            //if ($rootScope.cCategory.title.indexOf('San Diego') > -1) {
+            //    inCity = true;
+            // }
+            
         }
 
         function loadPublicFields() {
@@ -372,14 +369,34 @@
             testImageUrl(imageLinks[vm.linkIdx], showImageNotOk);
         }
 
+        function neighborhoodOk(answer){
+            var nhOk = true;
+            if (rankNh && rankNh != answer.cityarea) {
+                //Do this in case rankNh is non-atomic
+                var subAreas = rankNhObj.sub_areas.split(',').map(Number);
+                if (subAreas.length == 0) nhOk = false; 
+                else {
+                    var nhIsIncluded = false;
+                    var idx = 0;
+                    for (var j=0; j < subAreas.length; j++){
+                         idx = $rootScope.locations.map(function(x) {return x.id; }).indexOf(subAreas[j]);
+                         if ($rootScope.locations[idx].nh_name == answer.cityarea) nhIsIncluded = true;  
+                    }
+                    if (nhIsIncluded) nhOk = true;
+                    else nhOk = false;
+                }                
+            }
+            return nhOk;
+        }
+
         function addAnswerConfirmed(myAnswer) {
 
             //Add new answer, also add new post to catans (inside addAnser)
             
             if ($rootScope.DEBUG_MODE) console.log("No, different! @addAnswerConfirmed");
             //***** if (myAnswer.type == 'Establishment' && rankNh && rankNh != myAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
-            if (rankNh && rankNh != myAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
-            
+            var nhIsValid = neighborhoodOk(myAnswer); 
+            if (!nhIsValid) dialog.getDialog('neighborhoodsDontMatch');
             //****else if (myAnswer.type == 'Establishment' && (myAnswer.location != undefined && myAnswer.location != "" && myAnswer.location != null)) {
             else if ((myAnswer.location != undefined && myAnswer.location != "" && myAnswer.location != null)) {
               
@@ -393,35 +410,33 @@
                 //**** if (myAnswer.type == 'Establishment' || myAnswer.type == 'PersonCust') eqRanks();
                 eqRanks();
                 //create 2 catans records one for downtown and then district
-                if (eqFound && !inCity) {
-                    if ($rootScope.DEBUG_MODE) console.log("P1 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx,myAnswer);
-                    answer.addAnswer2(myAnswer, [$rootScope.cCategory.id, eqRankIdx]).then(rankSummary);                    
-                }
-                else if (eqFound && inCity) {
-                    if ($rootScope.DEBUG_MODE) console.log("P2 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx,myAnswer);
-                    answer.addAnswer2(myAnswer, [eqRankIdx]).then(rankSummary);
-                }
-                else { 
-                    if ($rootScope.DEBUG_MODE) console.log("P3 - ", myAnswer);
-                    /*
-                    var prms = []
-                    for (var i=0; i<vm.addToRanks.length; i++){
-                        if (vm.addToRanks[i].sel)
-                        prms.push(answer.addAnswer2(myAnswer,vm.addToRanks[i].id));
+                if (eqFound) {
+                    if (!hasSubAreas){
+                        if ($rootScope.DEBUG_MODE) console.log("P1 - eqFound,hasSubAreas,eqRankIdx - ", eqFound, hasSubAreas, eqRankIdx,myAnswer);
+                        answer.addAnswer2(myAnswer, [$rootScope.cCategory.id, eqRankIdx]).then(rankSummary);
                     }
-
-                    console.log("prms - ", prms);
-
-                    $q.all(prms).then(rankSummary);*/
-                    var ranks = [];
-                    for (var i=0; i<vm.addToRanks.length; i++){
-                        if (vm.addToRanks[i].sel) ranks.push(vm.addToRanks[i]);
-                    }  
-                    answer.addAnswer(myAnswer, ranks).then(rankSummary);
+                    else {
+                        if ($rootScope.DEBUG_MODE) console.log("P2 - eqFound,hasSubAreas,eqRankIdx - ", eqFound, hasSubAreas, eqRankIdx,myAnswer);
+                        answer.addAnswer2(myAnswer, [eqRankIdx]).then(rankSummary);
+                    }                    
                 }
-                myAnswer = undefined; 
+                else { //eqFound = false
+                    if (needCreateRec){
+                        console.log("Need to create record");
+                    }
+                    else{ 
+                        if ($rootScope.DEBUG_MODE) console.log("P3 - ", myAnswer);
+                        var ranks = [];
+                        for (var i=0; i<vm.addToRanks.length; i++){
+                            if (vm.addToRanks[i].sel) ranks.push(vm.addToRanks[i]);
+                        }  
+                        answer.addAnswer(myAnswer, ranks).then(rankSummary);
+                    }
+                    myAnswer = undefined;
+                } 
             }
         }
+    
 
         function addAnswerGPS() {
             if (!addAnswerGPSexec) {
@@ -429,17 +444,23 @@
                 addAnswerGPSexec = true;
                 eqRanks();
                 //create 2 catans records one for downtown and then district
-                if (eqFound && !inCity) {
-                    if ($rootScope.DEBUG_MODE) console.log("P4 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx, myAnswer);
-                    if (myAnswer) answer.addAnswer2(myAnswer, [$rootScope.cCategory.id, eqRankIdx]).then(rankSummary);
+                if (eqFound) {
+                    if (!hasSubAreas){
+                        if ($rootScope.DEBUG_MODE) console.log("P4 - eqFound,hasSubAreas,eqRankIdx - ", eqFound, hasSubAreas, eqRankIdx, myAnswer);
+                        if (myAnswer) answer.addAnswer2(myAnswer, [$rootScope.cCategory.id, eqRankIdx]).then(rankSummary);
+                    }
+                    else{
+                        if ($rootScope.DEBUG_MODE) console.log("P5 - eqFound,hasSubAreas,eqRankIdx - ", eqFound, hasSubAreas, eqRankIdx, myAnswer);
+                        if (myAnswer) answer.addAnswer2(myAnswer, [eqRankIdx]).then(rankSummary);
+                    }
                 }
-                else if (eqFound && inCity) {
-                    if ($rootScope.DEBUG_MODE) console.log("P5 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx, myAnswer);
-                    if (myAnswer) answer.addAnswer2(myAnswer, [eqRankIdx]).then(rankSummary);
-                }
-                else {
-                    if ($rootScope.DEBUG_MODE) console.log("P6",myAnswer);
-                    if (myAnswer) {
+                else { //eqFound = false
+                    if (needCreateRec){
+                        console.log("Need to Create Record")
+                    }
+                    else{
+                        if ($rootScope.DEBUG_MODE) console.log("P6",myAnswer);
+                        if (myAnswer) {
                         /*
                         console.log("vm.ranksToAdd - ", vm.ranksToAdd);
                         var prms = []
@@ -451,44 +472,59 @@
                         console.log("prms - ", prms);
 
                         $q.all(prms).then(rankSummary);*/
-                        var ranks = [];
-                        for (var i = 0; i < vm.addToRanks.length; i++) {
-                            if (vm.addToRanks[i].sel) ranks.push(vm.addToRanks[i]);
-                        }    
-                        answer.addAnswer(myAnswer, ranks).then(rankSummary);
+                            var ranks = [];
+                            for (var i = 0; i < vm.addToRanks.length; i++) {
+                                if (vm.addToRanks[i].sel) ranks.push(vm.addToRanks[i]);
+                            }    
+                            answer.addAnswer(myAnswer, ranks).then(rankSummary);
+                        }
                     }
-                }
                 myAnswer = undefined;                                 
+            }
             }
         }
         
          function answerIsSame() {
             if ($rootScope.DEBUG_MODE) console.log("Yeah Same, @answerIsSame");
+            var nhIsValid = neighborhoodOk(extAnswer);
             //Answer already exist in this category, do not add
             if (duplicateSameCategory) dialog.getDialog('answerDuplicated');
             
             //**** else if (myAnswer.type == 'Establishment' && rankNh && rankNh != extAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
-            else if (rankNh && rankNh != extAnswer.cityarea) dialog.getDialog('neighborhoodsDontMatch');
+             
+            else if (!nhIsValid) dialog.getDialog('neighborhoodsDontMatch');
+            
+            
+            //else if (rankNh && rankNh != extAnswer.cityarea) {
+            //    dialog.getDialog('neighborhoodsDontMatch');
+            //}
             
             //Answer already exist, just post new category-answer record            
             else {
                 //**** if (extAnswer.type == 'Establishment' || extAnswer.type == 'PersonCust' || extAnswer.type == 'Place'
                 // || extAnswer.type == 'Event') eqRanks();
                 eqRanks();
-                if ($rootScope.DEBUG_MODE) console.log("eqFound, inCity, eqRankIdx = ", eqFound, inCity, eqRankIdx);
+                if ($rootScope.DEBUG_MODE) console.log("eqFound, hasSubAreas, eqRankIdx = ", eqFound, hasSubAreas, eqRankIdx);
                 //create 2 catans records one for downtown and then district
-                if (eqFound && !inCity) {
-                    if ($rootScope.DEBUG_MODE) console.log("P7 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx);
-                    catans.postRec2(extAnswer.id, eqRankIdx);
-                    catans.postRec2(extAnswer.id, $rootScope.cCategory.id).then(rankSummary);
+                if (eqFound) {
+                    if (!hasSubAreas){
+                        if ($rootScope.DEBUG_MODE) console.log("P7 - eqFound,hasSubAreas,eqRankIdx - ", eqFound, hasSubAreas, eqRankIdx);
+                        catans.postRec2(extAnswer.id, eqRankIdx);
+                        catans.postRec2(extAnswer.id, $rootScope.cCategory.id).then(rankSummary);
+                    }
+                    else{
+                        if ($rootScope.DEBUG_MODE) console.log("P8 - eqFound,hasSubAreas,eqRankIdx - ", eqFound, hasSubAreas, eqRankIdx);
+                        catans.postRec2(extAnswer.id, eqRankIdx).then(rankSummary);
+                    }
                 }
-                else if (eqFound && inCity) {
-                    if ($rootScope.DEBUG_MODE) console.log("P8 - eqFound,inCity,eqRankIdx - ", eqFound, inCity, eqRankIdx);
-                    catans.postRec2(extAnswer.id, eqRankIdx).then(rankSummary);
-                }
-                else {
-                    if ($rootScope.DEBUG_MODE) console.log("P9");
-                    catans.postRec(extAnswer.id).then(rankSummary);
+                else { //eqFound = false;
+                    if (needCreateRec){
+                        console.log("Need to create record");
+                    }
+                    else {
+                        if ($rootScope.DEBUG_MODE) console.log("P9");
+                        catans.postRec(extAnswer.id).then(rankSummary);
+                    }
                 }
                 myAnswer = undefined;                
              }
@@ -500,40 +536,25 @@
             //Determine answer neighborhood
             if (myAnswer.cityarea == undefined)
                 if (extAnswer.cityarea) cityarea = extAnswer.cityarea;
+                else cityarea = rankNh;
             else 
                 cityarea = myAnswer.cityarea;
 
-            if (inDowntown || inDistrict || inCity) {
-                /*
-                if (inDowntown && myAnswer.cityarea != 'Downtown') {
-                    lookRank = $rootScope.cCategory.title.replace('Downtown', myAnswer.cityarea);
+            if (hasSubAreas) {    
+            //if (inDowntown || inDistrict || inCity) {              
+                //if (inCity){
+                    var idx = $rootScope.locations.map(function(x) {return x.nh_name; }).indexOf(cityarea);
+                    //lookRank = $rootScope.cCategory.title.replace(rankNh, cityarea);
+                    //console.log("lookRank - ", lookRank);
                     for (var n = 0; n < $rootScope.content.length; n++) {
-                        if ($rootScope.content[n].title == lookRank) {
-                            eqFound = true;
-                            eqRankIdx = $rootScope.content[n].id;
+                        if ($rootScope.content[n].cat == $rootScope.cCategory.cat && 
+                            $rootScope.content[n].nh == $rootScope.locations[idx].id) {
+                                eqFound = true;
+                                eqRankIdx = $rootScope.content[n].id;
                         }
                     }
-                }*/
-                /*
-                if (inDistrict) {
-                    lookRank = $rootScope.cCategory.title.replace(inDistrictName, 'Downtown');
-                    for (var n = 0; n < $rootScope.content.length; n++) {
-                        if ($rootScope.content[n].title == lookRank) {
-                            eqFound = true;
-                            eqRankIdx = $rootScope.content[n].id;
-                        }
-                    }
-                }
-                */               
-                if (inCity){
-                    lookRank = $rootScope.cCategory.title.replace('San Diego', cityarea);
-                    for (var n = 0; n < $rootScope.content.length; n++) {
-                        if ($rootScope.content[n].title == lookRank) {
-                            eqFound = true;
-                            eqRankIdx = $rootScope.content[n].id;
-                        }
-                    }
-                }
+                    //if (!eqFound) needCreateRec = true;
+                //}
             }
         }
 
@@ -557,7 +578,7 @@
             if (vm.addToRanks) vm.addToRanks = vm.addToRanks.concat(search.sibblingRanks($rootScope.cCategory, answerNeighborhood)); 
             else vm.addToRanks = search.sibblingRanks($rootScope.cCategory, answerNeighborhood);
 
-            if (!answerNeighborhood && vm.addToRanks.length == 0) vm.addToRanks.push($rootScope.cCategory);
+            if (vm.addToRanks.length == 0) vm.addToRanks.push($rootScope.cCategory);
             if (vm.addToRanks.length > 0) vm.addToRanks[0].sel = true;
             for (var i=1; i<vm.addToRanks.length; i++){
                 vm.addToRanks[i].sel = false;
@@ -770,9 +791,10 @@
                     //search for this answer, if single result populate fields, if not
                     //show dialog with options
                     inputLengthMem = x.val.length;        
-                    for (var i=0; i<$rootScope.answers.length; i++){
+                    for (var i=0; i < $rootScope.answers.length; i++){
                         if ($rootScope.answers[i].name == x.val){
-                            if (rankNh){
+                            if (rankNhObj.id != 1){
+
                                 if ($rootScope.answers[i].cityarea == rankNh)
                                     maybeSameAnswers.push($rootScope.answers[i]);    
                             }
@@ -805,7 +827,6 @@
         }
 
         function answerChosen(n){
-            console.log("answerChosen - ", extAnswer);
             if (n == undefined ) extAnswer = maybeSameAnswers[0];
             else extAnswer = maybeSameAnswers[n];
             answerIsSame();
@@ -813,14 +834,11 @@
 
         function detectNeighborhood(){
             //this function determines if current ranking is for a neighborhood or district
-            for (var i=0; i<$rootScope.allnh.length; i++){
-                if ($rootScope.cCategory.title.indexOf($rootScope.allnh[i])>-1){
-                    rankNh = $rootScope.allnh[i];
-                    answerNeighborhood = rankNh;
-                    prepareCatansOptions();
-                    break;
-                }
-            }
+            var idx = $rootScope.locations.map(function (x) { return x.id; }).indexOf($rootScope.cCategory.nh);
+            rankNh = $rootScope.locations[idx].nh_name;
+            rankNhObj = $rootScope.locations[idx];
+            answerNeighborhood = rankNh;
+            prepareCatansOptions();               
         }
 
         function checkUserCredentials(){

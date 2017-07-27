@@ -188,6 +188,7 @@
         }
 
         function activate() {
+
             answers = $rootScope.answers;
             catansrecs = $rootScope.catansrecs;
             useractivities = $rootScope.alluseractivity;
@@ -490,13 +491,17 @@
                 $rootScope.canswers4rank = $rootScope.canswers;
             }
 
-            if ($rootScope.canswers4rank.length > 1) vm.rankDisabled = '';
-            else vm.rankDisabled = 'disabled';
-
             if ($rootScope.canswers4rank.length > 0) vm.commentAllowed = true;
             else vm.commentAllowed = false;
+
+            updateStatusRankButton();
             
             //console.log("$rootScope.canswers4rank - ", $rootScope.canswers4rank);
+        }
+
+        function updateStatusRankButton(){
+            if ($rootScope.canswers4rank.length > 1) vm.rankDisabled = '';
+            else vm.rankDisabled = 'disabled';
         }
 
         function updateVoteTable() {
@@ -1443,6 +1448,9 @@
                     case 0: { x.dV = 1; x.upV++; break; }
                     case 1: { x.dV = 0; x.upV--; break; }
                 }
+                
+                if (x.dV == 1) addAnswer4Rank(x);
+                if (x.dV == -1 || x.dV == 0 ) removeAnswer4Rank(x);
 
                 displayVote(x);
                 if ($rootScope.DEBUG_MODE) console.log("UpVote");
@@ -1453,6 +1461,17 @@
                 return;
             }
         }
+
+        function addAnswer4Rank(x){
+            $rootScope.canswers4rank.push(x);
+            updateStatusRankButton();
+        }
+
+        function removeAnswer4Rank(x){
+            var i = $rootScope.canswers4rank.map(function(x) {return x.id; }).indexOf(x.id);
+            if (i > -1) $rootScope.canswers4rank.splice(i,1);
+            updateStatusRankButton();
+        }
         
         function DownVote(x,event) {
             if ($rootScope.isLoggedIn) {
@@ -1461,6 +1480,8 @@
                     case 0: { x.dV = -1; x.downV++; break; }
                     case 1: { x.dV = -1; x.upV--; x.downV++; break; }
                 }
+
+                if (x.dV == -1 || x.dV == 0 ) removeAnswer4Rank(x);
 
                 displayVote(x);
                 if ($rootScope.DEBUG_MODE) console.log("DownVote");
