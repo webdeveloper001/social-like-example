@@ -1,0 +1,63 @@
+<div ng-if="dirHor">
+<div class="container" ng-attr-style="color:{{fc}};margin:0px;padding:0px;border:0px;position:relative;width:{{w}};height:auto;cursor:pointer;
+					background: {{bc}};
+  					background: -webkit-linear-gradient(left, {{bc}}, {{bc2}});
+  					background: -o-linear-gradient(right, {{bc}}, {{bc2}});
+  					background: -moz-linear-gradient(right, {{bc}}, {{bc2}});
+  					background: linear-gradient(to right, {{bc}}, {{bc2}});">
+	<!--<h2 class=" hidden-xs text-center" 
+    style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{text}}</h2>
+    -->
+
+    <p class="text-left">{{type}}</p>
+    <h5 ng-if="!isRankOfDay" class="text-center" 
+    ng-attr-style="padding:3px; margin:0px;">{{text}}</h5>
+    <p style="text-align:center"><img ng-src="{{imageurl}}" style="width:90%"></p>
+    
+</div>
+<div class="container" ng-attr-style="color:{{fc}};margin:0px;padding:0px;border:0px;position:relative;width:{{w}};height:{{30}}px;cursor:pointer;
+					background: {{bc}};
+  					background: -webkit-linear-gradient(left, {{bc}}, {{bc2}});
+  					background: -o-linear-gradient(right, {{bc}}, {{bc2}});
+  					background: -moz-linear-gradient(right, {{bc}}, {{bc2}});
+                    background: linear-gradient(to right, {{bc}}, {{bc2}});">
+                      
+<div class="text-center" ng-attr-style="color:white;font-size:small">
+     <i class="fa fa-eye"></i> {{views}} | <i class="fa fa-list-ol"></i> {{answers}}  | <i class="fa fa-comment"></i> {{comments}} 
+</div>
+        
+</div>
+</div>
+<div ng-if="dirVer">
+<div class="container" style="color:{{fc}};margin:0px;padding:0px;border:0px;position:relative;width:{{w}};height:{{h}};cursor:pointer;
+					background: {{bc}};
+  					background: -webkit-linear-gradient({{bc}}, {{bc2}});
+  					background: -o-linear-gradient({{bc}}, {{bc2}});
+  					background: -moz-linear-gradient({{bc}}, {{bc2}});
+  					background: linear-gradient({{bc}}, {{bc2}});">
+	<!-- <h2 class=" hidden-xs text-center" 
+    style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{text}}</h2>
+    -->
+    <!--
+    <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" 
+    ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{text}}</h3>
+        -->
+
+    <p class="text-left">{{type}}</p>
+    <h4 ng-if="!isRankOfDay" class="text-center" 
+    ng-attr-style="padding:3px; margin:0px;">{{text}}</h4>
+    <img ng-src="{{imageurl}}">
+
+</div>
+<div class="container" ng-attr-style="color:{{fc}};margin:0px;padding:0px;border:0px;position:relative;width:{{w}};height:{{30}}px;cursor:pointer;
+					background: {{bc}};
+  					background: -webkit-linear-gradient(left, {{bc}}, {{bc2}});
+  					background: -o-linear-gradient(right, {{bc}}, {{bc2}});
+  					background: -moz-linear-gradient(right, {{bc}}, {{bc2}});
+  					background: linear-gradient(to right, {{bc}}, {{bc2}});">
+<div class="text-center" style="color:white;font-size:small">
+     <i class="fa fa-eye"></i> {{views}} | <i class="fa fa-list-ol"></i> {{answers}}  | <i class="fa fa-comment"></i> {{comments}} 
+</div>
+        
+</div>
+</div>

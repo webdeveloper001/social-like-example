@@ -5,9 +5,13 @@
         .module('app')
         .controller('cleandb', cleandb);
 
-    cleandb.$inject = ['$location', '$rootScope', '$state','$stateParams', 'table','dialog', '$q', 'useraccnt', 'promoter', 'answer', 'codeprice', 'setting', '$timeout', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'catans','categories', 'dataloader',  'locations', 'imagelist'];
+    cleandb.$inject = ['$location', '$rootScope', '$state','$stateParams', 'table','dialog', 
+    '$q', 'useraccnt', 'promoter', 'answer', 'codeprice', 'setting', '$timeout', 
+    'DTOptionsBuilder', 'DTColumnDefBuilder', 'catans','categories', 'dataloader',  'locations', 'imagelist'];
 
-    function cleandb(location, $rootScope, $state, $stateParams, table, dialog, $q, useraccnt, promoter, answer, codeprice,setting,$timeout, DTOptionsBuilder, DTColumnDefBuilder, catans, categories, dataloader,  locations, imagelist) {
+    function cleandb(location, $rootScope, $state, $stateParams, table, dialog, 
+    $q, useraccnt, promoter, answer, codeprice, setting, $timeout, 
+    DTOptionsBuilder, DTColumnDefBuilder, catans, categories, dataloader,  locations, imagelist) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'cleandb';

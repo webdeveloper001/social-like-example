@@ -1,13 +1,13 @@
-angular.module('app').directive('rankItem', 
+angular.module('app').directive('resultItem', 
     ['$rootScope', '$state', 'answer', 'table', 'catans', '$timeout', 'vrows','$window','cblock','color','search',
     function ($rootScope, $state, answer, table, catans, $timeout, vrows, $window, cblock, color, search) {
     'use strict';
 
     return {
-        templateUrl: 'app/content/partials/rank-block.html',
+        templateUrl: 'app/content/partials/result-block.html',
         transclude: true,
         scope: {
-            rankObject: '='
+            resultObject: '='
         },
         controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 'vrows','$window','cblock','color','search',
             
@@ -24,7 +24,7 @@ angular.module('app').directive('rankItem',
                 if ($window.innerWidth > 1200) vm.thumbheight = '100px';
  
             }], //end controller
-        link: function (scope) {
+        link: function (scope, elem, attr) {
 
             if (scope.isDestroyed == undefined){
                    loadContent();
@@ -32,13 +32,6 @@ angular.module('app').directive('rankItem',
                         
                 //load content based on mode
                 function loadContent() {
-
-                    /*var catstr = '';
-                    var idxs = [];
-                    var nidx = 0;
-                    var rankid = 0;
-                    scope.results = [];
-                    var bFound = false;*/
 
                     var w = $window.innerWidth-20;
                     scope.w2 = Math.round(w/2);
@@ -50,22 +43,14 @@ angular.module('app').directive('rankItem',
                     var resObj = {};
 
                     resObj = {};
-                    resObj = JSON.parse(JSON.stringify(scope.rankObject));
+                    resObj = JSON.parse(JSON.stringify(scope.resultObject));
                     scope.rank = resObj;
                     
-                    // if (scope.rankObject.image1url != $rootScope.EMPTY_IMAGE && 
-                    //     scope.rankObject.image1url != undefined &&
-                    //     scope.rankObject.image1url != ''){
-                        editTitle(resObj);
-                        //parseShortAnswer(resObj);
-                        // if (resObj.type != 'Short-Phrase' || resObj.fimage != undefined){
-                        //    scope.resultsTop.push(resObj);
-                        // }
-                    // }
-
-                    
-                    //var tr = scope.resultsTop[0]; //top result
+                    //editTitle(resObj);
                     scope.title = resObj.title;
+
+                    scope.imageurl = resObj.fimage;
+                    scope.type = resObj.type;
                     
                     //Get rank stats
                     scope.stats = {};
@@ -76,9 +61,6 @@ angular.module('app').directive('rankItem',
                     if (scope.stats.numcom == undefined || scope.stats.numcom == null )
                     scope.stats.numcom = 0;
 
-                    //scope.isBasic = true;
-                    
-                    //console.log('tr - ', tr);
                     //Set Feautured Image && box color
                 if (resObj.fimage != undefined && resObj.fimage != ''){
                     scope.image4 = resObj.image3url;
@@ -98,22 +80,14 @@ angular.module('app').directive('rankItem',
                     }              
                 }
                 else{
-                    //Set colors for title hideInfoBox
+                    /*//Set colors for title hideInfoBox
                     var colors = color.defaultRankColor(resObj);
                     scope.bc = colors[0];
                     scope.fc = colors[1];
-                    /*var x = Math.floor(Math.random() * 6) + 1;
-                    if (x == 1) {scope.bc = 'brown'; scope.fc = '#f8f8ff'; }
-                    if (x == 2) {scope.bc = '#4682b4'; scope.fc = '#f8f8ff'; }
-                    if (x == 3) {scope.bc = '#008080'; scope.fc = '#f8f8ff'; }
-                    if (x == 4) {scope.bc = 'gray'; scope.fc = '#f8f8ff'; }
-                    if (x == 5) {scope.bc = '#a3297a'; scope.fc = '#f8f8ff'; }
-                    if (x == 6) {scope.bc = '#c68c53'; scope.fc = '#f8f8ff'; }
-    */
                     scope.shade = -4;
                     scope.image3 = resObj.image3url;
                     scope.image2 = resObj.image2url;
-                    scope.image1 = resObj.image1url;
+                    scope.image1 = resObj.image1url;*/
                 }
                 if (resObj.type == 'Short-Phrase') scope.image1 = $rootScope.EMPTY_IMAGE; 
                                         

@@ -497,9 +497,9 @@
             //$rootScope.$emit('quitFeedbackMode');
             $rootScope.inputVal = '';
             vm.val = '';
-            switchScope(1);
-            $rootScope.fbmode = false;
-            vm.fbm = $rootScope.fbmode;
+            //switchScope(1);
+            //$rootScope.fbmode = false;
+            //vm.fbm = $rootScope.fbmode;
         }
         function gotoAnswer(x){
             $state.go('answerDetail',{index: x.answer});

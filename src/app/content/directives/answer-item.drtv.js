@@ -1,13 +1,13 @@
-angular.module('app').directive('rankItem', 
+angular.module('app').directive('answerItem', 
     ['$rootScope', '$state', 'answer', 'table', 'catans', '$timeout', 'vrows','$window','cblock','color','search',
     function ($rootScope, $state, answer, table, catans, $timeout, vrows, $window, cblock, color, search) {
     'use strict';
 
     return {
-        templateUrl: 'app/content/partials/rank-block.html',
+        templateUrl: 'app/content/partials/answer-block.html',
         transclude: true,
         scope: {
-            rankObject: '='
+            answerObject: '='
         },
         controller: ['$scope', 'query', '$http', 'answer', 'table', 'catans', '$timeout', 'vrows','$window','cblock','color','search',
             
@@ -33,96 +33,47 @@ angular.module('app').directive('rankItem',
                 //load content based on mode
                 function loadContent() {
 
-                    /*var catstr = '';
-                    var idxs = [];
-                    var nidx = 0;
-                    var rankid = 0;
-                    scope.results = [];
-                    var bFound = false;*/
-
                     var w = $window.innerWidth-20;
                     scope.w2 = Math.round(w/2);
                     scope.w4 = Math.round(w/4)-5;
                     scope.w8 = Math.round(w/8); 
-              
-                    //
-                    //scope.resultsTop = [];
+
                     var resObj = {};
 
                     resObj = {};
-                    resObj = JSON.parse(JSON.stringify(scope.rankObject));
-                    scope.rank = resObj;
+                    resObj = JSON.parse(JSON.stringify(scope.answerObject));
+                    scope.answer = resObj;
                     
-                    // if (scope.rankObject.image1url != $rootScope.EMPTY_IMAGE && 
-                    //     scope.rankObject.image1url != undefined &&
-                    //     scope.rankObject.image1url != ''){
-                        editTitle(resObj);
-                        //parseShortAnswer(resObj);
-                        // if (resObj.type != 'Short-Phrase' || resObj.fimage != undefined){
-                        //    scope.resultsTop.push(resObj);
-                        // }
-                    // }
-
-                    
-                    //var tr = scope.resultsTop[0]; //top result
-                    scope.title = resObj.title;
+                    if (resObj.type == 'Short-Phrase') parseShortAnswer(resObj);
                     
                     //Get rank stats
                     scope.stats = {};
                     scope.stats.views = resObj.views;
                     scope.stats.answers = resObj.answers;
                     scope.stats.numcom = resObj.numcom;
-                    
+
                     if (scope.stats.numcom == undefined || scope.stats.numcom == null )
                     scope.stats.numcom = 0;
 
-                    //scope.isBasic = true;
-                    
-                    //console.log('tr - ', tr);
-                    //Set Feautured Image && box color
-                if (resObj.fimage != undefined && resObj.fimage != ''){
-                    scope.image4 = resObj.image3url;
-                    scope.image3 = resObj.image2url;
-                    scope.image2 = resObj.image1url;
-                    scope.image1 = resObj.fimage;
-                    if (resObj.bc != undefined && resObj.bc != ''){
-                        scope.bc = resObj.bc;
-                        scope.fc = resObj.fc;
-                        scope.shade = resObj.shade;
-                    }
-                    else{
-                        var colors = color.defaultRankColor(resObj);
-                        scope.bc = colors[0];
-                        scope.fc = colors[1];
-                        scope.shade = -4;                        
-                    }              
-                }
-                else{
-                    //Set colors for title hideInfoBox
-                    var colors = color.defaultRankColor(resObj);
-                    scope.bc = colors[0];
-                    scope.fc = colors[1];
-                    /*var x = Math.floor(Math.random() * 6) + 1;
+                     //Choose color randomly
+                    var x = Math.floor(Math.random() * 5) + 1;
                     if (x == 1) {scope.bc = 'brown'; scope.fc = '#f8f8ff'; }
                     if (x == 2) {scope.bc = '#4682b4'; scope.fc = '#f8f8ff'; }
                     if (x == 3) {scope.bc = '#008080'; scope.fc = '#f8f8ff'; }
                     if (x == 4) {scope.bc = 'gray'; scope.fc = '#f8f8ff'; }
-                    if (x == 5) {scope.bc = '#a3297a'; scope.fc = '#f8f8ff'; }
-                    if (x == 6) {scope.bc = '#c68c53'; scope.fc = '#f8f8ff'; }
-    */
+                    //if (x == 5) {scope.bc = '#a3297a'; scope.fc = '#f8f8ff'; }
+                    if (x == 5) {scope.bc = '#c68c53'; scope.fc = '#f8f8ff'; }
+    
                     scope.shade = -4;
-                    scope.image3 = resObj.image3url;
-                    scope.image2 = resObj.image2url;
-                    scope.image1 = resObj.image1url;
-                }
-                if (resObj.type == 'Short-Phrase') scope.image1 = $rootScope.EMPTY_IMAGE; 
-                                        
-            }
+                    if (resObj.imageurl != undefined && resObj.imageurl != '' && resObj.imageurl != null)
+                    scope.image1 = resObj.imageurl;
+                    else
+                    scope.image1 = $rootScope.EMPTY_IMAGE;
 
-            function editTitle(x){
-                x.titlex = x.title.replace(' in San Diego','');
-                if (x.answers == 0 && x.type != 'Short-Phrase') x.image1url = "../../../assets/images/noimage.jpg";
-            }
+                    if (resObj.type == 'Short-Phrase') scope.image1 = $rootScope.EMPTY_IMAGE;
+                    
+                } 
+                                        
 
             function parseShortAnswer(x) {
                 //Check if results is Short-Phrase
@@ -147,13 +98,8 @@ angular.module('app').directive('rankItem',
                 }
             }             
 
-            scope.rankSel = function (x,nm) {
-                if (nm) $rootScope.rankIsNearMe = true;
-                else $rootScope.rankIsNearMe = false;
-                if ($rootScope.editMode) $state.go('editRanking', { index: x.slug });
-                else {
-                    $state.go('rankSummary', { index: x.slug });
-                }
+            scope.ansSel = function (x) {
+                $state.go('answerDetail', { index: x.slug });                
             };
            
             scope.$on('$destroy',function(){
