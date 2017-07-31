@@ -1,4 +1,5 @@
-angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search', '$timeout',function ($rootScope, $state, search, $timeout) {
+angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search', '$timeout', '$window',
+function ($rootScope, $state, search, $timeout, $window) {
     'use strict';
 
     return {
@@ -13,10 +14,19 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
         controller: ['$scope',
             
             function contentCtrl($scope) {
- 
+
+                //Adjust picture size for very small displays
+                if ($window.innerWidth < 768) { $scope.itemWidth = ($window.innerWidth - 8)/2; }
+                if ($window.innerWidth >= 768 && $window.innerWidth < 992) { $scope.itemWidth = ($window.innerWidth - 8)/3; }
+                if ($window.innerWidth >= 992 && $window.innerWidth < 1200) { $scope.itemWidth = ($window.innerWidth - 8)/4; }
+                if ($window.innerWidth > 1200) { $scope.itemWidth = ($window.innerWidth - 8)/6; }
             }], //end controller
         link: function (scope) {
+
             scope.rankSel = function (x,nm) {
+                scope.disableScrolling = true;
+                //console.log("scope.disableScrolling = ", scope.disableScrolling);
+                if (x.useTemp){
                 if (nm) $rootScope.rankIsNearMe = true;
                 else $rootScope.rankIsNearMe = false;
                 var selectedRank = {};
@@ -35,7 +45,7 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
                 });
                 */
                 if(selectedRank.id == undefined){
-                    var maxId = 0;
+                   var maxId = 0;
                     $rootScope.content.forEach(function(ranking){
                         if(ranking.id > maxId)
                             maxId = ranking.id;
@@ -80,41 +90,131 @@ angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search'
                         $state.go('rankSummary', { index: selectedRank.slug });
                     }
                 }
+            }
+            else {
+                if ($rootScope.editMode) $state.go('editRanking', { index: x.slug });
+                else $state.go('rankSummary', { index: x.slug });                  
+            }
             };
             scope.ansSel = function (x) {
                 $rootScope.cCategory = undefined;
+                scope.disableScrolling = true;
+                //console.log("scope.disableScrolling = ", scope.disableScrolling);
                 $state.go('answerDetail', { index: x.slug });                
             };
 
             scope.resRanks = [];
             scope.resAnswers = [];
+            scope.searchResults = [];
             scope.maxRes = 4000;
             
             var timeoutPromise;
             scope.$watch('query', function() {
                 $timeout.cancel(timeoutPromise); //do nothing is timeout already done   
                 timeoutPromise = $timeout(function(){
-                    scope.getResults();
+                //console.time('stime - ', scope.query);
+                scope.getResults();
+                //console.timeEnd('etime - ', scope.query);
+                    
                 },300);                                   
             });
 
             //Filter content based on user input
             scope.getResults = function() {
-
+                scope.useTemp = false;
                 scope.resRanks = [];
-                if( scope.ranks) scope.resRanks = search.searchRanks(scope.query);
+                var catRanks = [];
+                if( scope.ranks) {
+                    catRanks = [];
+                    scope.resRanks = search.searchRanks2(scope.query);
+                    catRanks = search.searchRanks(scope.query);
+                    var catmap = scope.resRanks.map(function(x) {return x.cat; });
+                    
+                    for (var i = 0; i < catRanks.length; i++){
+                        if (catmap.indexOf(catRanks[i].id) < 0) {
+                            scope.resRanks.push(catRanks[i]);
+                        }
+                    }
+                    
+                    if (scope.resRanks.length > 0){
+                        scope.disableScrolling = false;
+                        scope.currentIndex = scope.intialDataCount;
+                        scope.startIndex = 0;
+                        scope.endReached = false;
+                        //scope.loadMore();
+                    }
+                }
                 scope.resAnswers = [];
-                if( scope.ans) scope.resAnswers = search.searchAnswers(scope.query);
+                if(scope.ans) scope.resAnswers = search.searchAnswers(scope.query);
                 for (var i=0; i<scope.resAnswers.length; i++){
+                    scope.resAnswers[i].isAnswer = true;
                     if (scope.resAnswers[i].type == 'Establishment') scope.resAnswers[i].icon = 'fa fa-building-o';
                     if (scope.resAnswers[i].type == 'Person' || scope.resAnswers[i].type == 'PersonCust') scope.resAnswers[i].icon = 'fa fa-male';
                     if (scope.resAnswers[i].type == 'Short-Phrase') scope.resAnswers[i].icon = 'fa fa-comment-o';
                     if (scope.resAnswers[i].type == 'Event') scope.resAnswers[i].icon = 'fa fa-calendar-o';
-                    if (scope.resAnswers[i].type == 'Organization') scope.resAnswers[i].icon = 'fa fa-trademark'; 
+                    if (scope.resAnswers[i].type == 'Organization') scope.resAnswers[i].icon = 'fa fa-trademark';
+                    if (scope.resAnswers[i].type == 'Place') scope.resAnswers[i].icon = 'fa fa-map-marker'; 
                 }
 
                 scope.length = scope.resRanks.length + scope.resAnswers.length;
-                //console.log("scope.length - ", scope.length);                   
+                scope.searchResults = scope.resRanks.concat(scope.resAnswers);
+                //scope.seachResults = scope.resRanks;
+            }
+
+            scope.currentIndex = 0;
+            scope.startIndex = 0;
+            if($rootScope.sm){
+                scope.scrollingItemsOnePage = 6;
+                scope.loadingCountOneScroll = 3;
+            }
+            else{
+                scope.loadingCountOneScroll = 6;
+                scope.scrollingItemsOnePage = 6;
+            }
+            scope.scrollingItemsOnePage = 1000;
+            scope.scrollingData = [];
+            scope.scrollDataLoading = false;
+            scope.content = [];
+            scope.intialDataCount = 12;
+            scope.endReached = false;
+            scope.disableScrolling = true;
+            //console.log("scope.disableScrolling = ", scope.disableScrolling);
+            scope.scrollingData = [];
+            scope.uniqueResult = [];
+            loadInifiniteScroll(true);
+
+            scope.loadMore = function () {
+                //console.log("loadMore --",scope.startIndex, scope.currentIndex, scope.searchResults.length );
+
+                scope.scrollDataLoading = true;
+                
+                $timeout(function () {
+                
+                scope.currentIndex = scope.currentIndex + 12;
+                if (scope.currentIndex >= scope.searchResults.length) {
+                    
+                    //console.log("end reached - ");
+                    scope.endReached = true;
+                }
+                if((scope.currentIndex - scope.startIndex) > scope.scrollingItemsOnePage){
+                    scope.startIndex = scope.currentIndex - scope.scrollingItemsOnePage;        
+                } 
+                    scope.scrollDataLoading = false;
+                }, 500);
+            }
+
+            function loadInifiniteScroll(reloading) {
+                //console.log("loadingInfiniteScroll --");
+
+                scope.currentIndex = 12;
+                scope.startIndex = 0;
+                scope.loadingCountOneScroll = 6;
+                scope.scrollingData = [];
+                scope.scrollDataLoading = false;
+                scope.content = [];
+                scope.endReached = false;
+                scope.scrollingData = [];
+
             }
             
         },

@@ -14,6 +14,7 @@
         var service = {
 
             searchRanks: searchRanks,
+            searchRanks2: searchRanks2,
             searchAnswers: searchAnswers,
             searchRanksMainPage: searchRanksMainPage,
             sibblingRanks: sibblingRanks, 
@@ -483,7 +484,7 @@
                 }
             }
 
-            if(nh_names.indexOf('Pacific Beach') != -1)
+            //if(nh_names.indexOf('Pacific Beach') != -1)
 
             var nme = false;  //near me
             var rte = false;
@@ -564,17 +565,8 @@
                 var sc = false; //special case
                     
                     var valTags = inputVal.toLowerCase().split(" ");
-                      for (var j = 0; j < $rootScope.categories.length; j++) {  
-                        if (true) {    
-                            
-                            ss = $rootScope.searchStr[j]; //Search string
-                            rt = $rootScope.categories[j].category; // title
-                            rank = $rootScope.categories[j];
 
-                            m_ss = true;
-                            m_rt = true;
-                            
-                            //check for nh tags tag first
+                    //check for nh tags tag first
                              for (var k = 0; k < valTags.length; k++) {
 
                                 tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
@@ -584,7 +576,8 @@
                                 if (valTags[k].length >= 3) {
 
                                     if (valTags[k] != 'car' && 
-                                        valTags[k] != 'del' ){
+                                        valTags[k] != 'del' &&
+                                        valTags[k] != 'bar'){
                                         for (var q = 0; q < $rootScope.locations.length; q++) {
                                             if ($rootScope.locations[q].nh_name.toLowerCase().indexOf(valTags[k]) > -1 ||
                                                 $rootScope.locations[q].nh_name.toLowerCase().indexOf(valTags[k].toUpperCase()) > -1 ||
@@ -614,6 +607,16 @@
                             }
                             ignoreTagsIdx.push(valTags.indexOf('la'));
 
+                      for (var j = 0; j < $rootScope.categories.length; j++) {  
+                        if (true) {    
+                            
+                            ss = $rootScope.searchStr[j]; //Search string
+                            rt = $rootScope.categories[j].category; // title
+                            rank = $rootScope.categories[j];
+
+                            m_ss = true;
+                            m_rt = true;                 
+                            
                              //check that all tags exist exept those that are for neighborhood
                              for (var k = 0; k < valTags.length; k++) {
 
@@ -650,12 +653,14 @@
                                         rObj = JSON.parse(JSON.stringify($rootScope.categories[j]));
                                         rObj.title = rObj.category.replace('@Nh', nh[n].nh_name);
                                         rObj.locationId = nh[n].id;
+                                        rObj.useTemp = true;
                                         results_rt.push(rObj);
                                     }
                                 }
                                 else {
                                     rObj.title = rObj.category.replace('@Nh', 'San Diego');
                                     rObj.locationId = 1;
+                                    rObj.useTemp = true;
                                     results_rt.push(rObj);
                                 }
                                 
@@ -671,12 +676,14 @@
                                         rObj = JSON.parse(JSON.stringify($rootScope.categories[j]));
                                         rObj.title = rObj.category.replace('@Nh', nh[n].nh_name);
                                         rObj.locationId = nh[n].id;
+                                        rObj.useTemp = true;
                                         results_ss.push(rObj);
                                     }
                                 }
                                 else {
                                     rObj.title = rObj.category.replace('@Nh', 'San Diego');
                                     rObj.locationId = 1;
+                                    rObj.useTemp = true;
                                     results_ss.push(rObj);
                                 }
                             } 
@@ -699,6 +706,200 @@
             return results;
 
         }
+
+        function searchRanks2(query) {
+            //initialize tool variables 
+            var rt = '';   //rank title 
+            var ss = '';   //search string
+            var inm = false;
+            var rank = {};
+            var tagCapitalized = '';
+            var tagFirstLowered = '';
+            var rankObj = {};
+            var short = [];
+            var shortnames = ['pb', 'ob', 'dt', 'mb'];
+            var corrnh = ['Pacific Beach', 'Ocean Beach', 'Downtown', 'Mission Beach'];
+           
+            var nme = false;  //near me
+            var rte = false;
+            var rt_nme = false;
+            var nhe = false;
+            var results = [];
+
+            var input = query;
+            
+            if (input) {
+                
+                //ignore some keywords
+                if (input.indexOf('best') > -1) input = input.replace('best', '');
+                if (input.indexOf('Best') > -1) input = input.replace('Best', '');
+                if (input.indexOf('top') > -1) input = input.replace('top', '');
+                if (input.indexOf('Top') > -1) input = input.replace('Top', '');
+                if (input.indexOf('great') > -1) input = input.replace('great', '');
+                if (input.indexOf('Great') > -1) input = input.replace('Great', '');
+                if (input.indexOf('awesome') > -1) input = input.replace('awesome', '');
+                if (input.indexOf('Awesome') > -1) input = input.replace('Awesome', '');
+                if (input.indexOf('amazing') > -1) input = input.replace('amazing', '');
+                if (input.indexOf('Amazing') > -1) input = input.replace('Amazing', '');
+                if (input.indexOf('most') > -1) input = input.replace('most', '');
+                if (input.indexOf('Most') > -1) input = input.replace('Most', '');
+                if (input.indexOf('the ') > -1) input = input.replace('the ', '');
+                if (input.indexOf('The ') > -1) input = input.replace('The ', '');
+                if (input.indexOf('shops') > -1) input = input.replace('shops', '');
+                if (input.indexOf('Shops') > -1) input = input.replace('Shops', '');
+                if (input.indexOf('places') > -1) input = input.replace('places', '');
+                if (input.indexOf('Places') > -1) input = input.replace('Places', '');
+                if (input.indexOf('delicious') > -1) input = input.replace('delicious', '');
+                if (input.indexOf('Delicious') > -1) input = input.replace('Delicious', '');
+
+                if (input.length >= 3) {
+
+                var userIsTyping = false;
+                var inputVal = input;
+
+                    if (inputVal == 'Food') inputVal = inputVal.replace('Food', 'Food Near Me');
+                    if (inputVal == 'food') inputVal = inputVal.replace('food', 'Food Near Me');
+                 
+                //Special Cases
+                if (inputVal == 'pho' || inputVal == 'Pho') {
+                    inputVal = 'vietnamese';
+                }
+
+                if ($rootScope.isNh) inputVal = inputVal + ' ' + $rootScope.cnh;
+
+                var results_nm = [];
+                var results_ss = [];
+                var results_rt = [];
+                var results_rt_nm = [];
+                var results_nh = [];
+                var rObj = {};
+                var ignoreTagsIdx = [];
+
+                var m_ss = true; //match in search string
+                var m_rt = true; //match in title
+                var m_nh = false; //reference to neighborhood
+                var nh = []; //neighborhood reference
+                var sc = false; //special case
+                    
+                    var valTags = inputVal.toLowerCase().split(" ");
+
+                    //check for nh tags tag first
+                    for (var k = 0; k < valTags.length; k++) {
+
+                        tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
+                        tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
+
+                        //look if input makes reference to specific neighborhood
+
+                        if (valTags[k].length >= 3) {
+
+                            if (valTags[k] != 'car' &&
+                                valTags[k] != 'del' &&
+                                valTags[k] != 'bar') {
+                                for (var q = 0; q < $rootScope.locations.length; q++) {
+                                    if ($rootScope.locations[q].nh_name.toLowerCase().indexOf(valTags[k]) > -1 ||
+                                        $rootScope.locations[q].nh_name.toLowerCase().indexOf(valTags[k].toUpperCase()) > -1 ||
+                                        $rootScope.locations[q].nh_name.indexOf(tagCapitalized) > -1 ||
+                                        $rootScope.locations[q].nh_name.indexOf(tagFirstLowered) > -1) {
+                                        //console.log("found neighborhood!", $rootScope.locations[q]);
+                                        //checkNoDupThenPush($rootScope.locations[q], nh);
+                                        m_nh = true;
+                                        //ignoreTagsIdx.push(k);
+                                    }
+                                }
+                            }
+                        }
+                        //Special cases for neighborhoods
+                        if (valTags[k].length == 2) {
+                            for (var q = 0; q < shortnames.length; q++) {
+                                if (shortnames[q] == valTags[k] ||
+                                    shortnames[q] == valTags[k].toUpperCase() ||
+                                    shortnames[q] == tagCapitalized ||
+                                    shortnames[q] == tagFirstLowered) {
+                                    //checkNoDupThenPush(short[q],nh);
+                                    m_nh = true;
+                                    //ignoreTagsIdx.push(k);
+                                    valTags[k] = corrnh[q];
+                                    //console.log("valTags - ", valTags);                                            
+                                }
+                            }
+                        }
+                    }
+                    //ignoreTagsIdx.push(valTags.indexOf('la'));
+
+
+                      for (var j = 0; j < $rootScope.content.length; j++) {  
+                        if (true) {    
+                            
+                            ss = $rootScope.searchStrContent[j]; //Search string
+                            rt = $rootScope.content[j].title; // title
+                            rank = $rootScope.content[j];
+
+                            m_ss = true;
+                            m_rt = true;
+                            //check that all tags exist exept those that are for neighborhood
+                             for (var k = 0; k < valTags.length; k++) {
+
+                                 //if (ignoreTagsIdx.indexOf(k) < 0) {
+                                   if (true){  
+
+                                     tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
+                                     tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
+
+                                     //look for input in whole search string
+                                     if(!ss)
+                                        console.log(j);
+                                     m_ss = m_ss &&
+                                         (ss.indexOf(valTags[k]) > -1 ||
+                                             ss.indexOf(valTags[k].toUpperCase()) > -1 ||
+                                             ss.indexOf(tagCapitalized) > -1 ||
+                                             ss.indexOf(tagFirstLowered) > -1);
+
+                                     //look for input in rank title only        
+                                     m_rt = m_rt &&
+                                         (rt.indexOf(valTags[k]) > -1 ||
+                                             rt.indexOf(valTags[k].toUpperCase()) > -1 ||
+                                             rt.indexOf(tagCapitalized) > -1 ||
+                                             rt.indexOf(tagFirstLowered) > -1);
+
+                                 }
+                             }
+                            
+                            if (m_rt){
+                                rObj = {};
+                                rObj = JSON.parse(JSON.stringify($rootScope.content[j]));
+                                rObj.useTemp = false;
+                                if (m_nh) results_rt.push(rObj);
+                                else if (rObj.ismp) results_rt.push(rObj);
+                                rte = true; 
+                            }
+                            
+                            else if (m_ss){
+                                rObj = {};
+                                rObj = JSON.parse(JSON.stringify($rootScope.content[j]));
+                                rObj.useTemp = false;
+                                if (m_nh) results_ss.push(rObj);
+                                else if (rObj.ismp) results_ss.push(rObj);
+                                
+                            } 
+                        }
+                    }
+
+                    //if (nhe) results = results.concat(results_nh);
+                    //if (rt_nme) results = results.concat(results_rt_nm);
+                    if (rte) results = results.concat(results_rt);
+                    //if (nme) results = results.concat(results_nm);
+                    results = results.concat(results_ss);
+
+                }
+
+                else {
+                    results = [];
+                }
+            }
+            return results;
+        }
+
 
         function checkNoDupThenPush(x,array){
             var isdup = false;

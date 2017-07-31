@@ -163,6 +163,16 @@
             $rootScope.initalHomeDataLoaded = true;
             loadingDone();
         });
+        var mainViewListener = $rootScope.$on('mainView', function (event) {
+            if ($state.current.name == 'cwrapper') {
+                gotoHome();
+            }
+        });
+        var backtoResultsListener = $rootScope.$on('backToResults', function (event) {
+            if ($state.current.name != 'cwrapper') {
+                backToResults();
+            }
+        });
 
         /*
         if ($window.innerWidth < 512) vm.logoimage = "../../../assets/images/rankxlogosd_sm.png";
@@ -400,7 +410,17 @@
             if ($state.current.name != 'cwrapper') {
                 $state.go('cwrapper',{main: true});
             }
-            else $rootScope.$emit('mainView');
+            //else $rootScope.$emit('mainView');
+        }
+
+        function backToResults(){
+            if ($rootScope.inputVal != undefined && $rootScope.inputVal != ''){
+                $rootScope.searchActive = true;
+                vm.searchActive = true;
+            }
+            else {
+                gotoHome();
+            }
         }
 
         function goAddRank(){

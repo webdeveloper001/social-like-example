@@ -371,20 +371,42 @@
 
         function neighborhoodOk(answer){
             var nhOk = true;
-            if (rankNh && rankNh != answer.cityarea) {
+            var idx = vm.fields.map(function(x) {return x.name; }).indexOf('cityarea');
+            if (rankNh && idx > -1) {
+                if(rankNh != answer.cityarea){
                 //Do this in case rankNh is non-atomic
                 var subAreas = rankNhObj.sub_areas.split(',').map(Number);
-                if (subAreas.length == 0) nhOk = false; 
-                else {
+                if (!subAreas) nhOk = false; 
+                else if (subAreas){
                     var nhIsIncluded = false;
                     var idx = 0;
+                    subAreas.push(rankNhObj.id);
                     for (var j=0; j < subAreas.length; j++){
+                         if (nhIsIncluded) break;
                          idx = $rootScope.locations.map(function(x) {return x.id; }).indexOf(subAreas[j]);
-                         if ($rootScope.locations[idx].nh_name == answer.cityarea) nhIsIncluded = true;  
+                         if ($rootScope.locations[idx].nh_name == answer.cityarea) {
+                             nhIsIncluded = true;
+                             break;
+                         }
+                         if ($rootScope.locations[idx].sub_areas){
+                             var subs = $rootScope.locations[idx].sub_areas.split(',').map(Number);{
+                                var idx2 = 0;
+                                subs.push($rootScope.locations[idx].id); 
+                                for (var k=0; k < subs.length; k++){
+                                    idx2 = $rootScope.locations.map(function(x) {return x.id; }).indexOf(subs[k]);
+                                    if ($rootScope.locations[idx2].nh_name == answer.cityarea) {
+                                        nhIsIncluded = true;
+                                        break;
+                                    }
+                                }
+                             }
+                         }  
                     }
                     if (nhIsIncluded) nhOk = true;
                     else nhOk = false;
                 }                
+            }
+            else nhOk = true;
             }
             return nhOk;
         }

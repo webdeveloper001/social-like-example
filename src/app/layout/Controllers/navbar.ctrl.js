@@ -184,7 +184,6 @@
             else $rootScope.$emit('mainView');
         }
 
-
         function gotoCustomer() {
             //$stateProvider.state('app');
             $state.go('customer');

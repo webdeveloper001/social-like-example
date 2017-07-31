@@ -1,8 +1,8 @@
-angular.module('app').directive('bgBox2', ['color','$timeout',function (color,$timeout) {
+angular.module('app').directive('bgBox3', ['color','$timeout',function (color,$timeout) {
     'use strict';
 
     return {
-        templateUrl: 'app/common/partials/bgbox2.html',
+        templateUrl: 'app/common/partials/bgbox3.html',
         transclude: true,
         scope: {
             bc: '@',
@@ -15,6 +15,8 @@ angular.module('app').directive('bgBox2', ['color','$timeout',function (color,$t
             w: '@',
             h: '@',
             question: '@',
+            imageurl: '@',
+            type: '@',
             isRankOfDay: '@'
         },
         link: function (scope) {
@@ -25,7 +27,7 @@ angular.module('app').directive('bgBox2', ['color','$timeout',function (color,$t
             scope.views = S.views;
             scope.answers = S.answers;
             scope.comments = S.numcom;
-            
+
            if (scope.dir == "horizontal"){
                scope.dirHor = true;
                scope.dirVer = false;

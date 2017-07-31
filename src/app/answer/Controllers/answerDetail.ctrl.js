@@ -80,6 +80,7 @@
         vm.showLocations = showLocations;
         vm.navigateTowards = navigateTowards;
         vm.gotoCustomRank = gotoCustomRank;
+        vm.backToResults = backToResults;
       
         //Admin Function adding catans on spot
         vm.addCatans = addCatans;
@@ -96,6 +97,7 @@
         cObj.newComment = '';
         vm.cm = cObj;
         vm.commentAllowed = true;
+        vm.searchActive = $rootScope.searchActive;
         
         vm.isMobile = false; 
         // device detection
@@ -1356,6 +1358,11 @@
             }
 
             dialog.showLocations(locs);
+        }
+
+        function backToResults(){
+            updateRecords();
+            $rootScope.$emit('backToResults');
         }
 
         function share(){
