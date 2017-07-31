@@ -43,20 +43,31 @@
             return result;
         });
     }
-    function deleteAccount(stripeid, accountId){
-        var url = SERVER_URL + 'stripeServer/' + stripeid + '/' + accountId + '/deleteCustomer';
-        var req = {
-            method: 'GET',
-            url: url,
-            headers: {
-                'X-Dreamfactory-API-Key': undefined,
-                'X-DreamFactory-Session-Token': undefined
-            }
-        }
+    function deleteAccount(stripeid, accountId, answerId){
+        //TODO decide whether to delete it.
+        // var url = SERVER_URL + 'stripeServer/' + stripeid + '/' + accountId + '/deleteCustomer';
+        // var req = {
+        //     method: 'GET',
+        //     url: url,
+        //     headers: {
+        //         'X-Dreamfactory-API-Key': undefined,
+        //         'X-DreamFactory-Session-Token': undefined
+        //     }
+        // }
 
-        return $http(req).then(function(result){
+        // return $http(req).then(function(result){
+        //     return result;
+        // });
+
+
+        var url = baseURI + '/' + accountId;
+        return $http.delete(url).then(querySucceeded, _queryFailed);
+
+        function querySucceeded(result) {
+            var ind = _useraccnts.map(function(acc){return acc.id;}).indexOf(result.data.resource.id);
+            _useraccnts.splice(ind, 1);
             return result;
-        });
+        }
     }
 
     function getuseraccntInvoicesAndCustomer(stripeid){

@@ -17,6 +17,7 @@
         vm.selFlags = '';
         vm.selRankings = '';
         vm.selPlan = '';
+        vm.selCleanDB = '';
 
         vm.goBack = goBack;
         vm.keywords = keywords;
@@ -32,6 +33,7 @@
         vm.plan = plan;
         vm.bizAdmin = bizAdmin;
         vm.applyRule = applyRule;
+        vm.cleanDB = cleanDB;
         //vm.fbpost = fbpost;
         
         activate();
@@ -63,6 +65,7 @@
             vm.selPlan = '';
             vm.selBizAdmin = '';
             vm.selSibLocks = '';
+            vm.selCleanDB = '';
 
             $state.go('queries');
 
@@ -80,6 +83,8 @@
             vm.selPlan = '';
             vm.selBizAdmin = '';
             vm.selSibLocks = '';
+            vm.selCleanDB = '';
+
 
             $state.go('views');
 
@@ -97,6 +102,8 @@
             vm.selPlan = '';
             vm.selBizAdmin = '';
             vm.selSibLocks = '';
+            vm.selCleanDB = '';
+
 
             $state.go('flags');
 
@@ -115,6 +122,8 @@
             vm.selPlan = '';
             vm.selBizAdmin = '';
             vm.selSibLocks = '';
+            vm.selCleanDB = '';
+
 
             $state.go('addRank');
 
@@ -133,6 +142,8 @@
             vm.selPlan = '';
             vm.selBizAdmin = '';
             vm.selSibLocks = '';
+            vm.selCleanDB = '';
+
             
             $state.go('dbMaint');
         }
@@ -150,6 +161,8 @@
             vm.selPlan = '';
             vm.selBizAdmin = '';
             vm.selSibLocks = '';
+            vm.selCleanDB = '';
+
             
             $state.go('dbQuery');
         }
@@ -167,6 +180,8 @@
             vm.selPlan = '';
             vm.selBizAdmin = '';
             vm.selSibLocks = '';
+            vm.selCleanDB = '';
+
             
             $state.go('updateHeaders');
         }
@@ -184,6 +199,8 @@
             vm.selPlan = '';
             vm.selBizAdmin = '';
             vm.selSibLocks = '';
+            vm.selCleanDB = '';
+
             
             $state.go('foodRanks');
             
@@ -202,6 +219,8 @@
             vm.selPayment = '';
             vm.selPlan = '';
             vm.selBizAdmin = '';
+            vm.selCleanDB = '';
+
             
             $state.go('sibLocs');
         }
@@ -219,6 +238,8 @@
             vm.selPayment = 'active';
             vm.selBizAdmin = '';
             vm.selSibLocks = '';
+            vm.selCleanDB = '';
+
 
             $state.go('payment');
 
@@ -237,6 +258,8 @@
             vm.selPayment = '';
             vm.selBizAdmin = '';
             vm.selSibLocks = '';
+            vm.selCleanDB = '';
+
 
             $state.go('plan');
 
@@ -255,11 +278,32 @@
             vm.selPayment = '';
             vm.selBizAdmin = 'active';
             vm.selSibLocks = '';
+            vm.selCleanDB = '';
+
 
             $state.go('bizadmin');
 
         }
+        
+        function cleanDB() {
 
+            vm.selKeywords = '';
+            vm.selViews = '';
+            vm.selFlags = '';
+            vm.selRankings = '';
+            vm.selDbMaint = '';
+            vm.selQuery = '';
+            vm.selUpdate = '';
+            vm.selFoodRanks = '';
+            vm.selPlan = '';
+            vm.selPayment = '';
+            vm.selBizAdmin = '';
+            vm.selSibLocks = '';
+            vm.selCleanDB = 'active';
+
+
+            $state.go('cleandb');
+        }
         function goBack() {
             //if ($rootScope.cCategory.id == undefined) $state.go('rankSummary', { index: $rootScope.cCategory.id });
             //else $state.go('rankSummary', { index: 1 });

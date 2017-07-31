@@ -26,7 +26,7 @@
 
             if (_categories.length > 0 && !forceRefresh) {
 
-                return $q.when(categories);
+                return $q.when(_categories);
             }
 
             //var url = baseURI;

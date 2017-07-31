@@ -1,8 +1,8 @@
 <div ng-class="sm?'':'rank-item'" style="padding-bottom:10px">
     <!-- Basic Layout -->
-    <div class="row" ng-click="rankSel(rank,false)">
+    <div class="row" ng-click="ansSel(answer)">
         <div class="container-bgbox col-xs-6">
-            <bg-box2 bc="{{bc}}" shade="{{shade}}" fc="{{fc}}" text="{{title}}" dir="horizontal" 
+            <bg-box2 bc="{{bc}}" shade="{{shade}}" fc="{{fc}}" text="{{answer.name}}" dir="horizontal" 
             w="100%" h="{{sm ? '150':'200'}}" stats="{{stats}}"></bg-box2>
         </div>
 

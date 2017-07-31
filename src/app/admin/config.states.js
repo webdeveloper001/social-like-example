@@ -115,6 +115,13 @@
                 controller: 'bizadmin as vm'               
             },
             {
+                name: 'cleandb',
+                parent: 'admin',
+                url: '/cleandb',
+                templateUrl: 'app/admin/Partials/cleandb.html',
+                controller: 'cleandb as vm'               
+            },
+            {
                 name: 'rodconsole',
                 url: '/rodconsole',
                 views: {

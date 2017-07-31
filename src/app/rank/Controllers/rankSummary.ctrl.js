@@ -8,12 +8,12 @@
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope'
         , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', 
-        '$location', '$q', 'fbusers', 'useractivity', '$timeout','table2'];
+        '$location', '$q', 'fbusers', 'useractivity', '$timeout','table2','categories'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime, color
         , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope
         , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, 
-        $location, $q, fbusers, useractivity, $timeout, table2) {
+        $location, $q, fbusers, useractivity, $timeout, table2, categories) {
         /* jshint validthis:true */
 
         var vm = this;
@@ -44,6 +44,7 @@
         vm.UpVote = UpVote;
         vm.DownVote = DownVote;
         vm.sortbyHelpDialog = sortbyHelpDialog;
+        vm.backToResults = backToResults;
         
         vm.gotoParentRank = gotoParentRank;
         
@@ -58,6 +59,7 @@
         vm.user = $rootScope.user;
         vm.loadingAnswers = false;
         vm.sortByName = '';
+        vm.searchActive = $rootScope.searchActive;
         //var myParent = $rootScope.parentNum;
 
         // var votetable = [];
@@ -429,10 +431,19 @@
 
             //Set Feautured Image
             if ($rootScope.cCategory.fimage != undefined && $rootScope.cCategory.fimage != ''){
-                vm.image3 = vm.image2;
-                vm.image2 = vm.image1;
-                vm.image1 = $rootScope.cCategory.fimage;
+                if ($rootScope.cCategory.fimage != vm.image1){
+                    vm.image3 = vm.image2;
+                    vm.image2 = vm.image1;
+                    vm.image1 = $rootScope.cCategory.fimage;
+                }
             }
+            /*//if category doesnt have image set, set to image1;
+            if ($rootScope.cCategory.fimage == undefined || $rootScope.cCategory.fimage == ''){
+                if ($rootScope.cCategory.type != 'Short-Phrase'){
+                    categories.update($rootScope.cCategory.cat,['fimage'],[vm.image1]);
+                }
+            }*/
+
             //Set bgbox color specs
             if ($rootScope.cCategory.bc != undefined && $rootScope.cCategory.bc != ''){
                 vm.bc = $rootScope.cCategory.bc;
@@ -641,7 +652,7 @@
                 if (start > -1 && end > -1) vm.introtext = $rootScope.cCategory.introtext.substring(start+2,end);
                 else vm.introtext = $rootScope.cCategory.introtext;
             }
-            else vm.introtext = 'This is the ranking for ' + $rootScope.cCategory.title + '. '+
+            else vm.introtext = 'This is the rank for ' + $rootScope.cCategory.title + '. '+
             ' Help shape the ranking by endorsing your favorites!.';
               
             if ($rootScope.cCategory.owner != 0 && $rootScope.cCategory.owner != undefined){
@@ -1385,38 +1396,6 @@
                         }); 
                         break;
                     }
-                    // case 'whatsapp':{
-                    //     if ($rootScope.DEBUG_MODE) console.log(x);
-                    //     Socialshare.share({
-                    //         'provider': 'whatsapp',
-                    //         'attrs': {
-                    //             'socialshareUrl': vm.linkurl,
-                    //             'socialshareText': 'Rank-X, '+ vm.ranking + ', '+ $rootScope.cCategory.question,
-                    //          }
-                    //     }); 
-                    //     break;
-                    // }
-                    // case 'messenger':{
-                    //     if ($rootScope.DEBUG_MODE) console.log(x);
-                    //     Socialshare.share({
-                    //         'provider': 'facebook-messenger',
-                    //         'attrs': {
-                    //             'socialshareUrl': vm.linkurl,
-                    //          }
-                    //     }); 
-                    //     break;
-                    // }
-                    // case 'sms':{
-                    //     if ($rootScope.DEBUG_MODE) console.log(x);
-                    //     Socialshare.share({
-                    //         'provider': 'sms',
-                    //         'attrs': {
-                    //             'socialshareUrl': vm.linkurl,
-                    //             'socialshareText': 'Rank-X, '+ vm.ranking + ', '+ $rootScope.cCategory.question,
-                    //          }
-                    //     }); 
-                    //     break;
-                    // }
                 } 
             }
         function changeMode(mode){
@@ -1624,6 +1603,11 @@
         }
         function sortbyHelpDialog() {
             dialog.sortbyHelpDialog();
+        }
+
+        function backToResults(){
+            updateRecords();
+            $rootScope.$emit('backToResults');
         }
     }
 })();
