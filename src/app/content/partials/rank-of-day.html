@@ -17,7 +17,7 @@
 
                 <img ng-src="{{image2}}" ng-attr-style="display:{{image2 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
             </div>
-            <div class="container-bgbox col-xs-6">
+            <div class="container-bgbox col-xs-6" ng-if="isShortPhrase">
                 <bg-box bc="{{bcp}}" bc2="{{bc2p}}" fc="{{fcp}}" 
                     text="{{title1}}" dir="horizontal" w="100%" h="{{sm ? '150px':'200px'}}"></bg-box>
 			</div>
