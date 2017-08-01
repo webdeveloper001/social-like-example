@@ -37,12 +37,12 @@ angular.module('app').directive('rankOfDay',
 
                 //load content based on mode
                 function loadContent() {
-                    var catstr = '';
-                    var idxs = [];
-                    var nidx = 0;
-                    var rankid = 0;
-                    $scope.results = [];
-                    var bFound = false;
+                    //var catstr = '';
+                    //var idxs = [];
+                    //var nidx = 0;
+                    //var rankid = 0;
+                    //$scope.results = [];
+                    //var bFound = false;
 
                     var w = $window.innerWidth-20;
                     $scope.w2 = Math.round(w/2);
@@ -50,7 +50,7 @@ angular.module('app').directive('rankOfDay',
                     $scope.w8 = Math.round(w/8); 
 
                     //
-                    $scope.resultsTop = [];
+                    //$scope.resultsTop = [];
                     var resObj = {};
 
                     resObj = {};
@@ -62,19 +62,19 @@ angular.module('app').directive('rankOfDay',
                         editTitle(resObj);
                         parseShortAnswer(resObj);
                         // if (resObj.type != 'Short-Phrase' || resObj.fimage != undefined){
-                            $scope.resultsTop.push(resObj);
+                            //$scope.resultsTop.push(resObj);
                         // }
                     // }
-
+                    $scope.rank = resObj;
                     
-                    var tr = $scope.resultsTop[0]; //top result
-                    $scope.title = tr.title;
+                    //var tr = $scope.resultsTop[0]; //top result
+                    $scope.title = resObj.title;
                     
                     //Get rank stats
                     $scope.stats = {};
-                    $scope.stats.views = tr.views;
-                    $scope.stats.answers = tr.answers;
-                    $scope.stats.numcom = tr.numcom;
+                    $scope.stats.views = resObj.views;
+                    $scope.stats.answers = resObj.answers;
+                    $scope.stats.numcom = resObj.numcom;
 
                     if ($scope.stats.numcom == undefined || $scope.stats.numcom == null )
                     $scope.stats.numcom = 0;
@@ -82,18 +82,18 @@ angular.module('app').directive('rankOfDay',
                     $scope.isBasic = true;
                     
                         //Set Feautured Image && box color
-                    if (tr.fimage != undefined && tr.fimage != ''){
-                        $scope.image4 = tr.image3url;
-                        $scope.image3 = tr.image2url;
-                        $scope.image2 = tr.image1url;
-                        $scope.image1 = tr.fimage;
-                        $scope.bc = tr.bc;
-                        $scope.fc = tr.fc;
-                        $scope.shade = tr.shade;              
+                    if (resObj.fimage != undefined && resObj.fimage != ''){
+                        $scope.image4 = resObj.image3url;
+                        $scope.image3 = resObj.image2url;
+                        $scope.image2 = resObj.image1url;
+                        $scope.image1 = resObj.fimage;
+                        $scope.bc = resObj.bc;
+                        $scope.fc = resObj.fc;
+                        $scope.shade = resObj.shade;              
                     }
                     else{
                         //Set colors for title hideInfoBox
-                        var colors = color.defaultRankColor(tr);
+                        var colors = color.defaultRankColor(resObj);
                         $scope.bc = colors[0];
                         $scope.fc = colors[1];
                         /*var x = Math.floor(Math.random() * 6) + 1;
@@ -105,9 +105,9 @@ angular.module('app').directive('rankOfDay',
                         if (x == 6) {$scope.bc = '#c68c53'; $scope.fc = '#f8f8ff'; }
         */
                         $scope.shade = -4;
-                        $scope.image3 = tr.image3url;
-                        $scope.image2 = tr.image2url;
-                        $scope.image1 = tr.image1url;
+                        $scope.image3 = resObj.image3url;
+                        $scope.image2 = resObj.image2url;
+                        $scope.image1 = resObj.image1url;
                     } 
                                             
                 }
@@ -124,19 +124,24 @@ angular.module('app').directive('rankOfDay',
                         x.isShortPhrase = true;
                         if (x.image1url != undefined) {
                             var sPVals1 = x.image1url.split("##");
-                            x.title1 = sPVals1[0];
-                            x.addinfo1 = sPVals1[1];
+                            $scope.title1 = sPVals1[0];
+                            $scope.addinfo1 = sPVals1[1];
                         }
                         if (x.image2url != undefined) {
                             var sPVals2 = x.image2url.split("##");
-                            x.title2 = sPVals2[0];
-                            x.addinfo2 = sPVals2[1];
+                            $scope.title2 = sPVals2[0];
+                            $scope.addinfo2 = sPVals2[1];
                         }
                         if (x.image3url != undefined) {
                             var sPVals3 = x.image3url.split("##");
-                            x.title3 = sPVals3[0];
-                            x.addinfo3 = sPVals3[1];
+                            $scope.title3 = sPVals3[0];
+                            $scope.addinfo3 = sPVals3[1];
                         }
+                        $scope.isShortPhrase = true;
+                        $scope.bcp = '#2952a3';
+                        $scope.bc2p = '#5c85d6';
+                        $scope.fcp = '#e6e6e6';
+                        
                     }
                 }          
  

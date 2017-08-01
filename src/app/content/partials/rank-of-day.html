@@ -1,6 +1,6 @@
 <div ng-class="sm?'':'rank-item'" style="padding-bottom:10px">
     <!-- Basic Layout -->
-    <div class="row" ng-click="rankSel(resultsTop[0],false)" ng-if="isBasic" >
+    <div class="row" ng-click="rankSel(rank,false)" ng-if="isBasic" >
         <div class="container-bgbox col-xs-12 col-sm-12 " ng-if="part=='title'">
             <div style="position:absolute;background-color:red; z-index: 50; padding: 2px; font-size: 17px; color: #fff">
                 Ranking of the day
@@ -13,10 +13,14 @@
             <div class="col-xs-6" style="padding: 0px">
                 <img ng-src="{{image1}}" ng-attr-style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
             </div>
-            <div class="col-xs-6" style="padding: 0px">
+            <div class="col-xs-6" style="padding: 0px" ng-if="!isShortPhrase">
 
                 <img ng-src="{{image2}}" ng-attr-style="display:{{image2 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};">
             </div>
+            <div class="container-bgbox col-xs-6">
+                <bg-box bc="{{bcp}}" bc2="{{bc2p}}" fc="{{fcp}}" 
+                    text="{{title1}}" dir="horizontal" w="100%" h="{{sm ? '200px':'200px'}}"></bg-box>
+			</div>
         </div>
     </div>
     
