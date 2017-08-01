@@ -24,7 +24,7 @@ angular.module('app').directive('rankOfDay',
                     $scope.rankObject = $rootScope.rankofday;
                     loadContent();
                 }
-                vm.sm = $rootScope.sm;
+                vm.sm = $rootScope.DISPLAY_XSMALL;
                 
                 vm.maxRes = 2;
 
