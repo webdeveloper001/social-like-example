@@ -5,7 +5,7 @@
         .module('app')
         .service('common', common);
 
-    rank.$inject = ['$rootScope'];
+    common.$inject = ['$rootScope'];
 
     function common($rootScope) {
 
