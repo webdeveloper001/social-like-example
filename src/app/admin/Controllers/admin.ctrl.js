@@ -5,9 +5,9 @@
         .module('app')
         .controller('admin', admin);
 
-    admin.$inject = ['$location', '$rootScope', '$state','table','answer','categorycode','$q','vrows','catans'];
+    admin.$inject = ['$location', '$rootScope', '$state','table','answer','categorycode','$q','vrows','catans','common'];
 
-    function admin(location, $rootScope, $state, table, answer, categorycode, $q, vrows, catans) {
+    function admin(location, $rootScope, $state, table, answer, categorycode, $q, vrows, catans, common) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'admin';
@@ -1088,22 +1088,18 @@
                     /*// 32.*****Populate catstr field **** 
                     var catstr = '';
                     var idx = -1;
+                    var idx2 = -1;
                     var nhObj = {};
                     var nhArr = [];
                     var nhSub = [];
+                    var nhSub2 = [];
                     var catArr = [];
 
                     for (var i=0; i < $rootScope.content.length; i++){
-                        nhObj = {};
+                    //for (var i=0; i < 100; i++){
                         nhArr = [];
-                        nhSub = [];
-                        idx = $rootScope.locations.map(function (x) { return x.id; }).indexOf($rootScope.content[i].nh);
-                        nhObj = $rootScope.locations[idx];
-                        nhArr.push(nhObj.id);
-                        nhSub = nhObj.sub_areas.split(',').map(Number);
-                        if (nhSub && nhSub[0] != 0) nhArr = nhArr.concat(nhSub);
-                        //console.log("length nhArr ", nhArr.length);
-                        //console.log("nhArr ", nhArr);
+                        common.getInclusiveAreas($rootScope.content[i].nh,nhArr);
+                        
                         catArr = [];
                         for (var j=0; j < $rootScope.content.length; j++){
                             if ($rootScope.content[i].cat == $rootScope.content[j].cat){
@@ -1129,7 +1125,7 @@
                     for (var i=0; i<$rootScope.content.length; i++){
                         if ($rootScope.content[i].cat == null) console.log($rootScope.content[i].slug);
                     }
-                    //End of 32 */
+                    *///End of 32 */
                     /*//33. Adjust db, create ranking of tables needed, move catans
                     var aidx = 0;
                     var nidx = 0;

@@ -5,10 +5,10 @@
         .module('app')
         .controller('addAnswer', addAnswer);
 
-    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', '$q',
+    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', '$q','common',
     'image', 'catans', 'getgps', '$timeout','getwiki','$window','$scope','search'];
 
-    function addAnswer(dialog, $state, answer, $rootScope, $modal, $q, 
+    function addAnswer(dialog, $state, answer, $rootScope, $modal, $q, common,
     image, catans, getgps, $timeout, getwiki, $window,$scope, search) {
         /* jshint validthis:true */
         var vm = this;
@@ -369,47 +369,28 @@
             testImageUrl(imageLinks[vm.linkIdx], showImageNotOk);
         }
 
-        function neighborhoodOk(answer){
+        function neighborhoodOk(answer) {
             var nhOk = true;
-            var idx = vm.fields.map(function(x) {return x.name; }).indexOf('cityarea');
+            var idx = vm.fields.map(function (x) { return x.name; }).indexOf('cityarea');
             if (rankNh && idx > -1) {
-                if(rankNh != answer.cityarea){
-                //Do this in case rankNh is non-atomic
-                var subAreas = rankNhObj.sub_areas.split(',').map(Number);
-                if (!subAreas) nhOk = false; 
-                else if (subAreas){
-                    var nhIsIncluded = false;
-                    var idx = 0;
-                    subAreas.push(rankNhObj.id);
-                    for (var j=0; j < subAreas.length; j++){
-                         if (nhIsIncluded) break;
-                         idx = $rootScope.locations.map(function(x) {return x.id; }).indexOf(subAreas[j]);
-                         if ($rootScope.locations[idx].nh_name == answer.cityarea) {
-                             nhIsIncluded = true;
-                             break;
-                         }
-                         if ($rootScope.locations[idx].sub_areas){
-                             var subs = $rootScope.locations[idx].sub_areas.split(',').map(Number);{
-                                var idx2 = 0;
-                                subs.push($rootScope.locations[idx].id); 
-                                for (var k=0; k < subs.length; k++){
-                                    idx2 = $rootScope.locations.map(function(x) {return x.id; }).indexOf(subs[k]);
-                                    if ($rootScope.locations[idx2].nh_name == answer.cityarea) {
-                                        nhIsIncluded = true;
-                                        break;
-                                    }
-                                }
-                             }
-                         }  
-                    }
+                if (rankNh != answer.cityarea) {
+
+                    var nhArr = [];
+                    common.getInclusiveAreas(rankNhObj.id, nhArr);
+
+                    var idx2 = $rootScope.locations.map(function (x) { return x.nh_name; }).indexOf(answer.cityarea);
+                    var nhIsIncluded = nhArr.indexOf($rootScope.locations[idx2].id) > -1;
+
                     if (nhIsIncluded) nhOk = true;
                     else nhOk = false;
-                }                
+
+                    //Temp until all neighborhoods are set and confirmed
+                    if (rankNhObj.id == 1) nhOk = true;
+                }
             }
             else nhOk = true;
-            }
             return nhOk;
-        }
+        }  
 
         function addAnswerConfirmed(myAnswer) {
 
