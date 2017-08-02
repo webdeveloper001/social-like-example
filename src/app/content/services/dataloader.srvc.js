@@ -164,7 +164,10 @@
                     if (nhObj.sub_areas && catObj.category.indexOf('@Nh')>-1) 
                         $rootScope.content[i].isatomic = false;
                     else $rootScope.content[i].isatomic = true;
-                    $rootScope.content[i].ismp = nhObj.id == 1 ? true:false;
+                    //Determine if set ismp flag.
+                    if (catObj.ismp != null && catObj.ismp != undefined ) $rootScope.content[i].ismp = catObj.ismp;
+                    else if (nhObj.id == 1) $rootScope.content[i].ismp = true;
+                    else $rootScope.content[i].ismp = false;
                 }
         }
 

@@ -115,7 +115,7 @@ angular.module('app').directive('rankItem',
                     scope.image2 = resObj.image2url;
                     scope.image1 = resObj.image1url;
                 }
-                if (resObj.type == 'Short-Phrase') scope.image1 = $rootScope.EMPTY_IMAGE; 
+                //if (resObj.type == 'Short-Phrase') scope.image1 = $rootScope.EMPTY_IMAGE; 
                                         
             }
 
