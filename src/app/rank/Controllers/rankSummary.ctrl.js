@@ -171,7 +171,7 @@
             vm.ranking = $rootScope.cCategory.title;
             if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego','close to me');
 
-            if ($rootScope.cCategory.id == 9521) {
+            if ($rootScope.cCategory.id == 11942) {
                 vm.foodNearMe = true;
                 foodNearMe = true;
                 vm.fnm = true;

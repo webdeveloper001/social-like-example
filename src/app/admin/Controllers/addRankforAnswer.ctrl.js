@@ -65,7 +65,7 @@
         function validateData(){
             
             if (vm.rankTitle == 'Enter a title...' || vm.rankTitle == '' 
-            || vm.rankTitle.length < 3) rankTitleOk = false;
+            || vm.rankTitle.length < 10) rankTitleOk = false;
             else rankTitleOk = true;
             if (vm.question == 'Enter a question...' || vm.question == ''
             || vm.question.length < 3 ) rankQuestionOk = false;

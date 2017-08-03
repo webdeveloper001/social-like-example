@@ -12,7 +12,6 @@
         //Members
         
         var service = {
-
             getInclusiveAreas: getInclusiveAreas
         };
 
@@ -31,9 +30,7 @@
                     getInclusiveAreas(nhSub[i], arr);
                 }
             }
-
         }
-
 
 
     }

@@ -2,6 +2,13 @@
     <!-- Basic Layout -->
     <div class="row" ng-click="ansSel(answer)">
         <div class="container-bgbox col-xs-6">
+            
+            <div style="position:absolute; z-index: 50; padding: 2px; font-size: 17px; color: #fff">
+            <!--<div class = "tooltip"> -->
+                <small><i class="{{answer.icon}}" aria-hidden="true"></i>
+                <span class="tooltiptext">{{answer.itext}}</span></small>
+            <!-- </div> -->
+            </div>
             <bg-box2 bc="{{bc}}" shade="{{shade}}" fc="{{fc}}" text="{{answer.name}}" dir="horizontal" 
             w="100%" h="{{sm ? '150':'200'}}" stats="{{stats}}"></bg-box2>
         </div>
