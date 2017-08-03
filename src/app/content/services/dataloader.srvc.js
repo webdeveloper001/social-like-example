@@ -158,7 +158,8 @@
                     $rootScope.content[i].type = catObj.type;
                     $rootScope.content[i].question = catObj.question;
                     $rootScope.content[i].shade = catObj.shade;
-                    $rootScope.content[i].introtext = catObj.introtext;
+                    if ($rootScope.content[i].nh == 1) $rootScope.content[i].introtext = catObj.introtext;
+                    else $rootScope.content[i].introtext = '';
                     $rootScope.content[i].user = catObj.user;
                     //if (nhObj.sub_areas.split(',').map(Number).length > 1 && catObj.category.indexOf('@Nh')>-1)
                     if (nhObj.sub_areas && catObj.category.indexOf('@Nh')>-1) 

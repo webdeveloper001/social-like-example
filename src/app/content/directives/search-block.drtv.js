@@ -56,7 +56,7 @@ function ($rootScope, $state, search, $timeout, $window) {
                     slug = slug.replace('/','at');
                     slug = slug + '-' + maxId;
 
-                    $rootScope.content.push({
+                    var ghostRank = {
                         id: maxId,  //TODO when add to db, should delete id and update slug.
                         catstr: '' + maxId,
                         slug: slug,
@@ -82,7 +82,12 @@ function ($rootScope, $state, search, $timeout, $window) {
                         timestmp: new Date(),
                         cat: x.id,
                         nh: x.locationId,
-                    });
+                    }
+                    
+                    $rootScope.content.push(ghostRank);
+                    //update searchString to keep array lengths in sync
+                    $rootScope.searchStrContent.push(ghostRank.tags ? ghostRank.tags : '') + " " + (ghostRank.title ? ghostRank.title : '');
+
                     $state.go('rankSummary', { index: slug });
                 } else {
                     if ($rootScope.editMode) $state.go('editRanking', { index: selectedRank.slug });
@@ -148,12 +153,35 @@ function ($rootScope, $state, search, $timeout, $window) {
                 if(scope.ans) scope.resAnswers = search.searchAnswers(scope.query);
                 for (var i=0; i<scope.resAnswers.length; i++){
                     scope.resAnswers[i].isAnswer = true;
-                    if (scope.resAnswers[i].type == 'Establishment') scope.resAnswers[i].icon = 'fa fa-building-o';
-                    if (scope.resAnswers[i].type == 'Person' || scope.resAnswers[i].type == 'PersonCust') scope.resAnswers[i].icon = 'fa fa-male';
-                    if (scope.resAnswers[i].type == 'Short-Phrase') scope.resAnswers[i].icon = 'fa fa-comment-o';
-                    if (scope.resAnswers[i].type == 'Event') scope.resAnswers[i].icon = 'fa fa-calendar-o';
-                    if (scope.resAnswers[i].type == 'Organization') scope.resAnswers[i].icon = 'fa fa-trademark';
-                    if (scope.resAnswers[i].type == 'Place') scope.resAnswers[i].icon = 'fa fa-map-marker'; 
+                    if (scope.resAnswers[i].type == 'Establishment') {
+                        scope.resAnswers[i].itext = 'Establishment';
+                        scope.resAnswers[i].icon = 'fa fa-building-o';
+
+                    }
+                    if (scope.resAnswers[i].type == 'Person'){
+                        scope.resAnswers[i].itext = 'Public Figure'; 
+                        scope.resAnswers[i].icon = 'fa fa-male';
+                    }
+                    if (scope.resAnswers[i].type == 'PersonCust'){
+                        scope.resAnswers[i].itext = 'Contractor'; 
+                        scope.resAnswers[i].icon = 'fa fa-male';
+                    }
+                    if (scope.resAnswers[i].type == 'Short-Phrase') {
+                        scope.resAnswers[i].itext = 'Opinion';
+                        scope.resAnswers[i].icon = 'fa fa-comment-o';
+                    }
+                    if (scope.resAnswers[i].type == 'Event') {
+                        scope.resAnswers[i].itext = 'Event';
+                        scope.resAnswers[i].icon = 'fa fa-calendar-o';
+                    }
+                    if (scope.resAnswers[i].type == 'Organization') {
+                        scope.resAnswers[i].itext = 'Brand';
+                        scope.resAnswers[i].icon = 'fa fa-trademark';
+                    }
+                    if (scope.resAnswers[i].type == 'Place') {
+                        scope.resAnswers[i].itext = 'Place';
+                        scope.resAnswers[i].icon = 'fa fa-map-marker';
+                    } 
                 }
 
                 scope.length = scope.resRanks.length + scope.resAnswers.length;
