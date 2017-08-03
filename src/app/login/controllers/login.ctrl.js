@@ -84,6 +84,9 @@
 
             console.log("vm.code", vm.code);
             $rootScope.isLoggedIn = false;
+            $rootScope.isAdmin = false;
+            $rootScope.dataAdmin = false;
+            $rootScope.$emit('adminCredentials');
 
         }
 

@@ -34,6 +34,7 @@
         vm.openCitySelection = openCitySelection;
         vm.goWarning = goWarning;
         vm.goCoords = goCoords;
+        vm.isAdmin = ($rootScope.isAdmin || $rootScope.dataAdmin);
 
         if ($rootScope.coordsRdy == undefined) $rootScope.coordsRdy = false;
         $rootScope.loadFbnWhenCoordsRdy = false;
@@ -49,6 +50,10 @@
 
         $rootScope.$on('coordsRdy', function (e) {
             showCoordsIcon();
+        });
+
+        $rootScope.$on('adminCredentials', function(e) {
+            vm.isAdmin = ($rootScope.isAdmin || $rootScope.dataAdmin);
         });
 
         $rootScope.$on('showWarning', function (e) {

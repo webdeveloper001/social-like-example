@@ -138,6 +138,9 @@
                 $cookies.remove('session_token');
                 delete $rootScope.user;
                 $rootScope.isLoggedIn = false;
+                $rootScope.isAdmin = false;
+                $rootScope.dataAdmin = false;
+                $rootScope.$emit('adminCredentials');
 
                 try {
                     window.localStorage.removeItem('user');

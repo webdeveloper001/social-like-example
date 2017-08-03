@@ -221,11 +221,6 @@
         function activate() {
 
             //****TEMP CODE, ENable for Admin Functions*****************
-            $rootScope.isAdmin = false;
-            vm.isAdmin = false;
-            if ($rootScope.isLoggedIn){
-                if ($rootScope.user.id == '1599427743409374') $rootScope.dataAdmin = true;
-            }
             /*
             $rootScope.isLoggedIn = true;
             $rootScope.user = {};
@@ -233,7 +228,16 @@
             $rootScope.user.first_name = 'Andres';
             $rootScope.user.last_name = 'Moctezuma';
             $rootScope.user.id = "10104518570729893";
-            //**********************End of Temp Code */
+            //---*/
+            
+            $rootScope.isAdmin = false;
+            $rootScope.dataAdmin = false;
+            if ($rootScope.isLoggedIn){
+                if ($rootScope.user.id == '1599427743409374') $rootScope.dataAdmin = true;
+                if ($rootScope.user.id == '10104518570729893') $rootScope.isAdmin = true;
+            }
+            vm.isAdmin = $rootScope.isAdmin;
+            $rootScope.$emit('adminCredentials');
 
             $rootScope.DEBUG_MODE = DEBUG_MODE;
             $rootScope.EMPTY_IMAGE = EMPTY_IMAGE;    

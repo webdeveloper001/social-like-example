@@ -10,7 +10,6 @@
         <button class="btn btn-default {{vm.selAddRanking}} " ng-click="vm.addRank() ">Add Ranking</button>
         <button class="btn btn-default {{vm.selDbMaint}} " ng-click="vm.dbMaint() ">dB Maint</button>
         <button class="btn btn-default {{vm.selQuery}} " ng-click="vm.dbQuery() ">Query</button>
-        <!--<button class="btn btn-default {{vm.selUpdate}} " ng-click="vm.update() ">Update Headlines</button>-->
         <button class="btn btn-default {{vm.selSibLocs}} " ng-click="vm.sibLocs() ">Sibbling Locations</button>
         <button class="btn btn-default {{vm.selFoodRanks}} " ng-click="vm.foodranks() ">Food Ranks</button>
         <button class="btn btn-default {{vm.selPayment}} " ng-click="vm.payment() ">Payment</button>
@@ -20,7 +19,10 @@
         <button class="btn btn-danger" ng-click="vm.applyRule() ">Apply Rule</button>
     </div>
 </div>
-<button class="btn btn-default {{vm.selQuery}} " ng-click="vm.dbQuery()" ng-if="vm.isDET">Query</button>
+<div ng-if="vm.dataAdmin">
+    <button class="btn btn-default {{vm.selQuery}} " ng-click="vm.dbQuery()">Query</button>
+    <button class="btn btn-default {{vm.selSibLocs}} " ng-click="vm.sibLocs() ">Sibbling Locations</button>
+</div>    
 <br>
 <br>
 <div ui-view></div>
