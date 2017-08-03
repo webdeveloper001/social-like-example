@@ -80,7 +80,7 @@
             });
 
             //loadData();
-            console.log("mybusiness page Loaded!");
+            if ($rootScope.DEBUG_MODE) console.log("mybusiness page Loaded!");
 
         }
 
@@ -234,7 +234,7 @@
             if (!x.isPremium || !x.hasRanks) vm.sell = true;
             else vm.sell = false;
 
-            console.log("vm.business",x);
+            if ($rootScope.DEBUG_MODE) console.log("vm.business",x);
             
         }
 
@@ -557,8 +557,11 @@
             dialog.showTOSCustomersDlg();
         }
 
-        function showLearnMore() {
-            dialog.showLearnMore();
+        function showLearnMore(x) {
+            var url='';
+            if (x==1) url = 'https://www.youtube.com/embed/IpUNM4Okb0U';
+            if (x==2) url = 'https://www.youtube.com/embed/pjxmggRM37o';
+            dialog.showLearnMore(url);
             
         }
     }   
