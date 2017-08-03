@@ -16,7 +16,7 @@
         vm.delCatans = delCatans;
         vm.delAnswer = delAnswer;
     
-        vm.isAdmin = $rootScope.isAdmin;
+        vm.isAdmin = $rootScope.isAdmin || $rootScope.dataAdmin;
         
         activate();
 

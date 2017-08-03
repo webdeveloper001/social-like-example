@@ -39,6 +39,9 @@
         activate();
 
         function activate() {
+
+            if (!$rootScope.isAdmin && !$rootScope.dataAdmin) $state.go('cwrapper');
+            else{
             
             vm.isDET = $rootScope.isLoggedIn && ($rootScope.user.id == '10104518570729893' ||
                                           $rootScope.user.id == 30 ||
@@ -49,7 +52,9 @@
                                           $rootScope.user.id == 194039991109146);
             
             vm.isAdmin = $rootScope.user.is_sys_admin || $rootScope.isAdmin;
+            vm.dataAdmin = $rootScope.dataAdmin;
             console.log("admin page Loaded!");
+            }
             
         }
         function keywords() {
