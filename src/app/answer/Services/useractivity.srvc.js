@@ -32,10 +32,10 @@
 
         function getAllUserActivity(forceRefresh) {
 
-            if (_areAllUserActivityLoaded() && !forceRefresh) {
+            /*if (_areAllUserActivityLoaded() && !forceRefresh) {
 
                 return $q.when(_alluseractivity);
-            }
+            }*/
 
             var url = baseURI;
 
@@ -88,12 +88,12 @@
                 }
         }
         
-        function getActivitybyUser(forceRefresh) {
+        function getActivitybyUser() {
 
-            if (_userActivityLoaded() && !forceRefresh) {
+            /*if (_userActivityLoaded() && !forceRefresh) {
 
                 return $q.when(_userActivityLoaded);
-            }
+            }*/
 
             var url = baseURI + '/?filter=user='+ $rootScope.user.id;;
 

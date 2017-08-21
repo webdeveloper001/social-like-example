@@ -236,7 +236,8 @@
                 localStorage.clear();
 
                 //$location.path('/');
-                $state.go('cwrapper', {}, { location: 'replace' });
+                //$state.go('cwrapper', {}, { location: 'replace' });
+                $rootScope.$emit('backToResults');
             });
         }
 

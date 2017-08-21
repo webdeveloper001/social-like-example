@@ -5,9 +5,9 @@
         .module('app')
         .controller('myfavs', myfavs);
 
-    myfavs.$inject = ['$location', '$rootScope', '$state', '$window'];
+    myfavs.$inject = ['$location', '$rootScope', '$state', '$window','dataloader'];
 
-    function myfavs(location, $rootScope, $state, $window) {
+    function myfavs(location, $rootScope, $state, $window, dataloader) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'myfavs';
@@ -45,7 +45,7 @@
 
             formatTables();
             loadData();
-            console.log("myfavs page Loaded!");
+            if ($rootScope.DEBUG_MODE) console.log("myfavs page Loaded!");
 
         }
 
@@ -130,83 +130,84 @@
 
             var tmap = [];
 
-
             for (var i = 0; i < $rootScope.cvotes.length; i++) {
                 if ($rootScope.cvotes[i].vote == 1) {
                     var idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf($rootScope.cvotes[i].answer);
-                    answer = $rootScope.answers[idx];
-                    //console.log("answer - ", answer.name);
-                    if (answer.type == 'Establishment') {
-                        
-                        //look this answer in catans recs
-                        for (var n = 0; n < $rootScope.catansrecs.length; n++) {
+                    if (idx > -1) {
+                        answer = $rootScope.answers[idx];
+                        //console.log("answer - ", answer.name);
+                        if (answer.type == 'Establishment') {
 
-                            if ($rootScope.catansrecs[n].answer == answer.id) {
+                            //look this answer in catans recs
+                            for (var n = 0; n < $rootScope.catansrecs.length; n++) {
 
-                                var idx2 = $rootScope.content.map(function (x) { return x.id; }).indexOf($rootScope.catansrecs[n].category);
-                                category = $rootScope.content[idx2];
-                                if (!category)
-                                    continue;
-                                if (category.title.indexOf('food') > -1 || category.tags.indexOf('food') > -1) {
-                                    tmap = vm.myfoodans.map(function (x) { return x.id; });
-                                    if (tmap.indexOf(answer.id) < 0) {
-                                        getSpecials(answer);
-                                        vm.myfoodans.push(answer);
+                                if ($rootScope.catansrecs[n].answer == answer.id) {
+
+                                    var idx2 = $rootScope.content.map(function (x) { return x.id; }).indexOf($rootScope.catansrecs[n].category);
+                                    category = $rootScope.content[idx2];
+                                    if (!category)
+                                        continue;
+                                    if (category.title.indexOf('food') > -1 || category.tags.indexOf('food') > -1) {
+                                        tmap = vm.myfoodans.map(function (x) { return x.id; });
+                                        if (tmap.indexOf(answer.id) < 0) {
+                                            getSpecials(answer);
+                                            vm.myfoodans.push(answer);
+                                        }
                                     }
-                                }
 
-                                if (category.title.indexOf('lifestyle') > -1 || category.tags.indexOf('lifestyle') > -1) {
-                                    tmap = vm.mylifestyleans.map(function (x) { return x.id; });
-                                    if (tmap.indexOf(answer.id) < 0) {
-                                        getSpecials(answer);
-                                        vm.mylifestyleans.push(answer);
+                                    if (category.title.indexOf('lifestyle') > -1 || category.tags.indexOf('lifestyle') > -1) {
+                                        tmap = vm.mylifestyleans.map(function (x) { return x.id; });
+                                        if (tmap.indexOf(answer.id) < 0) {
+                                            getSpecials(answer);
+                                            vm.mylifestyleans.push(answer);
+                                        }
                                     }
-                                }
 
-                                if (category.title.indexOf('services') > -1 || category.tags.indexOf('services') > -1) {
-                                    tmap = vm.myservicesans.map(function (x) { return x.id; });
-                                    if (tmap.indexOf(answer.id) < 0) {
-                                        getSpecials(answer);
-                                        vm.myservicesans.push(answer);
+                                    if (category.title.indexOf('services') > -1 || category.tags.indexOf('services') > -1) {
+                                        tmap = vm.myservicesans.map(function (x) { return x.id; });
+                                        if (tmap.indexOf(answer.id) < 0) {
+                                            getSpecials(answer);
+                                            vm.myservicesans.push(answer);
+                                        }
                                     }
-                                }
 
-                                if (category.title.indexOf('health') > -1 || category.tags.indexOf('health') > -1) {
-                                    tmap = vm.myhealthans.map(function (x) { return x.id; });
-                                    if (tmap.indexOf(answer.id) < 0) {
-                                        getSpecials(answer);
-                                        vm.myhealthans.push(answer);
+                                    if (category.title.indexOf('health') > -1 || category.tags.indexOf('health') > -1) {
+                                        tmap = vm.myhealthans.map(function (x) { return x.id; });
+                                        if (tmap.indexOf(answer.id) < 0) {
+                                            getSpecials(answer);
+                                            vm.myhealthans.push(answer);
+                                        }
                                     }
-                                }
 
-                                if (category.title.indexOf('beauty') > -1 || category.tags.indexOf('beauty') > -1) {
-                                    tmap = vm.mybeautyans.map(function (x) { return x.id; });
-                                    if (tmap.indexOf(answer.id) < 0) {
-                                        getSpecials(answer);
-                                        vm.mybeautyans.push(answer);
+                                    if (category.title.indexOf('beauty') > -1 || category.tags.indexOf('beauty') > -1) {
+                                        tmap = vm.mybeautyans.map(function (x) { return x.id; });
+                                        if (tmap.indexOf(answer.id) < 0) {
+                                            getSpecials(answer);
+                                            vm.mybeautyans.push(answer);
+                                        }
                                     }
-                                }
 
 
-                                if (category.title.indexOf('social') > -1 || category.tags.indexOf('social') > -1) {
-                                    tmap = vm.mysocialans.map(function (x) { return x.id; });
-                                    if (tmap.indexOf(answer.id) < 0) {
-                                        getSpecials(answer);
-                                        vm.mysocialans.push(answer);
+                                    if (category.title.indexOf('social') > -1 || category.tags.indexOf('social') > -1) {
+                                        tmap = vm.mysocialans.map(function (x) { return x.id; });
+                                        if (tmap.indexOf(answer.id) < 0) {
+                                            getSpecials(answer);
+                                            vm.mysocialans.push(answer);
+                                        }
                                     }
-                                }
 
 
-                                if (category.title.indexOf('family') > -1 || category.tags.indexOf('family') > -1) {
-                                    tmap = vm.myfamilyans.map(function (x) { return x.id; });
-                                    if (tmap.indexOf(answer.id) < 0) {
-                                        getSpecials(answer);
-                                        vm.myfamilyans.push(answer);
+                                    if (category.title.indexOf('family') > -1 || category.tags.indexOf('family') > -1) {
+                                        tmap = vm.myfamilyans.map(function (x) { return x.id; });
+                                        if (tmap.indexOf(answer.id) < 0) {
+                                            getSpecials(answer);
+                                            vm.myfamilyans.push(answer);
+                                        }
                                     }
                                 }
                             }
-                        }
 
+                        }
                     }
                 }
             }
@@ -326,7 +327,7 @@
         function goBack() {
             
             if ($rootScope.previousState == 'rankSummary')  $state.go('rankSummary', { index: $rootScope.cCategory.slug });
-            else $state.go('cwrapper');
+            else $rootScope.$emit('backToResults');
         }
 
     }
