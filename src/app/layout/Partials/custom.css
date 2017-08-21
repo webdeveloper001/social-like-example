@@ -407,16 +407,16 @@ width: 100% !important;
   line-height: 60px;
 }
 
-
+/*
 userfeed-block {
     overflow-y: auto;
     display: block;
     height: 400px;
-}
-
+}*/
+/*
 userfeed-block.show-all {
     overflow: initial;
-}
+}*/
 
 
 .trend-tab ul li a{

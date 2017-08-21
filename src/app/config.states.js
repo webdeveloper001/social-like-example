@@ -51,15 +51,7 @@
                 parent: 'layout',
                 url: '/editRanking/:index',
                 templateUrl: 'app/rank/Partials/editRanking.html',
-                controller: 'editRanking as vm',
-                resolve: {
-                    rankings: ['table', function (table) {
-                        return table.getTables().then(function (result) {
-
-                            return result;
-                        });
-                    }]
-                }
+                controller: 'editRanking as vm'
             },
             {
                 name: 'addAnswer',
@@ -80,22 +72,7 @@
                 parent: 'layout',
                 url: '/editAnswer/:index',
                 templateUrl: 'app/answer/Partials/editAnswer.html',
-                controller: 'editAnswer as vm',
-
-                resolve: {
-                    answers: ['answer', function (answer) {
-                        return answer.getAnswers().then(function (result) {
-                            return result;
-                        });
-                    }],
-                    edits: ['edit', function (edit) {
-
-                        return edit.getEdits().then(function (result) {
-
-                            return result;
-                        });
-                    }]
-                }
+                controller: 'editAnswer as vm'
             },
              {
                 name: 'specials',
@@ -141,38 +118,25 @@
             },
             {
                 name: 'addCustomRank',
+                parent: 'layout',
                 url: '/addCustomRank',
-                views: {
-                    "@": {
-                        templateUrl: 'app/admin/Partials/addCustomRank.html',
-                        controller: 'addCustomRank as vm'
-                    },
-                    "navbar@addCustomRank": {
-                        templateUrl: 'app/layout/Partials/navbar.html',
-                        controller: 'navbar as vm'
-                    }
-                }
+                templateUrl: 'app/admin/Partials/addCustomRank.html',
+                controller: 'addCustomRank as vm'
             },
             {
                 name: 'match',
                 parent: 'layout',
                 url: '/match',
                 templateUrl: 'app/rank/Partials/match.html',
-                controller: 'match as vm',
-                resolve: {
-
-                    answers: ['answer', function (answer) {
-                        return answer.getAnswers().then(function (result) {
-
-                            return result;
-                        });
-                    }]
-                }
+                controller: 'match as vm'
             },
             {
                 name: 'about',
                 url: '/about',
-                views: {
+                parent: 'layout',
+                templateUrl: 'app/layout/Partials/about.html',
+                controller: 'about as vm'
+                /*views: {
                     "@": {
                         templateUrl: 'app/layout/Partials/about.html',
                         controller: 'about as vm'
@@ -181,12 +145,15 @@
                         templateUrl: 'app/layout/Partials/navbar.html',
                         controller: 'navbar as vm'
                     }
-                }
+                }*/
             },
             {
                 name: 'privacypolicy',
                 url: '/privacypolicy',
-                views: {
+                parent: 'layout',
+                templateUrl: 'app/layout/Partials/privacypolicy.html',
+                controller: 'privacypolicy as vm'
+                /*views: {
                     "@": {
                         templateUrl: 'app/layout/Partials/privacypolicy.html',
                         controller: 'privacypolicy as vm'
@@ -195,13 +162,16 @@
                         templateUrl: 'app/layout/Partials/navbar.html',
                         controller: 'navbar as vm'
                     }
-                }
+                }*/
             },
 
             {
                 name: 'cutomertos',
                 url: '/terms-of-service/customers',
-                views: {
+                parent: 'layout',
+                templateUrl: 'app/layout/Partials/customertos.html',
+                controller: 'customertos as vm'
+                /*views: {
                     "@": {
                         templateUrl: 'app/layout/Partials/customertos.html',
                         controller: 'customertos as vm'
@@ -210,13 +180,16 @@
                         templateUrl: 'app/layout/Partials/navbar.html',
                         controller: 'navbar as vm'
                     }
-                }
+                }*/
             },
 
             {
                 name: 'promotertos',
                 url: '/terms-of-service/promoters',
-                views: {
+                parent: 'layout',
+                templateUrl: 'app/layout/Partials/promotertos.html',
+                controller: 'promotertos as vm'
+                /*views: {
                     "@": {
                         templateUrl: 'app/layout/Partials/promotertos.html',
                         controller: 'promotertos as vm'
@@ -225,7 +198,7 @@
                         templateUrl: 'app/layout/Partials/navbar.html',
                         controller: 'navbar as vm'
                     }
-                }
+                }*/
             },
 
           {
@@ -245,16 +218,19 @@
             {
                 name: 'promotersignup',
                 url: '/promotersignup',
-                views: {
+                parent: 'layout',
+                templateUrl: 'app/promoters/Partials/promotersignup.html',
+                controller: 'promotersignup as vm'
+                /*views: {
                     "@": {
-                        templateUrl: 'app/promoters/Partials/promotersignup.html',
-                        controller: 'promotersignup as vm'
+                        templateUrl: '',
+                        controller: ''
                     },
                     "navbar@promotersignup": {
                         templateUrl: 'app/layout/Partials/navbar.html',
                         controller: 'navbar as vm'
                     }
-                }
+                }*/
             },  
             {
                 name: 'favs',

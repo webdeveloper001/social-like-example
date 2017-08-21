@@ -1334,7 +1334,7 @@
                 callback: function (result) {
                     if (result) {
                         var imageurl = blobList[n].url;
-                        answer.updateAnswer(myanswer.id, ["image"], [imageurl]);
+                        answer.updateAnswer(myanswer.id, ["imageurl"], [imageurl]);
                     }
                 }
             });

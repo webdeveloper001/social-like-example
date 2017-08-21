@@ -11,6 +11,7 @@
 
         // Members
         var _locations = [];
+        $rootScope.locations = _locations;
         var baseURI = '/api/v2/mysql/_table/locations';
 
         var service = {
@@ -37,7 +38,8 @@
             var p0 = $http.get(url0);
             
             return $q.all([p0]).then(function (d){
-                _locations = d[0].data.resource;
+                var data = d[0].data.resource;
+                _load (data);
                 if ($rootScope.DEBUG_MODE) console.log("No. Categories ", _locations.length);
                 return _locations;            
             }, _queryFailed);  
@@ -137,6 +139,13 @@
                 console.log("Deleting location was succesful");
                 return result.data;
             }
+        }
+
+        function _load(data){
+            _locations.length = 0;
+            data.forEach(function(x){
+                _locations.push(x);
+            });
         }
 
         function _queryFailed(error) {

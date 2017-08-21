@@ -8,12 +8,12 @@
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope'
         , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', 
-        '$location', '$q', 'fbusers', 'useractivity', '$timeout','table2','categories'];
+        '$location', '$q', 'fbusers', 'useractivity', '$timeout','table2','categories','dataloader'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime, color
         , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope
         , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, 
-        $location, $q, fbusers, useractivity, $timeout, table2, categories) {
+        $location, $q, fbusers, useractivity, $timeout, table2, categories, dataloader) {
         /* jshint validthis:true */
 
         var vm = this;
@@ -45,6 +45,7 @@
         vm.DownVote = DownVote;
         vm.sortbyHelpDialog = sortbyHelpDialog;
         vm.backToResults = backToResults;
+        vm.seeMore = seeMore;
         
         vm.gotoParentRank = gotoParentRank;
         
@@ -60,6 +61,7 @@
         vm.loadingAnswers = false;
         vm.sortByName = '';
         vm.searchActive = $rootScope.searchActive;
+        vm.limit = 20;
         //var myParent = $rootScope.parentNum;
 
         // var votetable = [];
@@ -110,6 +112,20 @@
         var rankDataLoadedListener = $rootScope.$on('rankDataLoaded', function () {
             prepareRankSummary();
         });
+        var coordsRdyRankListener = $rootScope.$on('coordsRdy', function () {
+            console.log("received coordsreadyrank");
+            //loadData();
+            //$scope.$apply(function(){
+                vm.haveLocation = true;
+                getDistances();
+                //console.log('scope.$digest() - ', $scope.$digest());
+                //if (!scope.$digest()) 
+                $timeout(function(){
+                    $scope.$apply();
+                });
+                    
+            //});
+        });
                                
         var stateChangeListener = $rootScope.$on('$stateChangeStart',
             function (ev, to, toParams, from, fromParams) {
@@ -121,6 +137,7 @@
         $scope.$on('$destroy', stateChangeListener);
         $scope.$on('$destroy',updateVoteTableListener);
         $scope.$on('$destroy',rankDataLoadedListener);
+        $scope.$on('$destroy',coordsRdyRankListener);
 
         vm.isMobile = false; 
         // device detection
@@ -139,7 +156,7 @@
         }
         
         window.prerenderReady = false;
-        
+        if ($rootScope.DEBUG_MODE) console.log("$rootScope.rankSummaryDataLoaded - ", $rootScope.rankSummaryDataLoaded);
         if ($rootScope.rankSummaryDataLoaded) {
             prepareRankSummary();
         }
@@ -147,7 +164,7 @@
 
         function prepareRankSummary(){
             vm.dataReady = true; 
-
+            if ($rootScope.DEBUG_MODE) console.log("$rootScope.isCustomRank - ", $rootScope.isCustomRank);
             //Load current category
             $rootScope.cCategory = null;
             if ($rootScope.isCustomRank){
@@ -166,7 +183,8 @@
                     }
                 }
             }
-
+            //console.log("$rootScope.content.length - ", $rootScope.content.length);
+            if ($rootScope.DEBUG_MODE) console.log("$rootScope.cCategory - ", $rootScope.cCategory.id, $rootScope.cCategory.cat);
             if(!$rootScope.cCategory) $state.go('cwrapper');
             vm.ranking = $rootScope.cCategory.title;
             if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego','close to me');
@@ -208,17 +226,7 @@
 
             loadData(); //load data and write to $rootScope
             if (!foodNearMe){
-                var answerIDs = vm.answers.map(function (answer) { return answer.id; });
-                if (answerIDs.length > 0) {
-                    votes.loadLastMonthVoting(answerIDs)
-                        .then(function (resp) {
-                            resp.forEach(function (vote) {
-                                var idx = answerIDs.indexOf(vote.answer);
-                                vm.answers[idx].trendUpV++;
-                            });
-                            //console.log(vm.answers);
-                        });
-                }
+                loadTrendVotes(0);
             }
 
             checkUserCredentials();
@@ -453,7 +461,6 @@
             else{
                 //Set colors for title hideInfoBox
                 var colors = color.defaultRankColor($rootScope.cCategory);
-                //console.log("colors - ", colors);
                 vm.bc = colors[0];
                 vm.fc = colors[1];
                 vm.shade = -4;
@@ -488,8 +495,10 @@
                             if ($rootScope.cvotes[i].answer == $rootScope.canswers[k].id) {
                                 //Check vote correspond to this category
                                 var idx = $rootScope.catansrecs.map(function(x) {return x.id; }).indexOf($rootScope.cvotes[i].catans);
-                                if ($rootScope.catansrecs[idx].category == $rootScope.cCategory.id){  
-                                    $rootScope.canswers4rank.push($rootScope.canswers[k]);
+                                if (idx > -1) {
+                                    if ($rootScope.catansrecs[idx].category == $rootScope.cCategory.id) {
+                                        $rootScope.canswers4rank.push($rootScope.canswers[k]);
+                                    }
                                 }
                                 //break;
                             }
@@ -657,8 +666,14 @@
               
             if ($rootScope.cCategory.owner != 0 && $rootScope.cCategory.owner != undefined){
                 vm.isCustomRank = true;
-                var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(Number($rootScope.cCategory.owner));
-                vm.rankOwner = $rootScope.answers[idx]; 
+                //if custom rank is demo go to original answer, else get refernce from owner
+                if ($rootScope.cCategory.id == 11091 || 
+                    $rootScope.cCategory.id == 11092 ||
+                    $rootScope.cCategory.id == 11093) vm.rankOwner = $rootScope.oAnswer;
+                else{
+                    var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(Number($rootScope.cCategory.owner));
+                    vm.rankOwner = $rootScope.answers[idx];
+                } 
             }
             
             var fidx = 0;
@@ -724,12 +739,13 @@
                     if ($rootScope.content[n].title == ss){
                         vm.hasParent = true;
                         vm.parentRank = $rootScope.content[n];
+                        dataloader.pulldata('ranks',[vm.parentRank]);
                     }
                 }
             }
             
             //Load current answers
-            $rootScope.answers = answers;
+            //$rootScope.answers = answers;
             $rootScope.canswers = [];
             var fanswers = [];
             $rootScope.ccatans = [];
@@ -778,70 +794,9 @@
             }
             //all other ranks
             if (!foodNearMe) {
+                
                 for (var i = 0; i < catansrecs.length; i++) {
-                    //if rank is atomic 
-                    /*
-                    if ($rootScope.cCategory.isatomic) {
-                        if (catansrecs[i].category == $rootScope.cCategory.id) {
-                            for (var k = 0; k < answers.length; k++) {
-                                if (catansrecs[i].answer == answers[k].id) {
-                                    obj = {};
-                                    obj = answers[k];
-                                    obj.catans = catansrecs[i].id;
-                                    obj.catansrank = catansrecs[i].rank;
-                                    obj.upV = catansrecs[i].upV;
-
-                                    obj.upV = catansrecs[i].upV;
-                                    obj.downV = catansrecs[i].downV;
-                                    obj.catans = catansrecs[i].id;
-                                    obj.rank = catansrecs[i].rank;
-                                    obj.uservote = {};
-                                    obj.upVi = catansrecs[i].upV;
-                                    obj.downVi = catansrecs[i].downV;
-
-                                    obj.trendUpV = 0;
-
-                                    displayVote(obj);
-
-                                    if (vm.type == 'Event') {
-
-                                        eventObj = JSON.parse(answers[k].eventstr);
-
-                                        //Object.assign(answers[k], eventObj);
-                                        mergeObject(answers[k], eventObj);
-                                        
-                                        //To determine if event is current look at end date if exist if not use start date
-                                        //if (eventObj.edate != undefined && eventObj.edate != '') obj.date = answers[k].edate.slice(4);
-                                        //else obj.date = answers[k].sdate.slice(4);
-                                        eventIsCurrent = datetime.eventIsCurrent(obj, answers[k]);
-                                        
-                                        if (eventIsCurrent) {
-                                            $rootScope.canswers.push(obj);
-                                            $rootScope.ccatans.push(catansrecs[i]);
-                                
-                                            //Collect array of 'current' catans records ids
-                                            $rootScope.B.push(catansrecs[i].id);
-                                            break;
-                                        }
-                                        else break;
-                                    }
-                                    else {
-
-                                        $rootScope.canswers.push(obj);
-                                        $rootScope.ccatans.push(catansrecs[i]);
-                                
-                                        //Collect array of 'current' catans records ids
-                                        $rootScope.B.push(catansrecs[i].id);
-                                        break;
-                                    }
-                                }
-                            }
-                        }                  
-                    }
-                    //if rank is not atomic
-                    else {
-                        */
-                        //Puts numbers into array. Pretty sweet!
+                           //Puts numbers into array. Pretty sweet!
                         if ($rootScope.cCategory.catstr) catArr = $rootScope.cCategory.catstr.split(':').map(Number);
                         else catArr = [$rootScope.cCategory.id];
 
@@ -868,33 +823,29 @@
                                         if (vm.type == 'Event') {
 
                                             eventObj = JSON.parse(answers[k].eventstr);
+                                            if (eventObj) {
+                                                mergeObject(answers[k], eventObj);
 
-                                            //Object.assign(answers[k], eventObj);
-                                            mergeObject(answers[k], eventObj);
-                                            
-                                            //To determine if event is current look at end date if exist if not use start date
-                                            //if (eventObj.edate != undefined && eventObj.edate != '') obj.date = answers[k].edate.slice(4);
-                                            //else obj.date = answers[k].sdate.slice(4);
-                                            eventIsCurrent = datetime.eventIsCurrent(obj, answers[k]);
-                                            
-                                            if (eventIsCurrent) {
-                                                $rootScope.canswers.push(obj);
-                                                $rootScope.ccatans.push(catansrecs[i]);
-                                
-                                                //Collect array of 'current' catans records ids
-                                                $rootScope.B.push(catansrecs[i].id);
-                                                break;
+                                                //To determine if event is current look at end date if exist if not use start date
+                                                //if (eventObj.edate != undefined && eventObj.edate != '') obj.date = answers[k].edate.slice(4);
+                                                //else obj.date = answers[k].sdate.slice(4);
+                                                eventIsCurrent = datetime.eventIsCurrent(obj, answers[k]);
+
+                                                if (eventIsCurrent) {
+                                                    $rootScope.canswers.push(obj);
+                                                    $rootScope.ccatans.push(catansrecs[i]);
+                                                    break;
+                                                }
+                                                else break;
                                             }
-                                            else break;
                                         }
                                         else {
-
-                                            $rootScope.canswers.push(obj);
-                                            $rootScope.ccatans.push(catansrecs[i]);
-                                
-                                            //Collect array of 'current' catans records ids
-                                            $rootScope.B.push(catansrecs[i].id);
-                                            break;
+                                            if (($rootScope.isCustomRank && obj.isprivate) ||
+                                                (!$rootScope.isCustomRank && !obj.isprivate )) {
+                                                $rootScope.canswers.push(obj);
+                                                $rootScope.ccatans.push(catansrecs[i]);
+                                                break;
+                                            }
                                         }
 
                                     }
@@ -911,34 +862,16 @@
             }
             vm.answers = $rootScope.canswers;
             
-            //Calculate distances to user
-            var p = 0.017453292519943295;    // Math.PI / 180
-            var c = Math.cos;
-            var a = 0;
-            var lat_o = $rootScope.currentUserLatitude;
-            var lng_o = $rootScope.currentUserLongitude;
-            var lat = 0;
-            var lng = 0;
-            var dist_mi = 0;
-            for (var i = 0; i < vm.answers.length; i++) {
-                lat = vm.answers[i].lat;
-                lng = vm.answers[i].lng;
-                a = 0.5 - c((lat - lat_o) * p) / 2 + c(lat_o * p) * c(lat * p) * (1 - c((lng - lng_o) * p)) / 2;
-
-                dist_mi = (12742 * Math.asin(Math.sqrt(a))) / 1.609; // 2 * R; R = 6371 km
-                
-                if (dist_mi < 1) vm.answers[i].dist = dist_mi.toPrecision(2);
-                else vm.answers[i].dist = dist_mi.toPrecision(3);
-
+            if (vm.answers.length > vm.limit) vm.thereIsMore = true;
+            else vm.thereIsMore = false;
+            dataloader.pulldata('answers',$rootScope.canswers);
+            
+            if ($rootScope.currentUserLatitude && $rootScope.currentUserLongitude) {
+                vm.haveLocation = true;
+                getDistances();
             }
-            vm.haveLocation = true;
-            if (vm.answers.length > 0) {
-                if (isNaN(vm.answers[0].dist)) {
-                    vm.haveLocation = false;
-                }
-                else vm.haveLocation = true;
-            }
-
+            else vm.haveLocation = false;
+            
             //Specials
             var cdate = new Date();
             var dayOfWeek = cdate.getDay();
@@ -1047,6 +980,44 @@
             
             //data loading completed
             vm.isLoading = false;
+        }
+
+        function getDistances(){
+            //Calculate distances to user
+            var p = 0.017453292519943295;    // Math.PI / 180
+            var c = Math.cos;
+            var a = 0;
+            var lat_o = $rootScope.currentUserLatitude;
+            var lng_o = $rootScope.currentUserLongitude;
+            var lat = 0;
+            var lng = 0;
+            var dist_mi = 0;
+            for (var i = 0; i < vm.answers.length; i++) {
+                lat = vm.answers[i].lat;
+                lng = vm.answers[i].lng;
+                a = 0.5 - c((lat - lat_o) * p) / 2 + c(lat_o * p) * c(lat * p) * (1 - c((lng - lng_o) * p)) / 2;
+
+                dist_mi = (12742 * Math.asin(Math.sqrt(a))) / 1.609; // 2 * R; R = 6371 km
+                
+                if (dist_mi < 1) vm.answers[i].dist = dist_mi.toPrecision(2);
+                else vm.answers[i].dist = dist_mi.toPrecision(3);
+
+            }
+            //vm.answers = [];
+            /*
+            vm.haveLocation = true;
+            if (vm.answers.length > 0) {
+                if (isNaN(vm.answers[0].dist)) {
+                    vm.haveLocation = false;
+                }
+                else vm.haveLocation = true;
+            }*/
+
+            //$scope.$apply(function(){
+                
+            //});
+            //console.log("vm.answers - ", vm.answers);
+
         }
 
 
@@ -1247,6 +1218,7 @@
         }
 
         function callGetLocation() {
+            console.log("emitGetLocation");
             $rootScope.$emit('getLocation');
         }
 
@@ -1520,7 +1492,7 @@
                 }
                 catch (err) {
                     console.log("Error: ", err);
-                    console.log("$rootScope.thisuseractivity - ", $rootScope.thisuseractivity);
+                    console.log("$rootScope.cCategory - ", $rootScope.cCategory);
                     var idx = -1;                    
                 }
                 if (idx >= 0) {
@@ -1606,8 +1578,31 @@
         }
 
         function backToResults(){
-            updateRecords();
-            $rootScope.$emit('backToResults');
+            //updateRecords();
+            if ($rootScope.previousState == 'trends') $state.go('trends');
+            else $rootScope.$emit('backToResults');
+            //$rootScope.$emit('backToResults');
+        }
+
+        function seeMore(){
+            vm.limit = vm.limit+20;
+            loadTrendVotes(vm.limit);
+            if (vm.answers.length > vm.limit) vm.thereIsMore = true;
+            else vm.thereIsMore = false;
+        }
+
+        function loadTrendVotes(x){
+            var answerIDs = vm.answers.map(function (answer) { return answer.id; });
+                if (answerIDs.length > 0) {
+                    votes.loadLastMonthVoting(answerIDs.slice(x,x+20))
+                        .then(function (resp) {
+                            resp.forEach(function (vote) {
+                                var idx = answerIDs.indexOf(vote.answer);
+                                vm.answers[idx].trendUpV++;
+                            });
+                            //console.log(vm.answers);
+                        });
+                }
         }
     }
 })();

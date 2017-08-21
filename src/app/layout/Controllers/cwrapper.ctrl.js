@@ -108,11 +108,11 @@
         vm.loadMore = loadMore;
         vm.showLess = showLess;
 
-
-        vm.initialDataCount = 8;
-        if ($rootScope.md) {
-            vm.initialDataCount = 4;
-        }
+/*
+        vm.initialDataCount = 12;
+        //if ($rootScope.md) {
+          //  vm.initialDataCount = 8;
+        //}
         vm.pageDataLoaded = $rootScope.pageDataLoaded;
         vm.initalHomeData = $rootScope.initalHomeData;
         
@@ -130,28 +130,33 @@
         }
 
         vm.scrollingItemsOnePage = 1000;
-        vm.scrollingData = [];
+        //vm.scrollingData = [];
         vm.scrollDataLoading = false;
         vm.content = [];
         vm.endReached = false;
         vm.scrollingData = [];
         vm.uniqueResult = [];
         if($rootScope.pageDataLoaded){
-            vm.content = angular.copy($rootScope.content);
-            loadInifiniteScroll(true);
-        }
+            //vm.content = angular.copy($rootScope.content);
+            //loadInifiniteScroll(true);
+        }*/
 
         $rootScope.$on('filterOptionChanged', function () {
-            if(vm.pageDataLoaded)
-                loadInifiniteScroll(true);
+            //if(vm.pageDataLoaded)
+                //loadInifiniteScroll(true);
+        });
+
+        $rootScope.$on('initalHomeDataLoaded', function () {
+            //reload();
         });
 
         $rootScope.$on('homeDataLoaded', function () {
-            vm.pageDataLoaded = true;
-            vm.content = angular.copy($rootScope.content);
-            loadInifiniteScroll(false);
+            //vm.pageDataLoaded = true;
+            //console.log("length $rootScope.content - ",$rootScope.content.length );
+            //vm.content = angular.copy($rootScope.content);
+            //loadInifiniteScroll(false);
 
-
+/*
             if(!$rootScope.hasBusiness && !$rootScope.isPromoter) {
                 var time = 60000 * 5;
                 if ($rootScope.isLoggedIn){
@@ -160,9 +165,12 @@
                 $timeout(function(){
                     //dialog.openSubscriptionDlg(execSubscription);
                 }, time);;
-            }
+            }*/
         });
 
+        function reload(){
+            vm.initalHomeData = $rootScope.initalHomeData;
+        }
 
         function execSubscription(email){
             mailing.subscribed(email, $rootScope.user ? $rootScope.user.first_name + ' ' + $rootScope.user.last_name : '');
@@ -177,13 +185,12 @@
         //     $scope.$apply();
         // });
         function loadInifiniteScroll(reloading){
-
+            
             vm.currentIndex = 0;
             vm.startIndex = 0;
             vm.loadingCountOneScroll = 6;
-            vm.scrollingData = [];
             vm.scrollDataLoading = false;
-            vm.content = [];
+            // vm.content = [];
             vm.endReached = false;
             vm.scrollingData = [];
             
@@ -198,7 +205,8 @@
 
             if($rootScope.filterOptions.isAllTopics && $rootScope.filterOptions.isCity){
                 // uniqueResult = angular.copy($rootScope.content.filter(function(ranking){ return ranking.ismp == 1;}));
-                var res = search.searchRanksMainPage($rootScope.filterOptions.isCity,'san diego');
+                //var res = search.searchRanksMainPage($rootScope.filterOptions.isCity,'san diego');
+                res = $rootScope.content;
                 searchResult = searchResult.concat(res);
             } else if($rootScope.filterOptions.isAllTopics && !$rootScope.filterOptions.isCity) {
                 var res = search.searchRanksMainPage($rootScope.filterOptions.isCity, $rootScope.filterOptions.cnh);
@@ -209,15 +217,16 @@
                     searchResult = searchResult.concat(res);               
                 }
             }
+            //var res = $rootScope.content;
             
             shuffle(searchResult);
 
             searchResult.forEach(function(ranking){
-                if(uniqueResult.indexOf(ranking) == -1){
+                if(uniqueResult.indexOf(ranking) == -1 && ranking.ismp){
                     uniqueResult.push(ranking);
                 }
             });
-
+            
             // uniqueResult.sort(function(ranking1, ranking2){
             //     var view1 = ranking1.views ? ranking1.views : 0;
             //     var view2 = ranking2.views ? ranking2.views : 0;
@@ -237,6 +246,7 @@
                 }
                 vm.uniqueResult = uniqueResult;
             } else {
+                
                 var initalHomeDataIDs = vm.initalHomeData.map(function(ranking){ return ranking.id; })
                 vm.uniqueResult = uniqueResult.filter(function(ranking){
                     return initalHomeDataIDs.indexOf(ranking.id) == -1;
@@ -308,8 +318,8 @@
 
         window.prerenderReady = false;
 
-        if ($rootScope.cwrapperLoaded) activate();
-        else init();
+        //if ($rootScope.cwrapperLoaded) activate();
+        //else init();
         function activate() {
             if ($state.params.main == true) goHome();
             

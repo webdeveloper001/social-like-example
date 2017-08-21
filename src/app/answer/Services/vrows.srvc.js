@@ -11,85 +11,34 @@
 
         // Members
         var _allvrows = [];
+        var _fetchAnswersMem = [];
+        $rootScope.cvrows = _allvrows;
         var baseURI = '/api/v2/mysql/_table/vrows';
 
         var service = {
             getAllvrows: getAllvrows,
+            getVrowsX: getVrowsX,
             postRec: postRec,
             postRec2: postRec2,
             deleteVrowByAnswer: deleteVrowByAnswer,
             deleteVrow: deleteVrow,
             updateRec: updateRec,
             deleteVrowByGroup: deleteVrowByGroup,
-            postVrows4Answer: postVrows4Answer
+            //postVrows4Answer: postVrows4Answer
         };
 
         return service;
 
         function getAllvrows(forceRefresh) {
 
-            if (_areAllvrowsLoaded() && !forceRefresh) {
-
-                return $q.when(_allvrows);
-            }
-            
             //Get all vrows records
             var url0 = baseURI + '?offset=' + 0 * 1000;
-            /*var url1 = baseURI + '?offset=' + 1 * 1000;
-            var url2 = baseURI + '?offset=' + 2 * 1000;
-            var url3 = baseURI + '?offset=' + 3 * 1000;
-            var url4 = baseURI + '?offset=' + 4 * 1000;
-            var url5 = baseURI + '?offset=' + 5 * 1000;
-            var url6 = baseURI + '?offset=' + 6 * 1000;
-            var url7 = baseURI + '?offset=' + 7 * 1000;
-            var url8 = baseURI + '?offset=' + 8 * 1000;
-            var url9 = baseURI + '?offset=' + 9 * 1000;
-            var url10 = baseURI + '?offset=' + 10 * 1000;
-            var url11 = baseURI + '?offset=' + 11 * 1000;
-            var url12 = baseURI + '?offset=' + 12 * 1000;
-            var url13 = baseURI + '?offset=' + 13 * 1000;
-            var url14 = baseURI + '?offset=' + 14 * 1000;
-            var url15 = baseURI + '?offset=' + 15 * 1000;
-            var url16 = baseURI + '?offset=' + 16 * 1000;
-            var url17 = baseURI + '?offset=' + 17 * 1000;
-            var url18 = baseURI + '?offset=' + 18 * 1000;
-            var url19 = baseURI + '?offset=' + 19 * 1000;
-            var url20 = baseURI + '?offset=' + 20 * 1000;
-            var url21 = baseURI + '?offset=' + 21 * 1000;
-            var url22 = baseURI + '?offset=' + 22 * 1000;
-            var url23 = baseURI + '?offset=' + 23 * 1000;
-            var url24 = baseURI + '?offset=' + 24 * 1000;
-            var url25 = baseURI + '?offset=' + 25 * 1000;*/
 
             var p0 = $http.get(url0);
-/*            var p1 = $http.get(url1);
-            var p2 = $http.get(url2);
-            var p3 = $http.get(url3);
-            var p4 = $http.get(url4);
-            var p5 = $http.get(url5);
-            var p6 = $http.get(url6);
-            var p7 = $http.get(url7);
-            var p8 = $http.get(url8);
-            var p9 = $http.get(url9);
-            var p10 = $http.get(url10);
-            var p11 = $http.get(url11);
-            var p12 = $http.get(url12);
-            var p13 = $http.get(url13);
-            var p14 = $http.get(url14);
-            var p15 = $http.get(url15);
-            var p16 = $http.get(url16);
-            var p17 = $http.get(url17);
-            var p18 = $http.get(url18);
-            var p19 = $http.get(url19);
-            var p20 = $http.get(url20);
-            var p21 = $http.get(url21);
-            var p22 = $http.get(url22);
-            var p23 = $http.get(url23);
-            var p24 = $http.get(url24);
-            var p25 = $http.get(url25);*/
 
             return $q.all([p0]).then(function (d) {
-                _allvrows = d[0].data.resource;
+                var data = d[0].data.resource;
+                _load (data);
                 if ($rootScope.DEBUG_MODE) console.log("No. Vrows: ", _allvrows.length);
                 return _allvrows;
             }, _queryFailed); 
@@ -97,6 +46,46 @@
             //return _allvrows;
         }
 
+        function getVrowsX(data) {
+
+            var _datax = [];  //this is filtered array (ignore those answers for which vrows already fetched)
+            data.forEach(function(item){
+                if (_fetchAnswersMem.indexOf(item.answer)<0){
+                     _datax.push(item);
+                     _fetchAnswersMem.push(item.answer);
+                }
+            });
+
+            if (_datax.length == 0) return $q.when(false);
+
+            var filterstr = '?filter=(';
+            for (var i=0; i< _datax.length; i++){
+                filterstr = filterstr + 'answer=' + _datax[i].answer+')OR(';
+            }
+            filterstr = filterstr.substring(0,filterstr.length-3);
+            
+            //Get all vrows records
+            var url0 = baseURI + filterstr;
+            
+            var p0 = $http.get(url0);
+          
+            return $q.all([p0]).then(function (d) {
+                
+                var _allvrowsx = d[0].data.resource;
+                var map = _allvrows.map(function(x) {return x.id; });
+                
+                _allvrowsx.forEach(function(vrowobj){
+                        if(map.indexOf(vrowobj.id) < 0)
+                        _allvrows.push(vrowobj);
+                });
+
+                if ($rootScope.DEBUG_MODE) console.log("No. Vrows: ", _allvrows.length);
+                return _allvrowsx;
+            }, _queryFailed); 
+
+            //return _allvrows;
+        }
+/*
         function postVrows4Answer(answer) {
             var titles = [];
             var obj = {};
@@ -173,8 +162,8 @@
                 postRec2(vrowsobjs);
             }
 
-        }
-
+    }
+*/
         function postRec(x) {
            
             //form match record
@@ -339,13 +328,7 @@
             data.id = rec_id;
 
             for (var i = 0; i < field.length; i++) {
-                switch (field[i]) {
-                    case "upV": data.upV = val[i]; break;
-                    case "downV": data.downV = val[i]; break;
-                    case "title": data.title = val[i]; break;
-                    case "gnum": data.gnum = val[i]; break;
-                    case "gtitle": data.gtitle = val[i]; break;
-                }
+               data[field[i]] = val[i];
             }
             //console.log("data", data);
             obj.resource.push(data);
@@ -355,13 +338,7 @@
             //update local copy
             var idx = _allvrows.map(function (x) { return x.id; }).indexOf(rec_id);
             for (var i = 0; i < field.length; i++) {
-                switch (field[i]) {
-                    case "upV": $rootScope.cvrows[idx].upV = val[i]; break;
-                    case "downV": $rootScope.cvrows[idx].downV = val[i]; break;
-                    case "title": $rootScope.cvrows[idx].title = val[i]; break;
-                    case "gnum": $rootScope.cvrows[idx].gnum = val[i]; break;
-                    case "gtitle": $rootScope.cvrows[idx].gtitle = val[i]; break;
-                }
+                _allvrows[idx][field[i]] = val[i];
             }
 
             return $http.patch(url, obj, {
@@ -375,6 +352,13 @@
                 if ($rootScope.DEBUG_MODE) console.log("updating vrows record succesful");
                 return result.data;
             }
+        }
+
+        function _load(data){
+            _allvrows.length = 0;
+            data.forEach(function(x){
+                _allvrows.push(x);
+            });
         }
 
         function _areAllvrowsLoaded() {

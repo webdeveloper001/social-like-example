@@ -103,16 +103,7 @@
             data.id = event_id;
             
             for (var i=0; i<field.length; i++){
-                switch (field[i]){
-                    case "name": data.name = val[i]; break;
-                    case "addinfo": data.addinfo = val[i]; break;
-                    case "cityarea": data.cityarea = val[i]; break;
-                    case "location": data.location = val[i]; break;
-                    case "image": data.imageurl = val[i]; break;
-                    case "views": data.views = val[i]; break;
-                    case "owner": data.owner = val[i]; break;
-                    case "website": data.website = val[i]; break;
-                }
+                data[field[i]] = val[i];
             }
             //console.log("data", data);
             obj.resource.push(data);
@@ -124,21 +115,7 @@
             //var idx = $rootScope.A.indexOf(+event_id);
             var idx = _events.map(function(x) {return x.id; }).indexOf(event_id);  
             for (var i=0; i<field.length; i++){
-                switch (field[i]){
-                    case "name": $rootScope.events[idx].name = val[i]; break;
-                    case "addinfo": $rootScope.events[idx].addinfo = val[i]; break;
-                    case "cityarea": $rootScope.events[idx].cityarea = val[i]; break;
-                    case "location": $rootScope.events[idx].location = val[i]; break;
-                    case "image": $rootScope.events[idx].imageurl = val[i]; break;
-                    case "views": $rootScope.events[idx].views = val[i]; break;
-                    case "lat": $rootScope.events[idx].lat = val[i]; break;
-                    case "lng": $rootScope.events[idx].lng = val[i]; break;
-                    case "owner": $rootScope.events[idx].owner = val[i]; break;
-                    case "phone": $rootScope.events[idx].phone = val[i]; break;
-                    case "website": $rootScope.events[idx].website = val[i]; break;
-                    case "email": $rootScope.events[idx].email = val[i]; break;
-                    case "strhours": $rootScope.events[idx].strhours = val[i]; break;
-                }
+               _events[idx][field[i]] = val[i];
             }                        
             
             return $http.patch(url, obj, {

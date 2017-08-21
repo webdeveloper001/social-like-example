@@ -5,10 +5,12 @@
         .module('app')
         .service('userdata', userdata);
 
-    userdata.$inject = ['$rootScope', 'votes', 'editvote', 'vrowvotes', 'useraccnt', 'answer',
+    userdata.$inject = ['$rootScope', 'votes', 'editvote', 'vrowvotes', 
+    'useraccnt', 'answer','table2', 'catans','special',
      'useractivity', '$q', 'promoter','categorycode', 'codeprice','$http', 'SERVER_URL'];
 
-    function userdata($rootScope, votes, editvote, vrowvotes, useraccnt, answer,
+    function userdata($rootScope, votes, editvote, vrowvotes, 
+        useraccnt, answer, table2, catans, special,
     useractivity, $q, promoter, categorycode, codeprice, $http, SERVER_URL) {
 
         var service = {
@@ -64,10 +66,11 @@
         function loadUserAccount() {
 
             if ($rootScope.isLoggedIn) {
+                if ($rootScope.DEBUG_MODE) console.log("user is logged in, loading loading user accounts data");
            
                 //Check if user has business account    
                 useraccnt.getuseraccnt().then(function (result) {
-                    $rootScope.useraccnts = result;
+                    //$rootScope.useraccnts = result;
                     $rootScope.showWarning = false;
                     if ($rootScope.useraccnts.length > 0) {
                         var missingEmail = true;
@@ -98,7 +101,7 @@
                                     useraccnt.customer = result.data;
                                     syncDatatoAnswers();
                                 }
-                                console.log("Retrieving latest invoice info from Stripe");
+                                if ($rootScope.DEBUG_MODE) console.log("Retrieving latest invoice info from Stripe");
                             }
                         }
                         $rootScope.$emit('userAccountsLoaded');
@@ -107,6 +110,7 @@
                             $rootScope.$emit('showWarning');
                         }
                         else $rootScope.showWarning = false;
+                           
                     }
                 });
             }

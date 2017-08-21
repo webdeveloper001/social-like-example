@@ -55,6 +55,7 @@
         var colors = [];
         var ranks = [];
         var idx = 0;
+        var idx2 = 0;
 
         //Adjust picture size for very small displays
         if ($window.innerWidth < 512) { vm.sm = true; vm.nsm = false; }
@@ -161,6 +162,7 @@
                 item.shade = vm.shade;
                 item.keywords = '';
                 item.fimage = vm.image;
+                item.scope = $rootScope.SCOPE;
 
                 categories.addCategory(item).then(function(result){
                     
@@ -172,6 +174,7 @@
                     itemt.isatomic = true;
                     itemt.cat = result.resource[0].id;
                     itemt.nh = 1;
+                    itemt.scope = $rootScope.SCOPE;
 
                     //Create and update slug
                     //Create table record
@@ -179,14 +182,23 @@
                         //$timeout(function(){
                         //console.log("result ---> ", resultx.resource[0].id);
                         processImage(itemt.cat);
-                        dialog.getDialog('newRank');
-                        $state.go('rankSummary',{index: resultx.resource[0].id}); //slug matches filename
+                        //dialog.getDialog('newRank');
+                        var titlemsg = 'Success!';
+                        var message = 'Your ranking has been created succesfully! <br><br> Now add items to rank and '+
+                        'don\'t forget to share your ranking with other users!';
+                        idx2 = resultx;
+                        dialog.notificationWithCallback(titlemsg, message, goToNewRank);
+                        
                         //},2000);
                     });
 
                     if ($rootScope.DEBUG_MODE) console.log("category added --- ", result);
                 });
             }
+        }
+
+        function goToNewRank(){
+            $state.go('rankSummary',{index: idx2}); //slug matches filename
         }
         
         function clearFields(){
@@ -289,7 +301,7 @@
              vm.similarRanks = search.searchRanks2(vm.rankTitle);
              if (vm.similarRanks.length > 0){
                 vm.showAlert = true;
-                $scope.$apply();
+                //$scope.$apply();
              }
              else alertOk();
 
@@ -365,7 +377,7 @@
         function alertOk(){
             vm.showAlert = false;
             vm.step = 4;
-            $scope.$apply();
+            //$scope.$apply();
         }
 
         function tagsOk(){

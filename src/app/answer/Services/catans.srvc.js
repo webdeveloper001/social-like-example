@@ -11,10 +11,18 @@
 
         // Members
         var _allcatans = [];
+        var _fetchAnswersMem = [];
+        var _fetchRanksMem = [];
+        var _idx = 0;
+        
+        $rootScope.catansrecs = _allcatans;
+
         var baseURI = '/api/v2/mysql/_table/catans';
 
         var service = {
             getAllcatans: getAllcatans,
+            getAllcatansX: getAllcatansX,
+            getAllcatansY: getAllcatansY,
             //getbyCategory: getbyCategory,
             postRec: postRec,
             postRec2: postRec2,
@@ -43,11 +51,6 @@
         
         function getAllcatans(forceRefresh) {
 
-            if (_areAllcatansLoaded() && !forceRefresh) {
-
-                return $q.when(_allcatans);
-            }
-            
             //Get all catans records
             var url0 = baseURI + '?offset=' + 0 * 1000;
             var url1 = baseURI + '?offset=' + 1 * 1000;
@@ -72,15 +75,107 @@
             var p9 = $http.get(url9);
 
             return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9]).then(function (d){
-                _allcatans = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource, d[4].data.resource,
+                var data = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource, d[4].data.resource,
                 d[5].data.resource, d[6].data.resource, d[7].data.resource, d[8].data.resource, d[9].data.resource);
+                _load (data);
                 if ($rootScope.DEBUG_MODE) console.log("No. Cat-Ans: ", _allcatans.length);
                 return _allcatans;            
             }, _queryFailed);  
             
         }
 
-        
+        function getAllcatansX(data) {
+            //console.log("@catans - getAllCatansX");
+            var _datax = [];  //this is filtered array (ignore those ranks for which catans already fetched)
+            data.forEach(function(item){
+                if (_fetchRanksMem.indexOf(item.id)<0){
+                     _datax.push(item);
+                     _fetchRanksMem.push(item.id);
+                }
+            });
+            //_datax = [];
+            if (_datax.length == 0) return $q.when(false);
+
+            var filterstr = '?filter=(';
+            for (var i=0; i< _datax.length; i++){
+                if (_datax[i].catstr){
+                    var catArr = _datax[i].catstr.split(':').map(Number);
+                    for (var j=0; j<catArr.length; j++) {
+                        filterstr = filterstr + 'category=' + catArr[j]+')OR(';
+                        //console.log("@allcatansX", catArr[j]);
+                    }
+                }
+                else{
+                filterstr = filterstr + 'category=' + _datax[i].id+')OR(';
+                //console.log("@allcatansX", _datax[i].id);
+                }
+            }
+
+            filterstr = filterstr.substring(0,filterstr.length-3);
+            
+            //Get all catans records
+            var url0 = baseURI + filterstr;
+            
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                
+                var _allcatansx = d[0].data.resource;
+                var map = _allcatans.map(function(x) {return x.id; });
+                _allcatansx.forEach(function(catansobj){
+                        if(map.indexOf(catansobj.id) < 0)
+                        _allcatans.push(catansobj);
+                });
+
+                if ($rootScope.DEBUG_MODE) 
+                    console.log("getAllCatansX loaded: ", _allcatansx.length);
+                
+                return _allcatansx;            
+            }, _queryFailed);  
+            
+        }
+
+        function getAllcatansY(data) {
+
+            var _datax = [];  //this is filtered array (ignore those answers for which catans already fetched)
+            data.forEach(function(item){
+                if (_fetchAnswersMem.indexOf(item.id)<0){
+                    _datax.push(item);
+                    _fetchAnswersMem.push(item.id);
+                }
+            });
+
+            //_datax = [];
+
+            if (_datax.length == 0) return $q.when(false);
+
+            var filterstr = '?filter=(';
+            for (var i=0; i< _datax.length; i++){
+                filterstr = filterstr + 'answer=' + _datax[i].id+')OR(';
+                //console.log("@catansY -- answer =", _datax[i].id);
+            }
+            
+            filterstr = filterstr.substring(0,filterstr.length-3);
+            //Get all catans records
+            var url0 = baseURI + filterstr;
+            
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                
+                var _allcatansy = d[0].data.resource;
+                var map = _allcatans.map(function(x) {return x.id; });
+                _allcatansy.forEach(function(catansobj){
+                        if(map.indexOf(catansobj.id) < 0)
+                        _allcatans.push(catansobj);
+                });
+                if ($rootScope.DEBUG_MODE) 
+                    console.log("getAllCatansY loaded: ", _allcatansy.length);
+                return _allcatansy;            
+            }, _queryFailed);  
+            
+        }
+
         function deleteCatan(catan_id) {
             
             //delete records from local copy
@@ -143,9 +238,11 @@
             var obj = {};
             obj.resource = [];
 
+            //update local copy
+            _allcatans.push(data);
+
             obj.resource.push(data);
             
-            _allcatans.push(data);
             var url = baseURI;
 
             return $http.post(url, obj, {
@@ -156,9 +253,15 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
                 
-                //update local copies
-                var id = result.data.resource[0].id; 
-                _allcatans[_allcatans.length-1].id = id;
+                //write id to local copy record
+                _allcatans.forEach(function(item){
+                    if (item.category == data.category && 
+                        item.answer == data.answer)
+                        item.id = result.data.resource[0].id; 
+                })
+                //var datax = data;
+                //datax.id = result.data.resource[0].id;
+                //_allcatans.push(datax);
 
                 //Create user activity feed
                 uaf.post('addedAnswer',['answer','category'],[data.answer, data.category]); //user activity feed
@@ -183,9 +286,11 @@
             var obj = {};
             obj.resource = [];
 
+            //update local copy
+            _allcatans.push(data);
+
             obj.resource.push(data);
             
-            _allcatans.push(data);
             var url = baseURI;
 
             return $http.post(url, obj, {
@@ -197,12 +302,21 @@
             function querySucceeded(result) {
                 
                 //update local copies
-                var id = result.data.resource[0].id; 
-                _allcatans[_allcatans.length-1].id = id;
+                //write id to local copy record
+                _allcatans.forEach(function(item){
+                    if (item.category == data.category && 
+                        item.answer == data.answer)
+                        item.id = result.data.resource[0].id; 
+                });
+                //var datax = data;
+                //datax.id = result.data.resource[0].id;
+                //_allcatans.push(datax);
+
                 //Create user activity feed
                 uaf.post('addedAnswer',['answer','category'],[answer, category]); //user activity feed
                 
-                if ($rootScope.DEBUG_MODE) console.log("creating catans record was succesful");
+                //if ($rootScope.DEBUG_MODE) 
+                    console.log("@postRec2 creating catans record was succesful");
                 return result.data;
             }
         }
@@ -290,14 +404,7 @@
             data.id = rec_id;
             
             for (var i=0; i<field.length; i++){
-                switch (field[i]){
-                    case "upV": data.upV = val[i]; break;
-                    case "downV": data.downV = val[i]; break;
-                    case "rank": data.rank = val[i]; break;
-                    case "answer": data.answer = val[i];break;
-                    case "isdup": data.isdup = val[i];break;
-                    case "category": data.category = val[i];break;
-                }
+                data[field[i]] = val[i];
             }
             //console.log("data", data);
             obj.resource.push(data);
@@ -308,14 +415,7 @@
             //var idx = $rootScope.B.indexOf(+rec_id);
             var idx = _allcatans.map(function(x) {return x.id; }).indexOf(rec_id);            
             for (var i=0; i<field.length; i++){
-                switch (field[i]){
-                    case "upV": $rootScope.catansrecs[idx].upV = val[i]; break;
-                    case "downV": $rootScope.catansrecs[idx].downV = val[i]; break;
-                    case "rank": $rootScope.catansrecs[idx].rank = val[i]; break;
-                    case "answer": $rootScope.catansrecs[idx].answer = val[i]; break;
-                    case "isdup": $rootScope.catansrecs[idx].isdup = val[i]; break;
-                    case "category": $rootScope.catansrecs[idx].category = val[i]; break;
-                }
+                _allcatans[idx][field[i]] = val[i];
             }                        
             
             return $http.patch(url, obj, {
@@ -329,6 +429,13 @@
                 if ($rootScope.DEBUG_MODE) console.log("updating catans record succesful");
                 return result.data;
             }
+        }
+
+        function _load(data){
+            _allcatans.length = 0;
+            data.forEach(function(x){
+                _allcatans.push(x);
+            });
         }
      
         function _areAllcatansLoaded() {

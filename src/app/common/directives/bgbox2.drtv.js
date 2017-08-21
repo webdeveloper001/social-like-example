@@ -15,12 +15,12 @@ angular.module('app').directive('bgBox2', ['color','$timeout',function (color,$t
             w: '@',
             h: '@',
             question: '@',
-            isRankOfDay: '@'
+            isRankOfDay: '@',
         },
-        link: function (scope) {
+        link: function (scope, elem, attrs) {
 
         $timeout(function(){
-
+            //console.log("@bgbox2 - scope.rank - ", scope.rank);
             var S = JSON.parse(scope.stats);
             scope.views = S.views;
             scope.answers = S.answers;
@@ -36,7 +36,8 @@ angular.module('app').directive('bgBox2', ['color','$timeout',function (color,$t
            }
            if (scope.bc2 == undefined) scope.bc2 = color.shadeColor(scope.bc,scope.shade/10);
             
-        });   
+        });
+
            scope.$on('$destroy',function(){
                 scope.isDestroyed = true;
             });

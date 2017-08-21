@@ -28,7 +28,7 @@
         return service;
 
         function loadFilterOptions(){
-            $rootScope.filterOptions = $window.localStorage.getItem("Rank-X-Filters");
+            //$rootScope.filterOptions = $window.localStorage.getItem("Rank-X-Filters");
             if( !$rootScope.filterOptions )
                 $rootScope.filterOptions = defaultOptions;
             else
@@ -43,20 +43,21 @@
 
 
         function loadInitalHomeData(){
-            $rootScope.initalHomeData = $window.localStorage.getItem("Rank-X-HomeData");
+            //$rootScope.initalHomeData = $window.localStorage.getItem("Rank-X-HomeData");
             if( !$rootScope.initalHomeData ){
                 return false;
             }
             else{
-                $rootScope.initalHomeData = JSON.parse($rootScope.initalHomeData);
+                //$rootScope.initalHomeData = JSON.parse($rootScope.initalHomeData);
                 $rootScope.$emit('initalHomeDataLoaded');
                 return true;
             }
         }
 
         function saveInitalHomeData(initalHomeData){
-            $rootScope.initalHomeData = initalHomeData;
-            $window.localStorage.setItem("Rank-X-HomeData", JSON.stringify(initalHomeData));
+            //$rootScope.initalHomeData = initalHomeData;
+            //$window.localStorage.setItem("Ranks-HomeData", JSON.stringify(initalHomeData));
+            //$window.localStorage.setItem("Categories-HomeData", JSON.stringify(initalHomeData));
         }
 
     }
