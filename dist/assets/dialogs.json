@@ -75,6 +75,8 @@
     "dialog.wrongPassword.text": "The password you have entered is incorrect.",
     "dialog.noImages.title": "No Images",
     "dialog.noImages.text": "We couldnt find any images. Try changing using a different bank of images or change the query text.",
+    "dialog.onlySanDiego.title": "Select City",
+    "dialog.onlySanDiego.text": "Rank-X is currently only available for San Diego, CA. <br> We will be reaching other US cities soon.",
     "dialog.rodimageuploadsuccess.title": "Success!",
     "dialog.rodimageuploadsuccess.text": "The image has been uploaded and saved succesfully.",
     "dialog.rodimagedeletesuccess.title": "Success!",
