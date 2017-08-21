@@ -5,10 +5,10 @@
         .module('app')
         .controller('navbar', navbar);
 
-    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state',
+    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state', '$scope',
         'city', '$cookies', '$http', 'GOOGLE_API_KEY', 'dialog','getgps', 'useraccnt'];
 
-    function navbar($location, $translate, $rootScope, login, $state,
+    function navbar($location, $translate, $rootScope, login, $state, $scope,
         city, $cookies, $http, GOOGLE_API_KEY, dialog, getgps, useraccnt) {
         /* jshint validthis:true */
         var vm = this;
@@ -45,30 +45,29 @@
 
         vm.warning = false;
 
-        $rootScope.$on('getLocation', function (e) {
+        var geoLocationListener = $rootScope.$on('getLocation', function (e) {
             //console.log("navbar rx emitGetLocation");
             autoDetectCity();
         });
-
-        $rootScope.$on('coordsRdy', function (e) {
+        var coordsRdyListener = $rootScope.$on('coordsRdy', function (e) {
             showCoordsIcon();
         });
 
-        $rootScope.$on('adminCredentials', function(e) {
+        var adminCredentialsListener = $rootScope.$on('adminCredentials', function(e) {
             vm.isAdmin = ($rootScope.isAdmin || $rootScope.dataAdmin);
         });
 
-        $rootScope.$on('showWarning', function (e) {
+        var showWarningListener = $rootScope.$on('showWarning', function (e) {
             if ($rootScope.DEBUG_MODE) console.log("rx showWarning");
             showWarningsIcon();
         });
 
-        $rootScope.$on('hideWarning', function (e) {
+        var hideWarningListener = $rootScope.$on('hideWarning', function (e) {
             if ($rootScope.DEBUG_MODE) console.log("rx clearWarning");
             hideWarningsIcon();
         });
 
-        $rootScope.$on('useAddress', function (e, address) {
+        var useAddressListener = $rootScope.$on('useAddress', function (e, address) {
             //console.log("use address ----aaaaa");
             var obj = {};
             obj.location = address.address;
@@ -78,7 +77,7 @@
             getgps.getLocationGPS(obj);
         });
 
-        $rootScope.$on('userDataLoaded', function (e) {
+        var userDataLoadedListener = $rootScope.$on('userDataLoaded', function (e) {
             //if ($rootScope.isLoggedIn && $rootScope.userpromoter.length > 0) {
              if ($rootScope.isLoggedIn) {   
                 vm.isPromoter = true;
@@ -91,7 +90,7 @@
             }
         });
 
-        $rootScope.$on('userAccountsLoaded', function (e) {
+        var userAccountsLoadedListener = $rootScope.$on('userAccountsLoaded', function (e) {
             if ($rootScope.isLoggedIn && $rootScope.useraccnts.length > 0) {
                 vm.hasBusiness = true;
                 $rootScope.hasBusiness = true;
@@ -101,8 +100,17 @@
                 $rootScope.hasBusiness = false;
                 vm.hasBusiness = false;
             }
-        });
+        }); 
 
+        $scope.$on('$destroy',geoLocationListener);
+        $scope.$on('$destroy',coordsRdyListener);
+        $scope.$on('$destroy',adminCredentialsListener);
+        $scope.$on('$destroy',showWarningListener);
+        $scope.$on('$destroy',hideWarningListener);
+        $scope.$on('$destroy',useAddressListener);
+        $scope.$on('$destroy',userDataLoadedListener);
+        $scope.$on('$destroy',userAccountsLoadedListener);
+        
         activate();
 
         function activate() {
@@ -238,6 +246,7 @@
                 //$location.path('/');
                 //$state.go('cwrapper', {}, { location: 'replace' });
                 $rootScope.$emit('backToResults');
+                $rootScope.$emit('userLoggedOut');
             });
         }
 

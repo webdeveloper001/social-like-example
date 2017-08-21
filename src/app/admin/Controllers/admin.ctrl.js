@@ -38,6 +38,8 @@
         vm.bizAdmin = bizAdmin;
         vm.applyRule = applyRule;
         vm.cleanDB = cleanDB;
+
+        vm.dataready = false;
         //vm.fbpost = fbpost;
         
         activate();
@@ -59,7 +61,7 @@
             vm.dataAdmin = $rootScope.dataAdmin;
 
             loadData();
-            console.log("admin page Loaded!");
+            if ($rootScope.DEBUG_MODE) console.log("admin page Loaded!");
             }
             
         }
@@ -94,10 +96,11 @@
                 dataloader.unwrap();
                 dataloader.createSearchStrings();
 
-                console.log("$rootScope.content.length - ", $rootScope.content.length);
-                console.log("$rootScope.answers.length - ", $rootScope.answers.length);
+                //console.log("$rootScope.content.length - ", $rootScope.content.length);
+                //console.log("$rootScope.answers.length - ", $rootScope.answers.length);
                 
-                console.log("all data ready!");
+                //console.log("all data ready!");
+                vm.dataready = true;
             });   
 
         }

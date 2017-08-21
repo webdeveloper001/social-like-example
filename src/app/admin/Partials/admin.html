@@ -1,7 +1,10 @@
 <!-- Navigation Bar -->
 <div ui-view="navbar"></div>
 <br>
-
+<div ng-if="!vm.dataready">
+<h2>Please wait few seconds, loading all admin data...</h2>
+</div>
+<div ng-if="vm.dataready">
 <div class="text-center" ng-if="vm.isAdmin">
     <div class="btn-group">
         <button class="btn btn-default {{vm.selKeywords}} " ng-click="vm.keywords() ">Searched-Keyword</button>
@@ -22,6 +25,7 @@
 <div ng-if="vm.dataAdmin">
     <button class="btn btn-default {{vm.selQuery}} " ng-click="vm.dbQuery()">Query</button>
     <button class="btn btn-default {{vm.selSibLocs}} " ng-click="vm.sibLocs() ">Sibbling Locations</button>
+</div>
 </div>    
 <br>
 <br>
