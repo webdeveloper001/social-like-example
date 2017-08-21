@@ -16,30 +16,46 @@
     </div>
 
     <div ng-hide="vm.isLoading">
-            
-        
-        
-        <div class="container" style="margin-top: 70px"> <!-- style="padding-left:5px;padding-right:5px;"> -->
+                 
+        <div class="container" style="margin-top: 60px" ng-show="vm.barIsActive"> <!-- style="padding-left:5px;padding-right:5px;"> -->
             <div class="row" style="padding-bottom:10px">
-                <div class="col-xs-7 col-sm-9 col-md-10 col-lg-10">
-                    <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search San Diego" ng-model="vm.val" ng-change="vm.getResults()"
-                        id="SearchInput">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                        </div>
-                </div>
-            </div>
-            
-            <div class="col-xs-5 col-sm-3 col-md-2 col-lg-2">
-                <div class="text-center">
-                        <!--<button class="btn btn-default" ng-click="vm.gotoHome()"><i class="glyphicon glyphicon-home"></i></button>
-                        <button class="btn btn-default" ng-class="vm.showFilters ? 'active' : ''" ng-click="vm.toggleFilterBox()" type="submit"><i class="glyphicon glyphicon-tasks"></i></button> -->
-                        <button class="btn btn-default" ng-click="vm.goAddRank()">Add Rank&nbsp&nbsp<i class="glyphicon glyphicon-plus"></i></button>
+                
+                <!--
+                    <div class="col-xs-12 col-md-5" style="padding-left:0px;padding-right:0px;" ng-if="!vm.selCityActive">
+                        <button class="col-xs-10 btn btn-default" ng-click="vm.scopeCity()"><span class="fa fa-dot-circle-o">
+                            </span>&nbsp&nbspSan Diego, CA&nbsp&nbsp</button>
+                        <button class="col-xs-2 btn btn-default pull-right" ng-click="vm.toggleSelCity()"><span class="fa fa-cog"></span></button>    
+                    </div> 
+                    <div class="col-xs-12 col-md-5" style="padding-left:0px;padding-right:0px;" ng-if="vm.selCityActive">
+                    <div class="col-xs-3" style="padding-left:0px;padding-right:0px;">
+                        <p style="padding-top:5px">Select City:</p>
                     </div>
+                    <div class="col-xs-7" style="padding-left:0px;padding-right:0px;">
+                        <input type="text" class="form-control" placeholder="San Diego" ng-model="vm.city" ng-change="" id=""  disabled>
+                    </div> 
+                        <button class="col-xs-2 btn btn-default pull-right" type="submit" ng-click="vm.toggleSelCity()"> 
+                        OK</button>
+                    </div>
+                    -->
+                <div class="col-xs-12" style="padding-left:0px;padding-right:0px;">
+                    <div class="col-xs-7" style="padding-left:0px;padding-right:0px;">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search San Diego" ng-model="vm.val" ng-change="vm.getResults()" id="SearchInput">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3" style="padding-left:0px;padding-right:0px">
+                        <button class="btn btn-default" style="width:100%" ng-click="vm.goAddRank()">Add Rank&nbsp&nbsp
+                            <!-- <i class="glyphicon glyphicon-plus"></i> --></button>
+                    </div>
+                    <!--<div class="col-xs-2" style="padding-left:0px;padding-right:0px;"> -->
+                        <button class="col-xs-2 btn btn-default pull-right" ng-click="vm.showTrends()"><i class="fa fa-rss" aria-hidden="true"></i></button>
+                    <!--</div> -->
                 </div>
             </div> 
-            
+            <!--
             <div class="col-xs-12 fade in" ng-if="vm.showFilters" style="font-size: 18px">
                 <h2> Filters </h2>
                 <hr style="margin: 0px"/>
@@ -104,7 +120,7 @@
                 </form>
                 
                 <hr/>
-            </div>
+            </div>-->
         </div> 
 
         <div class="input-group" style="width:100%" ng-if="vm.isAdmin">
@@ -122,10 +138,15 @@
             -->
         </div>
         
-        <div ng-show="vm.searchActive">	
-	        <search-block ng-click="vm.hideSearch()" query="{{vm.val}}" ans="true" ranks="true" length="vm.slen"></search-block>
-        </div> 
-        <div ui-view ng-if="!vm.isLoading && !vm.searchActive" class="container" id="page-containter" style=""></div>
+        <div ng-show="!vm.childActive">	
+            <search-block ng-click="vm.hideSearch()" query="{{vm.val}}" 
+                ans="true" ranks="true" length="vm.slen" init="vm.initready" data="vm.dataready"
+                scrollactive="!vm.childActive"></search-block>
+        </div>
+        <br ng-if="vm.childActive">
+        <br ng-if="vm.childActive">
+        <br ng-if="vm.childActive">
+        <div ui-view ng-if="!vm.isLoading && vm.childActive" class="container" id="page-containter" style=""></div>
     </div>
 
     <a href="#" class="back-to-top" style="display: inline;">

@@ -4,12 +4,20 @@
 
 
             <ul class="nav nav-tabs trend-tab" style="background-color: white">
-                <li class="active" style="cursor: pointer"><a data-toggle="tab" href="#popular">Popular</a></li>
+                <li class="active" style="cursor: pointer"><a data-toggle="tab" href="#userfeed">Feed</a></li>
+                <li style="cursor: pointer"><a data-toggle="tab" href="#popular">Popular</a></li>
+                <!--<li class="active" style="cursor: pointer"><a data-toggle="tab" href="#popular">Popular</a></li>-->
                 <li style="cursor: pointer"><a data-toggle="tab" href="#newest">Newest</a></li>
             </ul>
 
             <div class="tab-content" style="">
-                <div class="tab-pane in active fade" style="padding-top:10px;padding-bottom:10px;  " ng-class="showAll =='true' ?'':'trend-tab-single-page'" id="popular">
+                <div class="tab-pane in active fade" style="padding-top:10px;padding-bottom:10px;  " ng-class="showAll =='true' ?'':'trend-tab-single-page'" id="userfeed">
+                        
+                    <userfeed-block show-all=true show-qty="{{userfeedLimit}}"></userfeed-block>
+
+                    <p class="text-center" style="color:blue; margin-top:10px" ng-if="showAll == 'true'"><a class="btn btn-default" style='margin-right:20px;' ng-click="seeMore('userfeed')">See More</a><a class="btn btn-default" ng-click="goBack()">Back</a></p>
+                </div>
+                <div class="tab-pane fade" style="padding-top:10px;padding-bottom:10px;  " ng-class="showAll =='true' ?'':'trend-tab-single-page'" id="popular">
                         
                     <div class="col-xs-12 media ranking-blog-item" ng-repeat="ranking in popularOrder  | limitTo:popularLimit" style="cursor: pointer;" ng-click="rankSel(ranking)">
 
@@ -22,9 +30,7 @@
                         </div>
 
                     </div>
-
-
-                    <p class="text-center" style="color:blue; margin-top:10px" ng-if="showAll == 'true'"><a class="btn btn-default" style='margin-right:20px;' ng-click="seeMore('popular')">See More</a><a class="btn btn-default" href="/home">Back</a></p>
+                    <p class="text-center" style="color:blue; margin-top:10px" ng-if="showAll == 'true'"><a class="btn btn-default" style='margin-right:20px;' ng-click="seeMore('popular')">See More</a><a class="btn btn-default" ng-click="goBack()">Back</a></p>
                 </div>
                 <div class="tab-pane fade"  style="padding-top:10px;padding-bottom:10px; " id="newest" ng-class="showAll =='true' ?'':'trend-tab-single-page'">
                     
@@ -40,8 +46,9 @@
 
                     </div>
 
-                    <p class="text-center" style="color:blue; margin-top:10px" ng-if="showAll == 'true'"><a class="btn btn-default" style='margin-right:20px;' ng-click="seeMore('newest')">See More</a><a class="btn btn-default" href="/home">Back</a></p>
+                    <p class="text-center" style="color:blue; margin-top:10px" ng-if="showAll == 'true'"><a class="btn btn-default" style='margin-right:20px;' ng-click="seeMore('newest')">See More</a><a class="btn btn-default" ng-click="goBack()">Back</a></p>
                 </div>
+
             </div>
 
             <p class="text-center " style="color:blue;margin-top:10px" ng-if="showAll == 'false'" ><a class="btn btn-default" href="/trends">See More</a></p>

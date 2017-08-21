@@ -27,6 +27,7 @@
         vm.gotoFeedback = gotoFeedback;
         vm.gotoTour = gotoTour;
         vm.gotoHome = gotoHome;
+        vm.selCity = selCity;
         vm.gotoAdmin = gotoAdmin;
         vm.goPromoterConsole = goPromoterConsole;
         vm.gotoFileUpload = gotoFileUpload;
@@ -45,6 +46,7 @@
         vm.warning = false;
 
         $rootScope.$on('getLocation', function (e) {
+            //console.log("navbar rx emitGetLocation");
             autoDetectCity();
         });
 
@@ -67,6 +69,7 @@
         });
 
         $rootScope.$on('useAddress', function (e, address) {
+            //console.log("use address ----aaaaa");
             var obj = {};
             obj.location = address.address;
             obj.lat = 0;
@@ -137,22 +140,31 @@
             } else {
               gotoHome();
             }
+            
 */
+            $rootScope.$emit('hideBar');
+            $(".navbar-collapse").collapse('hide');
             $state.go('mybusiness');   
             $(".navbar-collapse").collapse('hide');         
         }
 
         function gotofavs() {
+            $rootScope.$emit('hideBar');
+            $(".navbar-collapse").collapse('hide');
             //$stateProvider.state('app');
             $state.go('favs');
         }
 
         function goPromoterConsole(){
+            $rootScope.$emit('hideBar');
+            $(".navbar-collapse").collapse('hide');
             $state.go('promoterconsole');
             $(".navbar-collapse").collapse('hide');
         }
 
         function gotoAbout() {
+            $rootScope.$emit('hideBar');
+            $(".navbar-collapse").collapse('hide');
             //$stateProvider.state('app');
             $state.go('about');
         }
@@ -164,6 +176,8 @@
 
         function gotoAdmin() {
             //$stateProvider.state('app');
+            $rootScope.$emit('hideBar');
+            $(".navbar-collapse").collapse('hide');
             $state.go('admin');
         }
 
@@ -177,16 +191,21 @@
             $(".navbar-collapse").collapse('hide');
         }
 
+        function selCity(){
+            dialog.getDialog('onlySanDiego');
+        }
+
         function gotoHome() {
-            $rootScope.fbmode = false;
-            $rootScope.searchActive = false;
-            $rootScope.hidelogo = false;
-            $rootScope.inputVal = '';
+            //$rootScope.fbmode = false;
+            //$rootScope.searchActive = false;
+            //$rootScope.hidelogo = false;
+            //$rootScope.inputVal = '';
+            $rootScope.$emit('backToResults');
             //$state.go('cwrapper', {}, { reload: true });
-            if ($state.current.name != 'cwrapper') {
-                $state.go('cwrapper',{main: true});
-            }
-            else $rootScope.$emit('mainView');
+            //if ($state.current.name != 'cwrapper') {
+            //    $state.go('cwrapper',{main: true});
+            //}
+            //else 
         }
 
         function gotoCustomer() {
@@ -279,8 +298,10 @@
          */
         function setUserLatitudeLongitude(location) {
 
-            if ($rootScope.DEBUG_MODE) console.log("position.coords.latitude - ", location.coords.latitude);
-            if ($rootScope.DEBUG_MODE) console.log("position.coords.longitude - ", location.coords.longitude);
+            if ($rootScope.DEBUG_MODE) 
+                console.log("position.coords.latitude - ", location.coords.latitude);
+            if ($rootScope.DEBUG_MODE) 
+                console.log("position.coords.longitude - ", location.coords.longitude);
             /**
              * Set Latitude and Longitude from navigator to rootScope
              */
@@ -295,8 +316,7 @@
 
             $rootScope.coordsRdy = true;
             showCoordsIcon();
-
-            if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 9521 });
+            if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 11942 });
 
             /**
              * If user is logged in, then set latitude and longitude to user's object
@@ -306,10 +326,10 @@
                 $rootScope.user.longitude = $rootScope.currentUserLongitude;
                 if ($rootScope.DEBUG_MODE) console.log("Geo Location is set for logged in user.");
             }
-
-            if ($rootScope.DEBUG_MODE) console.log("Geo Location is set for user.");
+            if ($rootScope.DEBUG_MODE) 
+                console.log("Geo Location is set for user.");
             if ($state.current.name == 'rankSummary') {
-                $state.reload();
+                $rootScope.$emit('coordsRdy');
             }
         }
 
@@ -323,11 +343,13 @@
 
             geolocator.locate(geoOptions, function (err, location) {
                 if (err) {
-                    if ($rootScope.DEBUG_MODE) console.log('Error getting geolocation - ERROR(' + err.code + '): ' + err.message);
+                    if ($rootScope.DEBUG_MODE) 
+                        console.log('Error getting geolocation - ERROR(' + err.code + '): ' + err.message);
                     dialog.getDialog('errorGettingGeolocation');
                     }
                 else {
-                    if ($rootScope.DEBUG_MODE) console.log(location);
+                    if ($rootScope.DEBUG_MODE) 
+                        console.log(location);
                     setUserLatitudeLongitude(location);
                 }
             });
@@ -467,7 +489,8 @@
                 headers: {},
                 body: geobody
             }).then(function (result) {
-                if ($rootScope.DEBUG_MODE) console.log("Result from google geolocate - ", result);
+                if ($rootScope.DEBUG_MODE) 
+                    console.log("Result from google geolocate - ", result);
 
                 //var loc = result.data.loc.split(",");
                 //console.log("loc - ", loc);

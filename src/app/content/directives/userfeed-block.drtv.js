@@ -1,13 +1,14 @@
 angular.module('app').directive('userfeedBlock', 
-    ['$rootScope', '$state',  'fbusers', '$q','uaf','color',
-    function ($rootScope, $state, fbusers, $q, uaf, color) {
+    ['$rootScope', '$state',  'fbusers', '$q','uaf','color','dataloader',
+    function ($rootScope, $state, fbusers, $q, uaf, color, dataloader) {
     'use strict';
 
     return {
         templateUrl: 'app/content/partials/userfeed-block.html',
         transclude: true,
         scope: {
-            showAll: '@'
+            showAll: '@',
+            showQty: '@'
         },
         controller: ['$scope','$window', 'uaf',
             
@@ -25,6 +26,9 @@ angular.module('app').directive('userfeedBlock',
  
             }], //end controller
         link: function (scope) {
+
+            var si = 0;
+            pullData($rootScope.uafs.slice(si,scope.showQty));
 
             if (scope.isDestroyed == undefined){
                    getFeed();
@@ -46,12 +50,14 @@ angular.module('app').directive('userfeedBlock',
             //load uafs directly (without facebook) on init
             if (scope.feeds.length == 0) scope.feeds = $rootScope.uafs;
 
-            if(scope.showAll == 'true')
+            /*if(scope.showAll == 'true')
                 scope.fres = 30;
             else
                 scope.fres = 6;
-            scope.ftext = 'see more';
-            //console.log("vm.feeds - ", vm.feeds);
+            scope.ftext = 'see more';*/
+
+            scope.fres = scope.showQty;
+            console.log("scope.fres - ", scope.fres);
         }
         
         function load() {
@@ -71,6 +77,34 @@ angular.module('app').directive('userfeedBlock',
                 });
             
         }
+		
+        function pullData(uafs){
+            console.log("pullData @userfeed");
+            var ranks = [];
+            var ans = [];
+            var item = {};
+            for (var i=0; i<uafs.length; i++){
+                item = {};
+                if (uafs[i].action == 'addedCustomRank') {item.id = uafs[i].answer; ans.push(item);}
+                if (uafs[i].action == 'addedRank') {item.id = uafs[i].category; ranks.push(item);}
+                if (uafs[i].action == 'binded') {item.id = uafs[i].answer; ans.push(item);}
+                if (uafs[i].action == 'downVotedVrow') {item.id = uafs[i].answer; ans.push(item);}
+                if (uafs[i].action == 'upVotedVrow') {item.id = uafs[i].answer; ans.push(item);}
+                if (uafs[i].action == 'editA') {item.id = uafs[i].answer; ans.push(item);}
+                if (uafs[i].action == 'commentA') {item.id = uafs[i].answer; ans.push(item);}
+                if (uafs[i].action == 'commentR') {item.id = uafs[i].category; ranks.push(item);}
+                if (uafs[i].action == 'downVoted') {item.id = uafs[i].category; ranks.push(item);
+                    item = {}, item.id = uafs[i].answer; ans.push(item);}
+                if (uafs[i].action == 'upVoted') {item.id = uafs[i].category; ranks.push(item);
+                    item = {}, item.id = uafs[i].answer; ans.push(item);}
+                if (uafs[i].action == 'addedAnswer') {item.id = uafs[i].category; ranks.push(item);
+                    item = {}, item.id = uafs[i].answer; ans.push(item);}
+            }
+            
+            if (ans.length > 0) dataloader.pulldata('answers',ans);
+            if (ranks.length > 0) dataloader.pulldata('ranks',ranks);
+        }
+        /*
         scope.seeMoreFeed = function(isShowAll){
             if(scope.showAll == 'true'){
                 uaf.getnext10actions().then(function(){
@@ -82,7 +116,15 @@ angular.module('app').directive('userfeedBlock',
             else{
                 $state.go('feeds');
             }
-        }
+        }*/
+        scope.$watch('showQty', function() {
+                si = scope.fres;
+                scope.fres = scope.showQty;
+                console.log("si, fres, ", si, scope.showQty);
+                pullData($rootScope.uafs.slice(si,scope.showQty));
+                //scope.disableScrolling = !scope.scrollactive;                                   
+        });
+
         
         scope.refreshFeed = function(){
             console.log("refreshFeed");

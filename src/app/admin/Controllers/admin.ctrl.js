@@ -5,9 +5,13 @@
         .module('app')
         .controller('admin', admin);
 
-    admin.$inject = ['$location', '$rootScope', '$state','table','answer','categorycode','$q','vrows','catans','common'];
+    admin.$inject = ['$location', '$rootScope', '$state','table','answer','categories','table2',
+    'categorycode','$q','vrows','catans','common','dataloader','locations','special','matchrec',
+    'useractivity','edit'];
 
-    function admin(location, $rootScope, $state, table, answer, categorycode, $q, vrows, catans, common) {
+    function admin(location, $rootScope, $state, table, answer, categories, table2,
+        categorycode, $q, vrows, catans, common, dataloader, locations, special, matchrec,
+        useractivity, edit) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'admin';
@@ -53,9 +57,49 @@
             
             vm.isAdmin = $rootScope.user.is_sys_admin || $rootScope.isAdmin;
             vm.dataAdmin = $rootScope.dataAdmin;
+
+            loadData();
             console.log("admin page Loaded!");
             }
             
+        }
+
+        function loadData(){
+            var p0 = table.getTables();
+            var p1 = categories.getAllCategories();
+            var p2 = locations.getAllLocations();
+            var p3 = answer.getAnswers();
+            var p4 = special.getSpecials();
+            var p5 = matchrec.GetMatchTable();
+            var p6 = useractivity.getAllUserActivity();
+            var p7 = catans.getAllcatans(); 
+            var p8 = edit.getEdits();
+            var p9 = vrows.getAllvrows();
+            var p10 = table2.getTables();
+
+            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10]).then(function (d) {
+                
+                $rootScope.content = d[0];
+                $rootScope.categories = d[1];
+                $rootScope.locations = d[2];
+                $rootScope.answers = d[3];
+                $rootScope.specials = d[4];
+                $rootScope.mrecs = d[5];
+                $rootScope.alluseractivity = d[6];
+                $rootScope.catansrecs = d[7];
+                $rootScope.edits = d[8];
+                $rootScope.cvrows = d[9];
+                $rootScope.customranks = d[10];
+
+                dataloader.unwrap();
+                dataloader.createSearchStrings();
+
+                console.log("$rootScope.content.length - ", $rootScope.content.length);
+                console.log("$rootScope.answers.length - ", $rootScope.answers.length);
+                
+                console.log("all data ready!");
+            });   
+
         }
         function keywords() {
             vm.selKeywords = 'active';
@@ -1184,6 +1228,78 @@
                             }
                         }
                     }*/
+                    /*
+                    var includesSDctr = 0;
+                    var nincludesSDctr = 0;
+                    for (var i=0; i<$rootScope.categories.length; i++){
+                        if ($rootScope.categories[i].category.indexOf('San Diego')>-1 ||
+                            $rootScope.categories[i].category.indexOf('@Nh')>-1){
+                            includesSDctr++;
+                            categories.update($rootScope.categories[i].id,['scope'],[2]);
+                        }
+                        else{
+                            //console.log($rootScope.categories[i].category);
+                            categories.update($rootScope.categories[i].id,['scope'],[1]);
+                            nincludesSDctr++;
+                        }
+                    }
+                    */
+                    //console.log("includes SD - ", includesSDctr);
+                    //console.log("doesnt includes SD - ", nincludesSDctr);
+                    
+                    //var idx=0;
+                    console.log("$rootScope.answers ", $rootScope.answers.length);
+                    console.log("$rootScope.content ", $rootScope.content.length);
+                    console.log("$rootScope.catansrecs ", $rootScope.catansrecs.length);
+                    var idx1 = 0;
+                    var idx2 = 0;
+                    var scope = 0;
+                    console.log("answers with no scope")
+                    for (var i=0; i < $rootScope.answers.length; i++){
+                        if ($rootScope.answers[i].scope == undefined || 
+                                        $rootScope.answers[i].scope == null ||
+                                        $rootScope.answers[i].scope == '' ||
+                                        $rootScope.answers[i].scope == 0){
+                                        //console.log($rootScope.answers[i].name);
+                     //for (var i=0; i < 500; i++){   
+                        for (var j=0; j<$rootScope.catansrecs.length; j++){
+                            if ($rootScope.catansrecs[j].answer == $rootScope.answers[i].id){
+                                //console.log("found catans - ", $rootScope.answers[i].name);
+                                idx1 = $rootScope.content.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[j].category);
+                                if (idx1 > -1){
+                                    scope = $rootScope.content[idx1].scope;
+                                    console.log($rootScope.answers[i].name, scope);
+                                    answer.updateAnswer($rootScope.answers[i].id,['scope'],[scope]);                                
+                                }
+                                else{
+                                    //console.log("rank not found");
+                                    //answer.updateAnswer($rootScope.answers[i].id,['scope'],[1]);
+                                }
+                            }
+                        }
+                                        }
+                        
+                    }
+                    
+                    /*console.log("content with no scope");
+                    for (var j=0; j<$rootScope.content.length; j++){
+                        if ($rootScope.content[j].scope == undefined ||
+                            $rootScope.content[j].scope == null){
+                            console.log($rootScope.content[j].title);
+                            var idx1 = $rootScope.categories.map(function(x) {return x.id; }).indexOf($rootScope.content[j].cat);
+                            console.log("category scope: ", $rootScope.categories[idx1].scope);
+                                
+                            table.update($rootScope.content[j].id,['scope'],[2]);
+                            categories.update($rootScope.categories[idx1].id,['scope'],[2]);
+                            }
+                    }*/
+
+                    //for (var i=0; i<100; i++){    
+                        //idx = $rootScope.categories.map(function(x) {return x.id; }).indexOf($rootScope.content[i].cat);
+                        //console.log(idx, $rootScope.content[i].title,$rootScope.categories[idx].scope);
+                        //table.update($rootScope.content[i].id,['scope'],[$rootScope.categories[idx].scope]);
+                    //}
+                    
             }
                  
     }

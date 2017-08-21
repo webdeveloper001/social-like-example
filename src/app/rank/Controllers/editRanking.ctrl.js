@@ -6,10 +6,10 @@
         .controller('editRanking', editRanking);
 
     editRanking.$inject = ['$location', '$rootScope', '$state','$stateParams', '$window','$http','imagelist',
-    'table','dialog','catans','color','pixabay','pexels','categories', '$cookies','APP_API_KEY'];
+    'table','dialog','catans','color','pixabay','pexels','categories', '$cookies','APP_API_KEY','answer'];
 
     function editRanking(location, $rootScope, $state, $stateParams, $window, $http, imagelist,
-    table, dialog, catans, color, pixabay, pexels, categories, $cookies, APP_API_KEY) {
+    table, dialog, catans, color, pixabay, pexels, categories, $cookies, APP_API_KEY, answer) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'editRanking';
@@ -73,6 +73,7 @@
             vm.isatomic = $rootScope.cCategory.isatomic;
             vm.catstr = $rootScope.cCategory.catstr;
             vm.ismp = $rootScope.cCategory.ismp;
+            vm.scope = $rootScope.cCategory.scope;
             vm.image = $rootScope.cCategory.fimage;
             if ($rootScope.cCategory.bc) vm.bc = $rootScope.cCategory.bc;
             if ($rootScope.cCategory.fc) vm.fc = $rootScope.cCategory.fc;
@@ -120,6 +121,9 @@
                 fieldsc.push('category');
                 valsc.push(titlex);
                 console.log("tablex - ", titlex);
+                fields.push('title');
+                vals.push(titlex);
+                //console.log("tablex - ", titlex);
 
             }
             //if tags change
@@ -182,6 +186,14 @@
                 fieldsc.push('fimage');
                 valsc.push(vm.image);
             }
+            if (item.scope != vm.scope) {
+                fieldsc.push('scope');
+                valsc.push(vm.scope);
+                fields.push('scope');
+                vals.push(vm.scope);
+                changeScopeofAnswers();
+                changeScopeofAnswers()
+            }
 
             //if fimage changed
             if(vm.images){
@@ -189,11 +201,11 @@
                     processImage();
             }
             if (fields) {
-                //console.log("fields - ", fields, vals);
+                console.log("fields - ", fields, vals);
                 table.update(item.id, fields, vals);
             }
             if (fieldsc) {
-                //console.log("fieldsc - ", fieldsc, valsc);
+                console.log("fieldsc - ", fieldsc, valsc);
                 categories.update(item.cat, fieldsc, valsc);
             }
             closeRank();
@@ -364,6 +376,18 @@
                 $http.defaults.headers.common['X-DreamFactory-Session-Token'] = $cookies.session_token;
                 if ($rootScope.DEBUG_MODE) console.log("Error Processing Image - ", error);
             });
+        }
+
+        function changeScopeofAnswers(){
+            console.log("change Scope of Answres");
+            for (var i=0; i<$rootScope.catansrecs.length; i++){
+                if ($rootScope.catansrecs[i].category == $rootScope.cCategory.id){
+                    //console.log('Catans: ',$rootScope.catansrecs[i].id, $rootScope.catansrecs[i].category,$rootScope.catansrecs[i].answer);
+                    //console.log('Change scope of answer: ',$rootScope.catansrecs[i].answer, ' to ', vm.scope);
+                    var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[i].answer); 
+                    if (idx > -1) answer.updateAnswer($rootScope.catansrecs[i].answer,['scope'],[vm.scope]);
+                }
+            }
         }
 
         function goBack(){

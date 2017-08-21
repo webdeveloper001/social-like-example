@@ -51,7 +51,15 @@
                         catansobj = $rootScope.catansrecs[k];
                             for (var n=0; n < $rootScope.content.length; n++){
                                 if ($rootScope.catansrecs[k].category == $rootScope.content[n].id){
-                                    catansobj.rank = $rootScope.content[n].title;
+                                    catansobj.rankid = $rootScope.content[n].id;
+                                    catansobj.catid = $rootScope.content[n].cat;
+                                    catansobj.title = $rootScope.content[n].title;
+                                    /*for (var m=0; m < $rootScope.categories.length; m++){
+                                        if ($rootScope.content[n].cat == $rootScope.categories[m].id){
+                                            catansobj.title = $rootScope.categories[m].category;        
+                                        }
+                                    }*/
+                                    //catansobj.rank = $rootScope.content[n].title;
                                 }
                             }
                     vm.ansRes[j].catans.push(catansobj);

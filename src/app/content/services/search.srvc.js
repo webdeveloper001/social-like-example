@@ -130,7 +130,7 @@
                             }
                             
                             if (m_ss && isCity) {
-                                if ($rootScope.content[j].ismp)
+                                if ($rootScope.content[j].mp)
                                     results_ss.push($rootScope.content[j]);
                             }
                             else if (m_ss){
@@ -165,25 +165,26 @@
             var idx = 0;
             //Determine suggestions for answers in this category
             for (var i = 0; i < $rootScope.catansrecs.length; i++) {
-                //found answers in this category
+                //find answers in this category
                 for (var n = 0; n < catArr.length; n++) {
                     if ($rootScope.catansrecs[i].category == catArr[n]) {
                         for (var j = 0; j < $rootScope.catansrecs.length; j++) {
                             //find answers in other categories
                             if ($rootScope.catansrecs[j].answer == $rootScope.catansrecs[i].answer) {
                                 idx = $rootScope.content.map(function (x) { return x.id; }).indexOf($rootScope.catansrecs[j].category);
-                                
-                                sibExists = false;
-                                for (var k=0; k < sibblingRanksX.length; k++){
-                                    if (sibblingRanksX[k].title.substr(0,6) == $rootScope.content[idx].title.substr(0,6)) {
-                                        sibblingRanksX[k].ctr++; 
-                                        sibExists = true;
-                                    }                                     
-                                }
-                                if (!sibExists) {
-                                    rankObj = $rootScope.content[idx];
-                                    rankObj.ctr = 1;
-                                    sibblingRanksX.push(rankObj);
+                                if (idx > -1){
+                                    sibExists = false;
+                                    for (var k = 0; k < sibblingRanksX.length; k++) {
+                                        if (sibblingRanksX[k].title.substr(0, 6) == $rootScope.content[idx].title.substr(0, 6)) {
+                                            sibblingRanksX[k].ctr++;
+                                            sibExists = true;
+                                        }
+                                    }
+                                    if (!sibExists) {
+                                        rankObj = $rootScope.content[idx];
+                                        rankObj.ctr = 1;
+                                        sibblingRanksX.push(rankObj);
+                                    }
                                 }                                                                    
                             }
                         }
@@ -192,19 +193,37 @@
                     }
                 }
             }
-            //Change to approprate neighborhood
+            //Change to appropriate neighborhood
             for (var i=0; i < sibblingRanksX.length; i++){
                 if (sibblingRanksX[i].isatomic && sibblingRanksX[i].ismp) sibblingRanks.push(sibblingRanksX[i]);
                 else if (sibblingRanksX[i].isatomic && !sibblingRanksX[i].ismp){
                     for (var j=0; j < $rootScope.locations.length; j++){
                         if (sibblingRanksX[i].title.indexOf($rootScope.locations[j].nh_name)>-1){
                             searchtitle = sibblingRanksX[i].title.replace($rootScope.locations[j].nh_name,neighborhood);
+                            var rFound = false;
                             for (var k=0; k<$rootScope.content.length; k++){
                                 if ($rootScope.content[k].title == searchtitle){
+                                    console.log('found and added - ', searchtitle );
                                     rankObj = $rootScope.content[k];
                                     rankObj.ctr = sibblingRanksX[i].ctr;
+                                    rankObj.isghost = false;
                                     sibblingRanks.push(rankObj);
+                                    rFound = true;
+                                    break;
                                 }
+                            }
+                            if (!rFound){
+                                console.log('Couldnt find: ', searchtitle, ' made it ghost :)');
+                                //Create ghost ranking for suggestion
+                                var ghostObj = {};
+                                ghostObj.title = searchtitle;
+                                ghostObj.cat = sibblingRanksX[i].cat;
+                                var nidx = $rootScope.locations.map(function (x) { return x.nh_name; }).indexOf(neighborhood);
+                                ghostObj.nh = $rootScope.locations[nidx].id;
+                                ghostObj.isghost = true;
+                                ghostObj.isatomic = true;
+                                console.log('ghost - ', ghostObj);
+                                sibblingRanks.push(ghostObj);
                             }
                         }
                     }                    
@@ -518,8 +537,8 @@
                 var userIsTyping = false;
                 var inputVal = input;
 
-                    if (inputVal == 'Food') inputVal = inputVal.replace('Food', 'Food Near Me');
-                    if (inputVal == 'food') inputVal = inputVal.replace('food', 'Food Near Me');
+                    //if (inputVal == 'Food') inputVal = inputVal.replace('Food', 'Food Near Me');
+                    //if (inputVal == 'food') inputVal = inputVal.replace('food', 'Food Near Me');
                  
                 //Special Cases
                 if (inputVal == 'pho' || inputVal == 'Pho') {
@@ -596,6 +615,8 @@
                             rt = $rootScope.content[j].title; // title
                             rank = $rootScope.content[j];
 
+                            if(!rt || !ss) console.log("this has issues - content.id - ",$rootScope.content[j]);
+                            else {
                             m_ss = true;
                             m_rt = true;
                             //check that all tags exist exept those that are for neighborhood
@@ -642,7 +663,8 @@
                                 if (m_nh) results_ss.push(rObj);
                                 else if (rObj.ismp) results_ss.push(rObj);
                                 
-                            } 
+                            }
+                            }//temp 
                         }
                     }
 

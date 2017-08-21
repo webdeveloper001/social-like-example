@@ -11,13 +11,14 @@
 
         // Members
         var _tables = [];
+        var _fetchAnswersMem = [];
+        $rootScope.customranks = _tables;
         var baseURI = '/api/v2/mysql/_table/customranks';
 
         var service = {
             getTables: getTables,
-            getTablesMain: getTablesMain,
-            getTablesNonMain: getTablesNonMain,
-            //getSingleTable: getSingleTable,
+            getTablesX: getTablesX,   //get tables from answers  
+            getTablesD: getTablesD,   //get tables for demo
             update: update,
             addTable: addTable,
             addTableforAnswer: addTableforAnswer,
@@ -39,12 +40,6 @@
 
         function getTables(forceRefresh) {
 
-            if (_areTablesLoaded() && !forceRefresh) {
-
-                return $q.when(_tables);
-            }
-
-            //var url = baseURI;
             //Get all match records
             var url0 = baseURI + '?offset=' + 0 * 1000;
             
@@ -52,70 +47,85 @@
             
 
             return $q.all([p0]).then(function (d){
-                _tables = d[0].data.resource;
+                var data = d[0].data.resource;
+                _load (data);
                 if ($rootScope.DEBUG_MODE) console.log("tables length: ", _tables.length);
                 return _tables;            
             }, _queryFailed);  
-            //return $http.get(url).then(querySucceeded, _queryFailed);
-            
-            //function querySucceeded(d) {
-
-                
-                //return _tables = result.data.resource;
-            //}          
         }
 
-        function getTablesMain() {
+        function getTablesX(data) {
 
-            var url0 = baseURI + '/?filter=ismp=true';
+            var _datax = [];  //this is filtered array (ignore those ranks for which data already fetched)
+            data.forEach(function(item){
+                if (_fetchAnswersMem.indexOf(item.answer)<0){
+                    _datax.push(item);
+                    _fetchAnswersMem.push(item.answer);
+                }
+            });
+            if (_datax.length == 0) return $q.when(false);
 
-            var p0 = $http.get(url0);
+            var filterstr = '?filter=(';
+            for (var i=0; i< _datax.length; i++){
+                filterstr = filterstr + 'owner=' + _datax[i].answer+')OR(';
+            }
+            filterstr = filterstr.substring(0,filterstr.length-3);
+
+            var url0 = baseURI + filterstr;
             
-            return $q.all([p0]).then(function (d){
-                _tables = d[0].data.resource;
-                if ($rootScope.DEBUG_MODE) console.log("tables_main length: ", _tables.length);
-                return _tables;            
-            }, _queryFailed);  
-                      
-        }
-
-        function getTablesNonMain() {
-            
-            //Get all match records
-            var url0 = baseURI + '/?filter=ismp=false'+'&offset=' + 0 * 1000;
-            var url1 = baseURI + '/?filter=ismp=false'+'&offset=' + 1 * 1000;
-            var url2 = baseURI + '/?filter=ismp=false'+'&offset=' + 2 * 1000;
-            var url3 = baseURI + '/?filter=ismp=false'+'&offset=' + 3 * 1000;
-            
-            var p0 = $http.get(url0);
-            var p1 = $http.get(url1);
-            var p2 = $http.get(url2);
-            var p3 = $http.get(url3);
-            
-            return $q.all([p0, p1, p2, p3]).then(function (d){
-                _tables = _tables.concat(d[0].data.resource, d[1].data.resource, d[2].data.resource, d[3].data.resource);
-                if ($rootScope.DEBUG_MODE) console.log("tables length: ", _tables.length);
-                return _tables;            
-            }, _queryFailed);
-                      
-        }
-/*
-        function getSingleTable(id) {
-
-            var url0 = baseURI + '/?filter=id=' + id;
-
             var p0 = $http.get(url0);
             
             return $q.all([p0]).then(function (d){
                 
-                _tables = d[0].data.resource;
-                console.log("single table ", _tables);
-                if ($rootScope.DEBUG_MODE) console.log("single table loaded: ", _tables.length);
+                var _tablesx = d[0].data.resource;
+                var map = _tables.map(function(x) {return x.id; });
+                _tablesx.forEach(function(table){
+                        if(map.indexOf(table.id) < 0)
+                        _tables.push(table);
+                });
+                
+                if ($rootScope.DEBUG_MODE) 
+                    console.log("getTablesX 'custom ranks' ", _tables.length);
                 return _tables;            
             }, _queryFailed);  
-                      
         }
-*/
+
+        function getTablesD(data) {
+
+            var _datax = [];  //this is filtered array (ignore those ranks for which data already fetched)
+            data.forEach(function(item){
+                if (_fetchAnswersMem.indexOf(item.category)<0){
+                    _datax.push(item);
+                    _fetchAnswersMem.push(item.category);
+                }
+            });
+
+            if (_datax.length == 0) return $q.when(false);
+
+            var filterstr = '?filter=(';
+            for (var i=0; i< _datax.length; i++){
+                filterstr = filterstr + 'id=' + _datax[i].category+')OR(';
+            }
+            filterstr = filterstr.substring(0,filterstr.length-3);
+
+            var url0 = baseURI + filterstr;
+            
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                
+                
+                var _tablesx = d[0].data.resource;
+                var map = _tables.map(function(x) {return x.id; });
+                _tablesx.forEach(function(table){
+                        if(map.indexOf(table.id) < 0)
+                        _tables.push(table);
+                });
+                
+                if ($rootScope.DEBUG_MODE) console.log("getTablesD 'custom ranks' ", _tables.length);
+                return _tables;            
+            }, _queryFailed);  
+        }
 
         function addTable(table) {
             
@@ -274,9 +284,7 @@
             data.id = id;
 
             for (var i = 0; i < field.length; i++) {
-                
-                data[field[i]] = val[i];                
-                
+               data[field[i]] = val[i];                 
             }
             //console.log("data", data);
             obj.resource.push(data);
@@ -284,15 +292,9 @@
             var url = baseURI;
             
             //update local copy
-            var idx = 0;
-            for (var i = 0; i < $rootScope.customranks.length; i++) {
-                if ($rootScope.customranks[i].id == id) {
-                    idx = i;
-                    break;
-                }
-            }
+            var idx = _tables.map(function(x) {return x.id; }).indexOf(id);
             for (var i = 0; i < field.length; i++) {
-                $rootScope.customranks[idx][field[i]] = val[i];              
+                _tables[idx][field[i]] = val[i];              
             }
 
             return $http.patch(url, obj, {
@@ -306,6 +308,13 @@
                 if ($rootScope.DEBUG_MODE) console.log("updating ranking record succesful");
                 return result.data;
             }
+        }
+
+        function _load(data){
+            _tables.length = 0;
+            data.forEach(function(x){
+                _tables.push(x);
+            });
         }
 
         function _areTablesLoaded() {

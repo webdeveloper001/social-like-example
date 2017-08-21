@@ -68,8 +68,12 @@
                             $rootScope.coordForUSer = false;
                             $rootScope.coordsRdy = true;
                             $rootScope.$emit('coordsRdy');
-                            if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 9521 });
-                            if ($rootScope.loadRankWhenCoordsRdy) $state.reload();
+                            console.log('@gps - 71');
+                            //if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 9521 });
+                            //if ($rootScope.loadRankWhenCoordsRdy) 
+                                //console.log("executed reload");
+                                //$state.go('rankSummary', { reload: true }); //$state.reload();
+                            
                         }
                         else $rootScope.$emit('answerGPSready');
                     }

@@ -1,5 +1,5 @@
-angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search', '$timeout', '$window',
-function ($rootScope, $state, search, $timeout, $window) {
+angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search', '$timeout', '$window','dataloader',
+function ($rootScope, $state, search, $timeout, $window, dataloader) {
     'use strict';
 
     return {
@@ -10,6 +10,9 @@ function ($rootScope, $state, search, $timeout, $window) {
             ans: '=',
             ranks: '=',
             length: '=',
+            init: '=',
+            data: '=',
+            scrollactive: '=',
         },
         controller: ['$scope',
             
@@ -23,8 +26,15 @@ function ($rootScope, $state, search, $timeout, $window) {
             }], //end controller
         link: function (scope) {
 
+            var pullDataArray = [];
+            var homeRanks = [];
+            var ranksLoaded = false;
+
             scope.rankSel = function (x,nm) {
-                scope.disableScrolling = true;
+                //$rootScope.$emit('childActive');
+                //$rootScope.PAGEYOFFSET =  window.pageYOffset;
+                //console.log("$rootScope.PAGEYOFFSET - ", $rootScope.PAGEYOFFSET);
+                //scope.disableScrolling = true;
                 //console.log("scope.disableScrolling = ", scope.disableScrolling);
                 if (x.useTemp){
                 if (nm) $rootScope.rankIsNearMe = true;
@@ -35,16 +45,9 @@ function ($rootScope, $state, search, $timeout, $window) {
                         if (x.locationId == $rootScope.content[i].nh) selectedRank = $rootScope.content[i];
                     }
                 }
-                /*
-                var selectedRank = $rootScope.content.filter(function(ranking){
-                    if(x.locationId == 1)
-                        return (!ranking.nh || !x.id == 1)  && ranking.cat == x.id;
-                    else {
-                        return ranking.nh == x.locationId  && ranking.cat == x.id;
-                    }
-                });
-                */
+                
                 if(selectedRank.id == undefined){
+                    console.log("rank is ghost");
                    var maxId = 0;
                     $rootScope.content.forEach(function(ranking){
                         if(ranking.id > maxId)
@@ -102,8 +105,9 @@ function ($rootScope, $state, search, $timeout, $window) {
             }
             };
             scope.ansSel = function (x) {
+                $rootScope.PAGEYOFFSET =  window.pageYOffset;
                 $rootScope.cCategory = undefined;
-                scope.disableScrolling = true;
+                //scope.disableScrolling = true;
                 //console.log("scope.disableScrolling = ", scope.disableScrolling);
                 $state.go('answerDetail', { index: x.slug });                
             };
@@ -111,6 +115,7 @@ function ($rootScope, $state, search, $timeout, $window) {
             scope.resRanks = [];
             scope.resAnswers = [];
             scope.searchResults = [];
+            scope.displayResults = [];
             scope.maxRes = 4000;
             
             var timeoutPromise;
@@ -118,7 +123,15 @@ function ($rootScope, $state, search, $timeout, $window) {
                 $timeout.cancel(timeoutPromise); //do nothing is timeout already done   
                 timeoutPromise = $timeout(function(){
                 //console.time('stime - ', scope.query);
-                scope.getResults();
+                if (scope.query.length >= 2) {
+                    scope.endReached = false;
+                    scope.getResults();
+                }
+                if (scope.query.length == 0) {
+                    scope.searchResults = homeRanks;
+                    scope.endReached = false;
+                    scope.displayResults = scope.searchResults.slice(0,scope.scrollingItemsOnePage);
+                }
                 //console.timeEnd('etime - ', scope.query);
                     
                 },300);                                   
@@ -129,8 +142,8 @@ function ($rootScope, $state, search, $timeout, $window) {
                 scope.useTemp = false;
                 scope.resRanks = [];
                 var catRanks = [];
-                if( scope.ranks) {
-                    catRanks = [];
+                //if( scope.resRanks.length > 0) {
+                //    catRanks = [];
                     scope.resRanks = search.searchRanks2(scope.query);
                     catRanks = search.searchRanks(scope.query);
                     var catmap = scope.resRanks.map(function(x) {return x.cat; });
@@ -148,7 +161,7 @@ function ($rootScope, $state, search, $timeout, $window) {
                         scope.endReached = false;
                         //scope.loadMore();
                     }
-                }
+                //}
                 scope.resAnswers = [];
                 if(scope.ans) scope.resAnswers = search.searchAnswers(scope.query);
                 for (var i=0; i<scope.resAnswers.length; i++){
@@ -186,54 +199,123 @@ function ($rootScope, $state, search, $timeout, $window) {
 
                 scope.length = scope.resRanks.length + scope.resAnswers.length;
                 scope.searchResults = scope.resRanks.concat(scope.resAnswers);
+                scope.displayResults = scope.searchResults.slice(0,scope.scrollingItemsOnePage);
+                pullDataArray = scope.displayResults;
+                var ranksRes = [];
+                var answerRes = []; 
+                for (var i=0; i<scope.displayResults.length; i++){
+                    if (scope.displayResults[i].isAnswer) answerRes.push(scope.displayResults[i]);
+                    else ranksRes.push(scope.displayResults[i]);
+                }
+                if (ranksRes.length > 0) pullData('ranks', ranksRes);
+                if (answerRes.length > 0) pullData('answers', answerRes);
                 //scope.seachResults = scope.resRanks;
             }
 
-            scope.currentIndex = 0;
-            scope.startIndex = 0;
+            var timeoutPromise2;
+            scope.$watch('init', function() {
+                $timeout.cancel(timeoutPromise2); //do nothing is timeout already done   
+                timeoutPromise2 = $timeout(function(){
+                    if (scope.init) scope.getContent();
+                },50);                                   
+            });
+
+            //Get content on loading
+            scope.getContent = function() {
+                homeRanks = [];
+                homeRanks = JSON.parse(JSON.stringify($rootScope.content));
+                   if (homeRanks.length > 0){
+                        shuffle(homeRanks);
+                        scope.disableScrolling = false;
+                        scope.currentIndex = scope.intialDataCount;
+                        scope.startIndex = 0;
+                        scope.endReached = false;
+                    }
+                ranksLoaded = false;
+                scope.searchResults = homeRanks;
+                scope.displayResults = scope.searchResults.slice(0,scope.scrollingItemsOnePage);
+                pullDataArray = scope.searchResults.slice(0,scope.scrollingItemsOnePage);
+                pullData('ranks',pullDataArray);
+            }
+
+            var timeoutPromise3;
+            scope.$watch('data', function() {
+                $timeout.cancel(timeoutPromise3); //do nothing is timeout already done   
+                timeoutPromise3 = $timeout(function(){
+                    if (scope.data) scope.addContent();
+                },50);                                   
+            });
+
+            scope.addContent = function(){
+                
+                var map = homeRanks.map(function(x) {return x.id; });
+                
+                $rootScope.content.forEach(function(ranking){
+                    if (map.indexOf(ranking.id) < 0 && ranking.ismp) homeRanks.push(ranking);                    
+                });
+                
+                scope.searchResults = JSON.parse(JSON.stringify(homeRanks));
+                ranksLoaded = true;
+                
+            }
+
+            scope.$watch('scrollactive', function() {
+                scope.disableScrolling = !scope.scrollactive;                                   
+            });
+
             if($rootScope.sm){
                 scope.scrollingItemsOnePage = 6;
                 scope.loadingCountOneScroll = 3;
             }
             else{
                 scope.loadingCountOneScroll = 6;
-                scope.scrollingItemsOnePage = 6;
+                scope.scrollingItemsOnePage = 12;
             }
-            scope.scrollingItemsOnePage = 1000;
+            scope.scrollingItemsOnePage = 12;
             scope.scrollingData = [];
             scope.scrollDataLoading = false;
             scope.content = [];
-            scope.intialDataCount = 12;
+            scope.intialDataCount = $rootScope.numInitItems;
             scope.endReached = false;
             scope.disableScrolling = true;
-            //console.log("scope.disableScrolling = ", scope.disableScrolling);
             scope.scrollingData = [];
             scope.uniqueResult = [];
             loadInifiniteScroll(true);
 
             scope.loadMore = function () {
-                //console.log("loadMore --",scope.startIndex, scope.currentIndex, scope.searchResults.length );
-
-                scope.scrollDataLoading = true;
+                if (scope.scrollactive){
+                    scope.scrollDataLoading = true;
                 
                 $timeout(function () {
                 
-                scope.currentIndex = scope.currentIndex + 12;
-                if (scope.currentIndex >= scope.searchResults.length) {
-                    
-                    //console.log("end reached - ");
-                    scope.endReached = true;
+                //load next items onto displayResults array
+                var b = scope.displayResults.length;
+                pullDataArray = [];
+                for (var i=b; i < b + scope.scrollingItemsOnePage; i++){
+                    if (scope.searchResults[i]) {
+                        scope.displayResults.push(scope.searchResults[i]);
+                        pullDataArray.push(scope.searchResults[i]);
+                    }
                 }
-                if((scope.currentIndex - scope.startIndex) > scope.scrollingItemsOnePage){
-                    scope.startIndex = scope.currentIndex - scope.scrollingItemsOnePage;        
-                } 
+                    if (pullDataArray.length > 0) pullData('ranks',pullDataArray);
                     scope.scrollDataLoading = false;
+
+                    if ((scope.displayResults.length == scope.searchResults.length) && ranksLoaded) {
+                        scope.endReached = true;
+                    }
                 }, 500);
+                }
+            }
+
+            function pullData(type,data){
+                //if (scope.disableScrolling == false){
+                    //console.log('scope.disableScrolling - ', scope.disableScrolling);
+                    dataloader.pulldata(type, data);
+                //}                
+               
             }
 
             function loadInifiniteScroll(reloading) {
-                //console.log("loadingInfiniteScroll --");
-
                 scope.currentIndex = 12;
                 scope.startIndex = 0;
                 scope.loadingCountOneScroll = 6;
@@ -242,8 +324,28 @@ function ($rootScope, $state, search, $timeout, $window) {
                 scope.content = [];
                 scope.endReached = false;
                 scope.scrollingData = [];
-
             }
+
+            function shuffle(array) {
+            var currentIndex = array.length, temporaryValue, randomIndex;
+
+            // While there remain elements to shuffle...
+            while (0 !== currentIndex) {
+
+                // Pick a remaining element...
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex -= 1;
+
+                // And swap it with the current element.
+                temporaryValue = array[currentIndex];
+                array[currentIndex] = array[randomIndex];
+                array[randomIndex] = temporaryValue;
+            }
+
+            return array;
+        }
+
+
             
         },
     }
