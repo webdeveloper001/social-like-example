@@ -146,81 +146,76 @@
         }
         /* End Filtering feature by Roy */
 
-        $rootScope.$on('refreshRanks', function () {
+        var refreshRanksListener = $rootScope.$on('refreshRanks', function () {
             if ($state.current.name == 'cwrapper') {
                 vm.hidelogo = $rootScope.hidelogo;
             }
         });
-        $rootScope.$on('showLogo', function () {
+        var showLogoListener = $rootScope.$on('showLogo', function () {
             if ($state.current.name == 'rankSummary' || $state.current.name == 'answerDetail') {
                 //vm.hidelogo = false;
             }
         });
-        $rootScope.$on('userDataLoaded', function () {
+        var userDataLoadedListener = $rootScope.$on('userDataLoaded', function () {
             if ($rootScope.DEBUG_MODE) console.log("RX - userDataLoaded");
             loadingDone();
         });
-        $rootScope.$on('homeDataLoaded', function () {
+        var homeDataLoadedListener = $rootScope.$on('homeDataLoaded', function () {
             if ($rootScope.DEBUG_MODE) console.log("RX - homeDataLoaded");
             loadingDone();
             vm.dataready = true;
             prepareNewCatansOptions();
         });
-        $rootScope.$on('rankDataLoaded', function () {
+        var rankDataLoadedListener = $rootScope.$on('rankDataLoaded', function () {
             if ($rootScope.DEBUG_MODE) console.log("RX - rankDataLoaded");
             loadingDone();
         });
-        $rootScope.$on('answerDataLoaded', function () {
+        var answerDataLoadedListener = $rootScope.$on('answerDataLoaded', function () {
             if ($rootScope.DEBUG_MODE) console.log("RX - answerDataLoaded");
             loadingDone();
         });
-        $rootScope.$on('initalHomeDataLoaded', function () {
+        var initialHomeDataLoadedListener = $rootScope.$on('initalHomeDataLoaded', function () {
             if ($rootScope.DEBUG_MODE) console.log("RX - initialHomeLoaded");
             $rootScope.initalHomeDataLoaded = true;
             vm.initready = true;
             loadingDone();
         });
         var mainViewListener = $rootScope.$on('mainView', function (event) {
-            //if ($state.current.name == 'cwrapper') {
                 vm.childActive = false;
                 gotoHome();
-            //}
         });
         var hideSearchBarListener = $rootScope.$on('hideBar', function (event) {
-            //if ($state.current.name == 'cwrapper') {
                 vm.childActive = true;
                 vm.barIsActive = false;
-
-                //gotoHome();
-            //}
         });
-        //var childActiveListener = $rootScope.$on('childActive', function (event) {
-            //if ($state.current.name == 'cwrapper') {
-                //vm.childActive = true;
-                //gotoHome();
-            //}
-        //});
         var backtoResultsListener = $rootScope.$on('backToResults', function (event) {
-            //if ($state.current.name != 'cwrapper') {
                 vm.childActive = false;
                 vm.barIsActive = true;
-                //if ($rootScope.PAGEYOFFSET){ 
-                    //console.log("$rootScope.PAGEYOFFSET - ", $rootScope.PAGEYOFFSET);
-                //    $window.scroll(0, $rootScope.PAGEYOFFSET); 
-                //}
-                backToResults();
-                
-            //}
+                backToResults();      
         });
-        $rootScope.$on('setScope', function () {
+
+        var userLoggedOutListener = $rootScope.$on('userLoggedOut', function (event) {
+                vm.isAdmin = false;
+        });
+
+        var setScopeListener = $rootScope.$on('setScope', function () {
             if ($rootScope.SCOPE == 1) {vm.scopeIsGeneral = true; vm.scopeIsCity = false; }
             if ($rootScope.SCOPE == 2) {vm.scopeIsGeneral = false; vm.scopeIsCity = true; } 
         });
 
-        /*
-        if ($window.innerWidth < 512) vm.logoimage = "../../../assets/images/rankxlogosd_sm.png";
-        else vm.logoimage = "../../../assets/images/rankxlogosd.png";
-        */
+        $scope.$on('$destroy',setScopeListener);
+        $scope.$on('$destroy',userLoggedOutListener);
+        $scope.$on('$destroy',backtoResultsListener);
+        $scope.$on('$destroy',hideSearchBarListener);
+        $scope.$on('$destroy',mainViewListener);
+        $scope.$on('$destroy',initialHomeDataLoadedListener);
+        $scope.$on('$destroy',answerDataLoadedListener);
+        $scope.$on('$destroy',rankDataLoadedListener);
+        $scope.$on('$destroy',homeDataLoadedListener);
+        $scope.$on('$destroy',userDataLoadedListener);
+        $scope.$on('$destroy',showLogoListener);
+        $scope.$on('$destroy',refreshRanksListener);
+
         if ($window.innerWidth < 512) {
             vm.logoimage = "/assets/images/rankxlogosd2_sm.png";
             $rootScope.sm = true;
