@@ -148,52 +148,54 @@
                 if ($rootScope.friends_votes[i].vote == 1) {
                     var idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf($rootScope.friends_votes[i].answer);
                     answer = $rootScope.answers[idx];
-                    //console.log("answer - ", answer.name);
-                    if (answer.type == 'Establishment') {
-                        
-                        //look this answer in catans recs
-                        for (var n = 0; n < $rootScope.catansrecs.length; n++) {
+                    if (idx > -1) {
+                        //console.log("answer - ", answer.name);
+                        if (answer.type == 'Establishment') {
 
-                            if ($rootScope.catansrecs[n].answer == answer.id) {
+                            //look this answer in catans recs
+                            for (var n = 0; n < $rootScope.catansrecs.length; n++) {
 
-                                var idx2 = $rootScope.content.map(function (x) { return x.id; }).indexOf($rootScope.catansrecs[n].category);
-                                category = $rootScope.content[idx2];
-                                if (!category)
-                                    continue;
-                                if (category.title.indexOf('food') > -1 || category.tags.indexOf('food') > -1) {
-                                    addRecord(vm.foodans, answer, i);
-                                }
+                                if ($rootScope.catansrecs[n].answer == answer.id) {
 
-                                if (category.title.indexOf('lifestyle') > -1 || category.tags.indexOf('lifestyle') > -1) {
+                                    var idx2 = $rootScope.content.map(function (x) { return x.id; }).indexOf($rootScope.catansrecs[n].category);
+                                    category = $rootScope.content[idx2];
+                                    if (!category)
+                                        continue;
+                                    if (category.title.indexOf('food') > -1 || category.tags.indexOf('food') > -1) {
+                                        addRecord(vm.foodans, answer, i);
+                                    }
 
-                                    addRecord(vm.lifestyleans, answer, i);
-                                }
+                                    if (category.title.indexOf('lifestyle') > -1 || category.tags.indexOf('lifestyle') > -1) {
 
-                                if (category.title.indexOf('services') > -1 || category.tags.indexOf('services') > -1) {
+                                        addRecord(vm.lifestyleans, answer, i);
+                                    }
 
-                                    addRecord(vm.servicesans, answer, i);
-                                }
+                                    if (category.title.indexOf('services') > -1 || category.tags.indexOf('services') > -1) {
 
-                                if (category.title.indexOf('health') > -1 || category.tags.indexOf('health') > -1) {
+                                        addRecord(vm.servicesans, answer, i);
+                                    }
 
-                                    addRecord(vm.healthans, answer, i);
-                                }
+                                    if (category.title.indexOf('health') > -1 || category.tags.indexOf('health') > -1) {
 
-                                if (category.title.indexOf('beauty') > -1 || category.tags.indexOf('beauty') > -1) {
- 
-                                    addRecord(vm.beautyans, answer, i);
-                                }
+                                        addRecord(vm.healthans, answer, i);
+                                    }
 
+                                    if (category.title.indexOf('beauty') > -1 || category.tags.indexOf('beauty') > -1) {
 
-                                if (category.title.indexOf('social') > -1 || category.tags.indexOf('social') > -1) {
-                                    
-                                    addRecord(vm.socialans, answer, i);
-                                }
+                                        addRecord(vm.beautyans, answer, i);
+                                    }
 
 
-                                if (category.title.indexOf('family') > -1 || category.tags.indexOf('family') > -1) {
-                                    
-                                    addRecord(vm.familyans, answer, i);
+                                    if (category.title.indexOf('social') > -1 || category.tags.indexOf('social') > -1) {
+
+                                        addRecord(vm.socialans, answer, i);
+                                    }
+
+
+                                    if (category.title.indexOf('family') > -1 || category.tags.indexOf('family') > -1) {
+
+                                        addRecord(vm.familyans, answer, i);
+                                    }
                                 }
                             }
                         }

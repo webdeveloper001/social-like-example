@@ -265,7 +265,6 @@
         activate();
         
         function activate() {
-
             //****TEMP CODE, ENable for Admin Functions*****************
             /*
             $rootScope.isLoggedIn = true;
@@ -300,6 +299,7 @@
                 loadJSON();
                 //if (!tourviewed && !$rootScope.isLoggedIn) dialog.tour();
             }
+            else loadData();
 
             //Call userdata functions, If user is not logged in, functions do not execute.
             userdata.loadUserData();        //load user data (votes and activities)

@@ -214,6 +214,7 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
 
             var timeoutPromise2;
             scope.$watch('init', function() {
+                //console.log("init @search-blok");
                 $timeout.cancel(timeoutPromise2); //do nothing is timeout already done   
                 timeoutPromise2 = $timeout(function(){
                     if (scope.init) scope.getContent();
@@ -223,7 +224,15 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
             //Get content on loading
             scope.getContent = function() {
                 homeRanks = [];
-                homeRanks = JSON.parse(JSON.stringify($rootScope.content));
+
+                if ($rootScope.content.length < 50) 
+                    homeRanks = JSON.parse(JSON.stringify($rootScope.content));
+                else {
+                    $rootScope.content.forEach(function(item){
+                        if (item.ismp) homeRanks.push(item);
+                    });
+                }
+                
                    if (homeRanks.length > 0){
                         shuffle(homeRanks);
                         scope.disableScrolling = false;
@@ -240,6 +249,7 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
 
             var timeoutPromise3;
             scope.$watch('data', function() {
+                //console.log("data @search-blok");
                 $timeout.cancel(timeoutPromise3); //do nothing is timeout already done   
                 timeoutPromise3 = $timeout(function(){
                     if (scope.data) scope.addContent();

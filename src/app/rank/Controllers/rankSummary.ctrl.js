@@ -186,6 +186,7 @@
             //console.log("$rootScope.content.length - ", $rootScope.content.length);
             if ($rootScope.DEBUG_MODE) console.log("$rootScope.cCategory - ", $rootScope.cCategory.id, $rootScope.cCategory.cat);
             if(!$rootScope.cCategory) $state.go('cwrapper');
+
             vm.ranking = $rootScope.cCategory.title;
             if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego','close to me');
 

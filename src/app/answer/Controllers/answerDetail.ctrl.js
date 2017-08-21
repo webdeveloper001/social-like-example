@@ -329,7 +329,10 @@
             
             //Determine number of user comments
             if (vm.answer.numcom == undefined) vm.numcom = 0;
-            else vm.numcom = vm.answer.numcom;
+            else vm.numcom = vm.vrows.length;
+
+            if (vm.answer.numcom != vm.vrows.length)
+                answer.updateAnswer(vm.answer.id, ['numcom'], [vm.numcom]);
 
             //Determine if necessary to show navigation buttons
             if (vm.ranking) vm.showNextnPrev = true;
@@ -713,7 +716,7 @@
                 $state.go('match');
             }
             else if ($rootScope.inFavMode) {
-                $state.go('myfavs');
+                $state.go('favs');
             }
             else {
                 //var nViews = vm.answer.views + 1;
@@ -863,7 +866,6 @@
         }
 
         function showSpecial(x){
-            console.log("showspecial");
             dialog.showSpecial(x);
         }
 

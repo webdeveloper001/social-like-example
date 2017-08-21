@@ -6,11 +6,11 @@
         .factory('dataloader', dataloader);
 
     dataloader.$inject = ['$http', '$q','$rootScope','pvisits', 'table2',
-        'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata',
+        'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 
         'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans','categories', 'locations'];
 
     function dataloader($http, $q, $rootScope, pvisits, table2,
-        rankofday, answer, table, special, datetime, uaf, userdata,
+        rankofday, answer, table, special, datetime, uaf, 
         matchrec, edit, useractivity, vrows, headline, cblock, catans, categories, locations) {
 
         // Members
@@ -131,7 +131,8 @@
         }
 
         function getSecondaryData(){
-            var p0 = uaf.getactions();        
+            var p0 = uaf.getactions();
+            var p1 = headline.getheadlines();        
         }
 
         function unwrap(){
@@ -485,7 +486,6 @@
             var idx = slugA[slugA.length-1];
             
             answer.getAnswer(idx).then(function(result){
-                console.log("@landAnswer - result ", result);
                 //$rootScope.answers = result;
                 answerReady = true;
                 landAnswerCheckStatus();
@@ -532,7 +532,6 @@
             if (answerReady && catansReady && dataReady){
                     if ($rootScope.isLoggedIn){
                         if (demoDataReady){
-                            console.log("all data ready");
                             $rootScope.rankSummaryDataLoaded = true;
                             $rootScope.answerDetailLoaded = true;
                             $rootScope.$emit('answerDataLoaded');

@@ -237,7 +237,7 @@
                 parent: 'layout',
                 url: '/favs',
                 templateUrl: 'app/layout/Partials/favs.html',
-                controller: 'favs as ctrl'
+                controller: 'favs as vm'
             },
 
             {

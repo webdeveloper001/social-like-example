@@ -1367,7 +1367,7 @@
                     cssClass: 'btn-primary',
                     action: function (dialogItself) {
 
-                         //Store current state 
+                        //Store current state 
                         $rootScope.stateName = $state.current.name;
                         if ($rootScope.stateName == 'rankSummary') $rootScope.stateNum = $rootScope.cCategory.id;
                         else if ($rootScope.stateName == 'answerDetail') $rootScope.stateNum = $rootScope.canswer.id;
