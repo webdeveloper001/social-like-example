@@ -57,7 +57,6 @@ angular.module('app').directive('userfeedBlock',
             scope.ftext = 'see more';*/
 
             scope.fres = scope.showQty;
-            console.log("scope.fres - ", scope.fres);
         }
         
         function load() {
@@ -79,7 +78,6 @@ angular.module('app').directive('userfeedBlock',
         }
 		
         function pullData(uafs){
-            console.log("pullData @userfeed");
             var ranks = [];
             var ans = [];
             var item = {};
@@ -120,7 +118,6 @@ angular.module('app').directive('userfeedBlock',
         scope.$watch('showQty', function() {
                 si = scope.fres;
                 scope.fres = scope.showQty;
-                console.log("si, fres, ", si, scope.showQty);
                 pullData($rootScope.uafs.slice(si,scope.showQty));
                 //scope.disableScrolling = !scope.scrollactive;                                   
         });

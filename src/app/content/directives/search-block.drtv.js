@@ -12,6 +12,7 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
             length: '=',
             init: '=',
             data: '=',
+            rod: '=',
             scrollactive: '=',
         },
         controller: ['$scope',
@@ -222,29 +223,29 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
             });
 
             //Get content on loading
-            scope.getContent = function() {
+            scope.getContent = function () {
                 homeRanks = [];
 
-                if ($rootScope.content.length < 50) 
+                if ($rootScope.content.length < 50)
                     homeRanks = JSON.parse(JSON.stringify($rootScope.content));
                 else {
-                    $rootScope.content.forEach(function(item){
+                    $rootScope.content.forEach(function (item) {
                         if (item.ismp) homeRanks.push(item);
                     });
                 }
-                
-                   if (homeRanks.length > 0){
-                        shuffle(homeRanks);
-                        scope.disableScrolling = false;
-                        scope.currentIndex = scope.intialDataCount;
-                        scope.startIndex = 0;
-                        scope.endReached = false;
-                    }
+
+                if (homeRanks.length > 0) {
+                    shuffle(homeRanks);
+                    scope.disableScrolling = false;
+                    scope.currentIndex = scope.intialDataCount;
+                    scope.startIndex = 0;
+                    scope.endReached = false;
+                }
                 ranksLoaded = false;
                 scope.searchResults = homeRanks;
-                scope.displayResults = scope.searchResults.slice(0,scope.scrollingItemsOnePage);
-                pullDataArray = scope.searchResults.slice(0,scope.scrollingItemsOnePage);
-                pullData('ranks',pullDataArray);
+                scope.displayResults = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
+                pullDataArray = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
+                pullData('ranks', pullDataArray);
             }
 
             var timeoutPromise3;
@@ -268,6 +269,21 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                 ranksLoaded = true;
                 
             }
+
+            var timeoutPromise4;
+            scope.$watch('rod', function () {
+                $timeout.cancel(timeoutPromise4); //do nothing is timeout already done   
+                timeoutPromise4 = $timeout(function () {
+                    if (scope.rod == true) {
+                        if ($rootScope.rankofday) {
+                            var obj = $rootScope.rankofday;
+                            obj[0].isrod = true;
+                            homeRanks[0] = obj[0];
+                            scope.displayResults[0] = obj[0];
+                        }
+                    }
+                }, 50);
+            });
 
             scope.$watch('scrollactive', function() {
                 scope.disableScrolling = !scope.scrollactive;                                   

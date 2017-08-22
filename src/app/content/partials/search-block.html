@@ -6,7 +6,6 @@
 	id="inifinite-container" 
 	style="{{sm? 'padding-right: 5px;':''}}">
 		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-repeat="x in displayResults">
-
 			<div ng-if="!x.isAnswer" ng-click="rankSel(x,false)">
 				<rank-item rank-object="x" views="x.views"></rank-item>
 			</div>

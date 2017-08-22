@@ -51,6 +51,7 @@
         vm.initready = false;
         vm.barIsActive = true;
         vm.childActive = false;
+        vm.rodready = false;
 
         //Admin Methods
         vm.editRank = editRank;
@@ -197,6 +198,10 @@
         var userLoggedOutListener = $rootScope.$on('userLoggedOut', function (event) {
                 vm.isAdmin = false;
         });
+        
+        var rodReadyListener = $rootScope.$on('rodReady', function (event) {
+                vm.rodready = true;
+        });
 
         var setScopeListener = $rootScope.$on('setScope', function () {
             if ($rootScope.SCOPE == 1) {vm.scopeIsGeneral = true; vm.scopeIsCity = false; }
@@ -215,6 +220,7 @@
         $scope.$on('$destroy',userDataLoadedListener);
         $scope.$on('$destroy',showLogoListener);
         $scope.$on('$destroy',refreshRanksListener);
+        $scope.$on('$destroy',rodReadyListener);
 
         if ($window.innerWidth < 512) {
             vm.logoimage = "/assets/images/rankxlogosd2_sm.png";

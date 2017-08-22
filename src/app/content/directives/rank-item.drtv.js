@@ -48,6 +48,7 @@ angular.module('app').directive('rankItem',
                     editTitle(scope.rankObject);
                     
                     scope.title = resObj.title;
+                    scope.rod = resObj.isrod;
                     
                     //Get rank stats
                     scope.stats = {};
