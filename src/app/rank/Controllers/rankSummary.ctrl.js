@@ -1482,75 +1482,77 @@
             if ($rootScope.DEBUG_MODE) console.log("UpdateRecords @answerDetail");
             
             //TODO Need to pass table id
-            for (var i = 0; i < vm.answers.length; i++) {
+            if (vm.answers) {
+                for (var i = 0; i < vm.answers.length; i++) {
 
-                var voteRecordExists = vm.answers[i].voteRecordExists;
-                var userHasRank = false;
-                var useractivityrec = {};
-                //console.log("$rootScope.thisuseractivity - ", $rootScope.thisuseractivity);
-                try {
-                    var idx = $rootScope.thisuseractivity.map(function (x) { return x.category; }).indexOf($rootScope.cCategory.id);
-                }
-                catch (err) {
-                    console.log("Error: ", err);
-                    console.log("$rootScope.cCategory - ", $rootScope.cCategory);
-                    var idx = -1;                    
-                }
-                if (idx >= 0) {
-                    userHasRank = true;
-                    useractivityrec = $rootScope.thisuseractivity[idx];
-                }
-                else userHasRank = false;  
-                //if vote is changed to non-zero
-                if (voteRecordExists && vm.answers[i].uservote.vote != vm.answers[i].dV && vm.answers[i].dV != 0) {
-                    //update vote
-                    if ($rootScope.DEBUG_MODE) console.log("UR-1");
-                    votes.patchRec(vm.answers[i].uservote.id, vm.answers[i].dV);
-                }
-                //if vote is changed to zero
-                if (voteRecordExists && vm.answers[i].uservote.vote != vm.answers[i].dV && vm.answers[i].dV == 0) {
-                    //Delete vote
-                    if ($rootScope.DEBUG_MODE) console.log("UR-2");
-                    votes.deleteRec(vm.answers[i].uservote.id);
-                    //Decrease vote counter from user activity. If counter is 1, also delete user activiy record (since there is no more votes
-                    //from this user)
-                    if (useractivityrec.votes < 2) {
-                        if ($rootScope.DEBUG_MODE) console.log("UR-3");
-                        useractivity.deleteRec(useractivityrec.id);
+                    var voteRecordExists = vm.answers[i].voteRecordExists;
+                    var userHasRank = false;
+                    var useractivityrec = {};
+                    //console.log("$rootScope.thisuseractivity - ", $rootScope.thisuseractivity);
+                    try {
+                        var idx = $rootScope.thisuseractivity.map(function (x) { return x.category; }).indexOf($rootScope.cCategory.id);
                     }
-                    else {
-                        if ($rootScope.DEBUG_MODE) console.log("UR-4");
-                        useractivity.patchRec(useractivityrec.id, useractivityrec.votes - 1);
-                        //$rootScope.userActRec.votes--;
+                    catch (err) {
+                        console.log("Error: ", err);
+                        console.log("$rootScope.cCategory - ", $rootScope.cCategory);
+                        var idx = -1;
                     }
-                }
-                if (!voteRecordExists && vm.answers[i].dV != 0) {
-                    //Post a new vote and create useractivity record
-                    if ($rootScope.DEBUG_MODE) console.log("UR-5");
-                    votes.postRec(vm.answers[i].catans, vm.answers[i].id, $rootScope.cCategory.id, vm.answers[i].dV);
-                    if (userHasRank) {
-                        if ($rootScope.DEBUG_MODE) console.log("UR-6");
-                        useractivity.patchRec(useractivityrec.id, useractivityrec.votes + 1);
-                        //$rootScope.userActRec.votes++;
+                    if (idx >= 0) {
+                        userHasRank = true;
+                        useractivityrec = $rootScope.thisuseractivity[idx];
                     }
-                    else {
-                        if ($rootScope.DEBUG_MODE) console.log("UR-7");
-                        useractivity.postRec($rootScope.cCategory.id);
-                        //$rootScope.thisuseractivity.push();
+                    else userHasRank = false;
+                    //if vote is changed to non-zero
+                    if (voteRecordExists && vm.answers[i].uservote.vote != vm.answers[i].dV && vm.answers[i].dV != 0) {
+                        //update vote
+                        if ($rootScope.DEBUG_MODE) console.log("UR-1");
+                        votes.patchRec(vm.answers[i].uservote.id, vm.answers[i].dV);
                     }
-                }
-            
-                //update answer record (vote count) if necessary
-                //TODO Need to pass table id
-                if ((vm.answers[i].upV != vm.answers[i].upVi) || (vm.answers[i].downV != vm.answers[i].downVi)) {
-                    if ($rootScope.DEBUG_MODE) console.log("UR-8");
-                    //console.log("vm.answerRanks[i] - ",vm.answerRanks[i]);
-                    //catans.getCatan(vm.answers[i].catans).then(function(catan){
-                     //   var updV = vm.answerRanks[i].upV + vm.answerRanks[i].upVi;
-                     //   var downdV = vm.answerRanks[i].downV + vm.answerRanks[i].downVi;
-                        
-                    catans.updateRec(vm.answers[i].catans, ["upV", "downV"], [vm.answers[i].upV, vm.answers[i].downV]);    
-                    //});
+                    //if vote is changed to zero
+                    if (voteRecordExists && vm.answers[i].uservote.vote != vm.answers[i].dV && vm.answers[i].dV == 0) {
+                        //Delete vote
+                        if ($rootScope.DEBUG_MODE) console.log("UR-2");
+                        votes.deleteRec(vm.answers[i].uservote.id);
+                        //Decrease vote counter from user activity. If counter is 1, also delete user activiy record (since there is no more votes
+                        //from this user)
+                        if (useractivityrec.votes < 2) {
+                            if ($rootScope.DEBUG_MODE) console.log("UR-3");
+                            useractivity.deleteRec(useractivityrec.id);
+                        }
+                        else {
+                            if ($rootScope.DEBUG_MODE) console.log("UR-4");
+                            useractivity.patchRec(useractivityrec.id, useractivityrec.votes - 1);
+                            //$rootScope.userActRec.votes--;
+                        }
+                    }
+                    if (!voteRecordExists && vm.answers[i].dV != 0) {
+                        //Post a new vote and create useractivity record
+                        if ($rootScope.DEBUG_MODE) console.log("UR-5");
+                        votes.postRec(vm.answers[i].catans, vm.answers[i].id, $rootScope.cCategory.id, vm.answers[i].dV);
+                        if (userHasRank) {
+                            if ($rootScope.DEBUG_MODE) console.log("UR-6");
+                            useractivity.patchRec(useractivityrec.id, useractivityrec.votes + 1);
+                            //$rootScope.userActRec.votes++;
+                        }
+                        else {
+                            if ($rootScope.DEBUG_MODE) console.log("UR-7");
+                            useractivity.postRec($rootScope.cCategory.id);
+                            //$rootScope.thisuseractivity.push();
+                        }
+                    }
+
+                    //update answer record (vote count) if necessary
+                    //TODO Need to pass table id
+                    if ((vm.answers[i].upV != vm.answers[i].upVi) || (vm.answers[i].downV != vm.answers[i].downVi)) {
+                        if ($rootScope.DEBUG_MODE) console.log("UR-8");
+                        //console.log("vm.answerRanks[i] - ",vm.answerRanks[i]);
+                        //catans.getCatan(vm.answers[i].catans).then(function(catan){
+                        //   var updV = vm.answerRanks[i].upV + vm.answerRanks[i].upVi;
+                        //   var downdV = vm.answerRanks[i].downV + vm.answerRanks[i].downVi;
+
+                        catans.updateRec(vm.answers[i].catans, ["upV", "downV"], [vm.answers[i].upV, vm.answers[i].downV]);
+                        //});
+                    }
                 }
             }
 

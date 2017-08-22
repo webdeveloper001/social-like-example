@@ -27,6 +27,7 @@
             unwrap: unwrap,
             createSearchStrings: createSearchStrings,
             pulldata: pulldata,
+            getDemoData: getDemoData,
         };
 
         var _ranksLoaded = false;
@@ -196,7 +197,6 @@
                 checkDemoDataStatus();
             });
             catans.getAllcatansX(demoCustomRanks).then(function (result2) {
-                //console.log('dataloader 182 --- result2 - ', result2);
                 if (result2 != false) 
                     answer.getAnswersL(result2).then(function(){
                         demoData2of3 = true;
@@ -477,7 +477,7 @@
             });
             //var data = {};
             //data.id = idx;
-            getDemoData();
+            //getDemoData();
         }
 
         function landAnswer(slug){
@@ -525,7 +525,7 @@
                     landAnswerCheckStatus();  
                 });
             
-            getDemoData();
+            //getDemoData();
         }
 
         function landAnswerCheckStatus(){

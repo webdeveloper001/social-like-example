@@ -46,6 +46,7 @@
                     $rootScope.friends_votes = d[7];
 
                     pullFavoriteData();
+                    dataloader.getDemoData();
                     if ($rootScope.DEBUG_MODE) console.log("user promoter - ",$rootScope.userpromoter);
                     $rootScope.userDataLoaded = true;
                     $rootScope.$emit('userDataLoaded');  
