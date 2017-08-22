@@ -53,6 +53,7 @@
             var cids = [1164, 1130, 1403, 1407, 1313, 1275, 1149, 1276, 1390, 1475, 1367, 1241];
             var p1 = table.getInitialHomeData(rids);
             var p2 = categories.getInitialHomeData(cids);
+            var p3 = rankofday.getrankofday();
             $q.all([p1,p2]).then(function(){
                 unwrap();
                 $rootScope.$emit('initalHomeDataLoaded');
@@ -62,7 +63,7 @@
        
 
         function gethomedata() {
-
+/*
             var p0 = table.getTables();
             //var p1 = headline.getheadlines();
             //var p2 = cblock.getcblocksmain();
@@ -100,6 +101,7 @@
                 $rootScope.$emit('homeDataLoaded');
 
             });
+            */
         }
 
         function gethomedataX(scope) {

@@ -11,6 +11,7 @@
 
         // Members
         var _rankofday = [];
+        $rootScope.rankofday = _rankofday;
         var _allranks = [];
         var baseURI = '/api/v2/mysql/_table/rankofday';
 
@@ -48,7 +49,6 @@
                 if (result.data.resource.length != 0) {
 
                     var rodObj = result.data.resource[0];
-
                     //once we get rankofday record, we find record with that category.
                     /*$rootScope.content.forEach(function(x){
                         if (x.cat == result.data.resource[0].category && x.nh == 1) _rankofday = x;
@@ -74,7 +74,8 @@
                         rankObj.fc = catObj.fc;
                         rankObj.bc = catObj.bc;
                         rankObj.shade = catObj.shade;
-                        _rankofday = rankObj;
+                        _rankofday.push(rankObj);
+                        $rootScope.$emit('rodReady');
                         return _rankofday;
                     },function(err){
                         console.log("Error getting rank of day data: ", err);
