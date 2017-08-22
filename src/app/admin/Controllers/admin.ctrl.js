@@ -1250,7 +1250,7 @@
                     //console.log("includes SD - ", includesSDctr);
                     //console.log("doesnt includes SD - ", nincludesSDctr);
                     
-                    //var idx=0;
+                    /*//var idx=0;
                     console.log("$rootScope.answers ", $rootScope.answers.length);
                     console.log("$rootScope.content ", $rootScope.content.length);
                     console.log("$rootScope.catansrecs ", $rootScope.catansrecs.length);
@@ -1302,7 +1302,18 @@
                         //console.log(idx, $rootScope.content[i].title,$rootScope.categories[idx].scope);
                         //table.update($rootScope.content[i].id,['scope'],[$rootScope.categories[idx].scope]);
                     //}
-                    
+                    //40. Write isprivate flag to custom ranks answers
+                    /*var cranks = [11300,11301,11302,11303,11304];
+                    for (var i=0; i<cranks.length; i++){
+                        for (var j=0; j<$rootScope.catansrecs.length; j++){
+                            if ($rootScope.catansrecs[j].category == cranks[i]){
+                                console.log("update answer - ", $rootScope.catansrecs[j].answer);
+                                answer.updateAnswer($rootScope.catansrecs[j].answer,['isprivate'],[true]);
+                            }
+                        }
+
+                    }*/
+
             }
                  
     }

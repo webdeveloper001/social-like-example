@@ -114,7 +114,6 @@
                 filterstr = filterstr + 'id=' + _datax[i].answer+')OR(';
             }
             filterstr = filterstr.substring(0,filterstr.length-3);
-            
             //Get all answer records
             var url0 = baseURI + filterstr;
             
