@@ -262,7 +262,7 @@
                 <!-- ng-attr-style="background-color:{{x.bc}};color:{{x.fc}}" -->
                 <td ng-show="vm.type == 'Establishment' && vm.mode=='specials'" ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}" ng-click="vm.answerDetail(x)">
                     {{x.sp_title}}</td>
-                <td ng-if="vm.mode=='endorse'">
+                <td ng-if="vm.mode=='endorse'" style="width:{{vm.sm?'150px':'200px'}}">
 
                     <div>
                         <span  ng-click="vm.UpVote(x,$event)"  ng-attr-style="color:{{x.thumbUp}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 18px;" 
