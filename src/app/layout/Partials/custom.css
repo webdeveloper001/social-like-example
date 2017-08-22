@@ -332,10 +332,10 @@ a.navbar-profile-picture-wrapper span{
 }
 
 @media screen and (max-width: 414px) {
-	
+	/*
     a.home-link{
-        display: none;
-    }
+        display: none;*
+    }*/
     a.navbar-profile-picture-wrapper{
         padding-left: 10px;
         display: inline;

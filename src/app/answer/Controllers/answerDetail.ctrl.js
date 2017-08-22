@@ -7,11 +7,13 @@
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
         'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt','dataloader','$timeout',
-        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope','$cookies', '$q', 'fbusers', 'InstagramService', 'mailing', 'Socialshare']; //AM:added user service
+        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope', 'table',
+        '$cookies', '$q', 'fbusers', 'InstagramService', 'mailing', 'Socialshare']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
         votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt, dataloader, $timeout,
-        $location, vrows, vrowvotes, imagelist, instagram, $scope, $cookies, $q, fbusers, InstagramService, mailing, Socialshare) { //AM:added user service
+        $location, vrows, vrowvotes, imagelist, instagram, $scope, table,
+        $cookies, $q, fbusers, InstagramService, mailing, Socialshare) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
@@ -1257,23 +1259,66 @@
 
         function addcts(x) {
             var title = '';
-            var category = 0;
-            
+            var rank = -1;
+            var rFound = false;
+            var cat = -1;
+            var nh = -1;
             title = vm.addctsval;
-            
-            for (var i = 0; i < $rootScope.content.length; i++) {
 
-                if ($rootScope.content[i].title == title) {
-                    category = $rootScope.content[i].id;
+            for (var i=0; i<$rootScope.content.length; i++){
+                if ($rootScope.content[i].title == title){
+                    rFound = true;
+                    rank = r.id;
                     break;
                 }
             }
-            console.log("category - ", category);
-            catans.postRec2(vm.answer.id, category).then(function(){
-                vm.addctsactive = false;
-                getAnswerRanks();
-                vm.dispRanks++;
-            });
+            
+            if (rFound) {
+                console.log('rank found, posting record');
+                catans.postRec2(vm.answer.id, rank).then(function () {
+                    vm.addctsactive = false;
+                    getAnswerRanks();
+                    vm.dispRanks++;
+                });
+            }
+            //Rank not found, determine category and create ghost
+            else {
+                //find string to look in category
+                console.log('rank not found, will create ghost');
+                if (title.indexOf(vm.answer.cityarea) > -1) {
+                    title = title.replace(vm.answer.cityarea, '@Nh');
+                    console.log('category title - ', title);
+                }
+
+                for (var i=0; i< $rootScope.categories.length; i++) {
+                    if ($rootScope.categories[i].category == title) {
+                        cat = $rootScope.categories[i].id;
+                        break;
+                    }
+                }
+
+                for (var i=0; i< $rootScope.locations.length; i++) {
+                    if ($rootScope.locations[i].nh_name == vm.answer.cityarea) {
+                        nh = $rootScope.locations[i].id;
+                        break;
+                    }
+                }
+                
+                if (cat > -1 && nh > -1) {
+                    var obj = {};
+                    obj.cat = cat;
+                    obj.nh = nh;
+                    obj.isatomic = true;
+                    table.addTable(obj).then(function (tableid) {
+                        catans.postRec2(vm.answer.id, tableid).then(function () {
+                            vm.addctsactive = false;
+                            getAnswerRanks();
+                            vm.dispRanks++;
+                        })
+                    })
+                }
+                else console.log('Error creating ghost rank, cat, nh ', cat, nh);
+            }           
         }
 
         function addCatans(x) {
