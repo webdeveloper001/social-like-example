@@ -1283,7 +1283,7 @@
                 },
                 callback: function (result) {
                     if (result) {
-                        console.log(blobList);
+                        if ($rootScope.DEBUG_MODE) console.log(blobList);
                         if( blobList[n].type == 'Instagram' ){
                             var itempos = current_answer.ig_image_urls.indexOf(blobList[n].url);
                             if( itempos != -1){

@@ -18,12 +18,11 @@
         <div class="text-left">
             <small class="text-muted">&nbsp;&nbsp;&nbsp{{vm.answer.views}}&nbspviews</small>            
         </div>
-
     </div>
     <div class="col-xs-6 col-sm-9 col-md-10">
             <div ng-show="{{vm.type == 'Establishment' || vm.type == 'PersonCust' || vm.type == 'Event' }}" class="text-right">
                 <p ng-attr-style="display:{{vm.answer.hasOwner ? 'none':'inline'}};" class="hiw" ng-click="vm.bizRegDialog()">
-                    <u>{{vm.bindtxt}}</u>
+                    <u>{{vm.bindtxt}}</u>{{vm.isAdmin?(' '+ vm.bizcat):''}}
                 </p>
                 <!--<br ng-attr-style="display:{{vm.answer.hasOwner ? 'inline':'none'}}">-->
                 <span class="glyphicon glyphicon-lock" ng-attr-style="display:{{vm.answer.hasOwner ? 'inline':'none'}}"></span>
@@ -87,7 +86,7 @@
         <p class="text-center" ng-if="vm.type == 'Short-Phrase'"> on {{r.title}}</p>
         <div class="row" ng-if="true" style="padding-bottom:5px;padding-top:5px; margin-top:0px">
             <img ng-attr-style="height:55px;width:auto;" class="col-xs-3 col-md-1 col-lg-1" ng-attr-style="margin:0px" ng-src="{{r.icon}}">
-           <div class="col-xs-6">
+           <div class="col-xs-6" style="min-width:175px">
                 <p style="padding-top:3px;margin-bottom:px;">Ranked <strong>#{{r.rank}}</strong> out of <strong>{{r.answers}}</strong></p>
                <div class="text-center" style="margin-top:2px">
                <span ng-click="vm.UpVote(r)" ng-attr-style="color:{{r.thumbUp}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 18px;"

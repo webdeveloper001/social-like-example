@@ -201,6 +201,8 @@
         
         var rodReadyListener = $rootScope.$on('rodReady', function (event) {
                 vm.rodready = true;
+                dataloader.pulldata('ranks', $rootScope.rankofday);
+                //console.log("$rootScope.rankofday - ", $rootScope.rankofday);
         });
 
         var setScopeListener = $rootScope.$on('setScope', function () {
@@ -282,6 +284,7 @@
                 if ($rootScope.user.id == '1599427743409374') $rootScope.dataAdmin = true;
                 if ($rootScope.user.id == '10104518570729893') $rootScope.isAdmin = true;
                 if ($rootScope.user.id == '10214255239240099') $rootScope.contentAdmin = true;
+                if ($rootScope.user.id == '1638806919478345') $rootScope.modAdmin = true;
             }
             vm.isAdmin = $rootScope.isAdmin || $rootScope.contentAdmin;
             $rootScope.$emit('adminCredentials');

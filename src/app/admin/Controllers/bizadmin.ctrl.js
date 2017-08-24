@@ -51,13 +51,14 @@
 
                 data[0].forEach(function(business){
                     var pextend = angular.copy(business);
-                    getAnswer(pextend).then(function(){
-                        filterData();    
-                        
-                    });
-                    vm.businesses.push(pextend);       
-                        
+                    var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(pextend.answer);  
+                    if (idx > -1){
                     
+                        getAnswer(pextend).then(function(){
+                            filterData();    
+                        });
+                        vm.businesses.push(pextend);       
+                    }                        
                 });
 
                 vm.dataReady = true;

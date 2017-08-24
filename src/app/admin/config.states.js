@@ -75,6 +75,13 @@
                 templateUrl: 'app/admin/Partials/dbQuery.html',
                 controller: 'dbQuery as vm'               
             },
+            {
+                name: 'imagesmod',
+                parent: 'admin',
+                url: '/imagemod',
+                templateUrl: 'app/admin/Partials/imagesmod.html',
+                controller: 'imagesmod as vm'               
+            },
              {
                 name: 'updateHeaders',
                 parent: 'admin',

@@ -396,8 +396,7 @@
             data.forEach(function(x){
                 _answers.push(x);
                 _fetchAnswersMem.push(x.id);
-            });
-            
+            });        
         }
 
         function _areAnswersLoaded() {
