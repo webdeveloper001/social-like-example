@@ -7,11 +7,11 @@
 
     admin.$inject = ['$location', '$rootScope', '$state','table','answer','categories','table2',
     'categorycode','$q','vrows','catans','common','dataloader','locations','special','matchrec',
-    'useractivity','edit'];
+    'useractivity','edit','useraccnt'];
 
     function admin(location, $rootScope, $state, table, answer, categories, table2,
         categorycode, $q, vrows, catans, common, dataloader, locations, special, matchrec,
-        useractivity, edit) {
+        useractivity, edit, useraccnt) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'admin';
@@ -38,6 +38,7 @@
         vm.bizAdmin = bizAdmin;
         vm.applyRule = applyRule;
         vm.cleanDB = cleanDB;
+        vm.modImages = modImages;
 
         vm.dataready = false;
         //vm.fbpost = fbpost;
@@ -59,6 +60,7 @@
             
             vm.isAdmin = $rootScope.user.is_sys_admin || $rootScope.isAdmin;
             vm.dataAdmin = $rootScope.dataAdmin;
+            vm.modAdmin = $rootScope.modAdmin;
 
             loadData();
             if ($rootScope.DEBUG_MODE) console.log("admin page Loaded!");
@@ -78,8 +80,9 @@
             var p8 = edit.getEdits();
             var p9 = vrows.getAllvrows();
             var p10 = table2.getTables();
+            var p11 = useraccnt.getallaccnts();
 
-            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10]).then(function (d) {
+            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11]).then(function (d) {
                 
                 $rootScope.content = d[0];
                 $rootScope.categories = d[1];
@@ -92,6 +95,7 @@
                 $rootScope.edits = d[8];
                 $rootScope.cvrows = d[9];
                 $rootScope.customranks = d[10];
+                $rootScope.useraccnts = d[11];
 
                 dataloader.unwrap();
                 dataloader.createSearchStrings();
@@ -105,240 +109,90 @@
 
         }
         function keywords() {
+            disableAll();
             vm.selKeywords = 'active';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-            vm.selSibLocks = '';
-            vm.selCleanDB = '';
-
             $state.go('queries');
 
         }
         function views() {
-            vm.selKeywords = '';
+            disableAll();
             vm.selViews = 'active';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-            vm.selSibLocks = '';
-            vm.selCleanDB = '';
-
-
             $state.go('views');
 
         }
         function flags() {
-            vm.selKeywords = '';
-            vm.selViews = '';
+            disableAll();
             vm.selFlags = 'active';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-            vm.selSibLocks = '';
-            vm.selCleanDB = '';
-
-
             $state.go('flags');
-
         }
 
         function addRank() {
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
+            disableAll();   
             vm.selRankings = 'active';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-            vm.selSibLocks = '';
-            vm.selCleanDB = '';
-
-
             $state.go('addRank');
 
         }
-
         function dbMaint() {
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
+            disableAll();
             vm.selDbMaint = 'active';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-            vm.selSibLocks = '';
-            vm.selCleanDB = '';
-
-            
             $state.go('dbMaint');
         }
 
         function dbQuery() {
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
+            disableAll();
             vm.selQuery = 'active';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-            vm.selSibLocks = '';
-            vm.selCleanDB = '';
-
-            
             $state.go('dbQuery');
         }
         
          function update() {
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
+            disableAll();
             vm.selUpdate = 'active';
-            vm.selFoodRanks = '';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-            vm.selSibLocks = '';
-            vm.selCleanDB = '';
-
-            
             $state.go('updateHeaders');
         }
         
         function foodranks(){
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
+            disableAll();
             vm.selFoodRanks = 'active';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-            vm.selSibLocks = '';
-            vm.selCleanDB = '';
-
-            
             $state.go('foodRanks');
-            
         }
 
         function sibLocs(){
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
+            disableAll();
             vm.selSibLocks = 'active';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-            vm.selCleanDB = '';
-
-            
             $state.go('sibLocs');
         }
 
         function payment() {
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
-            vm.selPlan = '';
+            disableAll();
             vm.selPayment = 'active';
-            vm.selBizAdmin = '';
-            vm.selSibLocks = '';
-            vm.selCleanDB = '';
-
-
             $state.go('payment');
-
         }
 
         function plan() {
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
+            disableAll();
             vm.selPlan = 'active';
-            vm.selPayment = '';
-            vm.selBizAdmin = '';
-            vm.selSibLocks = '';
-            vm.selCleanDB = '';
-
-
             $state.go('plan');
-
         }
 
         function bizAdmin() {
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
-            vm.selPlan = '';
-            vm.selPayment = '';
-            vm.selBizAdmin = 'active';
-            vm.selSibLocks = '';
-            vm.selCleanDB = '';
-
-
-            $state.go('bizadmin');
-
+           disableAll();
+           vm.selBizAdmin = 'active';
+           $state.go('bizadmin');
         }
         
         function cleanDB() {
+            disableAll();
+            vm.selCleanDB = 'active';
+            $state.go('cleandb');
+        }
 
+        function modImages(){
+            disableAll();
+            vm.selimagesMod = 'active';
+            $state.go('imagesmod');
+        }
+
+        function disableAll(){
             vm.selKeywords = '';
             vm.selViews = '';
             vm.selFlags = '';
@@ -351,11 +205,10 @@
             vm.selPayment = '';
             vm.selBizAdmin = '';
             vm.selSibLocks = '';
-            vm.selCleanDB = 'active';
-
-
-            $state.go('cleandb');
+            vm.selCleanDB = '';
+            vm.selimagesMod = '';
         }
+
         function goBack() {
             //if ($rootScope.cCategory.id == undefined) $state.go('rankSummary', { index: $rootScope.cCategory.id });
             //else $state.go('rankSummary', { index: 1 });
@@ -1312,6 +1165,13 @@
                             }
                         }
 
+                    }*/
+                    /*for (var i=0; i<$rootScope.answers.length; i++){
+                        if ($rootScope.answers[i].owner != undefined && $rootScope.answers[i].owner != 0 
+                            && $rootScope.answers[i].owner != '' && !$rootScope.answers[i].isprivate){
+                            console.log($rootScope.answers[i].name, " owner: ",$rootScope.answers[i].owner);
+                            //answer.updateAnswer($rootScope.answers[i].id,['owner'],['']);
+                        }
                     }*/
 
             }

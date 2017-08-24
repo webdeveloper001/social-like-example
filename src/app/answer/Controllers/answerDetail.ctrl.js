@@ -180,6 +180,8 @@
             answers = $rootScope.canswers;
             vm.fields = $rootScope.fields;
             vm.isAdmin = $rootScope.isAdmin || $rootScope.dataAdmin;
+            if (vm.isAdmin) vm.bizcat = useraccnt.getBizCat(vm.answer.id);
+
             $rootScope.isLoggedIn = $rootScope.isLoggedIn ? $rootScope.isLoggedIn : false;
             vm.isLoggedIn = $rootScope.isLoggedIn;
 

@@ -349,6 +349,7 @@
               if ($rootScope.catansrecs[j].answer == answerid) {
                   category = $rootScope.catansrecs[j].category;
                   var idx = $rootScope.content.map(function (x) { return x.id; }).indexOf(category);
+                  if (idx > -1){
                   rank = $rootScope.content[idx];
                   for (var k = 0; k < $rootScope.catcodes.length; k++) {
                       if (rank.title.indexOf($rootScope.catcodes[k].category) > -1) {
@@ -371,6 +372,8 @@
                           }
                       }
                   }
+                  }
+                else console.log('Couldnt find rank: ', category);
               }
           }
           return bizcat;

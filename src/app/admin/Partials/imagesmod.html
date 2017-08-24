@@ -1,0 +1,12 @@
+<div class="container">
+<h1>Images Moderation</h1>
+ 
+<div ng-repeat="x in vm.uuis">
+        <img src="{{x.imageurl}}" style="width:200px;height:auto">
+        {{x.answername}}
+        <button class="btn btn-success" ng-click="vm.approveImage(x)">Approve Image</button>
+        <button class="btn btn-danger" ng-click="vm.removeImage(x)">Remove Image</button>
+        <!--<button class="btn btn-danger" ng-click="vm.blockUser(x)">Block User</button> -->
+</div> 
+</div> 
+ 

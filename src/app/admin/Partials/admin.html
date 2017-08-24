@@ -2,7 +2,7 @@
 <div ui-view="navbar"></div>
 <br>
 <div ng-if="!vm.dataready">
-<h2>Please wait few seconds, loading all admin data...</h2>
+<h2>Please wait, loading all admin data...</h2>
 </div>
 <div ng-if="vm.dataready">
 <div class="text-center" ng-if="vm.isAdmin">
@@ -19,12 +19,16 @@
         <button class="btn btn-default {{vm.selPlan}} " ng-click="vm.plan() ">Plan</button>
         <button class="btn btn-default" ng-click="vm.bizAdmin() ">Business</button>
         <button class="btn btn-default" ng-click="vm.cleanDB() ">Clean DB</button>
+        <button class="btn btn-default" ng-click="vm.modImages() ">Moderate Images</button>
         <button class="btn btn-danger" ng-click="vm.applyRule() ">Apply Rule</button>
     </div>
 </div>
 <div ng-if="vm.dataAdmin">
     <button class="btn btn-default {{vm.selQuery}} " ng-click="vm.dbQuery()">Query</button>
     <button class="btn btn-default {{vm.selSibLocs}} " ng-click="vm.sibLocs() ">Sibbling Locations</button>
+</div>
+<div ng-if="vm.modAdmin">
+    <button class="btn btn-default" ng-click="vm.modImages() ">Moderate Images</button>
 </div>
 </div>    
 <br>

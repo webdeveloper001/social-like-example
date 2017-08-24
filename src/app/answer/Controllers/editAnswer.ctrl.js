@@ -873,9 +873,9 @@
                 if ($rootScope.DEBUG_MODE) console.log("R1");
                 vm.imageURL = $rootScope.blobimage;
                 //console.log("vm.imageURL - ", vm.imageURL);
-                answer.updateAnswer(x.answer, ['image'], [x.imageURL]);
+                answer.updateAnswer(x.answer, ['imageurl'], [x.imageURL]);
                 //$state.go("editAnswer", { reload: true });
-                $state.go('editAnswer', {}, { reload: true });
+                $state.go('editAnswer',{index: vm.answer.id});
                 //refreshImage();                
             }
             else if (x.field == "location"){

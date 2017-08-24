@@ -58,6 +58,7 @@ app.post('/ImageServer/SaveImage', image.saveImage);
 
 app.post('/mailing/promoterCreated', mailing.promoterCreated);
 app.post('/mailing/newBizCreated', mailing.newBizCreated);
+app.post('/mailing/userSubscribed', mailing.newImageUploaded);
 app.post('/mailing/userSubscribed', mailing.userSubscribed);
 
 // app.post('/mailing/', image.saveImage);
