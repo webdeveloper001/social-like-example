@@ -1456,7 +1456,7 @@
 
         function share(){
             //vm.linkurl = 'https://rank-x.com/answerDetail/' + vm.answer.slug;
-            vm.linkurl = SERVER_URL + '/answer' + vm.answer.id + '.html';
+            vm.linkurl = SERVER_URL + 'answer' + vm.answer.id + '.html';
             vm.tweet = vm.answer.name + ', endorse your favorite ones at: ';
 
             var imageurl = vm.answer.imageurl;
