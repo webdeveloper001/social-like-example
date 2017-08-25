@@ -28,8 +28,8 @@
         vm.header = '';
         //-----SEO tags ----
         $scope.$parent.seo = {
-            pageTitle: 'Home |',
-            metaDescription: 'Home | Rank-X creates collective rankings on everything in your city.'
+            pageTitle: 'Rank-X',
+            metaDescription: 'Rank-X creates collective rankings on everything in your city.'
         };
 
         //vm.searchRank = searchRank;
