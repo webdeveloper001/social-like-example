@@ -1267,7 +1267,7 @@
             
             function share(){
                 //vm.linkurl = 'https://rank-x.com/rankSummary/' + $rootScope.cCategory.slug; 
-                vm.linkurl = SERVER_URL + '/rank' + $rootScope.cCategory.id + '.html';
+                vm.linkurl = SERVER_URL + 'rank' + $rootScope.cCategory.id + '.html';
                 vm.tweet = $rootScope.cCategory.title + ', endorse your favorite ones at: ';
 
                 var imageurl = $rootScope.cCategory.image1url;
