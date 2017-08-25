@@ -5,9 +5,9 @@
         .module('app')
         .factory('answer', answer);
 
-    answer.$inject = ['$http', '$q', '$rootScope','catans','vrows','uaf'];
+    answer.$inject = ['$http', '$q', '$rootScope','catans','vrows','uaf','staticpages'];
 
-    function answer($http, $q, $rootScope,catans, vrows, uaf) {
+    function answer($http, $q, $rootScope,catans, vrows, uaf, staticpages) {
 
         //Members
         var _answers = [];
@@ -190,14 +190,18 @@
                 //update local copy
                 var answerx = answer;
                 answerx.id = result.data.resource[0].id; 
-                _answers.push(answerx);
-
+                
                 //update slug tag and featured image
                 var slug = answerx.name.toLowerCase(); 
                 slug = slug.replace(/ /g,'-');
                 slug = slug.replace('/','at');
                 slug = slug + '-' + result.data.resource[0].id;
+                answerx.slug = slug;
+                
+                _answers.push(answerx);
+
                 updateAnswer(result.data.resource[0].id,['slug'],[slug]);
+                staticpages.createPageAnswer(answerx);
                 
                 //Update current establishment and person names for typeahead
                 if (answerx.type == 'Establishment') {
@@ -254,14 +258,18 @@
                 //update local copy
                 var answerx = answer;
                 answerx.id = result.data.resource[0].id; 
-                _answers.push(answerx);
-
+                
                 //update slug tag and featured image
                 var slug = answerx.name.toLowerCase(); 
                 slug = slug.replace(/ /g,'-');
                 slug = slug.replace('/','at');
                 slug = slug + '-' + result.data.resource[0].id;
+                answerx.slug = slug;
+
+                _answers.push(answerx);
                 updateAnswer(result.data.resource[0].id,['slug'],[slug]);
+
+                staticpages.createPageAnswer(answerx);
                 
                 //Update current establishment and person names for typeahead
                 if (answerx.type == 'Establishment') {
@@ -314,7 +322,18 @@
             var idx = _answers.map(function(x) {return x.id; }).indexOf(answer_id);  
             for (var i=0; i<field.length; i++){
                 _answers[idx][field[i]] = val[i];
-            }                        
+            }
+            
+            //determine if necessary to update static file
+            var updateStaticFile = false;
+            for (var i = 0; i < field.length; i++) {
+                if (field[i] == 'name' || (field[i] == 'slug' && field.length > 1) || 
+                    field[i] == 'imageurl' || field[i] == 'addinfo'){
+                        updateStaticFile = true;
+                        break;
+                    }               
+            }
+            if (updateStaticFile) staticpages.createPageAnswer(_answers[idx]);
             
             return $http.patch(url, obj, {
                 headers: {
@@ -384,6 +403,12 @@
                 body: obj
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
+
+                //delete static page for this answer
+                var filename = 'answer' + answer_id + '.html';
+                var data = {};
+                data.filename = filename;
+                staticpages.removeFile(data);
 
                 if ($rootScope.DEBUG_MODE) console.log("Deleting answer was succesful");
                 return result.data;
