@@ -7,11 +7,11 @@
 
     admin.$inject = ['$location', '$rootScope', '$state','table','answer','categories','table2',
     'categorycode','$q','vrows','catans','common','dataloader','locations','special','matchrec',
-    'useractivity','edit','useraccnt'];
+    'useractivity','edit','useraccnt','staticpages', '$timeout'];
 
     function admin(location, $rootScope, $state, table, answer, categories, table2,
         categorycode, $q, vrows, catans, common, dataloader, locations, special, matchrec,
-        useractivity, edit, useraccnt) {
+        useractivity, edit, useraccnt, staticpages, $timeout) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'admin';
@@ -42,6 +42,7 @@
 
         vm.dataready = false;
         //vm.fbpost = fbpost;
+        var staticpagesfiles = [];
         
         activate();
 
@@ -63,6 +64,10 @@
             vm.modAdmin = $rootScope.modAdmin;
 
             loadData();
+            staticpages.getFileList().then(function(result){
+                        staticpagesfiles = result.data;
+                        console.log("static pages list ready");
+            });
             if ($rootScope.DEBUG_MODE) console.log("admin page Loaded!");
             }
             
@@ -217,8 +222,12 @@
 
         var applyRuleDone = false;
                 var midx = 0;
+                var myanswer = {};
+                var filename = '';
+                var createPage = false;
                 function applyRule() {
                     console.log("apply Rule");
+                    //if (midx%100 == 0) console.log(midx/$rootScope.answers.length);
                     // $rootScope.$emit('getLocation');   
             
                     /*//  1.Use this code to get GPS location for alls answers starting at index $rootScope.answeridxgp
@@ -1173,6 +1182,79 @@
                             //answer.updateAnswer($rootScope.answers[i].id,['owner'],['']);
                         }
                     }*/
+                    
+                    
+
+                    /*
+                    var rank = JSON.parse(JSON.stringify($rootScope.content[midx]));
+                    //for (var i=0; i<$rootScope.content.length; i++){
+                        if (rank.fimage == undefined ||
+                            rank.fimage == '' ||
+                            rank.fimage == null )
+                            rank.fimage = rank.image1url;
+                        
+                        if (rank.fimage == undefined ||
+                            rank.fimage == '' ||
+                            rank.fimage == null )
+                            rank.fimage = $rootScope.EMPTY_IMAGE;    
+                            //console.log($rootScope.content[i].title);
+                    //}                  
+                    if (rank.introtext) {
+                        var start = rank.introtext.indexOf('++');
+                        var end = rank.introtext.indexOf('--');
+                        if (start > -1 && end > -1) rank.introtext = rank.introtext.substring(start + 2, end);
+                        else rank.introtext = rank.introtext;
+                    }
+                    else rank.introtext = 'This is the rank for ' + rank.title + '. ' +
+                        ' Help shape the ranking by endorsing your favorites!.';
+                    staticpages.createPageRank(rank);*/
+                    //var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(3319);
+                    //console.log("idx - ", idx);  
+                    /*while (!createPage) {
+                        myanswer = {};
+                        myanswer = JSON.parse(JSON.stringify($rootScope.answers[midx]));
+                        filename = 'answer' + myanswer.id + '.html';
+                        if (staticpagesfiles.indexOf(filename) == -1) {
+
+                            console.log("answer - ", myanswer);
+                            staticpages.createPageAnswer(myanswer);
+                            createPage = true;
+                            midx++;
+                            $timeout(function () {
+                                if (midx < $rootScope.answers.length) {
+                                    createPage = false;
+                                    applyRule();
+                                }
+                            }, 600);
+
+                        }
+                        else {
+                            console.log('skip');
+                            midx++;
+                            createPage = false;
+                        }
+                        
+                    }*/
+                    
+                    /*
+                    var files = [];
+                    var filename = '';
+                    var missingRCtr = 0;
+                    var missingACtr = 0;
+                    staticpages.getFileList().then(function(result){
+                        files = result.data;
+                        //console.log("Files - ", files);
+                        for (var i=0; i< $rootScope.answers.length; i++){
+                            filename = 'answer' + $rootScope.answers[i].id + '.html';
+                            if (files.indexOf(filename) == -1) missingACtr++;
+                        }
+                        for (var i=0; i< $rootScope.content.length; i++){
+                            filename = 'rank' + $rootScope.content[i].id + '.html';
+                            if (files.indexOf(filename) == -1) missingRCtr++;
+                        }
+                    console.log("Missing Answers: ", missingACtr, " out of ", $rootScope.answers.length);
+                    console.log("Missing Ranks: ", missingRCtr, " out of ", $rootScope.content.length);
+                    });*/
 
             }
                  

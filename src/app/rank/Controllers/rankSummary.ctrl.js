@@ -7,12 +7,12 @@
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope'
-        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', 
+        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', 'SERVER_URL',
         '$location', '$q', 'fbusers', 'useractivity', '$timeout','table2','categories','dataloader'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime, color
         , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope
-        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, 
+        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, SERVER_URL, 
         $location, $q, fbusers, useractivity, $timeout, table2, categories, dataloader) {
         /* jshint validthis:true */
 
@@ -1266,7 +1266,8 @@
         }
             
             function share(){
-                vm.linkurl = 'https://rank-x.com/rankSummary/' + $rootScope.cCategory.slug; 
+                //vm.linkurl = 'https://rank-x.com/rankSummary/' + $rootScope.cCategory.slug; 
+                vm.linkurl = SERVER_URL + '/rank' + $rootScope.cCategory.id + '.html';
                 vm.tweet = $rootScope.cCategory.title + ', endorse your favorite ones at: ';
 
                 var imageurl = $rootScope.cCategory.image1url;

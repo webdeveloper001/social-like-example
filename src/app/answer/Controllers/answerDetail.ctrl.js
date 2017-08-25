@@ -7,12 +7,12 @@
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
         'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt','dataloader','$timeout',
-        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope', 'table',
+        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope', 'table', 'SERVER_URL',
         '$cookies', '$q', 'fbusers', 'InstagramService', 'mailing', 'Socialshare']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
         votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt, dataloader, $timeout,
-        $location, vrows, vrowvotes, imagelist, instagram, $scope, table,
+        $location, vrows, vrowvotes, imagelist, instagram, $scope, table, SERVER_URL,
         $cookies, $q, fbusers, InstagramService, mailing, Socialshare) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
@@ -1455,7 +1455,8 @@
         }
 
         function share(){
-            vm.linkurl = 'https://rank-x.com/answerDetail/' + vm.answer.slug; 
+            //vm.linkurl = 'https://rank-x.com/answerDetail/' + vm.answer.slug;
+            vm.linkurl = SERVER_URL + '/answer' + vm.answer.id + '.html';
             vm.tweet = vm.answer.name + ', endorse your favorite ones at: ';
 
             var imageurl = vm.answer.imageurl;

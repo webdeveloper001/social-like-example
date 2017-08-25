@@ -11,6 +11,7 @@ var stripeServer = require('./routes/stripeServer');
 var image = require('./routes/image');
 var settings = require('./routes/settings');
 var mailing = require('./routes/mailing');
+var staticpages = require('./routes/staticpages');
 
 var log = require('./log');
 
@@ -60,6 +61,11 @@ app.post('/mailing/promoterCreated', mailing.promoterCreated);
 app.post('/mailing/newBizCreated', mailing.newBizCreated);
 app.post('/mailing/userSubscribed', mailing.newImageUploaded);
 app.post('/mailing/userSubscribed', mailing.userSubscribed);
+
+app.post('/staticpages/createPageRank',staticpages.createPageRank);
+app.post('/staticpages/createPageAnswer',staticpages.createPageAnswer);
+app.post('/staticpages/getFileList', staticpages.getFileList);
+app.post('/staticpages/removeFile', staticpages.removeFile);
 
 // app.post('/mailing/', image.saveImage);
 // app.post('/newBizCreated/', mailing.newBizCreated);

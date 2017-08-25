@@ -5,9 +5,9 @@
         .module('app')
         .factory('table', table);
 
-    table.$inject = ['$http', '$q', '$rootScope','answer','$state', 'filter','uaf','$window','catans'];
+    table.$inject = ['$http', '$q', '$rootScope','answer','$state', 'filter','uaf','$window','catans','staticpages'];
 
-    function table($http, $q, $rootScope, answer, $state, filter, uaf, $window, catans) {
+    function table($http, $q, $rootScope, answer, $state, filter, uaf, $window, catans, staticpages) {
 
         // Members
         var _tables = [];
@@ -177,9 +177,7 @@
                 tablex.type = catObj.type;
                 tablex.user = $rootScope.user.id;
                 tablex.introtext = catObj.introtext;
-
-                _tables.push(tablex);
-                
+                                
                 //push to search String array
                 var searchStr = tablex.tags + " " + tablex.title;
                 $rootScope.searchStr.push(searchStr);
@@ -190,8 +188,14 @@
                 slug = slug.replace('/','at');
                 slug = slug.replace('?','');
                 slug = slug + '-' + result.data.resource[0].id;
+                tablex.slug = slug;
+
+                _tables.push(tablex);
                 //var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/' + slug + fext;
                 update(result.data.resource[0].id,['slug'],[slug]);
+
+                //create static page for this rank
+                staticpages.createPageRank(tablex);
 
                 //Create user-activity feed record
                 uaf.post('addedRank',['category'],[tablex.id]); //user activity feed
@@ -285,6 +289,12 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
+                //delete static page for this rank
+                var filename = 'rank' + table_id + '.html';
+                var data = {};
+                data.filename = filename;
+                staticpages.removeFile(data);
+
                 if ($rootScope.DEBUG_MODE) console.log("Deleting table was succesful");
                 return result.data;
             }
@@ -313,6 +323,17 @@
             for (var i = 0; i < field.length; i++) {
                 _tables[idx][field[i]] = val[i];              
             }
+
+            //determine if necessary to update static file
+            var updateStaticFile = false;
+            for (var i = 0; i < field.length; i++) {
+                if (field[i] == 'title' || (field[i] == 'slug' && field.length > 1) || 
+                    field[i] == 'fimage' || field[i] == 'introtext'){
+                        updateStaticFile = true;
+                        break;
+                    }               
+            }
+            if (updateStaticFile) staticpages.createPageRank(_tables[idx]);
 
             return $http.patch(url, obj, {
                 headers: {
