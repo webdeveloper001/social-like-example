@@ -5,17 +5,22 @@
         .module('app')
         .factory('answer', answer);
 
-    answer.$inject = ['$http', '$q', '$rootScope','catans','vrows','uaf'];
+    answer.$inject = ['$http', '$q', '$rootScope','catans','vrows','uaf','staticpages'];
 
-    function answer($http, $q, $rootScope,catans, vrows, uaf) {
+    function answer($http, $q, $rootScope,catans, vrows, uaf, staticpages) {
 
         //Members
         var _answers = [];
+        var _fetchAnswersMem = [];
+        $rootScope.answers = _answers;
+
         var _selectedAnswer;
         var baseURI = '/api/v2/mysql/_table/answers';
 
         var service = {
             getAnswers: getAnswers,
+            getAnswersX: getAnswersX,
+            getAnswersL: getAnswersL,
             getAnswer: getAnswer,
             addAnswer: addAnswer,
             addAnswer2: addAnswer2,
@@ -29,12 +34,6 @@
         
 
         function getAnswers(forceRefresh) {
-            // console.log("getAnswers..._areAnswersLoaded()", _areAnswersLoaded());
-
-            if (_areAnswersLoaded() && !forceRefresh) {
-
-                return $q.when(_answers);
-            }
             
             //Get all answer records
             var url0 = baseURI + '?offset=' + 0 * 1000;
@@ -57,38 +56,105 @@
             var p7 = $http.get(url7);
 
             return $q.all([p0, p1, p2, p3, p4, p5, p6, p7]).then(function (d){
-                _answers = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource, 
+                var data = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource, 
                 d[4].data.resource, d[5].data.resource, d[6].data.resource, d[7].data.resource);
+                _load (data);
                 if ($rootScope.DEBUG_MODE) console.log("No. Answers: ", _answers.length);
                 return _answers;            
             }, _queryFailed);  
 
         }
 
-        function getAnswer(id, forceRefresh) {
+        function getAnswersX(scope) {
+            
+            //Get all answer records
+            var url0 = baseURI + '?offset=' + 0 * 1000 + '&filter=scope='+scope;
+            var url1 = baseURI + '?offset=' + 1 * 1000 + '&filter=scope='+scope;
+            var url2 = baseURI + '?offset=' + 2 * 1000 + '&filter=scope='+scope;
+            var url3 = baseURI + '?offset=' + 3 * 1000 + '&filter=scope='+scope;
+            var url4 = baseURI + '?offset=' + 4 * 1000 + '&filter=scope='+scope;
+            var url5 = baseURI + '?offset=' + 5 * 1000 + '&filter=scope='+scope;
+            var url6 = baseURI + '?offset=' + 6 * 1000 + '&filter=scope='+scope;
+            var url7 = baseURI + '?offset=' + 7 * 1000 + '&filter=scope='+scope;
 
-            if (_isSelectedAnswerLoaded(id) && !forceRefresh) {
 
-                return $q.when(_selectedAnswer);
+            var p0 = $http.get(url0);
+            var p1 = $http.get(url1);
+            var p2 = $http.get(url2);
+            var p3 = $http.get(url3);
+            var p4 = $http.get(url4);
+            var p5 = $http.get(url5);
+            var p6 = $http.get(url6);
+            var p7 = $http.get(url7);
+
+            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7]).then(function (d){
+                var data = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource, 
+                d[4].data.resource, d[5].data.resource, d[6].data.resource, d[7].data.resource);
+                _load (data);
+                if ($rootScope.DEBUG_MODE) console.log("No. Answers: ", _answers.length);
+                return _answers;            
+            }, _queryFailed);  
+
+        }
+
+        function getAnswersL(data) {
+
+            var _datax = [];  //this is filtered array (ignore those ranks for which catans already fetched)
+            data.forEach(function(item){
+                if (_fetchAnswersMem.indexOf(item.answer)<0){
+                     _datax.push(item);
+                     _fetchAnswersMem.push(item.answer);
+                }
+            });
+            //_datax = [];
+            if (_datax.length == 0) return $q.when(false);
+            
+            var filterstr = '?filter=(';
+            for (var i=0; i< _datax.length; i++){
+                filterstr = filterstr + 'id=' + _datax[i].answer+')OR(';
             }
+            filterstr = filterstr.substring(0,filterstr.length-3);
+            //Get all answer records
+            var url0 = baseURI + filterstr;
+            
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                
+                var _answersx = d[0].data.resource;
+                var map = _answers.map(function(x) {return x.id; });
+                
+                _answersx.forEach(function(answer){
+                        if(map.indexOf(answer.id) < 0)
+                        _answers.push(answer);
+                });
+                
+                if ($rootScope.DEBUG_MODE) console.log("answers L loaded ", _answersx); 
+                return _answers;            
+            }, _queryFailed);  
 
-            var url = baseURI + '/' + id;
+        }
 
-            return $http.get(url).then(querySucceeded, _queryFailed);
+        function getAnswer(id) {
 
-            function querySucceeded(result) {
+            var url0 = baseURI + '/?filter=id=' + id;
 
-                return _selectedAnswer = result.data;
-            }
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                var _answer = d[0].data.resource[0];
+                
+                var map = _answers.map(function(x) {return x.id; });
+                if(map.indexOf(_answer.id) < 0) _answers.push(_answer);
+                
+                if ($rootScope.DEBUG_MODE) console.log("single answer loaded: ", _answer);
+                return _answer;
+            });
+            
         }
         
         function getAnswerbyCustomer(customer_id) {
-/*
-            if (_isSelectedAnswerLoaded(id) && !forceRefresh) {
 
-                return $q.when(_selectedAnswer);
-            }
-*/
             var url = baseURI + '/?filter=customer='+ customer_id;
 
             return $http.get(url).then(querySucceeded, _queryFailed);
@@ -101,6 +167,8 @@
 
         function addAnswer(answer, ranks) {
 
+            answer.scope = $rootScope.SCOPE;
+            
             var url = baseURI;
             var resource = [];
 
@@ -122,14 +190,18 @@
                 //update local copy
                 var answerx = answer;
                 answerx.id = result.data.resource[0].id; 
-                _answers.push(answerx);
-
+                
                 //update slug tag and featured image
                 var slug = answerx.name.toLowerCase(); 
                 slug = slug.replace(/ /g,'-');
                 slug = slug.replace('/','at');
                 slug = slug + '-' + result.data.resource[0].id;
+                answerx.slug = slug;
+                
+                _answers.push(answerx);
+
                 updateAnswer(result.data.resource[0].id,['slug'],[slug]);
+                staticpages.createPageAnswer(answerx);
                 
                 //Update current establishment and person names for typeahead
                 if (answerx.type == 'Establishment') {
@@ -161,6 +233,8 @@
         
         function addAnswer2(answer, category) {
 
+            answer.scope = $rootScope.SCOPE;
+
             var url = baseURI;
             var resource = [];
 
@@ -184,14 +258,18 @@
                 //update local copy
                 var answerx = answer;
                 answerx.id = result.data.resource[0].id; 
-                _answers.push(answerx);
-
+                
                 //update slug tag and featured image
                 var slug = answerx.name.toLowerCase(); 
                 slug = slug.replace(/ /g,'-');
                 slug = slug.replace('/','at');
                 slug = slug + '-' + result.data.resource[0].id;
+                answerx.slug = slug;
+
+                _answers.push(answerx);
                 updateAnswer(result.data.resource[0].id,['slug'],[slug]);
+
+                staticpages.createPageAnswer(answerx);
                 
                 //Update current establishment and person names for typeahead
                 if (answerx.type == 'Establishment') {
@@ -233,33 +311,7 @@
             data.id = answer_id;
             
             for (var i=0; i<field.length; i++){
-                switch (field[i]){
-                    case "name": data.name = val[i]; break;
-                    case "addinfo": data.addinfo = val[i]; break;
-                    case "cityarea": data.cityarea = val[i]; break;
-                    case "location": data.location = val[i]; break;
-                    case "image": data.imageurl = val[i]; break;
-                    case "views": data.views = val[i]; break;
-                    case "lat": data.lat = val[i]; break;
-                    case "lng": data.lng = val[i]; break;
-                    case "owner": data.owner = val[i]; break;
-                    case "phone": data.phone = val[i]; break;
-                    case "website": data.website = val[i]; break;
-                    case "email": data.email = val[i]; break;
-                    case "strhours": data.strhours = val[i]; break;
-                    case "eventstr": data.eventstr = val[i]; break;
-                    case "numcom": data.numcom = val[i]; break;
-                    case "ranks": data.ranks = val[i]; break;
-                    case "ispremium": data.ispremium = val[i]; break;
-                    case "hasranks": data.hasranks = val[i]; break;
-                    case "ranksqty": data.ranksqty = val[i]; break;
-                    case "ig_image_urls": data.ig_image_urls = val[i]; break;
-                    case "slug": data.slug = val[i]; break;
-                    case "type": data.type = val[i]; break;
-                    case "eventloc": data.eventloc = val[i]; break;
-                    case "eventlocid": data.eventlocid = val[i]; break;
-                    case "family": data.family = val[i]; break;
-                }
+               data[field[i]] = val[i];
             }
             //console.log("data", data);
             obj.resource.push(data);
@@ -267,37 +319,21 @@
             var url = baseURI;
             
             //update local copy
-            //var idx = _answers.map(function(x) {return x.id; }).indexOf(answer_id);
-            //var idx = $rootScope.A.indexOf(+answer_id);
             var idx = _answers.map(function(x) {return x.id; }).indexOf(answer_id);  
             for (var i=0; i<field.length; i++){
-                switch (field[i]){
-                    case "name": $rootScope.answers[idx].name = val[i]; break;
-                    case "addinfo": $rootScope.answers[idx].addinfo = val[i]; break;
-                    case "cityarea": $rootScope.answers[idx].cityarea = val[i]; break;
-                    case "location": $rootScope.answers[idx].location = val[i]; break;
-                    case "image": $rootScope.answers[idx].imageurl = val[i]; break;
-                    case "views": $rootScope.answers[idx].views = val[i]; break;
-                    case "lat": $rootScope.answers[idx].lat = val[i]; break;
-                    case "lng": $rootScope.answers[idx].lng = val[i]; break;
-                    case "owner": $rootScope.answers[idx].owner = val[i]; break;
-                    case "phone": $rootScope.answers[idx].phone = val[i]; break;
-                    case "website": $rootScope.answers[idx].website = val[i]; break;
-                    case "email": $rootScope.answers[idx].email = val[i]; break;
-                    case "strhours": $rootScope.answers[idx].strhours = val[i]; break;
-                    case "eventstr": $rootScope.answers[idx].eventstr = val[i]; break;
-                    case "numcom": $rootScope.answers[idx].numcom = val[i]; break;
-                    case "ranks": $rootScope.answers[idx].ranks = val[i]; break;
-                    case "ispremium": $rootScope.answers[idx].ispremium = val[i]; break;
-                    case "hasranks": $rootScope.answers[idx].hasranks = val[i]; break;
-                    case "ranksqty": $rootScope.answers[idx].ranksqty = val[i]; break;
-                    case "slug": $rootScope.answers[idx].slug = val[i]; break;
-                    case "type": $rootScope.answers[idx].type = val[i]; break;
-                    case "eventloc": $rootScope.answers[idx].eventloc = val[i]; break;
-                    case "eventlocid": $rootScope.answers[idx].eventlocid = val[i]; break;
-                    case "family": $rootScope.answers[idx].family = val[i]; break;
-                }
-            }                        
+                _answers[idx][field[i]] = val[i];
+            }
+            
+            //determine if necessary to update static file
+            var updateStaticFile = false;
+            for (var i = 0; i < field.length; i++) {
+                if (field[i] == 'name' || (field[i] == 'slug' && field.length > 1) || 
+                    field[i] == 'imageurl' || field[i] == 'addinfo'){
+                        updateStaticFile = true;
+                        break;
+                    }               
+            }
+            if (updateStaticFile) staticpages.createPageAnswer(_answers[idx]);
             
             return $http.patch(url, obj, {
                 headers: {
@@ -368,9 +404,24 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
+                //delete static page for this answer
+                var filename = 'answer' + answer_id + '.html';
+                var data = {};
+                data.filename = filename;
+                staticpages.removeFile(data);
+
                 if ($rootScope.DEBUG_MODE) console.log("Deleting answer was succesful");
                 return result.data;
             }
+        }
+
+        function _load(data){
+            _answers.length = 0;
+            _fetchAnswersMem.length = 0;
+            data.forEach(function(x){
+                _answers.push(x);
+                _fetchAnswersMem.push(x.id);
+            });        
         }
 
         function _areAnswersLoaded() {

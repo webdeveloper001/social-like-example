@@ -12,16 +12,19 @@
             {
                 name: 'admin',
                 url: '/admin',
-                views: {
+                parent: 'layout',
+                templateUrl: 'app/admin/Partials/admin.html',
+                controller: 'admin as vm'
+                /*views: {
                     "@": {
                         templateUrl: 'app/admin/Partials/admin.html',
-                        controller: 'admin as vm'
+                        controller: ''
                     },
                     "navbar@admin": {
                         templateUrl: 'app/layout/Partials/navbar.html',
                         controller: 'navbar as vm'
                     }
-                }
+                }*/
             },
             {
                 name: 'queries',
@@ -71,6 +74,13 @@
                 url: '/dbQuery',
                 templateUrl: 'app/admin/Partials/dbQuery.html',
                 controller: 'dbQuery as vm'               
+            },
+            {
+                name: 'imagesmod',
+                parent: 'admin',
+                url: '/imagemod',
+                templateUrl: 'app/admin/Partials/imagesmod.html',
+                controller: 'imagesmod as vm'               
             },
              {
                 name: 'updateHeaders',
@@ -124,7 +134,10 @@
             {
                 name: 'rodconsole',
                 url: '/rodconsole',
-                views: {
+                parent: 'layout',
+                templateUrl: 'app/admin/Partials/rodconsole.html',
+                controller: 'rodconsole as vm'
+                /*views: {
                     "@": {
                         templateUrl: 'app/admin/Partials/rodconsole.html',
                         controller: 'rodconsole as vm'
@@ -133,7 +146,7 @@
                         templateUrl: 'app/layout/Partials/navbar.html',
                         controller: 'navbar as vm'
                     }
-                }
+                }*/
             }
         ];
 

@@ -21,245 +21,6 @@
         };
 
         return service;
-/*
-        function searchRanks(query) {
-            //initialize tool variables 
-            var rt = '';   //rank title 
-            var ss = '';   //search string
-            var inm = false;
-            var rank = {};
-            var tagCapitalized = '';
-            var tagFirstLowered = '';
-            var rankObj = {};
-            var short = ['pb', 'ob', 'dt', 'mb'];
-            var corrnh = ['Pacific Beach', 'Ocean Beach', 'Downtown', 'Mission Beach'];
-
-            var nme = false;  //near me
-            var rte = false;
-            var rt_nme = false;
-            var nhe = false;
-            var results = [];
-
-            var input = query;
-            
-            if (input) {
-                
-                //ignore some keywords
-                if (input.indexOf('best') > -1) input = input.replace('best', '');
-                if (input.indexOf('Best') > -1) input = input.replace('Best', '');
-                if (input.indexOf('top') > -1) input = input.replace('top', '');
-                if (input.indexOf('Top') > -1) input = input.replace('Top', '');
-                if (input.indexOf('great') > -1) input = input.replace('great', '');
-                if (input.indexOf('Great') > -1) input = input.replace('Great', '');
-                if (input.indexOf('awesome') > -1) input = input.replace('awesome', '');
-                if (input.indexOf('Awesome') > -1) input = input.replace('Awesome', '');
-                if (input.indexOf('amazing') > -1) input = input.replace('amazing', '');
-                if (input.indexOf('Amazing') > -1) input = input.replace('Amazing', '');
-                if (input.indexOf('most') > -1) input = input.replace('most', '');
-                if (input.indexOf('Most') > -1) input = input.replace('Most', '');
-                if (input.indexOf('the ') > -1) input = input.replace('the ', '');
-                if (input.indexOf('The ') > -1) input = input.replace('The ', '');
-                if (input.indexOf('shops') > -1) input = input.replace('shops', '');
-                if (input.indexOf('Shops') > -1) input = input.replace('Shops', '');
-                if (input.indexOf('places') > -1) input = input.replace('places', '');
-                if (input.indexOf('Places') > -1) input = input.replace('Places', '');
-                if (input.indexOf('delicious') > -1) input = input.replace('delicious', '');
-                if (input.indexOf('Delicious') > -1) input = input.replace('Delicious', '');
-
-                if (input.length >= 3) {
-
-                var userIsTyping = false;
-                var inputVal = input;
-
-                //Check if user typed 'near me' conditions
-                if (inputVal.indexOf('near me') > -1 ||
-                    inputVal.indexOf('near') > -1 ||
-                    inputVal.indexOf('close') > -1 ||
-                    inputVal.indexOf('close to') > -1 ||
-                    inputVal.indexOf('close to me') > -1) {
-                    inm = true; //input has near me context
-                    inputVal = inputVal.replace('near me', 'in San Diego');
-                    inputVal = inputVal.replace('near', 'in San Diego');
-                    inputVal = inputVal.replace('close to me', 'in San Diego');
-                    inputVal = inputVal.replace('close to', 'in San Diego');
-                    inputVal = inputVal.replace('close', 'in San Diego');
-                }
-                else {
-                    inm = false;
-                }
-
-                    if (inputVal == 'Food') inputVal = inputVal.replace('Food', 'Food Near Me');
-                    if (inputVal == 'food') inputVal = inputVal.replace('food', 'Food Near Me');
-                 
-                //Special Cases
-                if (inputVal == 'pho' || inputVal == 'Pho') {
-                    inputVal = 'vietnamese';
-                }
-
-                if ($rootScope.isNh) inputVal = inputVal + ' ' + $rootScope.cnh;
-
-                var results_nm = [];
-                var results_ss = [];
-                var results_rt = [];
-                var results_rt_nm = [];
-                var results_nh = [];
-
-                var m_ss = true; //match in search string
-                var m_rt = true; //match in title
-                var m_nh = false; //reference to neighborhood
-                var nh = ''; //neighborhood reference
-                var sc = false; //special case
-                    //vm.content = $rootScope.content;
-                    var valTags = inputVal.split(" ");
-                    for (var j = 0; j < $rootScope.content.length; j++) {
-                        if ($rootScope.content[j].ismp) {
-                            //console.log("ismp is true");
-                            ss = $rootScope.searchStr[j]; //Search string
-                            rt = $rootScope.content[j].title; // title
-                            rank = $rootScope.content[j];
-
-                            m_ss = true;
-                            m_rt = true;
-                            
-                            //check that all tags exist
-                            for (var k = 0; k < valTags.length; k++) {
-
-                                tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
-                                tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
-
-                                //look for input in whole search string
-                                m_ss = m_ss &&
-                                    (ss.indexOf(valTags[k]) > -1 ||
-                                        ss.indexOf(valTags[k].toUpperCase()) > -1 ||
-                                        ss.indexOf(tagCapitalized) > -1 ||
-                                        ss.indexOf(tagFirstLowered) > -1);
-
-                                //look for input in rank title only        
-                                m_rt = m_rt &&
-                                    (rt.indexOf(valTags[k]) > -1 ||
-                                        rt.indexOf(valTags[k].toUpperCase()) > -1 ||
-                                        rt.indexOf(tagCapitalized) > -1 ||
-                                        rt.indexOf(tagFirstLowered) > -1);
-
-                                //look if input makes reference to specific neighborhood
-                                if (valTags[k].length >= 3) {
-                                    for (var q = 0; q < $rootScope.locations.length; q++) {
-                                        if ($rootScope.locations[q].indexOf(valTags[k]) > -1 ||
-                                            $rootScope.locations[q].indexOf(valTags[k].toUpperCase()) > -1 ||
-                                            $rootScope.locations[q].indexOf(tagCapitalized) > -1 ||
-                                            $rootScope.locations[q].indexOf(tagFirstLowered) > -1) {
-                                            //console.log("found neighborhood!", $rootScope.locations[q]);
-                                            nh = $rootScope.locations[q];
-                                            m_nh = true;
-                                        }
-                                    }
-                                }
-                                //Special cases for neighborhoods
-                                if (valTags[k].length == 2) {
-                                for (var q=0; q < short.length; q++) {
-                                    if (short[q].indexOf(valTags[k]) > -1 ||
-                                        short[q].indexOf(valTags[k].toUpperCase()) > -1 ||
-                                        short[q].indexOf(tagCapitalized) > -1 ||
-                                        short[q].indexOf(tagFirstLowered) > -1) {
-                                        nh = corrnh[q];
-                                        m_nh = true;
-                                    }
-                                }
-                                }
-
-                            }
-                            
-                            if (m_rt && rank.ismp) {
-                                results_rt.push($rootScope.content[j]);
-                                rte = true;
-                            }
-
-                            else if (m_ss) {
-                                if (inm) {
-                                    if (rank.title.indexOf('in San Diego') > -1) {
-                                        results_ss.push($rootScope.content[j]);
-                                    }
-                                }
-                                else results_ss.push($rootScope.content[j]);
-                            }
-                        }
-                    }
-
-                    //Execute only if input made reference to neighborhood
-                    if (m_nh){
-                        var m = false;
-                        for (var j = 0; j < $rootScope.content.length; j++) {
-                            ss = $rootScope.searchStr[j]; //Search string
-                            //check that all tags exist
-                            m = true;
-                            for (var k = 0; k < valTags.length; k++) {
-
-                                tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
-                                tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
-
-                                //look for input in whole search string
-                                m = m &&
-                                    (ss.indexOf(valTags[k]) > -1 ||
-                                        ss.indexOf(valTags[k].toUpperCase()) > -1 ||
-                                        ss.indexOf(tagCapitalized) > -1 ||
-                                        ss.indexOf(tagFirstLowered) > -1);
-                            }
-
-                            if (m) {
-                                results_nh.push($rootScope.content[j]);
-                                nhe = true;
-                            }
-                        }
-                    }
-
-                    //look in results that match title, if includes 'San Diego', make
-                    //corresponding 'close to me'
-                    for (var k = 0; k < results_rt.length; k++) {
-                        rt = results_rt[k].title; //Rank title
-                        if (rt.indexOf('in San Diego') > -1 && results_rt[k].isatomic == false) {
-                            rankObj = {};
-                            rankObj = JSON.parse(JSON.stringify(results_rt[k]));
-                            rankObj.title = rankObj.title.replace('in San Diego', 'close to me');
-                            results_rt_nm.push(rankObj);
-                            rt_nme = true;
-                        }
-                    }
-
-                    //look in results that match search string, in includes 'San Diego', make
-                    //corresponding 'close to me'
-                    for (var k = 0; k < results.length; k++) {
-                        rt = results[k].title; //Rank title
-                        if (rt.indexOf('in San Diego') > -1 && results[k].isatomic == false) {
-                            rankObj = {};
-                            rankObj = JSON.parse(JSON.stringify(results[k]));
-                            rankObj.title = rankObj.title.replace('in San Diego', 'close to me');
-                            results_nm.push(rankObj);
-                            nme = true;
-                        }
-                    }
-
-                    if (nhe) results = results.concat(results_nh);
-                    if (rt_nme) results = results.concat(results_rt_nm);
-                    if (rte) results = results.concat(results_rt);
-                    if (nme) results = results.concat(results_nm);
-                    results = results.concat(results_ss);
-
-                    //sort results, give priority to city ones
-                    //function compare(a, b) {
-                    //    return b.title.indexOf('in San Diego') - a.title.indexOf('in San Diego');
-                    //}
-                    //vm.results = vm.results.sort(compare);
-                }
-
-                else {
-                    results = [];
-                }
-            }
-
-            return results;
-
-        }
-        */
 
         function searchAnswers(query) {
 
@@ -369,7 +130,7 @@
                             }
                             
                             if (m_ss && isCity) {
-                                if ($rootScope.content[j].ismp)
+                                if ($rootScope.content[j].mp)
                                     results_ss.push($rootScope.content[j]);
                             }
                             else if (m_ss){
@@ -404,25 +165,26 @@
             var idx = 0;
             //Determine suggestions for answers in this category
             for (var i = 0; i < $rootScope.catansrecs.length; i++) {
-                //found answers in this category
+                //find answers in this category
                 for (var n = 0; n < catArr.length; n++) {
                     if ($rootScope.catansrecs[i].category == catArr[n]) {
                         for (var j = 0; j < $rootScope.catansrecs.length; j++) {
                             //find answers in other categories
                             if ($rootScope.catansrecs[j].answer == $rootScope.catansrecs[i].answer) {
                                 idx = $rootScope.content.map(function (x) { return x.id; }).indexOf($rootScope.catansrecs[j].category);
-                                
-                                sibExists = false;
-                                for (var k=0; k < sibblingRanksX.length; k++){
-                                    if (sibblingRanksX[k].title.substr(0,6) == $rootScope.content[idx].title.substr(0,6)) {
-                                        sibblingRanksX[k].ctr++; 
-                                        sibExists = true;
-                                    }                                     
-                                }
-                                if (!sibExists) {
-                                    rankObj = $rootScope.content[idx];
-                                    rankObj.ctr = 1;
-                                    sibblingRanksX.push(rankObj);
+                                if (idx > -1){
+                                    sibExists = false;
+                                    for (var k = 0; k < sibblingRanksX.length; k++) {
+                                        if (sibblingRanksX[k].title.substr(0, 6) == $rootScope.content[idx].title.substr(0, 6)) {
+                                            sibblingRanksX[k].ctr++;
+                                            sibExists = true;
+                                        }
+                                    }
+                                    if (!sibExists) {
+                                        rankObj = $rootScope.content[idx];
+                                        rankObj.ctr = 1;
+                                        sibblingRanksX.push(rankObj);
+                                    }
                                 }                                                                    
                             }
                         }
@@ -431,19 +193,37 @@
                     }
                 }
             }
-            //Change to approprate neighborhood
+            //Change to appropriate neighborhood
             for (var i=0; i < sibblingRanksX.length; i++){
                 if (sibblingRanksX[i].isatomic && sibblingRanksX[i].ismp) sibblingRanks.push(sibblingRanksX[i]);
                 else if (sibblingRanksX[i].isatomic && !sibblingRanksX[i].ismp){
                     for (var j=0; j < $rootScope.locations.length; j++){
                         if (sibblingRanksX[i].title.indexOf($rootScope.locations[j].nh_name)>-1){
                             searchtitle = sibblingRanksX[i].title.replace($rootScope.locations[j].nh_name,neighborhood);
+                            var rFound = false;
                             for (var k=0; k<$rootScope.content.length; k++){
                                 if ($rootScope.content[k].title == searchtitle){
+                                    console.log('found and added - ', searchtitle );
                                     rankObj = $rootScope.content[k];
                                     rankObj.ctr = sibblingRanksX[i].ctr;
+                                    rankObj.isghost = false;
                                     sibblingRanks.push(rankObj);
+                                    rFound = true;
+                                    break;
                                 }
+                            }
+                            if (!rFound){
+                                console.log('Couldnt find: ', searchtitle, ' made it ghost :)');
+                                //Create ghost ranking for suggestion
+                                var ghostObj = {};
+                                ghostObj.title = searchtitle;
+                                ghostObj.cat = sibblingRanksX[i].cat;
+                                var nidx = $rootScope.locations.map(function (x) { return x.nh_name; }).indexOf(neighborhood);
+                                ghostObj.nh = $rootScope.locations[nidx].id;
+                                ghostObj.isghost = true;
+                                ghostObj.isatomic = true;
+                                console.log('ghost - ', ghostObj);
+                                sibblingRanks.push(ghostObj);
                             }
                         }
                     }                    
@@ -608,7 +388,7 @@
                             ignoreTagsIdx.push(valTags.indexOf('la'));
 
                       for (var j = 0; j < $rootScope.categories.length; j++) {  
-                        if (true) {    
+                        if ($rootScope.categories[j].category.indexOf('@Nh')>-1) {    
                             
                             ss = $rootScope.searchStr[j]; //Search string
                             rt = $rootScope.categories[j].category; // title
@@ -757,8 +537,8 @@
                 var userIsTyping = false;
                 var inputVal = input;
 
-                    if (inputVal == 'Food') inputVal = inputVal.replace('Food', 'Food Near Me');
-                    if (inputVal == 'food') inputVal = inputVal.replace('food', 'Food Near Me');
+                    //if (inputVal == 'Food') inputVal = inputVal.replace('Food', 'Food Near Me');
+                    //if (inputVal == 'food') inputVal = inputVal.replace('food', 'Food Near Me');
                  
                 //Special Cases
                 if (inputVal == 'pho' || inputVal == 'Pho') {
@@ -835,6 +615,8 @@
                             rt = $rootScope.content[j].title; // title
                             rank = $rootScope.content[j];
 
+                            if(!rt || !ss) console.log("this has issues - content.id - ",$rootScope.content[j]);
+                            else {
                             m_ss = true;
                             m_rt = true;
                             //check that all tags exist exept those that are for neighborhood
@@ -881,7 +663,8 @@
                                 if (m_nh) results_ss.push(rObj);
                                 else if (rObj.ismp) results_ss.push(rObj);
                                 
-                            } 
+                            }
+                            }//temp 
                         }
                     }
 
@@ -899,7 +682,6 @@
             }
             return results;
         }
-
 
         function checkNoDupThenPush(x,array){
             var isdup = false;

@@ -68,7 +68,8 @@
             confirmRemoveRank: confirmRemoveRank,
             confirmSiblings: confirmSiblings,
             showLocations: showLocations,
-            showLearnMore: showLearnMore
+            showLearnMore: showLearnMore,
+            imageBank: imageBank,
         };
         return service;
 
@@ -1282,7 +1283,7 @@
                 },
                 callback: function (result) {
                     if (result) {
-                        console.log(blobList);
+                        if ($rootScope.DEBUG_MODE) console.log(blobList);
                         if( blobList[n].type == 'Instagram' ){
                             var itempos = current_answer.ig_image_urls.indexOf(blobList[n].url);
                             if( itempos != -1){
@@ -1333,7 +1334,7 @@
                 callback: function (result) {
                     if (result) {
                         var imageurl = blobList[n].url;
-                        answer.updateAnswer(myanswer.id, ["image"], [imageurl]);
+                        answer.updateAnswer(myanswer.id, ["imageurl"], [imageurl]);
                     }
                 }
             });
@@ -1366,7 +1367,7 @@
                     cssClass: 'btn-primary',
                     action: function (dialogItself) {
 
-                         //Store current state 
+                        //Store current state 
                         $rootScope.stateName = $state.current.name;
                         if ($rootScope.stateName == 'rankSummary') $rootScope.stateNum = $rootScope.cCategory.id;
                         else if ($rootScope.stateName == 'answerDetail') $rootScope.stateNum = $rootScope.canswer.id;
@@ -2934,11 +2935,10 @@
         }
 
 
-        function showLearnMore(locs){
+        function showLearnMore(url){
             var title = 'Learn More';
-            var message = '<div class="text-center"><iframe width="' + ($rootScope.sm ? '300' : '500') + '" height="' + ($rootScope.sm ? '200' : '350') + '" src="https://www.youtube.com/embed/IpUNM4Okb0U?autoplay=1"' +
+            var message = '<div class="text-center"><iframe width="' + ($rootScope.sm ? '300' : '500') + '" height="' + ($rootScope.sm ? '200' : '350') + '" src="'+ url + '?autoplay=1"' +
                         ' frameborder="0" allowfullscreen></iframe></div>' ;
-
 
             BootstrapDialog.show({
                 size: BootstrapDialog.SIZE_WIDE,
@@ -2959,8 +2959,42 @@
                     }
                 }]
             });
-
             
+        }
+
+        function imageBank() {
+
+            var title = 'Image Banks';
+            var message = '<strong>Pixabay</strong> and <strong>Pexels</strong> are databases of royalty free images. We encourage you to '+
+            'visit their websites to learn more about the services they offer. <br><br>' +
+            '<div class="row">'+
+            '<div class="col-xs-12 col-sm-6">'+     
+            '<img src="../../../assets/images/pixabay-logo.png" alt="Pixabay"'+
+            'style="width:100%;height:45px;padding:3px;border-style:solid;border-width:1px;">'+
+             '<div class="text-center"><a href="https://www.pixabay.com/">Visit Pixabay</a></div>'+
+            '</div>'+
+            '<div class="col-xs-12 col-sm-6">'+
+            '<img src="../../../assets/images/pexels-logo.png" alt="Pexels"'+
+            'style="width:100%;height:45px;padding:3px;border-style:solid;border-width:1px;">'+
+            '<div class="text-center"><a href="https://www.pexels.com/">Visit Pexels</a></div>'+
+            '</div>'+
+            '</div>';
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'OK',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }]
+            });
+
         }
 
     }

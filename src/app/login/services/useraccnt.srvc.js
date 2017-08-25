@@ -6,6 +6,7 @@
     useraccnt.$inject = ['$http','$q','$rootScope', 'login', 'SERVER_URL'];
     function useraccnt($http, $q, $rootScope, login, SERVER_URL) {
         var _useraccnts = [];
+        $rootScope.useraccnts = _useraccnts;
         var _promoteraccnts = [];
         var baseURI = '/api/v2/mysql/_table/useraccnts';
 
@@ -120,11 +121,14 @@
           return $http.get(url).then(querySucceeded, _queryFailed);
 
           function querySucceeded(result) {
+
+            var data = result.data.resource;
+            _load (data);
             // console.log("useraccnt.srvc.js:getuseraccnt(forcerefresh): GET: SUCCESS");
             // console.log("result.data.resource: " + JSON.stringify(result.data.resource[0]));
 
               // return _useraccnts = result.data.resource[0];
-              return _useraccnts = result.data.resource;
+              return _useraccnts;
           }
 
       }
@@ -345,6 +349,7 @@
               if ($rootScope.catansrecs[j].answer == answerid) {
                   category = $rootScope.catansrecs[j].category;
                   var idx = $rootScope.content.map(function (x) { return x.id; }).indexOf(category);
+                  if (idx > -1){
                   rank = $rootScope.content[idx];
                   for (var k = 0; k < $rootScope.catcodes.length; k++) {
                       if (rank.title.indexOf($rootScope.catcodes[k].category) > -1) {
@@ -367,10 +372,19 @@
                           }
                       }
                   }
+                  }
+                else console.log('Couldnt find rank: ', category);
               }
           }
           return bizcat;
       }
+      
+      function _load(data){
+            _useraccnts.length = 0;
+            data.forEach(function(x){
+                _useraccnts.push(x);
+            });
+        }
 
       function _isuseraccntLoaded() {
 

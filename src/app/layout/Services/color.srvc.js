@@ -80,6 +80,10 @@
              //Determine background color for rank of rankofday
              var bc = '';
              var fc = '';
+             if (x.tags == undefined || x.tags == null ) {
+                 x.tags = '';
+                 //console.log("@color - ", x);
+             }
 
                     if (x.tags.indexOf('food')>-1) {bc = 'brown'; fc = '#f8f8ff';}
                     else if (x.tags.indexOf('lifestyle')>-1) {bc = '#008080'; fc = '#f8f8ff';}

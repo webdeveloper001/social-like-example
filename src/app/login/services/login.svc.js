@@ -32,13 +32,13 @@
                         }
                     })
                     .then(function(me) {
-                        console.log('My info: ', me);
+                        if ($rootScope.DEBUG_MODE) console.log('My info: ', me);
 
                         $rootScope.user = me;
                         return $facebook.api('me/friends?fields=first_name,gender,locale,last_name,email,picture');
                     })
                     .then(function(friends) {
-                        console.log('Got friends: ', friends);
+                        if ($rootScope.DEBUG_MODE) console.log('Got friends: ', friends);
 
                         $rootScope.user.friends = friends;
                         $rootScope.isLoggedIn = true;
@@ -138,6 +138,9 @@
                 $cookies.remove('session_token');
                 delete $rootScope.user;
                 $rootScope.isLoggedIn = false;
+                $rootScope.isAdmin = false;
+                $rootScope.dataAdmin = false;
+                $rootScope.$emit('adminCredentials');
 
                 try {
                     window.localStorage.removeItem('user');

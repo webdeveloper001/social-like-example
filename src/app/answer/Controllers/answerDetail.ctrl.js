@@ -6,12 +6,14 @@
         .controller('answerDetail', answerDetail);
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
-        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt',
-        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope','$cookies', '$q', 'fbusers', 'InstagramService', 'mailing', 'Socialshare']; //AM:added user service
+        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt','dataloader','$timeout',
+        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope', 'table', 'SERVER_URL',
+        '$cookies', '$q', 'fbusers', 'InstagramService', 'mailing', 'Socialshare']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
-        votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt,
-        $location, vrows, vrowvotes, imagelist, instagram, $scope, $cookies, $q, fbusers, InstagramService, mailing, Socialshare) { //AM:added user service
+        votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt, dataloader, $timeout,
+        $location, vrows, vrowvotes, imagelist, instagram, $scope, table, SERVER_URL,
+        $cookies, $q, fbusers, InstagramService, mailing, Socialshare) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
@@ -98,6 +100,7 @@
         vm.cm = cObj;
         vm.commentAllowed = true;
         vm.searchActive = $rootScope.searchActive;
+        var answerFound = false;
         
         vm.isMobile = false; 
         // device detection
@@ -109,7 +112,7 @@
         var updateRecordsListener = $rootScope.$on('$stateChangeStart',
             function (ev, to, toParams, from, fromParams) {
                 if (from.name == 'answerDetail' && to.name != 'answerDetail') {
-                    if (!recordsUpdated && $rootScope.isLoggedIn) updateRecords();
+                    if (!recordsUpdated && $rootScope.isLoggedIn && answerFound) updateRecords();
                 }
             });
 
@@ -122,7 +125,7 @@
 
         var answerDataLoadedListener = $rootScope.$on('answerDataLoaded', function () {
             vm.dataReady = true;
-            activate();
+            getAnswer();
         });
 
         $scope.$on('$destroy',refreshImagesListener);
@@ -130,7 +133,10 @@
         $scope.$on('$destroy',answerDataLoadedListener);
         $scope.$on('$destroy',updateRecordsListener);
     
-        if ($rootScope.answerDetailLoaded) { vm.dataReady = true; activate(); }
+        if ($rootScope.answerDetailLoaded) { 
+            vm.dataReady = true; 
+            getAnswer(); 
+        }
         else vm.dataReady = false;
 
         //Flags to hide advertisement blocks
@@ -139,20 +145,10 @@
 
         //activate();
         window.prerenderReady = false;
+        
 
-        function activate() {
+        function getAnswer(){
 
-            //Init variables
-            //vm.ranking = $rootScope.title;
-            answers = $rootScope.canswers;
-            vm.fields = $rootScope.fields;
-            vm.isAdmin = $rootScope.isAdmin || $rootScope.dataAdmin;
-            $rootScope.isLoggedIn = $rootScope.isLoggedIn ? $rootScope.isLoggedIn : false;
-            vm.isLoggedIn = $rootScope.isLoggedIn;
-
-            $rootScope.cansvrows = undefined;
-
-            //vm.userIsOwner = $rootScope.userIsOwner;
             if ($stateParams.index) {
                 var isnum = /^\d+$/.test($stateParams.index);
                 if(isnum){
@@ -163,6 +159,33 @@
                     vm.answer = $rootScope.answers[i];
                 }
             }
+
+            if (vm.answer == undefined) {
+                answerFound = false;
+                dialog.notificationWithCallback(
+                'Oops','Couldnt find this answer. This answer probably got deleted and its no longer in the database.',
+                goBack );
+            }
+            else {
+                answerFound = true;
+                activate();
+            }
+            
+        }
+
+        function activate() {
+
+            //Init variables
+            //vm.ranking = $rootScope.title;
+            answers = $rootScope.canswers;
+            vm.fields = $rootScope.fields;
+            vm.isAdmin = $rootScope.isAdmin || $rootScope.dataAdmin;
+            if (vm.isAdmin) vm.bizcat = useraccnt.getBizCat(vm.answer.id);
+
+            $rootScope.isLoggedIn = $rootScope.isLoggedIn ? $rootScope.isLoggedIn : false;
+            vm.isLoggedIn = $rootScope.isLoggedIn;
+
+            $rootScope.cansvrows = undefined;
 
             // ----- SEO tags ----
             $scope.$parent.$parent.$parent.seo = { 
@@ -182,12 +205,12 @@
             //vm.isShortPhrase = vm.type == 'Short-Phrase';
             
             //if there is no category, look for it in cookies
-            if ($rootScope.cCategory == undefined) {
+            /*if ($rootScope.cCategory == undefined) {
                 var ccategoryid = $cookies.get('ccategory');
                 if ($rootScope.DEBUG_MODE) console.log("@answerDetail - ccategory ", ccategoryid);
                 var idx = $rootScope.content.map(function (x) { return x.id; }).indexOf(ccategoryid);
                 if (idx > -1) $rootScope.cCategory = $rootScope.content[idx];
-            }
+            }*/
 
             if ($rootScope.inFavMode) vm.ranking = $rootScope.myfavs.title;
             else if ($rootScope.cCategory) vm.ranking = $rootScope.cCategory.title;
@@ -225,6 +248,7 @@
                     if (vm.answer.isactive) vm.access = true;
                 }
                 else vm.userIsOwner = false;
+                if ($rootScope.isAdmin) vm.userIsOwner = true;
             }
             else vm.userIsOwner = false;
 
@@ -236,15 +260,19 @@
             if (vm.type == 'Establishment') getSpecials(vm.answer.id);
             //if (vm.type == 'Establishment' || vm.type == 'PersonCust') 
             getVRows(vm.answer.id);
-            getAnswerRanks();                        
+            getAnswerRanks();
+            dataloader.pulldata('ranks',vm.answerRanks);                        
 
             //if user votes are available - do my thing at getAnswerVotes
             //else fetch user votes
-            if ($rootScope.cvotes) getAnswerVotes();
-            else {
-                $rootScope.cvotes = [];
-                $rootScope.ceditvotes = [];
-            }
+            //if ($rootScope.cvotes) {
+            //    console.log('exec answer votes, $rootScope.isLoggedIn - ', $rootScope.isLoggedIn);
+                
+            //}
+            //else {
+            //    $rootScope.cvotes = [];
+            //    $rootScope.ceditvotes = [];
+            //}
 
             //Check if answer is event
             if (vm.type == 'Event') {
@@ -305,7 +333,10 @@
             
             //Determine number of user comments
             if (vm.answer.numcom == undefined) vm.numcom = 0;
-            else vm.numcom = vm.answer.numcom;
+            else vm.numcom = vm.vrows.length;
+
+            if (vm.answer.numcom != vm.vrows.length)
+                answer.updateAnswer(vm.answer.id, ['numcom'], [vm.numcom]);
 
             //Determine if necessary to show navigation buttons
             if (vm.ranking) vm.showNextnPrev = true;
@@ -431,6 +462,8 @@
         
         //Update Records
         function updateRecords() {
+
+            if ($rootScope.isLoggedIn && answerFound){
             
             //update vote record if necessary
             if ($rootScope.DEBUG_MODE) console.log("UpdateRecords @answerDetail");
@@ -528,6 +561,7 @@
                 }
             }
             recordsUpdated = true;
+        }
         }
         
         //AM:Refresh Thumb Up and Thumb down Vote Displays
@@ -686,7 +720,7 @@
                 $state.go('match');
             }
             else if ($rootScope.inFavMode) {
-                $state.go('myfavs');
+                $state.go('favs');
             }
             else {
                 //var nViews = vm.answer.views + 1;
@@ -695,7 +729,8 @@
                     if ($rootScope.cCategory.title.indexOf('@')>-1) $rootScope.isCustomRank = true;
                     $state.go('rankSummary', { index: $rootScope.cCategory.id });
                 }
-                else $state.go('cwrapper');
+                else //$state.go('cwrapper');
+                backToResults();
             }
         }
 
@@ -713,7 +748,9 @@
                 //delete catans for this answer
                 matchrec.deleteRecordsbyCatans($rootScope.cCategory.id, vm.answer.id);
                 catans.deleteRec(vm.answer.id, $rootScope.cCategory.id).then(function () {
-                    $state.go("answerDetail", { index: vm.answer.id }, { reload: true });
+                    vm.addctsactive = false;
+                    getAnswerRanks();
+                    vm.dispRanks--;
                 });
 
             }, function () {
@@ -745,7 +782,9 @@
                 //delete catans for this answer
                 matchrec.deleteRecordsbyCatans(r.id, vm.answer.id);
                 catans.deleteRec(vm.answer.id, r.id).then(function () {
-                    $state.go("answerDetail", { index: vm.answer.id }, { reload: true });
+                    vm.addctsactive = false;
+                    getAnswerRanks();
+                    vm.dispRanks--;
                 });
             });
         }
@@ -775,15 +814,16 @@
         }
 
         function getAnswerRanks() {
-
-            vm.answerRanks = [];
+           vm.answerRanks = [];
+            var rankObj = {};
             for (var i = 0; i < $rootScope.catansrecs.length; i++) {
                 //if ($rootScope.catansrecs[i].answer == vm.answer.id && $rootScope.catansrecs[i].category != $rootScope.cCategory.id) {
                 if ($rootScope.catansrecs[i].answer == vm.answer.id) {
                     for (var j = 0; j < $rootScope.content.length; j++) {
                         if ($rootScope.content[j].id == $rootScope.catansrecs[i].category) {
                             //to each rank object attach catans data
-                            var rankObj = $rootScope.content[j];
+                            rankObj = {};
+                            rankObj = $rootScope.content[j];
                             rankObj.upV = $rootScope.catansrecs[i].upV;
                             rankObj.downV = $rootScope.catansrecs[i].downV;
                             rankObj.catans = $rootScope.catansrecs[i].id;
@@ -809,6 +849,11 @@
             }
             //vm.otherRanksExist = vm.otherRanks.length > 0 ? true : false;
             vm.otherRanksExist = true;
+            getAnswerVotes();
+            //$timeout(function(){
+            //    $scope.$apply();
+            //});   
+            //console.log("vm.answerRanks - ", vm.answerRanks);
         }
 
         function getSpecials(x) {
@@ -825,7 +870,6 @@
         }
 
         function showSpecial(x){
-            console.log("showspecial");
             dialog.showSpecial(x);
         }
 
@@ -982,7 +1026,8 @@
         }
 
         function reloadAnswer() {
-            $state.go("answerDetail", { index: vm.answer.id }, { reload: true });
+            vm.userIsOwner = true;
+            //$state.go("answerDetail", { index: vm.answer.id }, { reload: true });
         }
 
         function openSpecials() {
@@ -1081,13 +1126,14 @@
         function gotoRank(x) {
             //var nViews = vm.answer.views + 1;
             //answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
-            $state.go('rankSummary', { index: x.id });
+            $state.go('rankSummary', { index: x.slug });
         }
 
         function gotoCustomRank(x) {
             //var nViews = vm.answer.views + 1;
             //answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
             $rootScope.oCategory = $rootScope.cCategory;
+            $rootScope.oAnswer = vm.answer;
             $rootScope.isCustomRank = true;
             $state.go('rankSummary', { index: x.id });
         }
@@ -1215,24 +1261,66 @@
 
         function addcts(x) {
             var title = '';
-            var category = 0;
-            
+            var rank = -1;
+            var rFound = false;
+            var cat = -1;
+            var nh = -1;
             title = vm.addctsval;
-            
-            for (var i = 0; i < $rootScope.content.length; i++) {
 
-                if ($rootScope.content[i].title == title) {
-                    category = $rootScope.content[i].id;
+            for (var i=0; i<$rootScope.content.length; i++){
+                if ($rootScope.content[i].title == title){
+                    rFound = true;
+                    rank = r.id;
                     break;
                 }
             }
-            catans.postRec2(vm.answer.id, category);
+            
+            if (rFound) {
+                console.log('rank found, posting record');
+                catans.postRec2(vm.answer.id, rank).then(function () {
+                    vm.addctsactive = false;
+                    getAnswerRanks();
+                    vm.dispRanks++;
+                });
+            }
+            //Rank not found, determine category and create ghost
+            else {
+                //find string to look in category
+                console.log('rank not found, will create ghost');
+                if (title.indexOf(vm.answer.cityarea) > -1) {
+                    title = title.replace(vm.answer.cityarea, '@Nh');
+                    console.log('category title - ', title);
+                }
 
-            vm.addctsactive = false;
+                for (var i=0; i< $rootScope.categories.length; i++) {
+                    if ($rootScope.categories[i].category == title) {
+                        cat = $rootScope.categories[i].id;
+                        break;
+                    }
+                }
 
-            setTimeout(function () {
-                $state.go("answerDetail", { index: vm.answer.id }, { reload: true });
-            }, 1000);
+                for (var i=0; i< $rootScope.locations.length; i++) {
+                    if ($rootScope.locations[i].nh_name == vm.answer.cityarea) {
+                        nh = $rootScope.locations[i].id;
+                        break;
+                    }
+                }
+                
+                if (cat > -1 && nh > -1) {
+                    var obj = {};
+                    obj.cat = cat;
+                    obj.nh = nh;
+                    obj.isatomic = true;
+                    table.addTable(obj).then(function (tableid) {
+                        catans.postRec2(vm.answer.id, tableid).then(function () {
+                            vm.addctsactive = false;
+                            getAnswerRanks();
+                            vm.dispRanks++;
+                        })
+                    })
+                }
+                else console.log('Error creating ghost rank, cat, nh ', cat, nh);
+            }           
         }
 
         function addCatans(x) {
@@ -1362,11 +1450,13 @@
 
         function backToResults(){
             updateRecords();
-            $rootScope.$emit('backToResults');
+            if ($rootScope.previousState == 'trends') $state.go('trends');
+            else $rootScope.$emit('backToResults');
         }
 
         function share(){
-            vm.linkurl = 'https://rank-x.com/answerDetail/' + vm.answer.slug; 
+            //vm.linkurl = 'https://rank-x.com/answerDetail/' + vm.answer.slug;
+            vm.linkurl = SERVER_URL + '/answer' + vm.answer.id + '.html';
             vm.tweet = vm.answer.name + ', endorse your favorite ones at: ';
 
             var imageurl = vm.answer.imageurl;

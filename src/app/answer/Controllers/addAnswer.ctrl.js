@@ -5,10 +5,10 @@
         .module('app')
         .controller('addAnswer', addAnswer);
 
-    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', '$q','common',
+    addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', '$q','common','table',
     'image', 'catans', 'getgps', '$timeout','getwiki','$window','$scope','search'];
 
-    function addAnswer(dialog, $state, answer, $rootScope, $modal, $q, common,
+    function addAnswer(dialog, $state, answer, $rootScope, $modal, $q, common, table,
     image, catans, getgps, $timeout, getwiki, $window,$scope, search) {
         /* jshint validthis:true */
         var vm = this;
@@ -18,6 +18,7 @@
         vm.searchDisabled = 'disabled';
         vm.modalEnable = true;
         vm.userIsOwner = false;
+        vm.addRanksEnable = true;
         vm.publicfields = [];
         vm.ranking = $rootScope.cCategory.title;
         var publicfield_obj = {};
@@ -64,6 +65,7 @@
         var answerNeighborhood = undefined;
         var rankObj = {};
         var rankNhObj = {};
+        var isCustomRank = false;
         
         // Members
         var myAnswer = {};
@@ -117,11 +119,22 @@
 
         function activate() {
 
+            //Set custom rank flag
+            if ($rootScope.cCategory.owner != undefined && $rootScope.cCategory.owner != 0 ) $rootScope.isCustomRank = true;
+            else $rootScope.isCustomRank = false;
+
             $window.scrollTo(0, 0);
+            vm.addToRanks = [];
             detectNeighborhood();
             loadPublicFields();
             determineScope(); 
-            vm.addToRanks = [];
+            
+
+            if ($rootScope.cCategory.owner != undefined && $rootScope.cCategory.owner != 0 ){
+                isCustomRank = true;
+                vm.addRanksEnable = false;
+            } 
+
             if ($rootScope.cCategory.isatomic){
                 vm.nhrdy = true;
                 prepareCatansOptions();
@@ -151,7 +164,7 @@
             
             vm.neighborhoods = $rootScope.neighborhoods.concat($rootScope.districts);
 
-            vm.establishmentNames = $rootScope.estNames.concat($rootScope.plaNames, $rootScope.orgNames);
+            vm.establishmentNames = $rootScope.estNames.concat($rootScope.plaNames, $rootScope.orgNames, $rootScope.freNames);
             vm.peopleNames = $rootScope.pplNames;
             //vm.placesNames = $rootScope.plaNames;
             //vm.organizationNames = $rootScope.orgNames;
@@ -190,6 +203,12 @@
 
                 //Typeahead check for current Companies
                 if (vm.fields[i].name == "name" && $rootScope.cCategory.type == 'Organization') {
+                    //vm.fields[i].opts = "c for c in vm.organizationNames";
+                    vm.fields[i].opts = "c for c in vm.establishmentNames";
+                }
+
+                //Typeahead check for current Companies
+                if (vm.fields[i].name == "name" && $rootScope.cCategory.type == 'PersonCust') {
                     //vm.fields[i].opts = "c for c in vm.organizationNames";
                     vm.fields[i].opts = "c for c in vm.establishmentNames";
                 }
@@ -429,11 +448,27 @@
                     }
                     else{ 
                         if ($rootScope.DEBUG_MODE) console.log("P3 - ", myAnswer);
+                        
                         var ranks = [];
+                        var includesGhostRanking = false;
+                        //var granks = [];
                         for (var i=0; i<vm.addToRanks.length; i++){
                             if (vm.addToRanks[i].sel) ranks.push(vm.addToRanks[i]);
-                        }  
-                        answer.addAnswer(myAnswer, ranks).then(rankSummary);
+                            if (vm.addToRanks[i].isghost) includesGhostRanking = true;
+                            //if (vm.addToRanks[i].sel && vm.addToRanks[i].isghost) granks.push(vm.addToRanks[i]);
+                        }
+                        //Process non-ghost ranks  
+                        if (!includesGhostRanking) answer.addAnswer(myAnswer, ranks).then(rankSummary);
+                        //Process ghost ranks
+                        else {
+                            console.log("X1 - ", ranks, myAnswer);
+                            table.ghostTablesWithAnswer(ranks, myAnswer).then(function(){
+                                $timeout(function(){
+                                    rankSummary();
+                                },1000);
+                            });
+                        }
+
                     }
                     myAnswer = undefined;
                 } 
@@ -461,25 +496,28 @@
                     if (needCreateRec){
                         console.log("Need to Create Record")
                     }
-                    else{
-                        if ($rootScope.DEBUG_MODE) console.log("P6",myAnswer);
+                    else {
+                        if ($rootScope.DEBUG_MODE) console.log("P6", myAnswer);
                         if (myAnswer) {
-                        /*
-                        console.log("vm.ranksToAdd - ", vm.ranksToAdd);
-                        var prms = []
-                        for (var i = 0; i < vm.addToRanks.length; i++) {
-                            if (vm.addToRanks[i].sel)
-                                prms.push(answer.addAnswer2(myAnswer, vm.addToRanks[i].id));
-                        }
-
-                        console.log("prms - ", prms);
-
-                        $q.all(prms).then(rankSummary);*/
                             var ranks = [];
+                            var includesGhostRanking = false;
+                            //var granks = [];
                             for (var i = 0; i < vm.addToRanks.length; i++) {
                                 if (vm.addToRanks[i].sel) ranks.push(vm.addToRanks[i]);
-                            }    
-                            answer.addAnswer(myAnswer, ranks).then(rankSummary);
+                                if (vm.addToRanks[i].isghost) includesGhostRanking = true;
+                                //if (vm.addToRanks[i].sel && vm.addToRanks[i].isghost) granks.push(vm.addToRanks[i]);
+                            }
+                            //Process non-ghost ranks  
+                            if (!includesGhostRanking) answer.addAnswer(myAnswer, ranks).then(rankSummary);
+                            //Process ghost ranks
+                            else {
+                                console.log("X2 - ", ranks, myAnswer);
+                                table.ghostTablesWithAnswer(ranks, myAnswer).then(function () {
+                                    $timeout(function () {
+                                        rankSummary();
+                                    }, 1000);
+                                });
+                            }
                         }
                     }
                 myAnswer = undefined;                                 
@@ -526,7 +564,30 @@
                     }
                     else {
                         if ($rootScope.DEBUG_MODE) console.log("P9");
-                        catans.postRec(extAnswer.id).then(rankSummary);
+                        if ($rootScope.cCategory.isatomic) catans.postRec(extAnswer.id).then(rankSummary);
+                        else{
+                            //Need to find appropriate ranking record
+                            var rFound = false;
+                            var nidx = $rootScope.locations.map(function(x) {return x.nh_name; }).indexOf(extAnswer.cityarea);
+                            $rootScope.content.forEach(function(r){
+                                if (r.nh == $rootScope.locations[nidx].id && 
+                                    r.cat == $rootScope.cCategory.cat ){
+                                        rFound = true;
+                                        rankid = r.id;
+                                    }
+                            });
+                            if (rFound) catans.postRec2(extAnswer.id,rankid).then(rankSummary);
+                            else{
+                                //Need to create rank from ghost
+                                var rObj = {};
+                                rObj.cat = $rootScope.cCategory.cat;
+                                rObj.nh = $rootScope.locations[nidx].id;
+                                rObj.isatomic = true;
+                                table.addTable(rObj).then(function(tableid){
+                                    catans.postRec2(extAnswer.id,tableid).then(rankSummary);
+                                });
+                            }
+                        }
                     }
                 }
                 myAnswer = undefined;                
@@ -556,7 +617,7 @@
                                 eqRankIdx = $rootScope.content[n].id;
                         }
                     }
-                    //if (!eqFound) needCreateRec = true;
+                    //if (!eqFound) needCreateGhostRec = true;
                 //}
             }
         }
@@ -577,30 +638,43 @@
         function prepareCatansOptions(){
 
             if ($rootScope.DEBUG_MODE) console.log("prepareCatansOptions");
-
-            if (vm.addToRanks) vm.addToRanks = vm.addToRanks.concat(search.sibblingRanks($rootScope.cCategory, answerNeighborhood)); 
-            else vm.addToRanks = search.sibblingRanks($rootScope.cCategory, answerNeighborhood);
-
-            if (vm.addToRanks.length == 0) vm.addToRanks.push($rootScope.cCategory);
-            if (vm.addToRanks.length > 0) vm.addToRanks[0].sel = true;
-            for (var i=1; i<vm.addToRanks.length; i++){
-                vm.addToRanks[i].sel = false;
-            }
-
-            vm.addToRanks = vm.addToRanks.sort(compare);
-
-            //search.sibblingRanks($rootScope.cCategory.id);
-            vm.addctsopts = [];
-            var opt = '';
-            //if (answerNeighborhood == undefined || answerNeighborhood == '') answerNeighborhood = 'San Diego';
-            for (var i = 0; i < $rootScope.ctsOptions.length; i++) {
-                if ($rootScope.ctsOptions[i].indexOf('@Nh') > -1) {
-                    if (answerNeighborhood){
-                        opt = $rootScope.ctsOptions[i].replace('@Nh', answerNeighborhood);
-                        vm.addctsopts.push(opt);
-                    }
+            if (!isCustomRank) {
+                if (vm.addToRanks.length > 0) {
+                    var morePossibleRanks = search.sibblingRanks($rootScope.cCategory, answerNeighborhood);
+                    var map = vm.addToRanks.map(function (x) { return x.id; });
+                    morePossibleRanks.forEach(function (item) {
+                        if (map.indexOf(item.id) < 0) vm.addToRanks.push(item);
+                    })
+                    //vm.addToRanks = vm.addToRanks.concat(search.sibblingRanks($rootScope.cCategory, answerNeighborhood)); 
                 }
-                else vm.addctsopts.push($rootScope.ctsOptions[i]);
+                else vm.addToRanks = search.sibblingRanks($rootScope.cCategory, answerNeighborhood);
+
+                if (vm.addToRanks.length == 0) vm.addToRanks.push($rootScope.cCategory);
+                if (vm.addToRanks.length > 0) vm.addToRanks[0].sel = true;
+                for (var i = 1; i < vm.addToRanks.length; i++) {
+                    vm.addToRanks[i].sel = false;
+                }
+
+                vm.addToRanks = vm.addToRanks.sort(compare);
+
+                //search.sibblingRanks($rootScope.cCategory.id);
+                vm.addctsopts = [];
+                var opt = '';
+                //if (answerNeighborhood == undefined || answerNeighborhood == '') answerNeighborhood = 'San Diego';
+                for (var i = 0; i < $rootScope.ctsOptions.length; i++) {
+                    if ($rootScope.ctsOptions[i].indexOf('@Nh') > -1) {
+                        if (answerNeighborhood) {
+                            opt = $rootScope.ctsOptions[i].replace('@Nh', answerNeighborhood);
+                            vm.addctsopts.push(opt);
+                        }
+                    }
+                    else vm.addctsopts.push($rootScope.ctsOptions[i]);
+                }
+            }
+            else {
+                console.log("added $rootScope.cCategory - ", $rootScope.cCategory);
+                console.log("vm.addRanksEnable - ", vm.addRanksEnable);
+                vm.addToRanks.push($rootScope.cCategory);
             }
         }
 
@@ -620,31 +694,49 @@
             var rankObj = {};
             var idx = $rootScope.content.map(function(x) {return x.title; }).indexOf(vm.addctsval);  
             //Check types match
-            if ($rootScope.cCategory.type == 'Person' && 
-                $rootScope.content[idx].type != 'Person') typemismatch = true;
-            if ($rootScope.cCategory.type == 'Event' && 
-                $rootScope.content[idx].type != 'Event') typemismatch = true;
-            if ($rootScope.cCategory.type == 'Thing' && 
-                $rootScope.content[idx].type != 'Thing') typemismatch = true;
-            if ($rootScope.cCategory.type == 'PersonCust' && 
-                $rootScope.content[idx].type != 'PersonCust') typemismatch = true;        
-            if (($rootScope.cCategory.type == 'Place' || 
-                $rootScope.cCategory.type == 'Establishment' || 
-                $rootScope.cCategory.type == 'Organization') &&  
-                ($rootScope.content[idx].type != 'Place' &&
-                $rootScope.content[idx].type != 'Establishment' &&
-                $rootScope.content[idx].type != 'Organization')) typemismatch = true;
-            
-            if (typemismatch) dialog.typemismatch($rootScope.content[idx].type,$rootScope.cCategory.type);
-            else {
-                rankObj = $rootScope.content[idx];
-                rankObj.sel = true;
-                vm.addToRanks.push(rankObj);
-                vm.addToRanks = vm.addToRanks.sort(compare);
+            if (idx > -1) {
+                
+                if ($rootScope.cCategory.type == 'Person' &&
+                    $rootScope.content[idx].type != 'Person') typemismatch = true;
+                if ($rootScope.cCategory.type == 'Event' &&
+                    $rootScope.content[idx].type != 'Event') typemismatch = true;
+                if ($rootScope.cCategory.type == 'Thing' &&
+                    $rootScope.content[idx].type != 'Thing') typemismatch = true;
+                if ($rootScope.cCategory.type == 'PersonCust' &&
+                    $rootScope.content[idx].type != 'PersonCust') typemismatch = true;
+                if (($rootScope.cCategory.type == 'Place' ||
+                    $rootScope.cCategory.type == 'Establishment' ||
+                    $rootScope.cCategory.type == 'Organization') &&
+                    ($rootScope.content[idx].type != 'Place' &&
+                    $rootScope.content[idx].type != 'Establishment' &&
+                    $rootScope.content[idx].type != 'Organization')) typemismatch = true;
 
-                //console.log("vm.addToRanks - ", vm.addToRanks);
-                vm.addctsval = '';
-                vm.addctsactive = false;
+                if (typemismatch) dialog.typemismatch($rootScope.content[idx].type, $rootScope.cCategory.type);
+                else {
+                    rankObj = $rootScope.content[idx];
+                    rankObj.sel = true;
+                    vm.addToRanks.push(rankObj);
+                    vm.addToRanks = vm.addToRanks.sort(compare);
+
+                    //console.log("vm.addToRanks - ", vm.addToRanks);
+                    vm.addctsval = '';
+                    vm.addctsactive = false;
+                }
+            }
+            //check if the value from addcts require ghost
+            else{
+                var idx2 = $rootScope.categories.map(function(x) {return x.category; }).indexOf(vm.addctsval.slice(0,9));
+                if ($rootScope.categories[idx2].category.indexOf('@Nh')>-1){
+                    var nidx = $rootScope.locations.map(function(x) {return x.nh_name; }).indexOf(answerNeighborhood);
+                    var gObj = {};
+                    gObj.cat = $rootScope.categories[idx2].id;
+                    gObj.nh = $rootScope.locations[nidx].id;
+                    gObj.isghost = true;
+                    gObj.isatomic = true;
+                    gObj.title = vm.addctsval;
+                    console.log("added ghost to vm.addToRanks from addcts");
+                    vm.addToRanks.push(gObj);
+                }
             }
         }
 
@@ -838,10 +930,12 @@
         function detectNeighborhood(){
             //this function determines if current ranking is for a neighborhood or district
             var idx = $rootScope.locations.map(function (x) { return x.id; }).indexOf($rootScope.cCategory.nh);
-            rankNh = $rootScope.locations[idx].nh_name;
-            rankNhObj = $rootScope.locations[idx];
-            answerNeighborhood = rankNh;
-            prepareCatansOptions();               
+            if (idx > -1){
+                rankNh = $rootScope.locations[idx].nh_name;
+                rankNhObj = $rootScope.locations[idx];
+                answerNeighborhood = rankNh;
+                if ($rootScope.cCategory.isatomic) prepareCatansOptions();
+            } 
         }
 
         function checkUserCredentials(){

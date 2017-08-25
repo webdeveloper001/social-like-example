@@ -1,3 +1,4 @@
+<!--
 <table class="table">
 	<tbody>
 		<thead>
@@ -16,6 +17,10 @@
 		</thead>
 	</tbody>
 </table>
+-->
+<button type="button" class="btn btn-default pull-right" style="vertical-align:middle;" ng-click="refreshFeed()">
+    <span class="glyphicon glyphicon-refresh" style="padding-top:0px;padding-bottom:0px;" aria-hidden="true"></span>
+</button>
 
 <div ng-repeat="x in feeds | orderBy:'-id' | limitTo:fres" style="padding:0px;border:0px;margin-top:10px;">
 	<div class="row" style="margin:4px">
@@ -74,5 +79,6 @@
 		</div>
 	</div>
 </div>
-
+<!--
 <p class="text-center" style="color:blue; margin-top:10px; margin-bottom: 60px" ng-if="showAll == 'true'"><a class="btn btn-default" style='margin-right:20px;' ng-click="seeMoreFeed(false)">See More</a><a class="btn btn-default" href="/home">Back</a></p>
+-->

@@ -4,20 +4,20 @@
     angular
         .module('app')
 
-    /*['ngAnimate',
-     'ngCookies',
-     'ngResource',
-     'ngRoute',
-     'ngSanitize',
-     'ngTouch',
-     'pascalprecht.translate',
-     'tmh.dynamicLocale'])*/
+        /*['ngAnimate',
+         'ngCookies',
+         'ngResource',
+         'ngRoute',
+         'ngSanitize',
+         'ngTouch',
+         'pascalprecht.translate',
+         'tmh.dynamicLocale'])*/
 
         .controller('layout', layout);
 
     layout.$inject = ['$location', '$rootScope', '$window', '$q', '$http', 'pvisits', '$cookies', '$scope',
         'DEBUG_MODE', 'EMPTY_IMAGE', 'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata', 'dialog',
-        'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state','dataloader', 'setting', 'filter'];
+        'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state', 'dataloader', 'setting', 'filter'];
 
     function layout($location, $rootScope, $window, $q, $http, pvisits, $cookies, $scope,
         DEBUG_MODE, EMPTY_IMAGE, rankofday, answer, table, special, datetime, uaf, userdata, dialog,
@@ -27,11 +27,11 @@
         vm.title = 'layout';
         vm.header = '';
         //-----SEO tags ----
-        $scope.$parent.seo = { 
-            pageTitle : 'Home |', 
-            metaDescription: 'Home | Rank-X creates collective rankings on everything in your city.' 
+        $scope.$parent.seo = {
+            pageTitle: 'Rank-X',
+            metaDescription: 'Rank-X creates collective rankings on everything in your city.'
         };
-        
+
         //vm.searchRank = searchRank;
 
         //if ($rootScope.answers) vm.isLoading = false;
@@ -43,56 +43,67 @@
         vm.gotoHome = gotoHome;
         vm.goAddRank = goAddRank;
         vm.foodNearMe = false;
-        if ($window.location.href.indexOf('rankSummary/food-near-me-9521') != -1 ) {
+        if ($window.location.href.indexOf('rankSummary/food-near-me-9521') != -1) {
             vm.foodNearMe = true;
             vm.veilMsg = 'Just a moment, finding some delicious food...';
         }
-        
+        vm.dataready = false;
+        vm.initready = false;
+        vm.barIsActive = true;
+        vm.childActive = false;
+        vm.rodready = false;
+
         //Admin Methods
         vm.editRank = editRank;
         vm.viewRank = viewRank;
         vm.applyRule = applyRule;
-        
+        vm.selCityActive = false;
+        vm.toggleSelCity = toggleSelCity;
+        vm.showTrends = showTrends;
+        //vm.scopeGeneral = scopeGeneral;
+        //vm.scopeCity = scopeCity;
+        //vm.childActive = false;
+
         vm.goPrivacyPolicy = goPrivacyPolicy;
         vm.goRankofDayConsole = goRankofDayConsole;
 
-        jQuery(document).ready(function() {
-        var offset = 250; 
-        var duration = 300;
+        jQuery(document).ready(function () {
+            var offset = 250;
+            var duration = 300;
 
-        jQuery(window).scroll(function() {
-            if (jQuery(this).scrollTop() > offset) {
-                jQuery('.back-to-top').fadeIn(duration);
-            } else {
-                jQuery('.back-to-top').fadeOut(duration);
-            }
-        });
- 
-        jQuery('.back-to-top').click(function(event) {
-            event.preventDefault();
-            jQuery('html, body').animate({scrollTop: 0}, duration);
+            jQuery(window).scroll(function () {
+                if (jQuery(this).scrollTop() > offset) {
+                    jQuery('.back-to-top').fadeIn(duration);
+                } else {
+                    jQuery('.back-to-top').fadeOut(duration);
+                }
+            });
+
+            jQuery('.back-to-top').click(function (event) {
+                event.preventDefault();
+                jQuery('html, body').animate({ scrollTop: 0 }, duration);
                 return false;
             })
         });
         /* Start Filtering feature by Roy */
-        
+
         vm.showFilters = false;
-        vm.toggleFilterBox = function(){
+        vm.toggleFilterBox = function () {
             vm.showFilters = !vm.showFilters;
         }
 
-        vm.hideFilterBox = function(){
+        vm.hideFilterBox = function () {
             vm.showFilters = false;
         }
-        
-        vm.selectNh = function(item, data){
+
+        vm.selectNh = function (item, data) {
             vm.filterOptions.isCity = false;
             vm.filterOptions.isNh = true;
         }
 
-        vm.selectTopic = function(topic){
-            if (topic == "All"){
-                if(vm.filterOptions.isAllTopics == false){
+        vm.selectTopic = function (topic) {
+            if (topic == "All") {
+                if (vm.filterOptions.isAllTopics == false) {
                     vm.filterOptions.isAllTopics = true;
                     vm.filterOptions.ctopics = angular.copy(vm.allTopics);
                 } else {
@@ -106,17 +117,17 @@
                     vm.filterOptions.ctopics.splice(vm.filterOptions.ctopics.indexOf(topic), 1);
                 } else {
                     vm.filterOptions.ctopics.push(topic);
-                    var isAll = vm.allTopics.filter(function(topic){ return vm.filterOptions.ctopics.indexOf(topic) == -1 });
-                    if(isAll.length == 0){
+                    var isAll = vm.allTopics.filter(function (topic) { return vm.filterOptions.ctopics.indexOf(topic) == -1 });
+                    if (isAll.length == 0) {
                         vm.filterOptions.isAllTopics = true;
                     }
                 }
             }
         }
-        
-        vm.switchLocationScope = function(loc){
-            if( loc == 'city' ){
-                vm.filterOptions.isCity = true;    
+
+        vm.switchLocationScope = function (loc) {
+            if (loc == 'city') {
+                vm.filterOptions.isCity = true;
                 vm.filterOptions.isNh = false;
             } else {
 
@@ -125,8 +136,8 @@
             }
         }
 
-        vm.applyFilters = function(){
-            if(vm.filterOptions.ctopics.length == 0){
+        vm.applyFilters = function () {
+            if (vm.filterOptions.ctopics.length == 0) {
                 alert("Please select at least 1 topic.");
                 return;
             }
@@ -136,53 +147,89 @@
         }
         /* End Filtering feature by Roy */
 
-        $rootScope.$on('refreshRanks', function () {
+        var refreshRanksListener = $rootScope.$on('refreshRanks', function () {
             if ($state.current.name == 'cwrapper') {
                 vm.hidelogo = $rootScope.hidelogo;
             }
         });
-        $rootScope.$on('showLogo', function () {
+        var showLogoListener = $rootScope.$on('showLogo', function () {
             if ($state.current.name == 'rankSummary' || $state.current.name == 'answerDetail') {
                 //vm.hidelogo = false;
             }
         });
-        $rootScope.$on('userDataLoaded', function () {
+        var userDataLoadedListener = $rootScope.$on('userDataLoaded', function () {
+            if ($rootScope.DEBUG_MODE) console.log("RX - userDataLoaded");
             loadingDone();
         });
-        $rootScope.$on('homeDataLoaded', function () {
+        var homeDataLoadedListener = $rootScope.$on('homeDataLoaded', function () {
+            if ($rootScope.DEBUG_MODE) console.log("RX - homeDataLoaded");
             loadingDone();
+            vm.dataready = true;
             prepareNewCatansOptions();
         });
-        $rootScope.$on('rankDataLoaded', function () {
+        var rankDataLoadedListener = $rootScope.$on('rankDataLoaded', function () {
+            if ($rootScope.DEBUG_MODE) console.log("RX - rankDataLoaded");
             loadingDone();
         });
-        $rootScope.$on('answerDataLoaded', function () {
+        var answerDataLoadedListener = $rootScope.$on('answerDataLoaded', function () {
+            if ($rootScope.DEBUG_MODE) console.log("RX - answerDataLoaded");
             loadingDone();
         });
-        $rootScope.$on('initalHomeDataLoaded', function () {
+        var initialHomeDataLoadedListener = $rootScope.$on('initalHomeDataLoaded', function () {
+            if ($rootScope.DEBUG_MODE) console.log("RX - initialHomeLoaded");
             $rootScope.initalHomeDataLoaded = true;
+            vm.initready = true;
             loadingDone();
         });
         var mainViewListener = $rootScope.$on('mainView', function (event) {
-            if ($state.current.name == 'cwrapper') {
+                vm.childActive = false;
                 gotoHome();
-            }
+        });
+        var hideSearchBarListener = $rootScope.$on('hideBar', function (event) {
+                vm.childActive = true;
+                vm.barIsActive = false;
         });
         var backtoResultsListener = $rootScope.$on('backToResults', function (event) {
-            if ($state.current.name != 'cwrapper') {
-                backToResults();
-            }
+                vm.childActive = false;
+                vm.barIsActive = true;
+                backToResults();      
         });
 
-        /*
-        if ($window.innerWidth < 512) vm.logoimage = "../../../assets/images/rankxlogosd_sm.png";
-        else vm.logoimage = "../../../assets/images/rankxlogosd.png";
-        */
+        var userLoggedOutListener = $rootScope.$on('userLoggedOut', function (event) {
+                vm.isAdmin = false;
+        });
+        
+        var rodReadyListener = $rootScope.$on('rodReady', function (event) {
+                vm.rodready = true;
+                dataloader.pulldata('ranks', $rootScope.rankofday);
+                //console.log("$rootScope.rankofday - ", $rootScope.rankofday);
+        });
+
+        var setScopeListener = $rootScope.$on('setScope', function () {
+            if ($rootScope.SCOPE == 1) {vm.scopeIsGeneral = true; vm.scopeIsCity = false; }
+            if ($rootScope.SCOPE == 2) {vm.scopeIsGeneral = false; vm.scopeIsCity = true; } 
+        });
+
+        $scope.$on('$destroy',setScopeListener);
+        $scope.$on('$destroy',userLoggedOutListener);
+        $scope.$on('$destroy',backtoResultsListener);
+        $scope.$on('$destroy',hideSearchBarListener);
+        $scope.$on('$destroy',mainViewListener);
+        $scope.$on('$destroy',initialHomeDataLoadedListener);
+        $scope.$on('$destroy',answerDataLoadedListener);
+        $scope.$on('$destroy',rankDataLoadedListener);
+        $scope.$on('$destroy',homeDataLoadedListener);
+        $scope.$on('$destroy',userDataLoadedListener);
+        $scope.$on('$destroy',showLogoListener);
+        $scope.$on('$destroy',refreshRanksListener);
+        $scope.$on('$destroy',rodReadyListener);
+
         if ($window.innerWidth < 512) {
             vm.logoimage = "/assets/images/rankxlogosd2_sm.png";
             $rootScope.sm = true;
             vm.sm = true;
             $rootScope.DISPLAY_XSMALL = true;
+            $rootScope.numInitItems = 12;
         }
         else {
             vm.logoimage = "/assets/images/rankxlogosd2_sm.png";
@@ -192,15 +239,18 @@
 
         if (($window.innerWidth >= 512) && ($window.innerWidth < 768)) {
             $rootScope.DISPLAY_SMALL = true;
+            $rootScope.numInitItems = 12;
         }
 
         $rootScope.md = false;
         if (($window.innerWidth >= 768) && ($window.innerWidth < 991)) {
             $rootScope.md = true;
             $rootScope.DISPLAY_MEDIUM = true;
+            $rootScope.numInitItems = 16;
         }
         if ($window.innerWidth > 991) {
             $rootScope.DISPLAY_LARGE = true;
+            $rootScope.numInitItems = 24;
         }
 
         //TODO: Would like to add this abstract template, but dont know how
@@ -215,17 +265,10 @@
         var tourviewed = $cookies.get('tourviewed');
         if (tourviewed == undefined) tourviewed = false;
 
-        // Members
         activate();
-
+        
         function activate() {
-
             //****TEMP CODE, ENable for Admin Functions*****************
-            $rootScope.isAdmin = false;
-            vm.isAdmin = false;
-            if ($rootScope.isLoggedIn){
-                if ($rootScope.user.id == '1599427743409374') $rootScope.dataAdmin = true;
-            }
             /*
             $rootScope.isLoggedIn = true;
             $rootScope.user = {};
@@ -233,31 +276,59 @@
             $rootScope.user.first_name = 'Andres';
             $rootScope.user.last_name = 'Moctezuma';
             $rootScope.user.id = "10104518570729893";
-            //**********************End of Temp Code */
+            //---*/
+
+            $rootScope.isAdmin = false;
+            $rootScope.dataAdmin = false;
+            if ($rootScope.isLoggedIn) {
+                if ($rootScope.user.id == '1599427743409374') $rootScope.dataAdmin = true;
+                if ($rootScope.user.id == '10104518570729893') $rootScope.isAdmin = true;
+                if ($rootScope.user.id == '10214255239240099') $rootScope.contentAdmin = true;
+                if ($rootScope.user.id == '1638806919478345') $rootScope.modAdmin = true;
+            }
+            vm.isAdmin = $rootScope.isAdmin || $rootScope.contentAdmin;
+            $rootScope.$emit('adminCredentials');
 
             $rootScope.DEBUG_MODE = DEBUG_MODE;
-            $rootScope.EMPTY_IMAGE = EMPTY_IMAGE;    
+            $rootScope.EMPTY_IMAGE = EMPTY_IMAGE;
+            $rootScope.SCOPE = 2; // This scope number is for city of San Diego.
 
             $rootScope.facebookAppId = ''; //1102409523140826'';
             $rootScope.facebookUrl = 'https://www.facebook.com/Rank-X-San-Diego-582174448644554';
-       
+
             //$timeout(loadingDone, 1000);
             if ($rootScope.dataIsLoaded == undefined) {
                 vm.isLoading = true;
                 //vm.nh = 'hang in there';
-                loadData();
+                loadJSON();
                 //if (!tourviewed && !$rootScope.isLoggedIn) dialog.tour();
             }
+            else loadData();
 
             //Call userdata functions, If user is not logged in, functions do not execute.
-                userdata.loadUserData();        //load user data (votes and activities)
-                userdata.loadUserAccount();     //load user business account
-            
+            userdata.loadUserData();        //load user data (votes and activities)
+            userdata.loadUserAccount();     //load user business account
+
             //Determine if user is using Facebook browser
             $rootScope.isFacebookApp = isFacebookApp();
 
             if ($rootScope.DEBUG_MODE) console.log("Layout Loaded!");
 
+        }
+
+        function loadJSON(){
+            var p0 = $http.get('../../../assets/fields.json').then(function (response) {
+                $rootScope.typeSchema = response.data;
+                loadData();
+            });
+
+            $http.get('../../../assets/dialogs.json').then(function (response) {
+                $rootScope.dialogs = response.data;
+            });
+
+            $http.get('../../../assets/foodans.json').then(function (response) {
+                $rootScope.foodans = response.data;
+            });
         }
 
         function loadData() {
@@ -276,79 +347,62 @@
 
             $rootScope.districts = [
                 "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
-                "Marina", "Bankers Hill","Balboa Park"];
+                "Marina", "Bankers Hill", "Balboa Park"];
 
             vm.nhs = [];
-            vm.nhs = vm.nhs.concat($rootScope.neighborhoods,$rootScope.districts);
+            vm.nhs = vm.nhs.concat($rootScope.neighborhoods, $rootScope.districts);
             vm.allTopics = ['LifeStyle', 'Social', 'Sports', 'Food', 'Beauty & Fashion', 'Family', 'Technology', 'Dating', 'City', 'Services', 'Health', 'Celebrities'];
 
-            
-            vm.filterOptions = filter.loadFilterOptions();
+
+            //vm.filterOptions = filter.loadFilterOptions();
 
             $rootScope.allnh = $rootScope.neighborhoods.concat($rootScope.districts);
 
-            $http.get('../../../assets/fields.json').then(function (response) {
-                $rootScope.typeSchema = response.data;
-            });
+            //$rootScope.answers = [];
+            //$rootScope.specials = [];
+            //$rootScope.mrecs = [];
+            //$rootScope.alluseractivity = [];
+            //$rootScope.catansrecs = [];
+            //$rootScope.edits = [];
+            //$rootScope.customranks = [];
+            //$rootScope.cvrows = [];
 
-            $http.get('../../../assets/dialogs.json').then(function (response) {
-                $rootScope.dialogs = response.data;
-            });
+            //$rootScope.content = table.sync();
 
-            /*$http.get('../../../assets/foodranks.json').then(function (response) {
-                $rootScope.foodranks = response.data;
-            });*/
-            $http.get('../../../assets/foodans.json').then(function (response) {
-                $rootScope.foodans = response.data;
-            });
-/*
-            if (window.location.href.indexOf('rankSummary')>-1){
-                var myRegexp = /rankSummary\/([0-9]+)/g;
-                var match = myRegexp.exec(window.location.href);
-                var category = match[1];
-                dataloader.getthisrankdata(category);
-                console.log("rank id: ",match[1]);
-            }
-*/
-            if(!filter.loadInitalHomeData())
-            // if (!$rootScope.initalHomeData)
-                table.getMostPopularData();
-            dataloader.gethomedata();
-            // dataloader.getallranks();
-            //dataloader.getallcblocks();
-            dataloader.getrankdata();
-            dataloader.getanswerdata();
+            //$rootScope.pageDataLoaded = false;
+            //$rootScope.rankSummaryDataLoaded = false;
+            //$rootScope.answerDetailLoaded = false;
+            //$rootScope.userDataLoaded = false;
+            dataloader.getInitialData();    
+            getDestination();
             dataloader.getpagevisitdata();
-            setting.getSetting();
-            //loadingDone();
+            setting.getSetting();    
+
         }
 
         function loadingDone() {
             if ($rootScope.pageDataLoaded == undefined) $rootScope.pageDataLoaded = false;
             if ($rootScope.userDataLoaded == undefined) $rootScope.userDataLoaded = false;
+
+            if (window.location.href.indexOf('rankSummary') > -1)
+                $rootScope.dataIsLoaded = $rootScope.rankSummaryDataLoaded && $rootScope.userDataLoaded;
+
+            else if (window.location.href.indexOf('answerDetail') > -1)
+                $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.userDataLoaded;
             
-
-            if (window.location.href.indexOf('rankSummary')>-1)
-                $rootScope.dataIsLoaded = $rootScope.rankSummaryDataLoaded && $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
-
-            else if (window.location.href.indexOf('answerDetail')>-1)
-                $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded && 
-                                    $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
-            else if (window.location.href.indexOf('favs')>-1)
-                $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded && 
-                                    $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
-            else if (window.location.href.indexOf('mybusiness')>-1)
+            else if (window.location.href.indexOf('favs') > -1)
+                $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded &&
+                    $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
+            else if (window.location.href.indexOf('mybusiness') > -1)
                 $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded;
-            else if (window.location.href.indexOf('promoteconsole')>-1)
-                $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded && 
-                                    $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
-            else if (window.location.href.indexOf('home')>-1)
+            else if (window.location.href.indexOf('promoteconsole') > -1)
+                $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded &&
+                    $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
+            else if (window.location.href.indexOf('home') > -1)
                 $rootScope.dataIsLoaded = $rootScope.initalHomeDataLoaded;
             else $rootScope.dataIsLoaded = $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
 
             vm.isLoading = !$rootScope.dataIsLoaded;
-            //vm.isLoading = false;
-            //$rootScope.dataIsLoaded = true;
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.dataIsLoaded -", $rootScope.dataIsLoaded);
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.pageDataLoaded -", $rootScope.pageDataLoaded);
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.userDataLoaded -", $rootScope.userDataLoaded);
@@ -361,74 +415,65 @@
             return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
         }
 
-        function goPrivacyPolicy(){
+        function goPrivacyPolicy() {
+            vm.childActive = true;
+            vm.barIsActive = false;
             $state.go('privacypolicy');
         }
 
-        function goRankofDayConsole(){
+        function goRankofDayConsole() {
+            vm.childActive = true;
+            vm.barIsActive = false;
             $state.go('rodconsole');
         }
-
-        function showNeighborhoods(){
-
-            setTimeout(function () {
-                if (vm.isLoading) {
-                    nidx = nidx + 1;
-                    if (nidx >= $rootScope.neighborhoods.length-1) nidx = 0;
-                    vm.nh = $rootScope.neighborhoods[nidx];
-                    showNeighborhoods();
-                }
-            }, 333);
-        }
-
+        
         function getResults() {
-            
+
             $rootScope.inputVal = vm.val;
-            if ($rootScope.inputVal.length > 0) {
-                   $rootScope.searchActive = true;
-            }
-            else {
-                $rootScope.searchActive = false;
-            }
+            $rootScope.searchActive = true;
             vm.searchActive = $rootScope.searchActive;
-            $window.scroll(0,0);                    
-            vm.hideFilterBox();
+            vm.childActive = !$rootScope.searchActive;
         }
 
-        function hideSearch(){
+        function hideSearch() {
             vm.searchActive = false;
+            vm.childActive = true;
+            vm.barIsActive = false;
         }
 
-         function gotoHome() {
-            $rootScope.fbmode = false;
-            $rootScope.searchActive = false;
-            vm.searchActive = false;
-            $rootScope.hidelogo = false;
-            $rootScope.inputVal = '';
-            vm.val = '';
-            //$state.go('cwrapper', {}, { reload: true });
-            if ($state.current.name != 'cwrapper') {
-                $state.go('cwrapper',{main: true});
+        function gotoHome() {
+            //$rootScope.searchActive = true;
+            vm.searchActive = true;
+            vm.childActive = false;
+            vm.barIsActive = true;
+            if ($state.current.name == 'cwrapper') {
+             $rootScope.inputVal = '';
+             vm.val = '';
             }
-            //else $rootScope.$emit('mainView');
         }
 
-        function backToResults(){
-            if ($rootScope.inputVal != undefined && $rootScope.inputVal != ''){
+        function backToResults() {
+            if ($state.current.name == 'cwrapper') {
+                $rootScope.inputVal = '';
+                vm.val = '';
+            }
+            $state.go('cwrapper');
+            if ($rootScope.inputVal != undefined && $rootScope.inputVal != '') {
                 $rootScope.searchActive = true;
                 vm.searchActive = true;
-            }
-            else {
-                gotoHome();
+                vm.childActive = false;
             }
         }
 
-        function goAddRank(){
-            if ($rootScope.isLoggedIn) $state.go('addCustomRank');
+        function goAddRank() {
+            if ($rootScope.isLoggedIn) {
+                vm.childActive = true;
+                $state.go('addCustomRank');
+            }
             else dialog.loginFacebook();
         }
 
-         //*****************Admin Functions************
+        //*****************Admin Functions************
         function editRank() {
             $rootScope.editMode = true;
             vm.selEditRank = 'active';
@@ -440,31 +485,87 @@
             $rootScope.editMode = false;
             vm.selEditRank = '';
             vm.selViewRank = 'active';
-            //console.log("mode -- ", editMode);
         }
-        function applyRule() {          
+        function applyRule() {
             $rootScope.$emit('applyRule');
+        }
+        /*
+        function scopeGeneral(force) {
+                
+                vm.scopeIsGeneral = true;
+                vm.scopeIsCity = false;
+                vm.initready = false;
+                vm.dataready = false;
+                vm.childActive = false;
+                $rootScope.SCOPE = 1; //Scope = 1, is General Scope
+                table.getMostPopularDataX(1);
+                dataloader.gethomedataX(1);
+                $rootScope.inputVal = '';
+                vm.val = '';
+                $state.go('cwrapper');
+                $window.scrollTo(0, 0);
+        }*/
+        function scopeCity() {
+                
+                vm.scopeIsGeneral = false;
+                vm.scopeIsCity = true;
+                vm.initready = false;
+                vm.dataready = false;
+                vm.childActive = false;
+                $rootScope.inputVal = '';
+                vm.val = '';
+                dataloader.gethomedataX($rootScope.SCOPE);
+                $state.go('cwrapper');
+                $window.scrollTo(0, 0);
+        }
+
+        function toggleSelCity() {
+            if (vm.selCityActive) {
+                vm.selCityActive = false;
+                return;
+            }
+            else {
+                vm.selCityActive = true;
+                return;
+            }
         }
 
         function prepareNewCatansOptions() {
-            
+
             if ($rootScope.DEBUG_MODE) console.log("@prepareNewCatansOptions - $rootScope.content.length ", $rootScope.content.length);
             $rootScope.ctsOptions = [];
             //var titlex = '';
             for (var i = 0; i < $rootScope.categories.length; i++) {
-                //if ($rootScope.content[i].title.indexOf('in Hillcrest') > -1) {
-                    //titlex = $rootScope.content[i].title.replace('Hillcrest', '@neighborhood');
-                    //$rootScope.ctsOptions.push(titlex);
-                //}
-                //if ($rootScope.content[i].ismp && $rootScope.content[i].isatomic) {
-                    $rootScope.ctsOptions.push($rootScope.categories[i].category);
-                //}
+                $rootScope.ctsOptions.push($rootScope.categories[i].category);
             }
         }
-/*
-        $rootScope.selectCity = function (city) {
-            $rootScope.selectedCity = city;
-            window.localStorage.selectedCity = JSON.stringify($rootScope.selectedCity);
-        }*/
+        
+         function getDestination(){
+            if (window.location.href.indexOf('rankSummary') > -1){
+                var n = window.location.href.indexOf('rankSummary/');
+                var slug = window.location.href.substring(n+12);
+                dataloader.landRanking(slug);
+                vm.childActive = true;
+                vm.barIsActive = false;
+            }
+            else if(window.location.href.indexOf('answerDetail') > -1){
+                var n = window.location.href.indexOf('answerDetail/');
+                var slug = window.location.href.substring(n+13);
+                dataloader.landAnswer(slug);
+                vm.childActive = true;
+                vm.barIsActive = false;
+            }
+            else{
+                $rootScope.childActive = false;
+                scopeCity();
+            }
+        }
+
+        function showTrends(){
+            vm.childActive = true;
+            vm.barIsActive = false;
+            $state.go('trends');
+        }
+
     }
 })();

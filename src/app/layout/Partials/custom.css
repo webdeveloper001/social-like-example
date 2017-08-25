@@ -332,10 +332,10 @@ a.navbar-profile-picture-wrapper span{
 }
 
 @media screen and (max-width: 414px) {
-	
+	/*
     a.home-link{
-        display: none;
-    }
+        display: none;*
+    }*/
     a.navbar-profile-picture-wrapper{
         padding-left: 10px;
         display: inline;
@@ -407,16 +407,16 @@ width: 100% !important;
   line-height: 60px;
 }
 
-
+/*
 userfeed-block {
     overflow-y: auto;
     display: block;
     height: 400px;
-}
-
+}*/
+/*
 userfeed-block.show-all {
     overflow: initial;
-}
+}*/
 
 
 .trend-tab ul li a{
@@ -430,4 +430,30 @@ userfeed-block.show-all {
 .trend-tab ul li.active a:hover{
     background-color: #efefef;
     cursor: pointer;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    left: 105%;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
 }

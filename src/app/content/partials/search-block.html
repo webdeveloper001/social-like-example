@@ -1,62 +1,27 @@
-	<!--
-	<table class="table" style="border-style:none;">
-		<tbody>			
-			<tr ng-repeat="x in resRanks track by $index | limitTo:maxRes " ng-click="rankSel(x,false)" style="cursor:pointer;">
-				<td style="width:50%;">
-					<i class="fa fa-list-ol" aria-hidden="true"></i> - {{x.title}}
-				</td>
-			</tr>
-			<tr ng-repeat="x in resAnswers track by $index | limitTo:maxRes " ng-click="ansSel(x,false)" style="cursor:pointer;">
-				<td style="width:50%;">
-					<i class="{{x.icon}}" aria-hidden="true"></i> - {{x.name}}, {{x.cityarea}}
-                    <small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;{{x.views}}&nbspviews</small>
-				</td>
-			</tr>			
-		</tbody>
-	</table>
--->
-<!--
-<div class="row">
-
-<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-repeat="x in resRanks.slice(0,8)" ng-click="rankSel(x,false)">
-			<rank-item rank-object="x"></rank-item>
-	</div>
-		</div>
-		-->
 <div class="">
-	<!-- <div class="viewport" id="viewport-scopeDatasource" ui-scroll-viewport>
-		<div class="item" ui-scroll="item in vm.datasource">{{item}}</div>
-	</div> -->
 	<div infinite-scroll='loadMore()'
-		infinite-scroll-distance='0'
-		infinite-scroll-disabled='scrollDataLoading || endReached || disableScrolling'
-		class="col-xs-12"
-		id="inifinite-container"
-		style="{{sm? 'padding-right: 5px;':''}}"
-	>
-		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-repeat="x in searchResults.slice(startIndex, currentIndex)">
-			
-			<div ng-if="!x.isAnswer" ng-click="rankSel(x,false)"><rank-item rank-object="x"></rank-item></div>
-			<div ng-if="x.isAnswer" ng-click="ansSel(x)"><answer-item answer-object="x"></answer-item></div> 
-			<!-- <div style="margin:3px"><result-item result-object="x"></result-item></div> -->
-		</div>
-			<!--
-		<div style="position:relative"><!-- data-masonry='{ "itemSelector": ".grid-item", "columnWidth": {{itemWidth}} }'-->
-			<!--<div ng-repeat="x in searchResults.slice(startIndex, currentIndex)">
-				<result-item result-object="x" id="item_{{x.id}}"></result-item>
+	infinite-scroll-distance='0.5' 
+	infinite-scroll-disabled='scrollDataLoading || endReached || disableScrolling'
+	class="col-xs-12" 
+	id="inifinite-container" 
+	style="{{sm? 'padding-right: 5px;':''}}">
+		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-repeat="x in displayResults">
+			<div ng-if="!x.isAnswer" ng-click="rankSel(x,false)">
+				<rank-item rank-object="x" views="x.views"></rank-item>
 			</div>
-		<!--<div class="grid-item grid-item--width2">...</div>
-			  <div class="grid-item">...</div>-->
+			<div ng-if="x.isAnswer" ng-click="ansSel(x)">
+				<answer-item answer-object="x"></answer-item>
+			</div>
 		</div>
-	
-		<div ng-if="scrollDataLoading && !endReached" class="col-xs-12 text-center">
-			<a>
+	</div>
+
+	<div ng-if="scrollDataLoading && !endReached" class="col-xs-12 text-center">
+		<a>
 				<img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/>
 				Loading More...
 			</a>
-		</div>
-		<div ng-if="endReached" class="col-xs-12 text-center" style="border: 1px solid #00b3e4;font-size: 20px">
-			No more results.
-		</div>
+	</div>
+	<div ng-if="endReached" class="col-xs-12 text-center" style="border: 1px solid #00b3e4;font-size: 20px">
+		No more results.
 	</div>
 </div>

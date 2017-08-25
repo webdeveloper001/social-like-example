@@ -35,12 +35,12 @@
         });
 
         // Only use on localhost to fake a FB login
-        
+        /*
         if (window.location.hostname == "localhost") {
           console.log("server is: " + window.location.hostname)
           console.log("let's fake your user as an FB login")
           login.setFakeLocalUser();
-        }
+        }*/
 
         if ($rootScope.isLoggedIn) $state.go('cwrapper');
         // else activate();
@@ -84,6 +84,9 @@
 
             console.log("vm.code", vm.code);
             $rootScope.isLoggedIn = false;
+            $rootScope.isAdmin = false;
+            $rootScope.dataAdmin = false;
+            $rootScope.$emit('adminCredentials');
 
         }
 
@@ -102,6 +105,7 @@
         }
 
         function redirectToState(){
+            
             var statename = $cookies.get('statename');
             var statenum = $cookies.get('statenum');
 

@@ -33,39 +33,22 @@ angular.module('app').directive('rankItem',
                 //load content based on mode
                 function loadContent() {
 
-                    /*var catstr = '';
-                    var idxs = [];
-                    var nidx = 0;
-                    var rankid = 0;
-                    scope.results = [];
-                    var bFound = false;*/
-
                     var w = $window.innerWidth-20;
                     scope.w2 = Math.round(w/2);
                     scope.w4 = Math.round(w/4)-5;
                     scope.w8 = Math.round(w/8); 
               
-                    //
-                    //scope.resultsTop = [];
                     var resObj = {};
 
                     resObj = {};
-                    resObj = JSON.parse(JSON.stringify(scope.rankObject));
+                    //resObj = JSON.parse(JSON.stringify(scope.rankObject));
+                    resObj = scope.rankObject;
                     scope.rank = resObj;
                     
-                    // if (scope.rankObject.image1url != $rootScope.EMPTY_IMAGE && 
-                    //     scope.rankObject.image1url != undefined &&
-                    //     scope.rankObject.image1url != ''){
-                        editTitle(resObj);
-                        //parseShortAnswer(resObj);
-                        // if (resObj.type != 'Short-Phrase' || resObj.fimage != undefined){
-                        //    scope.resultsTop.push(resObj);
-                        // }
-                    // }
-
+                    editTitle(scope.rankObject);
                     
-                    //var tr = scope.resultsTop[0]; //top result
                     scope.title = resObj.title;
+                    scope.rod = resObj.isrod;
                     
                     //Get rank stats
                     scope.stats = {};
@@ -76,9 +59,6 @@ angular.module('app').directive('rankItem',
                     if (scope.stats.numcom == undefined || scope.stats.numcom == null )
                     scope.stats.numcom = 0;
 
-                    //scope.isBasic = true;
-                    
-                    //console.log('tr - ', tr);
                     //Set Feautured Image && box color
                 if (resObj.fimage != undefined && resObj.fimage != ''){
                     scope.image4 = resObj.image3url;
@@ -120,7 +100,7 @@ angular.module('app').directive('rankItem',
             }
 
             function editTitle(x){
-                x.titlex = x.title.replace(' in San Diego','');
+                //x.titlex = x.title.replace(' in San Diego','');
                 if (x.answers == 0 && x.type != 'Short-Phrase') x.image1url = "../../../assets/images/noimage.jpg";
             }
 

@@ -5,29 +5,63 @@
         .module('app')
         .factory('categories', categories);
 
-    categories.$inject = ['$http', '$q', '$rootScope'];
+    categories.$inject = ['$http', '$q', '$rootScope','$window'];
 
-    function categories($http, $q, $rootScope) {
+    function categories($http, $q, $rootScope, $window) {
 
         // Members
         var _categories = [];
+        $rootScope.categories = _categories;
+
         var baseURI = '/api/v2/mysql/_table/categories';
 
         var service = {
             getAllCategories: getAllCategories,
+            getAllCategoriesX: getAllCategoriesX,
+            getAllCategoriesG: getAllCategoriesG,
             addCategory: addCategory,
             update: update,
-            deleteRec: deleteRec
+            deleteRec: deleteRec,
+            getInitialHomeData: getInitialHomeData,
         };
 
         return service;
 
+        function getInitialHomeData(data){
+
+            var catsFromStorage = $window.localStorage.getItem("Categories-HomeData");
+            if (catsFromStorage) {
+                 _load(JSON.parse(catsFromStorage));
+                 return $q.when(true);
+            }
+
+            var filterstr = '?filter=(';
+            for (var i=0; i< data.length; i++){
+                filterstr = filterstr + 'id=' + data[i]+')OR(';
+            }
+            filterstr = filterstr.substring(0,filterstr.length-3);
+
+            var url0 = baseURI + filterstr;
+            var p0 = $http.get(url0);
+
+            return $q.all([p0]).then(function (d){
+                var datax = d[0].data.resource;
+                
+                if (_categories.length == 0) _load(datax);
+
+                if ($rootScope.DEBUG_MODE) console.log("categories length: ", _categories.length);
+                $window.localStorage.setItem("Categories-HomeData", JSON.stringify(datax));
+                return _categories;            
+            }, _queryFailed);  
+
+        }
+
         function getAllCategories(forceRefresh) {
 
-            if (_categories.length > 0 && !forceRefresh) {
+            /*if (_categories.length > 0 && !forceRefresh) {
 
                 return $q.when(_categories);
-            }
+            }*/
 
             //var url = baseURI;
             //Get all match records
@@ -37,14 +71,50 @@
             var p0 = $http.get(url0);
             
             return $q.all([p0]).then(function (d){
-                _categories = d[0].data.resource;
+                var data = d[0].data.resource;
+                _load (data);
                 if ($rootScope.DEBUG_MODE) console.log("No. Categories ", _categories.length);
                 return _categories;            
             }, _queryFailed);  
 
         }
 
+        function getAllCategoriesX(scope) {
+
+            var url0 = baseURI + '?offset=' + 0 * 1000+'&filter=scope='+scope;
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                var data = d[0].data.resource;
+                _load (data);
+                if ($rootScope.DEBUG_MODE) console.log("No. Categories ", _categories.length);
+                return _categories;            
+            }, _queryFailed);  
+        }
+
+        function getAllCategoriesG(data) {
+
+            var filterstr = '?filter=(';
+            for (var i=0; i< data.length; i++){
+                filterstr = filterstr + 'id=' + data[i].cat+')OR(';
+            }
+            filterstr = filterstr.substring(0,filterstr.length-3);
+
+            var url0 = baseURI + filterstr;
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                var data = d[0].data.resource;
+                _load (data);
+                $rootScope.categories = d[0].data.resource;
+                if ($rootScope.DEBUG_MODE) console.log("No. Categories ", _categories.length);
+                return _categories;            
+            }, _queryFailed);  
+        }
+
         function addCategory(category) {
+
+            category.scope = $rootScope.SCOPE;
             
             var url = baseURI;
             var resource = [];
@@ -145,6 +215,13 @@
                 console.log("Deleting category was succesful");
                 return result.data;
             }
+        }
+
+        function _load(data){
+            _categories.length = 0;
+            data.forEach(function(x){
+                _categories.push(x);
+            });
         }
 
         function _queryFailed(error) {

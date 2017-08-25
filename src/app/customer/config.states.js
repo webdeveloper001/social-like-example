@@ -22,15 +22,6 @@
                         controller: 'navbar as vm'
                     }
                 },
-                 resolve: {
-
-                    answers: ['answer', function (answer) {
-                        return answer.getAnswers().then(function (result) {
-
-                            return result;
-                        });
-                    }]
-                 }
             },
             {
                 name: 'mainphoto',

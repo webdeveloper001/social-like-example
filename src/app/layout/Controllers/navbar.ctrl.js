@@ -5,10 +5,10 @@
         .module('app')
         .controller('navbar', navbar);
 
-    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state',
+    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state', '$scope',
         'city', '$cookies', '$http', 'GOOGLE_API_KEY', 'dialog','getgps', 'useraccnt'];
 
-    function navbar($location, $translate, $rootScope, login, $state,
+    function navbar($location, $translate, $rootScope, login, $state, $scope,
         city, $cookies, $http, GOOGLE_API_KEY, dialog, getgps, useraccnt) {
         /* jshint validthis:true */
         var vm = this;
@@ -27,6 +27,7 @@
         vm.gotoFeedback = gotoFeedback;
         vm.gotoTour = gotoTour;
         vm.gotoHome = gotoHome;
+        vm.selCity = selCity;
         vm.gotoAdmin = gotoAdmin;
         vm.goPromoterConsole = goPromoterConsole;
         vm.gotoFileUpload = gotoFileUpload;
@@ -34,6 +35,7 @@
         vm.openCitySelection = openCitySelection;
         vm.goWarning = goWarning;
         vm.goCoords = goCoords;
+        vm.isAdmin = ($rootScope.isAdmin || $rootScope.dataAdmin);
 
         if ($rootScope.coordsRdy == undefined) $rootScope.coordsRdy = false;
         $rootScope.loadFbnWhenCoordsRdy = false;
@@ -43,25 +45,30 @@
 
         vm.warning = false;
 
-        $rootScope.$on('getLocation', function (e) {
+        var geoLocationListener = $rootScope.$on('getLocation', function (e) {
+            //console.log("navbar rx emitGetLocation");
             autoDetectCity();
         });
-
-        $rootScope.$on('coordsRdy', function (e) {
+        var coordsRdyListener = $rootScope.$on('coordsRdy', function (e) {
             showCoordsIcon();
         });
 
-        $rootScope.$on('showWarning', function (e) {
+        var adminCredentialsListener = $rootScope.$on('adminCredentials', function(e) {
+            vm.isAdmin = ($rootScope.isAdmin || $rootScope.dataAdmin);
+        });
+
+        var showWarningListener = $rootScope.$on('showWarning', function (e) {
             if ($rootScope.DEBUG_MODE) console.log("rx showWarning");
             showWarningsIcon();
         });
 
-        $rootScope.$on('hideWarning', function (e) {
+        var hideWarningListener = $rootScope.$on('hideWarning', function (e) {
             if ($rootScope.DEBUG_MODE) console.log("rx clearWarning");
             hideWarningsIcon();
         });
 
-        $rootScope.$on('useAddress', function (e, address) {
+        var useAddressListener = $rootScope.$on('useAddress', function (e, address) {
+            //console.log("use address ----aaaaa");
             var obj = {};
             obj.location = address.address;
             obj.lat = 0;
@@ -70,7 +77,7 @@
             getgps.getLocationGPS(obj);
         });
 
-        $rootScope.$on('userDataLoaded', function (e) {
+        var userDataLoadedListener = $rootScope.$on('userDataLoaded', function (e) {
             //if ($rootScope.isLoggedIn && $rootScope.userpromoter.length > 0) {
              if ($rootScope.isLoggedIn) {   
                 vm.isPromoter = true;
@@ -83,7 +90,7 @@
             }
         });
 
-        $rootScope.$on('userAccountsLoaded', function (e) {
+        var userAccountsLoadedListener = $rootScope.$on('userAccountsLoaded', function (e) {
             if ($rootScope.isLoggedIn && $rootScope.useraccnts.length > 0) {
                 vm.hasBusiness = true;
                 $rootScope.hasBusiness = true;
@@ -93,8 +100,17 @@
                 $rootScope.hasBusiness = false;
                 vm.hasBusiness = false;
             }
-        });
+        }); 
 
+        $scope.$on('$destroy',geoLocationListener);
+        $scope.$on('$destroy',coordsRdyListener);
+        $scope.$on('$destroy',adminCredentialsListener);
+        $scope.$on('$destroy',showWarningListener);
+        $scope.$on('$destroy',hideWarningListener);
+        $scope.$on('$destroy',useAddressListener);
+        $scope.$on('$destroy',userDataLoadedListener);
+        $scope.$on('$destroy',userAccountsLoadedListener);
+        
         activate();
 
         function activate() {
@@ -132,22 +148,31 @@
             } else {
               gotoHome();
             }
+            
 */
+            $rootScope.$emit('hideBar');
+            $(".navbar-collapse").collapse('hide');
             $state.go('mybusiness');   
             $(".navbar-collapse").collapse('hide');         
         }
 
         function gotofavs() {
+            $rootScope.$emit('hideBar');
+            $(".navbar-collapse").collapse('hide');
             //$stateProvider.state('app');
             $state.go('favs');
         }
 
         function goPromoterConsole(){
+            $rootScope.$emit('hideBar');
+            $(".navbar-collapse").collapse('hide');
             $state.go('promoterconsole');
             $(".navbar-collapse").collapse('hide');
         }
 
         function gotoAbout() {
+            $rootScope.$emit('hideBar');
+            $(".navbar-collapse").collapse('hide');
             //$stateProvider.state('app');
             $state.go('about');
         }
@@ -159,6 +184,8 @@
 
         function gotoAdmin() {
             //$stateProvider.state('app');
+            $rootScope.$emit('hideBar');
+            $(".navbar-collapse").collapse('hide');
             $state.go('admin');
         }
 
@@ -172,16 +199,21 @@
             $(".navbar-collapse").collapse('hide');
         }
 
+        function selCity(){
+            dialog.getDialog('onlySanDiego');
+        }
+
         function gotoHome() {
-            $rootScope.fbmode = false;
-            $rootScope.searchActive = false;
-            $rootScope.hidelogo = false;
-            $rootScope.inputVal = '';
+            //$rootScope.fbmode = false;
+            //$rootScope.searchActive = false;
+            //$rootScope.hidelogo = false;
+            //$rootScope.inputVal = '';
+            $rootScope.$emit('backToResults');
             //$state.go('cwrapper', {}, { reload: true });
-            if ($state.current.name != 'cwrapper') {
-                $state.go('cwrapper',{main: true});
-            }
-            else $rootScope.$emit('mainView');
+            //if ($state.current.name != 'cwrapper') {
+            //    $state.go('cwrapper',{main: true});
+            //}
+            //else 
         }
 
         function gotoCustomer() {
@@ -212,7 +244,9 @@
                 localStorage.clear();
 
                 //$location.path('/');
-                $state.go('cwrapper', {}, { location: 'replace' });
+                //$state.go('cwrapper', {}, { location: 'replace' });
+                $rootScope.$emit('backToResults');
+                $rootScope.$emit('userLoggedOut');
             });
         }
 
@@ -274,8 +308,10 @@
          */
         function setUserLatitudeLongitude(location) {
 
-            if ($rootScope.DEBUG_MODE) console.log("position.coords.latitude - ", location.coords.latitude);
-            if ($rootScope.DEBUG_MODE) console.log("position.coords.longitude - ", location.coords.longitude);
+            if ($rootScope.DEBUG_MODE) 
+                console.log("position.coords.latitude - ", location.coords.latitude);
+            if ($rootScope.DEBUG_MODE) 
+                console.log("position.coords.longitude - ", location.coords.longitude);
             /**
              * Set Latitude and Longitude from navigator to rootScope
              */
@@ -290,8 +326,7 @@
 
             $rootScope.coordsRdy = true;
             showCoordsIcon();
-
-            if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 9521 });
+            if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 11942 });
 
             /**
              * If user is logged in, then set latitude and longitude to user's object
@@ -301,10 +336,10 @@
                 $rootScope.user.longitude = $rootScope.currentUserLongitude;
                 if ($rootScope.DEBUG_MODE) console.log("Geo Location is set for logged in user.");
             }
-
-            if ($rootScope.DEBUG_MODE) console.log("Geo Location is set for user.");
+            if ($rootScope.DEBUG_MODE) 
+                console.log("Geo Location is set for user.");
             if ($state.current.name == 'rankSummary') {
-                $state.reload();
+                $rootScope.$emit('coordsRdy');
             }
         }
 
@@ -318,11 +353,13 @@
 
             geolocator.locate(geoOptions, function (err, location) {
                 if (err) {
-                    if ($rootScope.DEBUG_MODE) console.log('Error getting geolocation - ERROR(' + err.code + '): ' + err.message);
+                    if ($rootScope.DEBUG_MODE) 
+                        console.log('Error getting geolocation - ERROR(' + err.code + '): ' + err.message);
                     dialog.getDialog('errorGettingGeolocation');
                     }
                 else {
-                    if ($rootScope.DEBUG_MODE) console.log(location);
+                    if ($rootScope.DEBUG_MODE) 
+                        console.log(location);
                     setUserLatitudeLongitude(location);
                 }
             });
@@ -462,7 +499,8 @@
                 headers: {},
                 body: geobody
             }).then(function (result) {
-                if ($rootScope.DEBUG_MODE) console.log("Result from google geolocate - ", result);
+                if ($rootScope.DEBUG_MODE) 
+                    console.log("Result from google geolocate - ", result);
 
                 //var loc = result.data.loc.split(",");
                 //console.log("loc - ", loc);
