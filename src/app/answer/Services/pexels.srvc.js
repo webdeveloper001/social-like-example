@@ -27,6 +27,8 @@
             delete $http.defaults.headers.common['X-DreamFactory-Session-Token'];
             $http.defaults.headers.common['Authorization'] = PEXELS_API_KEY;
 
+            console.log("$http.defaults ", $http.defaults);
+
       //https://pexels.com/api/?key=5296312-7285c9a61e74685606fe28209&q=yellow+flowers&image_type=photo
             var url = baseURI + '/v1/search?query=' + query;
 

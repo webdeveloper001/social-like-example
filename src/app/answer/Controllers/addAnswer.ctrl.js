@@ -881,7 +881,7 @@
             //console.log("x.val.length, inputLengthMem - ", x.val.length, inputLengthMem);
             //only use for field name
             if (x.name == 'name'){
-                if (Math.abs(x.val.length - inputLengthMem)>2 && x.val.length != 0){
+                if (Math.abs(x.val.length - inputLengthMem)>=2 && x.val.length != 0){
                     //an option was selected from the typeahead
                     //search for this answer, if single result populate fields, if not
                     //show dialog with options
