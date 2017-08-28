@@ -185,27 +185,32 @@
             }
             //console.log("$rootScope.content.length - ", $rootScope.content.length);
             if ($rootScope.DEBUG_MODE) console.log("$rootScope.cCategory - ", $rootScope.cCategory.id, $rootScope.cCategory.cat);
-            if(!$rootScope.cCategory) $state.go('cwrapper');
-
-            vm.ranking = $rootScope.cCategory.title;
-            if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego','close to me');
-
-            if ($rootScope.cCategory.id == 11942) {
-                vm.foodNearMe = true;
-                foodNearMe = true;
-                vm.fnm = true;
-                vm.showR = false;
-                if ($rootScope.coordsRdy == undefined || $rootScope.coordsRdy == false ){
-                    sortByDistance();
-                }
+            if(!$rootScope.cCategory) {
+                dialog.notificationWithCallback(
+                'Oops','Couldnt find this ranking. This ranking probably was deleted and its no longer in the database.',
+                backToResults);
             }
-            
-            vm.loadingAnswers = true;
-            $timeout(function(){           
-                if (!foodNearMe) activate();
-                else if ($rootScope.coordsRdy) activate();
-                vm.loadingAnswers = false;
-            });
+            else {
+                vm.ranking = $rootScope.cCategory.title;
+                if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego', 'close to me');
+
+                if ($rootScope.cCategory.id == 11942) {
+                    vm.foodNearMe = true;
+                    foodNearMe = true;
+                    vm.fnm = true;
+                    vm.showR = false;
+                    if ($rootScope.coordsRdy == undefined || $rootScope.coordsRdy == false) {
+                        sortByDistance();
+                    }
+                }
+
+                vm.loadingAnswers = true;
+                $timeout(function () {
+                    if (!foodNearMe) activate();
+                    else if ($rootScope.coordsRdy) activate();
+                    vm.loadingAnswers = false;
+                });
+            }
         }
 
         function activate() {

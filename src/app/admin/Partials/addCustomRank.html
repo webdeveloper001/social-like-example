@@ -246,7 +246,12 @@
 			    <bg-box bc="{{vm.bc}}" bc2="{{vm.bc2}}" fc="{{vm.fc}}" text="{{vm.rankTitle}}" dir="horizontal" w="100%" h="{{vm.sm ? '150px':'200px'}}"></bg-box>
 			</div>
         <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2" style="margin:0px;padding:0px;border:0px;">
-            <img ng-src="{{vm.image}}" ng-attr-style="width:100%;height:{{vm.sm ? '150px':'200px'}};">
+            <img ng-src="{{vm.image}}" ng-if="!vm.imageLoading" ng-attr-style="width:100%;height:{{vm.sm ? '150px':'200px'}};">
+            
+            <div ng-attr-style="position:relative;width:100%;height:{{vm.sm ? '150px':'200px'}};" 
+            ng-if="vm.imageLoading"><img src="/assets/images/loading.gif" class="img" 
+            style="width:50px;height:50px;position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)"/></div>
+            
         </div>
         <div class="hidden-xs col-sm-3 col-md-4 col-lg-4"></div>
     </div>

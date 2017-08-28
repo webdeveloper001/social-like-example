@@ -1,4 +1,4 @@
-<div class="">
+<div class="" ng-if="contentLoaded">
 	<div infinite-scroll='loadMore()'
 	infinite-scroll-distance='0.5' 
 	infinite-scroll-disabled='scrollDataLoading || endReached || disableScrolling'
@@ -24,4 +24,8 @@
 	<div ng-if="endReached" class="col-xs-12 text-center" style="border: 1px solid #00b3e4;font-size: 20px">
 		No more results.
 	</div>
+</div>
+<div ng-attr-style="position:relative;width:100%;height:150px;" ng-if="!contentLoaded">
+	<img src="/assets/images/loading.gif" class="img" 
+	style="width:50px;height:50px;position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
 </div>

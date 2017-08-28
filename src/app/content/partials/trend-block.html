@@ -22,7 +22,7 @@
                     <div class="col-xs-12 media ranking-blog-item" ng-repeat="ranking in popularOrder  | limitTo:popularLimit" style="cursor: pointer;" ng-click="rankSel(ranking)">
 
                         <div class="profile-avatar-wrapper media-left">
-                            <img src="{{ranking.realimage}}" />
+                            <img ng-src="{{ranking.realimage}}" />
                         </div>
                         <div class="media-body" style="vertical-align: middle;">
                             {{ranking.title}}
@@ -37,7 +37,7 @@
                     <div class="col-xs-12 media ranking-blog-item" ng-repeat="ranking in newestOrder| limitTo:newestLimit"  ng-click="rankSel(ranking)" style="cursor: pointer;">
 
                         <div class="profile-avatar-wrapper media-left">
-                            <img src="{{ranking.realimage}}" />
+                            <img ng-src="{{ranking.realimage}}" />
                         </div>
                         <div class="media-body" style="vertical-align: middle;">
                             {{ranking.title}}<span class="pull-right">{{ranking.humanized}}</span>

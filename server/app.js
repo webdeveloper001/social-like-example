@@ -56,6 +56,7 @@ app.post('/StripeServer/changeSource', stripeServer.changeSource);
 app.post('/StripeServer/charge', stripeServer.charge);
 
 app.post('/ImageServer/SaveImage', image.saveImage);
+app.post('/ImageServer/requestPexels', image.requestPexels);
 
 app.post('/mailing/promoterCreated', mailing.promoterCreated);
 app.post('/mailing/newBizCreated', mailing.newBizCreated);
