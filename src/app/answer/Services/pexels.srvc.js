@@ -5,9 +5,9 @@
         .module('app')
         .factory('pexels', pexels);
 
-    pexels.$inject = ['$http', '$rootScope','APP_API_KEY','$cookies'];
+    pexels.$inject = ['$http', '$rootScope','APP_API_KEY','$cookies','SERVER_URL'];
 
-    function pexels($http, $rootScope, APP_API_KEY, $cookies) {
+    function pexels($http, $rootScope, APP_API_KEY, $cookies, SERVER_URL) {
 
         //Members
         var _results = [];
@@ -16,6 +16,7 @@
 
         var service = {
             search: search,
+            reqFromServer: reqFromServer,
         };
 
         
@@ -37,7 +38,7 @@
                 _results = [];
                 _results = result.data.photos;
 
-                if ($rootScope.DEBUG_MODE) console.log("pexels results success! - ", result);
+                if ($rootScope.DEBUG_MODE) console.log("pexels results success! - ", results);
                 
                 delete $http.defaults.headers.common['Authorization'];
                 $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
@@ -51,6 +52,23 @@
                 if ($rootScope.DEBUG_MODE) console.log("Problem getting pexels Images");
             });
 
+        }
+
+        function reqFromServer(query){
+            var data = {};
+            data.query = query;
+
+            var url = SERVER_URL + 'ImageServer/requestPexels';
+            var req = {
+                method: 'POST',
+                data: data,
+                url: url,
+                headers: {
+                    'X-Dreamfactory-API-Key': undefined,
+                    'X-DreamFactory-Session-Token': undefined
+                }
+            }
+            return $http(req);
         }
     }
 })();

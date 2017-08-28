@@ -179,10 +179,12 @@
                         for (var j = 0; j < field.length; j++) {
                             $rootScope.content[i][field[j]] = val[j];
                         }
+                        //update searchStr
+                        $rootScope.searchStrContent[i] = $rootScope.content[i].tags + $rootScope.content[i].title; 
                     }
                 }
 
-                console.log("updating categoryx succesful");
+                if ($rootScope.DEBUG_MODE) console.log("updating categoryx succesful");
                 return result.data;
             }
         }
@@ -212,7 +214,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("Deleting category was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting category was succesful");
                 return result.data;
             }
         }

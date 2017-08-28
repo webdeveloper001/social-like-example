@@ -14,7 +14,6 @@
         var vm = this;
         vm.title = 'editRanking';
 
-        vm.closeRank = closeRank;
         vm.goEdit = goEdit;
         vm.goDelete = goDelete;
         vm.getImages = getImages;
@@ -49,7 +48,7 @@
             }
 
             item = JSON.parse(JSON.stringify($rootScope.cCategory));
-            console.log("$rootScope.cCategory - ", $rootScope.cCategory);
+            if ($rootScope.DEBUG_MODE) console.log("$rootScope.cCategory - ", $rootScope.cCategory);
             vm.ranking = $rootScope.cCategory.title;
             
             $rootScope.rankIsActive = true;
@@ -81,10 +80,6 @@
             if ($rootScope.cCategory.bc) vm.bc2 = color.shadeColor(vm.bc,vm.shade/10);
             if ($rootScope.cCategory.fimage) vm.image = $rootScope.cCategory.fimage;
   
-        }
-        
-         function closeRank() {
-               $state.go('cwrapper');                            
         }
 
         function selImgBank(x){
@@ -120,11 +115,10 @@
                 }
                 fieldsc.push('category');
                 valsc.push(titlex);
-                console.log("tablex - ", titlex);
+                if ($rootScope.DEBUG_MODE) console.log("tablex - ", titlex);
                 fields.push('title');
                 vals.push(titlex);
                 //console.log("tablex - ", titlex);
-
             }
             //if tags change
             if (item.tags != vm.tags) {
@@ -201,14 +195,14 @@
                     processImage();
             }
             if (fields) {
-                console.log("fields - ", fields, vals);
+                if ($rootScope.DEBUG_MODE) console.log("fields - ", fields, vals);
                 table.update(item.id, fields, vals);
             }
             if (fieldsc) {
-                console.log("fieldsc - ", fieldsc, valsc);
+                if ($rootScope.DEBUG_MODE) console.log("fieldsc - ", fieldsc, valsc);
                 categories.update(item.cat, fieldsc, valsc);
             }
-            closeRank();
+            goBack();
         }
         
         function goDelete(){            
@@ -222,7 +216,7 @@
             catans.deletebyCategory($rootScope.cCategory.id);
             table.deleteTable($rootScope.cCategory.id);
             
-            $state.go('cwrapper');
+            goBack();
         }
 
         function getImages() {
@@ -391,7 +385,8 @@
         }
 
         function goBack(){
-            $state.go('cwrapper');
+            //$state.go('cwrapper');
+            $rootScope.$emit('backToResults');
         }      
     }
 })();

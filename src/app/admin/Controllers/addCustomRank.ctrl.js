@@ -45,6 +45,7 @@
         var rankTitleOk = true;
         var rankTypeOk = true;
         var rankQuestionOk = true;
+        vm.imageLoading = false;
             
         vm.editRank = editRank;
         vm.addRank = addRank;
@@ -313,6 +314,7 @@
             vm.i = 0;
 
             if (vm.pixabay) {
+                vm.imageLoading = true;
                 pixabay.search(qry).then(function (result) {
                     if ($rootScope.DEBUG_MODE) console.log("Pixabay results - ", result);
                     vm.numResults = result.length;
@@ -330,17 +332,22 @@
                         vm.selImageEnable = 'disabled';
                         dialog.getDialog('noImages');
                     }
+
+                    vm.imageLoading = false;
                 });
             }
             if (vm.pexels) {
-                pexels.search(qry).then(function (result) {
+                vm.imageLoading = true;
+                //pexels.search(qry).then(function (result) {
+                pexels.reqFromServer(qry).then(function (res) {
+                    
+                    var result = res.data.photos; //remove this line for direct query
                     if ($rootScope.DEBUG_MODE) console.log("Pexels results - ", result);
                     vm.numResults = result.length;
 
                     for (var i = 0; i < vm.numResults; i++) {
                         vm.images.push(result[i]);
                         //console.log("image i - ", result[i].previewURL);
-
                     }
                     if (vm.images[vm.i]) {
                         vm.image = vm.images[vm.i].src.small;
@@ -350,6 +357,8 @@
                         vm.selImageEnable = 'disabled';
                         dialog.getDialog('noImages');
                     }
+
+                    vm.imageLoading = false;
                 });
             }
         }

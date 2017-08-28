@@ -251,7 +251,6 @@
         function goBack(){
             vm.overview = true;
             vm.detail = false;
-            $rootScope.$emit('backToResults');
         }
 
         function goHome(){

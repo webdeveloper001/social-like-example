@@ -321,7 +321,7 @@
             //update local copy
             var idx = _tables.map(function(x) {return x.id; }).indexOf(id);
             for (var i = 0; i < field.length; i++) {
-                _tables[idx][field[i]] = val[i];              
+                _tables[idx][field[i]] = val[i];                              
             }
 
             //determine if necessary to update static file

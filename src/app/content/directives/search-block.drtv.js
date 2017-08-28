@@ -31,6 +31,8 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
             var homeRanks = [];
             var ranksLoaded = false;
 
+            scope.contentLoaded = false;
+
             scope.rankSel = function (x,nm) {
                 //$rootScope.$emit('childActive');
                 //$rootScope.PAGEYOFFSET =  window.pageYOffset;
@@ -120,23 +122,27 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
             scope.maxRes = 4000;
             
             var timeoutPromise;
-            scope.$watch('query', function() {
-                $timeout.cancel(timeoutPromise); //do nothing is timeout already done   
-                timeoutPromise = $timeout(function(){
-                //console.time('stime - ', scope.query);
-                if (scope.query.length >= 2) {
-                    scope.endReached = false;
-                    scope.getResults();
-                }
-                if (scope.query.length == 0) {
-                    scope.searchResults = homeRanks;
-                    scope.endReached = false;
-                    scope.displayResults = scope.searchResults.slice(0,scope.scrollingItemsOnePage);
-                }
-                //console.timeEnd('etime - ', scope.query);
-                    
-                },300);                                   
+            scope.$watch('query', function() {                
+                if (ranksLoaded) queryPreamble();
+                else scope.contentLoaded = false;
             });
+
+            function queryPreamble(){
+                 $timeout.cancel(timeoutPromise); //do nothing is timeout already done   
+                    timeoutPromise = $timeout(function () {
+                        //console.time('stime - ', scope.query);
+                        if (scope.query.length >= 2) {
+                            scope.endReached = false;
+                            scope.getResults();
+                        }
+                        if (scope.query.length == 0) {
+                            scope.searchResults = homeRanks;
+                            scope.endReached = false;
+                            scope.displayResults = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
+                        }
+                        //console.timeEnd('etime - ', scope.query);
+                    }, 300);
+            }
 
             //Filter content based on user input
             scope.getResults = function() {
@@ -246,6 +252,7 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                 scope.displayResults = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
                 pullDataArray = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
                 pullData('ranks', pullDataArray);
+                scope.contentLoaded = true;
             }
 
             var timeoutPromise3;
@@ -267,6 +274,8 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                 
                 scope.searchResults = JSON.parse(JSON.stringify(homeRanks));
                 ranksLoaded = true;
+                scope.contentLoaded = true;
+                queryPreamble();
                 
             }
 

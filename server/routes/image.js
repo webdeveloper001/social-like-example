@@ -55,6 +55,34 @@ function saveImage(req, res, next) {
 
 
 }
+
+function requestPexels(req, res, next) {
+    
+var _results = [];
+var baseURI = 'api.pexels.com';
+var PEXELS_API_KEY = '563492ad6f9170000100000116ed76e3fd2b47bb574fb0174737aaf8';
+
+
+var options = {
+  url: 'http://api.pexels.com/v1/search?query=' + req.body.query,
+  headers: {
+    'Authorization': PEXELS_API_KEY
+  }
+};
+
+function callback(error, response, body) {
+  if (!error && response.statusCode == 200) {
+    res.status(200).send(body);
+  }
+  else{
+      res.status(500).send("error getting pexels image - " + error);
+  }
+}
+
+request(options, callback);    
+
+}
+
 var download = function(uri, filename, callback) {
 
     request.head(uri, function(err, res, body) {
@@ -69,5 +97,6 @@ var download = function(uri, filename, callback) {
 };
 
 module.exports= {
-    saveImage: saveImage
+    saveImage: saveImage,
+    requestPexels: requestPexels
 }
