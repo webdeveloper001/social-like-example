@@ -20,9 +20,6 @@
             'Find the best restaurants, services, activities, events, places, events and more.' 
         };
         
-        //if ($location.absUrl().indexOf('code=')>-1) $window.location.search = '';
-         
-        $rootScope.$emit('backToResults');
         /// ui-scroll
         var datasource = {};
         datasource.get = function (index, count, success) {

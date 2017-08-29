@@ -111,7 +111,6 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                 $rootScope.PAGEYOFFSET =  window.pageYOffset;
                 $rootScope.cCategory = undefined;
                 //scope.disableScrolling = true;
-                //console.log("scope.disableScrolling = ", scope.disableScrolling);
                 $state.go('answerDetail', { index: x.slug });                
             };
 

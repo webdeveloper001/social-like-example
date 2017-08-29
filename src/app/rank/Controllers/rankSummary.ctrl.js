@@ -1488,7 +1488,7 @@
             if ($rootScope.DEBUG_MODE) console.log("UpdateRecords @answerDetail");
             
             //TODO Need to pass table id
-            if (vm.answers) {
+            if (vm.answers && $rootScope.cCategory != undefined) {
                 for (var i = 0; i < vm.answers.length; i++) {
 
                     var voteRecordExists = vm.answers[i].voteRecordExists;
@@ -1595,7 +1595,7 @@
 
         function seeMore(){
             vm.limit = vm.limit+20;
-            loadTrendVotes(vm.limit);
+            loadTrendVotes(vm.limit-20);
             if (vm.answers.length > vm.limit) vm.thereIsMore = true;
             else vm.thereIsMore = false;
         }

@@ -47,6 +47,8 @@
             editNumRanks: editNumRanks,
             editInfo: editInfo,
             notificationWithCallback: notificationWithCallback,
+            notificationSuccess: notificationSuccess,
+            notificationDanger: notificationDanger,
             enterPassword: enterPassword,
             endorse: endorse,
             chooseImgFromIgDlg: chooseImgFromIgDlg,
@@ -1904,6 +1906,48 @@
 
         }
 
+        function notificationSuccess(title, message) {
+
+            var title = title;
+            var message = message;
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_SUCCESS,
+                title: title,
+                message: message,
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'OK',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }]
+            });
+        }
+
+        function notificationDanger(title, message) {
+
+            var title = title;
+            var message = message;
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_DANGER,
+                title: title,
+                message: message,
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'OK',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }]
+            });
+        }
+
         function endorse(type) {
 
             var typeStr = '';
@@ -2878,41 +2922,33 @@
 
             message = list;
 
-            console.log("@dialog showLocations");
-
             BootstrapDialog.show({
                 type: BootstrapDialog.TYPE_PRIMARY,
                 title: title,
                 message: function (dialogRef) {
                     var $content = $(message);
                     var x = dialogRef;
-                    console.log("inside dialog locs--->", locs);
                     $content.find('#item0').click({}, function () {
-                            console.log("click, 0");
                             $window.scrollTo(0, 0);
                             $state.go('answerDetail',{index: locs[0].id});
                             dialogRef.close();
                     });
                     $content.find('#item1').click({}, function () {
-                            console.log("click, 1");
                             $window.scrollTo(0, 0);
                             $state.go('answerDetail',{index: locs[1].id});
                             dialogRef.close();
                     });
                     $content.find('#item2').click({}, function () {
-                            console.log("click, 2");
                             $window.scrollTo(0, 0);
                             $state.go('answerDetail',{index: locs[2].id});
                             dialogRef.close();
                     });
                     $content.find('#item3').click({}, function () {
-                            console.log("click, 3");
                             $window.scrollTo(0, 0);
                             $state.go('answerDetail',{index: locs[3].id});
                             dialogRef.close();
                     });
                     $content.find('#item4').click({}, function () {
-                            console.log("click, 4");
                             $window.scrollTo(0, 0);
                             $state.go('answerDetail',{index: locs[4].id});
                             dialogRef.close();

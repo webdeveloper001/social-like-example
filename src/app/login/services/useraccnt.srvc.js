@@ -65,7 +65,7 @@
         return $http.delete(url).then(querySucceeded, _queryFailed);
 
         function querySucceeded(result) {
-            var ind = _useraccnts.map(function(acc){return acc.id;}).indexOf(result.data.resource.id);
+            var ind = _useraccnts.map(function(acc){return acc.id;}).indexOf(result.data.id);
             _useraccnts.splice(ind, 1);
             return result;
         }
