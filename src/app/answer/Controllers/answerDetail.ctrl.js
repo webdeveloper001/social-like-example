@@ -235,7 +235,7 @@
             if ($rootScope.previousState != 'answerDetail') $window.scrollTo(0, 0);
 
             //vm.showImageGallery = false;
-            $rootScope.$emit('showLogo');
+            //$rootScope.$emit('showLogo');
 
             getHeader();
             //        getCatAnsId(vm.answer.id);
@@ -245,6 +245,7 @@
             if ($rootScope.isLoggedIn) {
                 if ($rootScope.user.id == vm.answer.owner) {
                     vm.userIsOwner = true;
+                    //dataloader.getDemoData();
                     if (vm.answer.isactive) vm.access = true;
                 }
                 else vm.userIsOwner = false;
@@ -1022,11 +1023,13 @@
                     if ($rootScope.useraccnts[i].email != '') hasEmail = true;
                 }
                 if (!hasEmail) $rootScope.$emit('showWarning');
+                $rootScope.$emit('userAccountsLoaded');
             });
         }
 
         function reloadAnswer() {
             vm.userIsOwner = true;
+            getHeader();
             //$state.go("answerDetail", { index: vm.answer.id }, { reload: true });
         }
 
@@ -1442,7 +1445,7 @@
             var idx = 0;
             for (var i=0; i<locsIdx.length; i++){
                 idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(locsIdx[i]);
-                locs.push($rootScope.answers[idx]);  
+                if (idx > -1) locs.push($rootScope.answers[idx]);  
             }
 
             dialog.showLocations(locs);

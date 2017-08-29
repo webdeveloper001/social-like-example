@@ -122,8 +122,6 @@ function writeToDreamFactoryAnswers(updateReason, answerId, stripeCustomerId, ca
             log("response from DreamFactory: " + JSON.stringify(response));
         });
 
-    
-
     log("<<-------   end STRIPE SUBSCRIBE via app = express();-------------");
 }
 

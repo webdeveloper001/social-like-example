@@ -182,17 +182,19 @@
             loadingDone();
         });
         var mainViewListener = $rootScope.$on('mainView', function (event) {
-                vm.childActive = false;
+                vm.childActive = false; 
                 gotoHome();
         });
         var hideSearchBarListener = $rootScope.$on('hideBar', function (event) {
-                vm.childActive = true;
+                vm.childActive = true; 
                 vm.barIsActive = false;
         });
         var backtoResultsListener = $rootScope.$on('backToResults', function (event) {
-                vm.childActive = false;
-                vm.barIsActive = true;
-                backToResults();      
+            //console.log("rx back to results");
+                    vm.childActive = false; 
+                    vm.barIsActive = true;
+                    backToResults();
+                //}      
         });
 
         var userLoggedOutListener = $rootScope.$on('userLoggedOut', function (event) {
@@ -209,6 +211,13 @@
             if ($rootScope.SCOPE == 1) {vm.scopeIsGeneral = true; vm.scopeIsCity = false; }
             if ($rootScope.SCOPE == 2) {vm.scopeIsGeneral = false; vm.scopeIsCity = true; } 
         });
+
+        var locationChangeListener = $rootScope.$on('$locationChangeSuccess', function() {
+            if (window.location.href.indexOf('home') > -1) { vm.childActive = false; vm.barIsActive = true; }
+            if (window.location.href.indexOf('rankSummary') > -1) { vm.childActive = true; vm.barIsActive = false; }
+            if (window.location.href.indexOf('answerDetail') > -1) { vm.childActive = true; vm.barIsActive = false; }
+            if (window.location.href.indexOf('trends') > -1) { vm.childActive = true; vm.barIsActive = false; }
+        });   
 
         $scope.$on('$destroy',setScopeListener);
         $scope.$on('$destroy',userLoggedOutListener);
@@ -416,13 +425,13 @@
         }
 
         function goPrivacyPolicy() {
-            vm.childActive = true;
+            vm.childActive = true; 
             vm.barIsActive = false;
             $state.go('privacypolicy');
         }
 
         function goRankofDayConsole() {
-            vm.childActive = true;
+            vm.childActive = true; 
             vm.barIsActive = false;
             $state.go('rodconsole');
         }
@@ -437,14 +446,14 @@
 
         function hideSearch() {
             vm.searchActive = false;
-            vm.childActive = true;
+            vm.childActive = true; 
             vm.barIsActive = false;
         }
 
         function gotoHome() {
             //$rootScope.searchActive = true;
             vm.searchActive = true;
-            vm.childActive = false;
+            vm.childActive = false; 
             vm.barIsActive = true;
             if ($state.current.name == 'cwrapper') {
              $rootScope.inputVal = '';
@@ -467,7 +476,7 @@
 
         function goAddRank() {
             if ($rootScope.isLoggedIn) {
-                vm.childActive = true;
+                vm.childActive = true; 
                 $state.go('addCustomRank');
             }
             else dialog.loginFacebook();
@@ -511,7 +520,7 @@
                 vm.scopeIsCity = true;
                 vm.initready = false;
                 vm.dataready = false;
-                vm.childActive = false;
+                vm.childActive = false; 
                 $rootScope.inputVal = '';
                 vm.val = '';
                 dataloader.gethomedataX($rootScope.SCOPE);
@@ -545,14 +554,14 @@
                 var n = window.location.href.indexOf('rankSummary/');
                 var slug = window.location.href.substring(n+12);
                 dataloader.landRanking(slug);
-                vm.childActive = true;
+                vm.childActive = true; 
                 vm.barIsActive = false;
             }
             else if(window.location.href.indexOf('answerDetail') > -1){
                 var n = window.location.href.indexOf('answerDetail/');
                 var slug = window.location.href.substring(n+13);
                 dataloader.landAnswer(slug);
-                vm.childActive = true;
+                vm.childActive = true; 
                 vm.barIsActive = false;
             }
             else{
@@ -562,7 +571,7 @@
         }
 
         function showTrends(){
-            vm.childActive = true;
+            vm.childActive = true; 
             vm.barIsActive = false;
             $state.go('trends');
         }

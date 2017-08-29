@@ -86,5 +86,11 @@
     "dialog.neighborhoodsDontMatch.title": "Oops, something doesn't match",
     "dialog.neighborhoodsDontMatch.text": "The neighborhood of this establishment does not match the scope of the ranking.",
     "dialog.opinionsLimit.title": "Too many opinions",
-    "dialog.opinionsLimit.text": "You have already entered the maximum number of opinions. A single user can add up to 3 opinions. Instead endorse or disaprove existing opinions."         
+    "dialog.opinionsLimit.text": "You have already entered the maximum number of opinions. A single user can add up to 3 opinions. Instead endorse or disaprove existing opinions.",      
+    "dialog.invalidFirstName.title": "Invalid data.",
+    "dialog.invalidFirstName.text": "Please enter a valid first name for your account.",
+    "dialog.invalidLastName.title": "Invalid data.",
+    "dialog.invalidLastName.text": "Please enter a valid last name for your account.",
+    "dialog.invalidEmail.title": "Invalid data.",
+    "dialog.invalidEmail.text": "Please enter a valid email for your account."
 }

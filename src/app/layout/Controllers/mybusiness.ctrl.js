@@ -5,20 +5,22 @@
         .module('app')
         .controller('mybusiness', mybusiness);
 
-    mybusiness.$inject = ['$location', '$rootScope', '$state', '$window','useraccnt','dialog','answer','$http','promoter', 'SERVER_URL', '$q', 'setting', 'codeprice'];
+    mybusiness.$inject = ['$location', '$rootScope', '$state', '$window', '$scope',
+    'useraccnt','dialog','answer','$http','promoter', 'SERVER_URL', '$q', 'setting', 'codeprice'];
 
-    function mybusiness(location, $rootScope, $state, $window, useraccnt, dialog, answer, $http, promoter, SERVER_URL, $q, setting, codeprice) {
+    function mybusiness(location, $rootScope, $state, $window, $scope, 
+        useraccnt, dialog, answer, $http, promoter, SERVER_URL, $q, setting, codeprice) {
         /* jshint validthis:true */
         if($window.location.href.indexOf('cardUpdate') !== -1) {
             var isSuccess =  $window.location.href.slice($window.location.href.indexOf('cardUpdate')).split('=')[1].split('&')[0];
             if(isSuccess == 'success'){
-                $window.alert("Successfully changed card details.");
+                //$window.alert("Successfully changed card details.");
+                dialog.notificationSuccess('Success', "Successfully changed card details.");
             } else {
                 $window.alert($window.location.href.slice($window.location.href.indexOf('messgage')).split('=')[1].split('&')[0]);
             }
         }
-
-          
+      
         var vm = this;
         vm.title = 'mybusiness';
 
@@ -71,6 +73,12 @@
             $state.go('mybusiness', {}, {reload: true})
         }
         function activate() {
+
+            dialog.notificationWithCallback(
+                'Info',
+                'The Purchasing of Premium Feautures is not available at this moment. Please try again later.',
+                goBack);
+
             $q.all([ useraccnt.getuseraccnt(),  setting.getSetting(), codeprice.get()]).then(function(data){
                 $rootScope.useraccnts = data[0];
                 vm.CUSTOM_RANK_PRICE = data[1].CUSTOM_RANK_PRICE;
@@ -233,6 +241,7 @@
             vm.manageview = true;
             if (!x.isPremium || !x.hasRanks) vm.sell = true;
             else vm.sell = false;
+            checkData();
 
             if ($rootScope.DEBUG_MODE) console.log("vm.business",x);
             
@@ -243,6 +252,7 @@
                 vm.overview = true;
                 vm.manageview = false;
                 vm.checkout = false;
+                //$scope.$apply();
                 return;
             }
             if (vm.checkout == true) {
@@ -251,20 +261,22 @@
                 vm.overview = false;
                 return;
             }
+            if (vm.overview == true){
 
-            if ($rootScope.previousState == 'rankSummary')
-                    $state.go('rankSummary', {index: $rootScope.cCategory.slug});
-            else if ($rootScope.previousState == 'answerDetail')
-                    $state.go('answerDetail', {index: $rootScope.canswer.slug});
-            else if ($rootScope.previousState == 'addAnswer')
-                    $state.go('addAnswer', {index: $rootScope.canswer.id});
-            else if ($rootScope.previousState == 'editAnswer')
-                    $state.go('editAnswer', {index: $rootScope.canswer.id});                
-            else if ($rootScope.previousState == 'about')
+                if ($rootScope.previousState == 'rankSummary')
+                    $state.go('rankSummary', { index: $rootScope.cCategory.slug });
+                else if ($rootScope.previousState == 'answerDetail')
+                    $state.go('answerDetail', { index: $rootScope.canswer.slug });
+                else if ($rootScope.previousState == 'addAnswer')
+                    $state.go('addAnswer', { index: $rootScope.canswer.id });
+                else if ($rootScope.previousState == 'editAnswer')
+                    $state.go('editAnswer', { index: $rootScope.canswer.id });
+                else if ($rootScope.previousState == 'about')
                     $state.go('about');
-            else {
-                $rootScope.$emit('backToResults');
-                $state.go('cwrapper');
+                else {
+                    $rootScope.$emit('backToResults');
+                    //$state.go('cwrapper');
+                }
             }                
         }
 
@@ -318,10 +330,42 @@
             }
         }
 
+        function checkData(){
+            vm.contactInfoOk == false;
+            vm.fnok = false; //first name ok
+            vm.lnok = false; //last name ok
+            vm.emok = false; //email ok
+            
+            if (vm.business.firstname != undefined && vm.business.firstname != '' && vm.business.firstname != null){
+                vm.fnok = true;
+            }
+            if (vm.business.lastname != undefined && vm.business.lastname != '' && vm.business.lastname != null){
+                vm.lnok = true;
+            }
+            if (vm.business.email != undefined && vm.business.email != '' && vm.business.email != null &&
+                vm.business.email.indexOf('@')>-1){
+                vm.emok = true;
+            }
+            vm.contactInfoOk = vm.fnok && vm.lnok && vm.emok;
+
+            //check business category
+            if (vm.business.bizcat == undefined || vm.business.bizcat == '' || vm.business.bizcat == null ){
+                dialog.notificationWithCallback(
+                    'Missing Data',
+                    'The business category for this establishment or profile has not been assigned. Please '+
+                    'contact rank-x at <strong>contact@rank-x.com</strong> for more information.',
+                    goBack);
+            }
+        }
+
         function goCheckout(){
             vm.acceptTOS = false;
+            //Verify data
+            
             if (vm.contactInfoOk == false) {
-                dialog.getDialog('contactInfoIncomplete');
+                if (!vm.fnok) dialog.getDialog('invalidFirstName');
+                if (!vm.lnok) dialog.getDialog('invalidLastName');
+                if (!vm.emok) dialog.getDialog('invalidEmail');
             }
             else if (vm.getRanks == false && vm.getPremium == false ) {
                 dialog.getDialog('nothingSelectedForPurchase');
@@ -373,15 +417,16 @@
                     'stripesub' : vm.business.stripesub,
                     'stripesipremium' : vm.business.stripesipremium,
                     'stripesiranks' : vm.business.stripesiranks,
-                    'answerId': vm.business.id
-                    
+                    'answerId': vm.business.id                   
                 }
             }
 
             $http(req).then(function (result) {
-                console.log("Cancelling Premium Membership Success", result);
+                if ($rootScope.DEBUG_MODE) console.log("Cancelling Premium Membership Success", result);
+                dialog.notificationSuccess('Success', 'Succesfully cancelled your Premium Membership');
             }, function (error) {
-                console.log("Error Cancelling Premium Membership - ", error);
+                if ($rootScope.DEBUG_MODE) console.log("Error Cancelling Premium Membership - ", error);
+                dialog.notificationDanger('Error', 'There was an error cancelling your Premium Membership');
             });
             loopCheck('cancel');        
         }
@@ -440,13 +485,16 @@
                         'stripesub': vm.business.stripesub,
                         'stripesiranks': vm.business.stripesiranks,
                         'answerId': vm.business.id,
+
                     }
                 }
 
                 $http(req).then(function (result) {
-                    console.log("Updating Quantity of Custom Ranks Success", result);
+                   if ($rootScope.DEBUG_MODE) console.log("Updating Quantity of Custom Ranks Success", result);
+                   dialog.notificationSuccess('Success', 'Updating Quantity of Custom Ranks Success');
                 }, function (error) {
-                    console.log("Error Updating Quantity of Custom Ranks - ", error);
+                    if ($rootScope.DEBUG_MODE) console.log("Error Updating Quantity of Custom Ranks - ", error);
+                    dialog.notificationDanger('Error', 'Error Updating Quantity of Custom Ranks');
                 });
                 loopCheck('edit', updatedNumRanks);
             }
@@ -503,14 +551,15 @@
                         }
 
                         if (missionAccomplished) {
+                            console.log("mission accomplished");
                             //update local copy
                             var idx = $rootScope.useraccnts.map(function (x) { return x.id; }).indexOf(result[0].id);
-                            
+                            console.log("idx - ", idx);
                             $rootScope.useraccnts[idx] = result[0];
-                            idx = $rootScope.content.map(function (x) { return x.id; }).indexOf(result[0].answer);
-                            $rootScope.content[idx].ispremium = result[0].ispremium;
-                            $rootScope.content[idx].hasranks = result[0].hasranks;
-                            $rootScope.content[idx].ranksqty = result[0].ranksqty;
+                            var idx2 = $rootScope.answers.map(function (x) { return x.id; }).indexOf(result[0].answer);
+                            $rootScope.answers[idx2].ispremium = result[0].ispremium;
+                            $rootScope.answers[idx2].hasranks = result[0].hasranks;
+                            $rootScope.answers[idx2].ranksqty = result[0].ranksqty;
                             
                             loadData();
                             console.log(vm.mybiz);
@@ -526,7 +575,6 @@
                     }
                     catch (err) {
                         console.log("error while looking up subscription info from DF: " + JSON.stringify(err));
-
                         checkAgain = false;
 
                         return err;
@@ -544,9 +592,9 @@
         }
 
         function editContact(){
-            fields = ['name','email'];
-            labels = ['Name','Email'];
-            vals = [vm.business.firstname + ' ' + vm.business.lastname, vm.business.email];
+            fields = ['firstname','lastname','email'];
+            labels = ['First Name','Last Name','Email'];
+            vals = [vm.business.firstname, vm.business.lastname, vm.business.email];
             dialog.editInfo(fields,labels,vals,execEditContact);
         }
 
