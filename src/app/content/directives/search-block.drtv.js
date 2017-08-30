@@ -50,7 +50,8 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                 }
                 
                 if(selectedRank.id == undefined){
-                    console.log("rank is ghost");
+                    if ($rootScope.DEBUG_MODE) console.log("Rank is Ghost");
+
                    var maxId = 0;
                     $rootScope.content.forEach(function(ranking){
                         if(ranking.id > maxId)
@@ -89,13 +90,13 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                         cat: x.id,
                         nh: x.locationId,
                     }
-                    
+                    if ($rootScope.DEBUG_MODE) console.log("ghostRank - ", ghostRank);
                     $rootScope.content.push(ghostRank);
                     //update searchString to keep array lengths in sync
                     $rootScope.searchStrContent.push(ghostRank.tags ? ghostRank.tags : '') + " " + (ghostRank.title ? ghostRank.title : '');
-
                     $state.go('rankSummary', { index: slug });
                 } else {
+                    if ($rootScope.DEBUG_MODE) console.log("rank is normal ", selectedRank);
                     if ($rootScope.editMode) $state.go('editRanking', { index: selectedRank.slug });
                     else {
                         $state.go('rankSummary', { index: selectedRank.slug });
@@ -104,7 +105,9 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
             }
             else {
                 if ($rootScope.editMode) $state.go('editRanking', { index: x.slug });
-                else $state.go('rankSummary', { index: x.slug });                  
+                else {
+                    $state.go('rankSummary', { index: x.slug });
+                }                  
             }
             };
             scope.ansSel = function (x) {
