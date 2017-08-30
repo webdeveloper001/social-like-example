@@ -177,6 +177,7 @@
                 }
             }
             else{
+                if ($rootScope.DEBUG_MODE) console.log("$stateParams.index - ", $stateParams.index);
                 for (var i = 0; i < $rootScope.content.length; i++) {
                     if (($rootScope.content[i].id == $stateParams.index) || ($rootScope.content[i].slug == $stateParams.index)){
                         $rootScope.cCategory = $rootScope.content[i];
@@ -186,10 +187,13 @@
             }
             //console.log("$rootScope.content.length - ", $rootScope.content.length);
             if ($rootScope.DEBUG_MODE) console.log("$rootScope.cCategory - ", $rootScope.cCategory.id, $rootScope.cCategory.cat);
+            //console.log("$rootScope.cCategory - ", $rootScope.cCategory);
             if(!$rootScope.cCategory) {
-                dialog.notificationWithCallback(
-                'Oops','Couldnt find this ranking. This ranking probably was deleted and its no longer in the database.',
-                backToResults);
+                //console.log("$rootScope.cCategory - ", $rootScope.cCategory);
+                //console.log("$stateParams.index - ", $stateParams.index);
+                //dialog.notificationWithCallback(
+                //'Oops','Couldnt find this ranking. This ranking probably was deleted and its no longer in the database.',
+                //backToResults);
             }
             else {
                 vm.ranking = $rootScope.cCategory.title;
@@ -591,7 +595,7 @@
         }
 
         function addAnswer() {
-            if ($rootScope.isLoggedIn) {
+            if ($rootScope.isLoggedIn && $rootScope.cCategory != undefined) {
                 if (answersFull) {
                     dialog.getDialog('answersFull');
                     return;
@@ -622,9 +626,8 @@
                             isatomic: 1, //TODO decide isatomic, numcom, ismp, owner, 
                             timestmp: new Date(),
                             cat: $rootScope.cCategory.cat,
-                            nh: $rootScope.cCategory.locationId,
+                            nh: $rootScope.cCategory.nh,
                         };
-
                         table.addTable(item).then(function(result){
                             if ($rootScope.DEBUG_MODE) console.log("table added --- ", result);
                             var rankid = result.resource[0].id;
