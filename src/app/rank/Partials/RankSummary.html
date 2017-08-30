@@ -176,7 +176,7 @@
             <button class="btn btn-default {{vm.selRank}} " ng-click="vm.sortByRank()" ng-if="vm.type != 'Event' && !vm.fnm">Rank</button>
             <button class="btn btn-default {{vm.selUpV}} " ng-click="vm.sortByUpV()">Popular</button>
             <button class="btn btn-default {{vm.selDistance}} " ng-click="vm.sortByDistance()"
-                ng-show="{{vm.type == 'Establishment' || vm.type == 'Event'}}">Distance</button>
+                ng-show="{{vm.type == 'Establishment' || vm.type == 'Event' || vm.type == 'Place'}}">Distance</button>
                 
             <button class="btn btn-default {{vm.selDate}} " ng-click="vm.sortByDate()"
                 ng-show="{{vm.type == 'Event'}}">Date</button>               
@@ -186,12 +186,12 @@
         
         </div>
     </div>
-    <div class="col-xs-8 visible-xs" style="margin-bottom: 20px">
+    <div class="col-xs-8 visible-xs" style="margin-bottom: 10px">
 
         <div class="dropdown">
             <button class="btn btn-default" ng-click="vm.sortbyHelpDialog()"><i class="fa fa-question-circle"></i></button>
             <span style="line-height:32px; margin: 0px 10px;">Sort By:</span>
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
                 {{vm.sortByName}}
                 <span class="caret"></span>
                 
@@ -201,7 +201,7 @@
                 <li><a class="btn btn-default {{vm.selRank}} " ng-click="vm.sortByRank()" ng-if="vm.type != 'Event' && !vm.fnm">Rank</a></li>
                 <li><a class="btn btn-default {{vm.selUpV}} " ng-click="vm.sortByUpV()">Popular</a></li>
                 <li><a class="btn btn-default {{vm.selDistance}} " ng-click="vm.sortByDistance()"
-            ng-show="{{vm.type == 'Establishment'}}">Distance</a></li>
+            ng-show="{{vm.type == 'Establishment' || vm.type == 'Event' || vm.type == 'Place'}}">Distance</a></li>
                 <li><a class="btn btn-default {{vm.selDate}} " ng-click="vm.sortByDate()"
             ng-show="{{vm.type == 'Event'}}">Date</a></li>
                 <li><a class="btn btn-default {{vm.selTrending}} " ng-click="vm.sortByTrending()">Trending</a></li>
@@ -215,12 +215,13 @@
         ng-click="vm.share()" target="_blank"> Share&nbsp&nbsp<span class="fa fa-share"></span></a>
     </div>
 </div>
-<div style="margin:0px; margin-top: 10px; " class="text-center" ng-if="!vm.fnm">
+<div style="margin:0px; margin-top: 0px; " class="text-center" ng-if="!vm.fnm">
     <button ng-click="vm.changeMode('endorse') " class="btn btn-primary" ng-if="vm.mode=='specials'">Endorse</button>
     <button ng-click="vm.changeMode('specials') " class="btn btn-primary" ng-if="vm.mode=='endorse'">Specials</button>
 
     <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">Rank</button>
-    <span style="line-height: 32px">&nbsp;&nbsp;&nbsp;Contributors: <b style="color:blue; "><i>{{vm.numContributors}}&nbsp&nbsp</i></b></span>
+    <span style="line-height: 32px">&nbsp;&nbsp;&nbsp;Contributors: <b style="color:blue; ">
+        <i>{{vm.numContributors}}&nbsp&nbsp</i></b></span>
 </div>    
 <!--
 <div ng-show="{{vm.type == 'Establishment'}}">

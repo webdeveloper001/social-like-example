@@ -118,6 +118,7 @@
             //$scope.$apply(function(){
                 vm.haveLocation = true;
                 getDistances();
+                sortByDistance();
                 //console.log('scope.$digest() - ', $scope.$digest());
                 //if (!scope.$digest()) 
                 $timeout(function(){
