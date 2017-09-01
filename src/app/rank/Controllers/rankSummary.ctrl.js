@@ -1310,13 +1310,9 @@
                         FB.ui(
                         {
                             method: 'feed',
-                            name: $rootScope.cCategory.title,
                             link: vm.linkurl,
-                            picture: imageurl,
                             caption: 'Rank-X San Diego',
-                            description: $rootScope.cCategory.question,
-                            message: ''
-                        }); 
+                        }, function(response){}); 
                         break;
                     }  
                     case 'email':{
