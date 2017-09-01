@@ -1,0 +1,19 @@
+<div class="container">
+    <h1>Static Pages Console</h1>
+
+    <div class="input-group">
+        <!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
+        <input type="text" class="form-control" ng-model="vm.query" bs-options="c for c in vm.rankopts" bs-typeahead>
+        <span class="input-group text-right">
+            <button class="btn btn-default" type="button" ng-click="vm.getPage()">Get Static Page</button>
+            <button class="btn btn-default" type="button" ng-click="vm.recreatePage()">Re-Create</button>
+            <button class="btn btn-default" type="button" ng-click="vm.forceScrape()">Scrape</button>
+            <button class="btn btn-default" type="button" ng-click="vm.share()">Share</button>
+        </span>
+    </div>
+
+    <div ng-repeat="x in vm.pagecontent">
+    {{x}}<br>
+    </div>
+    
+</div>

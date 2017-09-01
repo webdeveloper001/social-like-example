@@ -39,10 +39,11 @@
         vm.applyRule = applyRule;
         vm.cleanDB = cleanDB;
         vm.modImages = modImages;
+        vm.staticPages = staticPages;
 
         vm.dataready = false;
         //vm.fbpost = fbpost;
-        var staticpagesfiles = [];
+        //var staticpagesfiles = [];
         
         activate();
 
@@ -64,10 +65,7 @@
             vm.modAdmin = $rootScope.modAdmin;
 
             loadData();
-            staticpages.getFileList().then(function(result){
-                        staticpagesfiles = result.data;
-                        console.log("static pages list ready");
-            });
+            
             if ($rootScope.DEBUG_MODE) console.log("admin page Loaded!");
             }
             
@@ -197,6 +195,12 @@
             $state.go('imagesmod');
         }
 
+        function staticPages(){
+            disableAll();
+            vm.selStaticPages = 'active';
+            $state.go('staticpagesconsole');
+        }
+
         function disableAll(){
             vm.selKeywords = '';
             vm.selViews = '';
@@ -212,6 +216,7 @@
             vm.selSibLocks = '';
             vm.selCleanDB = '';
             vm.selimagesMod = '';
+            vm.selStaticPages = '';
         }
 
         function goBack() {

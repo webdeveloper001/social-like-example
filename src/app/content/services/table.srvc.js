@@ -324,17 +324,6 @@
                 _tables[idx][field[i]] = val[i];                              
             }
 
-            //determine if necessary to update static file
-            var updateStaticFile = false;
-            for (var i = 0; i < field.length; i++) {
-                if (field[i] == 'title' || (field[i] == 'slug' && field.length > 1) || 
-                    field[i] == 'fimage' || field[i] == 'introtext'){
-                        updateStaticFile = true;
-                        break;
-                    }               
-            }
-            if (updateStaticFile) staticpages.createPageRank(_tables[idx]);
-
             return $http.patch(url, obj, {
                 headers: {
                     "Content-Type": "multipart/form-data"
