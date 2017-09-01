@@ -82,6 +82,13 @@
                 templateUrl: 'app/admin/Partials/imagesmod.html',
                 controller: 'imagesmod as vm'               
             },
+            {
+                name: 'staticpagesconsole',
+                parent: 'admin',
+                url: '/staticpagesconsole',
+                templateUrl: 'app/admin/Partials/staticpagesconsole.html',
+                controller: 'staticpagesconsole as vm'               
+            },
              {
                 name: 'updateHeaders',
                 parent: 'admin',

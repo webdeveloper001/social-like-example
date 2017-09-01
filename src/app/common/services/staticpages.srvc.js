@@ -17,6 +17,7 @@
             createPageAnswer: createPageAnswer,
             removeFile: removeFile,
             getFileList: getFileList,
+            getPageContent: getPageContent, 
         };
 
         return service;
@@ -55,6 +56,20 @@
             var req = {
                 method: 'POST',
                 data: {},
+                url: url,
+                headers: {
+                    'X-Dreamfactory-API-Key': undefined,
+                    'X-DreamFactory-Session-Token': undefined
+                }
+            }
+            return $http(req);
+        }
+
+        function getPageContent(page){
+            var url = SERVER_URL + 'staticpages/getPageContent';
+            var req = {
+                method: 'POST',
+                data: page,
                 url: url,
                 headers: {
                     'X-Dreamfactory-API-Key': undefined,
