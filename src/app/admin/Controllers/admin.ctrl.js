@@ -1004,47 +1004,7 @@
                             //table.update($rootScope.content[i].id,['nh'],[1]);
                         }
                     }*/
-                    /*// 32.*****Populate catstr field **** 
-                    var catstr = '';
-                    var idx = -1;
-                    var idx2 = -1;
-                    var nhObj = {};
-                    var nhArr = [];
-                    var nhSub = [];
-                    var nhSub2 = [];
-                    var catArr = [];
-
-                    for (var i=0; i < $rootScope.content.length; i++){
-                    //for (var i=0; i < 100; i++){
-                        nhArr = [];
-                        common.getInclusiveAreas($rootScope.content[i].nh,nhArr);
-                        
-                        catArr = [];
-                        for (var j=0; j < $rootScope.content.length; j++){
-                            if ($rootScope.content[i].cat == $rootScope.content[j].cat){
-                                for (var n=0; n < nhArr.length; n++){
-                                    if (nhArr[n] == $rootScope.content[j].nh) {
-                                        catArr.push($rootScope.content[j].id);
-                                        //console.log($rootScope.content[j].slug);
-                                    }
-                                }
-                            }
-                        }
-                        //console.log("length catArr ", catArr.length);
-                        catstr = '';
-                        for (var m=0; m < catArr.length; m++){
-                            catstr = catstr + ':'+ catArr[m];
-                        }
-                        catstr = catstr.substring(1);
-                        //console.log("catstr - ", catstr);
-                        table.update($rootScope.content[i].id,['catstr'],[catstr]);
-                        
-                    }
-                    /*
-                    for (var i=0; i<$rootScope.content.length; i++){
-                        if ($rootScope.content[i].cat == null) console.log($rootScope.content[i].slug);
-                    }
-                    *///End of 32 */
+                    
                     /*//33. Adjust db, create ranking of tables needed, move catans
                     var aidx = 0;
                     var nidx = 0;
@@ -1260,7 +1220,22 @@
                     console.log("Missing Answers: ", missingACtr, " out of ", $rootScope.answers.length);
                     console.log("Missing Ranks: ", missingRCtr, " out of ", $rootScope.content.length);
                     });*/
-
+                /*var imageurl = '';
+                for (var i=0; i < $rootScope.answers.length; i++){
+                    if ($rootScope.answers[i].imageurl.indexOf('/../')>-1){
+                        console.log("--------------------------", $rootScope.answers[i]);    
+                        console.log($rootScope.answers[i].name);
+                        imageurl = 'https://rank-x.com/assets/images/noimage.jpg';
+                        //answer.updateAnswer($rootScope.answers[i].id,['imageurl'],[imageurl]);
+                    }*/
+                    //else{
+                        //console.log($rootScope.answers[midx]);
+                    //    midx++;
+                    //    $timeout(function(){
+                    //        applyRule();
+                    //    },100);
+                //    }
+                //}
             }
                  
     }

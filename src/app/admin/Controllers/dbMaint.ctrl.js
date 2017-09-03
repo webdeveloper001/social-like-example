@@ -6,10 +6,12 @@
         .controller('dbMaint', dbMaint);
 
     dbMaint.$inject = ['$location', '$rootScope', '$state', '$stateParams', 'Upload', '$q','getgps',
-        'table', 'dialog', 'answer', 'catans', 'votes', '$http','categorycode','codeprice','useraccnt'];
+        'table', 'dialog', 'answer', 'catans', 'votes', 'common', 
+        '$http','categorycode','codeprice','useraccnt'];
 
     function dbMaint(location, $rootScope, $state, $stateParams, Upload, $q, getgps,
-        table, dialog, answer, catans, votes, $http, categorycode, codeprice, useraccnt) {
+        table, dialog, answer, catans, votes, common,
+        $http, categorycode, codeprice, useraccnt) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'dbMaint';
@@ -39,10 +41,12 @@
         vm.selEditAddress = selEditAddress;
         vm.editAddress = editAddress;
         vm.addcatcode = addcatcode;
+        vm.categoryStr = categoryStr;
 
         vm.isAdmin = $rootScope.isAdmin;
         
         vm.dupAnsRdy = false;
+        vm.catstrmode = false;
 
         activate();
 
@@ -609,6 +613,47 @@
                 //console.log("slugTag - ", slugTag);
                 }  
             }*/
+        }
+
+        function categoryStr(){
+            vm.catstrmode = true;
+            // 32.*****Populate catstr field for all ranks **** 
+                    var catstr = '';
+                    var idx = -1;
+                    var idx2 = -1;
+                    var nhObj = {};
+                    var nhArr = [];
+                    var nhSub = [];
+                    var nhSub2 = [];
+                    var catArr = [];
+
+                    for (var i=0; i < $rootScope.content.length; i++){
+                    //for (var i=0; i < 100; i++){
+                        nhArr = [];
+                        common.getInclusiveAreas($rootScope.content[i].nh,nhArr);
+                        
+                        catArr = [];
+                        for (var j=0; j < $rootScope.content.length; j++){
+                            if ($rootScope.content[i].cat == $rootScope.content[j].cat){
+                                for (var n=0; n < nhArr.length; n++){
+                                    if (nhArr[n] == $rootScope.content[j].nh) {
+                                        catArr.push($rootScope.content[j].id);
+                                        //console.log($rootScope.content[j].slug);
+                                    }
+                                }
+                            }
+                        }
+                        //console.log("length catArr ", catArr.length);
+                        catstr = '';
+                        for (var m=0; m < catArr.length; m++){
+                            catstr = catstr + ':'+ catArr[m];
+                        }
+                        catstr = catstr.substring(1);
+                        //console.log("catstr - ", catstr);
+                        table.update($rootScope.content[i].id,['catstr'],[catstr]);
+                        vm.cpct = (i/$rootScope.content.length)*100;
+                    }
+                    //End of 32 */
         }
     }
 })();

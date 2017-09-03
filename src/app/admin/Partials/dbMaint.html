@@ -25,6 +25,8 @@
 	<br>
 	<button class="btn btn-default" ng-click="vm.getSlugs()">get Slugs</button>
 	<br>
+	<button class="btn btn-default" ng-click="vm.categoryStr()">Update CatStr</button>
+	<br>
 	<br>
 	<div ng-if="vm.unrefans">
 		<div ng-repeat="x in vm.unrefans" ng-click="vm.selAns(x)">
@@ -100,4 +102,13 @@
 		</div>
 	</div>
 	<button ng-if="vm.dupAnsRdy" class="btn btn-primary" ng-click="vm.goMerge()">Go Merge Screen</button>
+	<div ng-if="vm.catstrmode">
+		<div class="progress">
+			<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="vm.cpct" aria-valuemin="0" aria-valuemax="100"
+			 style="width:{{vm.cpct}}%">
+				{{vm.cpct}}% complete
+			</div>
+			<p>Updating Category Strings</p>
+		</div>
+	</div>
 </div>

@@ -619,9 +619,9 @@
 
                             views: 0,
                             answers: 0,
-                            image1url: '../../../assets/images/noimage.jpg',
-                            image2url: '../../../assets/images/noimage.jpg',
-                            image3url: '../../../assets/images/noimage.jpg',
+                            image1url: $rootScope.EMPTY_IMAGE,
+                            image2url: $rootScope.EMPTY_IMAGE,
+                            image3url: $rootScope.EMPTY_IMAGE,
                             answertags: '',
                             isatomic: 1, //TODO decide isatomic, numcom, ismp, owner, 
                             timestmp: new Date(),
@@ -1196,9 +1196,9 @@
         }
 
         function getDisplayImages() {
-            vm.image1 = "/assets/images/noimage.jpg";
-            vm.image2 = "/assets/images/noimage.jpg";
-            vm.image3 = "/assets/images/noimage.jpg";
+            vm.image1 = $rootScope.EMPTY_IMAGE;
+            vm.image2 = $rootScope.EMPTY_IMAGE;
+            vm.image3 = $rootScope.EMPTY_IMAGE;
 
             if (vm.answers[0]) vm.image1 = vm.answers[0].imageurl;
             if (vm.answers[1]) vm.image2 = vm.answers[1].imageurl;
