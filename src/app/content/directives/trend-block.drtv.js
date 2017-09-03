@@ -68,7 +68,7 @@ angular.module('app').directive('trendBlock',
                         } else if (ranking.image1url  && ranking.image1url != '') {
                             ranking.realimage = ranking.image1url;
                         } else {
-                            ranking.realimage = '../../../assets/images/noimage.jpg';
+                            ranking.realimage = $rootScope.EMPTY_IMAGE;
                         }
                         ranking.humanized = moment(ranking.timestmp).fromNow();
                     })
@@ -91,7 +91,7 @@ angular.module('app').directive('trendBlock',
                         } else if (ranking.image1url  && ranking.image1url != '') {
                             ranking.realimage = ranking.image1url;
                         } else {
-                            ranking.realimage = '../../../assets/images/noimage.jpg';
+                            ranking.realimage = $rootScope.EMPTY_IMAGE;
                         }
                         ranking.humanized = moment(ranking.timestmp).fromNow();
                     })

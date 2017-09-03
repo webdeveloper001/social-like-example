@@ -584,7 +584,11 @@
                                 rObj.nh = $rootScope.locations[nidx].id;
                                 rObj.isatomic = true;
                                 table.addTable(rObj).then(function(tableid){
-                                    catans.postRec2(extAnswer.id,tableid).then(rankSummary);
+                                    //update catstr and register new catans record
+                                    var newcatstr = $rootScope.cCategory.catstr + ':' + tableid;
+                                    var p1 = catans.postRec2(extAnswer.id,tableid);
+                                    var p2 = table.update($rootScope.cCategory.id,['catstr'],[newcatstr]); 
+                                    $q.all([p1,p2]).then(rankSummary);
                                 });
                             }
                         }

@@ -101,7 +101,7 @@ angular.module('app').directive('rankItem',
 
             function editTitle(x){
                 //x.titlex = x.title.replace(' in San Diego','');
-                if (x.answers == 0 && x.type != 'Short-Phrase') x.image1url = "../../../assets/images/noimage.jpg";
+                if (x.answers == 0 && x.type != 'Short-Phrase') x.image1url = $rootScope.EMPTY_IMAGE;
             }
 
             function parseShortAnswer(x) {
