@@ -1488,12 +1488,8 @@
                     FB.ui(
                     {
                         method: 'feed',
-                        name: vm.answer.name,
                         link: vm.linkurl,
-                        picture: imageurl,
                         caption: 'Rank-X San Diego',
-                        description: '',
-                        message: ''
                     }); 
                     break;
                 }  

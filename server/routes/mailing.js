@@ -7,7 +7,7 @@ function format(ranking){
     var html = 
     `<tr>
         <td>
-            <img  style="max-width:100px" src="` +   (ranking.fimage ? ranking.fimage : ( ranking.image1url ?  ranking.image1url : 'https://Rank-X.com/assets/images/noimage.jpg')) +`" />
+            <img  style="max-width:100px" src="` +   (ranking.fimage ? ranking.fimage : ( ranking.image1url ?  ranking.image1url : $rootScope.EMPTY_IMAGE)) +`" />
         </td>
         <td style="padding-left: 10px">`+ (ranking.title) +`</td>
     </tr>`

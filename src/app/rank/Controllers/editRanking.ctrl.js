@@ -238,7 +238,10 @@
             }
             //If Image bank is Pexels
             if (vm.pexels) {
-                pexels.search(qry).then(function (result) {
+                //pexels.search(qry).then(function (result) {
+                    pexels.reqFromServer(qry).then(function (res) {
+                    var result = res.data.photos; //remove this line for direct query
+                    
                     if ($rootScope.DEBUG_MODE) console.log("Pexels results - ", result);
                     vm.numResults = result.length;
 

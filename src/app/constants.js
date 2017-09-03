@@ -10,7 +10,7 @@
         .constant('APP_API_KEY','da4f7e05b7afc5beffe8d9d416abec73cf98ef89e3703beeb5144f325be5decc')
         .constant('GOOGLE_API_KEY', 'AIzaSyC2gAzj80m1XpaagvunSDPgEvOCleNNe5A')
         .constant('DEBUG_MODE', false)
-        .constant('EMPTY_IMAGE','../../../assets/images/noimage.jpg')
+        .constant('EMPTY_IMAGE','https://rank-x.com/assets/images/noimage.jpg')
         .constant('INSTAGRAM_CLIENT_ID', "c46745e083b7451a99461240e01da20b")
         .constant('SERVER_URL', "https://server.rank-x.com/")
         // .constant('SERVER_URL', "http://localhost:3000/")
