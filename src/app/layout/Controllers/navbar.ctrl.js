@@ -54,7 +54,8 @@
         });
 
         var adminCredentialsListener = $rootScope.$on('adminCredentials', function(e) {
-            vm.isAdmin = ($rootScope.isAdmin || $rootScope.dataAdmin);
+            vm.isAdmin = ($rootScope.isAdmin || $rootScope.dataAdmin ||
+            $rootScope.modAdmin );
         });
 
         var showWarningListener = $rootScope.$on('showWarning', function (e) {
