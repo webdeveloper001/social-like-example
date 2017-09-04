@@ -102,6 +102,7 @@
             if ($state.current.name == 'editAnswer' && !$rootScope.cmd1exe) {
                 $rootScope.cmd1exe = true;
                 $rootScope.blobimage = data;
+                vm.imageURL = $rootScope.blobimage;
                 selectImage();                
             }
         });
@@ -365,10 +366,13 @@
             if ($rootScope.DEBUG_MODE) console.log("@selectImage");
             var newEdit = {};
             newEdit.field = "imageurl";
-            newEdit.cval = vm.answer.imageurl;
+            //newEdit.cval = vm.answer.imageurl;
+            newEdit.cval = vm.imageURL;
             newEdit.nval = "";
+            
             if ($rootScope.userIsOwner) newEdit.imageURL = $rootScope.blobimage;
-            else newEdit.imageURL = vm.imageURL;
+            //else newEdit.imageURL = vm.imageURL;
+            newEdit.imageURL = vm.imageURL;
             newEdit.display = 'inline'
             newEdit.answer = vm.answer.id;
             newEdit.upV = 0;
@@ -383,12 +387,11 @@
             newEdit.username = $rootScope.user.name;
             //newEdit.category = $rootScope.cCategory.id;
             newEdit.timestmp = Date.now();
-            
             //if user is owner - execute userIsOwnerEditDirectly function
             if ($rootScope.userIsOwner) dialog.editConfirm(newEdit, 'image', userIsOwnerEditDirectly); 
             //else create edit for image
             else dialog.editConfirm(newEdit, 'image', createImageEdit);
-            console.log("$rootScope.userIsOwner - ", $rootScope.userIsOwner);
+            //console.log("$rootScope.userIsOwner - ", $rootScope.userIsOwner);
         }
 
         //Get the votes for the edits in this answer
@@ -871,11 +874,9 @@
             if ($rootScope.DEBUG_MODE) console.log("edit - ", x);
             if (x.field == "imageurl") {
                 if ($rootScope.DEBUG_MODE) console.log("R1");
-                vm.imageURL = $rootScope.blobimage;
-                //console.log("vm.imageURL - ", vm.imageURL);
                 answer.updateAnswer(x.answer, ['imageurl'], [x.imageURL]);
                 //$state.go("editAnswer", { reload: true });
-                $state.go('editAnswer',{index: vm.answer.id});
+                //$state.go('editAnswer',{index: vm.answer.slug});
                 //refreshImage();                
             }
             else if (x.field == "location"){
@@ -901,6 +902,7 @@
         function onNoGoodImages(x){
             if (x){
                 vm.imageURL = $rootScope.EMPTY_IMAGE;
+                console.log("vm.imageURL - ", vm.imageURL);
                 selectImage();
             }
             else{
