@@ -26,7 +26,7 @@
 
             if (_locations.length > 0 && !forceRefresh) {
 
-                return $q.when(categories);
+                return $q.when(_locations);
             }
 
             //var url = baseURI;
