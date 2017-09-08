@@ -128,8 +128,10 @@
         function activate() {
 
             //Set custom rank flag
-            if ($rootScope.cCategory.owner != undefined && $rootScope.cCategory.owner != 0 ) $rootScope.isCustomRank = true;
-            else $rootScope.isCustomRank = false;
+            if ($rootScope.cCategory != undefined){
+                if ($rootScope.cCategory.owner != undefined && $rootScope.cCategory.owner != 0 ) $rootScope.isCustomRank = true;
+                else $rootScope.isCustomRank = false;
+            }
 
             $window.scrollTo(0, 0);
             

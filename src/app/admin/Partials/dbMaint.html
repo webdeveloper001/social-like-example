@@ -84,7 +84,15 @@
 	</div>
 	<p ng-repeat="x in vm.resDupRanks track by $index">{{x.title}} --- {{x.id}}</p>
 	<div ng-repeat="x in vm.syncp">
-	{{x.answername}} - {{x.categoryname}} - caUpV {{x.caUpV}} - nUpVotes {{x.nUpVlen}} - caDownV {{x.caDownV}} - nDownVotes {{x.nDownVlen}}
+	{{x.answername}} - {{x.categoryname}} - caUpV {{x.caUpV}} - nUpVotes {{x.nUpVlen}} - caDownV {{x.caDownV}} - nDownVotes {{x.nDownVlen}} <br>
+	UP VOTES <br>
+	<div ng-repeat="y in x.upVotes">
+	User:&nbsp{{y.user}} Vote:&nbsp{{y.vote}} VoteId:&nbsp{{y.id}} <a ng-click="vm.deleteDupVotes(y)">Delete</a>
+	</div>
+	DOWN VOTES <br>
+	<div ng-repeat="y in x.downVotes">
+	User:&nbsp{{y.user}} Vote:&nbsp{{y.vote}} VoteId:&nbsp{{y.id}} <a ng-click="vm.deleteDupVotes(y)">Delete</a>
+	</div>
 	<button class="btn btn-primary" ng-click="vm.updatecatans(x)">Fix</button>
 	</div>
 	<div ng-repeat="x in vm.answerdist">

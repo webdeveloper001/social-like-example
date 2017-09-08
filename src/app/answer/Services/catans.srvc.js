@@ -95,7 +95,7 @@
             });
             //_datax = [];
             if (_datax.length == 0) return $q.when(false);
-
+                
             var filterstr = '?filter=(';
             for (var i=0; i< _datax.length; i++){
                 if (_datax[i].catstr){
