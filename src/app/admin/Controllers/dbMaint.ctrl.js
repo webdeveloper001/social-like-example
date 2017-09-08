@@ -42,6 +42,7 @@
         vm.editAddress = editAddress;
         vm.addcatcode = addcatcode;
         vm.categoryStr = categoryStr;
+        vm.deleteDupVotes = deleteDupVotes;
 
         vm.isAdmin = $rootScope.isAdmin;
         
@@ -409,6 +410,8 @@
                     obj.caDownV = ca.downV;
                     obj.nUpVlen = nUpV.length;
                     obj.nDownVlen = nDownV.length;
+                    obj.upVotes = nUpV;
+                    obj.downVotes = nDownV;
 
                     vm.syncp.push(obj);
                     //console.log("syn problem upV @ catans - ", $rootScope.answers[idx].name, $rootScope.content[idx2].title, ca.upV, nUpV);
@@ -418,6 +421,21 @@
 
         function updatecatans(x) {
             catans.updateRec(x.catans, ['upV', 'downV'], [x.nUpVlen, x.nDownVlen]);
+        }
+
+        function deleteDupVotes(x){
+            var rFound = false;
+            for (var j = 0; j < $rootScope.allvotes.length; j++) {
+                if (x.user == $rootScope.allvotes[j].user && 
+                    x.vote == $rootScope.allvotes[j].vote && 
+                    x.catans == $rootScope.allvotes[j].catans &&
+                    x.answer == $rootScope.allvotes[j].answer){
+                    if (rFound) {
+                        votes.deleteRec($rootScope.allvotes[j].id);
+                    }
+                    rFound = true;
+                }
+            }
         }
 
         function estDistances() {
@@ -617,6 +635,7 @@
 
         function categoryStr(){
             vm.catstrmode = true;
+            var ctr = 0;
             // 32.*****Populate catstr field for all ranks **** 
                     var catstr = '';
                     var idx = -1;
@@ -650,8 +669,11 @@
                         }
                         catstr = catstr.substring(1);
                         //console.log("catstr - ", catstr);
-                        table.update($rootScope.content[i].id,['catstr'],[catstr]);
-                        vm.cpct = (i/$rootScope.content.length)*100;
+                        table.update($rootScope.content[i].id,['catstr'],[catstr]).then(function(){
+                            ctr++;
+                            vm.cpct = (ctr/$rootScope.content.length)*100;
+                        });
+                        
                     }
                     //End of 32 */
         }
