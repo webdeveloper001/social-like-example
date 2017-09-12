@@ -5,11 +5,11 @@
         .module('app')
         .controller('addCustomRank', addCustomRank);
 
-    addCustomRank.$inject = ['$location', '$rootScope', '$state','$stateParams','categories',
-    'dialog','$window','answer','color','pixabay','pexels','$http','table','$timeout'];
+    addCustomRank.$inject = ['$location', '$rootScope', '$state','$stateParams','categories','search',
+    'dialog','$window','answer','color','pixabay','pexels','$http','table','$timeout','$scope'];
 
-    function addCustomRank(location, $rootScope, $state, $stateParams, categories,
-     dialog, $window, answer, color, pixabay, pexels, $http, table, $timeout) {
+    function addCustomRank(location, $rootScope, $state, $stateParams, categories, search,
+     dialog, $window, answer, color, pixabay, pexels, $http, table, $timeout, $scope) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'addCustomRank';
@@ -31,16 +31,21 @@
         vm.whatisrankquestion = whatisrankquestion;
         vm.whataretags = whataretags;
         vm.selImgBank = selImgBank;
+        vm.selScopeGeneral = selScopeGeneral;
+        vm.imageBanksDialog = imageBanksDialog;
         vm.csel = csel;
         vm.c1sel = true;
         vm.showAlert = false;
-        vm.showAddButton = false;    
+        vm.showAddButton = false;
+        vm.selImageEnable = 'disabled';
+        vm.question = 'Who do you recommend?';    
         
         var itemt = {};
         var item = {};
         var rankTitleOk = true;
         var rankTypeOk = true;
         var rankQuestionOk = true;
+        vm.imageLoading = false;
             
         vm.editRank = editRank;
         vm.addRank = addRank;
@@ -51,6 +56,7 @@
         var colors = [];
         var ranks = [];
         var idx = 0;
+        var idx2 = 0;
 
         //Adjust picture size for very small displays
         if ($window.innerWidth < 512) { vm.sm = true; vm.nsm = false; }
@@ -64,6 +70,8 @@
                 vm.resLength = -1;
                 vm.rankType = 'Select ranking type';
                 vm.rankCat = 'Choose a category';
+                vm.selScopeGeneralText = "Choose Scope...";
+                vm.selScopeCityText = "San Diego";
                 vm.image = $rootScope.EMPTY_IMAGE;
                 vm.i = 0;
                 vm.step = 1;
@@ -155,6 +163,7 @@
                 item.shade = vm.shade;
                 item.keywords = '';
                 item.fimage = vm.image;
+                item.scope = $rootScope.SCOPE;
 
                 categories.addCategory(item).then(function(result){
                     
@@ -166,6 +175,7 @@
                     itemt.isatomic = true;
                     itemt.cat = result.resource[0].id;
                     itemt.nh = 1;
+                    itemt.scope = $rootScope.SCOPE;
 
                     //Create and update slug
                     //Create table record
@@ -173,14 +183,23 @@
                         //$timeout(function(){
                         //console.log("result ---> ", resultx.resource[0].id);
                         processImage(itemt.cat);
-                        dialog.getDialog('newRank');
-                        $state.go('rankSummary',{index: resultx.resource[0].id}); //slug matches filename
+                        //dialog.getDialog('newRank');
+                        var titlemsg = 'Success!';
+                        var message = 'Your ranking has been created succesfully! <br><br> Now add items to rank and '+
+                        'don\'t forget to share your ranking with other users!';
+                        idx2 = resultx;
+                        dialog.notificationWithCallback(titlemsg, message, goToNewRank);
+                        
                         //},2000);
                     });
 
                     if ($rootScope.DEBUG_MODE) console.log("category added --- ", result);
                 });
             }
+        }
+
+        function goToNewRank(){
+            $state.go('rankSummary',{index: idx2}); //slug matches filename
         }
         
         function clearFields(){
@@ -268,12 +287,25 @@
                 dialog.getDialog('rankTitle');
             }
             else {
-                if (vm.rankTitle.length < 10) dialog.getDialog('rankTitle'); 
-                else {
-                    vm.rankTitleVal = vm.rankTitle;
-                    vm.showAlert = true;
+                if (vm.rankTitle.indexOf('San Diego') < 0 && vm.scopeIsCity){
+                    vm.rankTitle = vm.rankTitle + ' in San Diego';
+                    var title = 'We made an adjustment';
+                    var message = "Because you are adding a City Ranking, we added 'in San Diego' to your Rank Title.";
+                    dialog.notificationWithCallback(title,message,getSimilarRanks);
                 }
+                //if (vm.rankTitle.length < 10) dialog.getDialog('rankTitle'); 
+                else getSimilarRanks();
             }
+        }
+
+        function getSimilarRanks(){
+             vm.similarRanks = search.searchRanks2(vm.rankTitle);
+             if (vm.similarRanks.length > 0){
+                vm.showAlert = true;
+                //$scope.$apply();
+             }
+             else alertOk();
+
         }
 
         function getImages() {
@@ -282,6 +314,7 @@
             vm.i = 0;
 
             if (vm.pixabay) {
+                vm.imageLoading = true;
                 pixabay.search(qry).then(function (result) {
                     if ($rootScope.DEBUG_MODE) console.log("Pixabay results - ", result);
                     vm.numResults = result.length;
@@ -291,20 +324,41 @@
                         //console.log("image i - ", result[i].previewURL);
 
                     }
-                    vm.image = vm.images[vm.i].previewURL;
+                    if (vm.images[vm.i]) {
+                        vm.image = vm.images[vm.i].previewURL;
+                        vm.selImageEnable = '';
+                    }
+                    else {
+                        vm.selImageEnable = 'disabled';
+                        dialog.getDialog('noImages');
+                    }
+
+                    vm.imageLoading = false;
                 });
             }
             if (vm.pexels) {
-                pexels.search(qry).then(function (result) {
+                vm.imageLoading = true;
+                //pexels.search(qry).then(function (result) {
+                pexels.reqFromServer(qry).then(function (res) {
+                    
+                    var result = res.data.photos; //remove this line for direct query
                     if ($rootScope.DEBUG_MODE) console.log("Pexels results - ", result);
                     vm.numResults = result.length;
 
                     for (var i = 0; i < vm.numResults; i++) {
                         vm.images.push(result[i]);
                         //console.log("image i - ", result[i].previewURL);
-
                     }
-                    vm.image = vm.images[vm.i].src.small;
+                    if (vm.images[vm.i]) {
+                        vm.image = vm.images[vm.i].src.small;
+                        vm.selImageEnable = '';
+                    }
+                    else {
+                        vm.selImageEnable = 'disabled';
+                        dialog.getDialog('noImages');
+                    }
+
+                    vm.imageLoading = false;
                 });
             }
         }
@@ -312,16 +366,16 @@
         function nextImg(){
             vm.i = vm.i + 1;
             if (vm.i > vm.images.length -1) vm.i = vm.images.length-1;
-            if(vm.pixabay) vm.image = vm.images[vm.i].previewURL;
-            if(vm.pexels) vm.image = vm.images[vm.i].src.small; 
+            if(vm.pixabay && vm.images[vm.i]) vm.image = vm.images[vm.i].previewURL;
+            if(vm.pexels && vm.images[vm.i]) vm.image = vm.images[vm.i].src.small; 
         }
 
         function prevImg(){
             vm.i = vm.i - 1;
             if (vm.i < 0) vm.i = 0;
             
-            if(vm.pixabay) vm.image = vm.images[vm.i].previewURL;
-            if(vm.pexels) vm.image = vm.images[vm.i].src.small; 
+            if(vm.pixabay && vm.images[vm.i]) vm.image = vm.images[vm.i].previewURL;
+            if(vm.pexels && vm.images[vm.i]) vm.image = vm.images[vm.i].src.small; 
         }
 
         function selectImg(){
@@ -331,8 +385,8 @@
 
         function alertOk(){
             vm.showAlert = false;
-            //if (vm.resLength == 0) 
             vm.step = 4;
+            //$scope.$apply();
         }
 
         function tagsOk(){
@@ -415,7 +469,9 @@
         }
 
         function goBack(){
-            $state.go('cwrapper');
+            if ($rootScope.previousState == 'rankSummary')  $state.go('rankSummary', { index: $rootScope.cCategory.slug });
+            else if ($rootScope.previousState == 'answerDetail')  $state.go('answerDetail', { index: $rootScope.canswer.slug });
+            else $rootScope.$emit('backToResults');
         }
 
         function selImgBank(x){
@@ -427,6 +483,23 @@
                 vm.pixabay = false;
                 vm.pexels = true;
             }
+        }
+
+        function selScopeGeneral(x){
+            if (x==1) { 
+                vm.scopeIsGeneral = true; 
+                vm.scopeIsCity = false; 
+                vm.selScopeGeneralText = 'General';
+            }
+            if (x==2) { 
+                vm.scopeIsGeneral = false; 
+                vm.scopeIsCity = true; 
+                vm.selScopeGeneralText = 'City';
+            }       
+        }
+
+        function imageBanksDialog(){
+            dialog.imageBank();
         }
                      
     }

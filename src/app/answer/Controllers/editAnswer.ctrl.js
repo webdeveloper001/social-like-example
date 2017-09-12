@@ -6,10 +6,12 @@
         .controller('editAnswer', editAnswer);
 
     editAnswer.$inject = ['dialog', '$stateParams', '$state', '$rootScope', 'catans', '$scope',
-    '$modal', 'edit', 'editvote', 'answer', 'image','getgps','$window','getwiki', '$http'];
+    '$modal', 'edit', 'editvote', 'answer', 'image','getgps', 'table',
+    '$window','getwiki', '$http'];
 
     function editAnswer(dialog, $stateParams, $state, $rootScope, catans, $scope, 
-    $modal, edit, editvote, answer, image, getgps, $window, getwiki, $http) {
+    $modal, edit, editvote, answer, image, getgps, table, 
+    $window, getwiki, $http) {
         /* jshint validthis:true */
         var vm = this;
 
@@ -54,7 +56,6 @@
             }
         }
         vm.type = vm.answer.type;
-        vm.imageURL = vm.answer.imageurl;
         vm.fields = [];
         var publicfield_obj = {};
 
@@ -69,6 +70,7 @@
         var editDeleteIndex = 0;
         var editIsLocation = false;
         var editAnswerGPSexec = false;
+        var requestOnFlight = false;
         
         // Methods
      
@@ -100,6 +102,7 @@
             if ($state.current.name == 'editAnswer' && !$rootScope.cmd1exe) {
                 $rootScope.cmd1exe = true;
                 $rootScope.blobimage = data;
+                vm.imageURL = $rootScope.blobimage;
                 selectImage();                
             }
         });
@@ -124,6 +127,10 @@
 
         function activate() {
 
+            //Set custom rank flag
+            if ($rootScope.cCategory.owner != undefined && $rootScope.cCategory.owner != 0 ) $rootScope.isCustomRank = true;
+            else $rootScope.isCustomRank = false;
+
             $window.scrollTo(0, 0);
             
             //country.loadCountries();
@@ -142,6 +149,8 @@
         }
 
         function loadAnswerData() {
+
+            vm.imageURL = vm.answer.imageurl;
 
             for (var i = 0; i < $rootScope.fields.length; i++) {
                 publicfield_obj = {};
@@ -327,12 +336,12 @@
         }
 
         function editImage() {
-            console.log("@editImate");
+            console.log("@editImage");
             if ($rootScope.isLoggedIn) {
                 //check that there isnt an edit for that field already
                 var editExists = false;
                 for (var i = 0; i < vm.edits.length; i++) {
-                    if (vm.edits[i].field == "image") {
+                    if (vm.edits[i].field == "imageurl") {
                         editExists = true;
                         break;
                     }
@@ -356,11 +365,14 @@
         function selectImage() {
             if ($rootScope.DEBUG_MODE) console.log("@selectImage");
             var newEdit = {};
-            newEdit.field = "image";
-            newEdit.cval = vm.answer.imageurl;
+            newEdit.field = "imageurl";
+            //newEdit.cval = vm.answer.imageurl;
+            newEdit.cval = vm.imageURL;
             newEdit.nval = "";
+            
             if ($rootScope.userIsOwner) newEdit.imageURL = $rootScope.blobimage;
-            else newEdit.imageURL = vm.imageURL;
+            //else newEdit.imageURL = vm.imageURL;
+            newEdit.imageURL = vm.imageURL;
             newEdit.display = 'inline'
             newEdit.answer = vm.answer.id;
             newEdit.upV = 0;
@@ -375,12 +387,11 @@
             newEdit.username = $rootScope.user.name;
             //newEdit.category = $rootScope.cCategory.id;
             newEdit.timestmp = Date.now();
-            
             //if user is owner - execute userIsOwnerEditDirectly function
             if ($rootScope.userIsOwner) dialog.editConfirm(newEdit, 'image', userIsOwnerEditDirectly); 
             //else create edit for image
             else dialog.editConfirm(newEdit, 'image', createImageEdit);
-            console.log("$rootScope.userIsOwner - ", $rootScope.userIsOwner);
+            //console.log("$rootScope.userIsOwner - ", $rootScope.userIsOwner);
         }
 
         //Get the votes for the edits in this answer
@@ -577,7 +588,7 @@
         function editEffective(index, type) {
             if (type == 'approve') {
                 approveEdit(index);
-                if (!editIsLocation) answerDetail();
+                if (!editIsLocation && !requestOnFlight) answerDetail();
             }
             if (type == 'reject') {
                 discardEdit(index);
@@ -587,9 +598,13 @@
         function approveEdit(index) {
             //update answer, delete edit record, and delete edit votes
             if ($rootScope.DEBUG_MODE) console.log("Edit has been approved");
-            if (vm.edits[index].field == "image") {
+            if (vm.edits[index].field == "imageurl") {
                 if ($rootScope.DEBUG_MODE) console.log("EA-3");
-                answer.updateAnswer(vm.edits[index].answer, [vm.edits[index].field], [vm.edits[index].imageURL]);
+                answer.updateAnswer(vm.edits[index].answer, [vm.edits[index].field], [vm.edits[index].imageURL]).then(function(){
+                    console.log("vm.answer - ", vm.answer);
+                    loadAnswerData();
+
+                });
             }
             else if (vm.edits[index].field == "location"){
                      if (vm.edits[index].nval != undefined && vm.edits[index].nval != "" && vm.edits[index].nval != null) {
@@ -609,13 +624,15 @@
                 var cidx = 0;
                 var cObj = {};
                 var sTitle = ''; //searched title
-                var rec2change = []; //store id of catans to change
-                var change2cat = []; //store category to change to
-                
+                var rec2change = 0; // id of catans to change
+                var change2cat = 0; //category to change to
+                var rFound = false;
                 for (var i=0; i<$rootScope.catansrecs.length; i++){
                     if ($rootScope.catansrecs[i].answer == vm.answer.id){
+                        rFound = false;
                         cidx = $rootScope.content.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[i].category);
                         cObj = $rootScope.content[cidx];
+                        console.log("change nh- ", cidx, cObj);
                         //if category for catans includes old nh, see if category for new nh exists
                         if (cObj.title.indexOf(vm.answer.cityarea) > -1){
                             sTitle = cObj.title.replace(vm.answer.cityarea,vm.edits[index].nval);
@@ -623,19 +640,38 @@
                                 //if searched title is found, store catans rec and category
                                 if ($rootScope.content[k].title == sTitle){
                                     //console.log($rootScope.content[k].title);
-                                    rec2change.push($rootScope.catansrecs[i].id);
-                                    change2cat.push($rootScope.content[k].id);
+                                    rec2change = $rootScope.catansrecs[i].id;
+                                    change2cat = $rootScope.content[k].id;
+                                    rFound = true;
                                     break;
                                 }
                             }
+                            if (rFound){
+                                console.log("Changed catans");
+                                catans.updateRec(rec2change,['category'],[change2cat]);
+                            }
+                            else {
+                            console.log('dang, have to create table');
+                            //if nh not found, create rank from ghost
+                            var gidx = $rootScope.categories.map(function(x) {return x.id; }).indexOf(cObj.cat);
+                            var nidx = $rootScope.locations.map(function(x) {return x.nh_name; }).indexOf(vm.edits[index].nval);
+
+                            var rObj = {}
+                            rObj.cat = $rootScope.categories[gidx].id;
+                            rObj.nh = $rootScope.locations[nidx].id;
+                            rObj.isatomic = true;
+                            rObj.scope = $rootScope.SCOPE;
+                            requestOnFlight = true;
+                            table.addTable(rObj).then(function(result){
+                                console.log('Had to create table, the id is: ', result);
+                                catans.updateRec(rec2change,['category'],[result]);
+                                answerDetail();
+                            });
+                            }                         
                         }
                     }
                 }
-                //console.log("rec2change - ", rec2change);
-                //console.log("change2cat - ", change2cat);
-                for (var i=0; i<rec2change.length; i++){
-                    catans.updateRec(rec2change[i],['category'],[change2cat[i]]);
-                }
+                
                 if ($rootScope.DEBUG_MODE) console.log("EA-4");
                 answer.updateAnswer(vm.edits[index].answer, [vm.edits[index].field], [vm.edits[index].nval]);
                 
@@ -836,13 +872,11 @@
         function userIsOwnerEditDirectly(x){
             if ($rootScope.DEBUG_MODE) console.log("Direct Edit Executed");
             if ($rootScope.DEBUG_MODE) console.log("edit - ", x);
-            if (x.field == "image") {
+            if (x.field == "imageurl") {
                 if ($rootScope.DEBUG_MODE) console.log("R1");
-                vm.imageURL = $rootScope.blobimage;
-                //console.log("vm.imageURL - ", vm.imageURL);
-                answer.updateAnswer(x.answer, ['image'], [x.imageURL]);
+                answer.updateAnswer(x.answer, ['imageurl'], [x.imageURL]);
                 //$state.go("editAnswer", { reload: true });
-                $state.go('editAnswer', {}, { reload: true });
+                //$state.go('editAnswer',{index: vm.answer.slug});
                 //refreshImage();                
             }
             else if (x.field == "location"){
@@ -868,6 +902,7 @@
         function onNoGoodImages(x){
             if (x){
                 vm.imageURL = $rootScope.EMPTY_IMAGE;
+                console.log("vm.imageURL - ", vm.imageURL);
                 selectImage();
             }
             else{

@@ -12,7 +12,10 @@
             {
                 name: 'promote',
                 url: '/promote',
-                views: {
+                parent: 'layout',
+                templateUrl: 'app/promoters/Partials/promote.html',
+                controller: 'promote as vm'
+                /*views: {
                     "@": {
                         templateUrl: 'app/promoters/Partials/promote.html',
                         controller: 'promote as vm'
@@ -21,7 +24,7 @@
                         templateUrl: 'app/layout/Partials/navbar.html',
                         controller: 'navbar as vm'
                     }
-                }
+                }*/
             }
         ];
 

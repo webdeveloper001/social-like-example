@@ -122,8 +122,6 @@ function writeToDreamFactoryAnswers(updateReason, answerId, stripeCustomerId, ca
             log("response from DreamFactory: " + JSON.stringify(response));
         });
 
-    
-
     log("<<-------   end STRIPE SUBSCRIBE via app = express();-------------");
 }
 
@@ -241,6 +239,9 @@ function writeToDreamFactory(updateReason, useraccntId, stripeCustomerId, callDa
             "id": useraccntId,
             "ranksqty": editData.numRanks,
         };
+    }
+    if (updateReason == 'updateSubscriptionItems') {
+        var editData = callData;
     }
     if (updateReason == 'setPromoCode') {
         params = {

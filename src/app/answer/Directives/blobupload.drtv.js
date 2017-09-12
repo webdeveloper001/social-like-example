@@ -11,8 +11,8 @@ angular.module('app').directive('blobUpload', ['$rootScope', '$state', function 
             //   isDynamic: '=dynamic',
             //   isRoW: '=rankofweek'
         },
-         controller: ['$scope', 'Upload', '$timeout', '$http', '$rootScope',
-          function blobUploadCtrl($scope, Upload, $timeout, $http, $rootScope) {           
+         controller: ['$scope', 'Upload', '$timeout', '$http', '$rootScope', 'useruploadedimages','mailing',
+          function blobUploadCtrl($scope, Upload, $timeout, $http, $rootScope, useruploadedimages, mailing) {           
             //$scope.uploadfile = function($scope, Upload, $timeout, $http) {
             // jshint validthis:true 
             displayError("");
@@ -56,6 +56,7 @@ angular.module('app').directive('blobUpload', ['$rootScope', '$state', function 
                                 $scope.errorMsg = response.status + ': ' + response.data;
                                 var imageurl = 'https://rankx.blob.core.windows.net/sandiego/'+$rootScope.canswer.id+'/' + file.name;
                                 console.log('emitted fileUploaded!!');
+                                postUserUploadedRecord(imageurl);
                                 $rootScope.$emit('fileUploaded', imageurl);
                         }, null, function (evt) {
                             file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
@@ -66,6 +67,21 @@ angular.module('app').directive('blobUpload', ['$rootScope', '$state', function 
         
                 function displayError(s) {
                     $scope.errorMsg = s;
+                }
+
+                function postUserUploadedRecord(x){
+                    var obj = {};
+                    console.log("$rootScope.user - ", $rootScope.user);
+                    obj.user = $rootScope.user.id;
+                    obj.username = $rootScope.user.name;
+                    obj.imageurl = x;
+                    obj.answer = $rootScope.canswer.id;
+                    obj.answername = $rootScope.canswer.name;
+                    useruploadedimages.postRecord(obj);
+                    //Mail to moderation notification of new image
+                    mailing.newImageUploaded(obj).then(function(data){
+                     console.log("Send mail request for image notification");
+                    })
                 }
 
             }] 

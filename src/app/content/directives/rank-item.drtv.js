@@ -26,6 +26,7 @@ angular.module('app').directive('rankItem',
             }], //end controller
         link: function (scope) {
 
+            console.log("--------------------rank item-------------------");
             if (scope.isDestroyed == undefined){
                    loadContent();
             }
@@ -33,66 +34,53 @@ angular.module('app').directive('rankItem',
                 //load content based on mode
                 function loadContent() {
 
-                    var catstr = '';
-                    var idxs = [];
-                    var nidx = 0;
-                    var rankid = 0;
-                    scope.results = [];
-                    var bFound = false;
-
                     var w = $window.innerWidth-20;
                     scope.w2 = Math.round(w/2);
                     scope.w4 = Math.round(w/4)-5;
                     scope.w8 = Math.round(w/8); 
-
-
-                    
-                    //
-                    scope.resultsTop = [];
+              
                     var resObj = {};
 
                     resObj = {};
-                    resObj = JSON.parse(JSON.stringify(scope.rankObject));
-
-                    // if (scope.rankObject.image1url != $rootScope.EMPTY_IMAGE && 
-                    //     scope.rankObject.image1url != undefined &&
-                    //     scope.rankObject.image1url != ''){
-                        editTitle(resObj);
-                        parseShortAnswer(resObj);
-                        // if (resObj.type != 'Short-Phrase' || resObj.fimage != undefined){
-                            scope.resultsTop.push(resObj);
-                        // }
-                    // }
-
+                    //resObj = JSON.parse(JSON.stringify(scope.rankObject));
+                    resObj = scope.rankObject;
+                    scope.rank = resObj;
                     
-                    var tr = scope.resultsTop[0]; //top result
-                    scope.title = tr.title;
+                    editTitle(scope.rankObject);
+                    
+                    scope.title = resObj.title;
+                    scope.rod = resObj.isrod;
                     
                     //Get rank stats
                     scope.stats = {};
-                    scope.stats.views = tr.views;
-                    scope.stats.answers = tr.answers;
-                    scope.stats.numcom = tr.numcom;
-
+                    scope.stats.views = resObj.views;
+                    scope.stats.answers = resObj.answers;
+                    scope.stats.numcom = resObj.numcom;
+                    
                     if (scope.stats.numcom == undefined || scope.stats.numcom == null )
                     scope.stats.numcom = 0;
 
-                    scope.isBasic = true;
-                    
-
                     //Set Feautured Image && box color
-                if (tr.fimage != undefined && tr.fimage != ''){
-                    scope.image4 = tr.image3url;
-                    scope.image3 = tr.image2url;
-                    scope.image2 = tr.image1url;
-                    scope.image1 = tr.fimage;
-                    scope.bc = tr.bc;
-                    scope.fc = tr.fc;
-                    scope.shade = tr.shade;              
+                if (resObj.fimage != undefined && resObj.fimage != ''){
+                    scope.image4 = resObj.image3url;
+                    scope.image3 = resObj.image2url;
+                    scope.image2 = resObj.image1url;
+                    scope.image1 = resObj.fimage;
+                    if (resObj.bc != undefined && resObj.bc != ''){
+                        scope.bc = resObj.bc;
+                        scope.fc = resObj.fc;
+                        scope.shade = resObj.shade;
+                    }
+                    else{
+                        var colors = color.defaultRankColor(resObj);
+                        scope.bc = colors[0];
+                        scope.fc = colors[1];
+                        scope.shade = -4;                        
+                    }              
                 }
                 else{
                     //Set colors for title hideInfoBox
-                    var colors = color.defaultRankColor(tr);
+                    var colors = color.defaultRankColor(resObj);
                     scope.bc = colors[0];
                     scope.fc = colors[1];
                     /*var x = Math.floor(Math.random() * 6) + 1;
@@ -104,16 +92,17 @@ angular.module('app').directive('rankItem',
                     if (x == 6) {scope.bc = '#c68c53'; scope.fc = '#f8f8ff'; }
     */
                     scope.shade = -4;
-                    scope.image3 = tr.image3url;
-                    scope.image2 = tr.image2url;
-                    scope.image1 = tr.image1url;
-                } 
+                    scope.image3 = resObj.image3url;
+                    scope.image2 = resObj.image2url;
+                    scope.image1 = resObj.image1url;
+                }
+                //if (resObj.type == 'Short-Phrase') scope.image1 = $rootScope.EMPTY_IMAGE; 
                                         
             }
 
             function editTitle(x){
-                x.titlex = x.title.replace(' in San Diego','');
-                if (x.answers == 0 && x.type != 'Short-Phrase') x.image1url = "../../../assets/images/noimage.jpg";
+                //x.titlex = x.title.replace(' in San Diego','');
+                if (x.answers == 0 && x.type != 'Short-Phrase') x.image1url = $rootScope.EMPTY_IMAGE;
             }
 
             function parseShortAnswer(x) {

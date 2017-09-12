@@ -6,39 +6,70 @@
         .factory('dataloader', dataloader);
 
     dataloader.$inject = ['$http', '$q','$rootScope','pvisits', 'table2',
-        'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata',
+        'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 
         'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans','categories', 'locations'];
 
     function dataloader($http, $q, $rootScope, pvisits, table2,
-        rankofday, answer, table, special, datetime, uaf, userdata,
+        rankofday, answer, table, special, datetime, uaf, 
         matchrec, edit, useractivity, vrows, headline, cblock, catans, categories, locations) {
 
         // Members
         var service = {
             gethomedata: gethomedata,
-            getallranks: getallranks,
-            //getthisrankdata: getthisrankdata,
-            getallcblocks: getallcblocks,
-            getrankdata: getrankdata,
-            getanswerdata: getanswerdata,
+            gethomedataX: gethomedataX,
+            landRanking: landRanking,
+            landAnswer: landAnswer,
+            //getallranks: getallranks,
+            //getrankdata: getrankdata,
+            //getanswerdata: getanswerdata,
             getpagevisitdata: getpagevisitdata,
-            getInitalHomeData: getInitalHomeData,
-            unwrap: unwrap
+            getInitialData: getInitialData,
+            unwrap: unwrap,
+            createSearchStrings: createSearchStrings,
+            pulldata: pulldata,
+            getDemoData: getDemoData,
         };
+
+        var _ranksLoaded = false;
+
+        var demoData1of3 = false;
+        var demoData2of3 = false;
+        var demoData3of3 = false;
+        var demoDataReady = false;
+
+        var answerReady = false;
+        var dataReady = false;
+        var catansReady = false;
+
+        var landAnswerActive = false;
+        var landRankActive = false;
 
         return service;
 
-        function getInitalHomeData() {
-            table.getInitalHomeData().then(function(response){
-
+        function getInitialData() {
+            if ($rootScope.DEBUG_MODE) console.log("get initial data called");
+            //Initial ranks and categories ids
+            var rids = [1733, 11619, 11285, 11288, 11673, 9734, 468, 9822, 11271, 11927, 11241, 7674];
+            var cids = [1164, 1130, 1403, 1407, 1313, 1275, 1149, 1276, 1390, 1475, 1367, 1241];
+            var p1 = table.getInitialHomeData(rids);
+            var p2 = categories.getInitialHomeData(cids);
+            
+            $q.all([p1,p2]).then(function(){
+                unwrap();
+                $rootScope.$emit('initalHomeDataLoaded');
             });
-        }
-        function gethomedata() {
 
+            var p3 = rankofday.getrankofday();
+        }
+
+       
+
+        function gethomedata() {
+/*
             var p0 = table.getTables();
             //var p1 = headline.getheadlines();
             //var p2 = cblock.getcblocksmain();
-            $rootScope.uafs = [];
+            //$rootScope.uafs = [];
             var p1 = rankofday.getrankofday();
             // var p2 = uaf.getactions();
             var p2 = uaf.getnext10actions();
@@ -60,54 +91,9 @@
                 $rootScope.locations = d[4];
 
                 $rootScope.content = d[0];
-
-                //console.time('unwrap');
-
                 unwrap(); // run whatever needs to be timed in between the statements
 
-                //console.timeEnd('unwrap');
-                
-                /*
-                $rootScope.content = d[0].map(function(ranking){
-                    ranking.title = '';
-                    delete ranking.type;
-                    delete ranking.tags;
-                    delete ranking.keywords;
-                    delete ranking.question;
-                    delete ranking.fimage;
-                    delete ranking.fc;
-                    delete ranking.bc;
-                    delete ranking.shade;
-                    delete ranking.introtext;
-                    delete ranking.user;
-
-                    if(ranking.cat){
-                        var catind = $rootScope.categories.map(function(cat){ return cat.id;}).indexOf(ranking.cat);
-                        if(catind != -1)
-                            ranking.title = $rootScope.categories[catind].category;
-                            ranking.type = $rootScope.categories[catind].type;
-                            ranking.tags = $rootScope.categories[catind].tags;
-                            ranking.keywords = $rootScope.categories[catind].keywords;
-                            ranking.question = $rootScope.categories[catind].question;
-                            ranking.fimage = $rootScope.categories[catind].fimage;
-                            ranking.fc = $rootScope.categories[catind].fc;
-                            ranking.bc = $rootScope.categories[catind].bc;
-                            ranking.shade = $rootScope.categories[catind].shade;
-                            ranking.introtext = $rootScope.categories[catind].introtext;
-                            ranking.user = $rootScope.categories[catind].user;
-                    }
-
-                    if (ranking.nh) {
-                        var locationind = $rootScope.locations.map(function(nh){ return nh.id;}).indexOf(ranking.nh);
-                        if (locationind != -1 && ranking.title) {
-                            ranking.title = ranking.title.replace('/@Nh/g', $rootScope.locations[locationind].nh_name)
-                        }
-                    }
-                    return ranking;
-                });
-                */
-
-                syncCatNh();
+                //syncCatNh();
                 createSearchStrings();
 
                 $rootScope.pageDataLoaded = true;
@@ -117,26 +103,47 @@
                 $rootScope.$emit('homeDataLoaded');
 
             });
+            */
+        }
+
+        function gethomedataX(scope) {
+
+            if ($rootScope.DEBUG_MODE) console.log("gethomedataX called");
+
+            $rootScope.pageDataLoaded = false;
+            var p0 = table.getTablesX(scope);
+            var p1 = categories.getAllCategoriesX(scope);
+            var p2 = locations.getAllLocations();
+            var p3 = answer.getAnswersX(scope);
+            
+            //Minimum Data for Cwrapper
+            return $q.all([p0, p1, p2, p3]).then(function (d) {
+            
+                 // run whatever needs to be timed in between the statements
+                unwrap();
+                createSearchStrings();
+                getEstablishmentAnswers();
+                if ($rootScope.isLoggedIn) getDemoData();
+
+                $rootScope.pageDataLoaded = true;
+                checkStatus();
+                getSecondaryData();
+                
+                if ($rootScope.DEBUG_MODE) console.log("cwrapper data ready!");
+                $rootScope.$emit('homeDataLoaded');
+
+            });
+        }
+
+        function getSecondaryData(){
+            var p0 = uaf.getactions();
+            var p1 = headline.getheadlines();        
         }
 
         function unwrap(){
-/*
-            for (var i=0; i < $rootScope.content.length; i++){
-                    $rootScope.content[i].title = '';
-                    $rootScope.content[i].fimage = '';
-                    $rootScope.content[i].bc = '';
-                    $rootScope.content[i].fc = '';
-                    $rootScope.content[i].tags = '';
-                    $rootScope.content[i].keywords = '';
-                    $rootScope.content[i].type = '';
-                    $rootScope.content[i].question = '';
-                    $rootScope.content[i].shade = '';
-                    $rootScope.content[i].introtext = '';
-                    $rootScope.content[i].user = '';
-                    //$rootScope.content[i].ismp = undefined;
-                    $rootScope.content[i].isatomic = undefined;
-                }
-*/
+
+            if ($rootScope.DEBUG_MODE) console.log("dataloader.unwrap");
+
             var nhObj = {};
             var catObj = {};
             var idx = -1;
@@ -147,27 +154,74 @@
                     nhObj = $rootScope.locations[idx];
                     idx2 = $rootScope.categories.map(function (x) { return x.id; }).indexOf($rootScope.content[i].cat);
                     catObj = $rootScope.categories[idx2];
-                    if(!catObj)
-                        console.log($rootScope.content[i].cat);
-                    $rootScope.content[i].title = catObj.category.replace('@Nh',nhObj.nh_name);
-                    $rootScope.content[i].fimage = catObj.fimage;
-                    $rootScope.content[i].bc = catObj.bc;
-                    $rootScope.content[i].fc = catObj.fc;
-                    $rootScope.content[i].tags = catObj.tags;
-                    $rootScope.content[i].keywords = catObj.keywords;
-                    $rootScope.content[i].type = catObj.type;
-                    $rootScope.content[i].question = catObj.question;
-                    $rootScope.content[i].shade = catObj.shade;
-                    $rootScope.content[i].introtext = catObj.introtext;
-                    $rootScope.content[i].user = catObj.user;
-                    //if (nhObj.sub_areas.split(',').map(Number).length > 1 && catObj.category.indexOf('@Nh')>-1)
-                    if (nhObj.sub_areas && catObj.category.indexOf('@Nh')>-1) 
-                        $rootScope.content[i].isatomic = false;
-                    else $rootScope.content[i].isatomic = true;
-                    $rootScope.content[i].ismp = nhObj.id == 1 ? true:false;
+                    //console.log("catObj - ", catObj);
+                    if(nhObj == undefined) {
+                        nhObj = {};
+                        nhObj.nh_name = 'San Diego';
+                        nhObj.id = 1;
+                        nhObj.sub_areas = '';
+                    }
+                    if (catObj) {
+                        $rootScope.content[i].title = catObj.category.replace('@Nh', nhObj.nh_name);
+                        $rootScope.content[i].fimage = catObj.fimage;
+                        $rootScope.content[i].bc = catObj.bc;
+                        $rootScope.content[i].fc = catObj.fc;
+                        $rootScope.content[i].tags = catObj.tags;
+                        $rootScope.content[i].keywords = catObj.keywords;
+                        $rootScope.content[i].type = catObj.type;
+                        $rootScope.content[i].question = catObj.question;
+                        $rootScope.content[i].shade = catObj.shade;
+                        if ($rootScope.content[i].nh == 1) $rootScope.content[i].introtext = catObj.introtext;
+                        else $rootScope.content[i].introtext = '';
+                        $rootScope.content[i].user = catObj.user;
+                        //if (nhObj.sub_areas.split(',').map(Number).length > 1 && catObj.category.indexOf('@Nh')>-1)
+                        if (nhObj.sub_areas && catObj.category.indexOf('@Nh') > -1)
+                            $rootScope.content[i].isatomic = false;
+                        else $rootScope.content[i].isatomic = true;
+                        //Determine if set ismp flag.
+                        if (catObj.ismp != null && catObj.ismp != undefined) $rootScope.content[i].ismp = catObj.ismp;
+                        else if (nhObj.id == 1) $rootScope.content[i].ismp = true;
+                        else $rootScope.content[i].ismp = false;
+                        //$rootScope.content[i].ismp = true;
+                    }
+                    else console.log("Couldnt find this category --- ",$rootScope.content[i].cat);
                 }
         }
 
+        function getDemoData(){
+            //Load demo custom ranks for customers to see
+            var demoCustomRanks = [
+                { category: 11091, id: 11091 },
+                { category: 11092, id: 11092 },
+                { category: 11093, id: 11093 },
+            ];
+
+            table2.getTablesD(demoCustomRanks).then(function(){
+                demoData1of3 = true;
+                checkDemoDataStatus();
+            });
+            catans.getAllcatansX(demoCustomRanks).then(function (result2) {
+                if (result2 != false) 
+                    answer.getAnswersL(result2).then(function(){
+                        demoData2of3 = true;
+                        checkDemoDataStatus();
+                    });
+                else {
+                    demoData2of3 = true;
+                    checkDemoDataStatus();
+                }
+            });
+            special.getSpecialsbyAnswer(1).then(function(){
+                demoData3of3 = true;
+                checkDemoDataStatus();
+            });       
+        }
+
+        function checkDemoDataStatus(){
+            demoDataReady = demoData1of3 && demoData2of3 && demoData3of3;
+            landAnswerCheckStatus();
+        }
+/*
         function getallranks(){
             
             var p0 = table.getTablesNonMain();      //Get ranks that are non main page, load them on the background
@@ -184,22 +238,7 @@
 
             });
         }
-
-        function getallcblocks(){
-            
-            var p0 = cblock.getcblocksall();      //Get ranks that are non main page, load them on the background
-
-            //Minimum Data for Cwrapper
-            return $q.all([p0]).then(function (d) {
-            
-                $rootScope.cblocks = d[0];
-                $rootScope.allCblocksLoaded = true;
-                
-                if ($rootScope.DEBUG_MODE) console.log("all cblocks ready!");
-                //$rootScope.$emit('homeDataLoaded');
-            });
-        }
-
+*//*
         function getrankdata() {
 
             // Requirement for rankSummary
@@ -224,7 +263,7 @@
 
             });
         }
-
+*//*
         function getanswerdata(){
 
             //Requirement for answerDetail
@@ -244,7 +283,7 @@
 
             });   
         }
-
+*/
         function getpagevisitdata(){
 
             //Not required for anything, just statistic, page visit counter
@@ -258,24 +297,6 @@
             });      
         }
 
-        /*
-        function getthisrankdata(category){
-            var p0 = table.getSingleTable(category);
-            return $q.all([p0]).then(function (d) {
-                
-                $rootScope.content = d[0];
-                if ($rootScope.DEBUG_MODE) console.log("loaded single table!");
-
-                var catansarr = [];
-                if ($rootScope.content[0].isatomic == true){
-                    catansarr = [category];
-                }
-                else catansarr = $rootScope.content[0].catstr.split(':').map(Number);
-                console.log("catansarr - ",catansarr);
-                var s0 = catans.getbyCategory(catansarr);
-                
-            });
-        }*/
 
         function updatePageVisits() {
             //get todays date
@@ -312,6 +333,9 @@
             $rootScope.pplNames = [];
             $rootScope.plaAnswers = [];
             $rootScope.plaNames = [];
+            $rootScope.freAnswers = [];
+            $rootScope.freNames = [];
+            $rootScope.orgNames = [];
             $rootScope.orgAnswers = [];
             $rootScope.orgNames = [];
             for (var i = 0; i < $rootScope.answers.length; i++) {
@@ -331,6 +355,10 @@
                     $rootScope.orgNames.push($rootScope.answers[i].name);
                     $rootScope.orgAnswers.push($rootScope.answers[i]);
                 }
+                if ($rootScope.answers[i].type == 'PersonCust') {
+                    $rootScope.freNames.push($rootScope.answers[i].name);
+                    $rootScope.freAnswers.push($rootScope.answers[i]);
+                }
             }
         }
 
@@ -339,8 +367,8 @@
             //Create seach strings combination of tags, title and answers            
             for (var i = 0; i < $rootScope.categories.length; i++) {                
                 //Create single string for search
-                //$rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title + " " + $rootScope.content[i].answertags;
-                $rootScope.searchStr[i] = ($rootScope.categories[i].tags ? $rootScope.categories[i].tags : '') + " " + ($rootScope.categories[i].title ? $rootScope.categories[i].title : '');
+                $rootScope.searchStr[i] = ($rootScope.categories[i].tags ? $rootScope.categories[i].tags : '') + 
+                " " + ($rootScope.categories[i].title ? $rootScope.categories[i].title : '');
 
             }
 
@@ -348,126 +376,186 @@
             //Create seach strings combination of tags, title and answers            
             for (var i = 0; i < $rootScope.content.length; i++) {                
                 //Create single string for search
-                //$rootScope.searchStr[i] = $rootScope.content[i].tags + " " + $rootScope.content[i].title + " " + $rootScope.content[i].answertags;
-                $rootScope.searchStrContent[i] = ($rootScope.content[i].tags ? $rootScope.content[i].tags : '') + " " + ($rootScope.content[i].title ? $rootScope.content[i].title : '');
+                $rootScope.searchStrContent[i] = ($rootScope.content[i].tags ? $rootScope.content[i].tags : '') + 
+                " " + ($rootScope.content[i].title ? $rootScope.content[i].title : '');
+            }          
+        }
 
+        function pulldata(type, data) {
+            if (type == 'ranks') {
+                catans.getAllcatansX(data).then(function (result) {
+                        if (result){
+                        _ranksLoaded = true;
+                        if ($rootScope.rankSummaryDataLoaded == false ||
+                        $rootScope.rankSummaryDataLoaded == undefined) checkStatus();
+
+                        var si = 0;
+                        var ei = result.length > 200 ? 200:result.length;
+                            while (si < result.length) {
+                                answer.getAnswersL(result.slice(si,ei));
+                                special.getSpecialsX(result.slice(si,ei));
+                                vrows.getVrowsX(result.slice(si,ei));
+                                matchrec.GetMatchTableX(result.slice(si,ei));
+                                useractivity.getAllUserActivityX(result.slice(si,ei));
+                                edit.getEditsX(result.slice(si,ei));
+                                table2.getTablesX(result.slice(si,ei));
+                                si = ei;
+                                ei = ei+200;
+                                if (ei > result.length) ei = result.length;
+                            }
+                        }                     
+                });
             }
+            if (type == 'answers') {
+                //if (data.length > 0 && data.length < (20 + 1)) {
+
+                    catans.getAllcatansY(data).then(function (result) {
+                        if (result){
+                        var si = 0;
+                        var ei = result.length > 200 ? 200:result.length;
+                            while (si < result.length) {
+                                special.getSpecialsX(result);
+                                vrows.getVrowsX(result);
+                                matchrec.GetMatchTableX(result);
+                                useractivity.getAllUserActivityX(result);
+                                edit.getEditsX(result);
+                                table2.getTablesX(result).then(function(result2){
+                                    if (result2 != false) pulldata('ranks',result2);
+                                });
+                                si = ei;
+                                ei = ei+200;
+                                if (ei > result.length) ei = result.length;
+                            }
+
+                            var cranks = [];
+                            var cr = {};
+                            data.forEach(function (item) {
+                                if (item.ranks != null) {
+                                    if (item.ranks.length > 2) {
+                                        cr = JSON.parse(item.ranks);
+                                        for (var i = 0; i < cr.length; i++) {
+                                            cranks.push(cr[i]);
+                                        }
+                                    }
+                                }
+                            });
+                            pulldata('ranks', cranks);
+                        }   
+                    });
+                //}
+            }
+        }
+
+        function landRanking(slug){
+            landRankActive = true;
+            _ranksLoaded = false;
+            var slugA = slug.split('-').map(Number);
+            var idx = slugA[slugA.length-1];
+            table.getSingleTable(idx).then(function(result){
+                //$rootScope.content = result;
+                catans.getAllcatansX(result).then(function(result2){
+                _ranksLoaded = true;
+                checkStatus();
+                if (result2 != false){
+                    answer.getAnswersL(result2).then(function(resultx){
+                        $rootScope.answerDetailLoaded = true;
+                        pulldata('answers', resultx);
+                    });
+                }
+            });          
+              
+                if (result[0].scope == 1){
+                    $rootScope.SCOPE = 1;
+                    //table.getMostPopularDataX(1);
+                    getInitialData();
+                    gethomedataX(1);
+                }
+                else{
+                    $rootScope.SCOPE = 2;
+                    //table.getMostPopularDataX(2);
+                    getInitialData();
+                    gethomedataX(2);
+                }
+                $rootScope.$emit('setScope');
+                //});                
+            });
+            //var data = {};
+            //data.id = idx;
+            //getDemoData();
+        }
+
+        function landAnswer(slug){
+            landAnswerActive = true;
+            var slugA = slug.split('-').map(Number);
+            var idx = slugA[slugA.length-1];
             
-        }
-
-        function syncCatNh() {
-
-            // $rootScope.content.forEach(function(ranking){
-            //     if (ranking.nh)
-            //         return;
-            //     if(ranking.isatomic && ranking.ismp) {
-            //         // var categoryName = ranking.title;
-
-
-            //         // var index = $rootScope.categories.map(function(cat){return cat.category.toLowerCase().trim();}).indexOf(ranking.title.toLowerCase().trim());
-            //         // // if (index == -1)
-            //         // //     console.log('No Category', categoryName, ranking);
-            //         // if (index != -1)
-            //         //     table.update(ranking.id, ['cat'], [$rootScope.categories[index].id]);
-
-
-            //     } else {
-            //         var ind = ranking.title.lastIndexOf(' in ');
-
-            //         var categoryName = ranking.title.slice(0, ind);
-            //         categoryName += ' in @nh';
-
-            //         var location = ranking.title.slice(ind+4);
-
-            //         var index = $rootScope.categories.map(function(cat){return cat.category.toLowerCase().trim();}).indexOf(categoryName.toLowerCase().trim());
-
-            //         // if (index == -1)
-            //         //     console.log('No Category', categoryName, ranking);
-
-            //         var indexlocation = $rootScope.locations.map(function(loc){return loc.nh_name.toLowerCase().trim();}).indexOf(location.toLowerCase().trim()); 
-
-            //         // if (indexlocation == -1)
-            //         //     console.log('No Location', location, ranking);
-            //         // if (index != -1)
-            //         //     table.update(ranking.id, ['cat'], [$rootScope.categories[index].id]);
-            //         if (indexlocation != -1) 
-            //             table.update(ranking.id, ['nh'], [$rootScope.locations[indexlocation].id]);
-                         
-
-            //     }
-            // });
-
-
-
-
-                    // if (indexlocation == -1)
-                    //     console.log('No Location', location, ranking);
-                    //table.update(ranking.id, ['cat','nh'], [$rootScope.categories[index].id, $rootScope.locations[indexlocation].id]);
-
-
-            // Uncomment when generating categories from title of rankings
-            // var categoryAddList = [];
-
-            // $rootScope.content.forEach(function(ranking){
+            answer.getAnswer(idx).then(function(result){
+                //$rootScope.answers = result;
+                answerReady = true;
+                landAnswerCheckStatus();
+                if (result.scope == 1){
+                    $rootScope.SCOPE = 1;
+                    //table.getMostPopularDataX(1);
+                    getInitialData();
+                    gethomedataX(1);
+                }
+                else{
+                    $rootScope.SCOPE = 2;
+                    //table.getMostPopularDataX(2);
+                    getInitialData();
+                    gethomedataX(2);
+                }
+                $rootScope.$emit('setScope');
+            });
+            var data = {};
+            data.id = idx;
+            catans.getAllcatansY([data]).then(function(result){
+                var p0 = table.getTablesL(result);
+                var p1 = useractivity.getAllUserActivityX(result);
+                return $q.all([p0,p1]).then(function (d){
+                    catansReady = true;
+                    landAnswerCheckStatus(); 
+                });              
+            });
+            data.answer = idx;
+                var p2 = special.getSpecialsX([data]);
+                var p3 = matchrec.GetMatchTableX([data]);
+                var p4 = edit.getEditsX([data]);
+                var p5 = table2.getTablesX([data]);
+                var p6 = vrows.getVrowsX([data]);
                 
-
-            //     if(ranking.isatomic && ranking.ismp) {
-            //         var categoryName = ranking.title;
-            //         categoryAddList.push({
-            //             category: ranking.title,
-            //             type: ranking.type,
-            //             tags: ranking.tags,
-            //             keywords: ranking.keywords,
-            //             question: ranking.question,
-            //             fimage: ranking.fimage,
-            //             bc: ranking.bc,
-            //             fc: ranking.fc,
-            //             shade: ranking.shade,
-            //             introtext: ranking.introtext,
-            //             user: ranking.user 
-            //         });
-
-            //     } else {
-            //         var ind = ranking.title.lastIndexOf(' in ');
-            //         var location = ranking.title.slice(ind+4);
-
-
-            //         var categoryName = ranking.title.slice(0, ind);
-            //         categoryName += ' in @nh';
-
-            //         if( ind != -1){
-
-            //             if(categoryAddList.map(function(cat){return cat.category.toLowerCase();}).indexOf(categoryName.toLowerCase()) == -1) {
-
-            //                 var capitalized = categoryName.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-
-            //                 categoryAddList.push({
-            //                     category: capitalized,
-            //                     type: ranking.type,
-            //                     tags: ranking.tags,
-            //                     keywords: ranking.keywords,
-            //                     question: ranking.question,
-            //                     fimage: ranking.fimage,
-            //                     bc: ranking.bc,
-            //                     fc: ranking.fc,
-            //                     shade: ranking.shade,
-            //                     introtext: ranking.introtext,
-            //                     user: ranking.user
-            //                 });
-            //             }
-            //         } else {
-
-            //         }
-            //     }
-            // });
-            //     // console.log(categoryAddList);
-            // $q.all(categoryAddList.map(function(nh){
-            //     return categories.addCategory(nh);
-            // })).then(function(responses){
-            //     console.log(responses);
-            // }).catch(function(err){
-            //     console.log(err);
-            // })
+                return $q.all([p2, p3, p4, p5, p6]).then(function (d){
+                    dataReady = true;
+                    landAnswerCheckStatus();  
+                });
+            
+            //getDemoData();
         }
+
+        function landAnswerCheckStatus(){
+            if (answerReady && catansReady && dataReady){
+                    if ($rootScope.isLoggedIn){
+                        if (demoDataReady){
+                            $rootScope.rankSummaryDataLoaded = true;
+                            $rootScope.answerDetailLoaded = true;
+                            $rootScope.$emit('answerDataLoaded');
+                        }
+                    }
+                    else{
+                        $rootScope.rankSummaryDataLoaded = true;
+                        $rootScope.answerDetailLoaded = true;
+                        $rootScope.$emit('answerDataLoaded');
+                    }
+            }
+        }
+
+        function checkStatus(){
+            if ($rootScope.pageDataLoaded && _ranksLoaded && !landAnswerActive){
+                    $rootScope.rankSummaryDataLoaded = true;
+                    $rootScope.answerDetailLoaded = true;
+                    $rootScope.$emit('rankDataLoaded');
+                }
+        }
+                
     }
 })();

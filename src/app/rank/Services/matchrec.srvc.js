@@ -11,11 +11,13 @@
 
         // Members
         var _mrecs = [];
+        $rootScope.mrecs = _mrecs;
         var json_schema = [];
         var baseURI = '/api/v2/mysql/_table/matchtable';
 
         var service = {
             GetMatchTable: GetMatchTable,
+            GetMatchTableX: GetMatchTableX,
             postRec: postRec,
             deleteRecordsbyAnswer: deleteRecordsbyAnswer,
             deleteRecordsbyCatans: deleteRecordsbyCatans
@@ -67,7 +69,38 @@
 
             function querySucceeded(result) {
 
-                return _mrecs = result.data.resource;
+                var data = result.data.resource;
+                _load (data);
+
+                return _mrecs;
+            }
+        }
+
+        function GetMatchTableX(data) {
+
+            var filterstr = '?filter=(';
+            for (var i=0; i< data.length; i++){
+                filterstr = filterstr + 'category=' + data[i].category+')OR(';
+            }
+            filterstr = filterstr.substring(0,filterstr.length-3);
+            
+            //Get all match records
+            var url = baseURI;
+
+            return $http.get(url).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+
+                var _mrecsx = result.data.resource;
+                var map = _mrecs.map(function(x) {return x.id; });
+                _mrecsx.forEach(function(obj){
+                        if(map.indexOf(obj.id) < 0)
+                        _mrecs.push(obj);
+                });
+
+                if ($rootScope.DEBUG_MODE) console.log("mrecsX data loaded");
+                //$rootScope.mrecs = result.data.resource; 
+                return _mrecsx;
             }
         }
 
@@ -135,6 +168,12 @@
            } 
         }
         
+        function _load(data){
+            _mrecs.length = 0;
+            data.forEach(function(x){
+                _mrecs.push(x);
+            });
+        }
 
         function _queryFailed(error) {
 

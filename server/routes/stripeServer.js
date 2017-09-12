@@ -465,14 +465,75 @@ function charge(req, res, next) {
     } else {    
         log("Create Subscription (Stripe Customer already exists.)");
         createStripeSubscription(this.customerId, subscriptions);
-        res.send(204)
+        // res.send(204)
             //res.sendStatus(status);
     }
 
 
 }
 
+// **************          UPDATE A SUBSCRIPTION   **********************
+function updateSubscription(req, res, next) {
+    var userId = req.body.userId;
+    this.useraccntId = req.body.useraccntId;
+    this.answerId = req.body.answerId;
+    this.stripeId = req.body.stripeId;
+    this.stripeSub = req.body.stripeSub;
+    var userEmail = req.body.userEmail;
+    this.couponValid =   req.body.couponValid;
+    this.bizcat = req.body.bizcat;
+    this.getPremium = req.body.getPremiumPlan;
+    this.getRanks = req.body.getCustomRanks;
+    this.ranksQuantity = req.body.ranksQuantity; 
 
+    this.plan = "";
+    this.quantity = 1;
+    if (this.getPremium == true) {
+        this.plan = "premium-plan-" + this.bizcat;
+    }
+    if (this.getRanks == true) {
+        this.plan = "custom-rank";
+        this.quantity = this.ranksQuantity;
+    }
+    if (this.couponValid == true) {
+        this.couponCode = 'startup-promo';
+        var callObj = {};
+        // mailing.codeSignupSubscription(req.body.promoCode, req.body.useraccntId);
+        helpers.writeToDreamFactory('setPromoCode', this.useraccntId, "0", {promoCode: req.body.promoCode});
+    }    
+    //Update subscription
+    stripe.subscriptionItems.create({
+        subscription: this.stripeSub,
+        plan: this.plan,
+        quantity: this.quantity
+    }, function(err, item) {
+            if (err) {
+                log("error while updating custom ranks..." + JSON.stringify(err));
+                res.status(500).send(err);
+            }
+            if (item) {
+                id = item.id
+                log("success updating custom ranks ");
+                var subscriptionsData = {};
+                subscriptionsData.sub = this.stripeSub;
+                subscriptionsData.items = [{
+                    "plan": this.plan,
+                    "quantity": this.quantity,
+                    "id": id,
+                }];
+                //stripePlanDetails = subscription.plan.id + ':' + subscription.plan.name + ':' + subscription.id;
+                // stripePlanDetails = subscription.plan.id;
+                //log("stripePlanDetails: ");
+                //log(stripePlanDetails);
+                //  log("subscriptionData " + JSON.stringify(subscriptionsData));
+                helpers.writeToDreamFactory('newSubscription', this.useraccntId, this.stripeId, subscriptionsData, 0, 0, 0);
+                helpers.writeToDreamFactoryAnswers('newSubscription', this.answerId, this.stripeId, subscriptionsData, 0, 0, 0);
+                res.send(204);
+            }
+    });
+
+}
+// *********************    END UPDATING A SUBSCRIPTION **************************
 
 
 // ********************************************************************
@@ -539,6 +600,7 @@ module.exports = {
     cancelSubscription: cancelSubscription,
     editSubscription: editSubscription,
     changeSource: changeSource,
-    charge: charge
+    charge: charge,
+    updateSubscription: updateSubscription,
 };
 

@@ -11,6 +11,7 @@ var stripeServer = require('./routes/stripeServer');
 var image = require('./routes/image');
 var settings = require('./routes/settings');
 var mailing = require('./routes/mailing');
+var staticpages = require('./routes/staticpages');
 
 var log = require('./log');
 
@@ -51,14 +52,22 @@ app.post('/stripeServer/payPromoter', stripeServer.payPromoter);
 app.get('/dreamfactory-stripe-user/:stripeId/:useraccntId', stripeServer.getStripeUser);
 app.post('/StripeServer/cancel', stripeServer.cancelSubscription);
 app.post('/StripeServer/edit', stripeServer.editSubscription);
+app.post('/StripeServer/update', stripeServer.updateSubscription);
 app.post('/StripeServer/changeSource', stripeServer.changeSource);
 app.post('/StripeServer/charge', stripeServer.charge);
 
 app.post('/ImageServer/SaveImage', image.saveImage);
+app.post('/ImageServer/requestPexels', image.requestPexels);
 
 app.post('/mailing/promoterCreated', mailing.promoterCreated);
 app.post('/mailing/newBizCreated', mailing.newBizCreated);
+app.post('/mailing/userSubscribed', mailing.newImageUploaded);
 app.post('/mailing/userSubscribed', mailing.userSubscribed);
+
+app.post('/staticpages/createPageRank',staticpages.createPageRank);
+app.post('/staticpages/createPageAnswer',staticpages.createPageAnswer);
+app.post('/staticpages/getFileList', staticpages.getFileList);
+app.post('/staticpages/removeFile', staticpages.removeFile);
 
 // app.post('/mailing/', image.saveImage);
 // app.post('/newBizCreated/', mailing.newBizCreated);

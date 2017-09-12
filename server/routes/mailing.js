@@ -7,7 +7,7 @@ function format(ranking){
     var html = 
     `<tr>
         <td>
-            <img  style="max-width:100px" src="` +   (ranking.fimage ? ranking.fimage : ( ranking.image1url ?  ranking.image1url : 'https://Rank-X.com/assets/images/noimage.jpg')) +`" />
+            <img  style="max-width:100px" src="` +   (ranking.fimage ? ranking.fimage : ( ranking.image1url ?  ranking.image1url : $rootScope.EMPTY_IMAGE)) +`" />
         </td>
         <td style="padding-left: 10px">`+ (ranking.title) +`</td>
     </tr>`
@@ -650,6 +650,55 @@ function newBizCreated(req, res, next) {
     sendReportEmail('bindAccount', req.body);
 }
 
+function newImageUploaded(req, res, next) {
+    var callbackData = {
+        userid: req.body.user,
+        answer: req.body.answer,
+        answername: req.body.answername,
+        username: req.body.username,
+        imageurl: req.body.imageurl,
+    }
+    
+    sendUploadedImageNotification(req.body,'andres@rank-x.com');
+    sendUploadedImageNotification(req.body,'amoctezuma81@gmail.com');
+}
+
+function sendUploadedImageNotification(x, target_email){
+   
+    var from_email = new sghelper.Email(process.env.ADMIN_EMAIL);
+    var to_email = new sghelper.Email(target_email);
+    var subject = 'Report from Rank-X';
+    var contentHtml = `<div style="background-color:#f0f0f0; padding:20px">
+    <center style="width:100%">
+        <div style="height:100px; line-height:100px">
+            <img src="https://Rank-X.com/assets/images/rankxlogo_noheadline.png" style="max-height:100px"/>
+        </div>
+    </center>`;
+    
+        subject += '- A new image was uploaded';
+        contentHtml += `
+        <p style="font-size: 17px;"> 
+            <b>User: `+ x.username +`</b> uploaded the following image to <b>`+ x.answername +`</b></p>`+
+            `<img src="`+ x.imageurl + `" style="width:200px;height:auto"/>`;
+    
+    contentHtml += `</div>`;
+    var content = new sghelper.Content('text/html', contentHtml);
+    var mail = new sghelper.Mail(from_email, subject, to_email, content);
+
+    var request = sendgrid.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: mail.toJSON(),
+    });
+
+    sendgrid.API(request, function(error, response) {
+        if(error)
+            console.log('ERROR', error);
+        else
+            console.log('Sent');
+    });
+}
+
 function codeSignupSubscription(promoCode, accountId){
     var callObj = {};
     helpers.getPromoterByCode(promoCode)
@@ -722,5 +771,7 @@ module.exports = {
     codeSignupSubscription: codeSignupSubscription,
     codeCancelSubscription: codeCancelSubscription,
     paymentProceed: paymentProceed,
-    sendReportEmail: sendReportEmail
+    sendReportEmail: sendReportEmail,
+    newImageUploaded: newImageUploaded,
+    sendUploadedImageNotification: sendUploadedImageNotification
 }

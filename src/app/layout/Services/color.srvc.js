@@ -30,7 +30,7 @@
                 else if (color == 'brown') color = '#a52a2a';
                 else if (color == 'blue') color = '#0000ff';
                 else if (color == 'white') color = '#ffffff';
-                else console.log("Dont know what color is ", color);
+                else if ($rootScope.DEBUG_MODE) console.log("Dont know what color is ", color);
             }
 
             var f = parseInt(color.slice(1), 16), t = percent < 0 ? 0 : 255, p = percent < 0 ? percent * -1 : percent, R = f >> 16, G = f >> 8 & 0x00FF, B = f & 0x0000FF;
@@ -80,6 +80,10 @@
              //Determine background color for rank of rankofday
              var bc = '';
              var fc = '';
+             if (x.tags == undefined || x.tags == null ) {
+                 x.tags = '';
+                 //console.log("@color - ", x);
+             }
 
                     if (x.tags.indexOf('food')>-1) {bc = 'brown'; fc = '#f8f8ff';}
                     else if (x.tags.indexOf('lifestyle')>-1) {bc = '#008080'; fc = '#f8f8ff';}

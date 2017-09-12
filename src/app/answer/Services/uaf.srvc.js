@@ -11,6 +11,7 @@
 
         //Members
         var _actions = [];
+        $rootScope.uafs = _actions;
         var baseURI = '/api/v2/mysql/_table/useractivityfeed';
 
         var service = {
@@ -38,7 +39,8 @@
             //var p1 = $http.get(url1);
 
             return $q.all([p0]).then(function (d){
-                _actions = d[0].data.resource.concat();
+                var data = d[0].data.resource;
+                _load (data);
                 if ($rootScope.DEBUG_MODE) console.log("No. user actions: ", _actions.length);
                 return _actions;            
             }, _queryFailed);  
@@ -55,9 +57,16 @@
             //var p1 = $http.get(url1);
 
             return $q.all([p0]).then(function (d){
-                _actions = _actions.concat(d[0].data.resource);
+                //_actions = _actions.concat(d[0].data.resource);
+                var data = d[0].data.resource;
+                var map = _actions.map(function(x) {return x.id; });
+                data.forEach(function(obj){
+                        if(map.indexOf(obj.id) < 0)
+                        _actions.push(obj);
+                });
+                
                 if ($rootScope.DEBUG_MODE) console.log("No. user actions: ", _actions.length);
-                return $rootScope.uafs = _actions;
+                return _actions;
             }, _queryFailed);  
 
         }
@@ -178,6 +187,13 @@
                 case 8: { c.bc = '#4d0099'; c.fc = 'white'; break; }
                 case 9: { c.bc = '#009999'; c.fc = 'black'; break; }
             }
+        }
+
+        function _load(data){
+            _actions.length = 0;
+            data.forEach(function(x){
+                _actions.push(x);
+            });
         }
 
         function _actionsLoaded() {

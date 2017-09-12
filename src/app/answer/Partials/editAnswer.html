@@ -57,8 +57,8 @@
 
     <div class="col-sm-12 col-md-5">
         <div class="" ng-if="vm.type!='Short-Phrase'">
-            <img class="displayed-uc" src="{{vm.imageURL}}" alt="{{image.errorLoading}}" ng-attr-style="width:100%; max-height:300px" ng-show="{{vm.type != 'Short-Phrase'}}">
-            <img src="../../../assets/images/powered_by_google_on_white.png" ng-if="vm.type!='PersonCust' && !vm.userIsOwner">
+            <img class="displayed-uc" ng-src="{{vm.imageURL}}" alt="{{image.errorLoading}}" ng-attr-style="width:100%; max-height:300px" ng-show="{{vm.type != 'Short-Phrase'}}">
+            <img ng-src="../../../assets/images/powered_by_google_on_white.png" ng-if="vm.type!='PersonCust' && !vm.userIsOwner">
         </div>
         <div class="container-answer" ng-attr-style="width:100%; max-height:300px;" ng-if="vm.type == 'Short-Phrase'">
             <br>
@@ -119,7 +119,7 @@
         <p><strong>{{x.username}}</strong> has edited the information of <strong><em>{{x.name}}</em>
             </strong> to: <br><br>{{x.nval}}.</p>
     </div>
-    <img src="{{x.imageURL}}" class="displayed" ng-attr-style="height:150px;display:{{x.display}}">
+    <img ng-src="{{x.imageURL}}" class="displayed" ng-attr-style="height:150px;display:{{x.display}}">
     <div class="row form-group ">
         <div class="text-center ">
             <label>{{x.upV}}</label>

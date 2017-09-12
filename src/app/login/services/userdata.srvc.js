@@ -5,10 +5,12 @@
         .module('app')
         .service('userdata', userdata);
 
-    userdata.$inject = ['$rootScope', 'votes', 'editvote', 'vrowvotes', 'useraccnt', 'answer',
+    userdata.$inject = ['$rootScope', 'votes', 'editvote', 'vrowvotes', 
+    'useraccnt', 'answer','table2', 'catans','special', 'dataloader',
      'useractivity', '$q', 'promoter','categorycode', 'codeprice','$http', 'SERVER_URL'];
 
-    function userdata($rootScope, votes, editvote, vrowvotes, useraccnt, answer,
+    function userdata($rootScope, votes, editvote, vrowvotes, 
+        useraccnt, answer, table2, catans, special, dataloader,
     useractivity, $q, promoter, categorycode, codeprice, $http, SERVER_URL) {
 
         var service = {
@@ -31,8 +33,9 @@
                 var p4 = promoter.getbyUser($rootScope.user.id);
                 var p5 = categorycode.get();
                 var p6 = codeprice.get();
+                var p7 = votes.loadVotesByMyFriends();
     
-                return $q.all([p0, p1, p2, p3, p4, p5, p6]).then(function (d) {
+                return $q.all([p0, p1, p2, p3, p4, p5, p6, p7]).then(function (d) {
                     $rootScope.cvotes = d[0];
                     $rootScope.editvotes = d[1];
                     $rootScope.cvrowvotes = d[2];
@@ -40,7 +43,10 @@
                     $rootScope.userpromoter = d[4];
                     $rootScope.catcodes = d[5];
                     $rootScope.codeprices = d[6];
-                    
+                    $rootScope.friends_votes = d[7];
+
+                    pullFavoriteData();
+                    dataloader.getDemoData();
                     if ($rootScope.DEBUG_MODE) console.log("user promoter - ",$rootScope.userpromoter);
                     $rootScope.userDataLoaded = true;
                     $rootScope.$emit('userDataLoaded');  
@@ -64,10 +70,11 @@
         function loadUserAccount() {
 
             if ($rootScope.isLoggedIn) {
+                if ($rootScope.DEBUG_MODE) console.log("user is logged in, loading loading user accounts data");
            
                 //Check if user has business account    
                 useraccnt.getuseraccnt().then(function (result) {
-                    $rootScope.useraccnts = result;
+                    //$rootScope.useraccnts = result;
                     $rootScope.showWarning = false;
                     if ($rootScope.useraccnts.length > 0) {
                         var missingEmail = true;
@@ -98,7 +105,7 @@
                                     useraccnt.customer = result.data;
                                     syncDatatoAnswers();
                                 }
-                                console.log("Retrieving latest invoice info from Stripe");
+                                if ($rootScope.DEBUG_MODE) console.log("Retrieving latest invoice info from Stripe");
                             }
                         }
                         $rootScope.$emit('userAccountsLoaded');
@@ -107,6 +114,7 @@
                             $rootScope.$emit('showWarning');
                         }
                         else $rootScope.showWarning = false;
+                           
                     }
                 });
             }
@@ -132,6 +140,30 @@
                     if (fields.length > 0) answer.updateAnswer($rootScope.answers[idx].id, fields, vals);
                 }
             }
+        }
+
+        function pullFavoriteData(){
+            //Prepare array to pulldata
+            var favans = [];
+            var obj = {};
+            for (var i = 0; i < $rootScope.cvotes.length; i++) {
+                obj = {};
+                obj.id = $rootScope.cvotes[i].answer;
+                obj.answer = $rootScope.cvotes[i].answer;
+                favans.push(obj);
+            }
+            dataloader.pulldata('answers',favans);
+            //My friends answers
+            $rootScope.friendsVotes = true;
+            var friendsans = [];
+            for (var i = 0; i < $rootScope.friends_votes.length; i++) {
+                obj = {};
+                obj.id = $rootScope.friends_votes[i].answer;
+                obj.answer = $rootScope.friends_votes[i].answer;
+                friendsans.push(obj);
+            }
+            dataloader.pulldata('answers',friendsans);
+
         }
     }
 })();

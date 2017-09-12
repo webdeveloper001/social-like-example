@@ -33,7 +33,10 @@
                     $state.go('editAnswer', {index: $rootScope.canswer.id});                
             else if ($rootScope.previousState == 'about')
                     $state.go('about');
-            else $state.go('cwrapper');                
+            else {
+                $rootScope.$emit('backToResults');
+                $state.go('cwrapper');
+            }                
         }
 
     }

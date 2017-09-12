@@ -78,8 +78,11 @@
                 rods = result;
                 rods.forEach(function(obj){
                     obj.datenum = datetime.date2number(obj.date);
+                    //console.log("obj - ", obj);
                     if (obj.category){
+                        //console.log("obj.category - ", obj.category);
                         var idx = $rootScope.categories.map(function(x) {return x.id; }).indexOf(obj.category);
+                         if (idx > -1){
                         obj.title = $rootScope.categories[idx].category.replace('@Nh','San Diego');
                         obj.fimage = $rootScope.categories[idx].fimage;
                         
@@ -100,7 +103,7 @@
 
                     if (obj.introtext != undefined && obj.introtext != '') obj.textok = true;
                     else obj.textok = false;
-                    
+                    }
                 });
                 vm.dataReady = true;
                 vm.rods = rods;
@@ -251,7 +254,8 @@
         }
 
         function goHome(){
-            $state.go('cwrapper');
+            $rootScope.$emit('backToResults');
+            //$state.go('cwrapper');
         }
 
         function plusShade(){

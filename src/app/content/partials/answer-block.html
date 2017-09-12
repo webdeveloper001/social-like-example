@@ -1,0 +1,21 @@
+<div ng-class="sm?'':'rank-item'" style="padding-bottom:10px">
+    <!-- Basic Layout -->
+    <div class="row" ng-click="ansSel(answer)">
+        <div class="container-bgbox col-xs-6">
+            
+            <div style="position:absolute; z-index: 50; padding: 2px; font-size: 17px; color: #fff">
+            <!--<div class = "tooltip"> -->
+                <small><i class="{{answer.icon}}" aria-hidden="true"></i>
+                <span class="tooltiptext">{{answer.itext}}</span></small>
+            <!-- </div> -->
+            </div>
+            <bg-box2 bc="{{bc}}" shade="{{shade}}" fc="{{fc}}" text="{{answer.name}}" dir="horizontal" 
+            w="100%" h="{{sm ? '150':'200'}}" stats="{{stats}}"></bg-box2>
+        </div>
+
+        <div class="col-xs-6" style="margin:0px;padding:0px;border:0px;" ng-if="!isShortPhrase">
+            <img ng-src="{{image1}}" ng-attr-style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};cursor:pointer;">
+
+        </div>
+    </div>
+</div>
