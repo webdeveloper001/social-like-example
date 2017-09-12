@@ -1273,11 +1273,11 @@
             for (var i=0; i<$rootScope.content.length; i++){
                 if ($rootScope.content[i].title == title){
                     rFound = true;
-                    rank = r.id;
+                    rank = $rootScope.content[i].id;
                     break;
                 }
             }
-            
+            console.log("could not find - ", title);
             if (rFound) {
                 console.log('rank found, posting record');
                 catans.postRec2(vm.answer.id, rank).then(function () {
