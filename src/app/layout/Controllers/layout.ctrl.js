@@ -24,7 +24,7 @@
         matchrec, edit, useractivity, vrows, headline, cblock, catans, $state, dataloader, setting, filter) {
         /* jshint validthis:true */
 
-        console.log("layout loading---------------------");
+        //console.log("layout loading---------------------");
         var vm = this;
         vm.title = 'layout';
         vm.header = '';
