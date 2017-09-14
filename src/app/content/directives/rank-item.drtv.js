@@ -26,6 +26,7 @@ angular.module('app').directive('rankItem',
             }], //end controller
         link: function (scope) {
 
+            //console.log("--------------------rank item-------------------");
             if (scope.isDestroyed == undefined){
                    loadContent();
             }

@@ -31,6 +31,7 @@
                 success(result);
             }, 100);
         };
+        $rootScope.$emit('homeDataLoaded');
         vm.sm = $rootScope.sm;
         vm.md = $rootScope.md;
         vm.datasource = datasource;
@@ -150,7 +151,7 @@
         $rootScope.$on('homeDataLoaded', function () {
             //vm.pageDataLoaded = true;
             //console.log("length $rootScope.content - ",$rootScope.content.length );
-            //vm.content = angular.copy($rootScope.content);
+            vm.content = angular.copy($rootScope.content);
             //loadInifiniteScroll(false);
 
 /*

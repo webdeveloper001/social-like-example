@@ -23,6 +23,8 @@
         DEBUG_MODE, EMPTY_IMAGE, rankofday, answer, table, special, datetime, uaf, userdata, dialog,
         matchrec, edit, useractivity, vrows, headline, cblock, catans, $state, dataloader, setting, filter) {
         /* jshint validthis:true */
+
+        //console.log("layout loading---------------------");
         var vm = this;
         vm.title = 'layout';
         vm.header = '';
@@ -290,6 +292,11 @@
             $rootScope.isAdmin = false;
             $rootScope.dataAdmin = false;
             if ($rootScope.isLoggedIn) {
+                // @rootScope.isAdmin = true;
+                // @rootScope.dataAdmin = true;
+                // @rootScope.contentAdmin = true;
+                // @rootScope.modAdmin = true;
+
                 if ($rootScope.user.id == '1599427743409374') $rootScope.dataAdmin = true;
                 if ($rootScope.user.id == '10104518570729893') $rootScope.isAdmin = true;
                 if ($rootScope.user.id == '10214255239240099') $rootScope.contentAdmin = true;
@@ -471,7 +478,8 @@
                 $rootScope.searchActive = true;
                 vm.searchActive = true;
                 vm.childActive = false;
-            }
+            } 
+            $rootScope.$emit('updateSearch')
         }
 
         function goAddRank() {

@@ -33,7 +33,7 @@ angular.module('app').directive('rankBlock',
                         
                 //load content based on mode
                 function loadContent() {
-
+                    console.log("-------------------load content------------------");
                     var catstr = '';
                     var idxs = [];
                     var nidx = 0;

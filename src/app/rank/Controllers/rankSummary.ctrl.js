@@ -164,7 +164,7 @@
         else vm.dataReady = false;
 
         function prepareRankSummary(){
-            vm.dataReady = true; 
+            vm.dataReady = true;    
             if ($rootScope.DEBUG_MODE) console.log("$rootScope.isCustomRank - ", $rootScope.isCustomRank);
             //Load current category
             $rootScope.cCategory = null;
@@ -187,7 +187,6 @@
             }
             //console.log("$rootScope.content.length - ", $rootScope.content.length);
             if ($rootScope.DEBUG_MODE) console.log("$rootScope.cCategory - ", $rootScope.cCategory.id, $rootScope.cCategory.cat);
-            console.log("$rootScope.cCategory - ", $rootScope.cCategory);
             if(!$rootScope.cCategory) {
                 //console.log("$rootScope.cCategory - ", $rootScope.cCategory);
                 //console.log("$stateParams.index - ", $stateParams.index);
@@ -281,7 +280,8 @@
             else vm.numcom = $rootScope.cCategory.numcom;
             
             //Check and update if necessary ranking and Num of items per rank, only for atomic ranks
-            if ($rootScope.cCategory.isatomic == true && !foodNearMe) {
+            //if ($rootScope.cCategory.isatomic == true && !foodNearMe) {
+            if (!foodNearMe) {    
                 for (var i = 0; i < vm.answers.length; i++) {
                     //console.log("vm.answers[i].Rank, vm.answers[i].catansrank -", vm.answers[i].Rank, vm.answers[i].catansrank);
                     if (vm.answers[i].Rank != vm.answers[i].catansrank) {

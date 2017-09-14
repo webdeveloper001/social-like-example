@@ -135,7 +135,7 @@
                 vm.addRanksEnable = false;
             } 
 
-            if ($rootScope.cCategory.isatomic){
+            if ($rootScope.cCategory.isatomic || rankNhObj.id != 1 ){
                 vm.nhrdy = true;
                 prepareCatansOptions();
                 rankObj = $rootScope.cCategory;
@@ -641,18 +641,19 @@
 
         function prepareCatansOptions(){
 
-            if ($rootScope.DEBUG_MODE) console.log("prepareCatansOptions");
+            if ($rootScope.DEBUG_MODE) console.log("prepareCatansOptions - ", $rootScope.cCategory, answerNeighborhood);
             if (!isCustomRank) {
+                
                 if (vm.addToRanks.length > 0) {
                     var morePossibleRanks = search.sibblingRanks($rootScope.cCategory, answerNeighborhood);
                     var map = vm.addToRanks.map(function (x) { return x.id; });
                     morePossibleRanks.forEach(function (item) {
                         if (map.indexOf(item.id) < 0) vm.addToRanks.push(item);
                     })
-                    //vm.addToRanks = vm.addToRanks.concat(search.sibblingRanks($rootScope.cCategory, answerNeighborhood)); 
+                    //vm.addToRanks = vm.addToRanks.concat(search.sibblingRanks($rootScope.cCategory, answerNeighborhood));
                 }
                 else vm.addToRanks = search.sibblingRanks($rootScope.cCategory, answerNeighborhood);
-
+                      
                 if (vm.addToRanks.length == 0) vm.addToRanks.push($rootScope.cCategory);
                 if (vm.addToRanks.length > 0) vm.addToRanks[0].sel = true;
                 for (var i = 1; i < vm.addToRanks.length; i++) {
@@ -676,8 +677,8 @@
                 }
             }
             else {
-                console.log("added $rootScope.cCategory - ", $rootScope.cCategory);
-                console.log("vm.addRanksEnable - ", vm.addRanksEnable);
+                //console.log("added $rootScope.cCategory - ", $rootScope.cCategory);
+                //console.log("vm.addRanksEnable - ", vm.addRanksEnable);
                 vm.addToRanks.push($rootScope.cCategory);
             }
         }
@@ -938,7 +939,7 @@
                 rankNh = $rootScope.locations[idx].nh_name;
                 rankNhObj = $rootScope.locations[idx];
                 answerNeighborhood = rankNh;
-                if ($rootScope.cCategory.isatomic) prepareCatansOptions();
+                if ($rootScope.cCategory.isatomic || rankNhObj.id != 1 ) prepareCatansOptions();
             } 
         }
 

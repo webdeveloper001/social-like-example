@@ -8,6 +8,24 @@
             <p style="font-size:large">loading your business accounts...</p>
         </div>
     </div>
+<div id="feedLoading" ng-show="vm.purchase_progress">
+	<div style="text-align: center" ng-if="vm.purchase_progress">
+	    <div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>
+	    <p style="font-size:large">Processing your payment information...</p>
+	</div>
+</div>
+<div id="feedLoading" ng-show="vm.edit_progress">
+	<div style="text-align: center" ng-if="vm.edit_progress">
+	    <div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>
+	    <p style="font-size:large">Updating your account...</p>
+	</div>
+</div>
+<div id="feedLoading" ng-show="vm.cancel_progress">
+	<div style="text-align: center" ng-if="vm.cancel_progress">
+	    <div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>
+	    <p style="font-size:large">Cancelling your subscrpitions...</p>
+	</div>
+</div>
 <div ng-if="vm.dataReady">
 
 <div>
@@ -83,7 +101,7 @@
 		Please Click here to change the card.</span><br/>
 			<button id="updateCardButton" name="updateCardButton" class="btn btn-success" onClick="updateCardNumberButton()" style="margin-top:10px">Update Card Details</button>
 		</div>
-		<form action="https://server.rank-x.com/StripeServer/changeSource" method="POST" ng-submit="changeCardNumber()" id="updateCardNumberForm">
+		<form action="https://server.rank-x.com/StripeServer/changeSource" method="POST" data-remote="true" ng-submit="changeCardNumber()" id="updateCardNumberForm">
 
           <div style="display: none"> <!-- D -->
             <script
@@ -311,12 +329,13 @@
 	<div class="text-center"> <!-- B -->
 		<!-- <button class="btn btn-success" ng-click="vm.goCheckout()">Pay with Card</button> -->
 		<br>
-		<button id="checkoutButton" name="checkoutButton" class="btn btn-success"  ng-class="vm.acceptTOS ? '' : 'disabled'" onClick="clickStripeButton()">Pay with Card</button>
+		<button id="checkoutButton" name="checkoutButton" class="btn btn-success"  ng-class="vm.acceptTOS ? '' : 'disabled'" onClick="clickStripeButton()" ng-if="!(vm.business.isPremium == true || vm.business.hasRanks == true)">Pay with Card</button>
+		<button id="checkoutButton" name="checkoutButton" class="btn btn-success"  ng-class="vm.acceptTOS ? '' : 'disabled'" ng-click="vm.addSubscription()" ng-if="vm.business.isPremium == true || vm.business.hasRanks == true">Add Subscription</button>
 		<br>
 		<div ng-show="!vm.showCurrentPlan" > <!-- C -->
 
-        <form action="https://server.rank-x.com/StripeServer/charge" method="POST">
-
+        <!-- <form action="https://server.rank-x.com/StripeServer/charge" method="POST"> -->
+        <form action="http://localhost:3000/StripeServer/charge" method="POST" data-remote="true" id="stripe-checkout-form" type="submit">
           <div style="display:none"> <!-- D -->
             <script
               src="https://checkout.stripe.com/checkout.js" class="stripe-button"
@@ -345,6 +364,7 @@
 			<input type="hidden" id="couponValid" name="promoCode" value={{vm.promocode}}></input>
 			<input type="hidden" id="bizcat" name="bizcat" value={{vm.business.bizcat}}></input>
         </form>
+
 	</div> <!-- /C -->
 	 </div><!-- /B -->				
 </div><!-- /A -->
@@ -383,4 +403,18 @@
 
           console.log("done firing click event, resultOfEventFire: " + resultOfEventFire);
         }
+
+
+		// $('iframe.stripe_checkout_app').ready(function(){
+		// 	var stripe_form_interval = setInterval(function(){
+		// 		console.log('000000000000000000000000')
+		// 		if($('button[type="submit"]').length != 0){
+		// 			clearInterval(stripe_form_interval)
+		// 			$('button[type="submit"]').bind('cssClassChanged',function(){
+		// 				alert('clearInterval(stripe_form_interval)')
+						
+		// 			})
+		// 		} 
+		// 	})
+		// })
         </script>

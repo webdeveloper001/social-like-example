@@ -240,6 +240,9 @@ function writeToDreamFactory(updateReason, useraccntId, stripeCustomerId, callDa
             "ranksqty": editData.numRanks,
         };
     }
+    if (updateReason == 'updateSubscriptionItems') {
+        var editData = callData;
+    }
     if (updateReason == 'setPromoCode') {
         params = {
             "id": useraccntId,

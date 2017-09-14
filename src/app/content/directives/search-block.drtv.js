@@ -129,6 +129,10 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                 else scope.contentLoaded = false;
             });
 
+            $rootScope.$on('updateSearch', function(){
+                queryPreamble()
+            })
+
             function queryPreamble(){
                  $timeout.cancel(timeoutPromise); //do nothing is timeout already done   
                     timeoutPromise = $timeout(function () {
@@ -136,10 +140,23 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                         if (scope.query.length >= 2) {
                             scope.endReached = false;
                             scope.getResults();
+                            
                         }
                         if (scope.query.length == 0) {
+                            var temp = homeRanks.map(function(rank){
+                                if (rank.id == $rootScope.updated_rank_id) {
+                                    $rootScope.content.map(function(x){
+                                        if (x.id == $rootScope.updated_rank_id) {
+                                            return rank = angular.copy(x)
+                                        }
+                                    })
+                                }
+                                return rank;
+                            });
+                            homeRanks = temp;
                             scope.searchResults = homeRanks;
                             scope.endReached = false;
+                            // scope.displayResults = homeRanks.slice(0, scope.scrollingItemsOnePage);
                             scope.displayResults = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
                         }
                         //console.timeEnd('etime - ', scope.query);

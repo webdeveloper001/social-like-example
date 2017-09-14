@@ -58,6 +58,9 @@
         vm.showTOSCustomersDlg = showTOSCustomersDlg;
         vm.showLearnMore = showLearnMore;
         vm.mybizs = [];
+        vm.clickStripeCheckout = clickStripeCheckout;
+        vm.stripeFormSubmit = stripeFormSubmit;
+        vm.addSubscription = addSubscription;
         activate();
         vm.noAns = false;
 
@@ -73,7 +76,7 @@
             $state.go('mybusiness', {}, {reload: true})
         }
         function activate() {
-
+            console.log("activate business page")
             dialog.notificationWithCallback(
                 'Info',
                 'The Purchasing of Premium Feautures is not available at this moment. Please try again later.',
@@ -502,13 +505,46 @@
 
         }
 
+        function addSubscription() {
+            var url = SERVER_URL + 'StripeServer/update';
+            var req = {
+                method: 'POST',
+                url: url,
+                headers: {
+                    'X-Dreamfactory-API-Key': undefined,
+                    'X-DreamFactory-Session-Token': undefined
+                },
+                data: {
+                    'userId': vm.business.user,
+                    'useraccntId': vm.business.accountid,
+                    'answerId': vm.business.id,
+                    'stripeId': vm.business.stripeid,
+                    'stripeSub': vm.business.stripesub,
+                    'getPremiumPlan': vm.getPremium,
+                    'getCustomRanks': vm.getRanks,
+                    'ranksQuantity': vm.ranksQty,
+                    'couponValid': vm.codeOk,
+                    'promoCode': vm.promocode,
+                    'bizcat': vm.business.bizcat,
+                }
+            }
+
+            $http(req).then(function (result) {
+               if ($rootScope.DEBUG_MODE) console.log("Updating Quantity of Custom Ranks Success", result);
+               dialog.notificationSuccess('Success', 'Updating Quantity of Custom Ranks Success');
+            }, function (error) {
+                if ($rootScope.DEBUG_MODE) console.log("Error Updating Quantity of Custom Ranks - ", error);
+                dialog.notificationDanger('Error', 'Error Updating Quantity of Custom Ranks');
+            });
+
+        }
       // -------- **UPGRADE**  STRIPE LOOP CHECKERS
         function loopCheck(check, updatedNumRanks) {
+            console.log("---------------call loop check------------------------");
             setTimeout(function () {
                 //  call a 3s setTimeout when the loop is called
                 //  your code here
                 console.log('loopCheck -- ', check);
-
 
                 useraccnt.getuseraccntans(vm.business.id).then(successGetuseraccnt, failGetuseraccnt);
                 function failGetuseraccnt(err) {
@@ -552,6 +588,9 @@
 
                         if (missionAccomplished) {
                             console.log("mission accomplished");
+                            vm.purchase_progress = false;
+                            vm.edit_progress = false;
+                            vm.cancel_progress = false;
                             //update local copy
                             var idx = $rootScope.useraccnts.map(function (x) { return x.id; }).indexOf(result[0].id);
                             console.log("idx - ", idx);
@@ -566,6 +605,7 @@
                             vm.overview = true;
                             vm.manageview = false;
                             vm.checkout = false;
+                            vm.dataReady = true;
                             return true;
 
                         } else {
@@ -582,6 +622,16 @@
 
                     if (checkAgain == true && (vm.checkout || vm.manage)) {
                         //recursion ... find another way if possible
+                        if (check == 'purchase') {
+                            vm.purchase_progress = true;
+                        }
+                        if (check == 'edit') {
+                            vm.edit_progress = true;
+                        }
+                        if (check == 'cancel') {
+                            vm.cancel_progress = true;
+                        }
+
                         loopCheck(check);
                     } else {
                         return;
@@ -589,6 +639,10 @@
                     //  ..  setTimeout()
                 }
             }, 3000);
+        }
+
+        function clickStripeCheckout(){
+            // vm.dataReady = false;
         }
 
         function editContact(){
@@ -614,6 +668,10 @@
             if (x==2) url = 'https://www.youtube.com/embed/pjxmggRM37o';
             dialog.showLearnMore(url);
             
+        }
+
+        function stripeFormSubmit(e) {
+            alert();
         }
     }   
 })();

@@ -52,6 +52,7 @@ app.post('/stripeServer/payPromoter', stripeServer.payPromoter);
 app.get('/dreamfactory-stripe-user/:stripeId/:useraccntId', stripeServer.getStripeUser);
 app.post('/StripeServer/cancel', stripeServer.cancelSubscription);
 app.post('/StripeServer/edit', stripeServer.editSubscription);
+app.post('/StripeServer/update', stripeServer.updateSubscription);
 app.post('/StripeServer/changeSource', stripeServer.changeSource);
 app.post('/StripeServer/charge', stripeServer.charge);
 

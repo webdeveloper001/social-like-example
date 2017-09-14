@@ -331,7 +331,7 @@
                 body: obj
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
-
+                $rootScope.updated_rank_id = result.data.resource[0].id
                 if ($rootScope.DEBUG_MODE) console.log("updating ranking record succesful");
                 return result.data;
             }
