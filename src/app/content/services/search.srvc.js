@@ -195,15 +195,20 @@
             }
             //Change to appropriate neighborhood
             for (var i=0; i < sibblingRanksX.length; i++){
+                //console.log("sibblingRanksX - ", sibblingRanksX[i]);
                 if (sibblingRanksX[i].isatomic && sibblingRanksX[i].ismp) sibblingRanks.push(sibblingRanksX[i]);
-                else if (sibblingRanksX[i].isatomic && !sibblingRanksX[i].ismp){
+                
+                if (!sibblingRanksX[i].isatomic && catObj.nh != 1) sibblingRanks.push(sibblingRanksX[i]);
+                
+                else if (sibblingRanksX[i].isatomic && !sibblingRanksX[i].ismp || 
+                            !sibblingRanksX[i].isatomic && sibblingRanksX[i].nh != 1){
                     for (var j=0; j < $rootScope.locations.length; j++){
                         if (sibblingRanksX[i].title.indexOf($rootScope.locations[j].nh_name)>-1){
                             searchtitle = sibblingRanksX[i].title.replace($rootScope.locations[j].nh_name,neighborhood);
                             var rFound = false;
                             for (var k=0; k<$rootScope.content.length; k++){
                                 if ($rootScope.content[k].title == searchtitle){
-                                    console.log('found and added - ', searchtitle );
+                                    //console.log('found and added - ', searchtitle );
                                     rankObj = $rootScope.content[k];
                                     rankObj.ctr = sibblingRanksX[i].ctr;
                                     rankObj.isghost = false;
@@ -213,7 +218,7 @@
                                 }
                             }
                             if (!rFound){
-                                console.log('Couldnt find: ', searchtitle, ' made it ghost :)');
+                                if ($rootScope.DEBUG_MODE) console.log('Couldnt find: ', searchtitle, ' made it ghost :)');
                                 //Create ghost ranking for suggestion
                                 var ghostObj = {};
                                 ghostObj.title = searchtitle;
@@ -222,7 +227,7 @@
                                 ghostObj.nh = $rootScope.locations[nidx].id;
                                 ghostObj.isghost = true;
                                 ghostObj.isatomic = true;
-                                console.log('ghost - ', ghostObj);
+                                if ($rootScope.DEBUG_MODE) console.log('ghost - ', ghostObj);
                                 sibblingRanks.push(ghostObj);
                             }
                         }
