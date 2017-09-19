@@ -46,6 +46,7 @@
         vm.sortbyHelpDialog = sortbyHelpDialog;
         vm.backToResults = backToResults;
         vm.seeMore = seeMore;
+        vm.showAllFriendsList = showAllFriendsList;
         
         vm.gotoParentRank = gotoParentRank;
         
@@ -237,6 +238,7 @@
             loadData(); //load data and write to $rootScope
             if (!foodNearMe){
                 loadTrendVotes(0);
+                loadFriendsEndorsements(0);
             }
 
             checkUserCredentials();
@@ -961,6 +963,7 @@
                 }
             }
             */
+            /*
             //Load UserActivity data
             //compute number of contributions
             $rootScope.cuseractivity = [];
@@ -987,7 +990,7 @@
             }
             
             vm.numContributors = $rootScope.cuseractivity.length;
-            
+            */
             //data loading completed
             vm.isLoading = false;
         }
@@ -1596,6 +1599,7 @@
         function seeMore(){
             vm.limit = vm.limit+20;
             loadTrendVotes(vm.limit-20);
+            //loadFriendsEndorsements(vm.limit-20);
             if (vm.answers.length > vm.limit) vm.thereIsMore = true;
             else vm.thereIsMore = false;
         }
@@ -1612,6 +1616,53 @@
                             //console.log(vm.answers);
                         });
                 }
+        }
+
+        function loadFriendsEndorsements(x){
+            //console.log("load friends endorsements - ",$rootScope.friends_votes.length,$rootScope.user.friends.data.length);
+            //Check friends endorsements for this answers
+            //var ansIds = vm.answers.slice(x,x+20);
+            var ansIds = vm.answers;
+            var idx = 0;
+            var cidx = 0;
+            var ridx = 0;
+            ansIds.forEach(function(answer){
+                answer.userObjs = [];
+                for (var i=0; i< $rootScope.friends_votes.length; i++){
+                    if ($rootScope.friends_votes[i].answer == answer.id) {
+                        var friend = getUser($rootScope.friends_votes[i]);
+                        //console.log("friend - ", friend);
+                        cidx = $rootScope.catansrecs.map(function(x) {return x.id; }).indexOf($rootScope.friends_votes[i].catans);
+                        ridx = $rootScope.content.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[cidx].category); 
+
+                        idx = answer.userObjs.map(function(x) {return x.id; }).indexOf(friend.id); 
+                        if (idx < 0) {
+                            //console.log("$rootScope.friends_votes[i] ", $rootScope.friends_votes[i]);
+                            friend.endorsements = [];
+                            friend.endorsements.push($rootScope.content[ridx].title);
+                            answer.userObjs.push(friend);
+                        }
+                        else {
+                            console.log("answer - ", answer);
+                            answer.userObjs[idx].endorsements.push($rootScope.content[ridx].title);
+                        }
+                    }
+                }
+
+            });
+            //console.log("ansIds - ", ansIds);
+        }
+
+        function getUser(voterec) {
+            for (var i = 0; i < $rootScope.user.friends.data.length; i++) {
+                if (voterec.user == $rootScope.user.friends.data[i].id) {
+                    return $rootScope.user.friends.data[i];
+                }
+            }
+        }
+
+        function showAllFriendsList(userObjs, answername){
+            dialog.showAllFriendsListDlg(userObjs, answername);
         }
     }
 })();

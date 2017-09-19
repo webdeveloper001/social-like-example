@@ -302,6 +302,11 @@
                 if (input.indexOf('Places') > -1) input = input.replace('Places', '');
                 if (input.indexOf('delicious') > -1) input = input.replace('delicious', '');
                 if (input.indexOf('Delicious') > -1) input = input.replace('Delicious', '');
+                if (input.indexOf('what ') > -1) input = input.replace('what ', '');
+                if (input.indexOf('What ') > -1) input = input.replace('What ', '');
+                if (input.indexOf('are ') > -1) input = input.replace('are ', '');
+                if (input.indexOf('where ') > -1) input = input.replace('where ', '');
+                if (input.indexOf('Where ') > -1) input = input.replace('Where ', '');
 
                 if (input.length >= 3) {
 
@@ -329,9 +334,10 @@
                     if (inputVal == 'food') inputVal = inputVal.replace('food', 'Food Near Me');
                  
                 //Special Cases
+                /*
                 if (inputVal == 'pho' || inputVal == 'Pho') {
                     inputVal = 'vietnamese';
-                }
+                }*/
 
                 if ($rootScope.isNh) inputVal = inputVal + ' ' + $rootScope.cnh;
 

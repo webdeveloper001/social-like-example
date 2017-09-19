@@ -44,15 +44,24 @@
         var landAnswerActive = false;
         var landRankActive = false;
 
+        var rids = [1733, 11619, 11285, 11288, 11673, 9734, 468, 9822, 11271, 11927, 
+                11241, 7674, 368, 43, 1728, 7965, 9735, 192, 10339, 9903, 
+                11598, 12041, 93, 12020, 3125];
+        var cids = [1164, 1130, 1403, 1407, 1313, 1275, 1149, 1276, 1390, 1475, 
+                1367, 1241, 1128, 1092, 1161, 1260, 1277, 1112, 1305, 1293, 
+                1106, 1542, 1104, 1535, 1200];
+        var ridsx = [];
+        var cidsx = [];
+
         return service;
 
         function getInitialData() {
             if ($rootScope.DEBUG_MODE) console.log("get initial data called");
             //Initial ranks and categories ids
-            var rids = [1733, 11619, 11285, 11288, 11673, 9734, 468, 9822, 11271, 11927, 11241, 7674];
-            var cids = [1164, 1130, 1403, 1407, 1313, 1275, 1149, 1276, 1390, 1475, 1367, 1241];
-            var p1 = table.getInitialHomeData(rids);
-            var p2 = categories.getInitialHomeData(cids);
+            shuffle();
+            
+            var p1 = table.getInitialHomeData(ridsx);
+            var p2 = categories.getInitialHomeData(cidsx);
             
             $q.all([p1,p2]).then(function(){
                 unwrap();
@@ -128,6 +137,8 @@
                 $rootScope.pageDataLoaded = true;
                 checkStatus();
                 getSecondaryData();
+                table.storeInitialHomeData(ridsx);
+                categories.storeInitialHomeData(cidsx);
                 
                 if ($rootScope.DEBUG_MODE) console.log("cwrapper data ready!");
                 $rootScope.$emit('homeDataLoaded');
@@ -555,6 +566,23 @@
                     $rootScope.answerDetailLoaded = true;
                     $rootScope.$emit('rankDataLoaded');
                 }
+        }
+
+        function shuffle(){
+            //Randomly get 12 ranks from those listed in rids and cids
+            var N = rids.length;
+            var idxs = [];
+            var n = 0;
+            while (idxs.length < 12){
+                n = Math.floor(Math.random() * N);
+                if (idxs.indexOf(n) == -1) idxs.push(n);
+            }
+            
+            idxs.forEach(function(i){
+                ridsx.push(rids[i]);
+                cidsx.push(cids[i]);
+            })
+
         }
                 
     }
