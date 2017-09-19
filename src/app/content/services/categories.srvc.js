@@ -23,6 +23,7 @@
             update: update,
             deleteRec: deleteRec,
             getInitialHomeData: getInitialHomeData,
+            storeInitialHomeData: storeInitialHomeData
         };
 
         return service;
@@ -50,7 +51,7 @@
                 if (_categories.length == 0) _load(datax);
 
                 if ($rootScope.DEBUG_MODE) console.log("categories length: ", _categories.length);
-                $window.localStorage.setItem("Categories-HomeData", JSON.stringify(datax));
+                //$window.localStorage.setItem("Categories-HomeData", JSON.stringify(datax));
                 return _categories;            
             }, _queryFailed);  
 
@@ -217,6 +218,16 @@
                 if ($rootScope.DEBUG_MODE) console.log("Deleting category was succesful");
                 return result.data;
             }
+        }
+
+        function storeInitialHomeData(cids){
+            var data = [];
+            var idx = 0;
+            cids.forEach(function(i){
+                 idx = _categories.map(function (x) { return x.id; }).indexOf(i);
+                 if (idx > -1) data.push(_categories[idx]);
+            });
+            $window.localStorage.setItem("Categories-HomeData", JSON.stringify(data));
         }
 
         function _load(data){

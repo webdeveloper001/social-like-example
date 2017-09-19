@@ -24,7 +24,8 @@
             getTablesX: getTablesX,
             getTablesL: getTablesL,
             getInitialHomeData: getInitialHomeData,
-            ghostTablesWithAnswer: ghostTablesWithAnswer 
+            ghostTablesWithAnswer: ghostTablesWithAnswer,
+            storeInitialHomeData: storeInitialHomeData 
         };
 
         return service;
@@ -52,7 +53,7 @@
                 if (_tables.length == 0) _load(datax); 
 
                 if ($rootScope.DEBUG_MODE) console.log("tables L length: ", _tables.length);
-                $window.localStorage.setItem("Ranks-HomeData", JSON.stringify(datax));
+                //$window.localStorage.setItem("Ranks-HomeData", JSON.stringify(datax));
                 return _tables;            
             }, _queryFailed);  
 
@@ -112,7 +113,6 @@
             var p2 = $http.get(url2);
             var p3 = $http.get(url3);
             
-
             return $q.all([p0, p1, p2, p3]).then(function (d){
                 var data = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource);
                 _load(data);
@@ -335,6 +335,17 @@
                 if ($rootScope.DEBUG_MODE) console.log("updating ranking record succesful");
                 return result.data;
             }
+        }
+
+        function storeInitialHomeData(rids){
+            
+            var data = [];
+            var idx = 0;
+            rids.forEach(function(i){
+                 idx = _tables.map(function (x) { return x.id; }).indexOf(i);
+                 if (idx > -1) data.push(_tables[idx]);
+            });
+            $window.localStorage.setItem("Ranks-HomeData", JSON.stringify(data));
         }
 
         function _load(data){

@@ -211,7 +211,9 @@
         
         function confirmDelete(){
             //Delete image if stored in azure
-            if (vm.image.indexOf('https://rankx.blob') > -1) imagelist.deleteBlob(vm.image);
+            if (vm.image != null && vm.image != undefined ){
+                if (vm.image.indexOf('https://rankx.blob') > -1) imagelist.deleteBlob(vm.image);
+            }
             if ($rootScope.cCategory.nh == 1) categories.deleteRec($rootScope.cCategory.cat);
             catans.deletebyCategory($rootScope.cCategory.id);
             table.deleteTable($rootScope.cCategory.id);

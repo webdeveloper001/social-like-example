@@ -186,9 +186,8 @@
         
         </div>
     </div>
-    <div class="col-xs-8 visible-xs" style="margin-bottom: 10px">
-
-        <div class="dropdown">
+    <div class="col-xs-8 visible-xs" style="margin-bottom: 10px; padding:0px">
+        <div class="dropdown" style="margin:0px; padding:0px;">
             <button class="btn btn-default" ng-click="vm.sortbyHelpDialog()"><i class="fa fa-question-circle"></i></button>
             <span style="line-height:32px; margin: 0px 10px;">Sort By:</span>
             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
@@ -207,7 +206,6 @@
                 <li><a class="btn btn-default {{vm.selTrending}} " ng-click="vm.sortByTrending()">Trending</a></li>
             </ul>
         </div>
-
     </div>
 
     <div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 btn-group text-center">
@@ -216,12 +214,16 @@
     </div>
 </div>
 <div style="margin:0px; margin-top: 0px; " class="text-center" ng-if="!vm.fnm">
-    <button ng-click="vm.changeMode('endorse') " class="btn btn-primary" ng-if="vm.mode=='specials'">Endorse</button>
-    <button ng-click="vm.changeMode('specials') " class="btn btn-primary" ng-if="vm.mode=='endorse'">Specials</button>
-
+    <div class="btn-group" style="padding-right:20px">
+    <button ng-click="vm.changeMode('endorse') " class="btn {{vm.mode=='endorse' ? 'btn-primary':'btn-default'}}" 
+    >Endorsements</button>
+    <button ng-click="vm.changeMode('specials') " class="btn {{vm.mode=='specials' ? 'btn-primary':'btn-default'}}"
+    >Specials</button>
+    </div>
     <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">Rank</button>
+    <!--
     <span style="line-height: 32px">&nbsp;&nbsp;&nbsp;Contributors: <b style="color:blue; ">
-        <i>{{vm.numContributors}}&nbsp&nbsp</i></b></span>
+        <i>{{vm.numContributors}}&nbsp&nbsp</i></b></span>-->
 </div>    
 <!--
 <div ng-show="{{vm.type == 'Establishment'}}">
@@ -239,12 +241,13 @@
                 <th ng-if="vm.mode=='specials'" align="middle">{{vm.showR ? 'Rank' : 'Votes'}}</th>
                 <th ng-if="!vm.sm && !vm.fnm && !vm.isE && vm.mode=='specials'" align="middle">Votes</th>
                 <th class="capitalize " ng-repeat="h in vm.fields | filter:{isrequired:true}" align="middle">{{h.label}}</th>
-                <th ng-if="vm.type == 'Establishment' && vm.haveLocation && vm.mode=='specials'" align="middle">Distance (mi)</th>
+                <th ng-if="(vm.type == 'Establishment' || vm.type == 'Place') && vm.haveLocation && vm.mode=='specials'" align="middle">Distance (mi)</th>
                 <th ng-if="vm.type == 'Event' && vm.mode=='specials'" align="middle">Date</th>
                 <th ng-if="vm.type == 'Establishment' && vm.mode=='specials'" align="middle">Specials</th>
                 <th ng-if="vm.mode == 'endorse'" align="middle">
                     Endorsements
                 </th>
+                <th ng-if="vm.mode=='endorse'">&nbsp</th>
 
                 <!-- ng-show="{{vm.type == 'Establishment'}}" -->
             </tr>
@@ -258,7 +261,7 @@
                 <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
                 <td ng-repeat="h in vm.fields | filter:{isrequired:true}" ><a ng-attr-style="text-decoration: none;" href="{{'/answerDetail/' + x.slug }}" ng-click="vm.answerDetail(x)">{{ x[h.name]}}</a></td> 
                 <!-- ng-attr-style="background-color:{{x.bc}};color:{{x.fc}}"> -->
-                <td ng-if="vm.type == 'Establishment' && vm.haveLocation && vm.mode=='specials'" ng-click="vm.answerDetail(x)">{{x.dist}}</td>
+                <td ng-if="(vm.type == 'Establishment' || vm.type == 'Place') && vm.haveLocation && vm.mode=='specials'" ng-click="vm.answerDetail(x)">{{x.dist}}</td>
                 <td ng-if="vm.type == 'Event' && vm.mode == 'specials'" ng-click="vm.answerDetail(x)">{{x.date}}</td>
                 <!-- ng-attr-style="background-color:{{x.bc}};color:{{x.fc}}" -->
                 <td ng-show="vm.type == 'Establishment' && vm.mode=='specials'" ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}" ng-click="vm.answerDetail(x)">
@@ -279,9 +282,34 @@
                             &nbsp&nbsp
                         </span>
                         
-                    </div>          
+                    </div>
+                    <div class="hidden-sm hidden-md hidden-lg hidden-xl">
+                        <div ng-if="x.userObjs.length == 1">
+                            <span class="badge btn-primary" ng-click="vm.showAllFriendsList(x.userObjs, x.name)">
+                        1 friend endorses this
+                        </span>
+                        </div>
+                        <div ng-if="x.userObjs.length > 1">
+                            <span class="badge btn-primary" ng-click="vm.showAllFriendsList(x.userObjs, x.name)">
+                        {{x.userObjs.length}} friends endorse this
+                        </span>
+                        </div>
+                    </div>
                 </td>
-
+                <td class="hidden-xs" ng-if="vm.mode=='endorse'" style="width:{{vm.sm?'150px':'150px'}}">
+                <!-- <div class="hidden-xs"> -->
+                    <div ng-if="x.userObjs.length == 1">
+                        <span class="badge btn-primary" ng-click="vm.showAllFriendsList(x.userObjs, x.name)">
+                        1 friend endorses this
+                        </span>
+                    </div>
+                    <div ng-if="x.userObjs.length > 1">
+                        <span class="badge btn-primary" ng-click="vm.showAllFriendsList(x.userObjs, x.name)">
+                        {{x.userObjs.length}} friends endorse this
+                        </span>
+                    </div>
+                <!-- </div>  -->
+                </td>
             </tr>
         </tbody>
 </table>

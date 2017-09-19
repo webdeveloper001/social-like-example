@@ -112,7 +112,7 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
             };
             scope.ansSel = function (x) {
                 $rootScope.PAGEYOFFSET =  window.pageYOffset;
-                $rootScope.cCategory = undefined;
+                $rootScope.cCategory = undefined; //clear current category
                 //scope.disableScrolling = true;
                 $state.go('answerDetail', { index: x.slug });                
             };

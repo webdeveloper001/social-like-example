@@ -179,7 +179,8 @@
 						</td>
 						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
 						<td>
-							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " align="middle" style="display: inline" >
+							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " 
+								ng-click="vm.showAllFriendsList(x.userObjs, x.name)" align="middle" style="display: inline" >
 								<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>
 							</div>
 						</td>     
@@ -213,7 +214,8 @@
 						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">	{{x.sp_title}}
 						</td>    
 						<td>
-							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " align="middle" style="display: inline" >
+							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " 
+								ng-click="vm.showAllFriendsList(x.userObjs, x.name)" align="middle" style="display: inline" >
 								<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>
 							</div>
 						</td>     
@@ -248,7 +250,8 @@
 						</td>
 						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
 						<td>
-							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " align="middle" style="display: inline" >
+							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " 
+							ng-click="vm.showAllFriendsList(x.userObjs, x.name)" align="middle" style="display: inline" >
 								<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>
 							</div>
 						</td>     
@@ -281,7 +284,8 @@
 						</td>
 						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
 						<td>
-							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " align="middle" style="display: inline" >
+							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " 
+							ng-click="vm.showAllFriendsList(x.userObjs, x.name)" align="middle" style="display: inline" >
 								<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>
 							</div>
 						</td>     
@@ -314,7 +318,8 @@
 						</td>
 						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
 						<td>
-							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " align="middle" style="display: inline" >
+							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " 
+							ng-click="vm.showAllFriendsList(x.userObjs, x.name)" align="middle" style="display: inline" >
 								<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>
 							</div>
 						</td>     
@@ -334,15 +339,30 @@
 						<tr>
 							<th ng-attr-style="background-color:{{vm.bgc6}};color:{{vm.fc6}};width:50%;">
 								{{vm.headline6}}</th>
-							<th ng-attr-style="background-color:{{vm.bgc6}};color:{{vm.fc6}};width:50%;"></th>	
+							<th ng-attr-style="background-color:{{vm.bgc6}};color:{{vm.fc6}};width:50%;"></th>
+							<th ng-attr-style="background-color:{{vm.bgc6}};color:{{vm.fc6}};width:50%;">
+							</th>
+							<th ng-attr-style="background-color:{{vm.bgc6}};color:{{vm.fc6}};width:50%;">
+							</th>	
 						</tr>
 					</thead>
 					<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
-					<tr ng-repeat="x in vm.socialans | limitTo:vm.maxRes6" ng-click="vm.answerDetail(6,x)" style="cursor:pointer;">
-						<td style="width:50%;">
+					<tr ng-repeat="x in vm.socialans | limitTo:vm.maxRes6" style="cursor:pointer;">
+						<td style="width:50%;line-height: 35px" ng-click="vm.answerDetail(6,x)" >
 							{{x.name}}
 						</td>
 						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+						<td>
+							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " 
+							ng-click="vm.showAllFriendsList(x.userObjs, x.name)" align="middle" style="display: inline" >
+								<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>
+							</div>
+						</td>     
+						<td style="line-height: 35px">
+							<div ng-show="x.userObjs.length > 1" style="display: inline">
+								<span class="badge btn-primary" ng-click="vm.showAllFriendsList(x.userObjs, x.name)">{{x.userObjs.length}}</span>
+							</div>
+						</td>     
 					</tr>
 				</tbody>
 			</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(6)" ng-if="vm.cb6gt5">&lt;&lt;{{vm.btext6}}&gt;&gt;</p>
@@ -353,15 +373,30 @@
 						<tr>
 							<th ng-attr-style="background-color:{{vm.bgc7}};color:{{vm.fc7}};width:50%;">
 								{{vm.headline7}}</th>
-							<th ng-attr-style="background-color:{{vm.bgc7}};color:{{vm.fc7}};width:50%;"></th>	
+							<th ng-attr-style="background-color:{{vm.bgc7}};color:{{vm.fc7}};width:50%;"></th>
+							<th ng-attr-style="background-color:{{vm.bgc7}};color:{{vm.fc7}};width:50%;">
+							</th>
+							<th ng-attr-style="background-color:{{vm.bgc7}};color:{{vm.fc7}};width:50%;">
+							</th>	
 						</tr>
 					</thead>
 					<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
-					<tr ng-repeat="x in vm.familyans | limitTo:vm.maxRes7" ng-click="vm.answerDetail(7,x)" style="cursor:pointer;">
-						<td style="width:50%;">
+					<tr ng-repeat="x in vm.familyans | limitTo:vm.maxRes7" style="cursor:pointer;">
+						<td style="width:50%;line-height: 35px" ng-click="vm.answerDetail(7,x)" >
 							{{x.name}}
 						</td>
 						<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+						<td>
+							<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs | limitTo:1 " 
+							ng-click="vm.showAllFriendsList(x.userObjs, x.name)" align="middle" style="display: inline" >
+								<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>
+							</div>
+						</td>     
+						<td style="line-height: 35px">
+							<div ng-show="x.userObjs.length > 1" style="display: inline">
+								<span class="badge btn-primary" ng-click="vm.showAllFriendsList(x.userObjs, x.name)">{{x.userObjs.length}}</span>
+							</div>
+						</td>     
 					</tr>
 				</tbody>
 			</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(7)" ng-if="vm.cb7gt5">&lt;&lt;{{vm.btext7}}&gt;&gt;</p>

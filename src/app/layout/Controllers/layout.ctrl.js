@@ -485,6 +485,8 @@
         function goAddRank() {
             if ($rootScope.isLoggedIn) {
                 vm.childActive = true; 
+                vm.barIsActive = false;
+                $rootScope.cCategory = undefined; //clear current category 
                 $state.go('addCustomRank');
             }
             else dialog.loginFacebook();
@@ -581,6 +583,7 @@
         function showTrends(){
             vm.childActive = true; 
             vm.barIsActive = false;
+            $rootScope.cCategory = undefined; //clear current category
             $state.go('trends');
         }
 

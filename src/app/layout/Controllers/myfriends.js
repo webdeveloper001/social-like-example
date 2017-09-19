@@ -191,7 +191,6 @@
                                         addRecord(vm.socialans, answer, i);
                                     }
 
-
                                     if (category.title.indexOf('family') > -1 || category.tags.indexOf('family') > -1) {
 
                                         addRecord(vm.familyans, answer, i);
@@ -271,20 +270,43 @@
         }
 
         function addRecord(part, answer, i){
+            var cidx = 0;
+            var ridx = 0;
+            var fidx = 0;
+            var idx = 0;
+            
+            cidx = $rootScope.catansrecs.map(function(x) {return x.id; }).indexOf($rootScope.friends_votes[i].catans);
+            ridx = $rootScope.content.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[cidx].category); 
+
             var map = part.map(function (x) { return x.id; });
-            if( map.indexOf(answer.id) == -1 ){
+            idx = map.indexOf(answer.id);
+            if(idx == -1){
                 var data = angular.copy(answer);
                 getSpecials(data);
                 data.trackID = data.id + '' + $rootScope.friends_votes[i].id;
                 data.userObjs = [];
-                var friend = getUser(data, $rootScope.friends_votes[i]);
+                var friend = angular.copy(getUser(data, $rootScope.friends_votes[i]));
+                
+                friend.endorsements = [];
+                friend.endorsements.push($rootScope.content[ridx].title);
                 data.userObjs.push(friend);
-                part.push(data);    
+                part.push(data);
             }
-            else{
-                var data = part[map.indexOf(answer.id)];
-                var friend = getUser(data, $rootScope.friends_votes[i]);
-                addUser(data, friend);
+            else {
+                
+                var friend = angular.copy(getUser(data, $rootScope.friends_votes[i]));
+                fidx = part[idx].userObjs.map(function(x) {return x.id; }).indexOf(friend.id);
+                
+                if (fidx == -1){
+                    friend.endorsements = [];
+                    friend.endorsements.push($rootScope.content[ridx].title);
+                    part[idx].userObjs.push(friend);
+                }
+                else {
+                    if (part[idx].userObjs[fidx].endorsements.indexOf($rootScope.content[ridx].title) == -1){ 
+                        part[idx].userObjs[fidx].endorsements.push($rootScope.content[ridx].title);
+                    }
+                }
             }
         }
 
