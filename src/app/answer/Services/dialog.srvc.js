@@ -2209,23 +2209,28 @@
             });
             }
         function showAllFriendsListDlg(userObjs, answername) {
-            var imageListHtml = "<div class='row'>";
+            var imageListHtml = '';
             for (var i = 0; i < userObjs.length; i++) {
-
+                imageListHtml += '<div class="row" style="padding-bottom:10px">';
                 imageListHtml += '<div class="col-xs-3 col-md-3 text-center">';
   
                 imageListHtml += '<img src="' + userObjs[i].picture.data.url + '" class="img-responsive img-circle profile-avatar" style="width: 100%;height: 100%;"/>';
-                imageListHtml += '<span>' + userObjs[i].first_name + ' ' + userObjs[i].last_name + '</span>';
                 imageListHtml += '</div>';
 
+                imageListHtml += '<div class="col-xs-9 col-md-9 text-center">';
+                imageListHtml +=  '<div class="text-left"><strong>' + userObjs[i].first_name + ' ' + userObjs[i].last_name + '</strong> endorsed in: </div>';
+                for (var j=0; j < userObjs[i].endorsements.length; j++){
+                    imageListHtml += '<i>'+userObjs[i].endorsements[j] + '</i></br>';
+                }
+                imageListHtml += '</div>';
+                imageListHtml += '</div>';
             }
-            imageListHtml += '</div>';
-            
+                     
             BootstrapDialog.show({
                 size: BootstrapDialog.SIZE_SM,
                 type: BootstrapDialog.TYPE_PRIMARY,
                 cssClass: 'fav-list-user-image-dialog',
-                title: "My Friends that like " + answername,
+                title: "Friends that like " + answername,
                 message: function (dialogRef) {
                     var $content = $(imageListHtml);
                     var x = dialogRef;

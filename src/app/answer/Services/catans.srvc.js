@@ -85,14 +85,15 @@
         }
 
         function getAllcatansX(data) {
-            //console.log("@catans - getAllCatansX");
             var _datax = [];  //this is filtered array (ignore those ranks for which catans already fetched)
-            data.forEach(function(item){
-                if (_fetchRanksMem.indexOf(item.id)<0){
-                     _datax.push(item);
-                     _fetchRanksMem.push(item.id);
-                }
-            });
+            if (data.length > 0) {
+                data.forEach(function (item) {
+                    if (_fetchRanksMem.indexOf(item.id) < 0) {
+                        _datax.push(item);
+                        _fetchRanksMem.push(item.id);
+                    }
+                });
+            }
             //_datax = [];
             if (_datax.length == 0) return $q.when(false);
                 
@@ -138,17 +139,18 @@
         function getAllcatansY(data) {
 
             var _datax = [];  //this is filtered array (ignore those answers for which catans already fetched)
-            data.forEach(function(item){
-                if (_fetchAnswersMem.indexOf(item.id)<0){
-                    _datax.push(item);
-                    _fetchAnswersMem.push(item.id);
-                }
-            });
-
+            if (data.length > 0) {
+                data.forEach(function (item) {
+                    if (_fetchAnswersMem.indexOf(item.id) < 0) {
+                        _datax.push(item);
+                        _fetchAnswersMem.push(item.id);
+                    }
+                });
+            }
             //_datax = [];
 
             if (_datax.length == 0) return $q.when(false);
-
+            //console.log();
             var filterstr = '?filter=(';
             for (var i=0; i< _datax.length; i++){
                 filterstr = filterstr + 'answer=' + _datax[i].id+')OR(';
