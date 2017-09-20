@@ -238,7 +238,7 @@
             loadData(); //load data and write to $rootScope
             if (!foodNearMe){
                 loadTrendVotes(0);
-                loadFriendsEndorsements(0);
+                if ($rootScope.isLoggedIn && $rootScope.friends_votes) loadFriendsEndorsements(0);
             }
 
             checkUserCredentials();
@@ -1643,7 +1643,7 @@
                             answer.userObjs.push(friend);
                         }
                         else {
-                            console.log("answer - ", answer);
+                            //console.log("answer - ", answer);
                             answer.userObjs[idx].endorsements.push($rootScope.content[ridx].title);
                         }
                     }
