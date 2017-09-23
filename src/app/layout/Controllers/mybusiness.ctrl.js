@@ -32,6 +32,7 @@
         vm.dataReady = false;
         vm.showInvoices = false;
         vm.showPaymentInfo = false;
+        vm.processInProgress = false;
         
         vm.SERVER_URL = SERVER_URL;
 
@@ -77,10 +78,10 @@
         }
         function activate() {
             console.log("activate business page")
-            dialog.notificationWithCallback(
-                'Info',
-                'The Purchasing of Premium Feautures is not available at this moment. Please try again later.',
-                goBack);
+            //dialog.notificationWithCallback(
+            //    'Info',
+            //    'The Purchasing of Premium Feautures is not available at this moment. Please try again later.',
+            //    goBack);
 
             $q.all([ useraccnt.getuseraccnt(),  setting.getSetting(), codeprice.get()]).then(function(data){
                 $rootScope.useraccnts = data[0];
@@ -591,6 +592,7 @@
                             vm.purchase_progress = false;
                             vm.edit_progress = false;
                             vm.cancel_progress = false;
+                            vm.processInProgress = false;
                             //update local copy
                             var idx = $rootScope.useraccnts.map(function (x) { return x.id; }).indexOf(result[0].id);
                             console.log("idx - ", idx);
@@ -622,17 +624,20 @@
 
                     if (checkAgain == true && (vm.checkout || vm.manage)) {
                         //recursion ... find another way if possible
-                        if (check == 'purchase') {
-                            vm.purchase_progress = true;
-                        }
-                        if (check == 'edit') {
-                            vm.edit_progress = true;
-                        }
-                        if (check == 'cancel') {
-                            vm.cancel_progress = true;
+                        if (vm.acceptTOS && vm.processInProgress) {
+                            if (check == 'purchase') {
+                                vm.purchase_progress = true;
+                            }
+                            if (check == 'edit' && vm.acceptTOS && vm.processInProgress) {
+                                vm.edit_progress = true;
+                            }
+                            if (check == 'cancel' && vm.acceptTOS && vm.processInProgress) {
+                                vm.cancel_progress = true;
+                            }
                         }
 
                         loopCheck(check);
+
                     } else {
                         return;
                     }
@@ -642,7 +647,7 @@
         }
 
         function clickStripeCheckout(){
-            // vm.dataReady = false;
+            vm.processInProgress = true;
         }
 
         function editContact(){
