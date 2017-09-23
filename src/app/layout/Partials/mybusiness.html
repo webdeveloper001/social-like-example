@@ -26,7 +26,7 @@
 	    <p style="font-size:large">Cancelling your subscrpitions...</p>
 	</div>
 </div>
-<div ng-if="vm.dataReady">
+<div ng-if="vm.dataReady" ng-hide="vm.processInProgress">
 
 <div>
 	<h3 ng-if="vm.overview">My Business</h3>
@@ -98,8 +98,8 @@
 		<div class="text-center">
 		
 		<span>Now you are billing with {{vm.business.customer.sources.data[0].brand}} Card  <code> **** - **** - **** - {{vm.business.customer.sources.data[0].last4}} </code>
-		Please Click here to change the card.</span><br/>
-			<button id="updateCardButton" name="updateCardButton" class="btn btn-success" onClick="updateCardNumberButton()" style="margin-top:10px">Update Card Details</button>
+		</span><br/>
+			<button id="updateCardButton" name="updateCardButton" class="btn btn-primary" onClick="updateCardNumberButton()" style="margin-top:10px">Enter a New Card</button>
 		</div>
 		<form action="https://server.rank-x.com/StripeServer/changeSource" method="POST" data-remote="true" ng-submit="changeCardNumber()" id="updateCardNumberForm">
 
@@ -329,7 +329,7 @@
 	<div class="text-center"> <!-- B -->
 		<!-- <button class="btn btn-success" ng-click="vm.goCheckout()">Pay with Card</button> -->
 		<br>
-		<button id="checkoutButton" name="checkoutButton" class="btn btn-success"  ng-class="vm.acceptTOS ? '' : 'disabled'" onClick="clickStripeButton()" ng-if="!(vm.business.isPremium == true || vm.business.hasRanks == true)">Pay with Card</button>
+		<button id="checkoutButton" name="checkoutButton" class="btn btn-success"  ng-class="vm.acceptTOS ? '' : 'disabled'" onClick="clickStripeButton()" ng-click="vm.clickStripeCheckout()" ng-if="!(vm.business.isPremium == true || vm.business.hasRanks == true)">Pay with Card</button>
 		<button id="checkoutButton" name="checkoutButton" class="btn btn-success"  ng-class="vm.acceptTOS ? '' : 'disabled'" ng-click="vm.addSubscription()" ng-if="vm.business.isPremium == true || vm.business.hasRanks == true">Add Subscription</button>
 		<br>
 		<div ng-show="!vm.showCurrentPlan" > <!-- C -->
