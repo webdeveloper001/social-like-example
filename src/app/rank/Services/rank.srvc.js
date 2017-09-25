@@ -84,11 +84,12 @@
                     //Get total number of games played for this answer
                     GPtemp = GPtemp + GP[i][j];                                         
                 }
-                answers[i].Rank = answers[i].Rank / GPtemp;
                 
+                answers[i].Rank = answers[i].Rank / GPtemp;
                 //if this answer has played fewer games than half the mean, multiply by reducing factor
                 //TODO. Now using linear reducing factor. Later can revise for a better statistical curve.
-                if (GPtemp < mGP) answers[i].Rank = answers[i].Rank * (GPtemp / mGP);                   
+                if (GPtemp < mGP) answers[i].Rank = answers[i].Rank * (GPtemp / mGP);
+                if (isNaN(answers[i].Rank)) answers[i].Rank = 0;
             }
 
             //Check one by one, compare rank and relative comparison

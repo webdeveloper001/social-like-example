@@ -114,7 +114,7 @@
             prepareRankSummary();
         });
         var coordsRdyRankListener = $rootScope.$on('coordsRdy', function () {
-            console.log("received coordsreadyrank");
+            if ($rootScope.DEBUG_MODE) console.log("received coordsreadyrank");
             //loadData();
             //$scope.$apply(function(){
                 vm.haveLocation = true;
@@ -268,14 +268,12 @@
             
             //Sort by rank here (this is to grab images of top 3 results)
             //vm.answers = $filter('orderBy')(vm.answers, '-Rank');
+            sortByRank();
             
             //Instead of rank points just show index in array
             for (var i = 0; i < vm.answers.length; i++) {
                 vm.answers[i].Rank = i + 1;
             }
-
-            //vm.answers = $filter('orderBy')(vm.answers, 'Rank');
-            sortByRank();
             
             //Determine number of user comments
             if ($rootScope.cCategory.numcom == undefined) vm.numcom = 0;
@@ -1067,9 +1065,11 @@
 
         function sortByRank() {
             function compare(a, b) {
-                return a.Rank - b.Rank;
+                if (a.Rank < 1 || b.Rank < 1 ) return a.Rank < b.Rank;
+                else return a.Rank > b.Rank;                 
             }
             vm.answers = vm.answers.sort(compare);
+            
             getDisplayImages();
 
             $rootScope.canswers = vm.answers;

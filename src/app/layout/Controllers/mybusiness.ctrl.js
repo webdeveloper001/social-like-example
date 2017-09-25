@@ -116,8 +116,12 @@
                             bizObj.email = $rootScope.useraccnts[j].email;
                             bizObj.accountid = $rootScope.useraccnts[j].id;
                             bizObj.stripeid = $rootScope.useraccnts[j].stripeid;
-                            bizObj.lastPaymentMade = $rootScope.useraccnts[j].lastPaymentMade;
-                            bizObj.nextPaymentDue = $rootScope.useraccnts[j].nextPaymentDue;
+                            bizObj.lastPaymentMade = formatDate($rootScope.useraccnts[j].lastPaymentMade);
+                            bizObj.nextPaymentDue = formatDate($rootScope.useraccnts[j].nextPaymentDue);
+                            bizObj.lastPaymentAmount = $rootScope.useraccnts[j].lastPaymentAmount/100;
+                            bizObj.nextPaymentAmount = $rootScope.useraccnts[j].nextPaymentAmount/100;
+                            bizObj.istrial = $rootScope.useraccnts[j].istrial;
+                            bizObj.discountEndDate = formatDate($rootScope.useraccnts[j].discountEndDate);
                             bizObj.monthlyCost = $rootScope.useraccnts[j].monthlyCost;
                             bizObj.isPremium = $rootScope.useraccnts[j].ispremium;
                             bizObj.hasRanks = $rootScope.useraccnts[j].hasranks;
@@ -142,6 +146,11 @@
                             }
                             else {bizObj.status2 = 'No Custom Ranks'; bizObj.style2 = 'background-color:#ffffff';}
 
+                            if (bizObj.istrial) {
+                                var todayDate = Date.now();
+                                var endDate = new Date(bizObj.discountEndDate);
+                                bizObj.daysLeft = Math.floor((endDate - todayDate)/86400000)
+                            }
                             //get monthly price
                             for (var k=0; k<$rootScope.codeprices.length; k++){
                                 //console.log($rootScope.codeprices[k].code, bizObj.bizcat);
@@ -159,6 +168,7 @@
                     bizObj.invoices = [];
                     loadInvoicesAndCustomer(bizObj);
                     loadPromoter(bizObj);
+                    console.log("bizObj - ", bizObj);
                     vm.mybizs.push(bizObj);     
                 }
             }
@@ -169,12 +179,14 @@
 
         function showInvoicsClicked(){
             vm.showInvoices = !vm.showInvoices;
+            if (vm.showInvoices) vm.showPaymentInfo = false; 
         }
         function hideInvoices(){
             vm.showInvoices = false;   
         }
         function showPaymentInfoEditClicked(){
             vm.showPaymentInfo = !vm.showPaymentInfo;
+            vm.showInvoices = false;
         }
         function GetFormattedDate(date) {
             var month = format(date.getMonth() + 1);
@@ -247,7 +259,8 @@
             else vm.sell = false;
             checkData();
 
-            if ($rootScope.DEBUG_MODE) console.log("vm.business",x);
+            //if ($rootScope.DEBUG_MODE) 
+                console.log("vm.business",x);
             
         }
 
@@ -677,6 +690,11 @@
 
         function stripeFormSubmit(e) {
             alert();
+        }
+
+        function formatDate(x){
+            var date = new Date(x);
+            return date.toDateString();
         }
     }   
 })();

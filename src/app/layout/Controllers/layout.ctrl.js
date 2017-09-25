@@ -195,6 +195,7 @@
             //console.log("rx back to results");
                     vm.childActive = false; 
                     vm.barIsActive = true;
+                    $rootScope.cCategory == undefined;
                     backToResults();
                 //}      
         });

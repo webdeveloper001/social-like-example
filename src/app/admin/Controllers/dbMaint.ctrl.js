@@ -671,7 +671,7 @@
                         //console.log("catstr - ", catstr);
                         table.update($rootScope.content[i].id,['catstr'],[catstr]).then(function(){
                             ctr++;
-                            vm.cpct = (ctr/$rootScope.content.length)*100;
+                            vm.cpct = Math.floor((ctr/$rootScope.content.length)*100);
                         });
                         
                     }

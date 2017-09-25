@@ -68,7 +68,7 @@
                             $rootScope.coordForUSer = false;
                             $rootScope.coordsRdy = true;
                             $rootScope.$emit('coordsRdy');
-                            console.log('@gps - 71');
+                            if ($rootScope.DEBUG_MODE)  console.log('@gps - 71');
                             //if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 9521 });
                             //if ($rootScope.loadRankWhenCoordsRdy) 
                                 //console.log("executed reload");
