@@ -89,6 +89,13 @@
                 templateUrl: 'app/admin/Partials/staticpagesconsole.html',
                 controller: 'staticpagesconsole as vm'               
             },
+            {
+                name: 'locations',
+                parent: 'admin',
+                url: '/locations',
+                templateUrl: 'app/admin/Partials/locations.html',
+                controller: 'locations as vm'               
+            },
              {
                 name: 'updateHeaders',
                 parent: 'admin',
