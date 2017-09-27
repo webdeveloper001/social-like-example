@@ -44,6 +44,8 @@
         vm.hideSearch = hideSearch;
         vm.gotoHome = gotoHome;
         vm.goAddRank = goAddRank;
+        vm.quickFilter = quickFilter;
+
         vm.foodNearMe = false;
         if ($window.location.href.indexOf('rankSummary/food-near-me-9521') != -1) {
             vm.foodNearMe = true;
@@ -60,6 +62,10 @@
         vm.viewRank = viewRank;
         vm.applyRule = applyRule;
         vm.selCityActive = false;
+        vm.selectNh = selectNh;
+        vm.clearNh = clearNh;
+        vm.nhctrl = false;
+        vm.nh = '';
         vm.toggleSelCity = toggleSelCity;
         vm.showTrends = showTrends;
         //vm.scopeGeneral = scopeGeneral;
@@ -97,12 +103,13 @@
         vm.hideFilterBox = function () {
             vm.showFilters = false;
         }
-
+/*
         vm.selectNh = function (item, data) {
             vm.filterOptions.isCity = false;
             vm.filterOptions.isNh = true;
         }
-
+*/
+/*
         vm.selectTopic = function (topic) {
             if (topic == "All") {
                 if (vm.filterOptions.isAllTopics == false) {
@@ -126,7 +133,8 @@
                 }
             }
         }
-
+*/
+/*
         vm.switchLocationScope = function (loc) {
             if (loc == 'city') {
                 vm.filterOptions.isCity = true;
@@ -508,6 +516,36 @@
         }
         function applyRule() {
             $rootScope.$emit('applyRule');
+        }
+
+        function quickFilter(x){
+            if (x == 'neighborhood') {
+                //dialog.selectNeighborhood($rootScope.locations);
+                if (vm.nhctrl == false) vm.nhctrl = true;
+                else vm.nhctrl = false;
+
+                if (vm.nhctrl == true) vm.nhops = $rootScope.nhops;
+
+            }
+            else {
+                if (vm.nh == '') vm.val = x;
+                else vm.val = vm.nh + ' ' + x;
+            }
+        }
+
+        function selectNh(){
+            if (vm.nhops.indexOf(vm.nhinp)>-1) {
+                vm.nh = vm.nhinp;
+                vm.nhctrl = false;
+                vm.val = vm.nh;
+            }
+        }
+
+        function clearNh(){
+            vm.nhinp = '';
+            vm.nh = '';
+            vm.nhctrl = false;
+            vm.val = '';
         }
         /*
         function scopeGeneral(force) {

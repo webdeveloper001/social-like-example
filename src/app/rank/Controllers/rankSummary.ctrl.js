@@ -268,7 +268,7 @@
             
             //Sort by rank here (this is to grab images of top 3 results)
             sortByRank();
-            
+                       
             //Instead of rank points just show index in array
             for (var i = 0; i < vm.answers.length; i++) {
                 vm.answers[i].Rank = i + 1;
@@ -1066,8 +1066,8 @@
 
         function sortByRank() {
             function compare(a, b) {
-                if (a.Rank < 1 || b.Rank < 1 ) return a.Rank < b.Rank;
-                else return a.Rank > b.Rank;                 
+                if (a.Rank < 1 || b.Rank < 1 ) return b.Rank - a.Rank;
+                else return a.Rank - b.Rank;             
             }
             vm.answers = vm.answers.sort(compare);
             

@@ -139,6 +139,7 @@
                 getSecondaryData();
                 table.storeInitialHomeData(ridsx);
                 categories.storeInitialHomeData(cidsx);
+                createNhOps();
                 
                 if ($rootScope.DEBUG_MODE) console.log("cwrapper data ready!");
                 $rootScope.$emit('homeDataLoaded');
@@ -231,6 +232,13 @@
         function checkDemoDataStatus(){
             demoDataReady = demoData1of3 && demoData2of3 && demoData3of3;
             landAnswerCheckStatus();
+        }
+
+        function createNhOps(){
+            $rootScope.nhops = [];
+            $rootScope.locations.forEach(function(nh){
+                $rootScope.nhops.push(nh.nh_name);
+            })
         }
 /*
         function getallranks(){
