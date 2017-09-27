@@ -7,12 +7,12 @@
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
         'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt','dataloader','$timeout',
-        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope', 'table', 'SERVER_URL',
+        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope', 'table', 'SERVER_URL','$http',
         '$cookies', '$q', 'fbusers', 'InstagramService', 'mailing', 'Socialshare']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
         votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt, dataloader, $timeout,
-        $location, vrows, vrowvotes, imagelist, instagram, $scope, table, SERVER_URL,
+        $location, vrows, vrowvotes, imagelist, instagram, $scope, table, SERVER_URL, $http,
         $cookies, $q, fbusers, InstagramService, mailing, Socialshare) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
@@ -344,8 +344,7 @@
             else vm.showNextnPrev = false;
 
             //Update number of views
-            var nViews = vm.answer.views + 1;
-            answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
+            incViews();
 
             votemodeOFF();
 
@@ -1586,6 +1585,21 @@
                 //     break;
                 // }
             } 
+        }
+
+        function incViews(){
+            var nViews = vm.answer.views++;
+            //increment number of views of this answer - request to server
+            var url = SERVER_URL + 'databaseOps/incViews/answer/' + vm.answer.id;
+            var req = {
+                method: 'POST',
+                url: url,
+                headers: {
+                    'X-Dreamfactory-API-Key': undefined,
+                    'X-DreamFactory-Session-Token': undefined
+                }
+            }
+            $http(req);
         }
     }
 })();

@@ -5,11 +5,11 @@
         .module('app')
         .controller('admin', admin);
 
-    admin.$inject = ['$location', '$rootScope', '$state','table','answer','categories','table2',
+    admin.$inject = ['$rootScope', '$state','table','answer','categories','table2',
     'categorycode','$q','vrows','catans','common','dataloader','locations','special','matchrec',
     'useractivity','edit','useraccnt','staticpages', '$timeout'];
 
-    function admin(location, $rootScope, $state, table, answer, categories, table2,
+    function admin($rootScope, $state, table, answer, categories, table2,
         categorycode, $q, vrows, catans, common, dataloader, locations, special, matchrec,
         useractivity, edit, useraccnt, staticpages, $timeout) {
         /* jshint validthis:true */
@@ -40,6 +40,7 @@
         vm.cleanDB = cleanDB;
         vm.modImages = modImages;
         vm.staticPages = staticPages;
+        vm.golocations = golocations;
 
         vm.dataready = false;
         //vm.fbpost = fbpost;
@@ -201,6 +202,12 @@
             $state.go('staticpagesconsole');
         }
 
+        function golocations(){
+            disableAll();
+            vm.selLocations = 'active';
+            $state.go('locations');
+        }
+
         function disableAll(){
             vm.selKeywords = '';
             vm.selViews = '';
@@ -217,6 +224,7 @@
             vm.selCleanDB = '';
             vm.selimagesMod = '';
             vm.selStaticPages = '';
+            vm.selLocations = '';
         }
 
         function goBack() {

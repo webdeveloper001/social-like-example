@@ -37,6 +37,60 @@
                         OK</button>
                     </div>
                     -->
+                <div class="hidden-sm hidden-md hidden-lg hidden-xl">
+                    <div class="col-xs-12" style="padding-left:0px;padding-right:0px;">
+                        <button class="col-xs-3 btn btn-default" ng-click="vm.quickFilter('food')">Food</button>
+                        <button class="col-xs-3 btn btn-default" ng-click="vm.quickFilter('activities')">Activities</button>
+                        <button class="col-xs-3 btn btn-default" ng-click="vm.quickFilter('nightlife')">Nightlife</button>
+                        <button class="col-xs-3 btn btn-default" ng-click="vm.quickFilter('beauty')">Beauty</button>
+                    </div>
+                    <div class="col-xs-12" style="padding-left:0px;padding-right:0px">
+                        <button class="col-xs-3 btn btn-default" ng-click="vm.quickFilter('shopping')">Shopping</button>
+                        <button class="col-xs-3 btn btn-default" ng-click="vm.quickFilter('events')">Events</button>
+                        <button class="col-xs-3 btn btn-default" ng-click="vm.quickFilter('family')">Family</button>
+                        <button class="col-xs-3 btn btn-default" ng-click="vm.quickFilter('health')">Health</button>
+                    </div>
+                    <div class="col-xs-12" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
+                        <button class="col-xs-3 btn btn-default" ng-click="vm.quickFilter('services')">Services</button>
+                        <button class="col-xs-3 btn btn-default" ng-click="vm.quickFilter('fitness')">Fitness</button>
+                        <button class="col-xs-3 btn btn-default" ng-click="vm.quickFilter('sports')">Sports</button>
+                        <button class="col-xs-3 btn btn-default" style="padding-left:5px" ng-click="vm.quickFilter('neighborhood')">
+                        <small>{{vm.nh != ''? vm.nh:'Neighborhood'}}</small></button>
+                    </div>
+                </div>
+                <div class="hidden-xs">
+                    <div class="col-xs-12" style="padding-left:0px;padding-right:0px;">
+                        <button class="col-xs-2 btn btn-default" ng-click="vm.quickFilter('food')">Food</button>
+                        <button class="col-xs-2 btn btn-default" ng-click="vm.quickFilter('activities')">Activities</button>
+                        <button class="col-xs-2 btn btn-default" ng-click="vm.quickFilter('nightlife')">Nightlife</button>
+                        <button class="col-xs-2 btn btn-default" ng-click="vm.quickFilter('beauty')">Beauty</button>
+                        <button class="col-xs-2 btn btn-default" ng-click="vm.quickFilter('shopping')">Shopping</button>
+                        <button class="col-xs-2 btn btn-default" ng-click="vm.quickFilter('events')">Events</button>
+                    </div>
+                    <div class="col-xs-12" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
+                        <button class="col-xs-2 btn btn-default" ng-click="vm.quickFilter('family')">Family</button>
+                        <button class="col-xs-2 btn btn-default" ng-click="vm.quickFilter('health')">Health</button>
+                        <button class="col-xs-2 btn btn-default" ng-click="vm.quickFilter('services')">Services</button>
+                        <button class="col-xs-2 btn btn-default" ng-click="vm.quickFilter('fitness')">Fitness</button>
+                        <button class="col-xs-2 btn btn-default" ng-click="vm.quickFilter('sports')">Sports</button>
+                        <button class="col-xs-2 btn btn-default" style="padding-left:5px" ng-click="vm.quickFilter('neighborhood')">
+                        {{vm.nh != ''? vm.nh:'Neighborhood'}}</button>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding-left:0px;padding-right:0px;padding-bottom:7px;"
+                ng-show="vm.nhctrl">
+                    <div class="col-xs-3" style="padding-left:0px;padding-right:0px;">
+                        <p style="padding-top:5px">Neighborhood</p>
+                    </div>
+                    <div class="col-xs-5" style="padding-left:0px;padding-right:0px;">
+                        <input type="text" class="form-control" placeholder="Enter Neighborhood" ng-model="vm.nhinp" 
+                        bs-options="c for c in vm.nhops" bs-typeahead>
+                    </div> 
+                        <button class="col-xs-2 btn btn-success" type="submit" ng-click="vm.selectNh()"> 
+                        Select</button>
+                        <button class="col-xs-2 btn btn-default" type="submit" ng-click="vm.clearNh()"> 
+                        Clear</button>
+                </div>
                 <div class="col-xs-12" style="padding-left:0px;padding-right:0px;">
                     <div class="col-xs-7" style="padding-left:0px;padding-right:0px;">
                         <div class="input-group">

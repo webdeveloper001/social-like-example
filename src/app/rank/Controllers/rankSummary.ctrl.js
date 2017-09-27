@@ -6,12 +6,12 @@
         .controller('rankSummary', rankSummary);
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color'
-        , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope'
+        , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope','$http'
         , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', 'SERVER_URL',
         '$location', '$q', 'fbusers', 'useractivity', '$timeout','table2','categories','dataloader'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime, color
-        , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope
+        , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope, $http
         , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, SERVER_URL, 
         $location, $q, fbusers, useractivity, $timeout, table2, categories, dataloader) {
         /* jshint validthis:true */
@@ -114,7 +114,7 @@
             prepareRankSummary();
         });
         var coordsRdyRankListener = $rootScope.$on('coordsRdy', function () {
-            console.log("received coordsreadyrank");
+            if ($rootScope.DEBUG_MODE) console.log("received coordsreadyrank");
             //loadData();
             //$scope.$apply(function(){
                 vm.haveLocation = true;
@@ -267,15 +267,12 @@
             rank.computeRanking($rootScope.canswers, $rootScope.cmrecs);
             
             //Sort by rank here (this is to grab images of top 3 results)
-            //vm.answers = $filter('orderBy')(vm.answers, '-Rank');
-            
+            sortByRank();
+                       
             //Instead of rank points just show index in array
             for (var i = 0; i < vm.answers.length; i++) {
                 vm.answers[i].Rank = i + 1;
             }
-
-            //vm.answers = $filter('orderBy')(vm.answers, 'Rank');
-            sortByRank();
             
             //Determine number of user comments
             if ($rootScope.cCategory.numcom == undefined) vm.numcom = 0;
@@ -303,12 +300,12 @@
                 if (!foodNearMe && !$rootScope.cCategory.isGhost) {
                     if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
-                        ['views', 'answers','image1url', 'image2url', 'image3url'],
-                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,'','','']);
+                        ['answers','image1url', 'image2url', 'image3url'],
+                        [$rootScope.canswers.length,'','','']);
                     else
                     table2.update($rootScope.cCategory.id,
-                        ['views', 'answers','image1url', 'image2url', 'image3url'],
-                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,'','','']);
+                        ['answers','image1url', 'image2url', 'image3url'],
+                        [$rootScope.canswers.length,'','','']);
                 }
             }
             if (vm.answers.length == 1) {
@@ -336,13 +333,13 @@
                 if (!foodNearMe && !$rootScope.cCategory.isGhost) {
                     if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
-                        ['views', 'answers', 'image1url','image2url', 'image3url'],
-                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                        ['answers', 'image1url','image2url', 'image3url'],
+                        [$rootScope.canswers.length,
                             vm.image1,'','']);
                     else
                     table2.update($rootScope.cCategory.id,
-                        ['views', 'answers', 'image1url','image2url', 'image3url'],
-                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                        ['answers', 'image1url','image2url', 'image3url'],
+                        [$rootScope.canswers.length,
                             vm.image1,'','']);
                 }
             }
@@ -380,13 +377,13 @@
                 if (!foodNearMe && !$rootScope.cCategory.isGhost) {
                     if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
-                        ['views', 'answers', 'image1url', 'image2url', 'image3url'],
-                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                        ['answers', 'image1url', 'image2url', 'image3url'],
+                        [$rootScope.canswers.length,
                             vm.image1, vm.image2,'']);
                     else
                     table2.update($rootScope.cCategory.id,
-                        ['views', 'answers', 'image1url', 'image2url', 'image3url'],
-                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                        ['answers', 'image1url', 'image2url', 'image3url'],
+                        [$rootScope.canswers.length,
                             vm.image1, vm.image2,'']);
                 }
             }
@@ -439,13 +436,13 @@
                 if (!foodNearMe && !$rootScope.cCategory.isGhost) {
                     if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
-                        ['views', 'answers', 'image1url', 'image2url', 'image3url'],
-                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                        ['answers', 'image1url', 'image2url', 'image3url'],
+                        [$rootScope.canswers.length,
                             vm.image1, vm.image2, vm.image3]);
                     else
                     table2.update($rootScope.cCategory.id,
-                        ['views', 'answers', 'image1url', 'image2url', 'image3url'],
-                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                        ['answers', 'image1url', 'image2url', 'image3url'],
+                        [$rootScope.canswers.length,
                             vm.image1, vm.image2,'']);
                 }
             }
@@ -491,6 +488,8 @@
             //TODO update answers in DB
             $rootScope.modeIsImage = true;
             
+            incViews(); //increment number of views
+
             if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
             
             window.prerenderReady = true;
@@ -1067,9 +1066,11 @@
 
         function sortByRank() {
             function compare(a, b) {
-                return a.Rank - b.Rank;
+                if (a.Rank < 1 || b.Rank < 1 ) return b.Rank - a.Rank;
+                else return a.Rank - b.Rank;             
             }
             vm.answers = vm.answers.sort(compare);
+            
             getDisplayImages();
 
             $rootScope.canswers = vm.answers;
@@ -1663,6 +1664,21 @@
 
         function showAllFriendsList(userObjs, answername){
             dialog.showAllFriendsListDlg(userObjs, answername);
+        }
+
+        function incViews() {
+            $rootScope.cCategory.views++;
+            //update number of views (Request to increment to server)
+            var url = SERVER_URL + 'databaseOps/incViews/rank/' + $rootScope.cCategory.id;
+            var req = {
+                method: 'POST',
+                url: url,
+                headers: {
+                    'X-Dreamfactory-API-Key': undefined,
+                    'X-DreamFactory-Session-Token': undefined
+                }
+            }
+            $http(req);
         }
     }
 })();
