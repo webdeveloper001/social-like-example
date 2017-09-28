@@ -1244,7 +1244,19 @@
                     //    },100);
                 //    }
                 //}
-            }
-                 
+                /*
+                var ctr = 0;
+                var newName = '';
+                for (var i=0; i<$rootScope.answers.length; i++){
+                    if ($rootScope.answers[i].imageurl.indexOf('az/')>-1) {
+                        ctr++;
+                        newName = $rootScope.answers[i].imageurl.replace('az/','https://rankx.blob.core.windows.net/sandiego/');
+                        //console.log(newName);
+                        answer.updateAnswer($rootScope.answers[i].id,['imageurl'],[newName]);
+                    }
+                }
+                console.log("answer images in rankx.blob - ", ctr);
+            */
+            }                
     }
 })();

@@ -60,11 +60,15 @@
         }
 
         function getTablesX(scope) {
+
+            //for performance request only following fields:
+            var fields = '';
+            fields += 'id,type,tags,keywords,question,image1url,image2url,image3url,catstr,owner,slug,views,answers,numcom,scope,isatomic,ismp,cat,nh';
             //_tables = [];
-            var url0 = baseURI + '?offset=' + 0 * 1000 + '&filter=scope='+scope;
-            var url1 = baseURI + '?offset=' + 1 * 1000 + '&filter=scope='+scope;
-            var url2 = baseURI + '?offset=' + 2 * 1000 + '&filter=scope='+scope;
-            var url3 = baseURI + '?offset=' + 3 * 1000 + '&filter=scope='+scope;
+            var url0 = baseURI + '?offset=' + 0 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
+            var url1 = baseURI + '?offset=' + 1 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
+            var url2 = baseURI + '?offset=' + 2 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
+            var url3 = baseURI + '?offset=' + 3 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
             
             var p0 = $http.get(url0);
             var p1 = $http.get(url1);
