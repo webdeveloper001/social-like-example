@@ -158,10 +158,6 @@
         </div>
 
 
-
-
-
-
         <div style="margin-left:40px; margin-right:40px">
             <h3>Feature Images(Have no Reference)</h3>
             <div class="pull-right">
@@ -183,6 +179,41 @@
                                 <input type="checkbox" ng-model="biz.checked">
                             </td>
                             <td><img style="width:100px;height:100px" ng-src="{{biz.url}}"</td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div  ng-if="vm.deletingFImages">
+                <h6> Deleting Unreferenced Feature Images... </h6>
+            </div>
+        </div>
+
+        <div style="margin-left:40px; margin-right:40px">
+            <h3>Feature Images Sizes</h3>
+            <!-- <div class="pull-right">
+                <button class="btn btn-warning"  ng-click="vm.deleteSelectedFImages()">Delete Selected Unreferenced FImages</button>
+            </div> -->
+            <div class="clearfix" ></div>
+            <div   ng-if="!vm.deletingFImages">
+                <table datatable="ng"  class="table"  dt-options="vm.dtOptionsFImages" dt-columns="vm.dtColumnsFImages" dt-instance="vm.dtInstanceFImages" class="row-border hover">
+                    <thead style="border-style:none;">
+                        <tr>
+                            <th></th>
+                            <th>Image</th>
+                            <th>Filename</th>
+                            <th>Size</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            
+                        <tr ng-repeat="biz in vm.fimages | orderBy:'-size'" style="cursor:pointer;">
+                            <td>    
+                                <input type="checkbox" ng-model="biz.checked">
+                            </td>
+                            <td><img style="width:100px;height:100px" ng-src="{{biz.url}}"</td>
+                            <td>{{biz.url}}</td>
+                            <td>{{biz.size}}</td>
                             
                         </tr>
                     </tbody>

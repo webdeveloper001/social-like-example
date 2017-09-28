@@ -56,7 +56,8 @@
 
         function retrieveData() {
             
-            $q.all([catans.getAllcatans(),  useraccnt.getallaccnts(), categories.getAllCategories(), locations.getAllLocations(), table.getTables(), answer.getAnswers(), imagelist.getFeatureImageList()])
+            $q.all([catans.getAllcatans(),  useraccnt.getallaccnts(), categories.getAllCategories(), 
+                locations.getAllLocations(), table.getTables(), answer.getAnswers(), imagelist.getFeatureImageList()])
             .then(function(data){
 
                 vm.catans = data[0];
@@ -73,6 +74,7 @@
                 
                 vm.answers = data[5];
                 vm.fimages = data[6];
+                console.log("vm.fimages - ", vm.fimages);
                 vm.dataReady = true;
 
                 filterCatans();
