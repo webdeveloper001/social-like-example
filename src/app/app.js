@@ -9,14 +9,14 @@
         'ngFileUpload',
         'ngAnimate',
         'ngCookies',
-        'ngResource',
+        //'ngResource',
         'ngRoute',
         'ngSanitize',
         'ngTouch',
         'ngMessages',
         
-        'pascalprecht.translate',
-        'tmh.dynamicLocale',
+        //'pascalprecht.translate',
+        //'tmh.dynamicLocale',
         
         // Custom modules 
         'login',
