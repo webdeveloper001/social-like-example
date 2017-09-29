@@ -126,7 +126,7 @@
             var p3 = answer.getAnswersX(scope);
             
             //Minimum Data for Cwrapper
-            return $q.all([p0, p1, p2, p3]).then(function (d) {
+            return $q.all([p0, p1, p2]).then(function (d) {
             
                 // run whatever needs to be timed in between the statements
                 unwrap();
