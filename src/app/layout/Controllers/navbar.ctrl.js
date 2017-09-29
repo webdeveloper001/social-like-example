@@ -5,10 +5,10 @@
         .module('app')
         .controller('navbar', navbar);
 
-    navbar.$inject = ['$location', '$translate', '$rootScope', 'login', '$state', '$scope',
+    navbar.$inject = ['$location', '$rootScope', 'login', '$state', '$scope',
         'city', '$cookies', '$http', 'GOOGLE_API_KEY', 'dialog','getgps', 'useraccnt'];
 
-    function navbar($location, $translate, $rootScope, login, $state, $scope,
+    function navbar($location, $rootScope, login, $state, $scope,
         city, $cookies, $http, GOOGLE_API_KEY, dialog, getgps, useraccnt) {
         /* jshint validthis:true */
         var vm = this;

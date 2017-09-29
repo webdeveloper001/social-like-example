@@ -3,16 +3,6 @@
 
     angular
         .module('app')
-
-        /*['ngAnimate',
-         'ngCookies',
-         'ngResource',
-         'ngRoute',
-         'ngSanitize',
-         'ngTouch',
-         'pascalprecht.translate',
-         'tmh.dynamicLocale'])*/
-
         .controller('layout', layout);
 
     layout.$inject = ['$location', '$rootScope', '$window', '$q', '$http', 'pvisits', '$cookies', '$scope',
