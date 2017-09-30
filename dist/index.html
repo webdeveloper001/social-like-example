@@ -19,18 +19,21 @@
 
 <![endif]-->
 <script> window.prerenderReady = false; </script>
-<style type="text/css">
- div.splash-loading h2{
-    background: green;
-    background-color: white;
- }
+<style>
+.splash {
+  display: none;
+}
+
+[ng-cloak].splash {
+  background-color: #428bca;
+  width: 100%;
+  text-align: center;
+  color: white;
+  display: block !important;
+}
 </style>
-<div class="splash-loading" ng-if="false">
-    <br>
-    <br>
-    <h2>
-        Just a second. Getting our stuff together...
-    </h2>
+ <div ng-cloak="" class="splash" ng-cloak="">
+        <p>Loading pur page</p>
 </div>
 
 <div ui-view="" draggable="false"></div>
