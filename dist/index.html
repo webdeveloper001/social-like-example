@@ -19,8 +19,18 @@
 
 <![endif]-->
 <script> window.prerenderReady = false; </script>
+<style>
+.splash {
+  display: none;
+}
 
- <div ng-cloak="">
+[ng-cloak].splash {
+  width: 100%;
+  text-align: center;
+  display: block !important;
+}
+</style>
+ <div ng-cloak="" class="splash">
         <br>
         <br>
         <br>
