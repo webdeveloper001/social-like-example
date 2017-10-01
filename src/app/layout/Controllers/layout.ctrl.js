@@ -515,7 +515,6 @@
                 else vm.nhctrl = false;
 
                 if (vm.nhctrl == true) vm.nhops = $rootScope.nhops;
-
             }
             else {
                 if (vm.nh == '') vm.val = x;

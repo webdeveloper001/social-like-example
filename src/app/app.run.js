@@ -2,12 +2,12 @@
     'use strict';
 
     angular.module('app')
-        .run(configureHeaders);
+        .run(configureHeaders)
+        .run(setAnalytics);
 
     configureHeaders.$inject = ['$cookies', '$http', '$rootScope', 'APP_API_KEY', '$window'];
 
     function configureHeaders($cookies, $http, $rootScope, APP_API_KEY, $window) {
-
         // Configure API Headers
         $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
         $http.defaults.headers.common['X-DreamFactory-Session-Token'] = $cookies.session_token;
@@ -23,6 +23,17 @@
 	            { access_token: access });
 		    $window.close();
 	    	
-	    } 
+        }
+    }
+
+    setAnalytics.$inject = ['$rootScope', '$location', '$window'];
+    function setAnalytics($rootScope, $location, $window) {
+        // initialise google analytics
+        $window.ga('create', 'UA-XXXXXXXX-X', 'auto');
+ 
+        // track pageview on state change
+        $rootScope.$on('$stateChangeSuccess', function (event) {
+            $window.ga('send', 'pageview', $location.path());
+        }); 
     }
 })();
