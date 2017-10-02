@@ -29,8 +29,9 @@
     setAnalytics.$inject = ['$rootScope', '$location', '$window'];
     function setAnalytics($rootScope, $location, $window) {
         // initialise google analytics
-        $window.ga('create', 'UA-XXXXXXXX-X', 'auto');
- 
+        $window.ga('create', 'UA-88236718-1', 'auto');
+        $window.ga('send', 'pageview');
+        
         // track pageview on state change
         $rootScope.$on('$stateChangeSuccess', function (event) {
             $window.ga('send', 'pageview', $location.path());
