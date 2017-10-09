@@ -338,7 +338,7 @@
             
             if (vm.isCity) vm.searchScope = 'all San Diego';
             
-            vm.nhs = $rootScope.neighborhoods.concat($rootScope.districts);
+            vm.nhs = $rootScope.nhs;
             vm.searchActive = $rootScope.searchActive ? $rootScope.searchActive: false;
             
             //$rootScope.includeNearMe = false;
@@ -415,7 +415,7 @@
             $rootScope.cityranks = ['city', 'lifestyle', 'food', 'politics', 'services', 'social', 'beauty', 'sports', 'personalities', 'technology', 'dating', 'health'];
             $rootScope.nhranks = ['neighborhood', 'lifestyle', 'food', 'services', 'social', 'beauty', 'health'];
 
-            vm.nhs = $rootScope.neighborhoods.concat($rootScope.districts);
+            vm.nhs = $rootScope.nhs;
            
         }
 

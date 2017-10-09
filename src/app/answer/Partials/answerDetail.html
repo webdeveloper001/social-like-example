@@ -166,7 +166,9 @@
 </div>
 
 <!-- Show potential upgrades for Custom Ranks -->    
-<div class="container col-xs-12" ng-if="vm.userIsOwner&&!vm.answer.hasranks&&!vm.hideCustomRanksMsg&&!vm.answer.isprivate">
+<div class="container col-xs-12" 
+ ng-if="vm.userIsOwner&&!vm.answer.hasranks&&!vm.hideCustomRanksMsg&&!vm.answer.isprivate
+    &&vm.answer=='Establishment'||vm.answer=='PersonCust'">
 <!-- <div class="container col-xs-12"> -->
     <br>
     <div class="alert alert-info">
@@ -283,7 +285,8 @@
 </div>
 
 <!-- Show potential upgrades for Custom Ranks -->    
-<div class="container col-xs-12" ng-if="vm.userIsOwner&&!vm.answer.ispremium&&!vm.hideGetPremiumMsg&&!vm.answer.isprivate">
+<div class="container col-xs-12" ng-if="vm.userIsOwner&&!vm.answer.ispremium&&!vm.hideGetPremiumMsg
+    &&!vm.answer.isprivate&&vm.answer=='Establishment'||vm.answer=='PersonCust'">
     <!-- <div style="background-color:#D9EDF7; color:#31708B; border-color:#BCE8F1"> -->
         <div class="alert alert-info">
         

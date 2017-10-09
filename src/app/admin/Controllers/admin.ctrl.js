@@ -433,8 +433,8 @@
                             var isMain = true;
                             for (var i=50; i<$rootScope.content.length; i++){
                                 isMain = true;    
-                                for (var j=0; j<$rootScope.neighborhoods.length; j++){
-                                    if ($rootScope.content[i].title.includes($rootScope.neighborhoods[j])){
+                                for (var j=0; j<$rootScope.nhs.length; j++){
+                                    if ($rootScope.content[i].title.includes($rootScope.nhs[j])){
                                         isMain = false; break;
                                     }
                                 }

@@ -84,7 +84,7 @@
         vm.emptyarray=[];
         vm.updateHoursEn = 'disabled'
                 
-        vm.neighborhoods = $rootScope.neighborhoods.concat($rootScope.districts);
+        vm.neighborhoods = $rootScope.nhs;
                 
         //TODO: Would like to add this abstract template, but dont know how               
         $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {

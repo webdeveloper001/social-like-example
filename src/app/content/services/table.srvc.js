@@ -63,7 +63,8 @@
 
             //for performance request only following fields:
             var fields = '';
-            fields += 'id,type,tags,keywords,question,image1url,image2url,image3url,catstr,owner,slug,views,answers,numcom,scope,isatomic,ismp,cat,nh';
+            fields += 'id,type,tags,keywords,question,image1url,image2url,image3url,';
+            fields += 'catstr,owner,slug,views,answers,numcom,scope,isatomic,ismp,cat,nh,timestmp';
             //_tables = [];
             var url0 = baseURI + '?offset=' + 0 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
             var url1 = baseURI + '?offset=' + 1 * 1000 + '&filter=scope='+scope + '&fields=' + fields;

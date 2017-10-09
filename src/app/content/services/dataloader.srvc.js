@@ -123,7 +123,9 @@
             var p0 = table.getTablesX(scope);
             var p1 = categories.getAllCategoriesX(scope);
             var p2 = locations.getAllLocations();
-            var p3 = answer.getAnswersX(scope);
+            var p3 = answer.getAnswersX(scope).then(function(){
+                getEstablishmentAnswers();
+            });
             
             //Minimum Data for Cwrapper
             return $q.all([p0, p1, p2]).then(function (d) {
@@ -131,7 +133,6 @@
                 // run whatever needs to be timed in between the statements
                 unwrap();
                 createSearchStrings();
-                getEstablishmentAnswers();
                 if ($rootScope.isLoggedIn) getDemoData();
 
                 $rootScope.pageDataLoaded = true;
@@ -139,7 +140,9 @@
                 getSecondaryData();
                 table.storeInitialHomeData(ridsx);
                 categories.storeInitialHomeData(cidsx);
-                createNhOps();
+                //createNhOps();
+                //Create array of neighborhood options
+                $rootScope.nhs = $rootScope.locations.map(function(x) {return x.nh_name; });
                 
                 if ($rootScope.DEBUG_MODE) console.log("cwrapper data ready!");
                 $rootScope.$emit('homeDataLoaded');

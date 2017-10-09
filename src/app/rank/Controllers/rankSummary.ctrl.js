@@ -111,7 +111,7 @@
             updateExec = true;
         });
         var rankDataLoadedListener = $rootScope.$on('rankDataLoaded', function () {
-            prepareRankSummary();
+            if (vm.dataReady == false) prepareRankSummary();
         });
         var coordsRdyRankListener = $rootScope.$on('coordsRdy', function () {
             if ($rootScope.DEBUG_MODE) console.log("received coordsreadyrank");
@@ -124,8 +124,7 @@
                 //if (!scope.$digest()) 
                 $timeout(function(){
                     $scope.$apply();
-                });
-                    
+                });                 
             //});
         });
                                
@@ -488,7 +487,7 @@
             //TODO update answers in DB
             $rootScope.modeIsImage = true;
             
-            incViews(); //increment number of views
+            if (!$rootScope.isCustomRank && !$rootScope.cCategory.isGhost) incViews(); //increment number of views
 
             if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
             
@@ -715,7 +714,7 @@
             $rootScope.cCategory.type == 'Place' ||
             $rootScope.cCategory.type == 'Event') {
                 //Determine if title already contains neighboorhood
-                var nhs = $rootScope.neighborhoods.concat($rootScope.districts);
+                var nhs = $rootScope.nhs;
                 for (var i = 0; i < nhs.length; i++) {
                     if ($rootScope.cCategory.title.indexOf(nhs[i]) > -1) {
                         $rootScope.NhImplied = true;
@@ -744,7 +743,7 @@
             }
 
             //Create button to link to parent rank if rank is atomic for better navigation
-            if ($rootScope.cCategory.isatomic && $rootScope.NhImplied){
+            if ($rootScope.cCategory.isatomic && $rootScope.NhImplied && $rootScope.NhValue != 'San Diego'){
                 var ss = $rootScope.cCategory.title.replace($rootScope.NhValue,'San Diego');
                 for (var n=0; n<$rootScope.content.length; n++){
                     if ($rootScope.content[n].title == ss){

@@ -230,7 +230,8 @@
             else if ($rootScope.stateName == 'answerDetail') $rootScope.stateNum = $rootScope.canswer.id;
             else $rootScope.stateNum = undefined;
 
-            $state.go('login');
+            dialog.loginFacebook();
+            //$state.go('login');
         }
 
         function logout() {

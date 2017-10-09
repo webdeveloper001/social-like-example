@@ -24,7 +24,7 @@
             var myLoc = '';
                 
                 //Perform checks to make sure location is in recognizable format for google api
-                var nhs = $rootScope.neighborhoods.concat($rootScope.districts);
+                var nhs = $rootScope.nhs;
                 var locationHasNh = false; //location has neighborhood
                 for (var i = 0; i < nhs.length; i++) {
                     if (answer.location.indexOf(nhs[i]) > -1) {

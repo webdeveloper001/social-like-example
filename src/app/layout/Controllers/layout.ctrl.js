@@ -347,7 +347,7 @@
         }
 
         function loadData() {
-
+            /*
             $rootScope.neighborhoods = [
                 "Downtown", "La Jolla", "Pacific Beach", "Hillcrest", "University Heights", "Old Town", "Del Mar",
                 "Ocean Beach", "North Park", "Mission Hills", "Barrio Logan", "City Heights", "Clairemont", "La Mesa", "Point Loma",
@@ -363,31 +363,13 @@
             $rootScope.districts = [
                 "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
                 "Marina", "Bankers Hill", "Balboa Park"];
+            */
 
-            vm.nhs = [];
-            vm.nhs = vm.nhs.concat($rootScope.neighborhoods, $rootScope.districts);
             vm.allTopics = ['LifeStyle', 'Social', 'Sports', 'Food', 'Beauty & Fashion', 'Family', 'Technology', 'Dating', 'City', 'Services', 'Health', 'Celebrities'];
 
+            //$rootScope.allnh = $rootScope.nhs;
+            
 
-            //vm.filterOptions = filter.loadFilterOptions();
-
-            $rootScope.allnh = $rootScope.neighborhoods.concat($rootScope.districts);
-
-            //$rootScope.answers = [];
-            //$rootScope.specials = [];
-            //$rootScope.mrecs = [];
-            //$rootScope.alluseractivity = [];
-            //$rootScope.catansrecs = [];
-            //$rootScope.edits = [];
-            //$rootScope.customranks = [];
-            //$rootScope.cvrows = [];
-
-            //$rootScope.content = table.sync();
-
-            //$rootScope.pageDataLoaded = false;
-            //$rootScope.rankSummaryDataLoaded = false;
-            //$rootScope.answerDetailLoaded = false;
-            //$rootScope.userDataLoaded = false;
             dataloader.getInitialData();    
             getDestination();
             dataloader.getpagevisitdata();
@@ -514,7 +496,7 @@
                 if (vm.nhctrl == false) vm.nhctrl = true;
                 else vm.nhctrl = false;
 
-                if (vm.nhctrl == true) vm.nhops = $rootScope.nhops;
+                if (vm.nhctrl == true) vm.nhops = $rootScope.nhs;
             }
             else {
                 if (vm.nh == '') vm.val = x;

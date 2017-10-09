@@ -654,9 +654,10 @@
                         catArr = [];
                         for (var j=0; j < $rootScope.content.length; j++){
                             if ($rootScope.content[i].cat == $rootScope.content[j].cat){
-                                for (var n=0; n < nhArr.length; n++){
+                                for (var n = 0; n < nhArr.length; n++){
                                     if (nhArr[n] == $rootScope.content[j].nh) {
-                                        catArr.push($rootScope.content[j].id);
+                                        if (catArr.indexOf($rootScope.content[j].id) == -1) 
+                                            catArr.push($rootScope.content[j].id);
                                         //console.log($rootScope.content[j].slug);
                                     }
                                 }

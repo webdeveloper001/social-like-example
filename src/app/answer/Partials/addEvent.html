@@ -222,7 +222,8 @@
         <!-- <br ng-if="vm.nsm"> -->
         <div class="form-group" style="padding:5px">
             <label class="control-label">Neighborhood:</label>
-            <input class="form-control" ng-model="vm.ev.cityarea" bs-typeahead bs-options="c for c in vm.neighborhoods" type="text" placeholder="{{vm.ev.cityarea}}">
+            <input class="form-control" ng-model="vm.ev.cityarea" bs-typeahead bs-options="c for c in vm.neighborhoods" 
+            ng-change="vm.onSelectNh()" type="text" placeholder="{{vm.ev.cityarea}}">
         </div>
         <div class="form-group" style="padding:5px">
             <label class="control-label">Phone Number:</label>

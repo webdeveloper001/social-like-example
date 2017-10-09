@@ -67,7 +67,7 @@
                 locationx.id = result.data.resource[0].id;
                 _locations.push(locationx);
 
-                console.log("adding locationx succesful", result);
+                if ($rootScope.DEBUG_MODE) console.log("adding locationx succesful", result);
                 return result.data;
             }
 
@@ -106,7 +106,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("updating locationx succesful");
+                if ($rootScope.DEBUG_MODE) console.log("updating locationx succesful");
                 return result.data;
             }
         }
@@ -136,7 +136,7 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
-                console.log("Deleting location was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Deleting location was succesful");
                 return result.data;
             }
         }

@@ -159,16 +159,12 @@
 
         function loadPublicFields() {
             vm.emptyarray = [];
-            //if ($rootScope.isDowntown) vm.neighborhoods = $rootScope.districts; 
-            //else vm.neighborhoods = $rootScope.neighborhoods.concat($rootScope.districts);
             
-            vm.neighborhoods = $rootScope.neighborhoods.concat($rootScope.districts);
+            vm.neighborhoods = $rootScope.nhs;
 
             vm.establishmentNames = $rootScope.estNames.concat($rootScope.plaNames, $rootScope.orgNames, $rootScope.freNames);
             vm.peopleNames = $rootScope.pplNames;
-            //vm.placesNames = $rootScope.plaNames;
-            //vm.organizationNames = $rootScope.orgNames;
-
+            
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
             myAnswer.type = vm.type;
@@ -914,8 +910,8 @@
                 if (Math.abs(x.val.length - inputLengthMemNh)>2 && x.val.length != 0){
                     //an option was selected from the typeahead
                     inputLengthMemNh = x.val.length;
-                    for (var i=0; i < $rootScope.allnh.length; i++){
-                        if ($rootScope.allnh[i] == x.val){
+                    for (var i=0; i < $rootScope.nhs.length; i++){
+                        if ($rootScope.nhs[i] == x.val){
                             vm.nhrdy = true;
                             answerNeighborhood = x.val;
                             prepareCatansOptions();
