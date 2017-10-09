@@ -124,8 +124,11 @@
         });
 
         var answerDataLoadedListener = $rootScope.$on('answerDataLoaded', function () {
-            vm.dataReady = true;
-            getAnswer();
+            //console.log("rx - answerDataLoaded");
+            if (!vm.dataReady) {
+                vm.dataReady = true;
+                getAnswer();
+            }
         });
 
         $scope.$on('$destroy',refreshImagesListener);
@@ -322,8 +325,10 @@
 
                 for (var i=0; i<vm.myranks.length; i++){
                     n = $rootScope.customranks.map(function(x) {return x.id; }).indexOf(vm.myranks[i].id);
-                    vm.myranks[i].title = $rootScope.customranks[n].title.replace(' @ Demo','');
-                    vm.myranks[i].image = $rootScope.customranks[n].image1url;
+                    if (n > -1){
+                        vm.myranks[i].title = $rootScope.customranks[n].title.replace(' @ Demo','');
+                        vm.myranks[i].image = $rootScope.customranks[n].image1url;
+                    }
                     if (vm.myranks[i].image == undefined || vm.myranks[i].image == '')
                     vm.myranks[i].image = $rootScope.EMPTY_IMAGE;
                 }

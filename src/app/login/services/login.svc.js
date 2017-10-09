@@ -49,7 +49,7 @@
                         } catch (e) {}
 
                         if ($rootScope.DEBUG_MODE) console.log("oauthWithFacebook succesful");
-                        $rootScope.$emit('redirectAfterLogin');
+                        //$rootScope.$emit('redirectAfterLogin');
                     })
                     .catch(function(err) {
                         console.log(err);

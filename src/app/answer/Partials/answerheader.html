@@ -16,7 +16,7 @@
                 <strong ng-if="answer.location">Address:</strong>
                 <a ng-if="answer.location" href="http://maps.apple.com/maps?q={{answer.location}}" target="_blank">{{answer.location}}</a>
                 <br ng-if="answer.location">
-                <strong ng-if="answer.cityarea">{{(answer.cityarea) ? 'Neighboorhood:' : ""}}</strong> {{(answer.cityarea)
+                <strong ng-if="answer.cityarea">{{(answer.cityarea) ? 'Neighborhood:' : ""}}</strong> {{(answer.cityarea)
                 ? answer.cityarea : ""}}
                 <br ng-attr-style="display:{{(answer.cityarea) ? 'inline' : 'none'}}">
                 <strong ng-if="answer.phone">Phone:</strong> <a ng-if="answer.phone" href="tel:{{answer.phone}}">{{answer.phone}}</a>
@@ -111,7 +111,7 @@
         <br ng-if="answer.location">
         <div class="row">
             <div class="col-xs-9">
-                <strong ng-if="answer.cityarea">{{(answer.cityarea) ? 'Neighboorhood:' : ""}}</strong> {{(answer.cityarea)
+                <strong ng-if="answer.cityarea">{{(answer.cityarea) ? 'Neighborhood:' : ""}}</strong> {{(answer.cityarea)
                 ? answer.cityarea : ""}}
                 <br ng-attr-style="display:{{(answer.cityarea) ? 'inline' : 'none'}}">
                 <strong ng-if="answer.phone">Phone:</strong> <a ng-if="answer.phone" href="tel:{{answer.phone}}">{{answer.phone}}</a>

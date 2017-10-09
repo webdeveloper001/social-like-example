@@ -933,8 +933,6 @@
             
             answerhtml = newline + '</p>';
 
-            console.log("answerhtml - ", answerhtml);
-            
             var addinfomessage = htmlops.eventHtml(event);
             showAddEvent(event, answerhtml, addinfomessage, event.imageurl, mode, callback);
             
@@ -945,8 +943,6 @@
             var message = '';
             var btnCancelLabel = '';
             var btnOkLabel = '';
-
-            console.log("answerhtml - ", answerhtml);
 
             if (mode == 'add') 
                 message = 'You want to add the following event to <strong>' + $rootScope.cCategory.title + '</strong>. </br><p></p>' +

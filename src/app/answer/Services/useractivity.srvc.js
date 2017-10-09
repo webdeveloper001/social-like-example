@@ -54,12 +54,14 @@
         function getAllUserActivityX(data) {
 
             var _datax = [];  //this is filtered array (ignore those ranks for which useractivity already fetched)
-            data.forEach(function(item){
-                if (_fetchRanksMem.indexOf(item.category)<0){
-                    _datax.push(item);
-                    _fetchRanksMem.push(item.category);
-                }
-            });
+            if (data != false) {
+                data.forEach(function (item) {
+                    if (_fetchRanksMem.indexOf(item.category) < 0) {
+                        _datax.push(item);
+                        _fetchRanksMem.push(item.category);
+                    }
+                });
+            }
 
             if (_datax.length == 0) return $q.when(false);
 

@@ -46,7 +46,7 @@
                 <li><a href="/tour" ng-click="vm.gotoTour()">Tour</a></li>
                 <!--<li><a href="/home" ng-click="vm.gotoFeedback()">Feedback</a></li>-->
                 <li ng-if="vm.isAdmin"><a href="" ng-click="vm.gotoAdmin()">Admin</a></li> 
-                <li ng-if="!vm.isLoggedIn"><a href="/login" ng-click="vm.goToLogin()">Login</a></li>
+                <li ng-if="!vm.isLoggedIn"><a ng-click="vm.goToLogin()">Login</a></li>
                 
                 <li ng-if="vm.isLoggedIn">
                     <a href="/logout" ng-click="vm.logout()" class="">

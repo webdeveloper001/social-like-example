@@ -77,7 +77,7 @@
             $state.go('mybusiness', {}, {reload: true})
         }
         function activate() {
-            console.log("activate business page")
+            if ($rootScope.DEBUG_MODE) console.log("activate business page")
             //dialog.notificationWithCallback(
             //    'Info',
             //    'The Purchasing of Premium Feautures is not available at this moment. Please try again later.',
@@ -168,7 +168,7 @@
                     bizObj.invoices = [];
                     loadInvoicesAndCustomer(bizObj);
                     loadPromoter(bizObj);
-                    console.log("bizObj - ", bizObj);
+                    if ($rootScope.DEBUG_MODE) console.log("bizObj - ", bizObj);
                     vm.mybizs.push(bizObj);     
                 }
             }
@@ -259,8 +259,7 @@
             else vm.sell = false;
             checkData();
 
-            //if ($rootScope.DEBUG_MODE) 
-                console.log("vm.business",x);
+            if ($rootScope.DEBUG_MODE) console.log("vm.business",x);
             
         }
 

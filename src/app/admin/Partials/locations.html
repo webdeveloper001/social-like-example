@@ -9,7 +9,7 @@
             </span>
         </div>
     </form>
-
+    <br>
     <table class="table table-hover cursor ">
         <thead>
             <tr>
@@ -21,11 +21,52 @@
         </thead>
         <tbody>
             <tr ng-repeat="x in vm.locations">
-            <td>{{x.id}}</td>
-            <td>{{x.nh_name}}</td>
-            <td>{{x.sastrs}}</td>
-            <td style="width:30px"><button class="btn btn-primary"  type="button" ng-click="vm.editLocation(x)">Edit</button></td>
+            <td ng-show="!x.sel">{{x.id}}</td>
+            <td ng-show="!x.sel">{{x.nh_name}}</td>
+            <td ng-show="!x.sel">
+                <div ng-repeat="y in x.sa"> - {{y.name}}</div>
+            </td>
+            <td ng-show="!x.sel" style="width:30px"><button class="btn btn-primary"  type="button" ng-click="vm.editLocation(x)">Edit</button></td>
+            <td ng-show="x.sel" colspan=4>
+                <div>
+                    <h2>{{x.nh_name}}</h2>
+                    SubAreas:
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="y in x.sa" ng-click="vm.selsa(y)" style="color:{{y.sel?'black':'lightgrey'}};cursor:pointer;">
+                            <i ng-if="y.sel" class="fa fa-check"></i>&nbsp{{y.name}}
+                        </li>
+                    </ul>
+                    <div class="input-group">
+                        <!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
+                        <input type="text" class="form-control" ng-model="vm.newsa" bs-options="c for c in vm.locs" bs-typeahead>
+                        <span class="input-group-btn text-right">
+                            <button class="btn btn-success" type="button" ng-click="vm.addsa(x)">Add</button>
+            
+                        </span>
+                    </div>
+                    <button class="btn btn-primary" type="button" ng-click="vm.savesa(x)">Save</button>
+                    <button class="btn btn-danger" type="button" ng-click="vm.deleteloc(x)">Delete</button>
+                    <button class="btn btn-default" type="button" ng-click="vm.cancel(x)">Cancel</button>
+                </div>
+            </td>
             </tr>
         </tbody>
     </table>
+    
+    <div>
+        <!-- <button class="btn btn-default" ng-click="vm.update()">Update City Name and Id</button> -->
+        <button class="btn btn-primary" ng-click="vm.enableAddLocation()">Add Location</button>
+        <button class="btn btn-default" ng-click="vm.update()">Update</button>
+    </div>
+    <div ng-show="vm.showAddLocation">
+        <form class="form-horizontal" role="form">
+        <label class="control-label">Location Name:</label>
+        <div class="input-group">
+            <input class="form-control" type="text" ng-model="vm.locname" placeholder="Enter Location Name">
+            <span class="input-group-btn text-right">
+            <button class="btn btn-success"  type="button" ng-click="vm.addLocation()">ADD</button>
+            </span>
+        </div>
+    </form>
+    </div>
 </div>

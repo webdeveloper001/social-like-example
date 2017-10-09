@@ -92,5 +92,7 @@
     "dialog.invalidLastName.title": "Invalid data.",
     "dialog.invalidLastName.text": "Please enter a valid last name for your account.",
     "dialog.invalidEmail.title": "Invalid data.",
-    "dialog.invalidEmail.text": "Please enter a valid email for your account."
+    "dialog.invalidEmail.text": "Please enter a valid email for your account.",
+    "dialog.subAreaInvalid.title": "Invalid data.",
+    "dialog.subAreaInvalid.text": "The sub area is invalid."
 }
