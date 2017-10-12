@@ -47,8 +47,9 @@
                     myObj.size = resParse.Properties["Content-Length"]/1024;
                     images.push(myObj);
                 }
-                return images;
+                
                 if ($rootScope.DEBUG_MODE) console.log('query succeded');
+                return images;
 
             }
             function queryFailed(result) {
@@ -70,22 +71,23 @@
                 var x2js = new X2JS();
                 var myJSON = x2js.xml_str2json(result.data);
                 var myObj = {};
-                
                 var resParse = myJSON.EnumerationResults.Blobs.Blob;
-
-                if ((!!resParse) && (resParse.constructor === Array)){
-                    for (var i=0; i < resParse.length; i++){
+                if (resParse != undefined) {
+                    if ((!!resParse) && (resParse.constructor === Array)) {
+                        for (var i = 0; i < resParse.length; i++) {
+                            myObj = {};
+                            myObj.url = 'https://rankx.blob.core.windows.net/sandiego/' + resParse[i].Name;
+                            myObj.type = 'azure-uploaded';
+                            $rootScope.blobs.push(myObj);
+                        }
+                    } else if ((!!resParse) && (resParse.constructor === Object)) {
                         myObj = {};
-                        myObj.url = 'https://rankx.blob.core.windows.net/sandiego/'+resParse[i].Name;
-                        myObj.type = 'azure-uploaded';
+                        myObj.url = 'https://rankx.blob.core.windows.net/sandiego/' + resParse.Name;
+                        myObj.type = 'Uploaded';
                         $rootScope.blobs.push(myObj);
                     }
-                } else if ((!!resParse) && (resParse.constructor === Object)) {
-                    myObj = {};
-                    myObj.url = 'https://rankx.blob.core.windows.net/sandiego/'+resParse.Name;
-                    myObj.type = 'Uploaded';
-                    $rootScope.blobs.push(myObj);
                 }
+                else $rootScope.blobs = [];
                 
                 if ($rootScope.DEBUG_MODE) console.log('query succeded');
 
