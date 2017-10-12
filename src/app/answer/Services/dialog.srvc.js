@@ -2321,7 +2321,7 @@
                 },
 
             });
-        }exec
+        }
 
         function changeCommissionDlg(STRIPE_COMMISSION_PERCENTAGE, execChangeFee) {
             var imageListHtml = 

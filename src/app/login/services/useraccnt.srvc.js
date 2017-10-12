@@ -349,31 +349,33 @@
               if ($rootScope.catansrecs[j].answer == answerid) {
                   category = $rootScope.catansrecs[j].category;
                   var idx = $rootScope.content.map(function (x) { return x.id; }).indexOf(category);
-                  if (idx > -1){
-                  rank = $rootScope.content[idx];
-                  for (var k = 0; k < $rootScope.catcodes.length; k++) {
-                      if (rank.title.indexOf($rootScope.catcodes[k].category) > -1) {
-                          if (bizcat == '') {
-                              bizcat = $rootScope.catcodes[k].code;
-                          }
-                          else {
-                              //find current value of answer bizcat
-                              for (var l = 0; l < $rootScope.codeprices.length; l++) {
-                                  if ($rootScope.codeprices[l].code == bizcat) {
-                                      scale_current = $rootScope.codeprices[l].scale;
+                  if (idx > -1) {
+                      rank = $rootScope.content[idx];
+                      if (rank.title != null) {
+                          for (var k = 0; k < $rootScope.catcodes.length; k++) {
+                              if (rank.title.indexOf($rootScope.catcodes[k].category) > -1) {
+                                  if (bizcat == '') {
+                                      bizcat = $rootScope.catcodes[k].code;
                                   }
-                                  if ($rootScope.codeprices[l].code == $rootScope.catcodes[k].code) {
-                                      scale_this = $rootScope.codeprices[l].scale;
+                                  else {
+                                      //find current value of answer bizcat
+                                      for (var l = 0; l < $rootScope.codeprices.length; l++) {
+                                          if ($rootScope.codeprices[l].code == bizcat) {
+                                              scale_current = $rootScope.codeprices[l].scale;
+                                          }
+                                          if ($rootScope.codeprices[l].code == $rootScope.catcodes[k].code) {
+                                              scale_this = $rootScope.codeprices[l].scale;
+                                          }
+                                      }
+                                      if (scale_this > scale_current) {
+                                          bizcat = $rootScope.catcodes[k].code;
+                                      }
                                   }
-                              }
-                              if (scale_this > scale_current) {
-                                  bizcat = $rootScope.catcodes[k].code;
                               }
                           }
                       }
                   }
-                  }
-                else console.log('Couldnt find rank: ', category);
+                  else if ($rootScope.DEBUG_MODE) console.log('Couldnt find rank: ', category);
               }
           }
           return bizcat;

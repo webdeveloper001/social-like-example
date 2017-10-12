@@ -1065,6 +1065,7 @@
                     }
                 }
                 imagelist.getImageList().then(showImages);
+                //imagelist.getImageList().then();
             }
         }
         function showImages() {

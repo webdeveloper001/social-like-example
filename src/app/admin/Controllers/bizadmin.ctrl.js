@@ -101,9 +101,12 @@
             if(vm.showFilter == 2) {
                 return vm.filtered = vm.businesses.filter(function(p) { return !(p.hasranks || p.haspremium);});
             }
-            return vm.filtered = vm.businesses;
+            
             vm.loading = false;    
             vm.dtInstance.rerender();
+            
+            return vm.filtered = vm.businesses;
+            
         }
 
         function  setShowPurchases  () {
