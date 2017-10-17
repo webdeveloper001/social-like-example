@@ -204,7 +204,11 @@
         
         var rodReadyListener = $rootScope.$on('rodReady', function (event) {
                 vm.rodready = true;
-                dataloader.pulldata('ranks', $rootScope.rankofday);
+                if ($rootScope.rankofday != undefined) {
+                    var obj = {};
+                    obj.id = $rootScope.rankofday[0].id;
+                    dataloader.pulldata('ranks', [obj]);
+                }
                 //console.log("$rootScope.rankofday - ", $rootScope.rankofday);
         });
 

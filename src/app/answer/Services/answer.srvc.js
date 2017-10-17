@@ -108,7 +108,6 @@
             });
             //_datax = [];
             if (_datax.length == 0) return $q.when(false);
-            
             var filterstr = '?filter=(';
             for (var i=0; i< _datax.length; i++){
                 filterstr = filterstr + 'id=' + _datax[i].answer+')OR(';
@@ -201,7 +200,7 @@
                 _answers.push(answerx);
 
                 updateAnswer(result.data.resource[0].id,['slug'],[slug]);
-                staticpages.createPageAnswer(answerx);
+                //staticpages.createPageAnswer(answerx);
                 
                 //Update current establishment and person names for typeahead
                 if (answerx.type == 'Establishment') {
@@ -269,7 +268,7 @@
                 _answers.push(answerx);
                 updateAnswer(result.data.resource[0].id,['slug'],[slug]);
 
-                staticpages.createPageAnswer(answerx);
+                //staticpages.createPageAnswer(answerx);
                 
                 //Update current establishment and person names for typeahead
                 if (answerx.type == 'Establishment') {
@@ -333,7 +332,7 @@
                         break;
                     }               
             }
-            if (updateStaticFile) staticpages.createPageAnswer(_answers[idx]);
+            //if (updateStaticFile) staticpages.createPageAnswer(_answers[idx]);
             
             return $http.patch(url, obj, {
                 headers: {

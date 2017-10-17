@@ -200,7 +200,7 @@
                 update(result.data.resource[0].id,['slug'],[slug]);
 
                 //create static page for this rank
-                staticpages.createPageRank(tablex);
+                //staticpages.createPageRank(tablex);
 
                 //Create user-activity feed record
                 uaf.post('addedRank',['category'],[tablex.id]); //user activity feed

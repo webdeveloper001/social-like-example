@@ -124,7 +124,7 @@ angular.module('app').directive('userfeedBlock',
 
         
         scope.refreshFeed = function(){
-            console.log("refreshFeed");
+            if ($rootScope.DEBUG_MODE) console.log("refreshFeed");
             uaf.getactions().then(function(response){
                 $rootScope.uafs = response;
                 getFeed();

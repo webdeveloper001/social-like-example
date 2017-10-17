@@ -1528,7 +1528,7 @@
             
             m1 =
             '<img id="image" class="displayed" src="' +
-            '/assets/images/rxtour1.png'+'" style="' + img_style + '">';
+            '/assets/images/rxtour1.jpg'+'" style="' + img_style + '">';
             
             messagehtml =  m1;
             
@@ -1555,7 +1555,7 @@
                             $('#btn1').text('No, thanks');
                             $('#btn2').text('Yes, take tour');
                         }
-                        else if (n == 12){
+                        else if (n == 17){
                             $('#btn1').text('Back');
                             $('#btn2').text('Close');
                             $cookies.put('tourviewed', true);
@@ -1565,7 +1565,7 @@
                             $('#btn2').text('Next');
                         }
                         m1 = '<img id="image" class="displayed" src="' +
-                            '/assets/images/rxtour'+n+'.png'+'" style="'+img_style+'">';
+                            '/assets/images/rxtour'+n+'.jpg'+'" style="'+img_style+'">';
                         dialog.setMessage(m1);
                         
                         }
@@ -1577,12 +1577,12 @@
                 action: function(dialog, messagehtml) {
                     var $button = this; // 'this' here is a jQuery object that wrapping the <button> DOM element.
                     //console.log("bt2-clicked,",n);
-                    if (n==12) {
+                    if (n==17) {
                         $cookies.put('tourviewed', true);
                         dialog.close();
                     }
                     else {
-                        if (n == 12) dialog.getButton(this.id).label = 'Close';
+                        if (n == 17) dialog.getButton(this.id).label = 'Close';
                         else {
                             //$button.text = 'Next'; 
                             n = n + 1;
@@ -1590,7 +1590,7 @@
                                 $('#btn1').text('No, thanks');
                                 $('#btn2').text('Yes, take tour');
                             }
-                            else if (n == 12) {
+                            else if (n == 17) {
                                 $('#btn1').text('Back');
                                 $('#btn2').text('Close');
                                 $cookies.put('tourviewed', true);
@@ -1601,7 +1601,7 @@
                             }
                         }
                         m1 = '<img id="image" class="displayed" src="' +
-                            '/assets/images/rxtour' + n + '.png' + '" style="' + img_style + '">';
+                            '/assets/images/rxtour' + n + '.jpg' + '" style="' + img_style + '">';
                         dialog.setMessage(m1);
                     }
                 }

@@ -125,6 +125,8 @@
             var p2 = locations.getAllLocations();
             var p3 = answer.getAnswersX(scope).then(function(){
                 getEstablishmentAnswers();
+                $rootScope.pageDataLoaded = true;
+                checkStatus();
             });
             
             //Minimum Data for Cwrapper
@@ -135,8 +137,8 @@
                 createSearchStrings();
                 if ($rootScope.isLoggedIn) getDemoData();
 
-                $rootScope.pageDataLoaded = true;
-                checkStatus();
+                //$rootScope.pageDataLoaded = true;
+                //checkStatus();
                 getSecondaryData();
                 table.storeInitialHomeData(ridsx);
                 categories.storeInitialHomeData(cidsx);
@@ -418,7 +420,7 @@
                                 special.getSpecialsX(result.slice(si,ei));
                                 vrows.getVrowsX(result.slice(si,ei));
                                 matchrec.GetMatchTableX(result.slice(si,ei));
-                                useractivity.getAllUserActivityX(result.slice(si,ei));
+                                //useractivity.getAllUserActivityX(result.slice(si,ei));
                                 edit.getEditsX(result.slice(si,ei));
                                 table2.getTablesX(result.slice(si,ei));
                                 si = ei;
@@ -436,12 +438,12 @@
                         var si = 0;
                         var ei = result.length > 200 ? 200:result.length;
                             while (si < result.length) {
-                                special.getSpecialsX(result);
-                                vrows.getVrowsX(result);
-                                matchrec.GetMatchTableX(result);
-                                useractivity.getAllUserActivityX(result);
-                                edit.getEditsX(result);
-                                table2.getTablesX(result).then(function(result2){
+                                special.getSpecialsX(result.slice(si,ei));
+                                vrows.getVrowsX(result.slice(si,ei));
+                                matchrec.GetMatchTableX(result.slice(si,ei));
+                                //useractivity.getAllUserActivityX(result);
+                                edit.getEditsX(result.slice(si,ei));
+                                table2.getTablesX(result.slice(si,ei)).then(function(result2){
                                     if (result2 != false) pulldata('ranks',result2);
                                 });
                                 si = ei;
@@ -461,7 +463,8 @@
                                     }
                                 }
                             });
-                            pulldata('ranks', cranks);
+                            if (cranks.length > 0) pulldata('ranks', cranks);
+                            
                         }   
                     });
                 //}
@@ -481,7 +484,6 @@
                 if (result2 != false){
                     answer.getAnswersL(result2).then(function(resultx){
                         $rootScope.answerDetailLoaded = true;
-                        pulldata('answers', resultx);
                     });
                 }
             });          
@@ -533,8 +535,8 @@
             data.id = idx;
             catans.getAllcatansY([data]).then(function(result){
                 var p0 = table.getTablesL(result);
-                var p1 = useractivity.getAllUserActivityX(result);
-                return $q.all([p0,p1]).then(function (d){
+                //var p1 = useractivity.getAllUserActivityX(result);
+                return $q.all([p0]).then(function (d){
                     catansReady = true;
                     landAnswerCheckStatus(); 
                 });              
