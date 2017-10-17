@@ -8,12 +8,12 @@
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope','$http'
         , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', 'SERVER_URL',
-        '$location', '$q', 'fbusers', 'useractivity', '$timeout','table2','categories','dataloader'];
+        '$location', '$q', 'fbusers', '$timeout','table2','categories','dataloader'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime, color
         , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope, $http
         , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, SERVER_URL, 
-        $location, $q, fbusers, useractivity, $timeout, table2, categories, dataloader) {
+        $location, $q, fbusers, $timeout, table2, categories, dataloader) {
         /* jshint validthis:true */
 
         var vm = this;
@@ -74,7 +74,7 @@
         //For readability
         var answers = [];
         var catansrecs = [];
-        var useractivities = [];
+        //var useractivities = [];
         var mrecs = [];
         var catArr = [];
         var nhObj = {};
@@ -221,7 +221,7 @@
 
             answers = $rootScope.answers;
             catansrecs = $rootScope.catansrecs;
-            useractivities = $rootScope.alluseractivity;
+            //useractivities = $rootScope.alluseractivity;
             mrecs = $rootScope.mrecs;
 
             $rootScope.inFavMode = false;
@@ -266,7 +266,7 @@
             rank.computeRanking($rootScope.canswers, $rootScope.cmrecs);
             
             //Sort by rank here (this is to grab images of top 3 results)
-            sortByRank();
+            if ($rootScope.cmrecs.length > 0) sortByRank();
                        
             //Instead of rank points just show index in array
             for (var i = 0; i < vm.answers.length; i++) {
@@ -286,13 +286,16 @@
                         //console.log("Updated Catans Rank", vm.answers[i].catans);
                         if (vm.answers[i].catans != undefined) {
                             if ($rootScope.DEBUG_MODE) console.log("RS-1");
-                            catans.updateRec(vm.answers[i].catans, ['rank'], [vm.answers[i].Rank]);
+                            //if rankings is different than on record update catans record
+                            if (vm.answers[i].catansrank != vm.answers[i].Rank) 
+                                catans.updateRec(vm.answers[i].catans, ['rank'], [vm.answers[i].Rank]);
                         }
                     }
                 }
             }                        
             
             //Check number of answers for this ranking
+            /*
             if (vm.answers.length == 0) {
                 vm.numAns = 0;
 
@@ -306,7 +309,7 @@
                         ['answers','image1url', 'image2url', 'image3url'],
                         [$rootScope.canswers.length,'','','']);
                 }
-            }
+            }*/
             if (vm.answers.length == 1) {
                 vm.numAns = 1;
                 if ($rootScope.cCategory.type == 'Short-Phrase') {
@@ -488,7 +491,7 @@
             $rootScope.modeIsImage = true;
             
             if (!$rootScope.isCustomRank && !$rootScope.cCategory.isGhost) incViews(); //increment number of views
-
+            
             if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
             
             window.prerenderReady = true;
@@ -1066,7 +1069,7 @@
         function sortByRank() {
             function compare(a, b) {
                 if (a.Rank < 1 || b.Rank < 1 ) return b.Rank - a.Rank;
-                else return a.Rank - b.Rank;             
+                else return a.Rank - b.Rank;         
             }
             vm.answers = vm.answers.sort(compare);
             
@@ -1386,18 +1389,24 @@
 
         function displayVote(x) {
 
-            if (x.dV == 1) {
-                x.thumbUp = "#0070c0";//"thumbs_up_blue.png";//
-                x.thumbDn = "#bfbfbf";//"thumbs_down_gray.png";
-            }
+            if ($rootScope.isLoggedIn) {
+                if (x.dV == 1) {
+                    x.thumbUp = "#0070c0";//"thumbs_up_blue.png";//
+                    x.thumbDn = "#bfbfbf";//"thumbs_down_gray.png";
+                }
 
-            if (x.dV == 0) {
+                if (x.dV == 0) {
+                    x.thumbUp = "#bfbfbf";//"thumbs_up_gray.png";
+                    x.thumbDn = "#bfbfbf";//"thumbs_down_gray.png";
+                }
+                if (x.dV == -1) {
+                    x.thumbUp = "#bfbfbf";//"thumbs_up_gray.png";
+                    x.thumbDn = "#0070c0";//"thumbs_down_blue.png";
+                }
+            }
+            else {
                 x.thumbUp = "#bfbfbf";//"thumbs_up_gray.png";
                 x.thumbDn = "#bfbfbf";//"thumbs_down_gray.png";
-            }
-            if (x.dV == -1) {
-                x.thumbUp = "#bfbfbf";//"thumbs_up_gray.png";
-                x.thumbDn = "#0070c0";//"thumbs_down_blue.png";
             }
         }
         

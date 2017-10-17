@@ -19,6 +19,10 @@
 
         var baseURI = '/api/v2/mysql/_table/catans';
 
+        //for performance request only following fields:
+        var fields = '';
+            fields += 'category,answer,upV,downV,rank,scope,id';
+        
         var service = {
             getAllcatans: getAllcatans,
             getAllcatansX: getAllcatansX,
@@ -115,10 +119,9 @@
             filterstr = filterstr.substring(0,filterstr.length-3);
             
             //Get all catans records
-            var url0 = baseURI + filterstr;
+            var url0 = baseURI + filterstr + '&fields=' + fields;
             
             var p0 = $http.get(url0);
-            
             return $q.all([p0]).then(function (d){
                 
                 var _allcatansx = d[0].data.resource;
@@ -137,6 +140,7 @@
         }
 
         function getAllcatansY(data) {
+            //console.log("getAllcatansY - ", data);
 
             var _datax = [];  //this is filtered array (ignore those answers for which catans already fetched)
             if (data.length > 0) {
@@ -150,7 +154,6 @@
             //_datax = [];
 
             if (_datax.length == 0) return $q.when(false);
-            //console.log();
             var filterstr = '?filter=(';
             for (var i=0; i< _datax.length; i++){
                 filterstr = filterstr + 'answer=' + _datax[i].id+')OR(';
@@ -159,10 +162,9 @@
             
             filterstr = filterstr.substring(0,filterstr.length-3);
             //Get all catans records
-            var url0 = baseURI + filterstr;
+            var url0 = baseURI + filterstr + '&fields=' + fields;
             
             var p0 = $http.get(url0);
-            
             return $q.all([p0]).then(function (d){
                 
                 var _allcatansy = d[0].data.resource;

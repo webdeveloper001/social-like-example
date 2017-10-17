@@ -11,6 +11,8 @@
 
         //Members
         var _edits = [];
+        var _fetchAnswersMem = [];
+
         $rootScope.edits = _edits;
         var baseURI = '/api/v2/mysql/_table/edittable';
 
@@ -45,9 +47,19 @@
 
         function getEditsX(data) {
 
+            var _datax = [];  //this is filtered array (ignore those ranks for which catans already fetched)
+            data.forEach(function(item){
+                if (_fetchAnswersMem.indexOf(item.answer)<0){
+                     _datax.push(item);
+                     _fetchAnswersMem.push(item.answer);
+                }
+            });
+            //_datax = [];
+            if (_datax.length == 0) return $q.when(false);
+
             var filterstr = '?filter=(';
-            for (var i=0; i< data.length; i++){
-                filterstr = filterstr + 'answer=' + data[i].answer+')OR(';
+            for (var i=0; i< _datax.length; i++){
+                filterstr = filterstr + 'answer=' + _datax[i].answer+')OR(';
             }
             filterstr = filterstr.substring(0,filterstr.length-3);
             
@@ -186,8 +198,10 @@
 
         function _load(data){
             _edits.length = 0;
+            _fetchAnswersMem.length = 0;
             data.forEach(function(x){
                 _edits.push(x);
+                _fetchAnswersMem.push(x.id);
             });
         }
         
