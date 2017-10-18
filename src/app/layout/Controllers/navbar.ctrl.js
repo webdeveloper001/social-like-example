@@ -35,7 +35,7 @@
         vm.openCitySelection = openCitySelection;
         vm.goWarning = goWarning;
         vm.goCoords = goCoords;
-        vm.isAdmin = ($rootScope.isAdmin || $rootScope.dataAdmin);
+        vm.isAdmin = ($rootScope.isAdmin || $rootScope.dataAdmin || $rootScope.modAdmin);
 
         if ($rootScope.coordsRdy == undefined) $rootScope.coordsRdy = false;
         $rootScope.loadFbnWhenCoordsRdy = false;
@@ -54,8 +54,7 @@
         });
 
         var adminCredentialsListener = $rootScope.$on('adminCredentials', function(e) {
-            vm.isAdmin = ($rootScope.isAdmin || $rootScope.dataAdmin ||
-            $rootScope.modAdmin );
+            vm.isAdmin = ($rootScope.isAdmin || $rootScope.dataAdmin || $rootScope.modAdmin );
         });
 
         var showWarningListener = $rootScope.$on('showWarning', function (e) {
@@ -126,6 +125,17 @@
             configGeolocation();
 
             vm.coordsRdy = $rootScope.coordsRdy;
+
+            //Admin Credentials
+            $rootScope.isAdmin = false;
+            $rootScope.dataAdmin = false;
+            if ($rootScope.isLoggedIn) {
+                if ($rootScope.user.id == '1599427743409374') $rootScope.dataAdmin = true;
+                if ($rootScope.user.id == '10104518570729893') $rootScope.isAdmin = true;
+                if ($rootScope.user.id == '10214255239240099') $rootScope.contentAdmin = true;
+                if ($rootScope.user.id == '1638806919478345') $rootScope.modAdmin = true;
+                vm.isAdmin = ($rootScope.isAdmin || $rootScope.dataAdmin || $rootScope.modAdmin );
+            }
 
             if ($rootScope.DEBUG_MODE) console.log("Navbar Loaded!");
             //console.log("isLoggedIn", !$rootScope.isLoggedIn)
