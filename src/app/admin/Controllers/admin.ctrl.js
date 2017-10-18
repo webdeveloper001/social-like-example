@@ -50,7 +50,7 @@
 
         function activate() {
 
-            if (!$rootScope.isAdmin && !$rootScope.dataAdmin) $state.go('cwrapper');
+            if (!$rootScope.isAdmin && !$rootScope.dataAdmin && !$rootScope.modAdmin) $state.go('cwrapper');
             else{
             
             vm.isDET = $rootScope.isLoggedIn && ($rootScope.user.id == '10104518570729893' ||
