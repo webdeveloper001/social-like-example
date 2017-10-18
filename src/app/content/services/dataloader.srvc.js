@@ -201,7 +201,7 @@
                         else $rootScope.content[i].ismp = false;
                         //$rootScope.content[i].ismp = true;
                     }
-                    else console.log("Couldnt find this category --- ",$rootScope.content[i].cat);
+                    else if ($rootScope.DEBUG_MODE) console.log("Couldnt find this category --- ",$rootScope.content[i].cat);
                 }
         }
 
