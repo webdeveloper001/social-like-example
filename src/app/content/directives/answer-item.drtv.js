@@ -55,7 +55,7 @@ angular.module('app').directive('answerItem',
                     if (scope.stats.numcom == undefined || scope.stats.numcom == null )
                     scope.stats.numcom = 0;
 
-                     //Choose color randomly
+                    //Choose color randomly
                     var x = Math.floor(Math.random() * 5) + 1;
                     if (x == 1) {scope.bc = 'brown'; scope.fc = '#f8f8ff'; }
                     if (x == 2) {scope.bc = '#4682b4'; scope.fc = '#f8f8ff'; }

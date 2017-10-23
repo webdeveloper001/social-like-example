@@ -42,6 +42,11 @@ angular.module('app').directive('bgBox3', ['color','$timeout',function (color,$t
            scope.$on('$destroy',function(){
                 scope.isDestroyed = true;
             });
+        
+        scope.addView = function(){
+            scope.views++;
+        }
+        
         },
     }
 }

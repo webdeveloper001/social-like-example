@@ -31,14 +31,13 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
             var homeRanks = [];
             var ranksLoaded = false;
 
+            var _currentOffset = -1;
+            var _lastOffset = -1;
+
             scope.contentLoaded = false;
 
             scope.rankSel = function (x,nm) {
-                //$rootScope.$emit('childActive');
-                //$rootScope.PAGEYOFFSET =  window.pageYOffset;
-                //console.log("$rootScope.PAGEYOFFSET - ", $rootScope.PAGEYOFFSET);
-                //scope.disableScrolling = true;
-                //console.log("scope.disableScrolling = ", scope.disableScrolling);
+                
                 if (x.useTemp){
                 if (nm) $rootScope.rankIsNearMe = true;
                 else $rootScope.rankIsNearMe = false;
@@ -124,7 +123,7 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
             scope.maxRes = 4000;
             
             var timeoutPromise;
-            scope.$watch('query', function() {                
+            scope.$watch('query', function() {
                 if (ranksLoaded) queryPreamble();
                 else scope.contentLoaded = false;
             });
@@ -136,10 +135,9 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
             function queryPreamble(){
                  $timeout.cancel(timeoutPromise); //do nothing is timeout already done   
                     timeoutPromise = $timeout(function () {
-                        //console.time('stime - ', scope.query);
                         if (scope.query.length >= 2) {
                             scope.endReached = false;
-                            scope.getResults();
+                            scope.getResults(scope.query);
                             
                         }
                         if (scope.query.length == 0) {
@@ -156,10 +154,8 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                             homeRanks = temp;
                             scope.searchResults = homeRanks;
                             scope.endReached = false;
-                            // scope.displayResults = homeRanks.slice(0, scope.scrollingItemsOnePage);
                             scope.displayResults = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
                         }
-                        //console.timeEnd('etime - ', scope.query);
                     }, 300);
             }
 
@@ -235,12 +231,18 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                 }
                 if (ranksRes.length > 0) pullData('ranks', ranksRes);
                 if (answerRes.length > 0) pullData('answers', answerRes);
-                //scope.seachResults = scope.resRanks;
+                
+                scope.relTags = search.searchRelatedRanks(ranksRes, scope.query);
+                scope.relTagsIdx = 0;
+                
+                if (scope.searchResults.length < 16) scope.disableScrolling = true;
+                else scope.disableScrolling = false;
+
+                scope.loadMore();  //this necessary to force masonery arrangement                
             }
 
             var timeoutPromise2;
             scope.$watch('init', function() {
-                //console.log("init @search-blok");
                 $timeout.cancel(timeoutPromise2); //do nothing is timeout already done   
                 timeoutPromise2 = $timeout(function(){
                     if (scope.init) scope.getContent();
@@ -276,7 +278,6 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
 
             var timeoutPromise3;
             scope.$watch('data', function() {
-                //console.log("data @search-blok");
                 $timeout.cancel(timeoutPromise3); //do nothing is timeout already done   
                 timeoutPromise3 = $timeout(function(){
                     if (scope.data) scope.addContent();
@@ -337,28 +338,66 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
             loadInifiniteScroll(true);
 
             scope.loadMore = function () {
-                if (scope.scrollactive){
-                    scope.scrollDataLoading = true;
                 
-                $timeout(function () {
-                
-                //load next items onto displayResults array
-                var b = scope.displayResults.length;
-                pullDataArray = [];
-                for (var i=b; i < b + scope.scrollingItemsOnePage; i++){
-                    if (scope.searchResults[i]) {
-                        scope.displayResults.push(scope.searchResults[i]);
-                        pullDataArray.push(scope.searchResults[i]);
-                    }
+                _currentOffset = $window.pageYOffset;
+                if (_currentOffset == _lastOffset) {
+                    //Do Nothing}
                 }
-                    if (pullDataArray.length > 0) pullData('ranks',pullDataArray);
-                    scope.scrollDataLoading = false;
+                else {
+                    if (scope.scrollactive) {
+                        scope.scrollDataLoading = true;
 
-                    if ((scope.displayResults.length == scope.searchResults.length) && ranksLoaded) {
-                        scope.endReached = true;
+                        $timeout(function () {
+                            //load next items onto displayResults array
+                            var b = scope.displayResults.length;
+                            pullDataArray = [];
+                            for (var i = b; i < b + scope.scrollingItemsOnePage; i++) {
+                                if (scope.searchResults[i]) {
+                                    scope.displayResults.push(scope.searchResults[i]);
+                                    pullDataArray.push(scope.searchResults[i]);
+                                }
+                            }
+
+                            if (pullDataArray.length > 0) pullData('ranks', pullDataArray);
+                            scope.scrollDataLoading = false;
+
+                            //load more content
+                            if ((scope.searchResults.length - scope.displayResults.length) < 12 && scope.relTags != undefined) {
+                                //console.log("added more ranks, tag - ", scope.relTags[scope.relTagsIdx].tag);
+                                if (scope.relTags[scope.relTagsIdx] != undefined) {
+                                    var moreRanks = search.searchRanks2(scope.relTags[scope.relTagsIdx].tag);
+                                    scope.relTagsIdx++;
+                                    //If new ranks do not exist already in results, add it
+                                    moreRanks.forEach(function (nrank) {
+                                        if (scope.searchResults.map(function (x) { return x.id; }).indexOf(nrank.id) < 0) {
+                                            scope.searchResults.push(nrank);
+                                        }
+                                    });
+                                }
+                            }
+
+                            //add more related tags    
+                            if (scope.relTags != undefined) {
+                                if (scope.relTagsIdx == scope.relTags.length - 1) {
+                                    //console.log("added more tags");
+                                    scope.relTags = search.searchRelatedRanks(scope.searchResults, scope.query);
+                                    scope.relTagsIdx = 0;
+                                    //console.log("scope.relTags - ", scope.relTags);
+                                }
+                            }
+
+                            if ((scope.displayResults.length == scope.searchResults.length) && ranksLoaded) {
+                                if (scope.relTags != undefined) {
+                                    if (scope.relTagsIdx == scope.relTags.length - 1) {
+                                        scope.endReached = true;
+                                    }
+                                }
+                                else scope.endReached = true;
+                            }
+                        }, 500);
                     }
-                }, 500);
                 }
+                _lastOffset = _currentOffset;                
             }
 
             function pullData(type,data){

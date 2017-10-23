@@ -68,7 +68,7 @@
                 $rootScope.$emit('initalHomeDataLoaded');
             });
 
-            var p3 = rankofday.getrankofday();
+            //var p3 = rankofday.getrankofday();
         }
 
        

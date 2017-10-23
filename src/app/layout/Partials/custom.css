@@ -352,6 +352,20 @@ a.navbar-profile-picture-wrapper span{
     }
 }
 
+@media screen and (min-width:615px) {
+            .minxs280 {
+                min-height: 0px;
+                padding-right:10px;
+                margin-bottom:5px;
+            }
+        }
+@media screen and (max-width:614px) {
+            .minxs280 {
+                min-height: 0px;
+                padding-right:10px;
+                margin-bottom:5px;
+            }
+        }
 
 .active-back{
     background-color: #efefef;

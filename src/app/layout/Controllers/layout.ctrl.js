@@ -5,11 +5,11 @@
         .module('app')
         .controller('layout', layout);
 
-    layout.$inject = ['$location', '$rootScope', '$window', '$q', '$http', 'pvisits', '$cookies', '$scope',
+    layout.$inject = ['$location', '$rootScope', '$window', '$q', '$http', 'pvisits', '$cookies', '$scope','$timeout',
         'DEBUG_MODE', 'EMPTY_IMAGE', 'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata', 'dialog',
         'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state', 'dataloader', 'setting', 'filter'];
 
-    function layout($location, $rootScope, $window, $q, $http, pvisits, $cookies, $scope,
+    function layout($location, $rootScope, $window, $q, $http, pvisits, $cookies, $scope,$timeout,
         DEBUG_MODE, EMPTY_IMAGE, rankofday, answer, table, special, datetime, uaf, userdata, dialog,
         matchrec, edit, useractivity, vrows, headline, cblock, catans, $state, dataloader, setting, filter) {
         /* jshint validthis:true */
@@ -46,6 +46,7 @@
         vm.barIsActive = true;
         vm.childActive = false;
         vm.rodready = false;
+        vm.showans = false;
 
         //Admin Methods
         vm.editRank = editRank;
@@ -430,6 +431,7 @@
         function getResults() {
 
             $rootScope.inputVal = vm.val;
+            if (vm.val.length == 1) vm.showans = true;
             $rootScope.searchActive = true;
             vm.searchActive = $rootScope.searchActive;
             vm.childActive = !$rootScope.searchActive;
@@ -462,8 +464,12 @@
                 $rootScope.searchActive = true;
                 vm.searchActive = true;
                 vm.childActive = false;
-            } 
-            $rootScope.$emit('updateSearch')
+            }
+            //$rootScope.$emit('updateSearch')
+            
+            $timeout(function(){
+                $window.scrollTo(0, $rootScope.pageYOffset);
+            })
         }
 
         function goAddRank() {
@@ -494,6 +500,7 @@
         }
 
         function quickFilter(x){
+            vm.showans = false;
             if (x == 'neighborhood') {
                 //dialog.selectNeighborhood($rootScope.locations);
                 if (vm.nhctrl == false) vm.nhctrl = true;
@@ -593,7 +600,7 @@
             }
         }
 
-        function showTrends(){
+        function showTrends(){            
             vm.childActive = true; 
             vm.barIsActive = false;
             $rootScope.cCategory = undefined; //clear current category

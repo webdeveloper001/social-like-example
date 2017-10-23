@@ -1,4 +1,4 @@
-<div ng-if="dirHor">
+<div ng-if="dirHor" ng-click="addView()">
 <div class="container" ng-attr-style="color:{{fc}};margin:0px;padding:0px;border:0px;position:relative;width:{{w}};height:auto;cursor:pointer;
 					background: {{bc}};
   					background: -webkit-linear-gradient(left, {{bc}}, {{bc2}});
@@ -9,9 +9,10 @@
     style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{text}}</h2>
     -->
 
-    <p class="text-left">{{type}}</p>
-    <h5 ng-if="!isRankOfDay" class="text-center" 
-    ng-attr-style="padding:3px; margin:0px;">{{text}}</h5>
+	<!-- <p class="text-left">{{type}}</p> -->
+	<p></p>
+    <h4 ng-if="!isRankOfDay" class="text-center" 
+    ng-attr-style="padding:3px; margin:0px;">{{text}}</h4>
     <p style="text-align:center"><img ng-src="{{imageurl}}" style="width:90%"></p>
     
 </div>
