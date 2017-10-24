@@ -730,21 +730,24 @@
             var idx1 = 0;
             var obj = {};
             for (var i = 0; i < ranks.length; i++) {
-                tstr = ranks[i].tags.replace(/,/g, ' ');
-                tagsr = tstr.split(' ');
-                //console.log("tagsr - ", tagsr);
-                for (var j = 0; j < tagsr.length; j++) {
-                    if (tagsr[j] != 'isMP' && tagsr[j] != query ) {
-                        idx1 = tagsm.map(function (x) { return x.tag; }).indexOf(tagsr[j]);
-                        //console.log("idx1 - ", idx1);
-                        if (idx1 < 0) {
-                            obj = {};
-                            obj.tag = tagsr[j];
-                            obj.ctr = 1;
-                            tagsm.push(obj);
-                        }
-                        else {
-                            tagsm[idx1].ctr++;
+                if (ranks[i].isAnswer == true){}
+                else{
+                    tstr = ranks[i].tags.replace(/,/g, ' ');
+                    tagsr = tstr.split(' ');
+                    //console.log("tagsr - ", tagsr);
+                    for (var j = 0; j < tagsr.length; j++) {
+                        if (tagsr[j] != 'isMP' && tagsr[j] != query) {
+                            idx1 = tagsm.map(function (x) { return x.tag; }).indexOf(tagsr[j]);
+                            //console.log("idx1 - ", idx1);
+                            if (idx1 < 0) {
+                                obj = {};
+                                obj.tag = tagsr[j];
+                                obj.ctr = 1;
+                                tagsm.push(obj);
+                            }
+                            else {
+                                tagsm[idx1].ctr++;
+                            }
                         }
                     }
                 }

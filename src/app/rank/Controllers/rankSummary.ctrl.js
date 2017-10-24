@@ -19,7 +19,7 @@
         var vm = this;
         vm.title = 'rankSummary';
         vm.addAnswerDisabled = '';
-        vm.mode = "specials";
+        vm.mode = "endorse";
         //if ($location.absUrl().indexOf('code=')>-1)$window.location.search = '';
         
         // Methods

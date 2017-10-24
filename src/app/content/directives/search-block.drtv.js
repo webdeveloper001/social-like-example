@@ -235,7 +235,7 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                 scope.relTags = search.searchRelatedRanks(ranksRes, scope.query);
                 scope.relTagsIdx = 0;
                 
-                if (scope.searchResults.length < 16) scope.disableScrolling = true;
+                if (scope.searchResults.length < 4) scope.disableScrolling = true;
                 else scope.disableScrolling = false;
 
                 scope.loadMore();  //this necessary to force masonery arrangement                
@@ -340,8 +340,10 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
             scope.loadMore = function () {
                 
                 _currentOffset = $window.pageYOffset;
-                if (_currentOffset == _lastOffset) {
+                //if (_currentOffset == _lastOffset && _currentOffset != 0) {
+                if (false) {    
                     //Do Nothing}
+                    console.log("loadMore - doNothing");
                 }
                 else {
                     if (scope.scrollactive) {
