@@ -235,7 +235,10 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                 scope.relTags = search.searchRelatedRanks(ranksRes, scope.query);
                 scope.relTagsIdx = 0;
                 
-                if (scope.searchResults.length < 4) scope.disableScrolling = true;
+                if (scope.searchResults.length < 4) {
+                    console.log("scrolling disabled");
+                    scope.disableScrolling = true;
+                }
                 else scope.disableScrolling = false;
 
                 scope.loadMore();  //this necessary to force masonery arrangement                
@@ -338,12 +341,12 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
             loadInifiniteScroll(true);
 
             scope.loadMore = function () {
-                
+                //console.log("loadMore - ", scope.scrollactive);
                 _currentOffset = $window.pageYOffset;
-                //if (_currentOffset == _lastOffset && _currentOffset != 0) {
-                if (false) {    
+                if (_currentOffset == _lastOffset && _currentOffset != 0) {
+                //if (false) {    
                     //Do Nothing}
-                    console.log("loadMore - doNothing");
+                    //console.log("loadMore - doNothing");
                 }
                 else {
                     if (scope.scrollactive) {
@@ -364,17 +367,19 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                             scope.scrollDataLoading = false;
 
                             //load more content
+                           
                             if ((scope.searchResults.length - scope.displayResults.length) < 12 && scope.relTags != undefined) {
-                                //console.log("added more ranks, tag - ", scope.relTags[scope.relTagsIdx].tag);
                                 if (scope.relTags[scope.relTagsIdx] != undefined) {
                                     var moreRanks = search.searchRanks2(scope.relTags[scope.relTagsIdx].tag);
                                     scope.relTagsIdx++;
                                     //If new ranks do not exist already in results, add it
                                     moreRanks.forEach(function (nrank) {
-                                        if (scope.searchResults.map(function (x) { return x.id; }).indexOf(nrank.id) < 0) {
+                                        if (scope.searchResults.map(function (x) { return x.id; }).indexOf(nrank.id) < 0 &&
+                                            nrank.ismp == true) {
                                             scope.searchResults.push(nrank);
                                         }
                                     });
+                                    scope.loadMore();
                                 }
                             }
 
