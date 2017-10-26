@@ -1,8 +1,8 @@
-<div ng-class="sm?'':'rank-item'">
+<div ng-class="sm?'':'result-item'">
     <!-- Basic Layout -->
-    <div class="row">
+    <div class="row" ng-click="resSel(result)">
         <div class="container-bgbox col-xs-12">
-            <bg-box3 bc="{{bc}}" shade="{{shade}}" fc="{{fc}}" text="{{title}}" dir="horizontal" 
+            <bg-box3 bc="{{bc}}" shade="{{shade}}" fc="{{fc}}" text="{{title}}" dir="horizontal"
             w="100%" h="{{sm ? '150':'200'}}" stats="{{stats}}" type="{{type}}" imageurl="{{imageurl}}"></bg-box3>
         </div>
 <!--

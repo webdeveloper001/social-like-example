@@ -14,7 +14,6 @@
         'ngSanitize',
         'ngTouch',
         'ngMessages',
-        
         //'pascalprecht.translate',
         //'tmh.dynamicLocale',
         
@@ -32,6 +31,7 @@
         
         'ui.select',
         'infinite-scroll',
-        'datatables'
+        'datatables',
+        'wu.masonry'
     ]);
 })();
