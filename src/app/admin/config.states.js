@@ -90,6 +90,13 @@
                 controller: 'staticpagesconsole as vm'               
             },
             {
+                name: 'sitemap',
+                parent: 'admin',
+                url: '/sitemap',
+                templateUrl: 'app/admin/Partials/sitemap.html',
+                controller: 'sitemap as vm'               
+            },
+            {
                 name: 'locations',
                 parent: 'admin',
                 url: '/locations',

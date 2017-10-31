@@ -41,6 +41,7 @@
         vm.modImages = modImages;
         vm.staticPages = staticPages;
         vm.golocations = golocations;
+        vm.gositemap = gositemap;
 
         vm.dataready = false;
         //vm.fbpost = fbpost;
@@ -208,6 +209,12 @@
             $state.go('locations');
         }
 
+        function gositemap(){
+            disableAll();
+            vm.selsitemap = 'active';
+            $state.go('sitemap');
+        }
+
         function disableAll(){
             vm.selKeywords = '';
             vm.selViews = '';
@@ -225,6 +232,7 @@
             vm.selimagesMod = '';
             vm.selStaticPages = '';
             vm.selLocations = '';
+            vm.selsitemap = '';
         }
 
         function goBack() {
