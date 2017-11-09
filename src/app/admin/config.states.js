@@ -10,23 +10,6 @@
 
         var states = [            
             {
-                name: 'admin',
-                url: '/admin',
-                parent: 'layout',
-                templateUrl: 'app/admin/Partials/admin.html',
-                controller: 'admin as vm'
-                /*views: {
-                    "@": {
-                        templateUrl: 'app/admin/Partials/admin.html',
-                        controller: ''
-                    },
-                    "navbar@admin": {
-                        templateUrl: 'app/layout/Partials/navbar.html',
-                        controller: 'navbar as vm'
-                    }
-                }*/
-            },
-            {
                 name: 'queries',
                 parent: 'admin',
                 url: '/queries',
@@ -150,7 +133,15 @@
                 parent: 'admin',
                 url: '/cleandb',
                 templateUrl: 'app/admin/Partials/cleandb.html',
-                controller: 'cleandb as vm'               
+                controller: 'cleandb as vm',
+                resolve: {
+                    load: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            rerun: true,
+                            files: ['scripts/vendor3.js']
+                        });
+                    }]
+                }               
             },
             {
                 name: 'rodconsole',

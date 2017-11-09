@@ -50,7 +50,33 @@ angular.module('app').directive('resultItem',
                         if (resObj.isAnswer == true) scope.imageurl = resObj.imageurl;
                         else scope.imageurl = resObj.fimage;
 
-                        scope.type = resObj.type;
+                        /*
+                        if (resObj.isAnswer == true) scope.introtext = resObj.addinfo.slice(0,150);
+                        else {
+                            var introtext = '';
+                            //If introtext exist load it, if not, create custom intro text
+                            if (resObj.introtext) {
+                                var start = resObj.introtext.indexOf('++');
+                                var end = resObj.introtext.indexOf('--');
+                                if (start > -1 && end > -1) introtext = resObj.introtext.substring(start + 2, end);
+                                else introtext = resObj.introtext;
+                            }
+                            else introtext = 'Endorse your favorite ' + resObj.title + '. ';
+                            scope.introtext = introtext.slice(0, 150);
+                        }*/
+
+                        //scope.type = resObj.type;
+                        if (resObj.isAnswer){
+                            if (resObj.type == 'Establishment') scope.type = 'Establishment';
+                            if (resObj.type == 'Event') scope.type = 'Event';
+                            if (resObj.type == 'Organization') scope.type = 'Organization';
+                            if (resObj.type == 'Person') scope.type = 'Public Figure';
+                            if (resObj.type == 'PersonCust') scope.type = 'Professional';
+                            if (resObj.type == 'Place') scope.type = 'Place';
+                            if (resObj.type == 'Short-Phrase') scope.type = 'Opinion';
+                        }
+                        else scope.type = 'Ranking';
+                        
 
                         //Get rank stats
                         scope.stats = {};
@@ -69,6 +95,7 @@ angular.module('app').directive('resultItem',
                             }
                             
                             //if bc and fc are undefined
+                            /*
                             if (resObj.bc != undefined && resObj.bc != '') {
                                     scope.bc = resObj.bc;
                                     scope.fc = resObj.fc;
@@ -79,17 +106,23 @@ angular.module('app').directive('resultItem',
                                     scope.bc = colors[0];
                                     scope.fc = colors[1];
                                     scope.shade = -4;
-                            }
+                            }*/
+                            
+                            scope.bc = 'gray';
+                            scope.fc = '#f8f8ff';
+                            scope.shade = 4;
                         }
                         else {
                             //Choose color randomly
-                            var x = Math.floor(Math.random() * 5) + 1;
-                            if (x == 1) { scope.bc = 'brown'; scope.fc = '#f8f8ff'; }
-                            if (x == 2) { scope.bc = '#4682b4'; scope.fc = '#f8f8ff'; }
-                            if (x == 3) { scope.bc = '#008080'; scope.fc = '#f8f8ff'; }
-                            if (x == 4) { scope.bc = 'gray'; scope.fc = '#f8f8ff'; }
-                            //if (x == 5) {scope.bc = '#a3297a'; scope.fc = '#f8f8ff'; }
-                            if (x == 5) { scope.bc = '#c68c53'; scope.fc = '#f8f8ff'; }
+                            
+                            //var x = Math.floor(Math.random() * 5) + 1;
+                            if (resObj.type == 'Organization') { scope.bc = 'brown'; scope.fc = '#f8f8ff'; }
+                            if (resObj.type == 'Establishment') { scope.bc = '#4682b4'; scope.fc = '#f8f8ff'; }
+                            if (resObj.type == 'Place') { scope.bc = '#008080'; scope.fc = '#f8f8ff'; }
+                            if (resObj.type == 'Short-Phrase') { scope.bc = '#2d5a6a'; scope.fc = '#f8f8ff'; }
+                            if (resObj.type == 'Event') { scope.bc = '#176ced'; scope.fc = '#f8f8ff'; }
+                            if (resObj.type == 'Person' || resObj.type == 'PersonCust') { scope.bc = '#c68c53'; scope.fc = '#f8f8ff'; }
+                            
                             scope.shade = -4;
                         }
                         if (resObj.type == 'Short-Phrase') scope.image1 = $rootScope.EMPTY_IMAGE;

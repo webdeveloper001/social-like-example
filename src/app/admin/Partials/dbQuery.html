@@ -4,7 +4,7 @@
  <button class="btn btn-primary" ng-click="vm.queryAnswer()">Query</button>
  <div ng-repeat="x in vm.ansRes">
 	 <h4 class="text-left">{{$index+1}}. {{x.name}}</h4>
-	 <img src="{{x.imageurl}}" style="width:120px"></br>
+	 <img ng-src="{{x.imageurl}}" style="width:120px"></br>
 	 Id: {{x.id}} Added by User: {{x.userid}} </br>
 	 Neighborhood: {{x.cityarea}} </br>
 	 Address: {{x.location}} </br>

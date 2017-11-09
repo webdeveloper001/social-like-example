@@ -1,4 +1,4 @@
-angular.module('app').directive('bgBox3', ['color','$timeout',function (color,$timeout) {
+angular.module('app').directive('bgBox3', ['color','$timeout','$rootScope',function (color, $timeout, $rootScope) {
     'use strict';
 
     return {
@@ -14,9 +14,9 @@ angular.module('app').directive('bgBox3', ['color','$timeout',function (color,$t
             stats: '@',
             w: '@',
             h: '@',
-            question: '@',
-            imageurl: '@',
+            introtext: '@',
             type: '@',
+            imageurl: '@',
             isRankOfDay: '@'
         },
         link: function (scope) {
@@ -27,6 +27,9 @@ angular.module('app').directive('bgBox3', ['color','$timeout',function (color,$t
             scope.views = S.views;
             scope.answers = S.answers;
             scope.comments = S.numcom;
+
+            if ($rootScope.DISPLAY_XSMALL == true) scope.sm = true;
+            else scope.sm = false;
 
            if (scope.dir == "horizontal"){
                scope.dirHor = true;

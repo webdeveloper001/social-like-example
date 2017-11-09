@@ -4,12 +4,16 @@
     var app = angular.module('app');
 
     // Configure the states and state resolvers
-    app.config(['$stateProvider', '$urlRouterProvider','$locationProvider', stateConfigurator]);
+    app.config(['$stateProvider', '$urlRouterProvider','$locationProvider', '$ocLazyLoadProvider',stateConfigurator]);
 
-    function stateConfigurator($stateProvider, $urlRouterProvider,$locationProvider) {
+    function stateConfigurator($stateProvider, $urlRouterProvider,$locationProvider,$ocLazyLoadProvider) {
 
-        // use the HTML5 History API
-        //$locationProvider.html5Mode(true);
+        var lazyDeferred;
+    
+        $ocLazyLoadProvider.config({
+            loadedModules: ['app'],
+            //asyncLoader: require
+        });
 
         // For any unmatched url
         $urlRouterProvider.otherwise('/home');
@@ -36,9 +40,18 @@
                 //abstract: true,
                 url: '/home', ///cwrapper',
                 templateUrl: 'app/layout/Partials/cwrapper.html',
-                controller: 'cwrapper as vm'
+                controller: 'cwrapper as vm',
+                resolve: {
+                    
+                    load: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            rerun: true,
+                            files: ['scripts/app2.js']
+                        });
+                    }]
+                    
+                }
             },
-
             {
                 name: 'rankSummary',
                 parent: 'layout',
@@ -50,28 +63,28 @@
                 name: 'editRanking',
                 parent: 'layout',
                 url: '/editRanking/:index',
-                templateUrl: 'app/rank/Partials/editRanking.html',
+                templateUrl: 'app/rank/Partials2/editRanking.html',
                 controller: 'editRanking as vm'
             },
             {
                 name: 'addAnswer',
                 parent: 'layout',
                 url: '/addAnswer',
-                templateUrl: 'app/answer/Partials/addAnswer.html',
+                templateUrl: 'app/answer/Partials2/addAnswer.html',
                 controller: 'addAnswer as vm'
             },
             {
                 name: 'addEvent',
                 parent: 'layout',
                 url: '/addEvent',
-                templateUrl: 'app/answer/Partials/addEvent.html',
+                templateUrl: 'app/answer/Partials2/addEvent.html',
                 controller: 'addEvent as vm'
             },
             {
                 name: 'editAnswer',
                 parent: 'layout',
                 url: '/editAnswer/:index',
-                templateUrl: 'app/answer/Partials/editAnswer.html',
+                templateUrl: 'app/answer/Partials2/editAnswer.html',
                 controller: 'editAnswer as vm'
             },
              {
@@ -92,7 +105,7 @@
                 name: 'addRankforAnswer',
                 parent: 'layout',
                 url: '/addRankforAnswer',
-                templateUrl: 'app/admin/Partials/addRankforAnswer.html',
+                templateUrl: 'app/rank/Partials2/addRankforAnswer.html',
                 controller: 'addRankforAnswer as vm'               
             },
             {
@@ -106,7 +119,7 @@
                 name: 'answerRanksManager',
                 parent: 'layout',
                 url: '/answerRanksManager',
-                templateUrl: 'app/answer/Partials/answerRanksManager.html',
+                templateUrl: 'app/answer/Partials2/answerRanksManager.html',
                 controller: 'answerRanksManager as vm',
             },
             {
@@ -120,92 +133,52 @@
                 name: 'addCustomRank',
                 parent: 'layout',
                 url: '/addCustomRank',
-                templateUrl: 'app/admin/Partials/addCustomRank.html',
+                templateUrl: 'app/rank/Partials2/addCustomRank.html',
                 controller: 'addCustomRank as vm'
             },
             {
                 name: 'match',
                 parent: 'layout',
                 url: '/match',
-                templateUrl: 'app/rank/Partials/match.html',
+                templateUrl: 'app/rank/Partials2/match.html',
                 controller: 'match as vm'
             },
             {
                 name: 'about',
                 url: '/about',
                 parent: 'layout',
-                templateUrl: 'app/layout/Partials/about.html',
+                templateUrl: 'app/layout/Partials2/about.html',
                 controller: 'about as vm'
-                /*views: {
-                    "@": {
-                        templateUrl: 'app/layout/Partials/about.html',
-                        controller: 'about as vm'
-                    },
-                    "navbar@about": {
-                        templateUrl: 'app/layout/Partials/navbar.html',
-                        controller: 'navbar as vm'
-                    }
-                }*/
             },
             {
                 name: 'privacypolicy',
                 url: '/privacypolicy',
                 parent: 'layout',
-                templateUrl: 'app/layout/Partials/privacypolicy.html',
+                templateUrl: 'app/layout/Partials2/privacypolicy.html',
                 controller: 'privacypolicy as vm'
-                /*views: {
-                    "@": {
-                        templateUrl: 'app/layout/Partials/privacypolicy.html',
-                        controller: 'privacypolicy as vm'
-                    },
-                    "navbar@privacypolicy": {
-                        templateUrl: 'app/layout/Partials/navbar.html',
-                        controller: 'navbar as vm'
-                    }
-                }*/
             },
 
             {
                 name: 'cutomertos',
                 url: '/terms-of-service/customers',
                 parent: 'layout',
-                templateUrl: 'app/layout/Partials/customertos.html',
+                templateUrl: 'app/layout/Partials2/customertos.html',
                 controller: 'customertos as vm'
-                /*views: {
-                    "@": {
-                        templateUrl: 'app/layout/Partials/customertos.html',
-                        controller: 'customertos as vm'
-                    },
-                    "navbar@cutomertos": {
-                        templateUrl: 'app/layout/Partials/navbar.html',
-                        controller: 'navbar as vm'
-                    }
-                }*/
             },
 
             {
                 name: 'promotertos',
                 url: '/terms-of-service/promoters',
                 parent: 'layout',
-                templateUrl: 'app/layout/Partials/promotertos.html',
+                templateUrl: 'app/layout/Partials2/promotertos.html',
                 controller: 'promotertos as vm'
-                /*views: {
-                    "@": {
-                        templateUrl: 'app/layout/Partials/promotertos.html',
-                        controller: 'promotertos as vm'
-                    },
-                    "navbar@promotertos": {
-                        templateUrl: 'app/layout/Partials/navbar.html',
-                        controller: 'navbar as vm'
-                    }
-                }*/
             },
 
           {
                 name: 'mybusiness',
                 url: '/mybusiness',
                 parent: 'layout',
-                templateUrl: 'app/layout/Partials/mybusiness.html',
+                templateUrl: 'app/layout/Partials2/mybusiness.html',
                 controller: 'mybusiness as vm'
             },
           {
@@ -221,42 +194,46 @@
                 parent: 'layout',
                 templateUrl: 'app/promoters/Partials/promotersignup.html',
                 controller: 'promotersignup as vm'
-                /*views: {
-                    "@": {
-                        templateUrl: '',
-                        controller: ''
-                    },
-                    "navbar@promotersignup": {
-                        templateUrl: 'app/layout/Partials/navbar.html',
-                        controller: 'navbar as vm'
-                    }
-                }*/
             },  
             {
                 name: 'favs',
                 parent: 'layout',
                 url: '/favs',
-                templateUrl: 'app/layout/Partials/favs.html',
+                templateUrl: 'app/layout/Partials2/favs.html',
                 controller: 'favs as vm'
             },
 
             {
                 name: 'feeds',
                 parent: 'layout',
-                //abstract: true,
                 url: '/feeds', ///cwrapper',
-                templateUrl: 'app/layout/Partials/feeds.html',
+                templateUrl: 'app/layout/Partials2/feeds.html',
                 controller: 'feeds as vm'
             },
             {
                 name: 'trends',
                 parent: 'layout',
-                //abstract: true,
                 url: '/trends', ///cwrapper',
-                templateUrl: 'app/layout/Partials/trends.html',
+                templateUrl: 'app/layout/Partials2/trends.html',
                 controller: 'trends as vm'
             },
-
+            {
+                name: 'admin',
+                url: '/admin',
+                parent: 'layout',
+                templateUrl: 'app/admin/Partials/admin.html',
+                controller: 'admin as vm',
+                resolve: {
+                    
+                    load: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            rerun: true,
+                            files: ['scripts/admin-app.js']
+                        });
+                    }]
+                    
+                }
+            }
         ];
 
         $(states).each(function () {

@@ -136,6 +136,7 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                  $timeout.cancel(timeoutPromise); //do nothing is timeout already done   
                     timeoutPromise = $timeout(function () {
                         if (scope.query.length >= 2) {
+                            scope.disableScrolling = false;
                             scope.endReached = false;
                             scope.getResults(scope.query);
                             
@@ -235,12 +236,13 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                 scope.relTags = search.searchRelatedRanks(ranksRes, scope.query);
                 scope.relTagsIdx = 0;
                 
-                if (scope.searchResults.length < 4) {
-                    console.log("scrolling disabled");
+                
+                if (scope.searchResults.length < 3) {
+                    //console.log("scrolling disabled");
                     scope.disableScrolling = true;
                 }
                 else scope.disableScrolling = false;
-
+                
                 scope.loadMore();  //this necessary to force masonery arrangement                
             }
 

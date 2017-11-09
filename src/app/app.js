@@ -14,6 +14,7 @@
         'ngSanitize',
         'ngTouch',
         'ngMessages',
+        'oc.lazyLoad',
         //'pascalprecht.translate',
         //'tmh.dynamicLocale',
         
