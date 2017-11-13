@@ -141,13 +141,13 @@
             var p0 = $http.get(url0);
             
             return $q.all([p0]).then(function (d){
-                var _answer = d[0].data.resource[0];
-                
-                var map = _answers.map(function(x) {return x.id; });
-                if(map.indexOf(_answer.id) < 0) _answers.push(_answer);
+                var answerx = d[0].data.resource[0];
+
+                var idx = _answers.map(function(x) {return x.id; }).indexOf(answerx.id);
+                if (idx < 0) _answers.push(answerx);
                 
                 if ($rootScope.DEBUG_MODE) console.log("single answer loaded: ", _answer);
-                return _answer;
+                return answerx;
             });
             
         }

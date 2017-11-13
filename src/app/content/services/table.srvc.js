@@ -34,7 +34,7 @@
 
             var ranksFromStorage = $window.localStorage.getItem("Ranks-HomeData");
             if (ranksFromStorage) {
-                 _load(JSON.parse(ranksFromStorage));
+                 _append(JSON.parse(ranksFromStorage));
                  return $q.when(true);
             }
 
@@ -49,8 +49,9 @@
 
             return $q.all([p0]).then(function (d){
                 var datax = d[0].data.resource;
-
-                if (_tables.length == 0) _load(datax); 
+                
+                _append([datax]);
+                //if (_tables.length == 0) _load(datax); 
 
                 if ($rootScope.DEBUG_MODE) console.log("tables L length: ", _tables.length);
                 //$window.localStorage.setItem("Ranks-HomeData", JSON.stringify(datax));
@@ -93,7 +94,6 @@
             filterstr = filterstr.substring(0,filterstr.length-3);
             
             var url0 = baseURI + filterstr;
-            
             var p0 = $http.get(url0);
             
             return $q.all([p0]).then(function (d){
@@ -135,10 +135,12 @@
             
             return $q.all([p0]).then(function (d){
                 
-                var data = d[0].data.resource;
-                _load(data);
+                var data = d[0].data.resource[0];
+                
+                _append([data]);
+
                 if ($rootScope.DEBUG_MODE) console.log("single table loaded: ", data);
-                return _tables;            
+                return data;            
             }, _queryFailed);  
                       
         }
@@ -358,6 +360,13 @@
             data.forEach(function(x){
                 _tables.push(x);
             });
+        }
+
+        function _append(data){
+           data.forEach(function(item){
+                var idx = _tables.map(function(x) {return x.id; }).indexOf(item.id);
+                if (idx < 0) _tables.push(item);
+            }); 
         }
 
         function _areTablesLoaded() {

@@ -160,6 +160,7 @@ angular.module('app').directive('resultItem',
                         $rootScope.pageYOffset = $window.pageYOffset;
                         scope.stats.views++;
                         if (x.isAnswer) {
+                            $rootScope.cCategory = undefined;
                             $state.go('answerDetail', { index: x.slug });
                         }
                         else {

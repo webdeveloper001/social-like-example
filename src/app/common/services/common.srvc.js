@@ -12,7 +12,8 @@
         //Members
         
         var service = {
-            getInclusiveAreas: getInclusiveAreas
+            getInclusiveAreas: getInclusiveAreas,
+            getIndexFromSlug: getIndexFromSlug
         };
 
         return service;
@@ -33,6 +34,21 @@
                 }
             }
             else console.log("Could not find -- ", nh);
+        }
+
+        function getIndexFromSlug(slug){
+            //first check if slug is number
+            if (isNumber(slug)){
+                return slug;
+            }
+            else{
+                var slugA = slug.split('-').map(Number);
+                return slugA[slugA.length-1];
+            }
+        }
+
+        function isNumber (o) {
+            return ! isNaN (o-0) && o !== null && o !== "" && o !== false;
         }
 
 

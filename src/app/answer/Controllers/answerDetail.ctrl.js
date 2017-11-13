@@ -7,12 +7,12 @@
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
         'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt','dataloader','$timeout',
-        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope', 'table', 'SERVER_URL','$http',
+        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope', 'table', 'SERVER_URL','$http', 'common',
         '$cookies', '$q', 'fbusers', 'InstagramService', 'mailing', 'Socialshare']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
         votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt, dataloader, $timeout,
-        $location, vrows, vrowvotes, imagelist, instagram, $scope, table, SERVER_URL, $http,
+        $location, vrows, vrowvotes, imagelist, instagram, $scope, table, SERVER_URL, $http, common,
         $cookies, $q, fbusers, InstagramService, mailing, Socialshare) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
@@ -101,6 +101,7 @@
         vm.commentAllowed = true;
         vm.searchActive = $rootScope.searchActive;
         var answerFound = false;
+        vm.dataReady = false;
         
         vm.isMobile = false; 
         // device detection
@@ -124,62 +125,38 @@
         });
 
         var answerDataLoadedListener = $rootScope.$on('answerDataLoaded', function () {
-            //console.log("rx - answerDataLoaded");
-            if (!vm.dataReady) {
-                vm.dataReady = true;
-                getAnswer();
-            }
+            if (vm.dataReady == false) checkAnswerExists();
         });
 
         $scope.$on('$destroy',refreshImagesListener);
         $scope.$on('$destroy',fileUploadedListener);
         $scope.$on('$destroy',answerDataLoadedListener);
         $scope.$on('$destroy',updateRecordsListener);
-    
-        if ($rootScope.answerDetailLoaded) { 
-            vm.dataReady = true; 
-            getAnswer(); 
-        }
-        else vm.dataReady = false;
 
         //Flags to hide advertisement blocks
         vm.hideCustomRanksMsg = $rootScope.hideCustomRankMsg == undefined ? false:$rootScope.hideCustomRankMsg; 
         vm.hideGetPremiumMsg = $rootScope.hideGetPremiumMsg == undefined ? false:$rootScope.hideGetPremiumMsg;
 
-        //activate();
         window.prerenderReady = false;
-        
+        checkAnswerExists();
 
-        function getAnswer(){
-
-            if ($stateParams.index) {
-                var isnum = /^\d+$/.test($stateParams.index);
-                if(isnum){
-                    var i = $rootScope.answers.map(function (x) { return x.id; }).indexOf(+$stateParams.index);
-                    vm.answer = $rootScope.answers[i];
-                } else {
-                    var i = $rootScope.answers.map(function (x) { return x.slug; }).indexOf($stateParams.index);
-                    vm.answer = $rootScope.answers[i];
-                }
-            }
-
-            if (vm.answer == undefined) {
-                answerFound = false;
-                dialog.notificationWithCallback(
-                'Oops','Couldnt find this answer. This answer probably got deleted and its no longer in the database.',
-                goBack );
-            }
-            else {
-                answerFound = true;
-                activate();
-            }
+        function checkAnswerExists(){
+            $rootScope.canswer = null;
+            var ansid = common.getIndexFromSlug($stateParams.index);
             
+            var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(Number(ansid));
+            if (idx > -1) $rootScope.canswer = $rootScope.answers[idx];
+            
+            //if rank exists continue loading controller, else get from database
+            if ($rootScope.canswer != null) activate();
+            else dataloader.getAnswer($stateParams.index);
         }
 
         function activate() {
 
-            //Init variables
-            //vm.ranking = $rootScope.title;
+            vm.dataReady = true;
+            vm.answer = $rootScope.canswer;
+
             answers = $rootScope.canswers;
             vm.fields = $rootScope.fields;
             vm.isAdmin = $rootScope.isAdmin || $rootScope.dataAdmin;
@@ -198,7 +175,6 @@
 
             if (vm.answer.isprivate == undefined) vm.answer.isprivate = false;            
 
-            $rootScope.canswer = vm.answer;
             vm.type = vm.answer.type;
             vm.i = -1;
             if ($rootScope.DISPLAY_XSMALL || $rootScope.DISPLAY_SMALL) numImagesPage = 4;

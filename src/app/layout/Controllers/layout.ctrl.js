@@ -57,7 +57,7 @@
         vm.clearNh = clearNh;
         vm.nhctrl = false;
         vm.nh = '';
-        vm.toggleSelCity = toggleSelCity;
+        //vm.toggleSelCity = toggleSelCity;
         vm.showTrends = showTrends;
         //vm.scopeGeneral = scopeGeneral;
         //vm.scopeCity = scopeCity;
@@ -170,10 +170,12 @@
         });
         var rankDataLoadedListener = $rootScope.$on('rankDataLoaded', function () {
             if ($rootScope.DEBUG_MODE) console.log("RX - rankDataLoaded");
+            if ($rootScope.initalHomeDataLoaded != true) dataloader.getInitialData();
             loadingDone();
         });
         var answerDataLoadedListener = $rootScope.$on('answerDataLoaded', function () {
             if ($rootScope.DEBUG_MODE) console.log("RX - answerDataLoaded");
+            if ($rootScope.initalHomeDataLoaded != true) dataloader.getInitialData();
             loadingDone();
         });
         var initialHomeDataLoadedListener = $rootScope.$on('initalHomeDataLoaded', function () {
@@ -211,12 +213,12 @@
                 }
                 //console.log("$rootScope.rankofday - ", $rootScope.rankofday);
         });
-
+        /*
         var setScopeListener = $rootScope.$on('setScope', function () {
             if ($rootScope.SCOPE == 1) {vm.scopeIsGeneral = true; vm.scopeIsCity = false; }
             if ($rootScope.SCOPE == 2) {vm.scopeIsGeneral = false; vm.scopeIsCity = true; } 
         });
-
+        */
         var locationChangeListener = $rootScope.$on('$locationChangeSuccess', function() {
             if (window.location.href.indexOf('home') > -1) { vm.childActive = false; vm.barIsActive = true; }
             if (window.location.href.indexOf('rankSummary') > -1) { vm.childActive = true; vm.barIsActive = false; }
@@ -224,7 +226,7 @@
             if (window.location.href.indexOf('trends') > -1) { vm.childActive = true; vm.barIsActive = false; }
         });   
 
-        $scope.$on('$destroy',setScopeListener);
+        //$scope.$on('$destroy',setScopeListener);
         $scope.$on('$destroy',userLoggedOutListener);
         $scope.$on('$destroy',backtoResultsListener);
         $scope.$on('$destroy',hideSearchBarListener);
@@ -310,7 +312,7 @@
 
             $rootScope.DEBUG_MODE = DEBUG_MODE;
             $rootScope.EMPTY_IMAGE = EMPTY_IMAGE;
-            $rootScope.SCOPE = 2; // This scope number is for city of San Diego.
+            //$rootScope.SCOPE = 2; // This scope number is for city of San Diego.
 
             $rootScope.facebookAppId = ''; //1102409523140826'';
             $rootScope.facebookUrl = 'https://www.facebook.com/Rank-X-San-Diego-582174448644554';
@@ -351,32 +353,11 @@
         }
 
         function loadData() {
-            /*
-            $rootScope.neighborhoods = [
-                "Downtown", "La Jolla", "Pacific Beach", "Hillcrest", "University Heights", "Old Town", "Del Mar",
-                "Ocean Beach", "North Park", "Mission Hills", "Barrio Logan", "City Heights", "Clairemont", "La Mesa", "Point Loma",
-                "South Park", "Scripps Ranch", "Mission Beach", "Mission Valley", "Kensington", "Cardiff by the Sea", "Coronado",
-                "Leucadia", "Oceanside", "National City", "Rancho Santa Fe", "Solana Beach", "Poway", "El Cajon",
-                "Escondido", "Carlsbad", "San Ysidro", "Otay Mesa", "Linda Vista", "Chula Vista", "Encinitas", "Golden Hill",
-                "Spring Valley", "Rancho San Diego", "Mira Mesa",
-                "Torrey Pines", "Carmel Valley", "Miramar", "Kearny Mesa", "Rancho Penasquitos",
-                "Sorrento Valley", "Tierra Santa", "Logan Heights", "Serra Mesa", "Normal Heights", "Talmadge",
-                "Bird Rock", "South San Diego", "North City", "San Carlos", "Del Cerro", "Grantville"
-            ];
-
-            $rootScope.districts = [
-                "Columbia", "Core", "Cortez Hill", "East Village", "Gaslamp Quarter", "Horton Plaza", "Little Italy",
-                "Marina", "Bankers Hill", "Balboa Park"];
-            */
-
-            vm.allTopics = ['LifeStyle', 'Social', 'Sports', 'Food', 'Beauty & Fashion', 'Family', 'Technology', 'Dating', 'City', 'Services', 'Health', 'Celebrities'];
-
-            //$rootScope.allnh = $rootScope.nhs;
-            
-
-            dataloader.getInitialData();    
+           
+            //vm.allTopics = ['LifeStyle', 'Social', 'Sports', 'Food', 'Beauty & Fashion', 'Family', 'Technology', 'Dating', 'City', 'Services', 'Health', 'Celebrities'];
+            //dataloader.getInitialData();    
             getDestination();
-            dataloader.getpagevisitdata();
+            //dataloader.getpagevisitdata();
             setting.getSetting();    
 
         }
@@ -386,10 +367,11 @@
             if ($rootScope.userDataLoaded == undefined) $rootScope.userDataLoaded = false;
 
             if (window.location.href.indexOf('rankSummary') > -1)
-                $rootScope.dataIsLoaded = $rootScope.rankSummaryDataLoaded && $rootScope.userDataLoaded;
+                //$rootScope.dataIsLoaded = $rootScope.rankSummaryDataLoaded && $rootScope.userDataLoaded;
+                $rootScope.dataIsLoaded = $rootScope.userDataLoaded;
 
             else if (window.location.href.indexOf('answerDetail') > -1)
-                $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.userDataLoaded;
+                $rootScope.dataIsLoaded = $rootScope.userDataLoaded;
             
             else if (window.location.href.indexOf('favs') > -1)
                 $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded &&
@@ -543,7 +525,7 @@
                 vm.val = '';
                 $state.go('cwrapper');
                 $window.scrollTo(0, 0);
-        }*/
+        }
         function scopeCity() {
                 
                 vm.scopeIsGeneral = false;
@@ -567,7 +549,7 @@
                 vm.selCityActive = true;
                 return;
             }
-        }
+        }*/
 
         function prepareNewCatansOptions() {
 
@@ -581,22 +563,17 @@
         
          function getDestination(){
             if (window.location.href.indexOf('rankSummary') > -1){
-                var n = window.location.href.indexOf('rankSummary/');
-                var slug = window.location.href.substring(n+12);
-                dataloader.landRanking(slug);
                 vm.childActive = true; 
                 vm.barIsActive = false;
             }
             else if(window.location.href.indexOf('answerDetail') > -1){
-                var n = window.location.href.indexOf('answerDetail/');
-                var slug = window.location.href.substring(n+13);
-                dataloader.landAnswer(slug);
                 vm.childActive = true; 
                 vm.barIsActive = false;
             }
             else{
+                $rootScope.SCOPE = 2; // Scope=2 is for city of San Diego, will change for different cities
+                dataloader.getInitialData();
                 $rootScope.childActive = false;
-                scopeCity();
             }
         }
 

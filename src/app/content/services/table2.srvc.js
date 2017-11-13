@@ -19,6 +19,7 @@
             getTables: getTables,
             getTablesX: getTablesX,   //get tables from answers  
             getTablesD: getTablesD,   //get tables for demo
+            getSingleTable: getSingleTable,
             update: update,
             addTable: addTable,
             addTableforAnswer: addTableforAnswer,
@@ -125,6 +126,25 @@
                 if ($rootScope.DEBUG_MODE) console.log("getTablesD 'custom ranks' ", _tables.length);
                 return _tables;            
             }, _queryFailed);  
+        }
+
+        function getSingleTable(id) {
+
+            var url0 = baseURI + '/?filter=id=' + id;
+
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                
+                var data = d[0].data.resource[0];
+                
+                var idx = _tables.map(function(x) {return x.id; }).indexOf(data.id); 
+                if (idx < 0) _tables.push(data);
+
+                if ($rootScope.DEBUG_MODE) console.log("single table loaded: ", data);
+                return _tables;            
+            }, _queryFailed);  
+                      
         }
 
         function addTable(table) {

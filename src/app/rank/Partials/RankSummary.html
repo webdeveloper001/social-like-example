@@ -94,11 +94,14 @@
     </div>
 </div> -->
 <div class="text-left">
-    <button class="btn btn-default" ng-click="vm.backToResults()" style="margin:5px; width:100%">Back to Results</button>
-    <button class="btn btn-default" ng-if="vm.hasParent" ng-click="vm.gotoParentRank()" style="margin:5px; width:100%">{{vm.parentRank.title}}</button>
+    <button class="btn btn-default" ng-click="vm.backToResults()" 
+    style="margin:5px; width:100%; background-color:lightgray">Back to Results</button>
+    <button class="btn btn-default" ng-if="vm.hasParent" 
+    ng-click="vm.gotoParentRank()" style="margin:5px; width:100%; background-color:lightgray">{{vm.parentRank.title}}</button>
 </div>
 <div class="text-left" ng-if="vm.isCustomRank">
-    <button class="btn btn-default" ng-click="vm.answerDetail(vm.rankOwner)" style="margin:5px; width:100%">Return to {{vm.rankOwner.name}}</button>
+    <button class="btn btn-default" ng-click="vm.answerDetail(vm.rankOwner)" 
+    style="margin:5px; width:100%; background-color:lightgray">Return to {{vm.rankOwner.name}}</button>
 </div>
 
 <div class="container">
@@ -238,33 +241,36 @@
     <tbody>
         <thead>
             <tr>
-                <th ng-if="vm.mode=='specials'" align="middle">{{vm.showR ? 'Rank' : 'Votes'}}</th>
+                <th ng-if="!vm.sm" align="middle">{{vm.showR ? 'Rank' : 'Votes'}}</th>
                 <th ng-if="!vm.sm && !vm.fnm && !vm.isE && vm.mode=='specials'" align="middle">Votes</th>
                 <th class="capitalize " ng-repeat="h in vm.fields | filter:{isrequired:true}" align="middle">{{h.label}}</th>
-                <th ng-if="(vm.type == 'Establishment' || vm.type == 'Place') && vm.haveLocation && vm.mode=='specials'" align="middle">Distance (mi)</th>
+                <th ng-if="(vm.type == 'Establishment' || vm.type == 'Place' || vm.type == 'Organization') && vm.haveLocation" 
+                    align="middle" style="width:10px">Dist (mi)</th>
                 <th ng-if="vm.type == 'Event' && vm.mode=='specials'" align="middle">Date</th>
-                <th ng-if="vm.type == 'Establishment' && vm.mode=='specials'" align="middle">Specials</th>
-                <th ng-if="vm.mode == 'endorse'" align="middle">
+                <th ng-if="vm.type == 'Establishment' && vm.mode=='specials'" style="width:{{vm.sm?'150px':'200px'}}" 
+                align="middle">Specials</th>
+                <th ng-if="vm.mode == 'endorse'" style="width:{{vm.sm?'150px':'200px'}}" align="middle">
                     Endorsements
                 </th>
-                <th ng-if="vm.mode=='endorse'">&nbsp</th>
+                <!-- <th ng-if="vm.mode=='endorse'">&nbsp</th>  -->
 
                 <!-- ng-show="{{vm.type == 'Establishment'}}" -->
             </tr>
         </thead>
         <tbody>
             <!--| orderBy: '-Rank' -->
-            <tr ng-repeat="x in vm.answers | limitTo: vm.limit">
-                <td  ng-click="vm.answerDetail(x)" ng-if="vm.mode=='specials'">{{vm.showR ? x.Rank : x.upV}}</td>
+            <tr ng-repeat="x in vm.answers | limitTo: vm.limit" style="height:43px">
+                <td  ng-click="vm.answerDetail(x)" ng-if="!vm.sm">{{vm.showR ? x.Rank : x.upV}}</td>
                 <td ng-if="!vm.sm && !vm.fnm && !vm.isE && vm.mode=='specials'" ng-click="vm.answerDetail(x)">{{x.upV}}</td>
                 <!--<td>{{x.Rank}}</td>-->
                 <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
                 <td ng-repeat="h in vm.fields | filter:{isrequired:true}" ><a ng-attr-style="text-decoration: none;" href="{{'/answerDetail/' + x.slug }}" ng-click="vm.answerDetail(x)">{{ x[h.name]}}</a></td> 
                 <!-- ng-attr-style="background-color:{{x.bc}};color:{{x.fc}}"> -->
-                <td ng-if="(vm.type == 'Establishment' || vm.type == 'Place') && vm.haveLocation && vm.mode=='specials'" ng-click="vm.answerDetail(x)">{{x.dist}}</td>
+                <td ng-if="(vm.type == 'Establishment' || vm.type == 'Place') && vm.haveLocation" ng-click="vm.answerDetail(x)">{{x.dist}}</td>
                 <td ng-if="vm.type == 'Event' && vm.mode == 'specials'" ng-click="vm.answerDetail(x)">{{x.date}}</td>
                 <!-- ng-attr-style="background-color:{{x.bc}};color:{{x.fc}}" -->
-                <td ng-show="vm.type == 'Establishment' && vm.mode=='specials'" ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}" ng-click="vm.answerDetail(x)">
+                <td ng-show="vm.type == 'Establishment' && vm.mode=='specials'" 
+                ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}};" ng-click="vm.answerDetail(x)">
                     {{x.sp_title}}</td>
                 <td ng-if="vm.mode=='endorse'" style="width:{{vm.sm?'150px':'200px'}}">
 

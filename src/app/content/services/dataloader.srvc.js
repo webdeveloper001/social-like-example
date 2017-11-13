@@ -5,26 +5,22 @@
         .module('app')
         .factory('dataloader', dataloader);
 
-    dataloader.$inject = ['$http', '$q','$rootScope','pvisits', 'table2',
-        'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 
+    dataloader.$inject = ['$http', '$q','$rootScope','pvisits', 'table2', 'dialog',
+        'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'common',
         'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans','categories', 'locations'];
 
-    function dataloader($http, $q, $rootScope, pvisits, table2,
-        rankofday, answer, table, special, datetime, uaf, 
+    function dataloader($http, $q, $rootScope, pvisits, table2, dialog,
+        rankofday, answer, table, special, datetime, uaf, common,
         matchrec, edit, useractivity, vrows, headline, cblock, catans, categories, locations) {
 
         // Members
         var service = {
-            gethomedata: gethomedata,
             gethomedataX: gethomedataX,
-            landRanking: landRanking,
-            landAnswer: landAnswer,
-            //getallranks: getallranks,
-            //getrankdata: getrankdata,
-            //getanswerdata: getanswerdata,
-            getpagevisitdata: getpagevisitdata,
+            getRank: getRank,
+            getAnswer: getAnswer,
             getInitialData: getInitialData,
             unwrap: unwrap,
+            unwrapSingle: unwrapSingle,
             createSearchStrings: createSearchStrings,
             pulldata: pulldata,
             getDemoData: getDemoData,
@@ -59,60 +55,14 @@
             if ($rootScope.DEBUG_MODE) console.log("get initial data called");
             //Initial ranks and categories ids
             shuffle();
-            
             var p1 = table.getInitialHomeData(ridsx);
             var p2 = categories.getInitialHomeData(cidsx);
             
             $q.all([p1,p2]).then(function(){
                 unwrap();
+                gethomedataX($rootScope.SCOPE);
                 $rootScope.$emit('initalHomeDataLoaded');
             });
-
-            //var p3 = rankofday.getrankofday();
-        }
-
-       
-
-        function gethomedata() {
-/*
-            var p0 = table.getTables();
-            //var p1 = headline.getheadlines();
-            //var p2 = cblock.getcblocksmain();
-            //$rootScope.uafs = [];
-            var p1 = rankofday.getrankofday();
-            // var p2 = uaf.getactions();
-            var p2 = uaf.getnext10actions();
-            var p3 = categories.getAllCategories();
-            var p4 = locations.getAllLocations();
-
-            // userdata.loadUserData();        //load user data (votes and activities)
-            // userdata.loadUserAccount();     //load user business account
-
-            //Minimum Data for Cwrapper
-            return $q.all([p0, p1, p2, p3, p4]).then(function (d) {
-            
-                //$rootScope.headlines = d[1];
-                //$rootScope.cblocks = d[2];
-                $rootScope.rankofday = d[1];
-                $rootScope.uafs = d[2];
-
-                $rootScope.categories = d[3];
-                $rootScope.locations = d[4];
-
-                $rootScope.content = d[0];
-                unwrap(); // run whatever needs to be timed in between the statements
-
-                //syncCatNh();
-                createSearchStrings();
-
-                $rootScope.pageDataLoaded = true;
-                //loadingDone();
-                createSearchStrings();
-                if ($rootScope.DEBUG_MODE) console.log("cwrapper data ready!");
-                $rootScope.$emit('homeDataLoaded');
-
-            });
-            */
         }
 
         function gethomedataX(scope) {
@@ -137,12 +87,11 @@
                 createSearchStrings();
                 if ($rootScope.isLoggedIn) getDemoData();
 
-                //$rootScope.pageDataLoaded = true;
                 //checkStatus();
                 getSecondaryData();
                 table.storeInitialHomeData(ridsx);
                 categories.storeInitialHomeData(cidsx);
-                //createNhOps();
+                
                 //Create array of neighborhood options
                 $rootScope.nhs = $rootScope.locations.map(function(x) {return x.nh_name; });
                 
@@ -205,6 +154,35 @@
                 }
         }
 
+        function unwrapSingle(rankObj, catObj, nhObj) {
+
+            if ($rootScope.DEBUG_MODE) console.log("dataloader.unwrapSingle");
+
+            var idx = $rootScope.content.map(function(x) {return x.id; }).indexOf(rankObj.id); 
+            var rank = $rootScope.content[idx];
+
+            rank.title = catObj.category.replace('@Nh', nhObj.nh_name);
+            rank.fimage = catObj.fimage;
+            rank.bc = catObj.bc;
+            rank.fc = catObj.fc;
+            rank.tags = catObj.tags;
+            rank.keywords = catObj.keywords;
+            rank.type = catObj.type;
+            rank.question = catObj.question;
+            rank.shade = catObj.shade;
+            if (rank.nh == 1) rank.introtext = catObj.introtext;
+            else rank.introtext = '';
+            rank.user = catObj.user;
+            //if (nhObj.sub_areas.split(',').map(Number).length > 1 && catObj.category.indexOf('@Nh')>-1)
+            if (nhObj.sub_areas && catObj.category.indexOf('@Nh') > -1)
+                rank.isatomic = false;
+            else rank.isatomic = true;
+            //Determine if set ismp flag.
+            if (catObj.ismp != null && catObj.ismp != undefined) rank.ismp = catObj.ismp;
+            else if (nhObj.id == 1) rank.ismp = true;
+            else rank.ismp = false;
+        }
+
         function getDemoData(){
             //Load demo custom ranks for customers to see
             var demoCustomRanks = [
@@ -236,7 +214,6 @@
 
         function checkDemoDataStatus(){
             demoDataReady = demoData1of3 && demoData2of3 && demoData3of3;
-            landAnswerCheckStatus();
         }
 
         function createNhOps(){
@@ -244,110 +221,6 @@
             $rootScope.locations.forEach(function(nh){
                 $rootScope.nhops.push(nh.nh_name);
             })
-        }
-/*
-        function getallranks(){
-            
-            var p0 = table.getTablesNonMain();      //Get ranks that are non main page, load them on the background
-
-            //Minimum Data for Cwrapper
-            return $q.all([p0]).then(function (d) {
-            
-                $rootScope.content = d[0];
-                $rootScope.allRanksLoaded = true;
-                createSearchStrings();
-                //loadingDone();
-                if ($rootScope.DEBUG_MODE) console.log("all ranks data ready!");
-                // $rootScope.$emit('homeDataLoaded');
-
-            });
-        }
-*//*
-        function getrankdata() {
-
-            // Requirement for rankSummary
-            var q0 = answer.getAnswers();
-            var q1 = special.getSpecials();
-            var q2 = matchrec.GetMatchTable();
-            var q3 = useractivity.getAllUserActivity();
-            var q4 = catans.getAllcatans();
-
-            return $q.all([q0, q1, q2, q3, q4]).then(function (d) {
-            
-                $rootScope.answers = d[0];
-                $rootScope.specials = d[1];
-                $rootScope.mrecs = d[2];
-                $rootScope.alluseractivity = d[3];
-                $rootScope.catansrecs = d[4];
-                
-                $rootScope.rankSummaryDataLoaded = true;
-                getEstablishmentAnswers();
-                if ($rootScope.DEBUG_MODE) console.log("rankSummary data ready!");
-                $rootScope.$emit('rankDataLoaded');
-
-            });
-        }
-*//*
-        function getanswerdata(){
-
-            //Requirement for answerDetail
-            var r0 = edit.getEdits();
-            var r1 = vrows.getAllvrows();
-            var r2 = table2.getTables();
-            
-            return $q.all([r0, r1, r2]).then(function (d) {
-                
-                $rootScope.edits = d[0];
-                $rootScope.cvrows = d[1];
-                $rootScope.customranks = d[2];
-                
-                $rootScope.answerDetailLoaded = true;
-                if ($rootScope.DEBUG_MODE) console.log("answerdetail data ready!");
-                $rootScope.$emit('answerDataLoaded');
-
-            });   
-        }
-*/
-        function getpagevisitdata(){
-
-            //Not required for anything, just statistic, page visit counter
-            var s0 = pvisits.getpvisits();
-            return $q.all([s0]).then(function (d) {
-                
-                $rootScope.pvisits = d[0];
-                updatePageVisits();
-                if ($rootScope.DEBUG_MODE) console.log("page visits data ready!");
-                
-            });      
-        }
-
-
-        function updatePageVisits() {
-            //get todays date
-            var datenow = new Date();
-            var tz = datenow.getTimezoneOffset();
-
-            datenow.setMinutes(datenow.getMinutes() - tz);
-
-            //var dateStr = datenow.toLocaleDateString();
-            function pad(n) { return n < 10 ? n : n; }
-            var dateStr = pad(datenow.getMonth() + 1) + "/" + pad(datenow.getDate()) + "/" + datenow.getFullYear();
-
-            //console.log('Date Str: ', dateStr);
-            var newDate = true;
-            var pvisitrec = {};
-            for (var i = 0; i < $rootScope.pvisits.length; i++) {
-                if ($rootScope.pvisits[i].date == dateStr) {
-                    newDate = false;
-                    pvisitrec = $rootScope.pvisits[i];
-                    break;
-                }
-            }
-            if (newDate) pvisits.postRec(dateStr);
-            else pvisits.patchRec(pvisitrec.id, pvisitrec.nvisits + 1);
-
-            $rootScope.dateToday = dateStr;
-            $rootScope.dateTodayNum = datetime.date2number(dateStr);
         }
 
         function getEstablishmentAnswers() {
@@ -409,9 +282,9 @@
             if (type == 'ranks') {
                 catans.getAllcatansX(data).then(function (result) {
                         if (result){
-                        _ranksLoaded = true;
-                        if ($rootScope.rankSummaryDataLoaded == false ||
-                        $rootScope.rankSummaryDataLoaded == undefined) checkStatus();
+                        //_ranksLoaded = true;
+                        //if ($rootScope.rankSummaryDataLoaded == false ||
+                        //$rootScope.rankSummaryDataLoaded == undefined) checkStatus();
 
                         var si = 0;
                         var ei = result.length > 200 ? 200:result.length;
@@ -431,9 +304,7 @@
                 });
             }
             if (type == 'answers') {
-                //if (data.length > 0 && data.length < (20 + 1)) {
-
-                    catans.getAllcatansY(data).then(function (result) {
+                catans.getAllcatansY(data).then(function (result) {
                         if (result){
                         var si = 0;
                         var ei = result.length > 200 ? 200:result.length;
@@ -466,48 +337,98 @@
                             if (cranks.length > 0) pulldata('ranks', cranks);
                             
                         }   
-                    });
-                //}
+                });
             }
         }
 
-        function landRanking(slug){
-            landRankActive = true;
-            _ranksLoaded = false;
-            var slugA = slug.split('-').map(Number);
-            var idx = slugA[slugA.length-1];
-            table.getSingleTable(idx).then(function(result){
-                //$rootScope.content = result;
-                catans.getAllcatansX(result).then(function(result2){
-                _ranksLoaded = true;
-                checkStatus();
-                if (result2 != false){
-                    answer.getAnswersL(result2).then(function(resultx){
-                        $rootScope.answerDetailLoaded = true;
+        //load data for single rank
+        function getRank(slug) {
+            if ($rootScope.DEBUG_MODE) console.log("getRank exec");
+            var rankid = common.getIndexFromSlug(slug);
+            var rankObj = {};
+            if ($rootScope.isCustomRank) {
+                var p0 = table2.getSingleTable(rankid);
+                catans.getAllcatansX([{"id":rankid}]).then(function (result) {
+                        if (result){
+                            var p1 = answer.getAnswersL(result);
+                            var p2 = special.getSpecialsX(result);
+                            var p3 = vrows.getVrowsX(result);
+                            var p4 = matchrec.GetMatchTableX(result);
+                            var p5 = edit.getEditsX(result);
+                            var p6 = table2.getTablesX(result);
+                            $q.all([p0,p1,p2,p3,p4,p5,p6]).then(function(){
+                                $rootScope.$emit('rankDataLoaded');
+                            })
+                        }                  
+                });
+            }
+            else {
+                var p0 = table.getSingleTable(rankid).then(function (res) {
+                    var rankObj = res; //its necessary to wait for rank as the field 'catstr' is needed to parse
+                    var p1 = categories.getCategory(rankObj.cat);
+                    var p2 = locations.getLocation(rankObj.nh);
+                    catans.getAllcatansX([rankObj]).then(function (result) {         //all the catans and answers
+                        if (result){
+                            var p4 = answer.getAnswersL(result);
+                            var p5 = special.getSpecialsX(result);
+                            var p6 = vrows.getVrowsX(result);
+                            var p7 = matchrec.GetMatchTableX(result);
+                            var p8 = edit.getEditsX(result);
+                            var p9 = table2.getTablesX(result);
+                            $q.all([p1,p2,p4,p5,p6,p7,p8,p9]).then(function(d){
+                                var catObj = d[0][0];
+                                var nhObj = d[1][0];
+                                unwrapSingle(rankObj, catObj, nhObj);
+                                $rootScope.$emit('rankDataLoaded');
+                            });
+                        }                  
                     });
-                }
-            });          
-              
-                if (result[0].scope == 1){
-                    $rootScope.SCOPE = 1;
-                    //table.getMostPopularDataX(1);
-                    getInitialData();
-                    gethomedataX(1);
-                }
-                else{
-                    $rootScope.SCOPE = 2;
-                    //table.getMostPopularDataX(2);
-                    getInitialData();
-                    gethomedataX(2);
-                }
-                $rootScope.$emit('setScope');
-                //});                
-            });
-            //var data = {};
-            //data.id = idx;
-            //getDemoData();
+                    if ($rootScope.SCOPE == undefined) $rootScope.SCOPE = rankObj.scope; 
+                });
+            }
+        }
+            
+        function errorLoading() {
+            dialog.notificationWithCallback(
+                'Oops', 'Sorry, there was an error loading this ranking.',
+                function(){
+                    $state.go('cwrapper');
+                });
         }
 
+        //load data for just one answer
+        function getAnswer(slug){
+            var ansid = common.getIndexFromSlug(slug);
+            var ansObj = {};
+            var data = {};
+            data.id = ansid;
+            data.answer = ansid;
+            var p0 = answer.getAnswer(ansid);
+            var p1 = special.getSpecialsX([data]);
+            var p2 = matchrec.GetMatchTableX([data]);
+            var p3 = edit.getEditsX([data]);
+            var p4 = table2.getTablesX([data]);
+            var p5 = vrows.getVrowsX([data]);
+            
+            catans.getAllcatansY([data]).then(function(result){
+                var p6 = table.getTablesL(result).then(function(resultx){
+                    
+                    if (resultx.constructor === Array) {}
+                    else resultx = [resultx];
+                    
+                    var p7 = categories.getCategoriesL(resultx);
+                    var p8 = locations.getLocationsL(resultx);
+                    $q.all([p0,p1,p2,p3,p4,p5,p6,p7,p8]).then(function (d){
+                        var ans = d[0];
+                        unwrap();
+                        if ($rootScope.SCOPE == undefined) $rootScope.SCOPE = ans.scope;
+                        $rootScope.$emit('answerDataLoaded');
+                    });
+                });
+                
+            });
+        }
+/*
         function landAnswer(slug){
             landAnswerActive = true;
             var slugA = slug.split('-').map(Number);
@@ -553,7 +474,6 @@
                     landAnswerCheckStatus();  
                 });
             
-            //getDemoData();
         }
 
         function landAnswerCheckStatus(){
@@ -572,7 +492,7 @@
                     }
             }
         }
-
+*/
         function checkStatus(){
             if ($rootScope.pageDataLoaded && _ranksLoaded && !landAnswerActive){
                     $rootScope.rankSummaryDataLoaded = true;

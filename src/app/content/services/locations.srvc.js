@@ -16,6 +16,8 @@
 
         var service = {
             getAllLocations: getAllLocations,
+            getLocationsL: getLocationsL,
+            getLocation: getLocation,
             addLocation: addLocation,
             update: update,
             deleteRec: deleteRec
@@ -44,6 +46,37 @@
                 return _locations;            
             }, _queryFailed);  
 
+        }
+
+        function getLocationsL(data) {
+
+            var filterstr = '?filter=(';
+            for (var i=0; i< data.length; i++){
+                filterstr = filterstr + 'id=' + data[i].nh+')OR(';
+            }
+            filterstr = filterstr.substring(0,filterstr.length-3);
+            
+            var url0 = baseURI + filterstr;
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                var data = d[0].data.resource;
+                _load (data);
+                if ($rootScope.DEBUG_MODE) console.log("No. Categories ", _categories.length);
+                return _locations;            
+            }, _queryFailed);  
+        }
+
+        function getLocation(id){
+            
+            var url0 = baseURI + '/?filter=id=' + id;
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                var data = d[0].data.resource;
+                if ($rootScope.DEBUG_MODE) console.log("loaded single location ", data);
+                return data;            
+            }, _queryFailed);  
         }
 
         function addLocation(location) {

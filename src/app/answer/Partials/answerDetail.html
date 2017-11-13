@@ -8,7 +8,8 @@
 <div ng-if="vm.dataReady" style="margin-left: -15px; margin-right: -15px">
 <div class="container">
     <div class="text-center">
-        <button class="btn btn-default" ng-if="vm.searchActive" ng-click="vm.backToResults()" style="margin:5px; width:100%">Back to Results</button>
+        <button class="btn btn-default" ng-if="vm.searchActive" ng-click="vm.backToResults()" 
+        style="margin:5px; width:100%; background-color:lightgray">Back to Results</button>
     </div>
 </div>
 <cat-bar ng-if="vm.ranking" text="{{vm.ranking}}" 

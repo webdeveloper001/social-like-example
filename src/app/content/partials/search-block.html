@@ -1,11 +1,11 @@
 <!-- scrollDataLoading || endReached || disableScrolling -->
-<div class="" ng-if="contentLoaded">
-  <div infinite-scroll='loadMore()'
+<div class="" ng-show="contentLoaded">
+  <div infinite-scroll='loadMore(false)'
 	   infinite-scroll-distance='3'
        infinite-scroll-disabled='scrollDataLoading || endReached || disableScrolling'
        id="inifinite-container">
-    <div masonry>
-	  <div 
+    <div masonry>  
+		<div 
 	  	class="col-xs-6 col-sm-6 col-md-4 col-lg-3 masonry-brick minxs280" ng-repeat="x in displayResults">
 		<div style="width:95%">
 			 <result-item result-object="x"></rank-item>
