@@ -20,7 +20,7 @@
         var service = {
             getAnswers: getAnswers,
             getAnswersX: getAnswersX,
-            getAnswersL: getAnswersL,
+            getAnswersFromCatans: getAnswersFromCatans,
             getAnswer: getAnswer,
             addAnswer: addAnswer,
             addAnswer2: addAnswer2,
@@ -32,7 +32,7 @@
 
         return service;
         
-
+        /*
         function getAnswers(forceRefresh) {
             
             //Get all answer records
@@ -63,20 +63,23 @@
                 return _answers;            
             }, _queryFailed);  
 
-        }
+        }*/
 
         function getAnswersX(scope) {
+
+            //for performance request only following fields:
+            var fields = '';
+            fields += 'id,name,imageurl,type';
             
             //Get all answer records
-            var url0 = baseURI + '?offset=' + 0 * 1000 + '&filter=scope='+scope;
-            var url1 = baseURI + '?offset=' + 1 * 1000 + '&filter=scope='+scope;
-            var url2 = baseURI + '?offset=' + 2 * 1000 + '&filter=scope='+scope;
-            var url3 = baseURI + '?offset=' + 3 * 1000 + '&filter=scope='+scope;
-            var url4 = baseURI + '?offset=' + 4 * 1000 + '&filter=scope='+scope;
-            var url5 = baseURI + '?offset=' + 5 * 1000 + '&filter=scope='+scope;
-            var url6 = baseURI + '?offset=' + 6 * 1000 + '&filter=scope='+scope;
-            var url7 = baseURI + '?offset=' + 7 * 1000 + '&filter=scope='+scope;
-
+            var url0 = baseURI + '?offset=' + 0 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
+            var url1 = baseURI + '?offset=' + 1 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
+            var url2 = baseURI + '?offset=' + 2 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
+            var url3 = baseURI + '?offset=' + 3 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
+            var url4 = baseURI + '?offset=' + 4 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
+            var url5 = baseURI + '?offset=' + 5 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
+            var url6 = baseURI + '?offset=' + 6 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
+            var url7 = baseURI + '?offset=' + 7 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
 
             var p0 = $http.get(url0);
             var p1 = $http.get(url1);
@@ -90,17 +93,20 @@
             return $q.all([p0, p1, p2, p3, p4, p5, p6, p7]).then(function (d){
                 var data = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource, 
                 d[4].data.resource, d[5].data.resource, d[6].data.resource, d[7].data.resource);
-                _load (data);
+                
+                if (_answers.length == 0) _load (data); //clear answers array and put new data
+                else _merge(data, _answers); //merge existing answers with new data
+                
                 if ($rootScope.DEBUG_MODE) console.log("No. Answers: ", _answers.length);
                 return _answers;            
             }, _queryFailed);  
 
         }
 
-        function getAnswersL(data) {
+        function getAnswersFromCatans(catans) {
 
             var _datax = [];  //this is filtered array (ignore those ranks for which catans already fetched)
-            data.forEach(function(item){
+            catans.forEach(function(item){
                 if (_fetchAnswersMem.indexOf(item.answer)<0){
                      _datax.push(item);
                      _fetchAnswersMem.push(item.answer);
@@ -121,17 +127,47 @@
             return $q.all([p0]).then(function (d){
                 
                 var _answersx = d[0].data.resource;
-                var map = _answers.map(function(x) {return x.id; });
-                
-                _answersx.forEach(function(answer){
-                        if(map.indexOf(answer.id) < 0)
-                        _answers.push(answer);
-                });
-                
-                if ($rootScope.DEBUG_MODE) console.log("answers L loaded ", _answersx); 
-                return _answers;            
-            }, _queryFailed);  
 
+                //make sure reference value is array
+                if (_answersx.constructor === Array) _merge(_answers,_answersx);
+                else _merge(_answers,[_answersx]);
+                
+                if ($rootScope.DEBUG_MODE) console.log("answer.getAnswersFromCatans ", _answersx); 
+                return _answersx;            
+            }, _queryFailed);  
+        }
+
+        function getAnswers(answers) {
+            var _datax = [];  //this is filtered array (ignore those ranks for which catans already fetched)
+            answers.forEach(function(item){
+                if (_fetchAnswersMem.indexOf(item.id)<0){
+                     _datax.push(item);
+                     _fetchAnswersMem.push(item.id);
+                }
+            });
+            //_datax = [];
+            if (_datax.length == 0) return $q.when(false);
+            var filterstr = '?filter=(';
+            for (var i=0; i< _datax.length; i++){
+                filterstr = filterstr + 'id=' + _datax[i].id+')OR(';
+            }
+            filterstr = filterstr.substring(0,filterstr.length-3);
+            //Get all answer records
+            var url0 = baseURI + filterstr;
+            
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                
+                var _answersx = d[0].data.resource;
+
+                //make sure reference value is array
+                if (_answersx.constructor === Array) _merge(_answers,_answersx);
+                else _merge(_answers,[_answersx]);
+                
+                if ($rootScope.DEBUG_MODE) console.log("answer.getAnswers ", _answersx); 
+                return _answersx;            
+            }, _queryFailed);  
         }
 
         function getAnswer(id) {
@@ -143,10 +179,12 @@
             return $q.all([p0]).then(function (d){
                 var answerx = d[0].data.resource[0];
 
-                var idx = _answers.map(function(x) {return x.id; }).indexOf(answerx.id);
-                if (idx < 0) _answers.push(answerx);
+                //var idx = _answers.map(function(x) {return x.id; }).indexOf(answerx.id);
+                //if (idx < 0) _answers.push(answerx);
+                //_append([answerx]);
+                _merge(_answers,[answerx]);
                 
-                if ($rootScope.DEBUG_MODE) console.log("single answer loaded: ", _answer);
+                if ($rootScope.DEBUG_MODE) console.log("single answer loaded: ", _answerx);
                 return answerx;
             });
             
@@ -415,12 +453,29 @@
         }
 
         function _load(data){
-            _answers.length = 0;
-            _fetchAnswersMem.length = 0;
-            data.forEach(function(x){
-                _answers.push(x);
-                _fetchAnswersMem.push(x.id);
-            });        
+            //if (data.length < _answers.length) {
+                _answers.length = 0;
+                _fetchAnswersMem.length = 0;
+                data.forEach(function (x) {
+                    _answers.push(x);
+                    //_fetchAnswersMem.push(x.id);
+                });
+        }
+/*
+        function _append(data){
+           data.forEach(function(item){
+                var idx = _answers.map(function(x) {return x.id; }).indexOf(item.id);
+                if (idx < 0) _answers.push(item);
+            }); 
+        }*/
+
+        function _merge(lg,sm){  //lg is large set of data, sm is small set of data, merge small into large is more efficient
+            sm.forEach(function(item){
+                var idx = lg.map(function(x) {return x.id; }).indexOf(item.id);
+                if (idx < 0) lg.push(item);
+                else lg[idx] = item;
+                _fetchAnswersMem.push(item.id);
+            });
         }
 
         function _areAnswersLoaded() {

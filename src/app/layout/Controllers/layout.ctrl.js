@@ -9,7 +9,7 @@
         'DEBUG_MODE', 'EMPTY_IMAGE', 'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata', 'dialog',
         'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state', 'dataloader', 'setting', 'filter'];
 
-    function layout($location, $rootScope, $window, $q, $http, pvisits, $cookies, $scope,$timeout,
+    function layout($location, $rootScope, $window, $q, $http, pvisits, $cookies, $scope, $timeout,
         DEBUG_MODE, EMPTY_IMAGE, rankofday, answer, table, special, datetime, uaf, userdata, dialog,
         matchrec, edit, useractivity, vrows, headline, cblock, catans, $state, dataloader, setting, filter) {
         /* jshint validthis:true */
@@ -164,18 +164,25 @@
         });
         var homeDataLoadedListener = $rootScope.$on('homeDataLoaded', function () {
             if ($rootScope.DEBUG_MODE) console.log("RX - homeDataLoaded");
-            loadingDone();
+            vm.isLoading = false;
             vm.dataready = true;
             prepareNewCatansOptions();
+            if ($rootScope.isLoggedIn) userdata.pullFavoriteData();
         });
         var rankDataLoadedListener = $rootScope.$on('rankDataLoaded', function () {
             if ($rootScope.DEBUG_MODE) console.log("RX - rankDataLoaded");
-            if ($rootScope.initalHomeDataLoaded != true) dataloader.getInitialData();
+            if ($rootScope.initalHomeDataLoaded != true) {
+                dataloader.getInitialData();
+                if ($rootScope.isLoggedIn) userdata.pullFavoriteData();
+            }
             loadingDone();
         });
         var answerDataLoadedListener = $rootScope.$on('answerDataLoaded', function () {
             if ($rootScope.DEBUG_MODE) console.log("RX - answerDataLoaded");
-            if ($rootScope.initalHomeDataLoaded != true) dataloader.getInitialData();
+            if ($rootScope.initalHomeDataLoaded != true) {
+                dataloader.getInitialData();
+                if ($rootScope.isLoggedIn) userdata.pullFavoriteData();
+            }
             loadingDone();
         });
         var initialHomeDataLoadedListener = $rootScope.$on('initalHomeDataLoaded', function () {
@@ -193,10 +200,9 @@
                 vm.barIsActive = false;
         });
         var backtoResultsListener = $rootScope.$on('backToResults', function (event) {
-            //console.log("rx back to results");
                     vm.childActive = false; 
                     vm.barIsActive = true;
-                    $rootScope.cCategory == undefined;
+                    $rootScope.cCategory = undefined;
                     backToResults();
                 //}      
         });
@@ -373,6 +379,7 @@
             else if (window.location.href.indexOf('answerDetail') > -1)
                 $rootScope.dataIsLoaded = $rootScope.userDataLoaded;
             
+            /*
             else if (window.location.href.indexOf('favs') > -1)
                 $rootScope.dataIsLoaded = $rootScope.answerDetailLoaded && $rootScope.rankSummaryDataLoaded &&
                     $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
@@ -383,7 +390,11 @@
                     $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
             else if (window.location.href.indexOf('home') > -1)
                 $rootScope.dataIsLoaded = $rootScope.initalHomeDataLoaded;
-            else $rootScope.dataIsLoaded = $rootScope.pageDataLoaded && $rootScope.userDataLoaded;
+            else $rootScope.dataIsLoaded = $rootScope.pageDataLoaded && $rootScope.userDataLoaded;*/
+                else {
+                    $rootScope.dataIsLoaded = $rootScope.initalHomeDataLoaded;
+                    $state.go('cwrapper');
+                }
 
             vm.isLoading = !$rootScope.dataIsLoaded;
             if ($rootScope.DEBUG_MODE) console.log("@loadingDone - $rootScope.dataIsLoaded -", $rootScope.dataIsLoaded);

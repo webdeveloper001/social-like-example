@@ -30,12 +30,12 @@
         return service;
 
         function getInitialHomeData(data){
-
+            /*
             var catsFromStorage = $window.localStorage.getItem("Categories-HomeData");
             if (catsFromStorage) {
                  _load(JSON.parse(catsFromStorage));
                  return $q.when(true);
-            }
+            }*/
 
             var filterstr = '?filter=(';
             for (var i=0; i< data.length; i++){
@@ -49,7 +49,8 @@
             return $q.all([p0]).then(function (d){
                 var datax = d[0].data.resource;
                 
-                if (_categories.length == 0) _load(datax);
+                //if (_categories.length == 0) _load(datax);
+                 _append(datax);
 
                 if ($rootScope.DEBUG_MODE) console.log("categories length: ", _categories.length);
                 //$window.localStorage.setItem("Categories-HomeData", JSON.stringify(datax));
@@ -100,7 +101,7 @@
             
             return $q.all([p0]).then(function (d){
                 var data = d[0].data.resource;
-                _load (data);
+                _append (data);
                 if ($rootScope.DEBUG_MODE) console.log("No. Categories ", _categories.length);
                 return _categories;            
             }, _queryFailed);  
@@ -240,6 +241,13 @@
             data.forEach(function(x){
                 _categories.push(x);
             });
+        }
+
+        function _append(data){
+           data.forEach(function(item){
+                var idx = _categories.map(function(x) {return x.id; }).indexOf(item.id);
+                if (idx < 0) _categories.push(item);
+            }); 
         }
 
         function _queryFailed(error) {

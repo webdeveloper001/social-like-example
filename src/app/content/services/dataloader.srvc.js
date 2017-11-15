@@ -6,11 +6,11 @@
         .factory('dataloader', dataloader);
 
     dataloader.$inject = ['$http', '$q','$rootScope','pvisits', 'table2', 'dialog',
-        'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'common',
+        'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'common', '$timeout',
         'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans','categories', 'locations'];
 
     function dataloader($http, $q, $rootScope, pvisits, table2, dialog,
-        rankofday, answer, table, special, datetime, uaf, common,
+        rankofday, answer, table, special, datetime, uaf, common, $timeout,
         matchrec, edit, useractivity, vrows, headline, cblock, catans, categories, locations) {
 
         // Members
@@ -58,10 +58,10 @@
             var p1 = table.getInitialHomeData(ridsx);
             var p2 = categories.getInitialHomeData(cidsx);
             
-            $q.all([p1,p2]).then(function(){
+            $q.all([p1,p2]).then(function(d){
                 unwrap();
+                waitforImages(d[1]);
                 gethomedataX($rootScope.SCOPE);
-                $rootScope.$emit('initalHomeDataLoaded');
             });
         }
 
@@ -197,7 +197,7 @@
             });
             catans.getAllcatansX(demoCustomRanks).then(function (result2) {
                 if (result2 != false) 
-                    answer.getAnswersL(result2).then(function(){
+                    answer.getAnswersFromCatans(result2).then(function(){
                         demoData2of3 = true;
                         checkDemoDataStatus();
                     });
@@ -289,7 +289,7 @@
                         var si = 0;
                         var ei = result.length > 200 ? 200:result.length;
                             while (si < result.length) {
-                                answer.getAnswersL(result.slice(si,ei));
+                                answer.getAnswersFromCatans(result.slice(si,ei));
                                 special.getSpecialsX(result.slice(si,ei));
                                 vrows.getVrowsX(result.slice(si,ei));
                                 matchrec.GetMatchTableX(result.slice(si,ei));
@@ -304,6 +304,7 @@
                 });
             }
             if (type == 'answers') {
+                answer.getAnswers(data);
                 catans.getAllcatansY(data).then(function (result) {
                         if (result){
                         var si = 0;
@@ -350,7 +351,7 @@
                 var p0 = table2.getSingleTable(rankid);
                 catans.getAllcatansX([{"id":rankid}]).then(function (result) {
                         if (result){
-                            var p1 = answer.getAnswersL(result);
+                            var p1 = answer.getAnswersFromCatans(result);
                             var p2 = special.getSpecialsX(result);
                             var p3 = vrows.getVrowsX(result);
                             var p4 = matchrec.GetMatchTableX(result);
@@ -369,7 +370,7 @@
                     var p2 = locations.getLocation(rankObj.nh);
                     catans.getAllcatansX([rankObj]).then(function (result) {         //all the catans and answers
                         if (result){
-                            var p4 = answer.getAnswersL(result);
+                            var p4 = answer.getAnswersFromCatans(result);
                             var p5 = special.getSpecialsX(result);
                             var p6 = vrows.getVrowsX(result);
                             var p7 = matchrec.GetMatchTableX(result);
@@ -409,13 +410,12 @@
             var p3 = edit.getEditsX([data]);
             var p4 = table2.getTablesX([data]);
             var p5 = vrows.getVrowsX([data]);
-            
             catans.getAllcatansY([data]).then(function(result){
+                if (result){
                 var p6 = table.getTablesL(result).then(function(resultx){
                     
                     if (resultx.constructor === Array) {}
                     else resultx = [resultx];
-                    
                     var p7 = categories.getCategoriesL(resultx);
                     var p8 = locations.getLocationsL(resultx);
                     $q.all([p0,p1,p2,p3,p4,p5,p6,p7,p8]).then(function (d){
@@ -425,6 +425,8 @@
                         $rootScope.$emit('answerDataLoaded');
                     });
                 });
+                }
+            else $rootScope.$emit('answerDataLoaded');
                 
             });
         }
@@ -499,6 +501,18 @@
                     $rootScope.answerDetailLoaded = true;
                     $rootScope.$emit('rankDataLoaded');
                 }
+        }
+
+        function waitforImages(cats){
+            //get all fimage and wait until they are resolved
+            var pArr = [];
+            cats.forEach(function(item){
+                if (item.fimage != null && item.fimage != undefined && item.fimage.indexOf('rank-x')>-1) 
+                    pArr.push( $http.get(item.fimage) );
+            });
+            $q.all(pArr).then(function(){
+                $rootScope.$emit('initalHomeDataLoaded');
+            });
         }
 
         function shuffle(){

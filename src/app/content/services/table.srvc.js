@@ -28,32 +28,37 @@
             storeInitialHomeData: storeInitialHomeData 
         };
 
+        //for performance request only following fields:
+            var fields = '';
+            fields += 'id,type,tags,keywords,question,image1url,image2url,image3url,';
+            fields += 'catstr,owner,slug,views,answers,numcom,scope,isatomic,ismp,cat,nh,timestmp';
+
         return service;
         
         function getInitialHomeData(data){
-
+            /*
             var ranksFromStorage = $window.localStorage.getItem("Ranks-HomeData");
             if (ranksFromStorage) {
                  _append(JSON.parse(ranksFromStorage));
                  return $q.when(true);
             }
-
+            */
             var filterstr = '?filter=(';
             for (var i=0; i< data.length; i++){
                 filterstr = filterstr + 'id=' + data[i]+')OR(';
             }
             filterstr = filterstr.substring(0,filterstr.length-3);
 
-            var url0 = baseURI + filterstr;
+            var url0 = baseURI + filterstr + '&fields=' + fields;
             var p0 = $http.get(url0);
 
             return $q.all([p0]).then(function (d){
                 var datax = d[0].data.resource;
                 
-                _append([datax]);
+                _append(datax);
                 //if (_tables.length == 0) _load(datax); 
 
-                if ($rootScope.DEBUG_MODE) console.log("tables L length: ", _tables.length);
+                if ($rootScope.DEBUG_MODE) console.log("_tables length after initialhomedata load: ", _tables.length);
                 //$window.localStorage.setItem("Ranks-HomeData", JSON.stringify(datax));
                 return _tables;            
             }, _queryFailed);  
@@ -62,10 +67,6 @@
 
         function getTablesX(scope) {
 
-            //for performance request only following fields:
-            var fields = '';
-            fields += 'id,type,tags,keywords,question,image1url,image2url,image3url,';
-            fields += 'catstr,owner,slug,views,answers,numcom,scope,isatomic,ismp,cat,nh,timestmp';
             //_tables = [];
             var url0 = baseURI + '?offset=' + 0 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
             var url1 = baseURI + '?offset=' + 1 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
@@ -93,7 +94,7 @@
             }
             filterstr = filterstr.substring(0,filterstr.length-3);
             
-            var url0 = baseURI + filterstr;
+            var url0 = baseURI + filterstr + '&fields=' + fields;
             var p0 = $http.get(url0);
             
             return $q.all([p0]).then(function (d){
@@ -129,7 +130,7 @@
 
         function getSingleTable(id) {
 
-            var url0 = baseURI + '/?filter=id=' + id;
+            var url0 = baseURI + '/?filter=id=' + id + '&fields=' + fields;
 
             var p0 = $http.get(url0);
             
