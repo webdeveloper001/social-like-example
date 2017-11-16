@@ -236,6 +236,7 @@ function ($rootScope, $state, search,
                 scope.searchResults = scope.resRanks.concat(scope.resAnswers);
                 //resolve images for the ranks about to be displayed
                 resolveImages(scope.searchResults.slice(0,scope.scrollingItemsOnePage)).then(function(){
+                    scope.contentLoaded = true;
                     scope.displayResults = scope.searchResults.slice(0,scope.scrollingItemsOnePage);
                     scope.loadMore(true);
                     $timeout(function(){
@@ -452,9 +453,13 @@ function ($rootScope, $state, search,
 
             function resolveImages(results){
                 var pArr = [];
+                scope.contentLoaded = false;
                 results.forEach(function(item){
                     if (item.isAnswer) {}//pArr.push($http.get(item.imageurl));
-                    else pArr.push($http.get(item.fimage));
+                    else {
+                        if (item.fimage != null && item.fimage != undefined && item.fimage.indexOf('rankx')>-1)
+                        pArr.push($http.get(item.fimage));
+                    }
                 });
                 return $q.all(pArr);
             }

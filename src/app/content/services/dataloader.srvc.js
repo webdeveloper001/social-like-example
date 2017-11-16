@@ -507,7 +507,7 @@
             //get all fimage and wait until they are resolved
             var pArr = [];
             cats.forEach(function(item){
-                if (item.fimage != null && item.fimage != undefined && item.fimage.indexOf('rank-x')>-1) 
+                if (item.fimage != null && item.fimage != undefined && item.fimage.indexOf('rankx')>-1) 
                     pArr.push( $http.get(item.fimage) );
             });
             $q.all(pArr).then(function(){
