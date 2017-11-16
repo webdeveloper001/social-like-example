@@ -809,6 +809,7 @@
                             rankObj.downV = $rootScope.catansrecs[i].downV;
                             rankObj.catans = $rootScope.catansrecs[i].id;
                             rankObj.rank = $rootScope.catansrecs[i].rank;
+                            if (rankObj.rank > rankObj.answers) rankObj.rank = rankObj.answers;  
                             rankObj.uservote = {};
                             rankObj.upVi = $rootScope.catansrecs[i].upV;
                             rankObj.downVi = $rootScope.catansrecs[i].downV;

@@ -47,6 +47,7 @@
         vm.backToResults = backToResults;
         vm.seeMore = seeMore;
         vm.showAllFriendsList = showAllFriendsList;
+        vm.getResults = getResults;
         
         vm.gotoParentRank = gotoParentRank;
         
@@ -862,6 +863,7 @@
                 $rootScope.canswers = $rootScope.fanswers;
             }
             vm.answers = $rootScope.canswers;
+            getFilterOptions();
             
             if (vm.answers.length > vm.limit) vm.thereIsMore = true;
             else vm.thereIsMore = false;
@@ -1661,6 +1663,28 @@
                 }
             }
             $http(req);
+        }
+
+        function getResults() {
+            var timeoutPromise;
+            $timeout.cancel(timeoutPromise); //do nothing is timeout already done   
+            timeoutPromise = $timeout(function () {
+                vm.answers = [];
+                $rootScope.canswers.forEach(function(cans){
+                    if (cans.name.toLowerCase().indexOf(vm.val.toLowerCase()) > -1 || 
+                        cans.cityarea.toLowerCase().indexOf(vm.val.toLowerCase()) > -1){
+                        vm.answers.push(cans);
+                    }
+                });                
+            }, 300);
+        }
+
+        function getFilterOptions(){
+            vm.opts = [];
+            $rootScope.canswers.forEach(function(cans){
+                    if (vm.opts.indexOf(cans.name)<0) vm.opts.push(cans.name);
+                    if (vm.opts.indexOf(cans.cityarea)<0) vm.opts.push(cans.cityarea);
+            });
         }
     }
 })();

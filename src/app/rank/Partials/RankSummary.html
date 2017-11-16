@@ -172,7 +172,7 @@
 <div class="row" style="margin:0px;padding:0px;">
 
     
-    <div class="col-sm-9 col-md-9 col-lg-10 hidden-xs" >
+    <div class="col-sm-9 col-md-9 col-lg-10 hidden-xs" style="margin-bottom: 10px; padding:0px">
         <div class="btn-group text-left">
             <button class="btn btn-default" ng-click="vm.sortbyHelpDialog()"><i class="fa fa-question-circle"></i></button>
             <span style="float: left;margin-left: 10px; margin-right: 10px;line-height: 32px">{{vm.sm ? '':'Sort by:'}}</span>
@@ -185,8 +185,6 @@
                 ng-show="{{vm.type == 'Event'}}">Date</button>               
 
             <button class="btn btn-default {{vm.selTrending}} " ng-click="vm.sortByTrending()">Trending</button>
-            <!--  <button type="button " class="btn btn-primary ">{{"rankSummary.Filtered " | translate}}</button> -->
-        
         </div>
     </div>
     <div class="col-xs-8 visible-xs" style="margin-bottom: 10px; padding:0px">
@@ -195,8 +193,7 @@
             <span style="line-height:32px; margin: 0px 10px;">Sort By:</span>
             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
                 {{vm.sortByName}}
-                <span class="caret"></span>
-                
+                <span class="caret"></span>   
             </button>
             
             <ul class="dropdown-menu">
@@ -216,18 +213,27 @@
         ng-click="vm.share()" target="_blank"> Share&nbsp&nbsp<span class="fa fa-share"></span></a>
     </div>
 </div>
-<div style="margin:0px; margin-top: 0px; " class="text-center" ng-if="!vm.fnm">
+<div class="row">
+<div class="col-xs-12 col-sm-6 text-center" style="margin-bottom: 10px; padding:0px" ng-if="!vm.fnm">
     <div class="btn-group" style="padding-right:20px">
     <button ng-click="vm.changeMode('endorse') " class="btn {{vm.mode=='endorse' ? 'btn-primary':'btn-default'}}" 
     >Endorsements</button>
     <button ng-click="vm.changeMode('specials') " class="btn {{vm.mode=='specials' ? 'btn-primary':'btn-default'}}"
     >Specials</button>
     </div>
-    <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">Rank</button>
+    <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">&nbsp&nbsp&nbsp&nbspRank&nbsp&nbsp&nbsp&nbsp</button>
     <!--
     <span style="line-height: 32px">&nbsp;&nbsp;&nbsp;Contributors: <b style="color:blue; ">
         <i>{{vm.numContributors}}&nbsp&nbsp</i></b></span>-->
-</div>    
+</div>
+    <div class="col-xs-12 col-sm-6 input-group">
+        <input type="text" class="form-control" bs-options="c for c in vm.opts" bs-typeahead 
+        placeholder="Filter by Name or Neighborhood" ng-model="vm.val" ng-change="vm.getResults()" id="SearchInput">
+        <div class="input-group-btn">
+            <button class="btn btn-default" type="submit" ng-click="vm.val = ''"><i class="glyphicon glyphicon-search"></i></button>
+        </div>
+    </div>
+</div>
 <!--
 <div ng-show="{{vm.type == 'Establishment'}}">
     <div class="text-right" ng-attr-style="display:{{vm.haveLocation ? 'none':'inline'}}">
@@ -252,7 +258,7 @@
                 <th ng-if="vm.mode == 'endorse'" style="width:{{vm.sm?'150px':'200px'}}" align="middle">
                     Endorsements
                 </th>
-                <!-- <th ng-if="vm.mode=='endorse'">&nbsp</th>  -->
+                <th ng-if="vm.mode=='endorse'">&nbsp</th>
 
                 <!-- ng-show="{{vm.type == 'Establishment'}}" -->
             </tr>
