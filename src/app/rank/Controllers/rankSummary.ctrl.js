@@ -48,6 +48,7 @@
         vm.seeMore = seeMore;
         vm.showAllFriendsList = showAllFriendsList;
         vm.getResults = getResults;
+        vm.clearSearch = clearSearch;
         
         vm.gotoParentRank = gotoParentRank;
         
@@ -1596,6 +1597,7 @@
                         .then(function (resp) {
                             resp.forEach(function (vote) {
                                 var idx = answerIDs.indexOf(vote.answer);
+                                if (vm.answers[idx].trendUpV == undefined) vm.answers[idx].trendUpV = 0; 
                                 vm.answers[idx].trendUpV++;
                             });
                             //console.log(vm.answers);
@@ -1608,9 +1610,9 @@
             //Check friends endorsements for this answers
             //var ansIds = vm.answers.slice(x,x+20);
             var ansIds = vm.answers;
-            var idx = 0;
-            var cidx = 0;
-            var ridx = 0;
+            var idx = -1;
+            var cidx = -1;
+            var ridx = -1;
             ansIds.forEach(function(answer){
                 answer.userObjs = [];
                 for (var i=0; i< $rootScope.friends_votes.length; i++){
@@ -1618,19 +1620,20 @@
                         var friend = getUser($rootScope.friends_votes[i]);
                         //console.log("friend - ", friend);
                         cidx = $rootScope.catansrecs.map(function(x) {return x.id; }).indexOf($rootScope.friends_votes[i].catans);
-                        ridx = $rootScope.content.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[cidx].category); 
-
-                        idx = answer.userObjs.map(function(x) {return x.id; }).indexOf(friend.id); 
-                        if (idx < 0) {
-                            //console.log("$rootScope.friends_votes[i] ", $rootScope.friends_votes[i]);
-                            friend.endorsements = [];
-                            if (ridx > -1) friend.endorsements.push($rootScope.content[ridx].title);
-                            answer.userObjs.push(friend);
-                        }
-                        else {
-                            //console.log("answer - ", answer);
-                            if (ridx > -1) answer.userObjs[idx].endorsements.push($rootScope.content[ridx].title);
-                        }
+                        if (cidx > -1 ) ridx = $rootScope.content.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[cidx].category); 
+                        //if (ridx > -1) {
+                            idx = answer.userObjs.map(function (x) { return x.id; }).indexOf(friend.id);
+                            if (idx < 0) {
+                                //console.log("$rootScope.friends_votes[i] ", $rootScope.friends_votes[i]);
+                                friend.endorsements = [];
+                                if (ridx > -1) friend.endorsements.push($rootScope.content[ridx].title);
+                                answer.userObjs.push(friend);
+                            }
+                            else {
+                                //console.log("answer - ", answer);
+                                if (ridx > -1) answer.userObjs[idx].endorsements.push($rootScope.content[ridx].title);
+                            }
+                        //}
                     }
                 }
 
@@ -1685,6 +1688,11 @@
                     if (vm.opts.indexOf(cans.name)<0) vm.opts.push(cans.name);
                     if (vm.opts.indexOf(cans.cityarea)<0) vm.opts.push(cans.cityarea);
             });
+        }
+
+        function clearSearch(){
+            vm.val = '';
+            vm.answers = $rootScope.canswers;
         }
     }
 })();

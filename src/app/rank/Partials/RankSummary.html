@@ -230,7 +230,7 @@
         <input type="text" class="form-control" bs-options="c for c in vm.opts" bs-typeahead 
         placeholder="Filter by Name or Neighborhood" ng-model="vm.val" ng-change="vm.getResults()" id="SearchInput">
         <div class="input-group-btn">
-            <button class="btn btn-default" type="submit" ng-click="vm.val = ''"><i class="glyphicon glyphicon-search"></i></button>
+            <button class="btn btn-default" type="submit" ng-click="vm.clearSearch()"><i class="glyphicon glyphicon-search"></i></button>
         </div>
     </div>
 </div>
@@ -247,34 +247,46 @@
     <tbody>
         <thead>
             <tr>
-                <th ng-if="!vm.sm" align="middle">{{vm.showR ? 'Rank' : 'Votes'}}</th>
-                <th ng-if="!vm.sm && !vm.fnm && !vm.isE && vm.mode=='specials'" align="middle">Votes</th>
+                <th ng-if="!vm.sm || vm.sortByName=='Rank'" align="middle">Rank</th>
+                
                 <th class="capitalize " ng-repeat="h in vm.fields | filter:{isrequired:true}" align="middle">{{h.label}}</th>
-                <th ng-if="(vm.type == 'Establishment' || vm.type == 'Place' || vm.type == 'Organization') && vm.haveLocation" 
-                    align="middle" style="width:10px">Dist (mi)</th>
-                <th ng-if="vm.type == 'Event' && vm.mode=='specials'" align="middle">Date</th>
-                <th ng-if="vm.type == 'Establishment' && vm.mode=='specials'" style="width:{{vm.sm?'150px':'200px'}}" 
-                align="middle">Specials</th>
-                <th ng-if="vm.mode == 'endorse'" style="width:{{vm.sm?'150px':'200px'}}" align="middle">
-                    Endorsements
-                </th>
-                <th ng-if="vm.mode=='endorse'">&nbsp</th>
+                
+                <th ng-if="!vm.sm || vm.sortByName=='Popular'" align="middle" style="width:{{vm.sm?'10px':'auto'}}">Diff.</th>
+                
+                <th ng-if="(!vm.sm || vm.sortByName=='Distance') && vm.haveLocation" 
+                    align="middle" style="width:{{vm.sm?'10px':'auto'}}">Dist (mi)</th>
 
-                <!-- ng-show="{{vm.type == 'Establishment'}}" -->
+                <th ng-if="(!vm.sm || vm.sortByName=='Trending')" align="middle" style="width:{{vm.sm?'10px':'auto'}}">Last month</th>
+                
+                <th ng-if="(!vm.sm || vm.sortByName=='Date') && vm.type == 'Event' && vm.mode=='specials'" align="middle">Date</th>
+                
+                <th ng-if="vm.type == 'Establishment' && vm.mode=='specials'" style="width:{{vm.sm?'150px':'200px'}}" 
+                class="text-center">Specials</th>
+                
+                <th ng-if="vm.mode == 'endorse'" style="width:{{vm.sm?'150px':'200px'}}" class="text-center">Endorsements</th>
+                
+                <th ng-if="vm.mode=='endorse'">&nbsp</th>
             </tr>
         </thead>
         <tbody>
             <!--| orderBy: '-Rank' -->
-            <tr ng-repeat="x in vm.answers | limitTo: vm.limit" style="height:43px">
-                <td  ng-click="vm.answerDetail(x)" ng-if="!vm.sm">{{vm.showR ? x.Rank : x.upV}}</td>
-                <td ng-if="!vm.sm && !vm.fnm && !vm.isE && vm.mode=='specials'" ng-click="vm.answerDetail(x)">{{x.upV}}</td>
-                <!--<td>{{x.Rank}}</td>-->
-                <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
+            <tr ng-repeat="x in vm.answers | limitTo: vm.limit" style="height:43px" ng-click="vm.answerDetail(x)">
+                <td ng-if="!vm.sm || vm.sortByName == 'Rank'" align="middle">{{x.Rank}}</td>
+                
                 <td ng-repeat="h in vm.fields | filter:{isrequired:true}" ><a ng-attr-style="text-decoration: none;" href="{{'/answerDetail/' + x.slug }}" ng-click="vm.answerDetail(x)">{{ x[h.name]}}</a></td> 
-                <!-- ng-attr-style="background-color:{{x.bc}};color:{{x.fc}}"> -->
-                <td ng-if="(vm.type == 'Establishment' || vm.type == 'Place') && vm.haveLocation" ng-click="vm.answerDetail(x)">{{x.dist}}</td>
-                <td ng-if="vm.type == 'Event' && vm.mode == 'specials'" ng-click="vm.answerDetail(x)">{{x.date}}</td>
-                <!-- ng-attr-style="background-color:{{x.bc}};color:{{x.fc}}" -->
+                
+                <td ng-if="(!vm.sm || vm.sortByName == 'Distance') && vm.haveLocation" 
+                    align="middle" style="width:{{vm.sm?'10px':'auto'}}">{{x.dist}}</td>
+                
+                <td ng-if="!vm.sm || vm.sortByName == 'Popular'" align="middle" style="width:{{vm.sm?'10px':'auto'}}">
+                    {{x.upV - x.downV > 0 ? ('+'+(x.upV-x.downV)):(x.upV-x.downV)}}</td>
+
+                <td ng-if="!vm.sm || vm.sortByName == 'Trending'" align="middle" style="width:{{vm.sm?'10px':'auto'}}">
+                    {{x.trendUpV!=undefined&&x.trendUpV!=NaN?x.trendUpV:0}}</td>
+
+                <td ng-if="(!vm.sm || vm.sortByName == 'Date') && vm.type == 'Event' && vm.mode=='specials'" 
+                align="middle">{{x.date}}</th>
+                
                 <td ng-show="vm.type == 'Establishment' && vm.mode=='specials'" 
                 ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}};" ng-click="vm.answerDetail(x)">
                     {{x.sp_title}}</td>
