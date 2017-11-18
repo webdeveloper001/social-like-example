@@ -147,7 +147,7 @@
         }
 
         function sibblingRanks(catObj,neighborhood) {
-
+            //NOTE in this function catObj is a rank object
             function compare(a, b) {
                 return b.ctr - a.ctr;
             }
@@ -622,7 +622,6 @@
 
                       for (var j = 0; j < $rootScope.content.length; j++) {  
                         if (true) {    
-                            
                             ss = $rootScope.searchStrContent[j]; //Search string
                             rt = $rootScope.content[j].title; // title
                             rank = $rootScope.content[j];

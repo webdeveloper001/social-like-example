@@ -8,12 +8,12 @@
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color','locations'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope','$http'
         , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', 'SERVER_URL',
-        '$location', '$q', 'fbusers', '$timeout','table2','categories','dataloader','common'];
+        '$location', '$q', 'fbusers', '$timeout','table2','categories','dataloader','common','search'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime, color, locations
         , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope, $http
         , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, SERVER_URL, 
-        $location, $q, fbusers, $timeout, table2, categories, dataloader, common) {
+        $location, $q, fbusers, $timeout, table2, categories, dataloader, common, search) {
         /* jshint validthis:true */
 
         var vm = this;
@@ -49,7 +49,8 @@
         vm.showAllFriendsList = showAllFriendsList;
         vm.getResults = getResults;
         vm.clearSearch = clearSearch;
-        
+        vm.gotoRank = gotoRank;
+
         vm.gotoParentRank = gotoParentRank;
         
         vm.selOverall = 'active';
@@ -479,7 +480,7 @@
             $rootScope.modeIsImage = true;
             
             if (!$rootScope.isCustomRank && !$rootScope.cCategory.isGhost) incViews(); //increment number of views
-            
+            relatedRanks();
             if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
             
             window.prerenderReady = true;
@@ -1179,13 +1180,13 @@
         }
 
         function getDisplayImages() {
-            vm.image1 = $rootScope.EMPTY_IMAGE;
+            //vm.image1 = $rootScope.EMPTY_IMAGE;
             vm.image2 = $rootScope.EMPTY_IMAGE;
             vm.image3 = $rootScope.EMPTY_IMAGE;
 
-            if (vm.answers[0]) vm.image1 = vm.answers[0].imageurl;
-            if (vm.answers[1]) vm.image2 = vm.answers[1].imageurl;
-            if (vm.answers[2]) vm.image3 = vm.answers[2].imageurl;
+            if (vm.answers[0]) vm.image2 = vm.answers[0].imageurl;
+            if (vm.answers[1]) vm.image3 = vm.answers[1].imageurl;
+            //if (vm.answers[2]) vm.image3 = vm.answers[2].imageurl;
         }
         function closeRank() {
             //if ranking is one from answers, return to answer profile
@@ -1678,7 +1679,29 @@
                         cans.cityarea.toLowerCase().indexOf(vm.val.toLowerCase()) > -1){
                         vm.answers.push(cans);
                     }
-                });                
+                    //check for locations that have subareas. For instance if query is 'Downtown',
+                    //look all answers which neighborhood are downtown districts
+                    else {
+                        if ($rootScope.locsas) {
+                            var idx = $rootScope.locsas.indexOf(vm.val);
+                            if (idx > -1) {
+                                var arrayIds = [];
+                                var idx1 = -1;
+                                var idx2 = -1;
+                                idx1 = $rootScope.locations.map(function (x) { return x.nh_name; }).indexOf( $rootScope.locsas[idx]);
+                                arrayIds = $rootScope.locations[idx1].sub_areas.split(',').map(Number);
+                                arrayIds.forEach(function (nhid) {
+                                    idx2 = $rootScope.locations.map(function (x) { return x.id; }).indexOf(nhid);
+                                    if (cans.cityarea == $rootScope.locations[idx2].nh_name) {
+                                        vm.answers.push(cans);
+                                    }
+                                })
+                            }
+                        }
+                    }
+                });
+                if (vm.answers.length > vm.limit) vm.thereIsMore = true;
+                else vm.thereIsMore = false;               
             }, 300);
         }
 
@@ -1688,11 +1711,68 @@
                     if (vm.opts.indexOf(cans.name)<0) vm.opts.push(cans.name);
                     if (vm.opts.indexOf(cans.cityarea)<0) vm.opts.push(cans.cityarea);
             });
+            //add nhs with subareas to options
+            if ($rootScope.locsas) {
+                $rootScope.locsas.forEach(function (loc) {
+                    if (vm.opts.indexOf(loc) < 0) vm.opts.push(loc);
+                });
+            }
         }
 
         function clearSearch(){
             vm.val = '';
             vm.answers = $rootScope.canswers;
+        }
+
+        function gotoRank(x){
+            $state.go('rankSummary', {index: x.slug});
+        }
+
+        function relatedRanks() {
+            vm.relRanks = [];
+            var relRanksx = [];
+            var nidx = -1;
+            var idx = -1;
+            var nhname = '';
+            var n = 0;
+            
+            if ($rootScope.locations){
+                nidx = $rootScope.locations.map(function (x) { return x.id; }).indexOf($rootScope.cCategory.nh);
+                if (nidx > -1 ) {
+                    nhname = $rootScope.locations[nidx].nh_name;
+                    vm.relRanks = search.sibblingRanks($rootScope.cCategory, nhname);
+                    idx = vm.relRanks.map(function (x) { return x.id; }).indexOf($rootScope.cCategory.id);
+                    if (idx > -1) vm.relRanks.splice(idx, 1);
+                }
+            }
+            
+            if (vm.relRanks.length < 4) {
+                if ($rootScope.searchStrContent) {
+                    var tagObjs = search.searchRelatedRanks([$rootScope.cCategory], '');
+                    var relTags = tagObjs.map(function (x) { return x.tag; });
+                    
+                    for (var i = 0; i < relTags.length; i++) {
+                        //n = Math.floor(Math.random() * relTags.length);
+                        if (vm.relRanks.length < 5) {
+                            if (relTags[n].length > 3) {
+                                relRanksx = search.searchRanks2(relTags[n]);
+                                vm.relRanks = vm.relRanks.concat(relRanksx);
+                                var idx = vm.relRanks.map(function (x) { return x.id; }).indexOf($rootScope.cCategory.id);
+                                if (idx > -1) vm.relRanks.splice(idx, 1);
+                            }
+                            n++;
+                        }
+                        else break;
+                    }
+                }
+            }
+            if (vm.relRanks.length > 0) dataloader.pulldata('ranks', vm.relRanks.slice(0, 4));
+            vm.relRanks.forEach(function(rank){
+                if (rank.title.length > 50) {
+                    idx = rank.title.indexOf(' in ');
+                    rank.title = rank.title.substring(0,idx);
+                }
+            });
         }
     }
 })();

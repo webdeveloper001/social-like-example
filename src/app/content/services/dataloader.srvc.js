@@ -95,6 +95,11 @@
                 //Create array of neighborhood options
                 $rootScope.nhs = $rootScope.locations.map(function(x) {return x.nh_name; });
                 
+                //Create array of neighborhoods that have sub areas
+                $rootScope.locsas = $rootScope.locations.filter(function(x) {
+                    return (x.sub_areas != undefined && x.sub_areas != '' && x.nh_name != 'San Diego');
+                }).map(function(x) { return x.nh_name; });
+                
                 if ($rootScope.DEBUG_MODE) console.log("cwrapper data ready!");
                 $rootScope.$emit('homeDataLoaded');
 
@@ -214,13 +219,6 @@
 
         function checkDemoDataStatus(){
             demoDataReady = demoData1of3 && demoData2of3 && demoData3of3;
-        }
-
-        function createNhOps(){
-            $rootScope.nhops = [];
-            $rootScope.locations.forEach(function(nh){
-                $rootScope.nhops.push(nh.nh_name);
-            })
         }
 
         function getEstablishmentAnswers() {
