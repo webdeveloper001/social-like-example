@@ -18,7 +18,8 @@
         var service = {
             getAllCategories: getAllCategories,
             getAllCategoriesX: getAllCategoriesX,
-            getAllCategoriesG: getAllCategoriesG,
+            getCategoriesL: getCategoriesL,
+            getCategory: getCategory,
             addCategory: addCategory,
             update: update,
             deleteRec: deleteRec,
@@ -29,12 +30,12 @@
         return service;
 
         function getInitialHomeData(data){
-
+            /*
             var catsFromStorage = $window.localStorage.getItem("Categories-HomeData");
             if (catsFromStorage) {
                  _load(JSON.parse(catsFromStorage));
                  return $q.when(true);
-            }
+            }*/
 
             var filterstr = '?filter=(';
             for (var i=0; i< data.length; i++){
@@ -48,7 +49,8 @@
             return $q.all([p0]).then(function (d){
                 var datax = d[0].data.resource;
                 
-                if (_categories.length == 0) _load(datax);
+                //if (_categories.length == 0) _load(datax);
+                 _append(datax);
 
                 if ($rootScope.DEBUG_MODE) console.log("categories length: ", _categories.length);
                 //$window.localStorage.setItem("Categories-HomeData", JSON.stringify(datax));
@@ -59,16 +61,9 @@
 
         function getAllCategories(forceRefresh) {
 
-            /*if (_categories.length > 0 && !forceRefresh) {
-
-                return $q.when(_categories);
-            }*/
-
-            //var url = baseURI;
             //Get all match records
             var url0 = baseURI + '?offset=' + 0 * 1000;
-           //var url0 = baseURI + '/?filter=scope=city';
-
+           
             var p0 = $http.get(url0);
             
             return $q.all([p0]).then(function (d){
@@ -93,23 +88,34 @@
             }, _queryFailed);  
         }
 
-        function getAllCategoriesG(data) {
+        function getCategoriesL(data) {
 
             var filterstr = '?filter=(';
             for (var i=0; i< data.length; i++){
                 filterstr = filterstr + 'id=' + data[i].cat+')OR(';
             }
             filterstr = filterstr.substring(0,filterstr.length-3);
-
+            
             var url0 = baseURI + filterstr;
             var p0 = $http.get(url0);
             
             return $q.all([p0]).then(function (d){
                 var data = d[0].data.resource;
-                _load (data);
-                $rootScope.categories = d[0].data.resource;
+                _append (data);
                 if ($rootScope.DEBUG_MODE) console.log("No. Categories ", _categories.length);
                 return _categories;            
+            }, _queryFailed);  
+        }
+
+        function getCategory(id){
+            
+            var url0 = baseURI + '/?filter=id=' + id;
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                var data = d[0].data.resource;
+                if ($rootScope.DEBUG_MODE) console.log("loaded single category ", data);
+                return data;            
             }, _queryFailed);  
         }
 
@@ -235,6 +241,13 @@
             data.forEach(function(x){
                 _categories.push(x);
             });
+        }
+
+        function _append(data){
+           data.forEach(function(item){
+                var idx = _categories.map(function(x) {return x.id; }).indexOf(item.id);
+                if (idx < 0) _categories.push(item);
+            }); 
         }
 
         function _queryFailed(error) {

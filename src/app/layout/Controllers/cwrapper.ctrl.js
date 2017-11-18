@@ -31,7 +31,6 @@
                 success(result);
             }, 100);
         };
-        $rootScope.$emit('homeDataLoaded');
         vm.sm = $rootScope.sm;
         vm.md = $rootScope.md;
         vm.datasource = datasource;

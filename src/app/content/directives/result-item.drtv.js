@@ -44,12 +44,14 @@ angular.module('app').directive('resultItem',
                         resObj = scope.resultObject; //JSON.parse(JSON.stringify(scope.resultObject));
                         scope.result = resObj;
 
+
                         if (resObj.isAnswer == true) scope.title = resObj.name;
                         else scope.title = resObj.title;
                         
                         if (resObj.isAnswer == true) scope.imageurl = resObj.imageurl;
                         else scope.imageurl = resObj.fimage;
 
+                        scope.isAnswer = resObj.isAnswer == undefined ? false:resObj.isAnswer;
                         /*
                         if (resObj.isAnswer == true) scope.introtext = resObj.addinfo.slice(0,150);
                         else {
@@ -160,7 +162,8 @@ angular.module('app').directive('resultItem',
                         $rootScope.pageYOffset = $window.pageYOffset;
                         scope.stats.views++;
                         if (x.isAnswer) {
-                            $state.go('answerDetail', { index: x.slug });
+                            $rootScope.cCategory = undefined;
+                            $state.go('answerDetail', { index: x.id });
                         }
                         else {
                             if ($rootScope.editMode) $state.go('editRanking', { index: x.slug });

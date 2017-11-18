@@ -11,14 +11,18 @@
 
 	<!-- <p class="text-left">{{type}}</p> -->
 	<p></p>
-	<p style="text-align:center"><img ng-src="{{imageurl}}" style="width:90%"></p>
+	<p style="text-align:center"><img ng-src="{{imageurl}}" style="width:90%;min-height:100px"></p>
 	<p style="text-align:left; padding:0px;margin:0px;">&nbsp&nbsp&nbsp<u>{{type}}</u></p>	
 	<h4 ng-if="sm" class="text-center" ng-attr-style="padding:3px; margin:0px;">{{text}}</h4>
 	<h3 ng-if="!sm" class="text-center" ng-attr-style="padding:3px; margin:0px;">{{text}}</h3>
 	<p></p>
 	<!-- <p>{{introtext}}</p> -->
+	<div class="text-center" ng-attr-style="color:white;font-size:small;min-height:30px" ng-if="showStats">
+     	<i class="fa fa-eye"></i> {{views}} | <i class="fa fa-list-ol"></i> {{answers}}  | <i class="fa fa-comment"></i> {{comments}} 
+	</div>
     
 </div>
+<!--
 <div class="container" ng-attr-style="color:{{fc}};margin:0px;padding:0px;border:0px;position:relative;width:{{w}};height:{{30}}px;cursor:pointer;
 					background: {{bc}};
   					background: -webkit-linear-gradient(left, {{bc}}, {{bc2}});
@@ -26,11 +30,9 @@
   					background: -moz-linear-gradient(right, {{bc}}, {{bc2}});
                     background: linear-gradient(to right, {{bc}}, {{bc2}});">
                       
-<div class="text-center" ng-attr-style="color:white;font-size:small">
-     <i class="fa fa-eye"></i> {{views}} | <i class="fa fa-list-ol"></i> {{answers}}  | <i class="fa fa-comment"></i> {{comments}} 
-</div>
+
         
-</div>
+</div> -->
 </div>
 <div ng-if="dirVer">
 <div class="container" style="color:{{fc}};margin:0px;padding:0px;border:0px;position:relative;width:{{w}};height:{{h}};cursor:pointer;

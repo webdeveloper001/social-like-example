@@ -107,13 +107,9 @@
                     var catArr = _datax[i].catstr.split(':').map(Number);
                     for (var j=0; j<catArr.length; j++) {
                         filterstr = filterstr + 'category=' + catArr[j]+')OR(';
-                        //console.log("@allcatansX", catArr[j]);
                     }
                 }
-                else{
-                filterstr = filterstr + 'category=' + _datax[i].id+')OR(';
-                //console.log("@allcatansX", _datax[i].id);
-                }
+                else filterstr = filterstr + 'category=' + _datax[i].id+')OR(';
             }
 
             filterstr = filterstr.substring(0,filterstr.length-3);
@@ -140,8 +136,7 @@
         }
 
         function getAllcatansY(data) {
-            //console.log("getAllcatansY - ", data);
-
+            
             var _datax = [];  //this is filtered array (ignore those answers for which catans already fetched)
             if (data.length > 0) {
                 data.forEach(function (item) {
@@ -152,14 +147,12 @@
                 });
             }
             //_datax = [];
-
             if (_datax.length == 0) return $q.when(false);
             var filterstr = '?filter=(';
             for (var i=0; i< _datax.length; i++){
                 filterstr = filterstr + 'answer=' + _datax[i].id+')OR(';
                 //console.log("@catansY -- answer =", _datax[i].id);
             }
-            
             filterstr = filterstr.substring(0,filterstr.length-3);
             //Get all catans records
             var url0 = baseURI + filterstr + '&fields=' + fields;

@@ -21,6 +21,9 @@
             delete $http.defaults.headers.common['X-Dreamfactory-API-Key'];
             delete $http.defaults.headers.common['X-DreamFactory-Session-Token'];
             
+            //Remove '#' from address. This character causes error at google api
+            answer.location = answer.location.replace('#','');
+            
             var myLoc = '';
                 
                 //Perform checks to make sure location is in recognizable format for google api
@@ -37,9 +40,7 @@
                     myLoc = answer.location + ' San Diego, CA';
                 }
                 else myLoc = answer.location;
-                //Remove '#' from address. This character causes error at google api
-                myLoc = myLoc.replace('#','');
-
+                
                 //console.log("myLoc, GOOGLE_API_KEY --- ", myLoc, GOOGLE_API_KEY);
                 var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + myLoc + '&key=' + GOOGLE_API_KEY;
                 //console.log("url --- ", url);

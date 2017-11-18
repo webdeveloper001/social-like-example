@@ -17,11 +17,13 @@ angular.module('app').directive('bgBox3', ['color','$timeout','$rootScope',funct
             introtext: '@',
             type: '@',
             imageurl: '@',
-            isRankOfDay: '@'
+            isAnswer: '@'
         },
         link: function (scope) {
 
+            
         $timeout(function(){
+            scope.showStats = scope.type == 'Ranking';
 
             var S = JSON.parse(scope.stats);
             scope.views = S.views;

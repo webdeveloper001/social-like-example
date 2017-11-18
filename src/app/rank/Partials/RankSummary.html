@@ -94,11 +94,14 @@
     </div>
 </div> -->
 <div class="text-left">
-    <button class="btn btn-default" ng-click="vm.backToResults()" style="margin:5px; width:100%">Back to Results</button>
-    <button class="btn btn-default" ng-if="vm.hasParent" ng-click="vm.gotoParentRank()" style="margin:5px; width:100%">{{vm.parentRank.title}}</button>
+    <button class="btn btn-default" ng-click="vm.backToResults()" 
+    style="margin:5px; width:100%; background-color:lightgray">Back to Results</button>
+    <button class="btn btn-default" ng-if="vm.hasParent" 
+    ng-click="vm.gotoParentRank()" style="margin:5px; width:100%; background-color:lightgray">{{vm.parentRank.title}}</button>
 </div>
 <div class="text-left" ng-if="vm.isCustomRank">
-    <button class="btn btn-default" ng-click="vm.answerDetail(vm.rankOwner)" style="margin:5px; width:100%">Return to {{vm.rankOwner.name}}</button>
+    <button class="btn btn-default" ng-click="vm.answerDetail(vm.rankOwner)" 
+    style="margin:5px; width:100%; background-color:lightgray">Return to {{vm.rankOwner.name}}</button>
 </div>
 
 <div class="container">
@@ -169,7 +172,7 @@
 <div class="row" style="margin:0px;padding:0px;">
 
     
-    <div class="col-sm-9 col-md-9 col-lg-10 hidden-xs" >
+    <div class="col-sm-9 col-md-9 col-lg-10 hidden-xs" style="margin-bottom: 10px; padding:0px">
         <div class="btn-group text-left">
             <button class="btn btn-default" ng-click="vm.sortbyHelpDialog()"><i class="fa fa-question-circle"></i></button>
             <span style="float: left;margin-left: 10px; margin-right: 10px;line-height: 32px">{{vm.sm ? '':'Sort by:'}}</span>
@@ -182,8 +185,6 @@
                 ng-show="{{vm.type == 'Event'}}">Date</button>               
 
             <button class="btn btn-default {{vm.selTrending}} " ng-click="vm.sortByTrending()">Trending</button>
-            <!--  <button type="button " class="btn btn-primary ">{{"rankSummary.Filtered " | translate}}</button> -->
-        
         </div>
     </div>
     <div class="col-xs-8 visible-xs" style="margin-bottom: 10px; padding:0px">
@@ -192,8 +193,7 @@
             <span style="line-height:32px; margin: 0px 10px;">Sort By:</span>
             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
                 {{vm.sortByName}}
-                <span class="caret"></span>
-                
+                <span class="caret"></span>   
             </button>
             
             <ul class="dropdown-menu">
@@ -213,18 +213,27 @@
         ng-click="vm.share()" target="_blank"> Share&nbsp&nbsp<span class="fa fa-share"></span></a>
     </div>
 </div>
-<div style="margin:0px; margin-top: 0px; " class="text-center" ng-if="!vm.fnm">
+<div class="row">
+<div class="col-xs-12 col-sm-6 text-center" style="margin-bottom: 10px; padding:0px" ng-if="!vm.fnm">
     <div class="btn-group" style="padding-right:20px">
     <button ng-click="vm.changeMode('endorse') " class="btn {{vm.mode=='endorse' ? 'btn-primary':'btn-default'}}" 
     >Endorsements</button>
     <button ng-click="vm.changeMode('specials') " class="btn {{vm.mode=='specials' ? 'btn-primary':'btn-default'}}"
     >Specials</button>
     </div>
-    <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">Rank</button>
+    <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">&nbsp&nbsp&nbsp&nbspRank&nbsp&nbsp&nbsp&nbsp</button>
     <!--
     <span style="line-height: 32px">&nbsp;&nbsp;&nbsp;Contributors: <b style="color:blue; ">
         <i>{{vm.numContributors}}&nbsp&nbsp</i></b></span>-->
-</div>    
+</div>
+    <div class="col-xs-12 col-sm-6 input-group">
+        <input type="text" class="form-control" bs-options="c for c in vm.opts" bs-typeahead 
+        placeholder="Filter by Name or Neighborhood" ng-model="vm.val" ng-change="vm.getResults()" id="SearchInput">
+        <div class="input-group-btn">
+            <button class="btn btn-default" type="submit" ng-click="vm.clearSearch()"><i class="glyphicon glyphicon-search"></i></button>
+        </div>
+    </div>
+</div>
 <!--
 <div ng-show="{{vm.type == 'Establishment'}}">
     <div class="text-right" ng-attr-style="display:{{vm.haveLocation ? 'none':'inline'}}">
@@ -238,33 +247,48 @@
     <tbody>
         <thead>
             <tr>
-                <th ng-if="vm.mode=='specials'" align="middle">{{vm.showR ? 'Rank' : 'Votes'}}</th>
-                <th ng-if="!vm.sm && !vm.fnm && !vm.isE && vm.mode=='specials'" align="middle">Votes</th>
+                <th ng-if="!vm.sm || vm.sortByName=='Rank'" align="middle">Rank</th>
+                
                 <th class="capitalize " ng-repeat="h in vm.fields | filter:{isrequired:true}" align="middle">{{h.label}}</th>
-                <th ng-if="(vm.type == 'Establishment' || vm.type == 'Place') && vm.haveLocation && vm.mode=='specials'" align="middle">Distance (mi)</th>
-                <th ng-if="vm.type == 'Event' && vm.mode=='specials'" align="middle">Date</th>
-                <th ng-if="vm.type == 'Establishment' && vm.mode=='specials'" align="middle">Specials</th>
-                <th ng-if="vm.mode == 'endorse'" align="middle">
-                    Endorsements
-                </th>
-                <th ng-if="vm.mode=='endorse'">&nbsp</th>
+                
+                <th ng-if="!vm.sm || vm.sortByName=='Popular'" align="middle" style="width:{{vm.sm?'10px':'auto'}}">Diff.</th>
+                
+                <th ng-if="(!vm.sm || vm.sortByName=='Distance') && vm.haveLocation" 
+                    align="middle" style="width:{{vm.sm?'10px':'auto'}}">Dist (mi)</th>
 
-                <!-- ng-show="{{vm.type == 'Establishment'}}" -->
+                <th ng-if="(!vm.sm || vm.sortByName=='Trending')" align="middle" style="width:{{vm.sm?'10px':'auto'}}">Last month</th>
+                
+                <th ng-if="(!vm.sm || vm.sortByName=='Date') && vm.type == 'Event' && vm.mode=='specials'" align="middle">Date</th>
+                
+                <th ng-if="vm.type == 'Establishment' && vm.mode=='specials'" style="width:{{vm.sm?'150px':'200px'}}" 
+                class="text-center">Specials</th>
+                
+                <th ng-if="vm.mode == 'endorse'" style="width:{{vm.sm?'150px':'200px'}}" class="text-center">Endorsements</th>
+                
+                <th ng-if="vm.mode=='endorse'">&nbsp</th>
             </tr>
         </thead>
         <tbody>
             <!--| orderBy: '-Rank' -->
-            <tr ng-repeat="x in vm.answers | limitTo: vm.limit">
-                <td  ng-click="vm.answerDetail(x)" ng-if="vm.mode=='specials'">{{vm.showR ? x.Rank : x.upV}}</td>
-                <td ng-if="!vm.sm && !vm.fnm && !vm.isE && vm.mode=='specials'" ng-click="vm.answerDetail(x)">{{x.upV}}</td>
-                <!--<td>{{x.Rank}}</td>-->
-                <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
+            <tr ng-repeat="x in vm.answers | limitTo: vm.limit" style="height:43px" ng-click="vm.answerDetail(x)">
+                <td ng-if="!vm.sm || vm.sortByName == 'Rank'" align="middle">{{x.Rank}}</td>
+                
                 <td ng-repeat="h in vm.fields | filter:{isrequired:true}" ><a ng-attr-style="text-decoration: none;" href="{{'/answerDetail/' + x.slug }}" ng-click="vm.answerDetail(x)">{{ x[h.name]}}</a></td> 
-                <!-- ng-attr-style="background-color:{{x.bc}};color:{{x.fc}}"> -->
-                <td ng-if="(vm.type == 'Establishment' || vm.type == 'Place') && vm.haveLocation && vm.mode=='specials'" ng-click="vm.answerDetail(x)">{{x.dist}}</td>
-                <td ng-if="vm.type == 'Event' && vm.mode == 'specials'" ng-click="vm.answerDetail(x)">{{x.date}}</td>
-                <!-- ng-attr-style="background-color:{{x.bc}};color:{{x.fc}}" -->
-                <td ng-show="vm.type == 'Establishment' && vm.mode=='specials'" ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}" ng-click="vm.answerDetail(x)">
+                
+                <td ng-if="(!vm.sm || vm.sortByName == 'Distance') && vm.haveLocation" 
+                    align="middle" style="width:{{vm.sm?'10px':'auto'}}">{{x.dist}}</td>
+                
+                <td ng-if="!vm.sm || vm.sortByName == 'Popular'" align="middle" style="width:{{vm.sm?'10px':'auto'}}">
+                    {{x.upV - x.downV > 0 ? ('+'+(x.upV-x.downV)):(x.upV-x.downV)}}</td>
+
+                <td ng-if="!vm.sm || vm.sortByName == 'Trending'" align="middle" style="width:{{vm.sm?'10px':'auto'}}">
+                    {{x.trendUpV!=undefined&&x.trendUpV!=NaN?x.trendUpV:0}}</td>
+
+                <td ng-if="(!vm.sm || vm.sortByName == 'Date') && vm.type == 'Event' && vm.mode=='specials'" 
+                align="middle">{{x.date}}</th>
+                
+                <td ng-show="vm.type == 'Establishment' && vm.mode=='specials'" 
+                ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}};" ng-click="vm.answerDetail(x)">
                     {{x.sp_title}}</td>
                 <td ng-if="vm.mode=='endorse'" style="width:{{vm.sm?'150px':'200px'}}">
 

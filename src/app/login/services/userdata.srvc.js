@@ -17,6 +17,7 @@
 
             loadUserData: loadUserData,
             loadUserAccount: loadUserAccount,
+            pullFavoriteData: pullFavoriteData,
         };
 
         return service;
@@ -45,7 +46,6 @@
                     $rootScope.codeprices = d[6];
                     $rootScope.friends_votes = d[7];
 
-                    pullFavoriteData();
                     dataloader.getDemoData();
                     if ($rootScope.DEBUG_MODE) console.log("user promoter - ",$rootScope.userpromoter);
                     $rootScope.userDataLoaded = true;

@@ -1,5 +1,7 @@
-angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search', '$timeout', '$window','dataloader',
-function ($rootScope, $state, search, $timeout, $window, dataloader) {
+angular.module('app').directive('searchBlock', ['$rootScope', '$state', 'search', 
+'$timeout', '$window','dataloader','$http','$q',
+function ($rootScope, $state, search, 
+    $timeout, $window, dataloader, $http, $q) {
     'use strict';
 
     return {
@@ -33,9 +35,19 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
 
             var _currentOffset = -1;
             var _lastOffset = -1;
+            var _loadMoreThreshold = 0;
+            var _renderTime = 0;
 
             scope.contentLoaded = false;
+            
+            if ($rootScope.DISPLAY_XSMALL == true) _loadMoreThreshold = 400;
+            if ($rootScope.DISPLAY_SMALL == true) _loadMoreThreshold = 400;
+            if ($rootScope.DISPLAY_MEDIUM == true) _loadMoreThreshold = 400;
+            if ($rootScope.DISPLAY_LARGE == true) _loadMoreThreshold = 300;
 
+            if ($rootScope.DISPLAY_XSMALL == true || $rootScope.DISPLAY_SMALL == true) _renderTime = 1000;
+            if ($rootScope.DISPLAY_MEDIUM == true || $rootScope.DISPLAY_LARGE == true) _renderTime = 1000;
+            
             scope.rankSel = function (x,nm) {
                 
                 if (x.useTemp){
@@ -222,13 +234,22 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
 
                 scope.length = scope.resRanks.length + scope.resAnswers.length;
                 scope.searchResults = scope.resRanks.concat(scope.resAnswers);
-                scope.displayResults = scope.searchResults.slice(0,scope.scrollingItemsOnePage);
-                pullDataArray = scope.displayResults;
+                //resolve images for the ranks about to be displayed
+                resolveImages(scope.searchResults.slice(0,scope.scrollingItemsOnePage)).then(function(){
+                    scope.contentLoaded = true;
+                    scope.displayResults = scope.searchResults.slice(0,scope.scrollingItemsOnePage);
+                    scope.loadMore(true);
+                    $timeout(function(){
+                        $rootScope.$broadcast('masonry.reload');
+                    },500);
+                });
+                
+                pullDataArray = scope.searchResults.slice(0,scope.scrollingItemsOnePage);
                 var ranksRes = [];
                 var answerRes = []; 
-                for (var i=0; i<scope.displayResults.length; i++){
-                    if (scope.displayResults[i].isAnswer) answerRes.push(scope.displayResults[i]);
-                    else ranksRes.push(scope.displayResults[i]);
+                for (var i=0; i<pullDataArray.length; i++){
+                    if (pullDataArray[i].isAnswer) answerRes.push(pullDataArray[i]);
+                    else ranksRes.push(pullDataArray[i]);
                 }
                 if (ranksRes.length > 0) pullData('ranks', ranksRes);
                 if (answerRes.length > 0) pullData('answers', answerRes);
@@ -236,14 +257,12 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                 scope.relTags = search.searchRelatedRanks(ranksRes, scope.query);
                 scope.relTagsIdx = 0;
                 
-                
                 if (scope.searchResults.length < 3) {
                     //console.log("scrolling disabled");
                     scope.disableScrolling = true;
                 }
                 else scope.disableScrolling = false;
-                
-                scope.loadMore();  //this necessary to force masonery arrangement                
+                                
             }
 
             var timeoutPromise2;
@@ -279,6 +298,9 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                 pullDataArray = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
                 pullData('ranks', pullDataArray);
                 scope.contentLoaded = true;
+                $timeout(function(){
+                    $rootScope.$broadcast('masonry.reload');
+                },1500);          
             }
 
             var timeoutPromise3;
@@ -300,8 +322,7 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                 scope.searchResults = JSON.parse(JSON.stringify(homeRanks));
                 ranksLoaded = true;
                 scope.contentLoaded = true;
-                queryPreamble();
-                
+                queryPreamble();  
             }
 
             var timeoutPromise4;
@@ -320,7 +341,8 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
             });
 
             scope.$watch('scrollactive', function() {
-                scope.disableScrolling = !scope.scrollactive;                                   
+                scope.disableScrolling = !scope.scrollactive;
+                if (!scope.disableScrolling && scope.displayResults.length < 20) $rootScope.$broadcast('masonry.reload');                                   
             });
 
             if($rootScope.sm){
@@ -342,26 +364,30 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
             scope.uniqueResult = [];
             loadInifiniteScroll(true);
 
-            scope.loadMore = function () {
-                //console.log("loadMore - ", scope.scrollactive);
+            scope.loadMore = function (forceLoad) {
+                //console.log("loadMore - ");
                 _currentOffset = $window.pageYOffset;
-                if (_currentOffset == _lastOffset && _currentOffset != 0) {
-                //if (false) {    
-                    //Do Nothing}
+                if (Math.abs(_currentOffset-_lastOffset)<_loadMoreThreshold && !forceLoad) {
                     //console.log("loadMore - doNothing");
                 }
                 else {
+                    //console.log("loadMore - exec ", _currentOffset, forceLoad);
+                    _lastOffset = _currentOffset;
                     if (scope.scrollactive) {
                         scope.scrollDataLoading = true;
 
-                        $timeout(function () {
+                        //$timeout(function () {
                             //load next items onto displayResults array
                             var b = scope.displayResults.length;
                             pullDataArray = [];
                             for (var i = b; i < b + scope.scrollingItemsOnePage; i++) {
                                 if (scope.searchResults[i]) {
-                                    scope.displayResults.push(scope.searchResults[i]);
-                                    pullDataArray.push(scope.searchResults[i]);
+                                    //if not already in display array, add it to display 
+                                    var idx = scope.displayResults.map(function(x) {return x.id; }).indexOf(scope.searchResults[i].id);
+                                    if (idx < 0) {
+                                        scope.displayResults.push(scope.searchResults[i]);
+                                        pullDataArray.push(scope.searchResults[i]);
+                                    }
                                 }
                             }
 
@@ -369,7 +395,6 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                             scope.scrollDataLoading = false;
 
                             //load more content
-                           
                             if ((scope.searchResults.length - scope.displayResults.length) < 12 && scope.relTags != undefined) {
                                 if (scope.relTags[scope.relTagsIdx] != undefined) {
                                     var moreRanks = search.searchRanks2(scope.relTags[scope.relTagsIdx].tag);
@@ -381,7 +406,7 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                                             scope.searchResults.push(nrank);
                                         }
                                     });
-                                    scope.loadMore();
+                                    //scope.loadMore(true);
                                 }
                             }
 
@@ -403,18 +428,16 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                                 }
                                 else scope.endReached = true;
                             }
-                        }, 500);
+                        //}, 0);
+                        $timeout(function(){
+                            $rootScope.$broadcast('masonry.reload');
+                        },_renderTime);
                     }
                 }
-                _lastOffset = _currentOffset;                
             }
 
             function pullData(type,data){
-                //if (scope.disableScrolling == false){
-                    //console.log('scope.disableScrolling - ', scope.disableScrolling);
                     dataloader.pulldata(type, data);
-                //}                
-               
             }
 
             function loadInifiniteScroll(reloading) {
@@ -426,6 +449,19 @@ function ($rootScope, $state, search, $timeout, $window, dataloader) {
                 scope.content = [];
                 scope.endReached = false;
                 scope.scrollingData = [];
+            }
+
+            function resolveImages(results){
+                var pArr = [];
+                scope.contentLoaded = false;
+                results.forEach(function(item){
+                    if (item.isAnswer) {}//pArr.push($http.get(item.imageurl));
+                    else {
+                        if (item.fimage != null && item.fimage != undefined && item.fimage.indexOf('rankx')>-1)
+                        pArr.push($http.get(item.fimage));
+                    }
+                });
+                return $q.all(pArr);
             }
 
             function shuffle(array) {
