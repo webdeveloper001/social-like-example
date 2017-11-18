@@ -199,7 +199,7 @@
                 name: 'favs',
                 parent: 'layout',
                 url: '/favs',
-                templateUrl: 'app/layout/Partials2/favs.html',
+                templateUrl: 'app/user/Partials/favs.html',
                 controller: 'favs as vm'
             },
 

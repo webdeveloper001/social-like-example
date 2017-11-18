@@ -22,7 +22,7 @@
     "jquery": "~2.1.4",
     "x2js": "abdmob/x2js#^1.2.0",
     "angulike": "^1.2.0",
-    "angular-socialshare": "angularjs-socialshare#^2.3.4",
+    "angular-socialshare": "angularjs-socialshare#^2.3.11",
     "angular-ui-router": "^0.4.2",
     "moment": "^2.18.1",
     "angular-bootstrap": "~0.13.0",
