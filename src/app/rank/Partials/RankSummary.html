@@ -4,7 +4,9 @@
     <div id="veil" ng-hide="vm.dataReady"></div>
     <div id="feedLoading" ng-hide="vm.dataReady">
         <div style="text-align: center" ng-if="!vm.dataReady">
-            <div class="loading-pulse"></div>
+            <!-- <div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div> -->
+            <div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>
+            
             <p style="font-size:large">loading rank...</p>
         </div>
     </div>
@@ -14,8 +16,8 @@
     <div id="veil" ng-show="vm.loadingAnswers"></div>
     <div id="feedLoading" ng-show="vm.loadingAnswers">
         <div style="text-align: center" >
-            <div class="loading-pulse"></div>
-            <p style="font-size:large">Just a moment, looking for some delicious food near by...</p>
+            <div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>
+            <p style="font-size:large">Wait a moment, finding some delicious food near by...</p>
         </div>
     </div>
 
@@ -91,11 +93,15 @@
         </div>
     </div>
 </div> -->
-<div class="text-left" ng-if="vm.isCustomRank">
-    <button class="btn btn-default" ng-click="vm.answerDetail(vm.rankOwner)" style="margin:5px; width:100%">Return to {{vm.rankOwner.name}}</button>
+<div class="text-left">
+    <button class="btn btn-default" ng-click="vm.backToResults()" 
+    style="margin:5px; width:100%; background-color:lightgray">Back to Results</button>
+    <button class="btn btn-default" ng-if="vm.hasParent" 
+    ng-click="vm.gotoParentRank()" style="margin:5px; width:100%; background-color:lightgray">{{vm.parentRank.title}}</button>
 </div>
-<div class="text-left" ng-if="vm.hasParent">
-    <button class="btn btn-default" ng-click="vm.gotoParentRank()" style="margin:5px; width:100%">{{vm.parentRank.title}}</button>
+<div class="text-left" ng-if="vm.isCustomRank">
+    <button class="btn btn-default" ng-click="vm.answerDetail(vm.rankOwner)" 
+    style="margin:5px; width:100%; background-color:lightgray">Return to {{vm.rankOwner.name}}</button>
 </div>
 
 <div class="container">
@@ -103,31 +109,31 @@
     <div class="row">
 
         <div class="container-bgbox col-xs-6 col-sm-4 col-md-4 col-lg-3">
-            <bg-box bc="{{vm.bc}}" shade="{{vm.shade}}" fc="{{vm.fc}}" text="{{vm.ranking}}" dir="horizontal" w="100%" h="{{vm.sm ? '200px':'200px'}}"></bg-box>
+            <bg-box bc="{{vm.bc}}" shade="{{vm.shade}}" fc="{{vm.fc}}" text="{{vm.ranking}}" dir="horizontal" w="100%" h="{{vm.sm ? '150px':'200px'}}"></bg-box>
         </div>
         <div ng-if="!vm.isShortPhrase">
             <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
-                <img ng-src="{{vm.image1}}" ng-attr-style="display:{{vm.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '200px':'200px'}};">
+                <img ng-src="{{vm.image1}}" ng-attr-style="display:{{vm.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
             </div>
             <div class="hidden-xs col-sm-4 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
-                <img ng-src="{{vm.image2}}" ng-attr-style="display:{{vm.image2 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '200px':'200px'}};">
+                <img ng-src="{{vm.image2}}" ng-attr-style="display:{{vm.image2 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
             </div>
             <div class="hidden-xs hidden-sm hidden-md col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
-                <img ng-src="{{vm.image3}}" ng-attr-style="display:{{vm.image3 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '200px':'200px'}};">
+                <img ng-src="{{vm.image3}}" ng-attr-style="display:{{vm.image3 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
             </div>
         </div>
         <!-- Short-Phrase with Featured Image -->
         <div ng-if="vm.isShortPhrase&&vm.hasfimage">
             <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;">
-                <img ng-src="{{vm.fimage}}" ng-attr-style="display:{{vm.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '200px':'200px'}};">
+                <img ng-src="{{vm.fimage}}" ng-attr-style="display:{{vm.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
             </div>
-            <div class="container hidden-xs col-sm-4 col-md-4 col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+            <div class="container hidden-xs col-sm-4 col-md-4 col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
                 <div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
                     <h2 class="hidden-xs text-center">{{vm.title1}}</h2>
                     <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.title1}}</h3>
                 </div>
             </div>
-            <div class="container hidden-xs hidden-sm hidden-md col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+            <div class="container hidden-xs hidden-sm hidden-md col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
                 <div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
                     <h2 class="hidden-xs text-center">{{vm.title2}}</h2>
                     <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.title2}}</h3>
@@ -136,19 +142,19 @@
         </div>
         <!-- Short-Phrase without Featured Image -->
         <div ng-if="vm.isShortPhrase&&!vm.hasfimage">
-             <div class="container col-xs-6 col-sm-4 col-md-4 col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+             <div class="container col-xs-6 col-sm-4 col-md-4 col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
                 <div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
                     <h2 class="hidden-xs text-center">{{vm.title1}}</h2>
                     <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.title1}}</h3>
                 </div>
             </div>
-             <div class="container hidden-xs col-sm-4 col-md-4 col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+             <div class="container hidden-xs col-sm-4 col-md-4 col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
                 <div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
                     <h2 class="hidden-xs text-center">{{vm.title2}}</h2>
                     <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.title2}}</h3>
                 </div>
             </div>
-            <div class="container hidden-xs hidden-sm hidden-md col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '200px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
+            <div class="container hidden-xs hidden-sm hidden-md col-lg-3" ng-attr-style="background-color:lightgray;color:black;height:{{sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
                 <div style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
                     <h2 class="hidden-xs text-center">{{vm.title3}}</h2>
                     <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center">{{vm.title3}}</h3>
@@ -166,58 +172,68 @@
 <div class="row" style="margin:0px;padding:0px;">
 
     
-    <div class="col-sm-10 col-md-10 col-lg-10 hidden-xs" >
+    <div class="col-sm-9 col-md-9 col-lg-10 hidden-xs" style="margin-bottom: 10px; padding:0px">
         <div class="btn-group text-left">
             <button class="btn btn-default" ng-click="vm.sortbyHelpDialog()"><i class="fa fa-question-circle"></i></button>
             <span style="float: left;margin-left: 10px; margin-right: 10px;line-height: 32px">{{vm.sm ? '':'Sort by:'}}</span>
             <button class="btn btn-default {{vm.selRank}} " ng-click="vm.sortByRank()" ng-if="vm.type != 'Event' && !vm.fnm">Rank</button>
             <button class="btn btn-default {{vm.selUpV}} " ng-click="vm.sortByUpV()">Popular</button>
             <button class="btn btn-default {{vm.selDistance}} " ng-click="vm.sortByDistance()"
-                ng-show="{{vm.type == 'Establishment' || vm.type == 'Event'}}">Distance</button>
+                ng-show="{{vm.type == 'Establishment' || vm.type == 'Event' || vm.type == 'Place'}}">Distance</button>
                 
             <button class="btn btn-default {{vm.selDate}} " ng-click="vm.sortByDate()"
                 ng-show="{{vm.type == 'Event'}}">Date</button>               
 
             <button class="btn btn-default {{vm.selTrending}} " ng-click="vm.sortByTrending()">Trending</button>
-            <!--  <button type="button " class="btn btn-primary ">{{"rankSummary.Filtered " | translate}}</button> -->
-        
         </div>
     </div>
-    <div class="col-xs-9 visible-xs" style="margin-bottom: 20px">
-
-        <div class="dropdown">
+    <div class="col-xs-8 visible-xs" style="margin-bottom: 10px; padding:0px">
+        <div class="dropdown" style="margin:0px; padding:0px;">
             <button class="btn btn-default" ng-click="vm.sortbyHelpDialog()"><i class="fa fa-question-circle"></i></button>
             <span style="line-height:32px; margin: 0px 10px;">Sort By:</span>
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
                 {{vm.sortByName}}
-                <span class="caret"></span>
-                
+                <span class="caret"></span>   
             </button>
             
             <ul class="dropdown-menu">
                 <li><a class="btn btn-default {{vm.selRank}} " ng-click="vm.sortByRank()" ng-if="vm.type != 'Event' && !vm.fnm">Rank</a></li>
                 <li><a class="btn btn-default {{vm.selUpV}} " ng-click="vm.sortByUpV()">Popular</a></li>
                 <li><a class="btn btn-default {{vm.selDistance}} " ng-click="vm.sortByDistance()"
-            ng-show="{{vm.type == 'Establishment'}}">Distance</a></li>
+            ng-show="{{vm.type == 'Establishment' || vm.type == 'Event' || vm.type == 'Place'}}">Distance</a></li>
                 <li><a class="btn btn-default {{vm.selDate}} " ng-click="vm.sortByDate()"
             ng-show="{{vm.type == 'Event'}}">Date</a></li>
                 <li><a class="btn btn-default {{vm.selTrending}} " ng-click="vm.sortByTrending()">Trending</a></li>
             </ul>
         </div>
-
     </div>
 
-    <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2 btn-group text-right">
-        <button class="btn btn-default" ng-click="vm.share()" style="padding-right:5px">Share&nbsp&nbsp<span class="glyphicon glyphicon-share"></span></button>
+    <div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 btn-group text-center">
+        <a type="button" class="btn btn-default" style="vertical-align:middle;color:#0059b3;border-color:#0059b3;" ng-if="true" 
+        ng-click="vm.share()" target="_blank"> Share&nbsp&nbsp<span class="fa fa-share"></span></a>
     </div>
 </div>
-<div style="margin:0px; margin-top: 10px; " class="text-center">
-    <button ng-click="vm.changeMode('endorse') " class="btn btn-primary" ng-if="vm.mode=='specials'">Endorse</button>
-    <button ng-click="vm.changeMode('specials') " class="btn btn-primary" ng-if="vm.mode=='endorse'">Special</button>
-
-    <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">Rank</button>
-    <span style="line-height: 32px">&nbsp;&nbsp;&nbsp;Contributors: <b style="color:blue; "><i>{{vm.numContributors}}&nbsp&nbsp</i></b></span>
-</div>    
+<div class="row">
+<div class="col-xs-12 col-sm-6 text-center" style="margin-bottom: 10px; padding:0px" ng-if="!vm.fnm">
+    <div class="btn-group" style="padding-right:20px">
+    <button ng-click="vm.changeMode('endorse') " class="btn {{vm.mode=='endorse' ? 'btn-primary':'btn-default'}}" 
+    >Endorsements</button>
+    <button ng-click="vm.changeMode('specials') " class="btn {{vm.mode=='specials' ? 'btn-primary':'btn-default'}}"
+    >Specials</button>
+    </div>
+    <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">&nbsp&nbsp&nbsp&nbspRank&nbsp&nbsp&nbsp&nbsp</button>
+    <!--
+    <span style="line-height: 32px">&nbsp;&nbsp;&nbsp;Contributors: <b style="color:blue; ">
+        <i>{{vm.numContributors}}&nbsp&nbsp</i></b></span>-->
+</div>
+    <div class="col-xs-12 col-sm-6 input-group">
+        <input type="text" class="form-control" bs-options="c for c in vm.opts" bs-typeahead 
+        placeholder="Filter by Name or Neighborhood" ng-model="vm.val" ng-change="vm.getResults()" id="SearchInput">
+        <div class="input-group-btn">
+            <button class="btn btn-default" type="submit" ng-click="vm.clearSearch()"><i class="glyphicon glyphicon-search"></i></button>
+        </div>
+    </div>
+</div>
 <!--
 <div ng-show="{{vm.type == 'Establishment'}}">
     <div class="text-right" ng-attr-style="display:{{vm.haveLocation ? 'none':'inline'}}">
@@ -231,53 +247,99 @@
     <tbody>
         <thead>
             <tr>
-                <th ng-if="vm.mode=='specials'">{{vm.showR ? 'Rank' : 'Votes'}}</th>
-                <th ng-show="{{!vm.sm && !vm.fnm && !vm.isE}}" ng-if="vm.mode=='specials'">Votes</th>
-                <th class="capitalize " ng-repeat="h in vm.fields | filter:{isrequired:true}">{{h.label}}</th>
-                <th ng-show="{{vm.type == 'Establishment' && vm.haveLocation}}" ng-if="vm.mode=='specials'">Distance (mi)</th>
-                <th ng-show="{{vm.type == 'Event'}}" ng-if="vm.mode=='specials'">Date</th>
-                <th ng-show="{{vm.type == 'Establishment'}}" ng-if="vm.mode=='specials'">Specials</th>
-                <th ng-if="vm.mode == 'endorse'">
-                    Endorsements
-                </th>
+                <th ng-if="!vm.sm || vm.sortByName=='Rank'" align="middle">Rank</th>
+                
+                <th class="capitalize " ng-repeat="h in vm.fields | filter:{isrequired:true}" align="middle">{{h.label}}</th>
+                
+                <th ng-if="!vm.sm || vm.sortByName=='Popular'" align="middle" style="width:{{vm.sm?'10px':'auto'}}">Diff.</th>
+                
+                <th ng-if="(!vm.sm || vm.sortByName=='Distance') && vm.haveLocation" 
+                    align="middle" style="width:{{vm.sm?'10px':'auto'}}">Dist (mi)</th>
 
-                <!-- ng-show="{{vm.type == 'Establishment'}}" -->
+                <th ng-if="(!vm.sm || vm.sortByName=='Trending')" align="middle" style="width:{{vm.sm?'10px':'auto'}}">Last month</th>
+                
+                <th ng-if="(!vm.sm || vm.sortByName=='Date') && vm.type == 'Event' && vm.mode=='specials'" align="middle">Date</th>
+                
+                <th ng-if="vm.type == 'Establishment' && vm.mode=='specials'" style="width:{{vm.sm?'150px':'200px'}}" 
+                class="text-center">Specials</th>
+                
+                <th ng-if="vm.mode == 'endorse'" style="width:{{vm.sm?'150px':'200px'}}" class="text-center">Endorsements</th>
+                
+                <th ng-if="vm.mode=='endorse'">&nbsp</th>
             </tr>
         </thead>
         <tbody>
             <!--| orderBy: '-Rank' -->
-            <tr ng-repeat="x in vm.answers track by $index">
-                <td  ng-click="vm.answerDetail(x)" ng-if="vm.mode=='specials'">{{vm.showR ? x.Rank : x.upV}}</td>
-                <td ng-show="{{!vm.sm && !vm.fnm && !vm.isE}}" ng-if="vm.mode=='specials'" ng-click="vm.answerDetail(x)">{{x.upV}}</td>
-                <!--<td>{{x.Rank}}</td>-->
-                <!--<td ng-repeat="h in vm.answers.public ">{{x[h]}}</td>-->
+            <tr ng-repeat="x in vm.answers | limitTo: vm.limit" style="height:43px" ng-click="vm.answerDetail(x)">
+                <td ng-if="!vm.sm || vm.sortByName == 'Rank'" align="middle">{{x.Rank}}</td>
+                
                 <td ng-repeat="h in vm.fields | filter:{isrequired:true}" ><a ng-attr-style="text-decoration: none;" href="{{'/answerDetail/' + x.slug }}" ng-click="vm.answerDetail(x)">{{ x[h.name]}}</a></td> 
-                <!-- ng-attr-style="background-color:{{x.bc}};color:{{x.fc}}"> -->
-                <td ng-show="{{vm.type == 'Establishment' && vm.haveLocation}}" ng-if="vm.mode=='specials'" ng-click="vm.answerDetail(x)">{{x.dist}}</td>
-                <td ng-show="{{vm.type == 'Event'}}" ng-click="vm.answerDetail(x)" ng-if="vm.mode == 'specials'">{{x.date}}</td>
-                <!-- ng-attr-style="background-color:{{x.bc}};color:{{x.fc}}" -->
-                <td ng-show="{{vm.type == 'Establishment'}}" ng-if="vm.mode=='specials'" ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}" ng-click="vm.answerDetail(x)">
+                
+                <td ng-if="(!vm.sm || vm.sortByName == 'Distance') && vm.haveLocation" 
+                    align="middle" style="width:{{vm.sm?'10px':'auto'}}">{{x.dist}}</td>
+                
+                <td ng-if="!vm.sm || vm.sortByName == 'Popular'" align="middle" style="width:{{vm.sm?'10px':'auto'}}">
+                    {{x.upV - x.downV > 0 ? ('+'+(x.upV-x.downV)):(x.upV-x.downV)}}</td>
+
+                <td ng-if="!vm.sm || vm.sortByName == 'Trending'" align="middle" style="width:{{vm.sm?'10px':'auto'}}">
+                    {{x.trendUpV!=undefined&&x.trendUpV!=NaN?x.trendUpV:0}}</td>
+
+                <td ng-if="(!vm.sm || vm.sortByName == 'Date') && vm.type == 'Event' && vm.mode=='specials'" 
+                align="middle">{{x.date}}</th>
+                
+                <td ng-show="vm.type == 'Establishment' && vm.mode=='specials'" 
+                ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}};" ng-click="vm.answerDetail(x)">
                     {{x.sp_title}}</td>
-                <td ng-if="vm.mode=='endorse'">
+                <td ng-if="vm.mode=='endorse'" style="width:{{vm.sm?'150px':'200px'}}">
 
                     <div>
-                        <span  ng-click="vm.UpVote(x,$event)"  ng-attr-style="color:{{x.thumbUp}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 18px;" >
+                        <span  ng-click="vm.UpVote(x,$event)"  ng-attr-style="color:{{x.thumbUp}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 18px;" 
+                        class="pull-left">&nbsp&nbsp
                             <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                            <i style="color:black;font-size: 18px;">&nbsp;{{x.upV}}&nbsp;&nbsp;</i>
+                            <span style="color:black;font-size: 14px;">&nbsp;{{x.upV}}&nbsp;&nbsp;</span>
                         </span>
                         
-                        <span  ng-click="vm.DownVote(x,$event)" ng-attr-style="color:{{x.thumbDn}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 20px;" >
+                        <span  ng-click="vm.DownVote(x,$event)" ng-attr-style="color:{{x.thumbDn}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 18px;" 
+                        class="pull-right">
                             <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-                            <i style="color:black">&nbsp;{{x.downV}}</i>
+                            <span style="color:black;font-size: 14px;">&nbsp;{{x.downV}}</span>
+                            &nbsp&nbsp
                         </span>
                         
-                    </div>          
+                    </div>
+                    <div class="hidden-sm hidden-md hidden-lg hidden-xl">
+                        <div ng-if="x.userObjs.length == 1">
+                            <span class="badge btn-primary" ng-click="vm.showAllFriendsList(x.userObjs, x.name)">
+                        1 friend endorses this
+                        </span>
+                        </div>
+                        <div ng-if="x.userObjs.length > 1">
+                            <span class="badge btn-primary" ng-click="vm.showAllFriendsList(x.userObjs, x.name)">
+                        {{x.userObjs.length}} friends endorse this
+                        </span>
+                        </div>
+                    </div>
                 </td>
-
+                <td class="hidden-xs" ng-if="vm.mode=='endorse'" style="width:{{vm.sm?'150px':'150px'}}">
+                <!-- <div class="hidden-xs"> -->
+                    <div ng-if="x.userObjs.length == 1">
+                        <span class="badge btn-primary" ng-click="vm.showAllFriendsList(x.userObjs, x.name)">
+                        1 friend endorses this
+                        </span>
+                    </div>
+                    <div ng-if="x.userObjs.length > 1">
+                        <span class="badge btn-primary" ng-click="vm.showAllFriendsList(x.userObjs, x.name)">
+                        {{x.userObjs.length}} friends endorse this
+                        </span>
+                    </div>
+                <!-- </div>  -->
+                </td>
             </tr>
         </tbody>
 </table>
-
+<div class="text-center" ng-if="vm.thereIsMore">
+    <button class="btn btn-default" ng-click="vm.seeMore()">See More</button>
+</div>
 <div class="row" style="margin:0px;" ng-if="!vm.hasAnswerParent || vm.userIsOwner">
     <div class="col-xs-2" style="padding:0px">
         <a class="btn btn-primary" ng-click="vm.addAnswer()" class="btn btn-primary">+</a>

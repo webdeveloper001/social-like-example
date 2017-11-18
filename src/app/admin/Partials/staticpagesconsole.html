@@ -1,0 +1,35 @@
+<div class="container">
+    <h1>Static Pages Console</h1>
+
+    <div class="input-group text-right">
+            <button class="btn {{vm.mode == 'ranks'? 'btn-primary':'btn-default'}}" type="button" ng-click="vm.selRanks()">Ranks</button>
+            <button class="btn {{vm.mode == 'answers'? 'btn-primary':'btn-default'}}" type="button" ng-click="vm.selAnswers()">Answers</button>
+    </div>
+    <div class="input-group">
+        <input type="text" class="form-control" ng-model="vm.query" bs-options="c for c in vm.rankopts" bs-typeahead>
+        <span class="input-group text-right">
+            <button class="btn btn-default" type="button" ng-click="vm.getPage()">Get Static Page</button>
+            <button class="btn btn-default" type="button" ng-click="vm.recreatePage()">Re-Create</button>
+            <button class="btn btn-default" type="button" ng-click="vm.forceScrape()">Scrape</button>
+            <button class="btn btn-default" type="button" ng-click="vm.share()">Share</button>
+        </span>
+    </div>
+    <div class="input-group">
+        <span class="input-group text-right">
+            <button class="btn btn-default" type="button" ng-click="vm.recreateAll()">Re-Create All</button>
+            <button class="btn btn-default" type="button" ng-click="vm.scrapeAll()">Scrape All</button>
+        </span>
+    </div>
+
+    <div class="progress" ng-if="vm.inprogress">
+        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="vm.cpct" aria-valuemin="0" aria-valuemax="100"
+            style="width:{{vm.cpct}}%">
+            {{vm.cpct}}% Complete (success)
+        </div>
+    </div>
+
+    <div ng-if="!vm.inprogress" ng-repeat="x in vm.pagecontent">
+    {{x}}<br>
+    </div>
+    
+</div>

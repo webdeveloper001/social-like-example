@@ -11,10 +11,14 @@
 
         //Members
         var _edits = [];
+        var _fetchAnswersMem = [];
+
+        $rootScope.edits = _edits;
         var baseURI = '/api/v2/mysql/_table/edittable';
 
         var service = {
             getEdits: getEdits,
+            getEditsX: getEditsX,
             addEdit: addEdit,
             updateEdit: updateEdit,
             deleteEdit: deleteEdit,
@@ -26,18 +30,55 @@
         function getEdits(forceRefresh) {
             // console.log("getAnswers..._areAnswersLoaded()", _areAnswersLoaded());
 
-            if (_areEditsLoaded() && !forceRefresh) {
-
-                 return $q.when(_edits);
-            }
-
             var url = baseURI;
 
             return $http.get(url).then(querySucceeded, _queryFailed);
 
             function querySucceeded(result) {
 
-                return _edits = result.data.resource;
+                var data = result.data.resource;
+                _load (data);
+
+                if ($rootScope.DEBUG_MODE) console.log("Edits Loaded");
+                return _edits; 
+            }
+
+        }
+
+        function getEditsX(data) {
+
+            var _datax = [];  //this is filtered array (ignore those ranks for which catans already fetched)
+            data.forEach(function(item){
+                if (_fetchAnswersMem.indexOf(item.answer)<0){
+                     _datax.push(item);
+                     _fetchAnswersMem.push(item.answer);
+                }
+            });
+            //_datax = [];
+            if (_datax.length == 0) return $q.when(false);
+
+            var filterstr = '?filter=(';
+            for (var i=0; i< _datax.length; i++){
+                filterstr = filterstr + 'answer=' + _datax[i].answer+')OR(';
+            }
+            filterstr = filterstr.substring(0,filterstr.length-3);
+            
+            var url = baseURI + filterstr;
+
+            return $http.get(url).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+
+                var _editsx = result.data.resource;
+                var map = $rootScope.edits.map(function(x) {return x.id; });
+                _editsx.forEach(function(obj){
+                        if(map.indexOf(obj.id) < 0)
+                        _edits.push(obj);
+                });
+                
+                if ($rootScope.DEBUG_MODE) console.log("editsX data loaded - ", _editsx)
+
+                return _editsx;
             }
 
         }
@@ -64,6 +105,10 @@
                 _edits.push(newEditx);
                 
                 //$rootScope.edits.push(newEditx);
+                console.log("newEditx - ", newEditx);
+                console.log("_edits - ", _edits);
+                console.log("$rootScope.edits - ", $rootScope.edits);
+                
                 uaf.post('editA',['answer', 'edit'],[newEditx.answer, newEditx.id]); //user activity feed 
 
                 if ($rootScope.DEBUG_MODE) console.log("Adding new Edit succesful", result);
@@ -150,8 +195,16 @@
                 return result.data;
             }
         }
-        
 
+        function _load(data){
+            _edits.length = 0;
+            _fetchAnswersMem.length = 0;
+            data.forEach(function(x){
+                _edits.push(x);
+                _fetchAnswersMem.push(x.id);
+            });
+        }
+        
         function _areEditsLoaded() {
 
             return _edits.length > 0;

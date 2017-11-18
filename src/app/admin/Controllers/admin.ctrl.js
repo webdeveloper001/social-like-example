@@ -5,9 +5,13 @@
         .module('app')
         .controller('admin', admin);
 
-    admin.$inject = ['$location', '$rootScope', '$state','table','answer','categorycode','$q','vrows'];
+    admin.$inject = ['$rootScope', '$state','table','answer','categories','table2',
+    'categorycode','$q','vrows','catans','common','dataloader','locations','special','matchrec',
+    'useractivity','edit','useraccnt','staticpages', '$timeout'];
 
-    function admin(location, $rootScope, $state, table, answer, categorycode, $q, vrows) {
+    function admin($rootScope, $state, table, answer, categories, table2,
+        categorycode, $q, vrows, catans, common, dataloader, locations, special, matchrec,
+        useractivity, edit, useraccnt, staticpages, $timeout) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'admin';
@@ -17,6 +21,7 @@
         vm.selFlags = '';
         vm.selRankings = '';
         vm.selPlan = '';
+        vm.selCleanDB = '';
 
         vm.goBack = goBack;
         vm.keywords = keywords;
@@ -27,15 +32,27 @@
         vm.dbQuery = dbQuery;
         vm.update = update;
         vm.foodranks = foodranks;
+        vm.sibLocs = sibLocs;
         vm.payment = payment;
         vm.plan = plan;
         vm.bizAdmin = bizAdmin;
         vm.applyRule = applyRule;
+        vm.cleanDB = cleanDB;
+        vm.modImages = modImages;
+        vm.staticPages = staticPages;
+        vm.golocations = golocations;
+        vm.gositemap = gositemap;
+
+        vm.dataready = false;
         //vm.fbpost = fbpost;
+        //var staticpagesfiles = [];
         
         activate();
 
         function activate() {
+
+            if (!$rootScope.isAdmin && !$rootScope.dataAdmin && !$rootScope.modAdmin) $state.go('cwrapper');
+            else{
             
             vm.isDET = $rootScope.isLoggedIn && ($rootScope.user.id == '10104518570729893' ||
                                           $rootScope.user.id == 30 ||
@@ -45,177 +62,160 @@
                                           $rootScope.user.id == 187959328383879 ||
                                           $rootScope.user.id == 194039991109146);
             
-            vm.isAdmin = $rootScope.user.is_sys_admin;
-            //vm.isAdmin = $rootScope.isAdmin;
-            console.log("admin page Loaded!");
+            vm.isAdmin = $rootScope.user.is_sys_admin || $rootScope.isAdmin;
+            vm.dataAdmin = $rootScope.dataAdmin;
+            vm.modAdmin = $rootScope.modAdmin;
+
+            loadData();
+            
+            if ($rootScope.DEBUG_MODE) console.log("admin page Loaded!");
+            }
             
         }
-        function keywords() {
-            vm.selKeywords = 'active';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
 
+        function loadData(){
+            var p0 = table.getTables();
+            var p1 = categories.getAllCategories();
+            var p2 = locations.getAllLocations();
+            var p3 = answer.getAnswers();
+            var p4 = special.getSpecials();
+            var p5 = matchrec.GetMatchTable();
+            var p6 = useractivity.getAllUserActivity();
+            var p7 = catans.getAllcatans(); 
+            var p8 = edit.getEdits();
+            var p9 = vrows.getAllvrows();
+            var p10 = table2.getTables();
+            var p11 = useraccnt.getallaccnts();
+
+            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11]).then(function (d) {
+                
+                $rootScope.content = d[0];
+                $rootScope.categories = d[1];
+                $rootScope.locations = d[2];
+                $rootScope.answers = d[3];
+                $rootScope.specials = d[4];
+                $rootScope.mrecs = d[5];
+                $rootScope.alluseractivity = d[6];
+                $rootScope.catansrecs = d[7];
+                $rootScope.edits = d[8];
+                $rootScope.cvrows = d[9];
+                $rootScope.customranks = d[10];
+                $rootScope.useraccnts = d[11];
+
+                dataloader.unwrap();
+                dataloader.createSearchStrings();
+
+                //console.log("$rootScope.content.length - ", $rootScope.content.length);
+                //console.log("$rootScope.answers.length - ", $rootScope.answers.length);
+                
+                //console.log("all data ready!");
+                vm.dataready = true;
+            });   
+
+        }
+        function keywords() {
+            disableAll();
+            vm.selKeywords = 'active';
             $state.go('queries');
 
         }
         function views() {
-            vm.selKeywords = '';
+            disableAll();
             vm.selViews = 'active';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-
             $state.go('views');
 
         }
         function flags() {
-            vm.selKeywords = '';
-            vm.selViews = '';
+            disableAll();
             vm.selFlags = 'active';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-
             $state.go('flags');
-
         }
 
         function addRank() {
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
+            disableAll();   
             vm.selRankings = 'active';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-
             $state.go('addRank');
 
         }
-
         function dbMaint() {
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
+            disableAll();
             vm.selDbMaint = 'active';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-            
             $state.go('dbMaint');
         }
 
         function dbQuery() {
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
+            disableAll();
             vm.selQuery = 'active';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-            
             $state.go('dbQuery');
         }
         
          function update() {
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
+            disableAll();
             vm.selUpdate = 'active';
-            vm.selFoodRanks = '';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-            
             $state.go('updateHeaders');
         }
         
         function foodranks(){
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
+            disableAll();
             vm.selFoodRanks = 'active';
-            vm.selPayment = '';
-            vm.selPlan = '';
-            vm.selBizAdmin = '';
-            
             $state.go('foodRanks');
-            
+        }
+
+        function sibLocs(){
+            disableAll();
+            vm.selSibLocks = 'active';
+            $state.go('sibLocs');
         }
 
         function payment() {
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
-            vm.selPlan = '';
+            disableAll();
             vm.selPayment = 'active';
-            vm.selBizAdmin = '';
-
             $state.go('payment');
-
         }
 
         function plan() {
-            vm.selKeywords = '';
-            vm.selViews = '';
-            vm.selFlags = '';
-            vm.selRankings = '';
-            vm.selDbMaint = '';
-            vm.selQuery = '';
-            vm.selUpdate = '';
-            vm.selFoodRanks = '';
+            disableAll();
             vm.selPlan = 'active';
-            vm.selPayment = '';
-            vm.selBizAdmin = '';
-
             $state.go('plan');
-
         }
 
         function bizAdmin() {
+           disableAll();
+           vm.selBizAdmin = 'active';
+           $state.go('bizadmin');
+        }
+        
+        function cleanDB() {
+            disableAll();
+            vm.selCleanDB = 'active';
+            $state.go('cleandb');
+        }
+
+        function modImages(){
+            disableAll();
+            vm.selimagesMod = 'active';
+            $state.go('imagesmod');
+        }
+
+        function staticPages(){
+            disableAll();
+            vm.selStaticPages = 'active';
+            $state.go('staticpagesconsole');
+        }
+
+        function golocations(){
+            disableAll();
+            vm.selLocations = 'active';
+            $state.go('locations');
+        }
+
+        function gositemap(){
+            disableAll();
+            vm.selsitemap = 'active';
+            $state.go('sitemap');
+        }
+
+        function disableAll(){
             vm.selKeywords = '';
             vm.selViews = '';
             vm.selFlags = '';
@@ -226,10 +226,13 @@
             vm.selFoodRanks = '';
             vm.selPlan = '';
             vm.selPayment = '';
-            vm.selBizAdmin = 'active';
-
-            $state.go('bizadmin');
-
+            vm.selBizAdmin = '';
+            vm.selSibLocks = '';
+            vm.selCleanDB = '';
+            vm.selimagesMod = '';
+            vm.selStaticPages = '';
+            vm.selLocations = '';
+            vm.selsitemap = '';
         }
 
         function goBack() {
@@ -240,8 +243,12 @@
 
         var applyRuleDone = false;
                 var midx = 0;
+                var myanswer = {};
+                var filename = '';
+                var createPage = false;
                 function applyRule() {
                     console.log("apply Rule");
+                    //if (midx%100 == 0) console.log(midx/$rootScope.answers.length);
                     // $rootScope.$emit('getLocation');   
             
                     /*//  1.Use this code to get GPS location for alls answers starting at index $rootScope.answeridxgp
@@ -434,8 +441,8 @@
                             var isMain = true;
                             for (var i=50; i<$rootScope.content.length; i++){
                                 isMain = true;    
-                                for (var j=0; j<$rootScope.neighborhoods.length; j++){
-                                    if ($rootScope.content[i].title.includes($rootScope.neighborhoods[j])){
+                                for (var j=0; j<$rootScope.nhs.length; j++){
+                                    if ($rootScope.content[i].title.includes($rootScope.nhs[j])){
                                         isMain = false; break;
                                     }
                                 }
@@ -972,7 +979,292 @@
                     }
                 }
                     */// End of 29.
-            }
-                 
+                    /*
+                    var hasNhOne = false;
+                    var rankObj = {};
+                    for (var i=0; i< $rootScope.categories.length; i++){
+                        hasNhOne = false;
+                        if ($rootScope.categories[i].category.indexOf('@Nh')>-1){
+                            for (var j=0; j<$rootScope.content.length; j++){
+
+                                if ($rootScope.content[j].cat == $rootScope.categories[i].id){
+                                    if ($rootScope.content[j].nh == 64) hasNhOne = true;
+                                }
+                            }
+                        
+                        if (!hasNhOne) {
+                            rankObj = {};
+                            rankObj.cat = $rootScope.categories[i].id;
+                            rankObj.nh = 64;
+                            rankObj.views = 0;
+                            rankObj.image1url = '';
+                            rankObj.image2url = '';
+                            rankObj.image3url = '';
+                            rankObj.owner = 0;
+                            rankObj.numcom = 0;
+                            rankObj.answers = 0;
+                            rankObj.ismp = false;
+                            rankObj.isatomic = false;
+                            console.log($rootScope.categories[i].category);
+                            table.addTable(rankObj);
+                        }
+                        }
+                    }*/
+                    
+                    /*
+                    for (var i=0; i<$rootScope.content.length; i++){
+                        if ($rootScope.content[i].nh == null || 
+                        $rootScope.content[i].nh == undefined || 
+                        $rootScope.content[i].nh == 0 ){
+                            console.log($rootScope.content[i].title);
+                            //table.update($rootScope.content[i].id,['nh'],[1]);
+                        }
+                    }*/
+                    
+                    /*//33. Adjust db, create ranking of tables needed, move catans
+                    var aidx = 0;
+                    var nidx = 0;
+                    var answer = {};
+                    var nhObj = {};
+                    var nh = '';
+                    var foundRank = false;
+                    for (var k = 0; k < $rootScope.categories.length; k++) {
+                        if ($rootScope.categories[k].category.indexOf('@Nh') > -1) {
+                            for (var i = 0; i < $rootScope.content.length; i++) {
+                                if ($rootScope.content[i].cat == $rootScope.categories[k].id &&
+                                    $rootScope.content[i].nh == 1) {
+                                    for (var j = 0; j < $rootScope.catansrecs.length; j++) {
+                                        if ($rootScope.catansrecs[j].category == $rootScope.content[i].id) {
+                                            aidx = $rootScope.answers.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[j].answer);  
+                                            answer = $rootScope.answers[aidx];
+                                            nh = answer.cityarea;
+                                            nidx = $rootScope.locations.map(function(x) {return x.nh_name; }).indexOf(nh);  
+                                            if (nidx > -1){
+                                            //console.log("nh, nidx,", nh, nidx);
+                                            foundRank = false;
+                                            nhObj = $rootScope.locations[nidx];
+                                            for (var n=0; n <$rootScope.content.length; n++){
+                                                if ($rootScope.content[n].cat == $rootScope.categories[k].id &&
+                                                    $rootScope.content[n].nh == nhObj.id){ 
+                                                        foundRank = true;
+                                                        console.log("Found ", $rootScope.content[n].title, answer.name);
+                                                        //catans.updateRec($rootScope.catansrecs[j].id,['category'],[$rootScope.content[n].id]);
+                                                    }
+                                            }
+                                            if (!foundRank) {
+                                                console.log("Not Found ", $rootScope.categories[k].category, nh, answer.name);
+                                                var itemt = {};
+                                                itemt.views = 0;
+                                                itemt.answers = 0;
+                                                itemt.numcom = 0;
+                                                itemt.ismp = true;
+                                                itemt.isatomic = true;
+                                                itemt.cat = $rootScope.categories[k].id;
+                                                itemt.nh = nhObj.id;
+                                                //Create and update slug
+                                                //Create table record
+                                                //table.addTable(itemt);
+                                            }
+                                            //console.log("$rootScope.content[i].title - ", $rootScope.content[i].title);
+                                        }
+                                        else console.log("nh, ", nh);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }*/
+                    /*
+                    var includesSDctr = 0;
+                    var nincludesSDctr = 0;
+                    for (var i=0; i<$rootScope.categories.length; i++){
+                        if ($rootScope.categories[i].category.indexOf('San Diego')>-1 ||
+                            $rootScope.categories[i].category.indexOf('@Nh')>-1){
+                            includesSDctr++;
+                            categories.update($rootScope.categories[i].id,['scope'],[2]);
+                        }
+                        else{
+                            //console.log($rootScope.categories[i].category);
+                            categories.update($rootScope.categories[i].id,['scope'],[1]);
+                            nincludesSDctr++;
+                        }
+                    }
+                    */
+                    //console.log("includes SD - ", includesSDctr);
+                    //console.log("doesnt includes SD - ", nincludesSDctr);
+                    
+                    /*//var idx=0;
+                    console.log("$rootScope.answers ", $rootScope.answers.length);
+                    console.log("$rootScope.content ", $rootScope.content.length);
+                    console.log("$rootScope.catansrecs ", $rootScope.catansrecs.length);
+                    var idx1 = 0;
+                    var idx2 = 0;
+                    var scope = 0;
+                    console.log("answers with no scope")
+                    for (var i=0; i < $rootScope.answers.length; i++){
+                        if ($rootScope.answers[i].scope == undefined || 
+                                        $rootScope.answers[i].scope == null ||
+                                        $rootScope.answers[i].scope == '' ||
+                                        $rootScope.answers[i].scope == 0){
+                                        //console.log($rootScope.answers[i].name);
+                     //for (var i=0; i < 500; i++){   
+                        for (var j=0; j<$rootScope.catansrecs.length; j++){
+                            if ($rootScope.catansrecs[j].answer == $rootScope.answers[i].id){
+                                //console.log("found catans - ", $rootScope.answers[i].name);
+                                idx1 = $rootScope.content.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[j].category);
+                                if (idx1 > -1){
+                                    scope = $rootScope.content[idx1].scope;
+                                    console.log($rootScope.answers[i].name, scope);
+                                    answer.updateAnswer($rootScope.answers[i].id,['scope'],[scope]);                                
+                                }
+                                else{
+                                    //console.log("rank not found");
+                                    //answer.updateAnswer($rootScope.answers[i].id,['scope'],[1]);
+                                }
+                            }
+                        }
+                                        }
+                        
+                    }
+                    
+                    /*console.log("content with no scope");
+                    for (var j=0; j<$rootScope.content.length; j++){
+                        if ($rootScope.content[j].scope == undefined ||
+                            $rootScope.content[j].scope == null){
+                            console.log($rootScope.content[j].title);
+                            var idx1 = $rootScope.categories.map(function(x) {return x.id; }).indexOf($rootScope.content[j].cat);
+                            console.log("category scope: ", $rootScope.categories[idx1].scope);
+                                
+                            table.update($rootScope.content[j].id,['scope'],[2]);
+                            categories.update($rootScope.categories[idx1].id,['scope'],[2]);
+                            }
+                    }*/
+
+                    //for (var i=0; i<100; i++){    
+                        //idx = $rootScope.categories.map(function(x) {return x.id; }).indexOf($rootScope.content[i].cat);
+                        //console.log(idx, $rootScope.content[i].title,$rootScope.categories[idx].scope);
+                        //table.update($rootScope.content[i].id,['scope'],[$rootScope.categories[idx].scope]);
+                    //}
+                    //40. Write isprivate flag to custom ranks answers
+                    /*var cranks = [11300,11301,11302,11303,11304];
+                    for (var i=0; i<cranks.length; i++){
+                        for (var j=0; j<$rootScope.catansrecs.length; j++){
+                            if ($rootScope.catansrecs[j].category == cranks[i]){
+                                console.log("update answer - ", $rootScope.catansrecs[j].answer);
+                                answer.updateAnswer($rootScope.catansrecs[j].answer,['isprivate'],[true]);
+                            }
+                        }
+
+                    }*/
+                    /*for (var i=0; i<$rootScope.answers.length; i++){
+                        if ($rootScope.answers[i].owner != undefined && $rootScope.answers[i].owner != 0 
+                            && $rootScope.answers[i].owner != '' && !$rootScope.answers[i].isprivate){
+                            console.log($rootScope.answers[i].name, " owner: ",$rootScope.answers[i].owner);
+                            //answer.updateAnswer($rootScope.answers[i].id,['owner'],['']);
+                        }
+                    }*/
+                    
+                    
+
+                    /*
+                    var rank = JSON.parse(JSON.stringify($rootScope.content[midx]));
+                    //for (var i=0; i<$rootScope.content.length; i++){
+                        if (rank.fimage == undefined ||
+                            rank.fimage == '' ||
+                            rank.fimage == null )
+                            rank.fimage = rank.image1url;
+                        
+                        if (rank.fimage == undefined ||
+                            rank.fimage == '' ||
+                            rank.fimage == null )
+                            rank.fimage = $rootScope.EMPTY_IMAGE;    
+                            //console.log($rootScope.content[i].title);
+                    //}                  
+                    if (rank.introtext) {
+                        var start = rank.introtext.indexOf('++');
+                        var end = rank.introtext.indexOf('--');
+                        if (start > -1 && end > -1) rank.introtext = rank.introtext.substring(start + 2, end);
+                        else rank.introtext = rank.introtext;
+                    }
+                    else rank.introtext = 'This is the rank for ' + rank.title + '. ' +
+                        ' Help shape the ranking by endorsing your favorites!.';
+                    staticpages.createPageRank(rank);*/
+                    //var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(3319);
+                    //console.log("idx - ", idx);  
+                    /*while (!createPage) {
+                        myanswer = {};
+                        myanswer = JSON.parse(JSON.stringify($rootScope.answers[midx]));
+                        filename = 'answer' + myanswer.id + '.html';
+                        if (staticpagesfiles.indexOf(filename) == -1) {
+
+                            console.log("answer - ", myanswer);
+                            staticpages.createPageAnswer(myanswer);
+                            createPage = true;
+                            midx++;
+                            $timeout(function () {
+                                if (midx < $rootScope.answers.length) {
+                                    createPage = false;
+                                    applyRule();
+                                }
+                            }, 600);
+
+                        }
+                        else {
+                            console.log('skip');
+                            midx++;
+                            createPage = false;
+                        }
+                        
+                    }*/
+                    
+                    /*
+                    var files = [];
+                    var filename = '';
+                    var missingRCtr = 0;
+                    var missingACtr = 0;
+                    staticpages.getFileList().then(function(result){
+                        files = result.data;
+                        //console.log("Files - ", files);
+                        for (var i=0; i< $rootScope.answers.length; i++){
+                            filename = 'answer' + $rootScope.answers[i].id + '.html';
+                            if (files.indexOf(filename) == -1) missingACtr++;
+                        }
+                        for (var i=0; i< $rootScope.content.length; i++){
+                            filename = 'rank' + $rootScope.content[i].id + '.html';
+                            if (files.indexOf(filename) == -1) missingRCtr++;
+                        }
+                    console.log("Missing Answers: ", missingACtr, " out of ", $rootScope.answers.length);
+                    console.log("Missing Ranks: ", missingRCtr, " out of ", $rootScope.content.length);
+                    });*/
+                /*var imageurl = '';
+                for (var i=0; i < $rootScope.answers.length; i++){
+                    if ($rootScope.answers[i].imageurl.indexOf('/../')>-1){
+                        console.log("--------------------------", $rootScope.answers[i]);    
+                        console.log($rootScope.answers[i].name);
+                        imageurl = 'https://rank-x.com/assets/images/noimage.jpg';
+                        //answer.updateAnswer($rootScope.answers[i].id,['imageurl'],[imageurl]);
+                    }*/
+                    //else{
+                        //console.log($rootScope.answers[midx]);
+                    //    midx++;
+                    //    $timeout(function(){
+                    //        applyRule();
+                    //    },100);
+                //    }
+                //}
+                /*
+                var ctr = 0;
+                var newName = '';
+                for (var i=0; i<$rootScope.answers.length; i++){
+                    if ($rootScope.answers[i].imageurl.indexOf('az/')>-1) {
+                        ctr++;
+                        newName = $rootScope.answers[i].imageurl.replace('az/','https://rankx.blob.core.windows.net/sandiego/');
+                        //console.log(newName);
+                        answer.updateAnswer($rootScope.answers[i].id,['imageurl'],[newName]);
+                    }
+                }
+                console.log("answer images in rankx.blob - ", ctr);
+            */
+            }                
     }
 })();

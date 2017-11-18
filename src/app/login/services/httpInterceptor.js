@@ -41,12 +41,12 @@
 
         function responseError(result) {
             
-            console.log("result", result);
+            //console.log("result", result);
 
             // handle redirections for facebook login
             if (result.status == 302) {
 
-                console.log("result", result);
+                //console.log("result", result);
                 $location.path('/login');
                 return $q.reject(result);
             }

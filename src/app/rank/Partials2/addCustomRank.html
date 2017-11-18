@@ -1,0 +1,264 @@
+<!-- Navigation Bar -->
+<!--<div ui-view="navbar"></div>-->
+<div class="container">
+<h4> Add a New Ranking</h4>
+<!--
+<label for="inlineFormCustomSelect">Scope: &nbsp&nbsp</label>
+        <div class="checkbox" style="margin:0px;padding:0px;border:0px;">
+            <label><input type="checkbox" ng-model="vm.scopeIsGeneral" ng-click="vm.selScopeGeneral(1)">Nationwide Ranking</label>
+        </div>
+        <div class="row" style="margin:0px;padding-top:5px;border:0px;">
+            <div class="checkbox col-xs-6" style="margin:0px;padding:0px;border:0px;">
+                <label><input type="checkbox" ng-model="vm.scopeIsCity" ng-click="vm.selScopeGeneral(2)">City Ranking</label>
+            </div>
+            <div class="col-xs-6">
+                <!--<label for="inlineFormCustomSelect" ng-if="vm.scopeIsCity">Select City: &nbsp&nbsp</label>-->
+                <!--
+                <div class="dropdown" ng-if="vm.scopeIsCity">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="scopedropdown" style="width:100%">
+			            {{vm.selScopeCityText}}&nbsp&nbsp<span class="caret">
+		            </button>
+                    <ul class="dropdown-menu dropdown-menu-middle">
+                        <li ng-click="vm.selScope(1)"><a>San Diego</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>          
+        -->
+        <!--
+<label for="inlineFormCustomSelect">Scope: &nbsp&nbsp</label>
+<div class="dropdown" style="padding-bottom:10px">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="scopedropdown" style="width:100%">
+			{{vm.selScopeGeneralText}}&nbsp&nbsp<span class="caret">
+		</button>
+		<ul class="dropdown-menu dropdown-menu-middle">
+            <li ng-click="vm.selScopeGeneral(1)"><a>General</a></li>
+            <li ng-click="vm.selScopeGeneral(2)"><a>My City</a></li>
+        </ul>
+</div> -->
+
+<br>
+<label><strong>Choose the best category for your ranking:</strong></label>
+<div class="dropdown" style="padding-bottom:10px">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="nhdropdown" style="width:100%">
+			{{vm.rankCat}}&nbsp&nbsp<span class="caret">
+		</button>
+		<ul class="dropdown-menu dropdown-menu-middle">
+			<li ng-click="vm.selCat(1)"><a>FOOD</a></li>
+            <li ng-click="vm.selCat(2)"><a>LIFESTYLE</a></li>
+            <li ng-click="vm.selCat(3)"><a>HEALTH</a></li>
+            <li ng-click="vm.selCat(4)"><a>SOCIAL</a></li>
+            <li ng-click="vm.selCat(5)"><a>SPORTS</a></li>
+            <li ng-click="vm.selCat(6)"><a>PERSONALITIES</a></li>
+            <li ng-click="vm.selCat(7)"><a>SERVICES</a></li>
+            <li ng-click="vm.selCat(8)"><a>BEAUTY</a></li>
+            <li ng-click="vm.selCat(9)"><a>CITY</a></li>
+            <li ng-click="vm.selCat(10)"><a>POLITICS</a></li>
+            <li ng-click="vm.selCat(11)"><a>SCIENCE & TECH</a></li>
+            <li ng-click="vm.selCat(12)"><a>LOVE & RELATIONSHIPS</a></li>
+            <li ng-click="vm.selCat(13)"><a>FAMILY</a></li>
+            <li ng-click="vm.selCat(14)"><a>OTHER</a></li>
+        </ul>
+</div> 	
+<div ng-if="vm.step > 1">
+<label><strong>What are you ranking?</strong></label>
+<div class="dropdown" style="padding-bottom:10px">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="nhdropdown" style="width:100%">
+			{{vm.rankType}}&nbsp&nbsp<span class="caret">
+		</button>
+		<ul class="dropdown-menu dropdown-menu-middle">
+			<li ng-click="vm.selType(1)"><a><strong>ESTABLISHMENTS</strong> - i.e. Restaurants, Shops, Gyms</a></li>
+            <li ng-click="vm.selType(2)"><a><strong>PEOPLE</strong> - i.e. Athletes, Celebrities, Politicians</a></li>
+            <li ng-click="vm.selType(3)"><a><strong>ORGANIZATIONS</strong> - i.e. Companies, Brands</a></li>
+            <li ng-click="vm.selType(4)"><a><strong>PLACES</strong> - i.e. Physical Landmarks, Beaches, Parks, etc.</a></li>
+            <li ng-click="vm.selType(5)"><a><strong>OPINIONS</strong> - i.e. Favorite things, Things people like, etc.</a></li>
+            <li ng-click="vm.selType(6)"><a><strong>CONTRACTORS</strong> - i.e. Freelancers, Handyman, Tutors, etc.</a></li>
+            <li ng-click="vm.selType(7)"><a><strong>ITEM / OBJECTS</strong> - i.e. Souvenier, Products, etc.</a></li>
+            <li ng-click="vm.selType(8)"><a><strong>EVENTS</strong> - i.e. Parties, Festivals, etc</a></li>
+        </ul>
+</div>
+</div>
+<div ng-if="vm.step > 2">
+<label><strong>Ranking Title:</strong></label>
+<div class="input-group" style="padding-bottom:10px">
+      <input type="text" class="form-control" placeholder="i.e. The best fish tacos in San Diego" ng-model="vm.rankTitle">
+      <span class="input-group-btn">
+        <button class="btn btn-primary" ng-click="vm.valRank()" type="button">Validate</button>
+      </span>
+</div>
+
+<div class="alert alert-warning" ng-if="vm.showAlert&&vm.similarRanks.length>0" style="padding-bottom:0px;margin-bottom:0px;">
+  <strong>Please confirm.</strong> There are similar rankings to the one you are trying to create. 
+  If this ranking is different to any of the existing rankings below, click 'Continue'. 
+  If not, please cancel and expand on the already existing rankings.<br>
+  <div ng-repeat="x in vm.similarRanks">
+    &nbsp- {{x.title}}<br>
+  </div>
+  <div class="text-center">
+      <button class="btn btn-default" ng-click="vm.alertOk()">Continue</button>
+      <button class="btn btn-default" ng-click="vm.goBack()">Cancel</button>
+  </div>
+</div>
+<!--<br ng-if="vm.showAlert">-->
+<div class="alert alert-success" ng-if="vm.showAlert&&vm.similarRanks.length==0">
+  <strong>Good one!</strong> This rank does not seem to have any duplicates.<br>
+  <div class="text-right"><button class="btn btn-default" ng-click="vm.alertOk()">Ok</button></div>
+</div>
+<!--
+<div ng-if="vm.showAlert" style="background-color:beige">	
+    <search-block query="{{vm.rankTitleVal}}" ans="false" ranks="true" length="vm.resLength"></search-block>
+</div>
+--> 
+</div>
+<div ng-if="vm.step > 3">
+<label><strong>Ranking Question:</strong></label>
+<div class="input-group" style="padding-bottom:10px">
+      <input type="text" class="form-control" placeholder="i.e. Who makes the better fish tacos?" ng-model="vm.question">
+      <span class="input-group-btn">
+        <button class="btn btn-primary" ng-click="vm.questionOk()" type="button">Ok</button>
+      </span>
+</div>
+<div class="text-right">
+    <a href="" ng-click="vm.whatisrankquestion()">What is this?</a>
+</div>
+</div>
+<div ng-if="vm.step > 4">
+<label><strong>Tags</strong></label>
+<div class="input-group" style="padding-bottom:10px">
+      <input type="text" class="form-control" placeholder="tags separated by blank space, i.e. food seafood fish" ng-model="vm.tags">
+      <span class="input-group-btn">
+        <button class="btn btn-primary" ng-click="vm.tagsOk()" type="button">Ok</button>
+      </span>
+</div>
+<div class="text-right">
+    <a href="" ng-click="vm.whataretags()">What are tags?</a>
+</div>
+</div>
+<div ng-if="vm.step > 5">
+<div class="alert alert-info" ng-if="vm.step == 6">
+  <strong>Select Image</strong> <br>
+  1. Enter a query and click the 'Search Images' button. <br>
+  2. Navigate the available images using the '<<' and '>>' buttons. <br>
+  3. When you find an image you like, click 'Select Image'. <br><br> 
+</div>
+<br>
+<button class="btn btn-default" ng-click="vm.imageBanksDialog()"><i class="fa fa-question"></i></button>
+<label><strong>Select Image Bank:</strong></label>
+<div class="row">
+        <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
+        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+            <img src="../../../assets/images/pixabay-logo.png" ng-click="vm.selImgBank(1)" alt="Pixabay"
+            style="width:100%;height:45px;padding:3px;border-style:solid;border-width:1px;border-color:{{vm.pixabay ? 'black':'white'}}">
+            <!-- <div class="text-center"><a href="https://www.pixabay.com/">Visit Pixabay</a></div> -->
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+            <img src="../../../assets/images/pexels-logo.png" ng-click="vm.selImgBank(2)" alt="Pexels"
+            style="width:100%;height:45px;padding:3px;border-style:solid;border-width:1px;border-color:{{vm.pexels ? 'black':'white'}}">
+         <!--   <div class="text-center"><a href="https://www.pexels.com/">Visit Pexels</a></div> -->
+        </div>
+        <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
+</div>
+<label><strong>Image Query:</strong></label>
+<div class="input-group" style="padding-bottom:10px">
+      <input type="text" class="form-control" placeholder="Enter what to search for an image, i.e. taco" ng-model="vm.imageQuery">
+      <span class="input-group-btn">
+        <button class="btn btn-primary" ng-click="vm.getImages()" type="button">Search Images</button>
+      </span>
+</div>
+<!--comment -->
+<div class="text-center">
+    <div class="btn-group">
+        <button class="btn btn-default" ng-click="vm.prevImg()">&nbsp&nbspPrev&nbsp&nbsp</button>
+        <button class="btn btn-default" ng-click="vm.nextImg()">&nbsp&nbspNext&nbsp&nbsp</button>
+    </div>
+        <button class="btn btn-success {{vm.selImageEnable}}" ng-click="vm.selectImg()">Select Image</button> 
+</div>
+</div>
+<br>
+
+<div ng-if="vm.step > 6">
+    <div class="alert alert-info" ng-if="vm.step == 7">
+  <strong>Select Title Box Background Color</strong> <br>
+  1. Select a background color. <br>
+  2. Adjust the shade factor to create attractive visual with your image. <br>
+  3. When you are ready to submit, click the 'Add Rank' button.
+</div>
+<label><strong>Select Color Design:</strong></label>
+<div class="container">
+<div class="row">
+    <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
+    <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(1)"
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c1sel ? 'black':'white'}};">
+        <div style="height:30px;background-color:brown"></div>
+        <!-- <div style="height:20px;background-color:#f8f8ff"></div>  -->    
+    </div>
+    <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(2)"
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c2sel ? 'black':'white'}};">
+        <div style="height:30px;background-color:#4682b4"></div>
+        <!-- <div style="height:20px;background-color:#f8f8ff"></div> -->     
+    </div>
+    <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(3)"
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c3sel ? 'black':'white'}};">
+        <div style="height:30px;background-color:#008080"></div>
+        <!-- <div style="height:20px;background-color:#f8f8ff"></div> -->     
+    </div>
+    <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(4)"
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c4sel ? 'black':'white'}};">
+        <div style="height:30px;background-color:gray"></div>
+        <!-- <div style="height:20px;background-color:#f8f8ff"></div> -->     
+    </div>
+    <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(5)"
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c5sel ? 'black':'white'}};">
+        <div style="height:30px;background-color:#a3297a"></div>
+        <!-- <div style="height:20px;background-color:#f8f8ff"></div> -->      
+    </div>
+    <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(6)"
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c6sel ? 'black':'white'}};">
+        <div style="height:30px;background-color:#c68c53"></div>
+        <!-- <div style="height:20px;background-color:black"></div> -->      
+    </div>
+    <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
+</div>
+<div class="row" style="padding-top:10px">
+    <div class="text-right col-xs-6">
+        <label>Shade Factor:</label>
+    </div>
+    <div class="btn-group col-xs-6">
+        <button class="btn btn-primary" ng-click="vm.minusShade()">&nbsp&nbsp<i class="fa fa-minus"></i>&nbsp&nbsp</button>
+        <button class="btn btn-primary" ng-click="vm.plusShade()">&nbsp&nbsp<i class="fa fa-plus"></i>&nbsp&nbsp</button>
+    </div>    
+</div>
+</div>
+</div>
+
+<div class="container" ng-if="vm.step > 5">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="well-sm" style="background-color:#666666;color:#f8f8ff;">
+                <h3 class="sub-header">Preview</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-bottom:10px">
+        <div class="hidden-xs col-sm-3 col-md-4 col-lg-4"></div>
+        <div class="container-bgbox col-xs-6 col-sm-3 col-md-2 col-lg-2">
+			    <bg-box bc="{{vm.bc}}" bc2="{{vm.bc2}}" fc="{{vm.fc}}" text="{{vm.rankTitle}}" dir="horizontal" w="100%" h="{{vm.sm ? '150px':'200px'}}"></bg-box>
+			</div>
+        <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2" style="margin:0px;padding:0px;border:0px;">
+            <img ng-src="{{vm.image}}" ng-if="!vm.imageLoading" ng-attr-style="width:100%;height:{{vm.sm ? '150px':'200px'}};">
+            
+            <div ng-attr-style="position:relative;width:100%;height:{{vm.sm ? '150px':'200px'}};" 
+            ng-if="vm.imageLoading"><img src="/assets/images/loading.gif" class="img" 
+            style="width:50px;height:50px;position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)"/></div>
+            
+        </div>
+        <div class="hidden-xs col-sm-3 col-md-4 col-lg-4"></div>
+    </div>
+</div>
+<br>
+<div class="text-right">
+    <button type="button" class="btn btn-default" ng-click="vm.goBack()">Cancel</button>
+    <button type="button" class="btn btn-primary" ng-click="vm.addRank()" ng-show="vm.showAddButton">{{vm.buttonLabel}}</button>
+</div>
+<br><br>
+</div>

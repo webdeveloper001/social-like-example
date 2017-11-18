@@ -1,10 +1,10 @@
-<div class="container" ng-if="vm.isAdmin || vm.isDET">
+<div class="container" ng-if="vm.isAdmin">
 <h1>Database Query</h1>
  <input class="form-control" ng-model="vm.val" placeholder="Enter answer to search">
  <button class="btn btn-primary" ng-click="vm.queryAnswer()">Query</button>
  <div ng-repeat="x in vm.ansRes">
 	 <h4 class="text-left">{{$index+1}}. {{x.name}}</h4>
-	 <img src="{{x.imageurl}}" style="width:120px"></br>
+	 <img ng-src="{{x.imageurl}}" style="width:120px"></br>
 	 Id: {{x.id}} Added by User: {{x.userid}} </br>
 	 Neighborhood: {{x.cityarea}} </br>
 	 Address: {{x.location}} </br>
@@ -14,7 +14,7 @@
 	 <button class="btn btn-danger" ng-click="vm.delAnswer(x)">Delete Answer</button><br>
 	 Categories</br>
 	 <div ng-repeat="y in x.catans">
-		 {{y.rank}} --- {{y.id}} --- {{y.category}} --- {{y.answer}} <button class="btn btn-warning" ng-click="vm.delCatans(y)">Delete Catans</button><br>
+		 {{y.title}}---cat:{{y.catid}}---c:{{y.id}}---r:{{y.category}}---a:{{y.answer}} <button class="btn btn-warning" ng-click="vm.delCatans(y)">Delete Catans</button><br>
  	 </div>
  </div>
 </div> 

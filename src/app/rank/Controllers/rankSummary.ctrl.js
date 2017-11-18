@@ -5,19 +5,21 @@
         .module('app')
         .controller('rankSummary', rankSummary);
 
-    rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color'
-        , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope'
-        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', '$location', '$q', 'fbusers', 'useractivity', '$timeout'];
+    rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color','locations'
+        , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope','$http'
+        , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', 'SERVER_URL',
+        '$location', '$q', 'fbusers', '$timeout','table2','categories','dataloader','common'];
 
-    function rankSummary(dialog, $stateParams, $state, catans, datetime, color
-        , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope
-        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, $location, $q, fbusers, useractivity, $timeout) {
+    function rankSummary(dialog, $stateParams, $state, catans, datetime, color, locations
+        , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope, $http
+        , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, SERVER_URL, 
+        $location, $q, fbusers, $timeout, table2, categories, dataloader, common) {
         /* jshint validthis:true */
 
         var vm = this;
         vm.title = 'rankSummary';
         vm.addAnswerDisabled = '';
-        vm.mode = "specials";
+        vm.mode = "endorse";
         //if ($location.absUrl().indexOf('code=')>-1)$window.location.search = '';
         
         // Methods
@@ -42,6 +44,11 @@
         vm.UpVote = UpVote;
         vm.DownVote = DownVote;
         vm.sortbyHelpDialog = sortbyHelpDialog;
+        vm.backToResults = backToResults;
+        vm.seeMore = seeMore;
+        vm.showAllFriendsList = showAllFriendsList;
+        vm.getResults = getResults;
+        vm.clearSearch = clearSearch;
         
         vm.gotoParentRank = gotoParentRank;
         
@@ -51,24 +58,22 @@
         vm.selDistance = '';
         vm.commLoaded = false;
         vm.userIsOwner = false;
+        vm.dataReady = false;
         vm.hasAnswerParent = false;
         vm.isCustomRank = false;
         vm.user = $rootScope.user;
         vm.loadingAnswers = false;
         vm.sortByName = '';
-        //var myParent = $rootScope.parentNum;
-
-        // var votetable = [];
-        // var editvotetable = [];
-        // $rootScope.cvotes = [];
-        // $rootScope.ceditvotes = [];
-        // $rootScope.cmrecs_user = [];
+        vm.searchActive = $rootScope.searchActive;
+        vm.limit = 20;
         
         //For readability
         var answers = [];
         var catansrecs = [];
-        var useractivities = [];
+        //var useractivities = [];
         var mrecs = [];
+        var catArr = [];
+        var nhObj = {};
 
         var answersFull = false;
         var updateExec = false;
@@ -102,44 +107,34 @@
             updateExec = true;
         });
         var rankDataLoadedListener = $rootScope.$on('rankDataLoaded', function () {
-            vm.dataReady = true;
-
-            //Load current category
-            $rootScope.cCategory = {};
-            for (var i = 0; i < $rootScope.content.length; i++) {
-                if (($rootScope.content[i].id == $stateParams.index) || ($rootScope.content[i].slug == $stateParams.index)){
-                    $rootScope.cCategory = $rootScope.content[i];
-                    break;
-                }
-            }
-
-            vm.ranking = $rootScope.cCategory.title;
-            if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego','close to me');
-
-            if ($rootScope.cCategory.id == 9521) {
-                vm.foodNearMe = true;
-                foodNearMe = true;
-                vm.fnm = true;
-                vm.showR = false;
-            }
-            
-            vm.loadingAnswers = true;
-            $timeout(function(){
-                activate();
-                vm.loadingAnswers = false
-            });
+            if (vm.dataReady == false) checkRankIsLoaded();
         });
-
-        $scope.$on('$destroy',updateVoteTableListener);
-        $scope.$on('$destroy',rankDataLoadedListener);
+        var coordsRdyRankListener = $rootScope.$on('coordsRdy', function () {
+            if ($rootScope.DEBUG_MODE) console.log("received coordsreadyrank");
+            //loadData();
+            //$scope.$apply(function(){
+                vm.haveLocation = true;
+                getDistances();
+                sortByDistance();
+                //console.log('scope.$digest() - ', $scope.$digest());
+                //if (!scope.$digest()) 
+                $timeout(function(){
+                    $scope.$apply();
+                });                 
+            //});
+        });
                                
-        $rootScope.$on('$stateChangeStart',
+        var stateChangeListener = $rootScope.$on('$stateChangeStart',
             function (ev, to, toParams, from, fromParams) {
                 if (from.name == 'rankSummary' && to.name != 'rankSummary') {
-                    if ($rootScope.isLoggedIn) updateRecords();
+                     if ($rootScope.isLoggedIn) updateRecords();
                 }
             });
-
+        
+        $scope.$on('$destroy', stateChangeListener);
+        $scope.$on('$destroy',updateVoteTableListener);
+        $scope.$on('$destroy',rankDataLoadedListener);
+        $scope.$on('$destroy',coordsRdyRankListener);
 
         vm.isMobile = false; 
         // device detection
@@ -158,42 +153,63 @@
         }
         
         window.prerenderReady = false;
+
+        if ($rootScope.DEBUG_MODE) console.log("$rootScope.rankSummaryDataLoaded - ", $rootScope.rankSummaryDataLoaded);
+        if ($rootScope.DEBUG_MODE) console.log("$rootScope.isCustomRank - ", $rootScope.isCustomRank);
+        if ($rootScope.DEBUG_MODE) console.log("$stateParams.index - ", $stateParams.index);
+        if ($rootScope.DEBUG_MODE) console.log("$rootScope.cCategory - ", $rootScope.cCategory.id, $rootScope.cCategory.cat);
+
+        //if ($rootScope.landRanking != true ) 
+        checkRankIsLoaded();
         
-        if ($rootScope.rankSummaryDataLoaded) { 
-            vm.dataReady = true; 
-
-            //Load current category
-            $rootScope.cCategory = {};
-            for (var i = 0; i < $rootScope.content.length; i++) {
-                if (($rootScope.content[i].id == $stateParams.index) || ($rootScope.content[i].slug == $stateParams.index)){
-                    $rootScope.cCategory = $rootScope.content[i];
-                    break;
-                }
+        //verify that rank exists in database
+        function checkRankIsLoaded(){
+            $rootScope.cCategory = null;
+            var rankid = common.getIndexFromSlug($stateParams.index);
+            var idx = 0;
+            
+            if ($rootScope.isCustomRank){
+                idx = $rootScope.customranks.map(function(x) {return x.id; }).indexOf(Number(rankid));
+                if (idx > -1) $rootScope.cCategory = $rootScope.customranks[idx];
+            }                                
+            else{    
+                idx = $rootScope.content.map(function(x) {return x.id; }).indexOf(Number(rankid));
+                if (idx > -1) $rootScope.cCategory = $rootScope.content[idx];
             }
+            
+            //if rank exists continue loading controller, else get from database
+            if ($rootScope.cCategory != null) prepareRankSummary();
+            else dataloader.getRank($stateParams.index);
+        }
 
+        function prepareRankSummary() {
+            vm.dataReady = true;
             vm.ranking = $rootScope.cCategory.title;
-            if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego','close to me');
+            //if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego', 'close to me');
 
-            if ($rootScope.cCategory.id == 9521) {
+            if ($rootScope.cCategory.id == 11942) {
                 vm.foodNearMe = true;
                 foodNearMe = true;
                 vm.fnm = true;
                 vm.showR = false;
+                if ($rootScope.coordsRdy == undefined || $rootScope.coordsRdy == false) {
+                    sortByDistance();
+                }
             }
-            
+
             vm.loadingAnswers = true;
-            $timeout(function(){
-            
-                activate();
+            $timeout(function () {
+                if (!foodNearMe) activate();
+                else if ($rootScope.coordsRdy) activate();
                 vm.loadingAnswers = false;
             });
         }
-        else vm.dataReady = false;
 
         function activate() {
+
             answers = $rootScope.answers;
             catansrecs = $rootScope.catansrecs;
-            useractivities = $rootScope.alluseractivity;
+            //useractivities = $rootScope.alluseractivity;
             mrecs = $rootScope.mrecs;
 
             $rootScope.inFavMode = false;
@@ -207,16 +223,9 @@
             $rootScope.objNumAct = $rootScope.objNum;
 
             loadData(); //load data and write to $rootScope
-            var answerIDs = vm.answers.map(function(answer){return answer.id;});
-            if (answerIDs.length > 0){
-                votes.loadLastMonthVoting(answerIDs)
-                    .then(function(resp){
-                        resp.forEach(function(vote){
-                            var idx = answerIDs.indexOf(vote.answer);
-                            vm.answers[idx].trendUpV ++;
-                        });
-                //console.log(vm.answers);
-                });
+            if (!foodNearMe){
+                loadTrendVotes(0);
+                if ($rootScope.isLoggedIn && $rootScope.friends_votes) loadFriendsEndorsements(0);
             }
 
             checkUserCredentials();
@@ -245,44 +254,50 @@
             rank.computeRanking($rootScope.canswers, $rootScope.cmrecs);
             
             //Sort by rank here (this is to grab images of top 3 results)
-            //vm.answers = $filter('orderBy')(vm.answers, '-Rank');
-            
+            if ($rootScope.cmrecs.length > 0) sortByRank();
+                       
             //Instead of rank points just show index in array
             for (var i = 0; i < vm.answers.length; i++) {
                 vm.answers[i].Rank = i + 1;
             }
-
-            //vm.answers = $filter('orderBy')(vm.answers, 'Rank');
-            sortByRank();
             
             //Determine number of user comments
             if ($rootScope.cCategory.numcom == undefined) vm.numcom = 0;
             else vm.numcom = $rootScope.cCategory.numcom;
             
             //Check and update if necessary ranking and Num of items per rank, only for atomic ranks
-            if ($rootScope.cCategory.isatomic == true && !foodNearMe) {
+            //if ($rootScope.cCategory.isatomic == true && !foodNearMe) {
+            if (!foodNearMe) {    
                 for (var i = 0; i < vm.answers.length; i++) {
                     //console.log("vm.answers[i].Rank, vm.answers[i].catansrank -", vm.answers[i].Rank, vm.answers[i].catansrank);
                     if (vm.answers[i].Rank != vm.answers[i].catansrank) {
                         //console.log("Updated Catans Rank", vm.answers[i].catans);
                         if (vm.answers[i].catans != undefined) {
                             if ($rootScope.DEBUG_MODE) console.log("RS-1");
-                            catans.updateRec(vm.answers[i].catans, ['rank'], [vm.answers[i].Rank]);
+                            //if rankings is different than on record update catans record
+                            if (vm.answers[i].catansrank != vm.answers[i].Rank) 
+                                catans.updateRec(vm.answers[i].catans, ['rank'], [vm.answers[i].Rank]);
                         }
                     }
                 }
             }                        
             
             //Check number of answers for this ranking
+            /*
             if (vm.answers.length == 0) {
                 vm.numAns = 0;
 
-                if (!foodNearMe) {
+                if (!foodNearMe && !$rootScope.cCategory.isGhost) {
+                    if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
-                        ['views', 'answers','image1url', 'image2url', 'image3url'],
-                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,'','','']);
+                        ['answers','image1url', 'image2url', 'image3url'],
+                        [$rootScope.canswers.length,'','','']);
+                    else
+                    table2.update($rootScope.cCategory.id,
+                        ['answers','image1url', 'image2url', 'image3url'],
+                        [$rootScope.canswers.length,'','','']);
                 }
-            }
+            }*/
             if (vm.answers.length == 1) {
                 vm.numAns = 1;
                 if ($rootScope.cCategory.type == 'Short-Phrase') {
@@ -305,10 +320,16 @@
                     }
                     else vm.image1ok = false;
                 }
-                if (!foodNearMe) {
+                if (!foodNearMe && !$rootScope.cCategory.isGhost) {
+                    if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
-                        ['views', 'answers', 'image1url','image2url', 'image3url'],
-                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                        ['answers', 'image1url','image2url', 'image3url'],
+                        [$rootScope.canswers.length,
+                            vm.image1,'','']);
+                    else
+                    table2.update($rootScope.cCategory.id,
+                        ['answers', 'image1url','image2url', 'image3url'],
+                        [$rootScope.canswers.length,
                             vm.image1,'','']);
                 }
             }
@@ -343,10 +364,16 @@
                     }
                     else vm.image2ok = false;
                 }
-                if (!foodNearMe) {
+                if (!foodNearMe && !$rootScope.cCategory.isGhost) {
+                    if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
-                        ['views', 'answers', 'image1url', 'image2url', 'image3url'],
-                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                        ['answers', 'image1url', 'image2url', 'image3url'],
+                        [$rootScope.canswers.length,
+                            vm.image1, vm.image2,'']);
+                    else
+                    table2.update($rootScope.cCategory.id,
+                        ['answers', 'image1url', 'image2url', 'image3url'],
+                        [$rootScope.canswers.length,
                             vm.image1, vm.image2,'']);
                 }
             }
@@ -396,20 +423,35 @@
                         }
                     }                    
                 }
-                if (!foodNearMe) {
+                if (!foodNearMe && !$rootScope.cCategory.isGhost) {
+                    if (!$rootScope.isCustomRank)
                     table.update($rootScope.cCategory.id,
-                        ['views', 'answers', 'image1url', 'image2url', 'image3url'],
-                        [$rootScope.cCategory.views + 1, $rootScope.canswers.length,
+                        ['answers', 'image1url', 'image2url', 'image3url'],
+                        [$rootScope.canswers.length,
                             vm.image1, vm.image2, vm.image3]);
+                    else
+                    table2.update($rootScope.cCategory.id,
+                        ['answers', 'image1url', 'image2url', 'image3url'],
+                        [$rootScope.canswers.length,
+                            vm.image1, vm.image2,'']);
                 }
             }
 
             //Set Feautured Image
             if ($rootScope.cCategory.fimage != undefined && $rootScope.cCategory.fimage != ''){
-                vm.image3 = vm.image2;
-                vm.image2 = vm.image1;
-                vm.image1 = $rootScope.cCategory.fimage;
+                if ($rootScope.cCategory.fimage != vm.image1){
+                    vm.image3 = vm.image2;
+                    vm.image2 = vm.image1;
+                    vm.image1 = $rootScope.cCategory.fimage;
+                }
             }
+            /*//if category doesnt have image set, set to image1;
+            if ($rootScope.cCategory.fimage == undefined || $rootScope.cCategory.fimage == ''){
+                if ($rootScope.cCategory.type != 'Short-Phrase'){
+                    categories.update($rootScope.cCategory.cat,['fimage'],[vm.image1]);
+                }
+            }*/
+
             //Set bgbox color specs
             if ($rootScope.cCategory.bc != undefined && $rootScope.cCategory.bc != ''){
                 vm.bc = $rootScope.cCategory.bc;
@@ -419,7 +461,6 @@
             else{
                 //Set colors for title hideInfoBox
                 var colors = color.defaultRankColor($rootScope.cCategory);
-                //console.log("colors - ", colors);
                 vm.bc = colors[0];
                 vm.fc = colors[1];
                 vm.shade = -4;
@@ -437,9 +478,12 @@
             //TODO update answers in DB
             $rootScope.modeIsImage = true;
             
+            if (!$rootScope.isCustomRank && !$rootScope.cCategory.isGhost) incViews(); //increment number of views
+            
             if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
             
-            window.prerenderReady = true; 
+            window.prerenderReady = true;
+            $rootScope.isCustomRank = false; 
         }
 
         function getRankAnswers() {
@@ -453,8 +497,10 @@
                             if ($rootScope.cvotes[i].answer == $rootScope.canswers[k].id) {
                                 //Check vote correspond to this category
                                 var idx = $rootScope.catansrecs.map(function(x) {return x.id; }).indexOf($rootScope.cvotes[i].catans);
-                                if ($rootScope.catansrecs[idx].category == $rootScope.cCategory.id){  
-                                    $rootScope.canswers4rank.push($rootScope.canswers[k]);
+                                if (idx > -1) {
+                                    if ($rootScope.catansrecs[idx].category == $rootScope.cCategory.id) {
+                                        $rootScope.canswers4rank.push($rootScope.canswers[k]);
+                                    }
                                 }
                                 //break;
                             }
@@ -467,13 +513,17 @@
                 $rootScope.canswers4rank = $rootScope.canswers;
             }
 
-            if ($rootScope.canswers4rank.length > 1) vm.rankDisabled = '';
-            else vm.rankDisabled = 'disabled';
-
             if ($rootScope.canswers4rank.length > 0) vm.commentAllowed = true;
             else vm.commentAllowed = false;
+
+            updateStatusRankButton();
             
             //console.log("$rootScope.canswers4rank - ", $rootScope.canswers4rank);
+        }
+
+        function updateStatusRankButton(){
+            if ($rootScope.canswers4rank.length > 1) vm.rankDisabled = '';
+            else vm.rankDisabled = 'disabled';
         }
 
         function updateVoteTable() {
@@ -515,7 +565,7 @@
             //if rank is Custom Rank and has Owner, clear $rootScope.cCategory
             //to avoid showing wrong navigation bar
             if (vm.rankOwner){
-                if (x.slug == vm.rankOwner.slug) $rootScope.cCategory = undefined;
+                if (x.slug == vm.rankOwner.slug) $rootScope.cCategory = $rootScope.oCategory;
             }
             $state.go("answerDetail", { index: x.slug });
         }
@@ -536,17 +586,64 @@
         }
 
         function addAnswer() {
-            if ($rootScope.isLoggedIn) {
+            if ($rootScope.isLoggedIn && $rootScope.cCategory != undefined) {
                 if (answersFull) {
                     dialog.getDialog('answersFull');
                     return;
                 }
                 else {
-                    if (vm.type == 'Event') {
-                        $rootScope.eventmode = 'add';
-                        $state.go("addEvent");
+
+                    if($rootScope.cCategory.isGhost) {
+
+                        var item = {
+                            title: $rootScope.cCategory.title,
+                            type: $rootScope.cCategory.type,
+                            tags: $rootScope.cCategory.tags,
+                            keywords: $rootScope.cCategory.keywords,
+                            question: $rootScope.cCategory.question,
+                            fimage: $rootScope.cCategory.fimage,
+                            bc: $rootScope.cCategory.bc,
+                            fc: $rootScope.cCategory.fc,
+                            shade: $rootScope.cCategory.shade,
+                            introtext: $rootScope.cCategory.introtext,
+                            user: $rootScope.cCategory.user ,
+
+                            views: 0,
+                            answers: 0,
+                            image1url: $rootScope.EMPTY_IMAGE,
+                            image2url: $rootScope.EMPTY_IMAGE,
+                            image3url: $rootScope.EMPTY_IMAGE,
+                            answertags: '',
+                            isatomic: 1, //TODO decide isatomic, numcom, ismp, owner, 
+                            timestmp: new Date(),
+                            cat: $rootScope.cCategory.cat,
+                            nh: $rootScope.cCategory.nh,
+                        };
+                        table.addTable(item).then(function(result){
+                            if ($rootScope.DEBUG_MODE) console.log("table added --- ", result);
+                            var rankid = result.resource[0].id;
+                            //Create and update slug
+                            var slug = item.title.toLowerCase();; 
+                            slug = slug.replace(/ /g,'-');
+                            slug = slug.replace('/','at');
+                            slug = slug + '-' + rankid;
+                            table.update(rankid,['slug'],[slug]);
+
+                            
+                            if (vm.type == 'Event') {
+                                $rootScope.eventmode = 'add';
+                                $state.go("addEvent");
+                            }
+                            else $state.go("addAnswer");
+                        });
                     }
-                    else $state.go("addAnswer");
+                    else{
+                        if (vm.type == 'Event') {
+                            $rootScope.eventmode = 'add';
+                            $state.go("addEvent");
+                        }
+                        else $state.go("addAnswer");
+                    }
                 }
             }
             else {
@@ -559,14 +656,25 @@
         function loadData() {
 
             //If introtext exist load it, if not, create custom intro text
-            if ($rootScope.cCategory.introtext) vm.introtext = $rootScope.cCategory.introtext;
-            else vm.introtext = 'This is the ranking for ' + $rootScope.cCategory.title + '. '+
+            if ($rootScope.cCategory.introtext) {
+                var start = $rootScope.cCategory.introtext.indexOf('++');
+                var end = $rootScope.cCategory.introtext.indexOf('--');
+                if (start > -1 && end > -1) vm.introtext = $rootScope.cCategory.introtext.substring(start+2,end);
+                else vm.introtext = $rootScope.cCategory.introtext;
+            }
+            else vm.introtext = 'This is the rank for ' + $rootScope.cCategory.title + '. '+
             ' Help shape the ranking by endorsing your favorites!.';
               
             if ($rootScope.cCategory.owner != 0 && $rootScope.cCategory.owner != undefined){
                 vm.isCustomRank = true;
-                var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(Number($rootScope.cCategory.owner));
-                vm.rankOwner = $rootScope.answers[idx]; 
+                //if custom rank is demo go to original answer, else get refernce from owner
+                if ($rootScope.cCategory.id == 11091 || 
+                    $rootScope.cCategory.id == 11092 ||
+                    $rootScope.cCategory.id == 11093) vm.rankOwner = $rootScope.oAnswer;
+                else{
+                    var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(Number($rootScope.cCategory.owner));
+                    vm.rankOwner = $rootScope.answers[idx];
+                } 
             }
             
             var fidx = 0;
@@ -593,14 +701,18 @@
 
             $rootScope.NhImplied = false;
             $rootScope.NhValue = '';
-            if ($rootScope.cCategory.type == 'Establishment' || $rootScope.cCategory.type == 'Event') {
+            if ($rootScope.cCategory.type == 'Establishment' ||
+            $rootScope.cCategory.type == 'Place' ||
+            $rootScope.cCategory.type == 'Event') {
                 //Determine if title already contains neighboorhood
-                var nhs = $rootScope.neighborhoods.concat($rootScope.districts);
-                for (var i = 0; i < nhs.length; i++) {
-                    if ($rootScope.cCategory.title.indexOf(nhs[i]) > -1) {
-                        $rootScope.NhImplied = true;
-                        $rootScope.NhValue = nhs[i];
-                        break;
+                if ($rootScope.nhs != undefined) {
+                    var nhs = $rootScope.nhs;
+                    for (var i = 0; i < nhs.length; i++) {
+                        if ($rootScope.cCategory.title.indexOf(nhs[i]) > -1) {
+                            $rootScope.NhImplied = true;
+                            $rootScope.NhValue = nhs[i];
+                            break;
+                        }
                     }
                 }
             }
@@ -623,19 +735,20 @@
                 }
             }
 
-            //Load parent is rank is atomic for better navigation
-            if ($rootScope.cCategory.isatomic && $rootScope.NhImplied){
+            //Create button to link to parent rank if rank is atomic for better navigation
+            if ($rootScope.cCategory.isatomic && $rootScope.NhImplied && $rootScope.NhValue != 'San Diego'){
                 var ss = $rootScope.cCategory.title.replace($rootScope.NhValue,'San Diego');
                 for (var n=0; n<$rootScope.content.length; n++){
                     if ($rootScope.content[n].title == ss){
                         vm.hasParent = true;
                         vm.parentRank = $rootScope.content[n];
+                        dataloader.pulldata('ranks',[vm.parentRank]);
                     }
                 }
             }
             
             //Load current answers
-            $rootScope.answers = answers;
+            //$rootScope.answers = answers;
             $rootScope.canswers = [];
             var fanswers = [];
             $rootScope.ccatans = [];
@@ -646,35 +759,23 @@
             
             //Rank is 'Food Near Me' - first time only
             if (foodNearMe && $rootScope.fanswers == undefined) {
-                for (var i = 0; i < catansrecs.length; i++) {
-                    var catansrec = catansrecs[i];
                     var answerid = 0;
                     var idx = 0;
                     var isDup = false;
                     var ansObj = {};
-                    var nidx = 0;
+                    
+                    var ansArr = $rootScope.foodans.cats.split(':').map(Number);
 
-                    var catArr2 = $rootScope.foodranks.cats.split(':').map(Number);
-
-                    for (var j = 0; j < catArr2.length; j++) {
-                        if (catansrec.category == catArr2[j]) {
-                            answerid = catansrec.answer;
-                            //foodAnswersMap = [];
-                            //if (foodAnswers.length > 0) {
-                            //foodAnswersMap = foodAnswers.map(function(x) {return x.id;});
-                            //}
-                            idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf(answerid);
-                            if (idx < 0) {
-                                console.log("idx - ", answerid, "catansrec - ", catansrec.id, catansrec.answer, catansrec.category);
-                                catans.deleteRec(catansrec.answer, catansrec.category);
-                            }
+                    for (var j = 0; j < ansArr.length; j++) {
+                        idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf(ansArr[j]);
+                        if ($rootScope.answers[idx]) {
                             //only add if its not already added
                             isDup = false;
                             if (fanswers.length > 0 && idx > 0) {
                                 for (var n = 0; n < fanswers.length; n++) {
                                     if (fanswers[n].id == $rootScope.answers[idx].id) {
                                         isDup = true;
-                                        nidx = n;
+                                        //nidx = n;
                                         break;
                                     }
                                 }
@@ -682,84 +783,26 @@
                             //if not duplicated, add to answer array. upV is init to first catans record
                             if (!isDup) {
                                 ansObj = $rootScope.answers[idx];
-                                ansObj.upV = catansrec.upV;
-                                fanswers.push(ansObj);
-                            }
-                            //if duplicated, add upV from new catan
-                            if (isDup) {
-                                fanswers[nidx].upV = fanswers[nidx].upV + catansrec.upV;
+                                //We have user coordinates, so we check that both lat and lng are within approx a mile
+                                //1 degree ~ 69 miles, so 1 miles ~ 0.0145 degrees
+                                if (Math.abs($rootScope.currentUserLatitude - $rootScope.answers[idx].lat) < 0.0145 &&
+                                    Math.abs($rootScope.currentUserLongitude - $rootScope.answers[idx].lng) < 0.0145)
+                                    fanswers.push(ansObj);
                             }
                         }
                     }
-                }
+                
                 $rootScope.canswers = fanswers;
                 $rootScope.fanswers = fanswers;
             }
             //all other ranks
             if (!foodNearMe) {
+                
                 for (var i = 0; i < catansrecs.length; i++) {
-                    //if rank is atomic 
-                    if ($rootScope.cCategory.isatomic) {
-                        if (catansrecs[i].category == $rootScope.cCategory.id) {
-                            for (var k = 0; k < answers.length; k++) {
-                                if (catansrecs[i].answer == answers[k].id) {
-                                    obj = {};
-                                    obj = answers[k];
-                                    obj.catans = catansrecs[i].id;
-                                    obj.catansrank = catansrecs[i].rank;
-                                    obj.upV = catansrecs[i].upV;
+                           //Puts numbers into array. Pretty sweet!
+                        if ($rootScope.cCategory.catstr) catArr = $rootScope.cCategory.catstr.split(':').map(Number);
+                        else catArr = [$rootScope.cCategory.id];
 
-                                    obj.upV = catansrecs[i].upV;
-                                    obj.downV = catansrecs[i].downV;
-                                    obj.catans = catansrecs[i].id;
-                                    obj.rank = catansrecs[i].rank;
-                                    obj.uservote = {};
-                                    obj.upVi = catansrecs[i].upV;
-                                    obj.downVi = catansrecs[i].downV;
-
-                                    obj.trendUpV = 0;
-
-                                    displayVote(obj);
-
-                                    if (vm.type == 'Event') {
-
-                                        eventObj = JSON.parse(answers[k].eventstr);
-
-                                        //Object.assign(answers[k], eventObj);
-                                        mergeObject(answers[k], eventObj);
-                                        
-                                        //To determine if event is current look at end date if exist if not use start date
-                                        //if (eventObj.edate != undefined && eventObj.edate != '') obj.date = answers[k].edate.slice(4);
-                                        //else obj.date = answers[k].sdate.slice(4);
-                                        eventIsCurrent = datetime.eventIsCurrent(obj, answers[k]);
-                                        
-                                        if (eventIsCurrent) {
-                                            $rootScope.canswers.push(obj);
-                                            $rootScope.ccatans.push(catansrecs[i]);
-                                
-                                            //Collect array of 'current' catans records ids
-                                            $rootScope.B.push(catansrecs[i].id);
-                                            break;
-                                        }
-                                        else break;
-                                    }
-                                    else {
-
-                                        $rootScope.canswers.push(obj);
-                                        $rootScope.ccatans.push(catansrecs[i]);
-                                
-                                        //Collect array of 'current' catans records ids
-                                        $rootScope.B.push(catansrecs[i].id);
-                                        break;
-                                    }
-                                }
-                            }
-                        }                  
-                    }
-                    //if rank is not atomic
-                    else {
-                        //Puts numbers into array. Pretty sweet!
-                        var catArr = $rootScope.cCategory.catstr.split(':').map(Number);
                         for (var n = 0; n < catArr.length; n++) {
                             if (catansrecs[i].category == catArr[n]) {
                                 for (var k = 0; k < answers.length; k++) {
@@ -783,39 +826,35 @@
                                         if (vm.type == 'Event') {
 
                                             eventObj = JSON.parse(answers[k].eventstr);
+                                            if (eventObj) {
+                                                mergeObject(answers[k], eventObj);
 
-                                            //Object.assign(answers[k], eventObj);
-                                            mergeObject(answers[k], eventObj);
-                                            
-                                            //To determine if event is current look at end date if exist if not use start date
-                                            //if (eventObj.edate != undefined && eventObj.edate != '') obj.date = answers[k].edate.slice(4);
-                                            //else obj.date = answers[k].sdate.slice(4);
-                                            eventIsCurrent = datetime.eventIsCurrent(obj, answers[k]);
-                                            
-                                            if (eventIsCurrent) {
-                                                $rootScope.canswers.push(obj);
-                                                $rootScope.ccatans.push(catansrecs[i]);
-                                
-                                                //Collect array of 'current' catans records ids
-                                                $rootScope.B.push(catansrecs[i].id);
-                                                break;
+                                                //To determine if event is current look at end date if exist if not use start date
+                                                //if (eventObj.edate != undefined && eventObj.edate != '') obj.date = answers[k].edate.slice(4);
+                                                //else obj.date = answers[k].sdate.slice(4);
+                                                eventIsCurrent = datetime.eventIsCurrent(obj, answers[k]);
+
+                                                if (eventIsCurrent) {
+                                                    $rootScope.canswers.push(obj);
+                                                    $rootScope.ccatans.push(catansrecs[i]);
+                                                    break;
+                                                }
+                                                else break;
                                             }
-                                            else break;
                                         }
                                         else {
-
-                                            $rootScope.canswers.push(obj);
-                                            $rootScope.ccatans.push(catansrecs[i]);
-                                
-                                            //Collect array of 'current' catans records ids
-                                            $rootScope.B.push(catansrecs[i].id);
-                                            break;
+                                            if (($rootScope.isCustomRank && obj.isprivate) ||
+                                                (!$rootScope.isCustomRank && !obj.isprivate )) {
+                                                $rootScope.canswers.push(obj);
+                                                $rootScope.ccatans.push(catansrecs[i]);
+                                                break;
+                                            }
                                         }
 
                                     }
                                 }
                             }
-                        }                                     
+                      //  }                                     
                     }
 
                 }
@@ -825,34 +864,19 @@
                 $rootScope.canswers = $rootScope.fanswers;
             }
             vm.answers = $rootScope.canswers;
+            getFilterOptions();
             
-            //Calculate distances to user
-            var p = 0.017453292519943295;    // Math.PI / 180
-            var c = Math.cos;
-            var a = 0;
-            var lat_o = $rootScope.currentUserLatitude;
-            var lng_o = $rootScope.currentUserLongitude;
-            var lat = 0;
-            var lng = 0;
-            var dist_mi = 0;
-            for (var i = 0; i < vm.answers.length; i++) {
-                lat = vm.answers[i].lat;
-                lng = vm.answers[i].lng;
-                a = 0.5 - c((lat - lat_o) * p) / 2 + c(lat_o * p) * c(lat * p) * (1 - c((lng - lng_o) * p)) / 2;
-
-                dist_mi = (12742 * Math.asin(Math.sqrt(a))) / 1.609; // 2 * R; R = 6371 km
-                
-                if (dist_mi < 1) vm.answers[i].dist = dist_mi.toPrecision(2);
-                else vm.answers[i].dist = dist_mi.toPrecision(3);
-
+            if (vm.answers.length > vm.limit) vm.thereIsMore = true;
+            else vm.thereIsMore = false;
+            dataloader.pulldata('answers',$rootScope.canswers);
+            
+            if ($rootScope.currentUserLatitude && $rootScope.currentUserLongitude) {
+                vm.haveLocation = true;
+                getDistances();
             }
-            vm.haveLocation = true;
-            if (vm.answers.length > 0) {
-                if (isNaN(vm.answers[0].dist)) {
-                    vm.haveLocation = false;
-                }
-                else vm.haveLocation = true;
-            }
+            else vm.haveLocation = false;
+            
+            //Specials
             var cdate = new Date();
             var dayOfWeek = cdate.getDay();
             var isToday = false;
@@ -870,6 +894,14 @@
                             if (dayOfWeek == 5 && $rootScope.specials[i].fri) isToday = true;
                             if (dayOfWeek == 6 && $rootScope.specials[i].sat) isToday = true;
                             if (isToday) {
+                                vm.answers[j].sp_bc = $rootScope.specials[i].bc;
+                                vm.answers[j].sp_fc = $rootScope.specials[i].fc;
+                                vm.answers[j].sp_title = $rootScope.specials[i].stitle;
+                                break;
+                            }
+                        }
+                        if ($rootScope.specials[i].freq == 'onetime') {
+                            if(moment().isBetween(moment($rootScope.specials[i].sdate), moment($rootScope.specials[i].edate), 'day', '[]')) {
                                 vm.answers[j].sp_bc = $rootScope.specials[i].bc;
                                 vm.answers[j].sp_fc = $rootScope.specials[i].fc;
                                 vm.answers[j].sp_title = $rootScope.specials[i].stitle;
@@ -923,6 +955,7 @@
                 }
             }
             */
+            /*
             //Load UserActivity data
             //compute number of contributions
             $rootScope.cuseractivity = [];
@@ -937,10 +970,10 @@
             }
             //else if rank is not atomic ('near me', 'San Diego', etc)
             else {
-                var catArr2 = $rootScope.cCategory.catstr.split(':').map(Number);
+                //var catArr2 = $rootScope.cCategory.catstr.split(':').map(Number);
                 for (var i = 0; i < useractivities.length; i++) {
-                    for (var j = 0; j < catArr2.length; j++) {
-                        if (useractivities[i].category == catArr2[j]) {
+                    for (var j = 0; j < catArr.length; j++) {
+                        if (useractivities[i].category == catArr[j]) {
                             $rootScope.cuseractivity.push(useractivities[i]);
                             break;
                         }
@@ -949,9 +982,33 @@
             }
             
             vm.numContributors = $rootScope.cuseractivity.length;
-            
+            */
             //data loading completed
             vm.isLoading = false;
+        }
+
+        function getDistances(){
+            //Calculate distances to user
+            var p = 0.017453292519943295;    // Math.PI / 180
+            var c = Math.cos;
+            var a = 0;
+            var lat_o = $rootScope.currentUserLatitude;
+            var lng_o = $rootScope.currentUserLongitude;
+            var lat = 0;
+            var lng = 0;
+            var dist_mi = 0;
+            for (var i = 0; i < vm.answers.length; i++) {
+                lat = vm.answers[i].lat;
+                lng = vm.answers[i].lng;
+                a = 0.5 - c((lat - lat_o) * p) / 2 + c(lat_o * p) * c(lat * p) * (1 - c((lng - lng_o) * p)) / 2;
+
+                dist_mi = (12742 * Math.asin(Math.sqrt(a))) / 1.609; // 2 * R; R = 6371 km
+                
+                if (dist_mi < 1) vm.answers[i].dist = dist_mi.toPrecision(2);
+                else vm.answers[i].dist = dist_mi.toPrecision(3);
+
+                if (vm.answers[i].dist > 2000) vm.answers[i].dist = undefined; 
+            }
         }
 
 
@@ -988,9 +1045,11 @@
 
         function sortByRank() {
             function compare(a, b) {
-                return a.Rank - b.Rank;
+                if (a.Rank < 1 || b.Rank < 1 ) return b.Rank - a.Rank;
+                else return a.Rank - b.Rank;         
             }
             vm.answers = vm.answers.sort(compare);
+            
             getDisplayImages();
 
             $rootScope.canswers = vm.answers;
@@ -1098,7 +1157,7 @@
             vm.selUpV = '';
             vm.selDate = 'active';
             vm.selTrending = '';
-            vm.sortByName = 'rankDataLoaded';
+            vm.sortByName = 'Date';
 
             //if (!vm.isE) vm.showR = false || (!vm.sm);
         }
@@ -1120,9 +1179,9 @@
         }
 
         function getDisplayImages() {
-            vm.image1 = "/assets/images/noimage.jpg";
-            vm.image2 = "/assets/images/noimage.jpg";
-            vm.image3 = "/assets/images/noimage.jpg";
+            vm.image1 = $rootScope.EMPTY_IMAGE;
+            vm.image2 = $rootScope.EMPTY_IMAGE;
+            vm.image3 = $rootScope.EMPTY_IMAGE;
 
             if (vm.answers[0]) vm.image1 = vm.answers[0].imageurl;
             if (vm.answers[1]) vm.image2 = vm.answers[1].imageurl;
@@ -1147,10 +1206,12 @@
         }
 
         function gotoParentRank(){
+            updateRecords();
             $state.go('rankSummary',{index: vm.parentRank.id});
         }
 
         function callGetLocation() {
+            console.log("emitGetLocation");
             $rootScope.$emit('getLocation');
         }
 
@@ -1197,10 +1258,11 @@
         }
             
             function share(){
-                vm.linkurl = 'https://rank-x.com/rankSummary/' + $rootScope.cCategory.slug; 
+                //vm.linkurl = 'https://rank-x.com/rankSummary/' + $rootScope.cCategory.slug; 
+                vm.linkurl = SERVER_URL + 'rank' + $rootScope.cCategory.id + '.html';
                 vm.tweet = $rootScope.cCategory.title + ', endorse your favorite ones at: ';
 
-                var imageurl = "https://rank-x.com/" + $rootScope.cCategory.image1url;
+                var imageurl = $rootScope.cCategory.image1url;
                 if ($rootScope.cCategory.type == 'Short-Phrase')
                     imageurl = 'https://rank-x.com/assets/images/rankxlogosd2_sm.png';
 
@@ -1231,13 +1293,9 @@
                         FB.ui(
                         {
                             method: 'feed',
-                            name: $rootScope.cCategory.title,
                             link: vm.linkurl,
-                            picture: imageurl,
                             caption: 'Rank-X San Diego',
-                            description: $rootScope.cCategory.question,
-                            message: ''
-                        }); 
+                        }, function(response){}); 
                         break;
                     }  
                     case 'email':{
@@ -1300,38 +1358,6 @@
                         }); 
                         break;
                     }
-                    // case 'whatsapp':{
-                    //     if ($rootScope.DEBUG_MODE) console.log(x);
-                    //     Socialshare.share({
-                    //         'provider': 'whatsapp',
-                    //         'attrs': {
-                    //             'socialshareUrl': vm.linkurl,
-                    //             'socialshareText': 'Rank-X, '+ vm.ranking + ', '+ $rootScope.cCategory.question,
-                    //          }
-                    //     }); 
-                    //     break;
-                    // }
-                    // case 'messenger':{
-                    //     if ($rootScope.DEBUG_MODE) console.log(x);
-                    //     Socialshare.share({
-                    //         'provider': 'facebook-messenger',
-                    //         'attrs': {
-                    //             'socialshareUrl': vm.linkurl,
-                    //          }
-                    //     }); 
-                    //     break;
-                    // }
-                    // case 'sms':{
-                    //     if ($rootScope.DEBUG_MODE) console.log(x);
-                    //     Socialshare.share({
-                    //         'provider': 'sms',
-                    //         'attrs': {
-                    //             'socialshareUrl': vm.linkurl,
-                    //             'socialshareText': 'Rank-X, '+ vm.ranking + ', '+ $rootScope.cCategory.question,
-                    //          }
-                    //     }); 
-                    //     break;
-                    // }
                 } 
             }
         function changeMode(mode){
@@ -1340,18 +1366,24 @@
 
         function displayVote(x) {
 
-            if (x.dV == 1) {
-                x.thumbUp = "#0070c0";//"thumbs_up_blue.png";//
-                x.thumbDn = "#bfbfbf";//"thumbs_down_gray.png";
-            }
+            if ($rootScope.isLoggedIn) {
+                if (x.dV == 1) {
+                    x.thumbUp = "#0070c0";//"thumbs_up_blue.png";//
+                    x.thumbDn = "#bfbfbf";//"thumbs_down_gray.png";
+                }
 
-            if (x.dV == 0) {
+                if (x.dV == 0) {
+                    x.thumbUp = "#bfbfbf";//"thumbs_up_gray.png";
+                    x.thumbDn = "#bfbfbf";//"thumbs_down_gray.png";
+                }
+                if (x.dV == -1) {
+                    x.thumbUp = "#bfbfbf";//"thumbs_up_gray.png";
+                    x.thumbDn = "#0070c0";//"thumbs_down_blue.png";
+                }
+            }
+            else {
                 x.thumbUp = "#bfbfbf";//"thumbs_up_gray.png";
                 x.thumbDn = "#bfbfbf";//"thumbs_down_gray.png";
-            }
-            if (x.dV == -1) {
-                x.thumbUp = "#bfbfbf";//"thumbs_up_gray.png";
-                x.thumbDn = "#0070c0";//"thumbs_down_blue.png";
             }
         }
         
@@ -1363,6 +1395,9 @@
                     case 0: { x.dV = 1; x.upV++; break; }
                     case 1: { x.dV = 0; x.upV--; break; }
                 }
+                
+                if (x.dV == 1) addAnswer4Rank(x);
+                if (x.dV == -1 || x.dV == 0 ) removeAnswer4Rank(x);
 
                 displayVote(x);
                 if ($rootScope.DEBUG_MODE) console.log("UpVote");
@@ -1373,6 +1408,17 @@
                 return;
             }
         }
+
+        function addAnswer4Rank(x){
+            $rootScope.canswers4rank.push(x);
+            updateStatusRankButton();
+        }
+
+        function removeAnswer4Rank(x){
+            var i = $rootScope.canswers4rank.map(function(x) {return x.id; }).indexOf(x.id);
+            if (i > -1) $rootScope.canswers4rank.splice(i,1);
+            updateStatusRankButton();
+        }
         
         function DownVote(x,event) {
             if ($rootScope.isLoggedIn) {
@@ -1381,6 +1427,8 @@
                     case 0: { x.dV = -1; x.downV++; break; }
                     case 1: { x.dV = -1; x.upV--; x.downV++; break; }
                 }
+
+                if (x.dV == -1 || x.dV == 0 ) removeAnswer4Rank(x);
 
                 displayVote(x);
                 if ($rootScope.DEBUG_MODE) console.log("DownVote");
@@ -1429,73 +1477,81 @@
             if ($rootScope.DEBUG_MODE) console.log("UpdateRecords @answerDetail");
             
             //TODO Need to pass table id
-            for (var i = 0; i < vm.answers.length; i++) {
+            if (vm.answers && $rootScope.cCategory != undefined) {
+                for (var i = 0; i < vm.answers.length; i++) {
 
-                var voteRecordExists = vm.answers[i].voteRecordExists;
-                var userHasRank = false;
-                var useractivityrec = {};
-                //console.log("$rootScope.thisuseractivity - ", $rootScope.thisuseractivity);
-                try {
-                    var idx = $rootScope.thisuseractivity.map(function (x) { return x.category; }).indexOf($rootScope.cCategory.id);
-                }
-                catch (err) {
-                    console.log("Error: ", err);
-                    console.log("$rootScope.thisuseractivity - ", $rootScope.thisuseractivity);
-                    var idx = -1;                    
-                }
-                if (idx >= 0) {
-                    userHasRank = true;
-                    useractivityrec = $rootScope.thisuseractivity[idx];
-                }
-                else userHasRank = false;  
-                //if vote is changed to non-zero
-                if (voteRecordExists && vm.answers[i].uservote.vote != vm.answers[i].dV && vm.answers[i].dV != 0) {
-                    //update vote
-                    if ($rootScope.DEBUG_MODE) console.log("UR-1");
-                    votes.patchRec(vm.answers[i].uservote.id, vm.answers[i].dV);
-                }
-                //if vote is changed to zero
-                if (voteRecordExists && vm.answers[i].uservote.vote != vm.answers[i].dV && vm.answers[i].dV == 0) {
-                    //Delete vote
-                    if ($rootScope.DEBUG_MODE) console.log("UR-2");
-                    votes.deleteRec(vm.answers[i].uservote.id);
-                    //Decrease vote counter from user activity. If counter is 1, also delete user activiy record (since there is no more votes
-                    //from this user)
-                    if (useractivityrec.votes < 2) {
-                        if ($rootScope.DEBUG_MODE) console.log("UR-3");
-                        useractivity.deleteRec(useractivityrec.id);
+                    var voteRecordExists = vm.answers[i].voteRecordExists;
+                    var userHasRank = false;
+                    var useractivityrec = {};
+                    //console.log("$rootScope.thisuseractivity - ", $rootScope.thisuseractivity);
+                    try {
+                        var idx = $rootScope.thisuseractivity.map(function (x) { return x.category; }).indexOf($rootScope.cCategory.id);
                     }
-                    else {
-                        if ($rootScope.DEBUG_MODE) console.log("UR-4");
-                        useractivity.patchRec(useractivityrec.id, useractivityrec.votes - 1);
-                        //$rootScope.userActRec.votes--;
+                    catch (err) {
+                        console.log("Error: ", err);
+                        console.log("$rootScope.cCategory - ", $rootScope.cCategory);
+                        var idx = -1;
                     }
-                }
-                if (!voteRecordExists && vm.answers[i].dV != 0) {
-                    //Post a new vote and create useractivity record
-                    if ($rootScope.DEBUG_MODE) console.log("UR-5");
-                    votes.postRec(vm.answers[i].catans, vm.answers[i].id, $rootScope.cCategory.id, vm.answers[i].dV);
-                    if (userHasRank) {
-                        if ($rootScope.DEBUG_MODE) console.log("UR-6");
-                        useractivity.patchRec(useractivityrec.id, useractivityrec.votes + 1);
-                        //$rootScope.userActRec.votes++;
+                    if (idx >= 0) {
+                        userHasRank = true;
+                        useractivityrec = $rootScope.thisuseractivity[idx];
                     }
-                    else {
-                        if ($rootScope.DEBUG_MODE) console.log("UR-7");
-                        useractivity.postRec($rootScope.cCategory.id);
-                        //$rootScope.thisuseractivity.push();
+                    else userHasRank = false;
+                    //if vote is changed to non-zero
+                    if (voteRecordExists && vm.answers[i].uservote.vote != vm.answers[i].dV && vm.answers[i].dV != 0) {
+                        //update vote
+                        if ($rootScope.DEBUG_MODE) console.log("UR-1");
+                        votes.patchRec(vm.answers[i].uservote.id, vm.answers[i].dV);
                     }
-                }
-            
-                //update answer record (vote count) if necessary
-                //TODO Need to pass table id
-                if ((vm.answers[i].upV != vm.answers[i].upVi) || (vm.answers[i].downV != vm.answers[i].downVi)) {
-                    if ($rootScope.DEBUG_MODE) console.log("UR-8");
-                    catans.updateRec(vm.answers[i].catans, ["upV", "downV"], [vm.answers[i].upV, vm.answers[i].downV]);
+                    //if vote is changed to zero
+                    if (voteRecordExists && vm.answers[i].uservote.vote != vm.answers[i].dV && vm.answers[i].dV == 0) {
+                        //Delete vote
+                        if ($rootScope.DEBUG_MODE) console.log("UR-2");
+                        votes.deleteRec(vm.answers[i].uservote.id);
+                        //Decrease vote counter from user activity. If counter is 1, also delete user activiy record (since there is no more votes
+                        //from this user)
+                        if (useractivityrec.votes < 2) {
+                            if ($rootScope.DEBUG_MODE) console.log("UR-3");
+                            useractivity.deleteRec(useractivityrec.id);
+                        }
+                        else {
+                            if ($rootScope.DEBUG_MODE) console.log("UR-4");
+                            useractivity.patchRec(useractivityrec.id, useractivityrec.votes - 1);
+                            //$rootScope.userActRec.votes--;
+                        }
+                    }
+                    if (!voteRecordExists && vm.answers[i].dV != 0) {
+                        //Post a new vote and create useractivity record
+                        if ($rootScope.DEBUG_MODE) console.log("UR-5");
+                        votes.postRec(vm.answers[i].catans, vm.answers[i].id, $rootScope.cCategory.id, vm.answers[i].dV);
+                        if (userHasRank) {
+                            if ($rootScope.DEBUG_MODE) console.log("UR-6");
+                            useractivity.patchRec(useractivityrec.id, useractivityrec.votes + 1);
+                            //$rootScope.userActRec.votes++;
+                        }
+                        else {
+                            if ($rootScope.DEBUG_MODE) console.log("UR-7");
+                            useractivity.postRec($rootScope.cCategory.id);
+                            //$rootScope.thisuseractivity.push();
+                        }
+                    }
+
+                    //update answer record (vote count) if necessary
+                    //TODO Need to pass table id
+                    if ((vm.answers[i].upV != vm.answers[i].upVi) || (vm.answers[i].downV != vm.answers[i].downVi)) {
+                        if ($rootScope.DEBUG_MODE) console.log("UR-8");
+                        //console.log("vm.answerRanks[i] - ",vm.answerRanks[i]);
+                        //catans.getCatan(vm.answers[i].catans).then(function(catan){
+                        //   var updV = vm.answerRanks[i].upV + vm.answerRanks[i].upVi;
+                        //   var downdV = vm.answerRanks[i].downV + vm.answerRanks[i].downVi;
+
+                        catans.updateRec(vm.answers[i].catans, ["upV", "downV"], [vm.answers[i].upV, vm.answers[i].downV]);
+                        //});
+                    }
                 }
             }
 
-            if (vm.type == 'Establishment' || vm.type == 'PersonCust') {
+            if (vm.vrows) {
                 for (var i = 0; i < vm.vrows.length; i++) {
                     var voteRecExists = vm.vrows[i].voteExists;
                     if (voteRecExists && vm.vrows[i].dVi != vm.vrows[i].dV) {
@@ -1517,6 +1573,126 @@
         }
         function sortbyHelpDialog() {
             dialog.sortbyHelpDialog();
+        }
+
+        function backToResults(){
+            //updateRecords();
+            if ($rootScope.previousState == 'trends') $state.go('trends');
+            else $rootScope.$emit('backToResults');
+            //$rootScope.$emit('backToResults');
+        }
+
+        function seeMore(){
+            vm.limit = vm.limit+20;
+            loadTrendVotes(vm.limit-20);
+            //loadFriendsEndorsements(vm.limit-20);
+            if (vm.answers.length > vm.limit) vm.thereIsMore = true;
+            else vm.thereIsMore = false;
+        }
+
+        function loadTrendVotes(x){
+            var answerIDs = vm.answers.map(function (answer) { return answer.id; });
+                if (answerIDs.length > 0) {
+                    votes.loadLastMonthVoting(answerIDs.slice(x,x+20))
+                        .then(function (resp) {
+                            resp.forEach(function (vote) {
+                                var idx = answerIDs.indexOf(vote.answer);
+                                if (vm.answers[idx].trendUpV == undefined) vm.answers[idx].trendUpV = 0; 
+                                vm.answers[idx].trendUpV++;
+                            });
+                            //console.log(vm.answers);
+                        });
+                }
+        }
+
+        function loadFriendsEndorsements(x){
+            //console.log("load friends endorsements - ",$rootScope.friends_votes.length,$rootScope.user.friends.data.length);
+            //Check friends endorsements for this answers
+            //var ansIds = vm.answers.slice(x,x+20);
+            var ansIds = vm.answers;
+            var idx = -1;
+            var cidx = -1;
+            var ridx = -1;
+            ansIds.forEach(function(answer){
+                answer.userObjs = [];
+                for (var i=0; i< $rootScope.friends_votes.length; i++){
+                    if ($rootScope.friends_votes[i].answer == answer.id) {
+                        var friend = getUser($rootScope.friends_votes[i]);
+                        //console.log("friend - ", friend);
+                        cidx = $rootScope.catansrecs.map(function(x) {return x.id; }).indexOf($rootScope.friends_votes[i].catans);
+                        if (cidx > -1 ) ridx = $rootScope.content.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[cidx].category); 
+                        //if (ridx > -1) {
+                            idx = answer.userObjs.map(function (x) { return x.id; }).indexOf(friend.id);
+                            if (idx < 0) {
+                                //console.log("$rootScope.friends_votes[i] ", $rootScope.friends_votes[i]);
+                                friend.endorsements = [];
+                                if (ridx > -1) friend.endorsements.push($rootScope.content[ridx].title);
+                                answer.userObjs.push(friend);
+                            }
+                            else {
+                                //console.log("answer - ", answer);
+                                if (ridx > -1) answer.userObjs[idx].endorsements.push($rootScope.content[ridx].title);
+                            }
+                        //}
+                    }
+                }
+
+            });
+            //console.log("ansIds - ", ansIds);
+        }
+
+        function getUser(voterec) {
+            for (var i = 0; i < $rootScope.user.friends.data.length; i++) {
+                if (voterec.user == $rootScope.user.friends.data[i].id) {
+                    return $rootScope.user.friends.data[i];
+                }
+            }
+        }
+
+        function showAllFriendsList(userObjs, answername){
+            dialog.showAllFriendsListDlg(userObjs, answername);
+        }
+
+        function incViews() {
+            $rootScope.cCategory.views++;
+            //update number of views (Request to increment to server)
+            var url = SERVER_URL + 'databaseOps/incViews/rank/' + $rootScope.cCategory.id;
+            var req = {
+                method: 'POST',
+                url: url,
+                headers: {
+                    'X-Dreamfactory-API-Key': undefined,
+                    'X-DreamFactory-Session-Token': undefined
+                }
+            }
+            $http(req);
+        }
+
+        function getResults() {
+            var timeoutPromise;
+            $timeout.cancel(timeoutPromise); //do nothing is timeout already done   
+            timeoutPromise = $timeout(function () {
+                vm.answers = [];
+                $rootScope.canswers.forEach(function(cans){
+                    if (cans.name.toLowerCase().indexOf(vm.val.toLowerCase()) > -1 || 
+                        cans.cityarea.toLowerCase().indexOf(vm.val.toLowerCase()) > -1){
+                        vm.answers.push(cans);
+                    }
+                });                
+            }, 300);
+        }
+
+        function getFilterOptions(){
+            vm.opts = [];
+            $rootScope.canswers.forEach(function(cans){
+                    if (vm.opts.indexOf(cans.name)<0) vm.opts.push(cans.name);
+                    if (vm.opts.indexOf(cans.cityarea)<0) vm.opts.push(cans.cityarea);
+            });
+        }
+
+        function clearSearch(){
+            vm.val = '';
+            vm.answers = $rootScope.canswers;
         }
     }
 })();

@@ -6,9 +6,9 @@
         .factory('dialog', dialog);
 
     dialog.$inject = ['$q', '$rootScope', 'useraccnt', 'imagelist', 'answer', 'login',
-        '$window','$cookies', '$state', '$compile','htmlops','datetime']
+        '$window','$cookies', '$state', '$compile','htmlops','datetime', 'InstagramService']
     function dialog($q, $rootScope, useraccnt, imagelist, answer, login,
-        $window, $cookies, $state, $compile, htmlops, datetime) {
+        $window, $cookies, $state, $compile, htmlops, datetime, InstagramService) {
 
         var service = {
             editConfirm: editConfirm,
@@ -47,6 +47,8 @@
             editNumRanks: editNumRanks,
             editInfo: editInfo,
             notificationWithCallback: notificationWithCallback,
+            notificationSuccess: notificationSuccess,
+            notificationDanger: notificationDanger,
             enterPassword: enterPassword,
             endorse: endorse,
             chooseImgFromIgDlg: chooseImgFromIgDlg,
@@ -66,6 +68,10 @@
             typemismatch: typemismatch,
             confirmAddRank: confirmAddRank,
             confirmRemoveRank: confirmRemoveRank,
+            confirmSiblings: confirmSiblings,
+            showLocations: showLocations,
+            showLearnMore: showLearnMore,
+            imageBank: imageBank,
         };
         return service;
 
@@ -927,8 +933,6 @@
             
             answerhtml = newline + '</p>';
 
-            console.log("answerhtml - ", answerhtml);
-            
             var addinfomessage = htmlops.eventHtml(event);
             showAddEvent(event, answerhtml, addinfomessage, event.imageurl, mode, callback);
             
@@ -939,8 +943,6 @@
             var message = '';
             var btnCancelLabel = '';
             var btnOkLabel = '';
-
-            console.log("answerhtml - ", answerhtml);
 
             if (mode == 'add') 
                 message = 'You want to add the following event to <strong>' + $rootScope.cCategory.title + '</strong>. </br><p></p>' +
@@ -1013,7 +1015,8 @@
             '</div>' +
             '</div>';
 
-            messageLoading = '<div class="loading-pulse"></div>' +
+            messageLoading = '<div style="height:80px;position:relative"><img src="/assets/images/loading.gif" class="img" ' + 
+            'style="width:50px;height:50px;position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)"/></div>' +
             '<p>Just a moment, finding your location...</p>';
 
             BootstrapDialog.show({
@@ -1278,7 +1281,7 @@
                 },
                 callback: function (result) {
                     if (result) {
-                        console.log(blobList);
+                        if ($rootScope.DEBUG_MODE) console.log(blobList);
                         if( blobList[n].type == 'Instagram' ){
                             var itempos = current_answer.ig_image_urls.indexOf(blobList[n].url);
                             if( itempos != -1){
@@ -1329,7 +1332,7 @@
                 callback: function (result) {
                     if (result) {
                         var imageurl = blobList[n].url;
-                        answer.updateAnswer(myanswer.id, ["image"], [imageurl]);
+                        answer.updateAnswer(myanswer.id, ["imageurl"], [imageurl]);
                     }
                 }
             });
@@ -1362,7 +1365,7 @@
                     cssClass: 'btn-primary',
                     action: function (dialogItself) {
 
-                         //Store current state 
+                        //Store current state 
                         $rootScope.stateName = $state.current.name;
                         if ($rootScope.stateName == 'rankSummary') $rootScope.stateNum = $rootScope.cCategory.id;
                         else if ($rootScope.stateName == 'answerDetail') $rootScope.stateNum = $rootScope.canswer.id;
@@ -1391,28 +1394,28 @@
             title = 'Share Options';
             rendercode =
             '<div class="row">' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center" style="cursor: pointer">' +
             '<img src="/assets/images/1485385043_mail.png" id="email" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center" style="cursor: pointer">' +
             '<img src="/assets/images/1485384809_2_-_Facebook.png" id="facebook" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center" style="cursor: pointer">' +
             '<img src="/assets/images/1485384868_1_-_Twitter.png" id="twitter" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center" style="cursor: pointer">' +
             '<img src="/assets/images/1485384841_13_-_Pintrest.png" id="pinterest" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center" style="cursor: pointer">' +
             '<img src="/assets/images/1485384824_6_-_Google_Plus.png" id="gplus" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center" style="cursor: pointer">' +
             '<img src="/assets/images/1485384853_5_-_Tumbler.png" id="tumblr" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center" style="cursor: pointer">' +
             '<img src="/assets/images/1485425301_reddit.png" id="reddit" style="width:50px;margin-bottom:20px">' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +    
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center style="cursor: pointer"">' +    
             '<a href="#" socialshare ' +
                 'socialshare-provider="whatsapp" ' +
                 'socialshare-text="'+ text + '" ' +
@@ -1421,7 +1424,7 @@
             ' style="width:50px;margin-bottom:20px;display:'+ (isMobile ? 'inline':'none') + '">' +
             ' </a>' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center style="cursor: pointer"">' +
             '<a href="#" socialshare ' +
                 'socialshare-provider="facebook-messenger" ' +
                 'socialshare-url="' + link + '">' +
@@ -1429,7 +1432,7 @@
             ' style="width:50px;margin-bottom:20px;display:'+ (isMobile ? 'inline':'none') + '">' +
             ' </a>' +
             '</div>' +
-            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center">' +
+            '<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-center style="cursor: pointer"">' +
             '<a href="#" socialshare ' +
                 'socialshare-provider="sms" ' +
                 'socialshare-text="'+ text + '" ' +
@@ -1525,7 +1528,7 @@
             
             m1 =
             '<img id="image" class="displayed" src="' +
-            '/assets/images/rxtour1.png'+'" style="' + img_style + '">';
+            '/assets/images/rxtour1.jpg'+'" style="' + img_style + '">';
             
             messagehtml =  m1;
             
@@ -1552,7 +1555,7 @@
                             $('#btn1').text('No, thanks');
                             $('#btn2').text('Yes, take tour');
                         }
-                        else if (n == 12){
+                        else if (n == 17){
                             $('#btn1').text('Back');
                             $('#btn2').text('Close');
                             $cookies.put('tourviewed', true);
@@ -1562,7 +1565,7 @@
                             $('#btn2').text('Next');
                         }
                         m1 = '<img id="image" class="displayed" src="' +
-                            '/assets/images/rxtour'+n+'.png'+'" style="'+img_style+'">';
+                            '/assets/images/rxtour'+n+'.jpg'+'" style="'+img_style+'">';
                         dialog.setMessage(m1);
                         
                         }
@@ -1574,12 +1577,12 @@
                 action: function(dialog, messagehtml) {
                     var $button = this; // 'this' here is a jQuery object that wrapping the <button> DOM element.
                     //console.log("bt2-clicked,",n);
-                    if (n==12) {
+                    if (n==17) {
                         $cookies.put('tourviewed', true);
                         dialog.close();
                     }
                     else {
-                        if (n == 12) dialog.getButton(this.id).label = 'Close';
+                        if (n == 17) dialog.getButton(this.id).label = 'Close';
                         else {
                             //$button.text = 'Next'; 
                             n = n + 1;
@@ -1587,7 +1590,7 @@
                                 $('#btn1').text('No, thanks');
                                 $('#btn2').text('Yes, take tour');
                             }
-                            else if (n == 12) {
+                            else if (n == 17) {
                                 $('#btn1').text('Back');
                                 $('#btn2').text('Close');
                                 $cookies.put('tourviewed', true);
@@ -1598,7 +1601,7 @@
                             }
                         }
                         m1 = '<img id="image" class="displayed" src="' +
-                            '/assets/images/rxtour' + n + '.png' + '" style="' + img_style + '">';
+                            '/assets/images/rxtour' + n + '.jpg' + '" style="' + img_style + '">';
                         dialog.setMessage(m1);
                     }
                 }
@@ -1899,6 +1902,48 @@
 
         }
 
+        function notificationSuccess(title, message) {
+
+            var title = title;
+            var message = message;
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_SUCCESS,
+                title: title,
+                message: message,
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'OK',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }]
+            });
+        }
+
+        function notificationDanger(title, message) {
+
+            var title = title;
+            var message = message;
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_DANGER,
+                title: title,
+                message: message,
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'OK',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }]
+            });
+        }
+
         function endorse(type) {
 
             var typeStr = '';
@@ -1986,7 +2031,7 @@
         function setInstagramImageUrl(id, urls){
             return answer.updateAnswer(id, ['ig_image_urls'], [urls]);
         }
-        function chooseImgFromIgDlg(blobList,  answer, isOwner) {
+        function chooseImgFromIgDlg(blobList,  answer, isOwner, navigateTowards) {
 
             var title = '';
             var messagehtml = ''
@@ -2012,7 +2057,15 @@
             
             m1 =
             '<div class="row">' +
+                '<div class="col-xs-12">';
+            if (InstagramService.isPreviousAvailable())
+                m1 += '<button class="btn btn-default pull-left" id="previgpage">Previous</button>';
+                
+            if (InstagramService.isNextAvailable())
+                m1 += '<button class="btn btn-default pull-right" id="nextigpage">Next</button>';
+                
 
+            m1 += '</div>';
             '</div>';
             m4 =
             '<div class="text-right">' +
@@ -2060,6 +2113,17 @@
                 message: function (dialogRef) {
                     var $content = $(messagehtml);
                     var x = dialogRef;
+                    
+
+                    $content.find('#previgpage').click({}, function () {
+                        dialogRef.close();
+                        navigateTowards('previous');
+                    });
+                    $content.find('#nextigpage').click({}, function () {
+                        dialogRef.close();
+                        navigateTowards('next');
+                    });
+
                     $content.find('#add_photo').click({}, function () {
                         console.log(answer.ig_image_urls);
                         var url = $(this).parent().children('#image').attr('src');
@@ -2141,23 +2205,28 @@
             });
             }
         function showAllFriendsListDlg(userObjs, answername) {
-            var imageListHtml = "<div class='row'>";
+            var imageListHtml = '';
             for (var i = 0; i < userObjs.length; i++) {
-
+                imageListHtml += '<div class="row" style="padding-bottom:10px">';
                 imageListHtml += '<div class="col-xs-3 col-md-3 text-center">';
   
                 imageListHtml += '<img src="' + userObjs[i].picture.data.url + '" class="img-responsive img-circle profile-avatar" style="width: 100%;height: 100%;"/>';
-                imageListHtml += '<span>' + userObjs[i].first_name + ' ' + userObjs[i].last_name + '</span>';
                 imageListHtml += '</div>';
 
+                imageListHtml += '<div class="col-xs-9 col-md-9 text-center">';
+                imageListHtml +=  '<div class="text-left"><strong>' + userObjs[i].first_name + ' ' + userObjs[i].last_name + '</strong> endorsed in: </div>';
+                for (var j=0; j < userObjs[i].endorsements.length; j++){
+                    imageListHtml += '<i>'+userObjs[i].endorsements[j] + '</i></br>';
+                }
+                imageListHtml += '</div>';
+                imageListHtml += '</div>';
             }
-            imageListHtml += '</div>';
-            
+                     
             BootstrapDialog.show({
                 size: BootstrapDialog.SIZE_SM,
                 type: BootstrapDialog.TYPE_PRIMARY,
                 cssClass: 'fav-list-user-image-dialog',
-                title: "My Friends that like " + answername,
+                title: "Friends that like " + answername,
                 message: function (dialogRef) {
                     var $content = $(imageListHtml);
                     var x = dialogRef;
@@ -2252,7 +2321,7 @@
                 },
 
             });
-        }exec
+        }
 
         function changeCommissionDlg(STRIPE_COMMISSION_PERCENTAGE, execChangeFee) {
             var imageListHtml = 
@@ -2796,6 +2865,173 @@
                     if (result) callback(category,answer);
                 }
             });
+        }
+
+        function confirmSiblings(answer,callback){
+            var title = '';
+            var message = '';
+            var btnCancelLabel = '';
+            var btnOkLabel = '';
+            var siblingshtml = '<div class="text-center">';
+
+            var idx = 0;
+            for (var i=0; i<answer.ansLocs.length; i++){
+                idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(answer.ansLocs[i]);  
+                siblingshtml = siblingshtml + $rootScope.answers[idx].name + '</br>';
+            }
+            siblingshtml = siblingshtml + '</div>'; 
+
+            title = 'Please Confirm';
+            message = 'This will add the following sibling Establishments: <br>' + siblingshtml + '<br> to ' + '<strong>' + answer.name +'</strong>.';
+
+            btnCancelLabel = 'Cancel';
+            btnOkLabel = 'Ok';
+            
+            BootstrapDialog.confirm({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: btnCancelLabel,
+                btnOKLabel: btnOkLabel,
+                btnOKClass: 'default',
+                btnCancelAction: function (dialogRef) {
+                    dialogRef.close();
+                },
+                //callback: function (dialogRef, result) {
+                callback: function (result) {
+                    if (result) callback();
+                }
+            }); 
+        }
+
+        function showLocations(locs){
+            var title = 'Additional Locations';
+            var message = '' ;
+            var list = '';
+
+            list = '<ul class="list-group">';
+            for (var i=0; i< locs.length; i++){
+
+                list = list +
+                '<li id="item' + i +'"class="list-group-item"'+ 
+                    ' style="cursor:pointer;"><strong>' + locs[i].name + '</strong>,&nbsp'+ locs[i].location + ',&nbsp'+ locs[i].cityarea + 
+                '</li>';
+            }
+            list = list + '</ul>';
+
+            message = list;
+
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: function (dialogRef) {
+                    var $content = $(message);
+                    var x = dialogRef;
+                    $content.find('#item0').click({}, function () {
+                            $window.scrollTo(0, 0);
+                            $state.go('answerDetail',{index: locs[0].id});
+                            dialogRef.close();
+                    });
+                    $content.find('#item1').click({}, function () {
+                            $window.scrollTo(0, 0);
+                            $state.go('answerDetail',{index: locs[1].id});
+                            dialogRef.close();
+                    });
+                    $content.find('#item2').click({}, function () {
+                            $window.scrollTo(0, 0);
+                            $state.go('answerDetail',{index: locs[2].id});
+                            dialogRef.close();
+                    });
+                    $content.find('#item3').click({}, function () {
+                            $window.scrollTo(0, 0);
+                            $state.go('answerDetail',{index: locs[3].id});
+                            dialogRef.close();
+                    });
+                    $content.find('#item4').click({}, function () {
+                            $window.scrollTo(0, 0);
+                            $state.go('answerDetail',{index: locs[4].id});
+                            dialogRef.close();
+                    });
+                    
+                    return $content;
+                },
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'OK',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef, result) {
+                        dialogRef.close();
+                    }
+                }]
+            });
+
+
+        }
+
+
+        function showLearnMore(url){
+            var title = 'Learn More';
+            var message = '<div class="text-center"><iframe width="' + ($rootScope.sm ? '300' : '500') + '" height="' + ($rootScope.sm ? '200' : '350') + '" src="'+ url + '?autoplay=1"' +
+                        ' frameborder="0" allowfullscreen></iframe></div>' ;
+
+            BootstrapDialog.show({
+                size: BootstrapDialog.SIZE_WIDE,
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: function (dialogRef) {
+                    var $content = $(message);
+                    
+                    return $content;
+                },
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'I got it.',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef, result) {
+                        dialogRef.close();
+                    }
+                }]
+            });
+            
+        }
+
+        function imageBank() {
+
+            var title = 'Image Banks';
+            var message = '<strong>Pixabay</strong> and <strong>Pexels</strong> are databases of royalty free images. We encourage you to '+
+            'visit their websites to learn more about the services they offer. <br><br>' +
+            '<div class="row">'+
+            '<div class="col-xs-12 col-sm-6">'+     
+            '<img src="../../../assets/images/pixabay-logo.png" alt="Pixabay"'+
+            'style="width:100%;height:45px;padding:3px;border-style:solid;border-width:1px;">'+
+             '<div class="text-center"><a href="https://www.pixabay.com/">Visit Pixabay</a></div>'+
+            '</div>'+
+            '<div class="col-xs-12 col-sm-6">'+
+            '<img src="../../../assets/images/pexels-logo.png" alt="Pexels"'+
+            'style="width:100%;height:45px;padding:3px;border-style:solid;border-width:1px;">'+
+            '<div class="text-center"><a href="https://www.pexels.com/">Visit Pexels</a></div>'+
+            '</div>'+
+            '</div>';
+            
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'OK',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }]
+            });
+
         }
 
     }

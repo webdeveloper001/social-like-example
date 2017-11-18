@@ -11,6 +11,7 @@
 
         // Members
         var _headlines = [];
+        $rootScope.headlines = _headlines;
         var baseURI = '/api/v2/mysql/_table/headlines';
 
         var service = {
@@ -35,7 +36,8 @@
             var p0 = $http.get(url0);
             
             return $q.all([p0]).then(function (d){
-                _headlines = d[0].data.resource;
+                var data = d[0].data.resource;
+                _load(data);
                 return _headlines;            
             }, _queryFailed);  
 
@@ -62,7 +64,7 @@
                 headlinex.id = result.data.resource[0].id;
                 _headlines.push(headlinex);
 
-                console.log("result", result);
+                if ($rootScope.DEBUG_MODE) console.log("result", result);
                 return result.data;
             }
 
@@ -117,6 +119,13 @@
                 console.log("updating headlines succesful");
                 return result.data;
             }
+        }
+
+        function _load(data){
+            _headlines.length = 0;
+            data.forEach(function(x){
+                _headlines.push(x);
+            });
         }
 
         function _areheadlinesLoaded() {

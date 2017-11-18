@@ -4,7 +4,7 @@
     <div id="veil" ng-hide="vm.dataReady"></div>
     <div id="feedLoading" ng-hide="vm.dataReady">
         <div style="text-align: center" ng-if="!vm.dataReady">
-            <div class="loading-pulse"></div>
+            <div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>
             <p style="font-size:large">loading your business information...</p>
         </div>
     </div>
@@ -16,11 +16,13 @@
                 <button class="btn btn-default" ng-class="vm.showFilter == 1 ? 'active' : ''" ng-click="vm.setShowPurchases()">Show Only Purchaces</button>
                 <button class="btn btn-default" ng-class="vm.showFilter == 2 ? 'active' : ''" ng-click="vm.setShowNonPurchases()">Show Only Non-Purchaces</button>
                 <button class="btn btn-default" ng-class="vm.showUserFilter ? 'active' : ''" ng-click="vm.showUser()">Show User</button>
+                <button class="btn btn-warning" ng-class="vm.showUserFilter ? 'active' : ''" ng-click="vm.deleteSelected()">Delete Selected</button>
             </div>
             <div class="clearfix"></div>
-            <table datatable="ng"  class="table"  dt-options="vm.dtOptions" dt-columns="vm.dtColumns" dt-instance="vm.dtInstance" class="row-border hover">
+            <table datatable="ng"  class="table"  dt-options="vm.dtOptions" dt-columns="vm.dtColumns" dt-instance="vm.dtInstance" class="row-border hover"  ng-if="!vm.loading">
                 <thead style="border-style:none;">
                     <tr>
+                        <th></th>
                         <th>Business Name</th>
                         <th>Type</th>
                         <th>Activity</th>
@@ -29,8 +31,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
-                    <tr ng-repeat="biz in vm.getFiltered(vm.businesses)" style="cursor:pointer;">
+                        
+                    <tr ng-repeat="biz in vm.filtered" style="cursor:pointer;">{{vm.filtered.length}}
+                        <td>
+                            <input type="checkbox" ng-model="biz.checked">
+                        </td>
+
                         <td>{{biz.answerObj.name}}</td>
                         <td>{{biz.bizcat}}</td>
                         

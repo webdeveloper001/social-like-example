@@ -1,0 +1,28 @@
+<h2>Custom Ranks Manager</h2>
+<br>
+<p class="text-left">You have purchased <strong>{{vm.ranksqty}}</strong> ranks that are currently active.</p>    
+	<table class="table">
+		<tbody>
+			<thead style="border-style:none;">
+				<tr>
+					<th>Name</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
+			<tr ng-repeat="x in vm.ranks" style="cursor:pointer;">
+				<td ng-if="x.used" style="width:80%">{{x.title}}</td>
+                <td ng-if="!x.used" style="width:80%;color:#808080"><i>Empty</i></td>
+                <td ng-if="x.used" style="width:10%"><button class="btn btn-primary" ng-click="vm.editRank($index)">Edit</button></td>
+                <td ng-if="x.used" style="width:10%"><button class="btn btn-danger" ng-click="vm.deleteRank($index)">Delete</button></td>
+                <td ng-if="!x.used" style="width:10%"><button class="btn btn-success" ng-click="vm.addRank()">Add</button></td>
+			</tr>
+		</tbody>
+	</table>
+    <p class="text-left"> Custom ranks are a great way to engage your audience with your products and services. </p>
+    <div class="text-center">
+        <button class="btn btn-success">Purchase additional Ranks</button>
+    <div class="text-right">
+        <button class="btn btn-default" ng-click="vm.goBack()">Back</button>
+    </div>

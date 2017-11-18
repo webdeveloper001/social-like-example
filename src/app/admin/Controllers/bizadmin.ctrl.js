@@ -18,7 +18,7 @@
         vm.notifications = [];
 
         vm.gotoanswer = gotoanswer;
-        vm.getFiltered = getFiltered;
+        vm.filterData = filterData;
 
         vm.showFilter = 0;
         vm.showUserFilter = true;
@@ -26,6 +26,7 @@
         vm.setShowAll = setShowAll;
         vm.setShowNonPurchases = setShowNonPurchases;
         vm.showUser = showUser;
+        vm.deleteSelected = deleteSelected;
         // vm.dtOptions = DTOptionsBuilder.newOptions();
         // vm.dtColumnDefs = [
         //     DTColumnDefBuilder.newColumnDef(0),
@@ -33,8 +34,8 @@
         //     DTColumnDefBuilder.newColumnDef(2)
         // ];
         vm.dtInstance = {};
-
-
+        vm.filtered = [];
+        vm.loading = false;
         retrieveData();
 
         function retrieveData() {
@@ -50,12 +51,18 @@
 
                 data[0].forEach(function(business){
                     var pextend = angular.copy(business);
-                    getAnswer(pextend);
+                    var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(pextend.answer);  
+                    if (idx > -1){
                     
-                    vm.businesses.push(pextend);   
+                        getAnswer(pextend).then(function(){
+                            filterData();    
+                        });
+                        vm.businesses.push(pextend);       
+                    }                        
                 });
 
                 vm.dataReady = true;
+                filterData();
                 // $timeout(function(){
                 //     vm.dtInstance.rerender();
                 // })
@@ -70,7 +77,7 @@
         }
 
         function getAnswer(account){
-            answer.getAnswer(account.answer)
+            return answer.getAnswer(account.answer)
             .then(function(answer){
                 account.answerObj = answer;
             })
@@ -87,36 +94,43 @@
             $state.go('answerDetail', { index: x.slug });
         }
 
-        function getFiltered() {
+        function filterData() {
             if(vm.showFilter == 1) {
-                return vm.businesses.filter(function(p) { return p.hasranks || p.haspremium;});
+                return vm.filtered = vm.businesses.filter(function(p) { return p.hasranks || p.haspremium;});
             }
             if(vm.showFilter == 2) {
-                return vm.businesses.filter(function(p) { return !(p.hasranks || p.haspremium);});
+                return vm.filtered = vm.businesses.filter(function(p) { return !(p.hasranks || p.haspremium);});
             }
-            return vm.businesses;
+            
+            vm.loading = false;    
+            vm.dtInstance.rerender();
+            
+            return vm.filtered = vm.businesses;
+            
         }
 
         function  setShowPurchases  () {
             vm.showFilter = 1;
-            vm.dtInstance.rerender();
+            filterData();
         }
 
         function setShowNonPurchases() {
             vm.showFilter = 2;
-            vm.dtInstance.rerender();
-
+            filterData();
         }
 
         function setShowAll() {
             vm.showFilter = 0;
-            vm.dtInstance.rerender();
-
+            filterData();
         }
         function showUser() {
             vm.showUserFilter = !vm.showUserFilter;
-            vm.dtInstance.rerender();
-
+            filterData();
+        }
+        function deleteSelected() {
+            console.log(vm.filtered.filter(function(biz){ return biz.checked;}).map(function(biz){
+                return biz;
+            }));
         }
     }
 })();

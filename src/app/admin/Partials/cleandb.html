@@ -1,0 +1,227 @@
+<br>
+<div class="row" ng-if="vm.isAdmin">
+    <!-- Navigation Bar -->
+    <div id="veil" ng-hide="vm.dataReady"></div>
+    <div id="feedLoading" ng-hide="vm.dataReady">
+        <div style="text-align: center" ng-if="!vm.dataReady">
+            <div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>
+            <p style="font-size:large">loading your DB information...</p>
+        </div>
+    </div>
+    <div style="min-height: 200px" ng-hide="vm.dataReady"></div>
+
+    <div ng-if="vm.dataReady">
+        <div style="margin-left:40px; margin-right:40px">
+            <h3>Catans(Duplicated)</h3>
+            <div class="pull-right">
+                <button class="btn btn-warning"  ng-click="vm.deleteSelectedCatans()">Delete Duplication in Selected Catans</button>
+            </div>
+            <div class="clearfix" ></div>
+            <div   ng-if="!vm.deletingCatans">
+                <table datatable="ng"  class="table"  dt-options="vm.dtOptions" dt-columns="vm.dtColumns" dt-instance="vm.dtInstanceCatans" class="row-border hover">
+                    <thead style="border-style:none;">
+                        <tr>
+                            <th></th>
+                            <th>Category</th>
+                            <th>Answer</th>
+                            <th>Duplication</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                            
+                        <tr ng-repeat="biz in vm.filteredCatans" style="cursor:pointer;">
+                            <td>
+                                <input type="checkbox" ng-model="biz[0].checked">
+                            </td>
+                            <td>{{biz[0].category}}</td>
+                            <td>{{biz[0].answer}}</td>
+                            <td>{{biz.length}}</td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div  ng-if="vm.deletingCatans">
+                <h6> Deleting Duplication... </h6>
+            </div>
+        </div>
+
+
+        <div style="margin-left:40px; margin-right:40px">
+            <h3>Categories(Have no Rankings)</h3>
+            <div class="pull-right">
+                <button class="btn btn-warning"  ng-click="vm.deleteSelectedCategories()">Delete Selected Unlinked Categories</button>
+            </div>
+            <div class="clearfix" ></div>
+            <div   ng-if="!vm.deletingCategories">
+                <table datatable="ng"  class="table"  dt-options="vm.dtOptionsCategories" dt-columns="vm.dtColumnsCategories" dt-instance="vm.dtInstanceCategories" class="row-border hover">
+                    <thead style="border-style:none;">
+                        <tr>
+                            <th></th>
+                            <th>ID</th>
+
+                            <th>Category</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            
+                        <tr ng-repeat="biz in vm.filteredCategories" style="cursor:pointer;">
+                            <td>    
+                                <input type="checkbox" ng-model="biz.checked">
+                            </td>
+                            <td>{{biz.id}}</td>
+                            <td>{{biz.category}}</td>
+                            <td>{{biz.type}}</td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div  ng-if="vm.deletingCategories">
+                <h6> Deleting Unlinked Categories... </h6>
+            </div>
+        </div>
+
+        <div style="margin-left:40px; margin-right:40px">
+            <h3>Answers(Have no Reference)</h3>
+            <div class="pull-right">
+                <button class="btn btn-warning"  ng-click="vm.deleteSelectedAnswers()">Delete Selected Unreferenced Answers</button>
+            </div>
+            <div class="clearfix" ></div>
+            <div   ng-if="!vm.deletingAnswer">
+                <table datatable="ng"  class="table"  dt-options="vm.dtOptionsAnswers" dt-columns="vm.dtColumnsAnswer" dt-instance="vm.dtInstanceAnswers" class="row-border hover">
+                    <thead style="border-style:none;">
+                        <tr>
+                            <th></th>
+                            <th>ID</th>
+
+                            <th>Image</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            
+                        <tr ng-repeat="biz in vm.filteredAnswers" style="cursor:pointer;">
+                            <td>    
+                                <input type="checkbox" ng-model="biz.checked">
+                            </td>
+                            <td>{{biz.id}}</td>
+                            <td><img style="width:100px;height:100px" ng-src="{{biz.imageurl}}" /></td>
+                            <td>{{biz.name}}</td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div  ng-if="vm.deletingAnswers">
+                <h6> Deleting Unreferenced Answers... </h6>
+            </div>
+        </div>
+
+
+        <div style="margin-left:40px; margin-right:40px">
+            <h3>Rankings(Have no Answers)</h3>
+            <div class="pull-right">
+                <button class="btn btn-warning"  ng-click="vm.deleteSelectedRankings()">Delete Selected Unreferenced Rankings</button>
+            </div>
+            <div class="clearfix" ></div>
+            <div   ng-if="!vm.deletingRanking">
+                <table datatable="ng"  class="table"  dt-options="vm.dtOptionsRankings" dt-columns="vm.dtColumnsRanking" dt-instance="vm.dtInstanceRankings" class="row-border hover">
+                    <thead style="border-style:none;">
+                        <tr>
+                            <th></th>
+                            <th>ID</th>
+
+                            <th>Title</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            
+                        <tr ng-repeat="biz in vm.filteredRankings" style="cursor:pointer;">
+                            <td>    
+                                <input type="checkbox" ng-model="biz.checked">
+                            </td>
+                            <td>{{biz.id}}</td>
+                            <td>{{biz.title}}</td>
+                            <td>{{biz.type}}</td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div  ng-if="vm.deletingRankings">
+                <h6> Deleting Unreferenced Rankings... </h6>
+            </div>
+        </div>
+
+
+        <div style="margin-left:40px; margin-right:40px">
+            <h3>Feature Images(Have no Reference)</h3>
+            <div class="pull-right">
+                <button class="btn btn-warning"  ng-click="vm.deleteSelectedFImages()">Delete Selected Unreferenced FImages</button>
+            </div>
+            <div class="clearfix" ></div>
+            <div   ng-if="!vm.deletingFImages">
+                <table datatable="ng"  class="table"  dt-options="vm.dtOptionsFImages" dt-columns="vm.dtColumnsFImages" dt-instance="vm.dtInstanceFImages" class="row-border hover">
+                    <thead style="border-style:none;">
+                        <tr>
+                            <th></th>
+                            <th>Image</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            
+                        <tr ng-repeat="biz in vm.filteredFImages" style="cursor:pointer;">
+                            <td>    
+                                <input type="checkbox" ng-model="biz.checked">
+                            </td>
+                            <td><img style="width:100px;height:100px" ng-src="{{biz.url}}"</td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div  ng-if="vm.deletingFImages">
+                <h6> Deleting Unreferenced Feature Images... </h6>
+            </div>
+        </div>
+
+        <div style="margin-left:40px; margin-right:40px">
+            <h3>Feature Images Sizes</h3>
+            <!-- <div class="pull-right">
+                <button class="btn btn-warning"  ng-click="vm.deleteSelectedFImages()">Delete Selected Unreferenced FImages</button>
+            </div> -->
+            <div class="clearfix" ></div>
+            <div   ng-if="!vm.deletingFImages">
+                <table datatable="ng"  class="table"  dt-options="vm.dtOptionsFImages" dt-columns="vm.dtColumnsFImages" dt-instance="vm.dtInstanceFImages" class="row-border hover">
+                    <thead style="border-style:none;">
+                        <tr>
+                            <th></th>
+                            <th>Image</th>
+                            <th>Filename</th>
+                            <th>Size</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            
+                        <tr ng-repeat="biz in vm.fimages | orderBy:'-size'" style="cursor:pointer;">
+                            <td>    
+                                <input type="checkbox" ng-model="biz.checked">
+                            </td>
+                            <td><img style="width:100px;height:100px" ng-src="{{biz.url}}"</td>
+                            <td>{{biz.url}}</td>
+                            <td>{{biz.size}}</td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div  ng-if="vm.deletingFImages">
+                <h6> Deleting Unreferenced Feature Images... </h6>
+            </div>
+        </div>
+    </div>
+</div>

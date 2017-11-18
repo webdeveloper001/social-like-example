@@ -269,7 +269,7 @@
             exe1 = true;
 
         }
-        var nhs = $rootScope.neighborhoods.concat($rootScope.districts);
+        var nhs = $rootScope.nhs;
         var exe2 = false;
         function createCBlocksRecsNh() {
             if (exe2) return;

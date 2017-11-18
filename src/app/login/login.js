@@ -3,7 +3,7 @@
 
     angular.module('login', [
         // Angular modules 
-        'ngResource',
+        //'ngResource',
         'ngCookies',
 
         // Custom modules 

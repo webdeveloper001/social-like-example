@@ -1,0 +1,206 @@
+<div class="well-answer" ng-if="vm.nsm">
+    <h2 class="sub-header">{{vm.answer.name}}
+      <span class="nomargin"><button type="button" class="glyphicon glyphicon-remove pull-right" 
+            style="margin:0px;padding:0px;border:0px;background-color:#b3b3b3;color:#4d4d4d;font-size:medium;" 
+            ng-click="vm.closeRank()"></button></span>
+    </h2>
+</div>
+<div class="well-answer" ng-if="vm.sm">
+    <h3 class="sub-header">{{vm.answer.name}}
+       <span class="nomargin"><button type="button" class="glyphicon glyphicon-remove pull-right" 
+            style="margin:0px;padding:0px;border:0px;background-color:#b3b3b3;color:#4d4d4d;font-size:medium;" 
+            ng-click="vm.closeRank()"></button></span>
+    </h3>
+</div>
+<div class="row" style="margin:0px">
+    <div class="col-sm-6">
+        <h3>Edit Answer Profile</h3>
+    </div>
+    <div class="col-sm-6 text-right">
+        <p class="hiw" ng-click="vm.showHowItWorksDialog()"><u>How it Works</u></p>
+    </div>
+</div>
+<br>
+
+<div class="row" style="margin:0px">
+    <div class="col-sm-12 col-md-7">
+    <form class="form-horizontal" role="form" name="answerForm" ng-repeat="x in vm.fields">
+        <!--  <div class="form-group" ng-repeat="x in vm.fields"> -->
+        <!--   <div ng-repeat="x in vm.fields">  -->
+       
+        <!--<div class="col-sm-8 col-md-8">-->
+        <div ng-attr-style="display:{{x.field!='addinfo' ? 'inline':'none'}}" ng-hide="{{x.onlybyowner && !vm.userIsOwner}}">
+            <label class="control-label capitalize">{{x.label}}:</label>
+            <div class="input-group">
+                <!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
+                <input type="text" class="form-control" ng-model="x.val" bs-options="{{x.opts}}" bs-typeahead placeholder="{{x.cval}}">
+                <span class="input-group-btn text-right">
+                        <button class="btn btn-primary" type="button" ng-click="vm.editField(x)">Edit</button>
+                    </span>
+            </div>
+        </div>        
+        <div class="input-group" ng-attr-style="display:{{x.field=='addinfo' ? 'inline':'none'}}" 
+        ng-hide="{{!vm.access && (vm.type == 'PersonCust')}}">
+        <label class="control-label capitalize">{{x.label}}:</label>
+            <textarea id="textarea1" class="form-control" ng-model="x.val" placeholder="{{x.cval}}" rows="5" ng-model-options="{debounce: 2500}">
+            </textarea>
+            <br><br>
+            <span class="input-group-btn text-right">
+                <button ng-click="vm.getWiki()" class="btn btn-primary" style="background-color:#595959;border-color:gray;margin-right:10px" ng-if="vm.type == 'Person'">
+                    Get from Wikipedia
+                </button>
+                <button class="btn btn-primary" type="button" ng-click="vm.editField(x)">Edit</button>
+            </span>
+        </div>
+    </form>
+    </div>
+
+    <div class="col-sm-12 col-md-5">
+        <div class="" ng-if="vm.type!='Short-Phrase'">
+            <img class="displayed-uc" ng-src="{{vm.imageURL}}" alt="{{image.errorLoading}}" ng-attr-style="width:100%; max-height:300px" ng-show="{{vm.type != 'Short-Phrase'}}">
+            <img ng-src="../../../assets/images/powered_by_google_on_white.png" ng-if="vm.type!='PersonCust' && !vm.userIsOwner">
+        </div>
+        <div class="container-answer" ng-attr-style="width:100%; max-height:300px;" ng-if="vm.type == 'Short-Phrase'">
+            <br>
+            <h2 style="text-align:center"><strong>{{vm.answer.name}}</strong></h2>
+            <br>
+            <h4 style="text-align:center">{{vm.answer.addinfo}}</h4>
+        </div>
+        <br>
+        <div ng-if="vm.userIsOwner" ng-attr-style="display:{{vm.userIsOwner ? 'inline':'none'}}">
+        <!-- <div> -->    
+            <blob-upload>
+        </div>
+        <div ng-attr-style="display:{{vm.userIsOwner ? 'none':'inline'}}" ng-if="vm.type!='PersonCust'"> 
+        <!-- <div ng-if="vm.type!='PersonCust'"> -->    
+            <button type="submit" class="btn btn-primary" ng-click="vm.editImage()">{{vm.imageCommand}}</button>
+            <button type="submit" class="btn btn-primary" ng-click="vm.viewPrev()" ng-attr-style="display:{{vm.imagefunctions}}">&laquo</button>
+            <button type="submit" class="btn btn-primary" ng-click="vm.viewNext()" ng-attr-style="display:{{vm.imagefunctions}}">&raquo</button>
+            <a ng-attr-style="display:{{vm.imagefunctions}}">{{vm.linkIdx+1}} of {{vm.numLinks}}</a>
+            <button type="submit" class="btn btn-success" ng-click="vm.selectImage()" ng-attr-style="display:{{vm.imagefunctions}}">Select</button>
+        </div>
+        </br>
+        <label class="checkbox-inline"  ng-show="{{vm.type != 'Short-Phrase'}}">
+                <input type="checkbox" ng-change='vm.onNoGoodImages(vm.ngi)' ng-model="vm.ngi">No good images were found
+        </label>
+    </div>
+
+</div>
+<div class="row">
+<div class="col-sm-12 col-md-7" style="padding-top:10px">
+    <label>Ranks:</label>
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="x in vm.answerRanks" 
+            style="cursor:pointer;">{{x.title}}
+        <i ng-if="$index>0" class="glyphicon glyphicon-remove pull-right" ng-click="vm.remRank(x)"></i></li>
+    </ul>
+
+    <div ng-if="true" style="padding-top:10px">
+        <div class="text-left"><button class="btn btn-primary" ng-if="!vm.addctsactive" ng-click="vm.addCatans()">Add More Ranks</button></div>
+		<div class="input-group" ng-if="vm.addctsactive">
+        <!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
+        <input type="text" class="form-control" ng-model="vm.addctsval" bs-options="c for c in vm.addctsopts" bs-typeahead>
+        <span class="input-group-btn text-right">
+            <button class="btn btn-success" type="button" ng-click="vm.addcts()">Add</button>
+        </span>
+		</div>
+	</div>
+</div>
+</div>
+<br>
+<div class="well well-light-edit" ng-repeat="x in vm.edits">
+    
+    <div ng-if="x.field != 'addinfo'">
+        <p><strong>{{x.username}}</strong> has edited the <strong class="capitalize"><em>{{x.field}}</em>
+            </strong> of <strong><em>{{x.name}}</em>
+            </strong> to <strong><em>{{x.nval}}</em></strong>.</p>
+    </div>
+    <div ng-if="x.field == 'addinfo'">
+        <p><strong>{{x.username}}</strong> has edited the information of <strong><em>{{x.name}}</em>
+            </strong> to: <br><br>{{x.nval}}.</p>
+    </div>
+    <img ng-src="{{x.imageURL}}" class="displayed" ng-attr-style="height:150px;display:{{x.display}}">
+    <div class="row form-group ">
+        <div class="text-center ">
+            <label>{{x.upV}}</label>
+            <label> </label>
+            <button class="btn btn-primary {{x.agree}} " ng-click="vm.editAgree(x, $index) ">Agree</button>
+            <button type="submit " class="btn btn-primary {{x.disagree}} " ng-click="vm.editDisagree(x, $index) ">Disagree</button>
+            <label> </label>
+            <label>{{x.downV}}</label>
+        </div>
+    </div>
+</div>
+<div ng-if="vm.sm && vm.userIsOwner && vm.type == 'Establishment'">
+<div class="text-center ">
+<label>Service Hours</label>
+</div>
+<br>
+<div ng-repeat="x in vm.openhours ">
+    <div class="container-hours ">
+        <div class="row ">
+            <div class="col-xs-6 col-sm-6 col-md-2 "><p> {{x.day}}: </p></div>
+            <div class="col-xs-6 col-sm-6 col-md-2 ">
+                <select ng-model="x.opn " ng-change="vm.hoursChanged() " ng-options="n for n in vm.openOptions ">
+		          <!--<option value=" ">{{x.opn}}</option>-->
+	           </select>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-xs-2 col-sm-2 col-md-2 " ng-attr-style="display:{{x.opn=='OPEN' ? 'inline': 'none'}} "><p class="text-right ">From: </p></div>
+            <div class="col-xs-4 col-sm-4 col-md-2 " ng-attr-style="display:{{x.opn=='OPEN' ? 'inline': 'none'}} ">
+                <select ng-model="x.st " ng-change="vm.hoursChanged() " ng-options="t for t in vm.timeDD ">
+	               <!--	<option value=" ">{{x.st}}</option>-->
+	           </select>
+            </div>    
+            <div class="col-xs-2 col-sm-2 col-md-2 " ng-attr-style="display:{{x.opn=='OPEN' ? 'inline': 'none'}} "><p class="text-right ">To: </p></div>
+            <div class="col-xs-4 col-sm-4 col-md-2 " ng-attr-style="display:{{x.opn=='OPEN' ? 'inline': 'none'}} ">
+                <select ng-model="x.ct " ng-change="vm.hoursChanged() " ng-options="t for t in vm.timeDD ">
+	               <!--	<option value=" ">{{x.ct}}</option> -->
+	           </select>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+</div>
+<div ng-if="vm.nsm && vm.userIsOwner && vm.type == 'Establishment'">
+<div class="container " style="background-color:#e6e6e6;padding-right:50px;padding-left:10px;padding-top:10px;padding-bottom:0px; ">
+<div class="text-center ">
+<label>Service Hours</label>
+</div>
+<br>
+<div class="container " ng-repeat="x in vm.openhours ">
+        <div class="row ">
+            <div class="col-xs-2 col-sm-2 col-md-2 "><p> {{x.day}}: </p></div>
+            <div class="col-xs-2 col-sm-2 col-md-2 ">
+                <select ng-model="x.opn " ng-change="vm.hoursChanged() " ng-options="n for n in vm.openOptions ">
+		          <!--<option value=" ">{{x.opn}}</option>-->
+	           </select>
+            </div>
+            <div class="col-xs-2 col-sm-2 col-md-2 " ng-attr-style="display:{{x.opn=='OPEN' ? 'inline': 'none'}} "><p class="text-right ">From: </p></div>
+            <div class="col-xs-2 col-sm-2 col-md-2 " ng-attr-style="display:{{x.opn=='OPEN' ? 'inline': 'none'}} ">
+                <select ng-model="x.st " ng-change="vm.hoursChanged() " ng-options="t for t in vm.timeDD ">
+	               <!--	<option value=" ">{{x.st}}</option>-->
+	           </select>
+            </div>    
+            <div class="col-xs-2 col-sm-2 col-md-2 " ng-attr-style="display:{{x.opn=='OPEN' ? 'inline': 'none'}} "><p class="text-right ">To: </p></div>
+            <div class="col-xs-2 col-sm-2 col-md-2 " ng-attr-style="display:{{x.opn=='OPEN' ? 'inline': 'none'}} ">
+                <select ng-model="x.ct " ng-change="vm.hoursChanged() " ng-options="t for t in vm.timeDD ">
+	               <!--	<option value=" ">{{x.ct}}</option> -->
+	           </select>
+            </div>
+        
+    </div>
+    <br>
+</div>
+</div>
+</div>
+<div class="text-right" ng-if="vm.userIsOwner && vm.type == 'Establishment'">
+<a ng-click="vm.updateHours() " class="btn btn-primary {{vm.updateHoursEn}} ">Update Hours</a>
+</div>
+<br>
+<div class="text-center ">
+<a ng-click="vm.answerDetail() " class="btn btn-success ">Back</a>
+</div>
+<br>

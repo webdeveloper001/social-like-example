@@ -5,144 +5,150 @@
         .module('app')
         .factory('table', table);
 
-    table.$inject = ['$http', '$q', '$rootScope','answer','$state', 'filter','uaf'];
+    table.$inject = ['$http', '$q', '$rootScope','answer','$state', 'filter','uaf','$window','catans','staticpages'];
 
-    function table($http, $q, $rootScope, answer, $state, filter, uaf) {
+    function table($http, $q, $rootScope, answer, $state, filter, uaf, $window, catans, staticpages) {
 
         // Members
         var _tables = [];
+        $rootScope.content = _tables;
+
         var baseURI = '/api/v2/mysql/_table/ranking';
 
         var service = {
             getTables: getTables,
-            getTablesMain: getTablesMain,
-            getTablesNonMain: getTablesNonMain,
-            //getSingleTable: getSingleTable,
+            getSingleTable: getSingleTable,
             update: update,
             addTable: addTable,
-            addTableforAnswer: addTableforAnswer,
             deleteTable: deleteTable,
-            getMostPopularData: getMostPopularData
+            getTablesX: getTablesX,
+            getTablesL: getTablesL,
+            getInitialHomeData: getInitialHomeData,
+            ghostTablesWithAnswer: ghostTablesWithAnswer,
+            storeInitialHomeData: storeInitialHomeData 
         };
 
+        //for performance request only following fields:
+            var fields = '';
+            fields += 'id,type,tags,keywords,question,image1url,image2url,image3url,';
+            fields += 'catstr,owner,slug,views,answers,numcom,scope,isatomic,ismp,cat,nh,timestmp';
+
         return service;
-        function getMostPopularData(){
-            // $rootScope.filterOptions.isCity
-            $http.get(baseURI + '?order=views DESC&offset=0&limit=8&filter=ismp=1')
-            .then(function(data){
-                $rootScope.initalHomeData = data.data.resource;
-                filter.saveInitalHomeData($rootScope.initalHomeData);
-                $rootScope.$emit('initalHomeDataLoaded');
-            });
-            return true;
+        
+        function getInitialHomeData(data){
+            /*
+            var ranksFromStorage = $window.localStorage.getItem("Ranks-HomeData");
+            if (ranksFromStorage) {
+                 _append(JSON.parse(ranksFromStorage));
+                 return $q.when(true);
+            }
+            */
+            var filterstr = '?filter=(';
+            for (var i=0; i< data.length; i++){
+                filterstr = filterstr + 'id=' + data[i]+')OR(';
+            }
+            filterstr = filterstr.substring(0,filterstr.length-3);
+
+            var url0 = baseURI + filterstr + '&fields=' + fields;
+            var p0 = $http.get(url0);
+
+            return $q.all([p0]).then(function (d){
+                var datax = d[0].data.resource;
+                
+                _append(datax);
+                //if (_tables.length == 0) _load(datax); 
+
+                if ($rootScope.DEBUG_MODE) console.log("_tables length after initialhomedata load: ", _tables.length);
+                //$window.localStorage.setItem("Ranks-HomeData", JSON.stringify(datax));
+                return _tables;            
+            }, _queryFailed);  
+
+        }
+
+        function getTablesX(scope) {
+
+            //_tables = [];
+            var url0 = baseURI + '?offset=' + 0 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
+            var url1 = baseURI + '?offset=' + 1 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
+            var url2 = baseURI + '?offset=' + 2 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
+            var url3 = baseURI + '?offset=' + 3 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
+            
+            var p0 = $http.get(url0);
+            var p1 = $http.get(url1);
+            var p2 = $http.get(url2);
+            var p3 = $http.get(url3);
+            
+            return $q.all([p0,p1,p2,p3]).then(function (d){
+                var data = d[0].data.resource.concat(d[1].data.resource,d[2].data.resource,d[3].data.resource);
+                _load (data);
+                if ($rootScope.DEBUG_MODE) console.log("tables length: ", _tables.length);
+                return _tables;            
+            }, _queryFailed);  
+        }
+
+        function getTablesL(data) {
+
+            var filterstr = '?filter=(';
+            for (var i=0; i< data.length; i++){
+                filterstr = filterstr + 'id=' + data[i].category+')OR(';
+            }
+            filterstr = filterstr.substring(0,filterstr.length-3);
+            
+            var url0 = baseURI + filterstr + '&fields=' + fields;
+            var p0 = $http.get(url0);
+            
+            return $q.all([p0]).then(function (d){
+                var data = d[0].data.resource;
+                _load(data);
+                if ($rootScope.DEBUG_MODE) console.log("tables L length: ", _tables.length);
+                return _tables;            
+            }, _queryFailed);  
         }
 
         function getTables(forceRefresh) {
 
-            if (_areTablesLoaded() && !forceRefresh) {
-
-                return $q.when(_tables);
-            }
-
-            //var url = baseURI;
             //Get all match records
             var url0 = baseURI + '?offset=' + 0 * 1000;
             var url1 = baseURI + '?offset=' + 1 * 1000;
             var url2 = baseURI + '?offset=' + 2 * 1000;
             var url3 = baseURI + '?offset=' + 3 * 1000;
-            var url4 = baseURI + '?offset=' + 4 * 1000;
-            var url5 = baseURI + '?offset=' + 5 * 1000;
-            var url6 = baseURI + '?offset=' + 6 * 1000;
-            var url7 = baseURI + '?offset=' + 7 * 1000;
+            
 
             var p0 = $http.get(url0);
             var p1 = $http.get(url1);
             var p2 = $http.get(url2);
             var p3 = $http.get(url3);
-            var p4 = $http.get(url4);
-            var p5 = $http.get(url5);
-            var p6 = $http.get(url6);
-            var p7 = $http.get(url7);
-
-            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7]).then(function (d){
-                _tables = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource,
-                  d[4].data.resource,  d[5].data.resource, d[6].data.resource, d[7].data.resource);
+            
+            return $q.all([p0, p1, p2, p3]).then(function (d){
+                var data = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource);
+                _load(data);
                 if ($rootScope.DEBUG_MODE) console.log("tables length: ", _tables.length);
                 return _tables;            
             }, _queryFailed);  
-            //return $http.get(url).then(querySucceeded, _queryFailed);
-            
-            //function querySucceeded(d) {
-
-                
-                //return _tables = result.data.resource;
-            //}          
+             
         }
 
-        function getTablesMain() {
-
-            var url0 = baseURI + '/?filter=ismp=true';
-
-            var p0 = $http.get(url0);
-            
-            return $q.all([p0]).then(function (d){
-                _tables = d[0].data.resource;
-                if ($rootScope.DEBUG_MODE) console.log("tables_main length: ", _tables.length);
-                return _tables;            
-            }, _queryFailed);  
-                      
-        }
-
-        function getTablesNonMain() {
-            
-            //Get all match records
-            var url0 = baseURI + '/?filter=ismp=false'+'&offset=' + 0 * 1000;
-            var url1 = baseURI + '/?filter=ismp=false'+'&offset=' + 1 * 1000;
-            var url2 = baseURI + '/?filter=ismp=false'+'&offset=' + 2 * 1000;
-            var url3 = baseURI + '/?filter=ismp=false'+'&offset=' + 3 * 1000;
-            var url4 = baseURI + '/?filter=ismp=false'+'&offset=' + 4 * 1000;
-            var url5 = baseURI + '/?filter=ismp=false'+'&offset=' + 5 * 1000;
-            var url6 = baseURI + '/?filter=ismp=false'+'&offset=' + 6 * 1000;
-            var url7 = baseURI + '/?filter=ismp=false'+'&offset=' + 7 * 1000;
-            
-            var p0 = $http.get(url0);
-            var p1 = $http.get(url1);
-            var p2 = $http.get(url2);
-            var p3 = $http.get(url3);
-            var p4 = $http.get(url4);
-            var p5 = $http.get(url5);
-            var p6 = $http.get(url6);
-            var p7 = $http.get(url7);
-
-            return $q.all([p0, p1, p2, p3, p4, p5, p6, p7]).then(function (d){
-                _tables = _tables.concat(d[0].data.resource, d[1].data.resource, d[2].data.resource, d[3].data.resource,
-                  d[4].data.resource,  d[5].data.resource, d[6].data.resource, d[7].data.resource);
-                if ($rootScope.DEBUG_MODE) console.log("tables length: ", _tables.length);
-                return _tables;            
-            }, _queryFailed);
-                      
-        }
-/*
         function getSingleTable(id) {
 
-            var url0 = baseURI + '/?filter=id=' + id;
+            var url0 = baseURI + '/?filter=id=' + id + '&fields=' + fields;
 
             var p0 = $http.get(url0);
             
             return $q.all([p0]).then(function (d){
                 
-                _tables = d[0].data.resource;
-                console.log("single table ", _tables);
-                if ($rootScope.DEBUG_MODE) console.log("single table loaded: ", _tables.length);
-                return _tables;            
+                var data = d[0].data.resource[0];
+                
+                _append([data]);
+
+                if ($rootScope.DEBUG_MODE) console.log("single table loaded: ", data);
+                return data;            
             }, _queryFailed);  
                       
         }
-*/
 
         function addTable(table) {
             
-            table.isatomic = true;
+            table.scope = $rootScope.SCOPE;
 
             var url = baseURI;
             var resource = [];
@@ -161,8 +167,25 @@
                 //update local copy
                 var tablex = table;
                 tablex.id = result.data.resource[0].id;
-                _tables.push(tablex);
+                                
+                //Unwrap category & neighborhood
+                var idx = $rootScope.categories.map(function(x) {return x.id; }).indexOf(tablex.cat);
+                var catObj = $rootScope.categories[idx]; 
+                var idx2 = $rootScope.locations.map(function(x) {return x.id; }).indexOf(tablex.nh);
+                var nhObj = $rootScope.locations[idx2];
 
+                var title = catObj.category.replace('@Nh',nhObj.nh_name);
+                tablex.title = title;
+                tablex.fimage = catObj.fimage;
+                tablex.tags = catObj.tags;
+                tablex.keywords = catObj.keywords;
+                tablex.fc = catObj.fc;
+                tablex.bc = catObj.bc;
+                tablex.shade = catObj.shade;
+                tablex.type = catObj.type;
+                tablex.user = $rootScope.user.id;
+                tablex.introtext = catObj.introtext;
+                                
                 //push to search String array
                 var searchStr = tablex.tags + " " + tablex.title;
                 $rootScope.searchStr.push(searchStr);
@@ -170,87 +193,83 @@
                 //update slug tag and featured image
                 var slug = tablex.title.toLowerCase(); 
                 slug = slug.replace(/ /g,'-');
+                slug = slug.replace('/','at');
+                slug = slug.replace('?','');
                 slug = slug + '-' + result.data.resource[0].id;
-                var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/'+slug+'.jpg';
-                update(result.data.resource[0].id,['slug','fimage'],[slug,fimage]);
+                tablex.slug = slug;
+
+                _tables.push(tablex);
+                //var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/' + slug + fext;
+                update(result.data.resource[0].id,['slug'],[slug]);
+
+                //create static page for this rank
+                //staticpages.createPageRank(tablex);
 
                 //Create user-activity feed record
                 uaf.post('addedRank',['category'],[tablex.id]); //user activity feed
 
                 if ($rootScope.DEBUG_MODE) console.log("result", result);
-                return result.data;
+                return result.data.resource[0].id;
             }
 
         }
 
-        function addTableforAnswer(table,colors,answerid){
-            table.isatomic = true;
-
-            var url = baseURI;
-            var resource = [];
-
-            resource.push(table);
-
-            return $http.post(url, resource, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                },
-                body: resource
-            }).then(querySucceeded, _queryFailed);
-
-            function querySucceeded(result) {
-
-                //update local copy
-                var tablex = table;
-                tablex.id = result.data.resource[0].id;
-                _tables.push(tablex);
-
-                //push to search String array
-                var searchStr = tablex.tags + " " + tablex.title;
-                $rootScope.searchStr.push(searchStr);
-
-                //update slug tag and featured image
-                var slug = tablex.title.toLowerCase(); 
-                slug = slug.replace(/ /g,'-');
-                slug = slug + '-' + result.data.resource[0].id;
-                //var fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/'+slug+'.jpg';
-                update(result.data.resource[0].id,['slug'],[slug]);
-
-                //update answer
-                var obj = {};
-                obj.id = result.data.resource[0].id;
-                obj.bc = colors[0];
-                obj.fc = colors[1];
-                var rankExists = false;
-                var ranksStr = '';
-                var ranks = [];
-                //if there is already a rank
-                if ($rootScope.canswer.ranks != undefined && $rootScope.canswer.ranks != null &&
-                    $rootScope.canswer.ranks != '') {
-                        //console.log("there is already a rank");
-                        ranksStr = $rootScope.canswer.ranks;
-                        //console.log("this is the existing string - ", ranksStr);
-                        ranks = JSON.parse(ranksStr);
-                        //console.log("ranks", ranks);
-                        ranks.push(obj);
-                        ranksStr = JSON.stringify(ranks);
-                        //console.log("this is the new string - ", ranksStr);
-                        answer.updateAnswer(answerid, ['ranks'], [ranksStr]);
+        function ghostTablesWithAnswer(ranks,ans) {
+           console.log("addGhostTableWithAnswer ", ranks, ans);
+           var tids = []; //table ids
+           var p = []; //promises array
+           var granks = [];
+           var granksids = [];
+           p.push(answer.addAnswer(ans,[]));
+           
+           ranks.forEach(function(rank){
+               if (rank.isghost) {
+                   granks.push(rank);
+                   p.push(addTable(rank));
+               }
+               else tids.push(rank.id); 
+           });
+           
+           return $q.all(p).then(function (d) {
+                var ansid = d[0].resource[0].id;
+                console.log("answer id - ", ansid);
+                for (var i=1; i < d.length; i++) {
+                    tids.push(d[i]); //push ids of newly created ranks (from ghosts)
+                    granksids.push(d[i]);
                 }
-                //if this is rank #1
-                else{
-                    ranksStr = '[' + JSON.stringify(obj) +']';
-                    //console.log("this is the new string - ", ranksStr);
-                    answer.updateAnswer(answerid, ['ranks'], [ranksStr]);
+                _updateCatstr(granks,granksids);
+                console.log('tids - ', tids);                
+                tids.forEach(function(t){
+                    catans.postRec2(ansid, t);
+                });
+                return d;
+            });
+   
+        }
+
+        function _updateCatstr(ranks,ids){
+            //update catstr from parent table if applicable
+            console.log("@ _updateCatstr ", ranks, ids);
+                var catvals = [];
+                var catstr = '';
+                for (var n = 0; n < ranks.length; n++) {
+                    catvals = [];
+                    catstr = '';
+                    _tables.forEach(function (t) {
+                        if (t.cat == ranks[n].cat && t.nh == 1) {
+                            console.log("Found parent rank");
+                            catvals = t.catstr.split(':').map(Number);
+                            catvals.push(ids[n]);
+                            catstr = '';
+                            for (var i = 0; i < catvals.length; i++) {
+                                catstr = catstr + ':' + catvals[i];
+                            }
+                            catstr = catstr.substring(1);
+                            console.log("updated catstr for table - ", t.id);
+                            update(t.id,['catstr'],[catstr]);
+                        }
+                    })
                 }
-
-                //Create user-activity feed record
-                uaf.post('addedCustomRank',['answer','category'],[$rootScope.canswer.id, tablex.id]); //user activity feed
-
-                //$state.go('answerDetail',{index: answerid});
-                if ($rootScope.DEBUG_MODE) console.log("result", result);
-                return result.data;
-            }
         }
 
         function deleteTable(table_id) {
@@ -278,6 +297,12 @@
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
 
+                //delete static page for this rank
+                var filename = 'rank' + table_id + '.html';
+                var data = {};
+                data.filename = filename;
+                staticpages.removeFile(data);
+
                 if ($rootScope.DEBUG_MODE) console.log("Deleting table was succesful");
                 return result.data;
             }
@@ -294,67 +319,17 @@
             data.id = id;
 
             for (var i = 0; i < field.length; i++) {
-                switch (field[i]) {
-                    case "views": data.views = val[i]; break;
-                    case "answers": data.answers = val[i]; break;
-                    case "title": data.title = val[i]; break;
-                    case "tags": data.tags = val[i]; break;
-                    case "keywords": data.keywords = val[i]; break;
-                    case "type": data.type = val[i]; break;
-                    case "question": data.question = val[i]; break;
-                    case "image1url": data.image1url = val[i]; break;
-                    case "image2url": data.image2url = val[i]; break;
-                    case "image3url": data.image3url = val[i]; break;
-                    case "answertags": data.answertags = val[i]; break;
-                    case "isatomic": data.isatomic = val[i]; break;
-                    case "catstr": data.catstr = val[i]; break;
-                    case "numcom": data.numcom = val[i]; break;
-                    case "ismp": data.ismp = val[i]; break;
-                    case "fimage": data.fimage = val[i]; break;
-                    case "bc": data.bc = val[i]; break;
-                    case "fc": data.fc = val[i]; break;
-                    case "shade": data.shade = val[i]; break;
-                    case "slug": data.slug = val[i]; break;
-                    case "introtext": data.introtext = val[i]; break;                     
-                }
+                data[field[i]] = val[i];                
             }
             //console.log("data", data);
             obj.resource.push(data);
 
             var url = baseURI;
-            
+
             //update local copy
-            var idx = 0;
-            for (var i = 0; i < $rootScope.content.length; i++) {
-                if ($rootScope.content[i].id == id) {
-                    idx = i;
-                    break;
-                }
-            }
+            var idx = _tables.map(function(x) {return x.id; }).indexOf(id);
             for (var i = 0; i < field.length; i++) {
-                switch (field[i]) {
-                    case "answers": $rootScope.content[idx].answers = val[i]; break;
-                    case "views": $rootScope.content[idx].views = val[i]; break;
-                    case "title": $rootScope.content[idx].title = val[i]; break;
-                    case "tags": $rootScope.content[idx].tags = val[i]; break;
-                    case "keywords": $rootScope.content[idx].keywords = val[i]; break;
-                    case "type": $rootScope.content[idx].type = val[i]; break;
-                    case "question": $rootScope.content[idx].question = val[i]; break;
-                    case "image1url": $rootScope.content[idx].image1url = val[i]; break;
-                    case "image2url": $rootScope.content[idx].image2url = val[i]; break;
-                    case "image3url": $rootScope.content[idx].image3url = val[i]; break;
-                    case "answertags": $rootScope.content[idx].answertags = val[i]; break;
-                    case "isatomic": $rootScope.content[idx].isatomic = val[i]; break;
-                    case "catstr": $rootScope.content[idx].catstr = val[i]; break;
-                    case "numcom": $rootScope.content[idx].numcom = val[i]; break;
-                    case "ismp": $rootScope.content[idx].ismp = val[i]; break;
-                    case "fimage": $rootScope.content[idx].fimage = val[i]; break;
-                    case "bc": $rootScope.content[idx].bc = val[i]; break;
-                    case "fc": $rootScope.content[idx].fc = val[i]; break;
-                    case "shade": $rootScope.content[idx].shade = val[i]; break;
-                    case "slug": $rootScope.content[idx].slug = val[i]; break;
-                    case "introtext": $rootScope.content[idx].introtext = val[i]; break;                   
-                }
+                _tables[idx][field[i]] = val[i];                              
             }
 
             return $http.patch(url, obj, {
@@ -364,10 +339,35 @@
                 body: obj
             }).then(querySucceeded, _queryFailed);
             function querySucceeded(result) {
-
+                $rootScope.updated_rank_id = result.data.resource[0].id
                 if ($rootScope.DEBUG_MODE) console.log("updating ranking record succesful");
                 return result.data;
             }
+        }
+
+        function storeInitialHomeData(rids){
+            
+            var data = [];
+            var idx = 0;
+            rids.forEach(function(i){
+                 idx = _tables.map(function (x) { return x.id; }).indexOf(i);
+                 if (idx > -1) data.push(_tables[idx]);
+            });
+            $window.localStorage.setItem("Ranks-HomeData", JSON.stringify(data));
+        }
+
+        function _load(data){
+            _tables.length = 0;
+            data.forEach(function(x){
+                _tables.push(x);
+            });
+        }
+
+        function _append(data){
+           data.forEach(function(item){
+                var idx = _tables.map(function(x) {return x.id; }).indexOf(item.id);
+                if (idx < 0) _tables.push(item);
+            }); 
         }
 
         function _areTablesLoaded() {

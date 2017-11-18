@@ -104,6 +104,29 @@ function (color, $window, $rootScope, $state, dialog) {
             scope.moretext = ' more ';
             scope.completeinfo = false;
 
+           //Get distance if not available
+           if ($rootScope.coordsRdy && scope.answer.location && scope.answer.dist == undefined) {
+               //Calculate distances to user
+               var p = 0.017453292519943295;    // Math.PI / 180
+               var c = Math.cos;
+               var a = 0;
+               var lat_o = $rootScope.currentUserLatitude;
+               var lng_o = $rootScope.currentUserLongitude;
+               var lat = 0;
+               var lng = 0;
+               var dist_mi = 0;
+
+               lat = scope.answer.lat;
+               lng = scope.answer.lng;
+
+               a = 0.5 - c((lat - lat_o) * p) / 2 + c(lat_o * p) * c(lat * p) * (1 - c((lng - lng_o) * p)) / 2;
+
+               dist_mi = (12742 * Math.asin(Math.sqrt(a))) / 1.609; // 2 * R; R = 6371 km
+
+               if (dist_mi < 1) scope.answer.dist = dist_mi.toPrecision(2);
+               else scope.answer.dist = dist_mi.toPrecision(3);
+           }
+
             getHours();
 
         //Directive Methods

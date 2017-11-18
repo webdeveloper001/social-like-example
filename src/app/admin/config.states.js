@@ -10,20 +10,6 @@
 
         var states = [            
             {
-                name: 'admin',
-                url: '/admin',
-                views: {
-                    "@": {
-                        templateUrl: 'app/admin/Partials/admin.html',
-                        controller: 'admin as vm'
-                    },
-                    "navbar@admin": {
-                        templateUrl: 'app/layout/Partials/navbar.html',
-                        controller: 'navbar as vm'
-                    }
-                }
-            },
-            {
                 name: 'queries',
                 parent: 'admin',
                 url: '/queries',
@@ -72,6 +58,34 @@
                 templateUrl: 'app/admin/Partials/dbQuery.html',
                 controller: 'dbQuery as vm'               
             },
+            {
+                name: 'imagesmod',
+                parent: 'admin',
+                url: '/imagemod',
+                templateUrl: 'app/admin/Partials/imagesmod.html',
+                controller: 'imagesmod as vm'               
+            },
+            {
+                name: 'staticpagesconsole',
+                parent: 'admin',
+                url: '/staticpagesconsole',
+                templateUrl: 'app/admin/Partials/staticpagesconsole.html',
+                controller: 'staticpagesconsole as vm'               
+            },
+            {
+                name: 'sitemap',
+                parent: 'admin',
+                url: '/sitemap',
+                templateUrl: 'app/admin/Partials/sitemap.html',
+                controller: 'sitemap as vm'               
+            },
+            {
+                name: 'locations',
+                parent: 'admin',
+                url: '/locations',
+                templateUrl: 'app/admin/Partials/locations.html',
+                controller: 'locations as vm'               
+            },
              {
                 name: 'updateHeaders',
                 parent: 'admin',
@@ -85,6 +99,13 @@
                 url: '/foodRanks',
                 templateUrl: 'app/admin/Partials/foodRanks.html',
                 controller: 'foodRanks as vm'               
+            },
+            {
+                name: 'sibLocs',
+                parent: 'admin',
+                url: '/sibLocs',
+                templateUrl: 'app/admin/Partials/sibLocs.html',
+                controller: 'sibLocs as vm'               
             },
             {
                 name: 'payment',
@@ -108,9 +129,27 @@
                 controller: 'bizadmin as vm'               
             },
             {
+                name: 'cleandb',
+                parent: 'admin',
+                url: '/cleandb',
+                templateUrl: 'app/admin/Partials/cleandb.html',
+                controller: 'cleandb as vm',
+                resolve: {
+                    load: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            rerun: true,
+                            files: ['scripts/vendor3.js']
+                        });
+                    }]
+                }               
+            },
+            {
                 name: 'rodconsole',
                 url: '/rodconsole',
-                views: {
+                parent: 'layout',
+                templateUrl: 'app/admin/Partials/rodconsole.html',
+                controller: 'rodconsole as vm'
+                /*views: {
                     "@": {
                         templateUrl: 'app/admin/Partials/rodconsole.html',
                         controller: 'rodconsole as vm'
@@ -119,7 +158,7 @@
                         templateUrl: 'app/layout/Partials/navbar.html',
                         controller: 'navbar as vm'
                     }
-                }
+                }*/
             }
         ];
 

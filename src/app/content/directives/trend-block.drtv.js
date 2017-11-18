@@ -1,6 +1,8 @@
 angular.module('app').directive('trendBlock', 
-    ['$rootScope', '$state', 'answer', 'table', 'catans', '$timeout', 'vrows','$window','cblock','color','search',
-    function ($rootScope, $state, answer, table, catans, $timeout, vrows, $window, cblock, color, search) {
+    ['$rootScope', '$state', 'answer', 'table', 'catans', '$timeout', 
+    'vrows','$window','cblock','color','search','dataloader',
+    function ($rootScope, $state, answer, table, catans, $timeout, 
+        vrows, $window, cblock, color, search, dataloader) {
     'use strict';
 
     return {
@@ -29,8 +31,11 @@ angular.module('app').directive('trendBlock',
             if (scope.isDestroyed == undefined){
                 //   loadContent();
             }   
-                scope.popularLimit = 8;
-                scope.newestLimit = 8;
+                scope.popularLimit = 10;
+                var sip = 0; //start  index for pulling data - popular
+                scope.newestLimit = 10;
+                var sin = 0; //start  index for pulling data - newest
+                scope.userfeedLimit = 10;    
                 
                 scope.seeTab = function(x){
                     if (x == 1){
@@ -63,10 +68,12 @@ angular.module('app').directive('trendBlock',
                         } else if (ranking.image1url  && ranking.image1url != '') {
                             ranking.realimage = ranking.image1url;
                         } else {
-                            ranking.realimage = '../../../assets/images/noimage.jpg';
+                            ranking.realimage = $rootScope.EMPTY_IMAGE;
                         }
+                        ranking.humanized = moment(ranking.timestmp).fromNow();
                     })
                     scope.popularOrder = res;
+                    dataloader.pulldata('ranks',scope.popularOrder.slice(sip,scope.popularLimit));
 
                     res = angular.copy($rootScope.content.filter(function(ranking){ return ranking.ismp == 1;}));
 
@@ -84,18 +91,31 @@ angular.module('app').directive('trendBlock',
                         } else if (ranking.image1url  && ranking.image1url != '') {
                             ranking.realimage = ranking.image1url;
                         } else {
-                            ranking.realimage = '../../../assets/images/noimage.jpg';
+                            ranking.realimage = $rootScope.EMPTY_IMAGE;
                         }
+                        ranking.humanized = moment(ranking.timestmp).fromNow();
                     })
                     scope.newestOrder = res;
+                    dataloader.pulldata('ranks',scope.newestOrder.slice(sin,scope.newestLimit));
                 }
             scope.seeMore = function(status){
-                if(status == 'newest'){
+                if(status == 'newest') {
+                    sin = scope.newestLimit; 
                     scope.newestLimit += 8;
-                } else {
-                    scope.popularLimit += 8;
+                    dataloader.pulldata('ranks',scope.newestOrder.slice(sin,scope.newestLimit));
                 }
+                if (status == 'popular') {
+                    sip = scope.popularLimit; 
+                    scope.popularLimit += 8;
+                    dataloader.pulldata('ranks',scope.popularOrder.slice(sip,scope.popularLimit));
+                }
+                if (status == 'userfeed') scope.userfeedLimit += 8;            
             }
+
+            scope.goBack = function(){
+                $rootScope.$emit('backToResults');            
+            }
+
             scope.rankSel = function (x,nm) {
                 if (nm) $rootScope.rankIsNearMe = true;
                 else $rootScope.rankIsNearMe = false;
@@ -108,6 +128,10 @@ angular.module('app').directive('trendBlock',
             scope.$on('$destroy',function(){
                 scope.isDestroyed = true;
             });
+
+            scope.getHumanized = function(timstamp) {
+                return moment(timstamp).fromNow();
+            }
              
         },
     }

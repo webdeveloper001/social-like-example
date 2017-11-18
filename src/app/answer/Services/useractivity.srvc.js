@@ -11,11 +11,15 @@
 
         // Members
         var _alluseractivity = [];
+        var _fetchRanksMem = [];
+        $rootScope.alluseractivity = _alluseractivity;
+
         var _useractivity = [];
         var baseURI = '/api/v2/mysql/_table/useractivity';
 
         var service = {
             getAllUserActivity: getAllUserActivity,
+            getAllUserActivityX: getAllUserActivityX,
             getActivitybyUser: getActivitybyUser,
             postRec: postRec,
             patchRec: patchRec,
@@ -28,10 +32,10 @@
 
         function getAllUserActivity(forceRefresh) {
 
-            if (_areAllUserActivityLoaded() && !forceRefresh) {
+            /*if (_areAllUserActivityLoaded() && !forceRefresh) {
 
                 return $q.when(_alluseractivity);
-            }
+            }*/
 
             var url = baseURI;
 
@@ -39,17 +43,59 @@
 
             function querySucceeded(result) {
 
-                return _alluseractivity = result.data.resource;
+                var data = result.data.resource;
+                _load (data);
+
+                return _alluseractivity;
             }
 
         }
-        
-        function getActivitybyUser(forceRefresh) {
 
-            if (_userActivityLoaded() && !forceRefresh) {
+        function getAllUserActivityX(data) {
+
+            var _datax = [];  //this is filtered array (ignore those ranks for which useractivity already fetched)
+            if (data != false) {
+                data.forEach(function (item) {
+                    if (_fetchRanksMem.indexOf(item.category) < 0) {
+                        _datax.push(item);
+                        _fetchRanksMem.push(item.category);
+                    }
+                });
+            }
+
+            if (_datax.length == 0) return $q.when(false);
+
+            var filterstr = '?filter=(';
+            for (var i=0; i< _datax.length; i++){
+                filterstr = filterstr + 'category=' + _datax[i].category+')OR(';
+            }
+            filterstr = filterstr.substring(0,filterstr.length-3);
+
+            var url = baseURI + filterstr;
+
+            return $http.get(url).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+
+                var _alluseractivityx = result.data.resource;
+                var map = _alluseractivity.map(function(x) {return x.id; });
+                _alluseractivityx.forEach(function(obj){
+                        if(map.indexOf(obj.id) < 0)
+                        _alluseractivity.push(obj);
+                });
+
+                if ($rootScope.DEBUG_MODE) console.log("useractivityX loaded");
+                return _alluseractivity;
+                
+                }
+        }
+        
+        function getActivitybyUser() {
+
+            /*if (_userActivityLoaded() && !forceRefresh) {
 
                 return $q.when(_userActivityLoaded);
-            }
+            }*/
 
             var url = baseURI + '/?filter=user='+ $rootScope.user.id;;
 
@@ -170,6 +216,13 @@
                 return result.data;
             }
         }*/
+
+        function _load(data){
+            _alluseractivity.length = 0;
+            data.forEach(function(x){
+                _alluseractivity.push(x);
+            });
+        }
      
         function _areAllUserActivityLoaded() {
 

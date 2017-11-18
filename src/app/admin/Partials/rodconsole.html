@@ -1,10 +1,10 @@
 <!-- Navigation Bar -->
-<div ui-view="navbar"></div>
+<!-- <div ui-view="navbar"></div> -->
 
 <div id="veil" ng-hide="vm.dataReady"></div>
 <div id="feedLoading" ng-hide="vm.dataReady">
     <div style="text-align: center" ng-if="!vm.dataReady">
-        <div class="loading-pulse"></div>
+        <div><img src="/assets/images/loading.gif" class="img" style="width:50px;height:50px"/></div>
         <p style="font-size:large">{{vm.loadText}}</p>
     </div>
 </div>
@@ -34,19 +34,21 @@
                         <tr>
                             <th>Date</th>
                             <th>Title</th>
-                            <th>Image</th>
-                            <th>Text</th>
+                            <th>Category</th>
+                            <!--<th>Text</th>-->
                         </tr>
                     </thead>
                     <!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
                     <tr ng-repeat="x in vm.rods" style="cursor:pointer;" ng-click="vm.selRank(x)">
                         <td align="middle">{{x.datenum}}</td>
                         <td align="middle">{{x.title}}</td>
+                        <td align="middle">{{x.category}}</td>
                         <td align="middle" ng-attr-style="background-color:{{x.imageok ? 'palegreen':'grey'}}">{{x.imageok ? 'Ready':'None'}}</td>
-                        <td align="middle" ng-attr-style="background-color:{{x.textok ? 'palegreen':'grey'}}">{{x.textok ? 'Ready':'None'}}</td>
+                        <td align="middle" ng-attr-style="background-color:{{x.textok ? 'palegreen':'grey'}}">{{x.textok ? 'Ready':'None'}}</td> 
+                        <!--<td> {{x.introtext}}</td>-->
                     </tr>
                 </tbody>
-            </table>
+            </table> 
         </div>
         <div ng-if="vm.detail">
             <h2>{{vm.rank.title}}</h2>
@@ -106,13 +108,13 @@
                             <h3 class="hidden-sm hidden-md hidden-lg hidden-xl text-center" style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{vm.rank.title}}</h3>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
-                        <img src="{{vm.rank.image1}}" ng-attr-style="display:{{vm.rank.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
+                        <img ng-src="{{vm.rank.image1}}" ng-attr-style="display:{{vm.rank.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
                     </div>
                     <div class="hidden-xs hidden-sm col-md-4 col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
-                        <img src="{{vm.rank.image2}}" ng-attr-style="display:{{vm.rank.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
+                        <img ng-src="{{vm.rank.image2}}" ng-attr-style="display:{{vm.rank.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
                     </div>
                     <div class="hidden-xs hidden-sm hidden-md col-lg-3" style="margin:0px;padding:0px;border:0px;" ng-if="!vm.isShortPhrase">
-                        <img src="{{vm.rank.image3}}" ng-attr-style="display:{{vm.rank.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
+                        <img ng-src="{{vm.rank.image3}}" ng-attr-style="display:{{vm.rank.image1 != undefined ? 'inline':'none'}};width:100%;height:{{vm.sm ? '150px':'200px'}};">
                     </div>
 
                     <div class="container col-xs-6 col-sm-6 col-md-4 col-lg-3" ng-if="vm.isShortPhrase" ng-attr-style="background-color:lightgray;color:black;height:{{vm.sm ? '150px':'200px'}};margin:0px;padding:0px;border:0px;position:relative;">
@@ -153,16 +155,24 @@
             <button class="btn btn-danger" ng-click="vm.goDeleteImage()">Delete Image</button>
             <button class="btn btn-success" ng-click="vm.goSaveImage()">Save Image & Design</button>
         </div>
-        </div>    
+        </div>
+
+        <input type="text" class="form-control" ng-model="vm.addval" bs-options="c for c in vm.addopts" bs-typeahead>
+        <span class="input-group-btn text-right">
+            <button class="btn btn-success" type="button" ng-click="vm.addCategory()">Add</button>
+        </span>
+
         <!--<img src="{{vm.testimage}}" style="display:inline;width:100px;height:auto;">-->
         <label class="control-label capitalize">Social Media Text:</label>
         <textarea id="textarea1" class="form-control" ng-model="vm.rank.introtext" rows="6">
         </textarea>
         <br>
         <!--<img src="{{vm.testimage}}" style="display:inline;width:100px;height:auto;">-->
+        <!--
         <label class="control-label capitalize">Website Text:</label>
         <textarea id="textarea2" class="form-control" ng-model="vm.rank.webtext" rows="6">
         </textarea>
+        -->
         <br>
         <div class="text-right">
             <button class="btn btn-success" ng-click="vm.goSaveText()">Save Intro Text</button>
@@ -172,5 +182,8 @@
             <button class="btn btn-default" ng-click="vm.goBack()">Back</button>
         </div>
     </div>
+    <br>
+    <br>
+    <br>
 </div>
 </div>

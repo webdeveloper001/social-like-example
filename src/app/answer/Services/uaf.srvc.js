@@ -11,13 +11,14 @@
 
         //Members
         var _actions = [];
+        $rootScope.uafs = _actions;
         var baseURI = '/api/v2/mysql/_table/useractivityfeed';
 
         var service = {
             getactions: getactions,
             post: post,
 			deletebyId: deletebyId,
-			           
+			getnext10actions: getnext10actions
         };
 
         return service;
@@ -31,16 +32,41 @@
             }
             */
             //Get all uaf  records
-            var url0 = baseURI + '?limit=200&order=id%20DESC';
+            var url0 = baseURI + '?limit=100&order=id%20DESC';
             //var url1 = baseURI + '?offset=' + 1 * 1000;
 
             var p0 = $http.get(url0);
             //var p1 = $http.get(url1);
 
             return $q.all([p0]).then(function (d){
-                _actions = d[0].data.resource.concat();
+                var data = d[0].data.resource;
+                _load (data);
                 if ($rootScope.DEBUG_MODE) console.log("No. user actions: ", _actions.length);
                 return _actions;            
+            }, _queryFailed);  
+
+        }
+
+
+        function getnext10actions(forceRefresh) {
+            //Get all uaf  records
+            var url0 = baseURI + '?limit=20&order=id%20DESC&offset=' + $rootScope.uafs.length ;
+            //var url1 = baseURI + '?offset=' + 1 * 1000;
+
+            var p0 = $http.get(url0);
+            //var p1 = $http.get(url1);
+
+            return $q.all([p0]).then(function (d){
+                //_actions = _actions.concat(d[0].data.resource);
+                var data = d[0].data.resource;
+                var map = _actions.map(function(x) {return x.id; });
+                data.forEach(function(obj){
+                        if(map.indexOf(obj.id) < 0)
+                        _actions.push(obj);
+                });
+                
+                if ($rootScope.DEBUG_MODE) console.log("No. user actions: ", _actions.length);
+                return _actions;
             }, _queryFailed);  
 
         }
@@ -60,7 +86,8 @@
             data.fc = _colors.fc;
             data.bc = _colors.bc;
             data.date = moment().format('YYYY-MM-DD');
-            data.actorusername = $rootScope.user.first_name + ' ' + $rootScope.user.last_name;
+            //data.actorusername = $rootScope.user.first_name + ' ' + $rootScope.user.last_name;
+            data.actorusername = $rootScope.user.first_name;
 			for (var i=0; i<field.length; i++){
                 switch (field[i]){
                     case "answer": {
@@ -160,6 +187,13 @@
                 case 8: { c.bc = '#4d0099'; c.fc = 'white'; break; }
                 case 9: { c.bc = '#009999'; c.fc = 'black'; break; }
             }
+        }
+
+        function _load(data){
+            _actions.length = 0;
+            data.forEach(function(x){
+                _actions.push(x);
+            });
         }
 
         function _actionsLoaded() {

@@ -6,12 +6,14 @@
         .controller('answerDetail', answerDetail);
 
     answerDetail.$inject = ['flag', '$stateParams', '$state', 'answer', 'dialog', '$rootScope','$window', 'useractivity','htmlops',
-        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt',
-        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope','$cookies', '$q', 'fbusers', 'InstagramService', 'mailing', 'Socialshare']; //AM:added user service
+        'votes', 'matchrec', 'edit', 'editvote', 'catans', 'datetime','commentops', 'userdata','useraccnt','dataloader','$timeout',
+        '$location', 'vrows', 'vrowvotes','imagelist','instagram', '$scope', 'table', 'SERVER_URL','$http', 'common',
+        '$cookies', '$q', 'fbusers', 'InstagramService', 'mailing', 'Socialshare']; //AM:added user service
 
     function answerDetail(flag, $stateParams, $state, answer, dialog, $rootScope, $window, useractivity,htmlops,
-        votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt,
-        $location, vrows, vrowvotes, imagelist, instagram, $scope, $cookies, $q, fbusers, InstagramService, mailing, Socialshare) { //AM:added user service
+        votes, matchrec, edit, editvote, catans, datetime, commentops, userdata,useraccnt, dataloader, $timeout,
+        $location, vrows, vrowvotes, imagelist, instagram, $scope, table, SERVER_URL, $http, common,
+        $cookies, $q, fbusers, InstagramService, mailing, Socialshare) { //AM:added user service
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'answerDetail';
@@ -77,7 +79,11 @@
         vm.moreImagesRev = moreImagesRev;
         vm.moreImagesFwd = moreImagesFwd;
         vm.showSpecial = showSpecial;
-
+        vm.showLocations = showLocations;
+        vm.navigateTowards = navigateTowards;
+        vm.gotoCustomRank = gotoCustomRank;
+        vm.backToResults = backToResults;
+      
         //Admin Function adding catans on spot
         vm.addCatans = addCatans;
         vm.addctsactive = false;
@@ -93,6 +99,9 @@
         cObj.newComment = '';
         vm.cm = cObj;
         vm.commentAllowed = true;
+        vm.searchActive = $rootScope.searchActive;
+        var answerFound = false;
+        vm.dataReady = false;
         
         vm.isMobile = false; 
         // device detection
@@ -104,7 +113,7 @@
         var updateRecordsListener = $rootScope.$on('$stateChangeStart',
             function (ev, to, toParams, from, fromParams) {
                 if (from.name == 'answerDetail' && to.name != 'answerDetail') {
-                    if (!recordsUpdated && $rootScope.isLoggedIn) updateRecords();
+                    if (!recordsUpdated && $rootScope.isLoggedIn && answerFound) updateRecords();
                 }
             });
 
@@ -116,48 +125,47 @@
         });
 
         var answerDataLoadedListener = $rootScope.$on('answerDataLoaded', function () {
-            vm.dataReady = true;
-            activate();
+            if (vm.dataReady == false) checkAnswerExists();
         });
 
         $scope.$on('$destroy',refreshImagesListener);
         $scope.$on('$destroy',fileUploadedListener);
         $scope.$on('$destroy',answerDataLoadedListener);
         $scope.$on('$destroy',updateRecordsListener);
-    
-        if ($rootScope.answerDetailLoaded) { vm.dataReady = true; activate(); }
-        else vm.dataReady = false;
 
         //Flags to hide advertisement blocks
         vm.hideCustomRanksMsg = $rootScope.hideCustomRankMsg == undefined ? false:$rootScope.hideCustomRankMsg; 
         vm.hideGetPremiumMsg = $rootScope.hideGetPremiumMsg == undefined ? false:$rootScope.hideGetPremiumMsg;
 
-        //activate();
         window.prerenderReady = false;
+        checkAnswerExists();
+
+        function checkAnswerExists(){
+            $rootScope.canswer = null;
+            var ansid = common.getIndexFromSlug($stateParams.index);
+            
+            var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(Number(ansid));
+            if (idx > -1) $rootScope.canswer = $rootScope.answers[idx];
+            
+            //if rank exists continue loading controller, else get from database
+            if ($rootScope.canswer != null) activate();
+            else dataloader.getAnswer($stateParams.index);
+        }
 
         function activate() {
 
-            //Init variables
-            //vm.ranking = $rootScope.title;
+            vm.dataReady = true;
+            vm.answer = $rootScope.canswer;
+
             answers = $rootScope.canswers;
             vm.fields = $rootScope.fields;
-            vm.isAdmin = $rootScope.isAdmin;
+            vm.isAdmin = $rootScope.isAdmin || $rootScope.dataAdmin;
+            if (vm.isAdmin) vm.bizcat = useraccnt.getBizCat(vm.answer.id);
+
             $rootScope.isLoggedIn = $rootScope.isLoggedIn ? $rootScope.isLoggedIn : false;
             vm.isLoggedIn = $rootScope.isLoggedIn;
 
             $rootScope.cansvrows = undefined;
-
-            //vm.userIsOwner = $rootScope.userIsOwner;
-            if ($stateParams.index) {
-                var isnum = /^\d+$/.test($stateParams.index);
-                if(isnum){
-                    var i = $rootScope.answers.map(function (x) { return x.id; }).indexOf(+$stateParams.index);
-                    vm.answer = $rootScope.answers[i];
-                } else {
-                    var i = $rootScope.answers.map(function (x) { return x.slug; }).indexOf($stateParams.index);
-                    vm.answer = $rootScope.answers[i];
-                }
-            }
 
             // ----- SEO tags ----
             $scope.$parent.$parent.$parent.seo = { 
@@ -167,7 +175,6 @@
 
             if (vm.answer.isprivate == undefined) vm.answer.isprivate = false;            
 
-            $rootScope.canswer = vm.answer;
             vm.type = vm.answer.type;
             vm.i = -1;
             if ($rootScope.DISPLAY_XSMALL || $rootScope.DISPLAY_SMALL) numImagesPage = 4;
@@ -177,12 +184,12 @@
             //vm.isShortPhrase = vm.type == 'Short-Phrase';
             
             //if there is no category, look for it in cookies
-            if ($rootScope.cCategory == undefined) {
+            /*if ($rootScope.cCategory == undefined) {
                 var ccategoryid = $cookies.get('ccategory');
                 if ($rootScope.DEBUG_MODE) console.log("@answerDetail - ccategory ", ccategoryid);
                 var idx = $rootScope.content.map(function (x) { return x.id; }).indexOf(ccategoryid);
                 if (idx > -1) $rootScope.cCategory = $rootScope.content[idx];
-            }
+            }*/
 
             if ($rootScope.inFavMode) vm.ranking = $rootScope.myfavs.title;
             else if ($rootScope.cCategory) vm.ranking = $rootScope.cCategory.title;
@@ -207,7 +214,7 @@
             if ($rootScope.previousState != 'answerDetail') $window.scrollTo(0, 0);
 
             //vm.showImageGallery = false;
-            $rootScope.$emit('showLogo');
+            //$rootScope.$emit('showLogo');
 
             getHeader();
             //        getCatAnsId(vm.answer.id);
@@ -217,9 +224,11 @@
             if ($rootScope.isLoggedIn) {
                 if ($rootScope.user.id == vm.answer.owner) {
                     vm.userIsOwner = true;
+                    //dataloader.getDemoData();
                     if (vm.answer.isactive) vm.access = true;
                 }
                 else vm.userIsOwner = false;
+                if ($rootScope.isAdmin) vm.userIsOwner = true;
             }
             else vm.userIsOwner = false;
 
@@ -231,15 +240,19 @@
             if (vm.type == 'Establishment') getSpecials(vm.answer.id);
             //if (vm.type == 'Establishment' || vm.type == 'PersonCust') 
             getVRows(vm.answer.id);
-            getAnswerRanks();                        
+            getAnswerRanks();
+            dataloader.pulldata('ranks',vm.answerRanks);                        
 
             //if user votes are available - do my thing at getAnswerVotes
             //else fetch user votes
-            if ($rootScope.cvotes) getAnswerVotes();
-            else {
-                $rootScope.cvotes = [];
-                $rootScope.ceditvotes = [];
-            }
+            //if ($rootScope.cvotes) {
+            //    console.log('exec answer votes, $rootScope.isLoggedIn - ', $rootScope.isLoggedIn);
+                
+            //}
+            //else {
+            //    $rootScope.cvotes = [];
+            //    $rootScope.ceditvotes = [];
+            //}
 
             //Check if answer is event
             if (vm.type == 'Event') {
@@ -256,9 +269,9 @@
                 vm.myranks = JSON.parse(vm.answer.ranks);
                 if (vm.myranks != undefined && vm.myranks.length > 0){
                     for (var i=0; i<vm.myranks.length; i++){
-                        n = $rootScope.content.map(function(x) {return x.id; }).indexOf(vm.myranks[i].id);
-                        vm.myranks[i].title = $rootScope.content[n].title.replace(' @ '+vm.answer.name,'');
-                        vm.myranks[i].image = $rootScope.content[n].image1url;
+                        n = $rootScope.customranks.map(function(x) {return x.id; }).indexOf(vm.myranks[i].id);
+                        vm.myranks[i].title = $rootScope.customranks[n].title.replace(' @ '+vm.answer.name,'');
+                        vm.myranks[i].image = $rootScope.customranks[n].image1url;
                         if (vm.myranks[i].image == undefined || vm.myranks[i].image == '')
                         vm.myranks[i].image = $rootScope.EMPTY_IMAGE;
                     }
@@ -287,9 +300,11 @@
                 vm.myranks.push(demorank);
 
                 for (var i=0; i<vm.myranks.length; i++){
-                    n = $rootScope.content.map(function(x) {return x.id; }).indexOf(vm.myranks[i].id);
-                    vm.myranks[i].title = $rootScope.content[n].title.replace(' @ Demo','');
-                    vm.myranks[i].image = $rootScope.content[n].image1url;
+                    n = $rootScope.customranks.map(function(x) {return x.id; }).indexOf(vm.myranks[i].id);
+                    if (n > -1){
+                        vm.myranks[i].title = $rootScope.customranks[n].title.replace(' @ Demo','');
+                        vm.myranks[i].image = $rootScope.customranks[n].image1url;
+                    }
                     if (vm.myranks[i].image == undefined || vm.myranks[i].image == '')
                     vm.myranks[i].image = $rootScope.EMPTY_IMAGE;
                 }
@@ -300,15 +315,17 @@
             
             //Determine number of user comments
             if (vm.answer.numcom == undefined) vm.numcom = 0;
-            else vm.numcom = vm.answer.numcom;
+            else vm.numcom = vm.vrows.length;
+
+            if (vm.answer.numcom != vm.vrows.length)
+                answer.updateAnswer(vm.answer.id, ['numcom'], [vm.numcom]);
 
             //Determine if necessary to show navigation buttons
             if (vm.ranking) vm.showNextnPrev = true;
             else vm.showNextnPrev = false;
 
             //Update number of views
-            var nViews = vm.answer.views + 1;
-            answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
+            incViews();
 
             votemodeOFF();
 
@@ -426,6 +443,8 @@
         
         //Update Records
         function updateRecords() {
+
+            if ($rootScope.isLoggedIn && answerFound){
             
             //update vote record if necessary
             if ($rootScope.DEBUG_MODE) console.log("UpdateRecords @answerDetail");
@@ -493,11 +512,17 @@
                 //TODO Need to pass table id
                 if ((vm.answerRanks[i].upV != vm.answerRanks[i].upVi) || (vm.answerRanks[i].downV != vm.answerRanks[i].downVi)) {
                     if ($rootScope.DEBUG_MODE) console.log("UR-8");
-                    catans.updateRec(vm.answerRanks[i].catans, ["upV", "downV"], [vm.answerRanks[i].upV, vm.answerRanks[i].downV]);
+                    //catans.getCatan(vm.answerRanks[i].catans).then(function(catan){
+                      //  var updV = vm.answerRanks[i].upV + vm.answerRanks[i].upVi;
+                      //  var downdV = vm.answerRanks[i].downV + vm.answerRanks[i].downVi;
+                        
+                        catans.updateRec(vm.answerRanks[i].catans, ["upV", "downV"], [vm.answerRanks[i].upV, vm.answerRanks[i].downV]);    
+                    //})
+                    
                 }
             }
 
-            if (vm.type == 'Establishment' || vm.type == 'PersonCust') {
+            if (vm.vrows) {
                 for (var i = 0; i < vm.vrows.length; i++) {
                     var voteRecExists = vm.vrows[i].voteExists;
                     if (voteRecExists && vm.vrows[i].dVi != vm.vrows[i].dV) {
@@ -517,6 +542,7 @@
                 }
             }
             recordsUpdated = true;
+        }
         }
         
         //AM:Refresh Thumb Up and Thumb down Vote Displays
@@ -601,17 +627,23 @@
         function displayVote(x) {
 
             if (x.dV == 1) {
-                x.thumbUp = "thumbs_up_blue_table.png";//"thumbs_up_blue.png";//
-                x.thumbDn = "thumbs_down_gray_table.png";//"thumbs_down_gray.png";
+                //x.thumbUp = "thumbs_up_blue_table.png";//"thumbs_up_blue.png";//
+                //x.thumbDn = "thumbs_down_gray_table.png";//"thumbs_down_gray.png";
+                x.thumbUp = '#0070c0';
+                x.thumbDn = 'grey';
             }
 
             if (x.dV == 0) {
-                x.thumbUp = "thumbs_up_gray_table.png";//"thumbs_up_gray.png";
-                x.thumbDn = "thumbs_down_gray_table.png";//"thumbs_down_gray.png";
+                //x.thumbUp = "thumbs_up_gray_table.png";//"thumbs_up_gray.png";
+                //x.thumbDn = "thumbs_down_gray_table.png";//"thumbs_down_gray.png";
+                x.thumbUp = 'grey';
+                x.thumbDn = 'grey';
             }
             if (x.dV == -1) {
-                x.thumbUp = "thumbs_up_gray_table.png";//"thumbs_up_gray.png";
-                x.thumbDn = "thumbs_down_blue_table.png";//"thumbs_down_blue.png";
+                //x.thumbUp = "thumbs_up_gray_table.png";//"thumbs_up_gray.png";
+                //x.thumbDn = "thumbs_down_blue_table.png";//"thumbs_down_blue.png";
+                x.thumbUp = 'grey';
+                x.thumbDn = '#0070c0';
             }
         }
         
@@ -669,13 +701,17 @@
                 $state.go('match');
             }
             else if ($rootScope.inFavMode) {
-                $state.go('myfavs');
+                $state.go('favs');
             }
             else {
                 //var nViews = vm.answer.views + 1;
                 //answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
-                if ($rootScope.cCategory) $state.go('rankSummary', { index: $rootScope.cCategory.id });
-                else $state.go('cwrapper');
+                if ($rootScope.cCategory) {
+                    if ($rootScope.cCategory.title.indexOf('@')>-1) $rootScope.isCustomRank = true;
+                    $state.go('rankSummary', { index: $rootScope.cCategory.id });
+                }
+                else //$state.go('cwrapper');
+                backToResults();
             }
         }
 
@@ -693,7 +729,9 @@
                 //delete catans for this answer
                 matchrec.deleteRecordsbyCatans($rootScope.cCategory.id, vm.answer.id);
                 catans.deleteRec(vm.answer.id, $rootScope.cCategory.id).then(function () {
-                    $state.go("answerDetail", { index: vm.answer.id }, { reload: true });
+                    vm.addctsactive = false;
+                    getAnswerRanks();
+                    vm.dispRanks--;
                 });
 
             }, function () {
@@ -725,7 +763,9 @@
                 //delete catans for this answer
                 matchrec.deleteRecordsbyCatans(r.id, vm.answer.id);
                 catans.deleteRec(vm.answer.id, r.id).then(function () {
-                    $state.go("answerDetail", { index: vm.answer.id }, { reload: true });
+                    vm.addctsactive = false;
+                    getAnswerRanks();
+                    vm.dispRanks--;
                 });
             });
         }
@@ -755,19 +795,21 @@
         }
 
         function getAnswerRanks() {
-
-            vm.answerRanks = [];
+           vm.answerRanks = [];
+            var rankObj = {};
             for (var i = 0; i < $rootScope.catansrecs.length; i++) {
                 //if ($rootScope.catansrecs[i].answer == vm.answer.id && $rootScope.catansrecs[i].category != $rootScope.cCategory.id) {
                 if ($rootScope.catansrecs[i].answer == vm.answer.id) {
                     for (var j = 0; j < $rootScope.content.length; j++) {
                         if ($rootScope.content[j].id == $rootScope.catansrecs[i].category) {
                             //to each rank object attach catans data
-                            var rankObj = $rootScope.content[j];
+                            rankObj = {};
+                            rankObj = $rootScope.content[j];
                             rankObj.upV = $rootScope.catansrecs[i].upV;
                             rankObj.downV = $rootScope.catansrecs[i].downV;
                             rankObj.catans = $rootScope.catansrecs[i].id;
                             rankObj.rank = $rootScope.catansrecs[i].rank;
+                            if (rankObj.rank > rankObj.answers) rankObj.rank = rankObj.answers;  
                             rankObj.uservote = {};
                             rankObj.upVi = $rootScope.catansrecs[i].upV;
                             rankObj.downVi = $rootScope.catansrecs[i].downV;
@@ -789,6 +831,11 @@
             }
             //vm.otherRanksExist = vm.otherRanks.length > 0 ? true : false;
             vm.otherRanksExist = true;
+            getAnswerVotes();
+            //$timeout(function(){
+            //    $scope.$apply();
+            //});   
+            //console.log("vm.answerRanks - ", vm.answerRanks);
         }
 
         function getSpecials(x) {
@@ -805,7 +852,6 @@
         }
 
         function showSpecial(x){
-            console.log("showspecial");
             dialog.showSpecial(x);
         }
 
@@ -911,7 +957,7 @@
         }
 
         function deleteButtonAccess() {
-            if ($rootScope.isAdmin || (vm.userIsOwner && vm.answer.isprivate)) vm.deleteButton = true;
+            if ($rootScope.dataAdmin || $rootScope.isAdmin || (vm.userIsOwner && vm.answer.isprivate)) vm.deleteButton = true;
             else vm.deleteButton = false;
         }
 
@@ -958,11 +1004,14 @@
                     if ($rootScope.useraccnts[i].email != '') hasEmail = true;
                 }
                 if (!hasEmail) $rootScope.$emit('showWarning');
+                $rootScope.$emit('userAccountsLoaded');
             });
         }
 
         function reloadAnswer() {
-            $state.go("answerDetail", { index: vm.answer.id }, { reload: true });
+            vm.userIsOwner = true;
+            getHeader();
+            //$state.go("answerDetail", { index: vm.answer.id }, { reload: true });
         }
 
         function openSpecials() {
@@ -993,6 +1042,7 @@
                     }
                 }
                 imagelist.getImageList().then(showImages);
+                //imagelist.getImageList().then();
             }
         }
         function showImages() {
@@ -1061,6 +1111,15 @@
         function gotoRank(x) {
             //var nViews = vm.answer.views + 1;
             //answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
+            $state.go('rankSummary', { index: x.slug });
+        }
+
+        function gotoCustomRank(x) {
+            //var nViews = vm.answer.views + 1;
+            //answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
+            $rootScope.oCategory = $rootScope.cCategory;
+            $rootScope.oAnswer = vm.answer;
+            $rootScope.isCustomRank = true;
             $state.go('rankSummary', { index: x.id });
         }
 
@@ -1187,32 +1246,74 @@
 
         function addcts(x) {
             var title = '';
-            var category = 0;
-            
+            var rank = -1;
+            var rFound = false;
+            var cat = -1;
+            var nh = -1;
             title = vm.addctsval;
-            
-            for (var i = 0; i < $rootScope.content.length; i++) {
 
-                if ($rootScope.content[i].title == title) {
-                    category = $rootScope.content[i].id;
+            for (var i=0; i<$rootScope.content.length; i++){
+                if ($rootScope.content[i].title == title){
+                    rFound = true;
+                    rank = $rootScope.content[i].id;
                     break;
                 }
             }
-            catans.postRec2(vm.answer.id, category);
+            console.log("could not find - ", title);
+            if (rFound) {
+                console.log('rank found, posting record');
+                catans.postRec2(vm.answer.id, rank).then(function () {
+                    vm.addctsactive = false;
+                    getAnswerRanks();
+                    vm.dispRanks++;
+                });
+            }
+            //Rank not found, determine category and create ghost
+            else {
+                //find string to look in category
+                console.log('rank not found, will create ghost');
+                if (title.indexOf(vm.answer.cityarea) > -1) {
+                    title = title.replace(vm.answer.cityarea, '@Nh');
+                    console.log('category title - ', title);
+                }
 
-            vm.addctsactive = false;
+                for (var i=0; i< $rootScope.categories.length; i++) {
+                    if ($rootScope.categories[i].category == title) {
+                        cat = $rootScope.categories[i].id;
+                        break;
+                    }
+                }
 
-            setTimeout(function () {
-                $state.go("answerDetail", { index: vm.answer.id }, { reload: true });
-            }, 1000);
+                for (var i=0; i< $rootScope.locations.length; i++) {
+                    if ($rootScope.locations[i].nh_name == vm.answer.cityarea) {
+                        nh = $rootScope.locations[i].id;
+                        break;
+                    }
+                }
+                
+                if (cat > -1 && nh > -1) {
+                    var obj = {};
+                    obj.cat = cat;
+                    obj.nh = nh;
+                    obj.isatomic = true;
+                    table.addTable(obj).then(function (tableid) {
+                        catans.postRec2(vm.answer.id, tableid).then(function () {
+                            vm.addctsactive = false;
+                            getAnswerRanks();
+                            vm.dispRanks++;
+                        })
+                    })
+                }
+                else console.log('Error creating ghost rank, cat, nh ', cat, nh);
+            }           
         }
 
         function addCatans(x) {
             vm.addctsopts = [];
             var opt = '';
             for (var i = 0; i < $rootScope.ctsOptions.length; i++) {
-                if ($rootScope.ctsOptions[i].indexOf('@neighborhood') > -1) {
-                    opt = $rootScope.ctsOptions[i].replace('@neighborhood', vm.answer.cityarea);
+                if ($rootScope.ctsOptions[i].indexOf('@Nh') > -1) {
+                    opt = $rootScope.ctsOptions[i].replace('@Nh', vm.answer.cityarea);
                     vm.addctsopts.push(opt);
                 }
                 else vm.addctsopts.push($rootScope.ctsOptions[i]);
@@ -1258,14 +1359,14 @@
 
 
 
-            function selectInstagramImages(){
+        function selectInstagramImages(){
             if(InstagramService.access_token() == null) {
                 InstagramService.login();
             }
             else {
                 InstagramService.getMyRecentImages()
-                .then(function(response){
-                    dialog.chooseImgFromIgDlg(response.data.data, vm.answer, vm.userIsOwner);
+                .then(function(data){
+                    dialog.chooseImgFromIgDlg(data, vm.answer, vm.userIsOwner, vm.navigateTowards);
                 })
                 .catch(function(err){
                     console.log(err);
@@ -1273,13 +1374,33 @@
             }
             $rootScope.$on("instagramLoggedIn", function (evt, args) {
                 InstagramService.getMyRecentImages()
-                .then(function(response){
-                    console.log(response);
-                    dialog.chooseImgFromIgDlg(response.data.data, vm.answer, vm.userIsOwner);
+                .then(function(data){
+                    dialog.chooseImgFromIgDlg(data, vm.answer, vm.userIsOwner, vm.navigateTowards);
                 }).catch(function(err){
                     console.log(err);
                 });
             });
+        }
+
+        function navigateTowards(direction) {
+            if(direction == 'next') {
+                InstagramService.getNextPage()
+                .then(function(data){
+                    dialog.chooseImgFromIgDlg(data, vm.answer, vm.userIsOwner, vm.navigateTowards);
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+            } else if (direction == 'previous') {
+                InstagramService.getPreviousPage()
+                .then(function(data){
+                    dialog.chooseImgFromIgDlg(data, vm.answer, vm.userIsOwner, vm.navigateTowards);
+                })
+                .catch(function(err){
+                    console.log(err);
+                });    
+            }
+            
         }
 
         function showRanks(){
@@ -1300,8 +1421,27 @@
             $state.go('mybusiness');
         }
 
+        function showLocations(){
+            var locsIdx = vm.answer.family.split(':').map(Number);
+            var locs = [];
+            var idx = 0;
+            for (var i=0; i<locsIdx.length; i++){
+                idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(locsIdx[i]);
+                if (idx > -1) locs.push($rootScope.answers[idx]);  
+            }
+
+            dialog.showLocations(locs);
+        }
+
+        function backToResults(){
+            updateRecords();
+            if ($rootScope.previousState == 'trends') $state.go('trends');
+            else $rootScope.$emit('backToResults');
+        }
+
         function share(){
-            vm.linkurl = 'https://rank-x.com/answerDetail/' + vm.answer.slug; 
+            //vm.linkurl = 'https://rank-x.com/answerDetail/' + vm.answer.slug;
+            vm.linkurl = SERVER_URL + 'answer' + vm.answer.id + '.html';
             vm.tweet = vm.answer.name + ', endorse your favorite ones at: ';
 
             var imageurl = vm.answer.imageurl;
@@ -1330,12 +1470,8 @@
                     FB.ui(
                     {
                         method: 'feed',
-                        name: vm.answer.name,
                         link: vm.linkurl,
-                        picture: imageurl,
                         caption: 'Rank-X San Diego',
-                        description: '',
-                        message: ''
                     }); 
                     break;
                 }  
@@ -1432,6 +1568,21 @@
                 //     break;
                 // }
             } 
+        }
+
+        function incViews(){
+            var nViews = vm.answer.views++;
+            //increment number of views of this answer - request to server
+            var url = SERVER_URL + 'databaseOps/incViews/answer/' + vm.answer.id;
+            var req = {
+                method: 'POST',
+                url: url,
+                headers: {
+                    'X-Dreamfactory-API-Key': undefined,
+                    'X-DreamFactory-Session-Token': undefined
+                }
+            }
+            $http(req);
         }
     }
 })();

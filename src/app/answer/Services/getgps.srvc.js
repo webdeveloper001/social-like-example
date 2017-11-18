@@ -21,10 +21,13 @@
             delete $http.defaults.headers.common['X-Dreamfactory-API-Key'];
             delete $http.defaults.headers.common['X-DreamFactory-Session-Token'];
             
+            //Remove '#' from address. This character causes error at google api
+            answer.location = answer.location.replace('#','');
+            
             var myLoc = '';
                 
                 //Perform checks to make sure location is in recognizable format for google api
-                var nhs = $rootScope.neighborhoods.concat($rootScope.districts);
+                var nhs = $rootScope.nhs;
                 var locationHasNh = false; //location has neighborhood
                 for (var i = 0; i < nhs.length; i++) {
                     if (answer.location.indexOf(nhs[i]) > -1) {
@@ -37,9 +40,7 @@
                     myLoc = answer.location + ' San Diego, CA';
                 }
                 else myLoc = answer.location;
-                //Remove '#' from address. This character causes error at google api
-                myLoc = myLoc.replace('#','');
-
+                
                 //console.log("myLoc, GOOGLE_API_KEY --- ", myLoc, GOOGLE_API_KEY);
                 var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + myLoc + '&key=' + GOOGLE_API_KEY;
                 //console.log("url --- ", url);
@@ -68,8 +69,12 @@
                             $rootScope.coordForUSer = false;
                             $rootScope.coordsRdy = true;
                             $rootScope.$emit('coordsRdy');
-                            if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 9521 });
-                            if ($rootScope.loadRankWhenCoordsRdy) $state.reload();
+                            if ($rootScope.DEBUG_MODE)  console.log('@gps - 71');
+                            //if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 9521 });
+                            //if ($rootScope.loadRankWhenCoordsRdy) 
+                                //console.log("executed reload");
+                                //$state.go('rankSummary', { reload: true }); //$state.reload();
+                            
                         }
                         else $rootScope.$emit('answerGPSready');
                     }

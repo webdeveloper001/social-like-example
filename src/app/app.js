@@ -9,14 +9,14 @@
         'ngFileUpload',
         'ngAnimate',
         'ngCookies',
-        'ngResource',
+        //'ngResource',
         'ngRoute',
         'ngSanitize',
         'ngTouch',
         'ngMessages',
-        
-        'pascalprecht.translate',
-        'tmh.dynamicLocale',
+        'oc.lazyLoad',
+        //'pascalprecht.translate',
+        //'tmh.dynamicLocale',
         
         // Custom modules 
         'login',
@@ -32,6 +32,7 @@
         
         'ui.select',
         'infinite-scroll',
-        'datatables'
+        'datatables',
+        'wu.masonry'
     ]);
 })();

@@ -32,13 +32,13 @@
                         }
                     })
                     .then(function(me) {
-                        console.log('My info: ', me);
+                        if ($rootScope.DEBUG_MODE) console.log('My info: ', me);
 
                         $rootScope.user = me;
                         return $facebook.api('me/friends?fields=first_name,gender,locale,last_name,email,picture');
                     })
                     .then(function(friends) {
-                        console.log('Got friends: ', friends);
+                        if ($rootScope.DEBUG_MODE) console.log('Got friends: ', friends);
 
                         $rootScope.user.friends = friends;
                         $rootScope.isLoggedIn = true;
@@ -49,7 +49,7 @@
                         } catch (e) {}
 
                         if ($rootScope.DEBUG_MODE) console.log("oauthWithFacebook succesful");
-                        $rootScope.$emit('redirectAfterLogin');
+                        //$rootScope.$emit('redirectAfterLogin');
                     })
                     .catch(function(err) {
                         console.log(err);
@@ -138,6 +138,9 @@
                 $cookies.remove('session_token');
                 delete $rootScope.user;
                 $rootScope.isLoggedIn = false;
+                $rootScope.isAdmin = false;
+                $rootScope.dataAdmin = false;
+                $rootScope.$emit('adminCredentials');
 
                 try {
                     window.localStorage.removeItem('user');
@@ -239,8 +242,8 @@
                 summary: {}
             };
             fakeResult.gender = 'male';
-            fakeResult.id = '187959328383879';
-            // fakeResult.id = '10104518570729893';
+            fakeResult.id = '187959328383879';   //Roy
+            // fakeResult.id = '10104518570729893';  //Andres
             
             fakeResult.email = 'roy.smith0820@gmail.com';
             fakeResult.last_name = 'User';

@@ -1,0 +1,125 @@
+<div class="container">
+<h3> Edit Ranking </h3>
+ <div class="row" style="padding-bottom:10px">
+        <div class="hidden-xs col-sm-3 col-md-4 col-lg-4"></div>
+        <div class="container-bgbox col-xs-6 col-sm-3 col-md-2 col-lg-2">
+			    <bg-box bc="{{vm.bc}}" bc2="{{vm.bc2}}" fc="{{vm.fc}}" text="{{vm.rankTitle}}" dir="horizontal" w="100%" h="{{vm.sm ? '200px':'200px'}}"></bg-box>
+			</div>
+        <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2" style="margin:0px;padding:0px;border:0px;">
+            <img ng-src="{{vm.image}}" ng-attr-style="width:100%;height:{{vm.sm ? '200px':'200px'}};">
+        </div>
+        <div class="hidden-xs col-sm-3 col-md-4 col-lg-4"></div>
+    </div>    
+<br>
+<label><strong>Select Image Bank:</strong></label>
+<div class="row">
+        <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
+        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+            <img src="../../../assets/images/pixabay-logo.png" ng-click="vm.selImgBank(1)" alt="Pixabay"
+            style="width:100%;height:45px;padding:3px;border-style:solid;border-width:1px;border-color:{{vm.pixabay ? 'black':'white'}}">
+             <div class="text-center"><a href="https://www.pixabay.com/">Visit Pixabay</a></div>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+            <img src="../../../assets/images/pexels-logo.png" ng-click="vm.selImgBank(2)" alt="Pexels"
+            style="width:100%;height:45px;padding:3px;border-style:solid;border-width:1px;border-color:{{vm.pexels ? 'black':'white'}}">
+            <div class="text-center"><a href="https://www.pexels.com/">Visit Pexels</a></div>
+        </div>
+        <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
+</div>
+<div>
+<br>
+<label><strong>Image Query:</strong></label>
+<div class="input-group" style="padding-bottom:10px">
+      <input type="text" class="form-control" placeholder="Enter what to search for an image, i.e. taco" ng-model="vm.imageQuery">
+      <span class="input-group-btn">
+        <button class="btn btn-secondary" ng-click="vm.getImages()" type="button">Search Images</button>
+      </span>
+</div>
+<div class="text-center">
+    <div class="btn-group">
+        <button class="btn btn-default" ng-click="vm.prevImg()">&nbsp&nbspPrev&nbsp&nbsp</button>
+        <button class="btn btn-default" ng-click="vm.nextImg()">&nbsp&nbspNext&nbsp&nbsp</button>
+        <button class="btn btn-default" ng-click="vm.selectImg()">Select Image</button>
+    </div>
+</div>
+</div>
+<br>
+<div>
+<label><strong>Select Color Design:</strong></label>
+<div class="container">
+<div class="row">
+    <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
+    <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(1)"
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c1sel ? 'black':'white'}};">
+        <div style="height:30px;background-color:brown"></div>
+        <!-- <div style="height:20px;background-color:#f8f8ff"></div>  -->    
+    </div>
+    <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(2)"
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c2sel ? 'black':'white'}};">
+        <div style="height:30px;background-color:#4682b4"></div>
+        <!-- <div style="height:20px;background-color:#f8f8ff"></div> -->     
+    </div>
+    <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(3)"
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c3sel ? 'black':'white'}};">
+        <div style="height:30px;background-color:#008080"></div>
+        <!-- <div style="height:20px;background-color:#f8f8ff"></div> -->     
+    </div>
+    <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(4)"
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c4sel ? 'black':'white'}};">
+        <div style="height:30px;background-color:gray"></div>
+        <!-- <div style="height:20px;background-color:#f8f8ff"></div> -->     
+    </div>
+    <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(5)"
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c5sel ? 'black':'white'}};">
+        <div style="height:30px;background-color:#a3297a"></div>
+        <!-- <div style="height:20px;background-color:#f8f8ff"></div> -->      
+    </div>
+    <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" ng-click="vm.csel(6)"
+    ng-attr-style="padding:15px;border-style:solid;border-width:1px;border-color:{{vm.c6sel ? 'black':'white'}};">
+        <div style="height:30px;background-color:#c68c53"></div>
+        <!-- <div style="height:20px;background-color:black"></div> -->      
+    </div>
+    <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
+</div>
+<div class="row" style="padding-top:10px">
+    <div class="text-right col-xs-6">
+        <label>Shade Factor:</label>
+    </div>
+    <div class="btn-group col-xs-6">
+        <button class="btn btn-primary" ng-click="vm.minusShade()">&nbsp&nbsp<i class="fa fa-minus"></i>&nbsp&nbsp</button>
+        <button class="btn btn-primary" ng-click="vm.plusShade()">&nbsp&nbsp<i class="fa fa-plus"></i>&nbsp&nbsp</button>
+    </div>    
+</div>
+</div>
+</div>
+<br>
+<label><strong>Title:</strong></label>
+<input class="form-control" ng-model="vm.rankTitle" type="text" placeholder="{{vm.rankTitle}}">
+<label><strong>Question:</strong></label>
+<input class="form-control" ng-model="vm.question" type="text" placeholder="{{vm.question}}">
+<label><strong>Tags:</strong></label>
+<input class="form-control" ng-model="vm.tags" type="text" placeholder="{{vm.tags}}">
+<label><strong>Keywords:</strong></label>
+<input class="form-control" ng-model="vm.keywords" type="text" placeholder="{{vm.keywords}}">
+<label><strong>AnswerTags:</strong></label>
+<input class="form-control" ng-model="vm.answertags" type="text" placeholder="{{vm.answertags}}">
+<label><strong>IsAtomic:</strong></label>
+<input class="form-control" ng-model="vm.isatomic" type="text" placeholder="{{vm.isatomic}}">
+<label><strong>Category-Strings:</strong></label>
+<input class="form-control" ng-model="vm.catstr" type="text" placeholder="{{vm.catstr}}">
+<label><strong>Type:</strong></label>
+<input class="form-control" ng-model="vm.type"  bs-typeahead type="text" placeholder="{{vm.type}}" bs-options="c for c in vm.typeList">
+<label><strong>fimage:</strong></label>
+<input class="form-control" ng-model="vm.image"  type="text" placeholder="{{vm.image}}">
+<label><strong>isMP Flag:</strong></label>
+<input class="form-control" ng-model="vm.ismp"  type="text" placeholder="{{vm.ismp}}">
+<label><strong>Scope:</strong></label>
+<input class="form-control" ng-model="vm.scope"  type="text" placeholder="{{vm.scope}}">
+<br>
+<div class="form-group text-right">
+    <button type="button" class="btn btn-default" ng-click="vm.goBack()">Cancel</button>
+    <button type="button" class="btn btn-primary" ng-click="vm.goEdit()">Edit</button>
+    <button type="button" class="btn btn-danger" ng-click="vm.goDelete()">Delete</button>
+</div>
+<br>
+</div>

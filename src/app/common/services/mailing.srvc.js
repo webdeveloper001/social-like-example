@@ -16,7 +16,9 @@
             promoterCreated: promoterCreated,
             newBizCreated: newBizCreated,
             planPurchased: planPurchased,
-            subscribed: subscribed 
+            subscribed: subscribed,
+            newImageUploaded: newImageUploaded,
+
         };
 
         return service;
@@ -34,6 +36,20 @@
                 }
             }
 
+            return $http(req);
+        }
+
+        function newImageUploaded(data){
+            var url = SERVER_URL + 'mailing/newImageUploaded';
+            var req = {
+                method: 'POST',
+                data: data,
+                url: url,
+                headers: {
+                    'X-Dreamfactory-API-Key': undefined,
+                    'X-DreamFactory-Session-Token': undefined
+                }
+            }
             return $http(req);
         }
         function promoterCreated(promoter){

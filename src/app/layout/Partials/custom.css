@@ -169,7 +169,7 @@ img.cursor
     cursor: not-allowed;
 
     opacity: .6;
-    background: #000 no-repeat center;
+    color: black;
 
     filter: alpha(opacity=60);
 }
@@ -184,8 +184,8 @@ img.cursor
 
     text-align: center;
 
-    color: white;
-    text-shadow: 2px 2px 2px #021124;
+    color: gray;
+    text-shadow: 2px 2px 2px gray;
 }
 .container-blue
 {
@@ -332,10 +332,10 @@ a.navbar-profile-picture-wrapper span{
 }
 
 @media screen and (max-width: 414px) {
-	
+	/*
     a.home-link{
-        display: none;
-    }
+        display: none;*
+    }*/
     a.navbar-profile-picture-wrapper{
         padding-left: 10px;
         display: inline;
@@ -352,6 +352,20 @@ a.navbar-profile-picture-wrapper span{
     }
 }
 
+@media screen and (min-width:615px) {
+            .minxs280 {
+                min-height: 0px;
+                padding-right:10px;
+                margin-bottom:5px;
+            }
+        }
+@media screen and (max-width:614px) {
+            .minxs280 {
+                min-height: 0px;
+                padding-right:10px;
+                margin-bottom:5px;
+            }
+        }
 
 .active-back{
     background-color: #efefef;
@@ -407,16 +421,16 @@ width: 100% !important;
   line-height: 60px;
 }
 
-
+/*
 userfeed-block {
     overflow-y: auto;
     display: block;
     height: 400px;
-}
-
+}*/
+/*
 userfeed-block.show-all {
     overflow: initial;
-}
+}*/
 
 
 .trend-tab ul li a{
@@ -424,10 +438,36 @@ userfeed-block.show-all {
     cursor: pointer;
 }
 .trend-tab ul li.active a{
-    background-color: #d3d3d3;
+    background-color: #e6e6e6;
     cursor: pointer;
 }
 .trend-tab ul li.active a:hover{
     background-color: #efefef;
     cursor: pointer;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    left: 105%;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
 }

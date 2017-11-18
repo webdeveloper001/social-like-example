@@ -6,10 +6,10 @@
         .controller('rodconsole', rodconsole);
 
     rodconsole.$inject = ['$location', '$rootScope', '$state','rankofday','color',
-    'datetime','dialog','$q','table','imagelist'];
+    'datetime','dialog','$q','table','imagelist','categories'];
 
     function rodconsole(location, $rootScope, $state, rankofday, color,
-     datetime, dialog, $q, table, imagelist) {
+     datetime, dialog, $q, table, imagelist, categories) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'rodconsole';
@@ -24,6 +24,7 @@
         vm.goSaveImage = goSaveImage;
         vm.goSaveText = goSaveText;
         vm.goDeleteImage = goDeleteImage;
+        vm.addCategory = addCategory;
 
         vm.dataReady = false;
         var rods = [];
@@ -55,7 +56,7 @@
         dialog.enterPassword(activate,goHome);
         
         //activate();
-
+        
         function activate() {
 
             //get todays date
@@ -66,11 +67,63 @@
             var dateStr = pad(datenow.getMonth()+1)+"/"+pad(datenow.getDate())+"/"+datenow.getFullYear();
             todaydatenum = datetime.date2number(dateStr);
 
-            loadData();
+            loadData2();
             if ($rootScope.DEBUG_MODE) console.log("rodconsole page Loaded!");
             
         }
-    
+
+        function loadData2(){
+            rods = [];
+            rankofday.getall().then(function(result){
+                rods = result;
+                rods.forEach(function(obj){
+                    obj.datenum = datetime.date2number(obj.date);
+                    //console.log("obj - ", obj);
+                    if (obj.category){
+                        //console.log("obj.category - ", obj.category);
+                        var idx = $rootScope.categories.map(function(x) {return x.id; }).indexOf(obj.category);
+                         if (idx > -1){
+                        obj.title = $rootScope.categories[idx].category.replace('@Nh','San Diego');
+                        obj.fimage = $rootScope.categories[idx].fimage;
+                        
+                        if (!obj.introtext){
+                        if ($rootScope.categories[idx].introtext != null &&
+                            $rootScope.categories[idx].introtext != undefined &&
+                            $rootScope.categories[idx].introtext != '' ) 
+                        
+                            obj.introtext = $rootScope.categories[idx].introtext;
+                        }
+                        obj.fc = $rootScope.categories[idx].fc;
+                        obj.bc = $rootScope.categories[idx].bc;
+                        obj.shade = $rootScope.categories[idx].shade;
+                    }
+
+                    if (obj.fimage != undefined && obj.fimage != '') obj.imageok = true;
+                    else obj.imageok = false;
+
+                    if (obj.introtext != undefined && obj.introtext != '') obj.textok = true;
+                    else obj.textok = false;
+                    }
+                });
+                vm.dataReady = true;
+                vm.rods = rods;
+            });
+            vm.addopts = [];
+            for (var i=0; i< $rootScope.categories.length; i++){
+                vm.addopts.push($rootScope.categories[i].category);
+            }
+           
+        }
+
+        function addCategory(){
+            for (var i=0; i< $rootScope.categories.length; i++){
+                if (vm.addval == $rootScope.categories[i].category){
+                    console.log(vm.rank.id, vm.addval);
+                    rankofday.update(vm.rank.id,['category'],[$rootScope.categories[i].id]);
+                }
+            }
+        }
+    /*
         function loadData(){
 
             var res = [];
@@ -119,7 +172,7 @@
                 vm.dataReady = true;
             });
 
-        }
+        }*/
 
         function filterData(x){
             if (x == "all"){
@@ -172,18 +225,26 @@
         function selRank(x){
             vm.overview = false;
             vm.detail = true;
+            vm.addval = '';
             vm.rank = x;
             if (vm.rank.fimage != undefined && vm.rank.fimage != ''){
                 vm.rank.image3 = vm.rank.image2;
                 vm.rank.image2 = vm.rank.image1;
                 vm.rank.image1 = vm.rank.fimage;
             }
-            console.log(vm.rank.bc);
-            if (vm.rank.bc.charAt(0) != 'h') hexcolor = vm.rank.bc;
-            else hexcolor = color.hsl2rgb(vm.rank.bc);
-            vm.rank.bc2 = color.shadeColor(hexcolor, vm.rank.shade/10);
-            $rootScope.cmd1exe = false;
             console.log("selRank", vm.rank);
+            console.log(vm.rank.bc);
+            if (vm.rank.bc != null){
+                if (vm.rank.bc.charAt(0) != 'h') hexcolor = vm.rank.bc;
+                else hexcolor = color.hsl2rgb(vm.rank.bc);
+                vm.rank.bc2 = color.shadeColor(hexcolor, vm.rank.shade/10);
+            }
+            else{
+                vm.rank.bc = 'hsl(240, 100%, 99%)';
+                vm.rank.bc2 = color.shadeColor(vm.rank.bc, -3/10);
+            }
+            $rootScope.cmd1exe = false;
+            
 
         }
 
@@ -193,7 +254,8 @@
         }
 
         function goHome(){
-            $state.go('cwrapper');
+            $rootScope.$emit('backToResults');
+            //$state.go('cwrapper');
         }
 
         function plusShade(){
@@ -281,16 +343,20 @@
         }
 
         function goSaveText(){
-            //Save post for social media
-            rankofday.update(vm.rank.id,['introtext'],[vm.rank.introtext]).then(function(){
+            
+            //Save intro text in category record
+            categories.update(vm.rank.category,['introtext'],[vm.rank.introtext]).then(function(){
                 dialog.getDialog('introTextSaved');
-                loadData();
+                loadData2();
             });
-            //Save intro text for ranking
-            table.update(vm.rank.rankid,['introtext'],[vm.rank.webtext]).then(function(){
-                //dialog.getDialog('introTextSaved');
-                //loadData();
+
+            //temporarily flush records from rank of day. Field 'introtext' in rankofday table will be deleted
+            var texthold = vm.rank.introtext;
+            rankofday.update(vm.rank.id,['introtext'],['']).then(function(){
+            //    dialog.getDialog('introTextSaved');
+            //    loadData();
             });
+            if (vm.rank.introtext == '') vm.rank.introtext = texthold;
         }
 
         function goDeleteImage(){

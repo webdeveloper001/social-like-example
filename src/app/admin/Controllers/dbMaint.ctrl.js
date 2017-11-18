@@ -6,10 +6,12 @@
         .controller('dbMaint', dbMaint);
 
     dbMaint.$inject = ['$location', '$rootScope', '$state', '$stateParams', 'Upload', '$q','getgps',
-        'table', 'dialog', 'answer', 'catans', 'votes', '$http','categorycode','codeprice','useraccnt'];
+        'table', 'dialog', 'answer', 'catans', 'votes', 'common', 
+        '$http','categorycode','codeprice','useraccnt'];
 
     function dbMaint(location, $rootScope, $state, $stateParams, Upload, $q, getgps,
-        table, dialog, answer, catans, votes, $http, categorycode, codeprice, useraccnt) {
+        table, dialog, answer, catans, votes, common,
+        $http, categorycode, codeprice, useraccnt) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'dbMaint';
@@ -39,10 +41,13 @@
         vm.selEditAddress = selEditAddress;
         vm.editAddress = editAddress;
         vm.addcatcode = addcatcode;
+        vm.categoryStr = categoryStr;
+        vm.deleteDupVotes = deleteDupVotes;
 
         vm.isAdmin = $rootScope.isAdmin;
         
         vm.dupAnsRdy = false;
+        vm.catstrmode = false;
 
         activate();
 
@@ -186,18 +191,24 @@
         }
         function showDuplicatedOnlyName() {
             // Find answers that are duplicated
-            
+            $rootScope.dupAns = [];
             var canswer = {};
             var obj = {};
             vm.dupAnsNames = [];
             var idx = 0;
+            var isFF = false;
             for (var i = 0; i < $rootScope.answers.length; i++) {
                 canswer = $rootScope.answers[i];
                 for (var j = 0; j < $rootScope.answers.length; j++) {
-                    if (canswer.name == $rootScope.answers[j].name && canswer.cityarea == $rootScope.answers[j].cityarea && i != j) {
+                    if (canswer.name == $rootScope.answers[j].name && 
+                    //canswer.cityarea == $rootScope.answers[j].cityarea && 
+                        canswer.location == $rootScope.answers[j].location && i != j) {
                         //console.log("Duplicated answer: ", canswer.name);
+                        isFF = false;
                         obj = {};
-                        obj.id = idx;
+                        obj.ans1 = canswer;
+                        obj.ans2 = $rootScope.answers[j];
+                        /*obj.id = idx;
                         obj.add1 = canswer.addinfo;
                         obj.nh1 = canswer.cityarea;
                         obj.loc1 = canswer.location;
@@ -212,7 +223,18 @@
                         obj.add2 = $rootScope.answers[j].addinfo;
                         obj.image2 = $rootScope.answers[j].imageurl;
                         obj.id2 = $rootScope.answers[j].id;
-                        vm.dupAnsNames.push(obj);
+                        //vm.dupAnsNames.push(obj);*/
+                        /*
+                        if ((obj.ans1.name.indexOf('Subway')>-1 || obj.ans2.name.indexOf('Subway')>-1) ||
+                        (obj.ans1.name.indexOf('Starbucks')>-1 || obj.ans2.name.indexOf('Starbucks')>-1) ||
+                        (obj.ans1.name.indexOf('Pizza Hut')>-1 || obj.ans2.name.indexOf('Pizza Hut')>-1) ||
+                        (obj.ans1.name.indexOf('Domino')>-1 || obj.ans2.name.indexOf('Domino')>-1) ||
+                        (obj.ans1.name.indexOf('KFC')>-1 || obj.ans2.name.indexOf('KFC')>-1) ||
+                        (obj.ans1.name.indexOf('Burger King')>-1 || obj.ans2.name.indexOf('Burger King')>-1) ||
+                        (obj.ans1.name.indexOf('Eleven')>-1 || obj.ans2.name.indexOf('Eleven')>-1)) isFF = true;
+                        */
+                        if (true) $rootScope.dupAns.push(obj);
+                        vm.dupAnsRdy = true;
                         idx++;
                     }
                 }
@@ -388,6 +410,8 @@
                     obj.caDownV = ca.downV;
                     obj.nUpVlen = nUpV.length;
                     obj.nDownVlen = nDownV.length;
+                    obj.upVotes = nUpV;
+                    obj.downVotes = nDownV;
 
                     vm.syncp.push(obj);
                     //console.log("syn problem upV @ catans - ", $rootScope.answers[idx].name, $rootScope.content[idx2].title, ca.upV, nUpV);
@@ -397,6 +421,21 @@
 
         function updatecatans(x) {
             catans.updateRec(x.catans, ['upV', 'downV'], [x.nUpVlen, x.nDownVlen]);
+        }
+
+        function deleteDupVotes(x){
+            var rFound = false;
+            for (var j = 0; j < $rootScope.allvotes.length; j++) {
+                if (x.user == $rootScope.allvotes[j].user && 
+                    x.vote == $rootScope.allvotes[j].vote && 
+                    x.catans == $rootScope.allvotes[j].catans &&
+                    x.answer == $rootScope.allvotes[j].answer){
+                    if (rFound) {
+                        votes.deleteRec($rootScope.allvotes[j].id);
+                    }
+                    rFound = true;
+                }
+            }
         }
 
         function estDistances() {
@@ -592,6 +631,52 @@
                 //console.log("slugTag - ", slugTag);
                 }  
             }*/
+        }
+
+        function categoryStr(){
+            vm.catstrmode = true;
+            var ctr = 0;
+            // 32.*****Populate catstr field for all ranks **** 
+                    var catstr = '';
+                    var idx = -1;
+                    var idx2 = -1;
+                    var nhObj = {};
+                    var nhArr = [];
+                    var nhSub = [];
+                    var nhSub2 = [];
+                    var catArr = [];
+
+                    for (var i=0; i < $rootScope.content.length; i++){
+                    //for (var i=0; i < 100; i++){
+                        nhArr = [];
+                        common.getInclusiveAreas($rootScope.content[i].nh,nhArr);
+                        
+                        catArr = [];
+                        for (var j=0; j < $rootScope.content.length; j++){
+                            if ($rootScope.content[i].cat == $rootScope.content[j].cat){
+                                for (var n = 0; n < nhArr.length; n++){
+                                    if (nhArr[n] == $rootScope.content[j].nh) {
+                                        if (catArr.indexOf($rootScope.content[j].id) == -1) 
+                                            catArr.push($rootScope.content[j].id);
+                                        //console.log($rootScope.content[j].slug);
+                                    }
+                                }
+                            }
+                        }
+                        //console.log("length catArr ", catArr.length);
+                        catstr = '';
+                        for (var m=0; m < catArr.length; m++){
+                            catstr = catstr + ':'+ catArr[m];
+                        }
+                        catstr = catstr.substring(1);
+                        //console.log("catstr - ", catstr);
+                        table.update($rootScope.content[i].id,['catstr'],[catstr]).then(function(){
+                            ctr++;
+                            vm.cpct = Math.floor((ctr/$rootScope.content.length)*100);
+                        });
+                        
+                    }
+                    //End of 32 */
         }
     }
 })();
