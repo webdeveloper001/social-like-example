@@ -270,22 +270,22 @@
         </thead>
         <tbody>
             <!--| orderBy: '-Rank' -->
-            <tr ng-repeat="x in vm.answers | limitTo: vm.limit" style="height:43px" ng-click="vm.answerDetail(x)">
+            <tr ng-repeat="x in vm.answers | limitTo: vm.limit" style="height:43px">
                 <td ng-if="!vm.sm || vm.sortByName == 'Rank'" align="middle">{{x.Rank}}</td>
                 
                 <td ng-repeat="h in vm.fields | filter:{isrequired:true}" ><a ng-attr-style="text-decoration: none;" href="{{'/answerDetail/' + x.slug }}" ng-click="vm.answerDetail(x)">{{ x[h.name]}}</a></td> 
                 
                 <td ng-if="(!vm.sm || vm.sortByName == 'Distance') && vm.haveLocation" 
-                    align="middle" style="width:{{vm.sm?'10px':'auto'}}">{{x.dist}}</td>
+                    align="middle" style="width:{{vm.sm?'10px':'auto'}}" ng-click="vm.answerDetail(x)">{{x.dist}}</td>
                 
-                <td ng-if="!vm.sm || vm.sortByName == 'Popular'" align="middle" style="width:{{vm.sm?'10px':'auto'}}">
+                <td ng-if="!vm.sm || vm.sortByName == 'Popular'" align="middle" style="width:{{vm.sm?'10px':'auto'}}" ng-click="vm.answerDetail(x)">
                     {{x.upV - x.downV > 0 ? ('+'+(x.upV-x.downV)):(x.upV-x.downV)}}</td>
 
-                <td ng-if="!vm.sm || vm.sortByName == 'Trending'" align="middle" style="width:{{vm.sm?'10px':'auto'}}">
+                <td ng-if="!vm.sm || vm.sortByName == 'Trending'" align="middle" style="width:{{vm.sm?'10px':'auto'}}" ng-click="vm.answerDetail(x)">
                     {{x.trendUpV!=undefined&&x.trendUpV!=NaN?x.trendUpV:0}}</td>
 
                 <td ng-if="(!vm.sm || vm.sortByName == 'Date') && vm.type == 'Event' && vm.mode=='specials'" 
-                align="middle">{{x.date}}</th>
+                align="middle" ng-click="vm.answerDetail(x)">{{x.date}}</th>
                 
                 <td ng-show="vm.type == 'Establishment' && vm.mode=='specials'" 
                 ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}};" ng-click="vm.answerDetail(x)">
