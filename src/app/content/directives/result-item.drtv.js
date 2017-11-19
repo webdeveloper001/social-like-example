@@ -51,6 +51,8 @@ angular.module('app').directive('resultItem',
                         if (resObj.isAnswer == true) scope.imageurl = resObj.imageurl;
                         else scope.imageurl = resObj.fimage;
 
+                        if (scope.imageurl == undefined) scope.imageurl = $rootScope.EMPTY_IMAGE; 
+
                         scope.isAnswer = resObj.isAnswer == undefined ? false:resObj.isAnswer;
                         /*
                         if (resObj.isAnswer == true) scope.introtext = resObj.addinfo.slice(0,150);
@@ -79,6 +81,7 @@ angular.module('app').directive('resultItem',
                         }
                         else scope.type = 'Ranking';
                         
+                        if (scope.type == undefined) scope.type = '';
 
                         //Get rank stats
                         scope.stats = {};
@@ -124,8 +127,10 @@ angular.module('app').directive('resultItem',
                             if (resObj.type == 'Short-Phrase') { scope.bc = '#2d5a6a'; scope.fc = '#f8f8ff'; }
                             if (resObj.type == 'Event') { scope.bc = '#176ced'; scope.fc = '#f8f8ff'; }
                             if (resObj.type == 'Person' || resObj.type == 'PersonCust') { scope.bc = '#c68c53'; scope.fc = '#f8f8ff'; }
-                            
                             scope.shade = -4;
+
+                            if (scope.type == '') {scope.bc = '#d3d3d3'; scope.fc = 'gray'; scope.shade = 4;}
+
                         }
                         if (resObj.type == 'Short-Phrase') scope.image1 = $rootScope.EMPTY_IMAGE;
                     }

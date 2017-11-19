@@ -110,6 +110,10 @@
         var rankDataLoadedListener = $rootScope.$on('rankDataLoaded', function () {
             if (vm.dataReady == false) checkRankIsLoaded();
         });
+        var answersLoadedListener = $rootScope.$on('answersLoaded', function () {
+            if (vm.dataReady == false) checkRankIsLoaded();
+        });
+
         var coordsRdyRankListener = $rootScope.$on('coordsRdy', function () {
             if ($rootScope.DEBUG_MODE) console.log("received coordsreadyrank");
             //loadData();
@@ -179,7 +183,9 @@
             }
             
             //if rank exists continue loading controller, else get from database
-            if ($rootScope.cCategory != null) prepareRankSummary();
+            if ($rootScope.cCategory != null) {
+                if ($rootScope.answersLoaded) prepareRankSummary();
+            }
             else dataloader.getRank($stateParams.index);
         }
 

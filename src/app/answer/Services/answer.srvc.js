@@ -65,11 +65,11 @@
 
         }*/
 
-        function getAnswersX(scope) {
-
+        function getAnswersX(scope,run) {
             //for performance request only following fields:
             var fields = '';
-            fields += 'id,name,imageurl,type';
+            if (run == 1) fields += 'id,name'; //on first run, get only these fields
+            if (run == 2) fields += 'id,imageurl,type'; //on second run get these fields
             
             //Get all answer records
             var url0 = baseURI + '?offset=' + 0 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
@@ -94,13 +94,19 @@
                 var data = d[0].data.resource.concat(d[1].data.resource, d[2].data.resource, d[3].data.resource, 
                 d[4].data.resource, d[5].data.resource, d[6].data.resource, d[7].data.resource);
                 
-                if (_answers.length == 0) _load (data); //clear answers array and put new data
-                else _merge(data, _answers); //merge existing answers with new data
-                
+                if (run == 1){
+                    if (_answers.length == 0) _load (data); //clear answers array and put new data
+                    else _merge(_answers, data); //merge existing answers with new data
+                    
+                    $rootScope.answersLoaded = true;
+                    $rootScope.$emit('answersLoaded');
+                    getAnswersX($rootScope.SCOPE,2);
+                }
+                if (run == 2) _augment (data);
+
                 if ($rootScope.DEBUG_MODE) console.log("No. Answers: ", _answers.length);
                 return _answers;            
             }, _queryFailed);  
-
         }
 
         function getAnswersFromCatans(catans) {
@@ -452,29 +458,33 @@
             }
         }
 
-        function _load(data){
-            //if (data.length < _answers.length) {
-                _answers.length = 0;
-                _fetchAnswersMem.length = 0;
-                data.forEach(function (x) {
-                    _answers.push(x);
-                    //_fetchAnswersMem.push(x.id);
-                });
+        function _load(data) {
+            _answers.length = 0;
+            _fetchAnswersMem.length = 0;
+            data.forEach(function (x) {
+                _answers.push(x);
+            });
         }
-/*
-        function _append(data){
-           data.forEach(function(item){
-                var idx = _answers.map(function(x) {return x.id; }).indexOf(item.id);
-                if (idx < 0) _answers.push(item);
-            }); 
-        }*/
 
-        function _merge(lg,sm){  //lg is large set of data, sm is small set of data, merge small into large is more efficient
-            sm.forEach(function(item){
-                var idx = lg.map(function(x) {return x.id; }).indexOf(item.id);
-                if (idx < 0) lg.push(item);
-                else lg[idx] = item;
+        function _merge(ans, data) {  //lg is large set of data, sm is small set of data, merge small into large is more efficient
+            var map = [];
+            var idx = -1;
+            map = ans.map(function (x) { return x.id; });
+            data.forEach(function (item) {
+                idx = map.indexOf(item.id);
+                if (idx < 0) ans.push(item);
+                else angular.extend(ans[idx], item); //merge existing record 
                 _fetchAnswersMem.push(item.id);
+            });
+        }
+
+        function _augment(data) {
+            var answersmap = _answers.map(function(x) {return x.id;});
+            var idx = -1;
+            data.forEach(function(obj){
+                idx = answersmap.indexOf(obj.id);
+                _answers[idx].imageurl = obj.imageurl;
+                _answers[idx].type = obj.type;
             });
         }
 

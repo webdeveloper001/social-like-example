@@ -295,8 +295,8 @@ function ($rootScope, $state, search,
                 ranksLoaded = false;
                 scope.searchResults = homeRanks;
                 scope.displayResults = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
-                pullDataArray = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
-                pullData('ranks', pullDataArray);
+                //pullDataArray = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
+                //pullData('ranks', pullDataArray);
                 scope.contentLoaded = true;
                 $timeout(function(){
                     $rootScope.$broadcast('masonry.reload');

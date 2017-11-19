@@ -61,7 +61,11 @@
             $q.all([p1,p2]).then(function(d){
                 unwrap();
                 waitforImages(d[1]);
-                gethomedataX($rootScope.SCOPE);
+                pulldata('ranks',d[0]).then(function(){
+                    $timeout(function(){
+                        gethomedataX($rootScope.SCOPE);
+                    },50);
+                });
             });
         }
 
@@ -73,7 +77,11 @@
             var p0 = table.getTablesX(scope);
             var p1 = categories.getAllCategoriesX(scope);
             var p2 = locations.getAllLocations();
-            var p3 = answer.getAnswersX(scope).then(function(){
+            var p3 = answer.getAnswersX(scope,1).then(function(){
+                if ($rootScope.isLoggedIn) getDemoData();
+                getSecondaryData();
+                table.storeInitialHomeData(ridsx);
+                categories.storeInitialHomeData(cidsx);
                 getEstablishmentAnswers();
                 $rootScope.pageDataLoaded = true;
                 checkStatus();
@@ -85,12 +93,6 @@
                 // run whatever needs to be timed in between the statements
                 unwrap();
                 createSearchStrings();
-                if ($rootScope.isLoggedIn) getDemoData();
-
-                //checkStatus();
-                getSecondaryData();
-                table.storeInitialHomeData(ridsx);
-                categories.storeInitialHomeData(cidsx);
                 
                 //Create array of neighborhood options
                 $rootScope.nhs = $rootScope.locations.map(function(x) {return x.nh_name; });
@@ -278,7 +280,7 @@
 
         function pulldata(type, data) {
             if (type == 'ranks') {
-                catans.getAllcatansX(data).then(function (result) {
+                return catans.getAllcatansX(data).then(function (result) {
                         if (result){
                         //_ranksLoaded = true;
                         //if ($rootScope.rankSummaryDataLoaded == false ||
