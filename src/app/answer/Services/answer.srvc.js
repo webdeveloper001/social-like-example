@@ -102,7 +102,10 @@
                     $rootScope.$emit('answersLoaded');
                     getAnswersX($rootScope.SCOPE,2);
                 }
-                if (run == 2) _augment (data);
+                if (run == 2) {
+                    _augment (data);
+                    _getanswernames();
+                }
 
                 if ($rootScope.DEBUG_MODE) console.log("No. Answers: ", _answers.length);
                 return _answers;            
@@ -484,6 +487,42 @@
                 _answers[idx].imageurl = obj.imageurl;
                 _answers[idx].type = obj.type;
             });
+        }
+
+        function _getanswernames(){
+            $rootScope.estAnswers = [];
+            $rootScope.estNames = [];
+            $rootScope.pplAnswers = [];
+            $rootScope.pplNames = [];
+            $rootScope.plaAnswers = [];
+            $rootScope.plaNames = [];
+            $rootScope.freAnswers = [];
+            $rootScope.freNames = [];
+            $rootScope.orgNames = [];
+            $rootScope.orgAnswers = [];
+            $rootScope.orgNames = [];
+            for (var i = 0; i < _answers.length; i++) {
+                if (_answers[i].type == 'Establishment') {
+                    $rootScope.estNames.push($rootScope.answers[i].name);
+                    $rootScope.estAnswers.push($rootScope.answers[i]);
+                }
+                if (_answers[i].type == 'Person') {
+                    $rootScope.pplNames.push($rootScope.answers[i].name);
+                    $rootScope.pplAnswers.push($rootScope.answers[i]);
+                }
+                if (_answers[i].type == 'Place') {
+                    $rootScope.plaNames.push($rootScope.answers[i].name);
+                    $rootScope.plaAnswers.push($rootScope.answers[i]);
+                }
+                if (_answers[i].type == 'Organization') {
+                    $rootScope.orgNames.push($rootScope.answers[i].name);
+                    $rootScope.orgAnswers.push($rootScope.answers[i]);
+                }
+                if (_answers[i].type == 'PersonCust') {
+                    $rootScope.freNames.push($rootScope.answers[i].name);
+                    $rootScope.freAnswers.push($rootScope.answers[i]);
+                }
+            }
         }
 
         function _areAnswersLoaded() {

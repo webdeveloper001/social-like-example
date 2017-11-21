@@ -82,7 +82,7 @@
                 getSecondaryData();
                 table.storeInitialHomeData(ridsx);
                 categories.storeInitialHomeData(cidsx);
-                getEstablishmentAnswers();
+                //getEstablishmentAnswers();
                 $rootScope.pageDataLoaded = true;
                 checkStatus();
             });
@@ -223,41 +223,7 @@
             demoDataReady = demoData1of3 && demoData2of3 && demoData3of3;
         }
 
-        function getEstablishmentAnswers() {
-            $rootScope.estAnswers = [];
-            $rootScope.estNames = [];
-            $rootScope.pplAnswers = [];
-            $rootScope.pplNames = [];
-            $rootScope.plaAnswers = [];
-            $rootScope.plaNames = [];
-            $rootScope.freAnswers = [];
-            $rootScope.freNames = [];
-            $rootScope.orgNames = [];
-            $rootScope.orgAnswers = [];
-            $rootScope.orgNames = [];
-            for (var i = 0; i < $rootScope.answers.length; i++) {
-                if ($rootScope.answers[i].type == 'Establishment') {
-                    $rootScope.estNames.push($rootScope.answers[i].name);
-                    $rootScope.estAnswers.push($rootScope.answers[i]);
-                }
-                if ($rootScope.answers[i].type == 'Person') {
-                    $rootScope.pplNames.push($rootScope.answers[i].name);
-                    $rootScope.pplAnswers.push($rootScope.answers[i]);
-                }
-                if ($rootScope.answers[i].type == 'Place') {
-                    $rootScope.plaNames.push($rootScope.answers[i].name);
-                    $rootScope.plaAnswers.push($rootScope.answers[i]);
-                }
-                if ($rootScope.answers[i].type == 'Organization') {
-                    $rootScope.orgNames.push($rootScope.answers[i].name);
-                    $rootScope.orgAnswers.push($rootScope.answers[i]);
-                }
-                if ($rootScope.answers[i].type == 'PersonCust') {
-                    $rootScope.freNames.push($rootScope.answers[i].name);
-                    $rootScope.freAnswers.push($rootScope.answers[i]);
-                }
-            }
-        }
+        
 
         function createSearchStrings(){
             $rootScope.searchStr = [];

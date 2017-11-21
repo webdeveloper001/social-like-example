@@ -35,6 +35,8 @@
         vm.gotoHome = gotoHome;
         vm.goAddRank = goAddRank;
         vm.quickFilter = quickFilter;
+        vm.buttonsFwd = buttonsFwd;
+        vm.buttonsPrev = buttonsPrev;
 
         vm.foodNearMe = false;
         if ($window.location.href.indexOf('rankSummary/food-near-me-9521') != -1) {
@@ -290,15 +292,7 @@
         activate();
         
         function activate() {
-            //****TEMP CODE, ENable for Admin Functions*****************
-            /*
-            $rootScope.isLoggedIn = true;
-            $rootScope.user = {};
-            $rootScope.user.name = "Andres Moctezuma";
-            $rootScope.user.first_name = 'Andres';
-            $rootScope.user.last_name = 'Moctezuma';
-            $rootScope.user.id = "10104518570729893";
-            //---*/
+            
 
             $rootScope.isAdmin = false;
             $rootScope.dataAdmin = false;
@@ -318,6 +312,7 @@
 
             $rootScope.DEBUG_MODE = DEBUG_MODE;
             $rootScope.EMPTY_IMAGE = EMPTY_IMAGE;
+            
             //$rootScope.SCOPE = 2; // This scope number is for city of San Diego.
 
             $rootScope.facebookAppId = ''; //1102409523140826'';
@@ -331,6 +326,7 @@
                 //if (!tourviewed && !$rootScope.isLoggedIn) dialog.tour();
             }
             else loadData();
+            buttons();
 
             //Call userdata functions, If user is not logged in, functions do not execute.
             userdata.loadUserData();        //load user data (votes and activities)
@@ -494,7 +490,7 @@
 
         function quickFilter(x){
             vm.showans = false;
-            if (x == 'neighborhood') {
+            if (x == 'Neighborhood' || x == vm.nh) {
                 //dialog.selectNeighborhood($rootScope.locations);
                 if (vm.nhctrl == false) vm.nhctrl = true;
                 else vm.nhctrl = false;
@@ -512,10 +508,16 @@
                 vm.nh = vm.nhinp;
                 vm.nhctrl = false;
                 vm.val = vm.nh;
+                //Substitute 'Neighborhood' for selection
+                var idx = vm.buts.indexOf('Neighborhood');
+                vm.buts[idx] = vm.nh;
             }
         }
 
         function clearNh(){
+            var idx = vm.buts.indexOf(vm.nh);
+            vm.buts[idx] = 'Neighborhood';
+
             vm.nhinp = '';
             vm.nh = '';
             vm.nhctrl = false;
@@ -593,6 +595,35 @@
             vm.barIsActive = false;
             $rootScope.cCategory = undefined; //clear current category
             $state.go('trends');
+        }
+
+        function buttons(){
+            vm.buts = ['Food','Activities','Nightlife','Shopping','Beauty','Events','Health','Fitness','Sports','Services',
+                        'Neighborhood','Culture','Personalities','City','Family','Groups','Religion','Pets'];
+            vm.bi = 0;
+        }
+        
+        function buttonsFwd(){
+            if ($rootScope.DISPLAY_XSMALL || $rootScope.DISPLAY_SMALL){
+                vm.bi = vm.bi += 8;
+                if (vm.bi+8 > vm.buts.length) vm.bi = vm.buts.length-8;
+            }
+            if ($rootScope.DISPLAY_MEDIUM || $rootScope.DISPLAY_LARGE){
+                vm.bi = vm.bi += 14;
+                if (vm.bi+14 > vm.buts.length) vm.bi = vm.buts.length-14;
+            }
+            //console.log("buttons fwd - bi", vm.bi);
+        }
+        function buttonsPrev(){
+            if ($rootScope.DISPLAY_XSMALL || $rootScope.DISPLAY_SMALL){
+                vm.bi = vm.bi -= 8;
+                if (vm.bi < 0) vm.bi = 0;
+            }
+            if ($rootScope.DISPLAY_MEDIUM || $rootScope.DISPLAY_LARGE){
+                vm.bi = vm.bi -= 14;
+                if (vm.bi < 0) vm.bi = 0;
+            }
+            //console.log("buttons prev - bi", vm.bi);
         }
 
     }

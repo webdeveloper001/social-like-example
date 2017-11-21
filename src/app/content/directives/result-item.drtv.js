@@ -95,7 +95,10 @@ angular.module('app').directive('resultItem',
                         //Set Feautured Image && box color
                         if (!resObj.isAnswer) { 
                             //if fimage is undefined
-                            if (scope.imageurl == undefined || scope.imageurl == '' || scope.imageurl == null) {
+                            if (scope.imageurl == undefined || 
+                                scope.imageurl == '' || 
+                                scope.imageurl == null ||
+                                scope.imageurl == $rootScope.EMPTY_IMAGE) {
                                 scope.imageurl = resObj.image1url;
                             }
                             
