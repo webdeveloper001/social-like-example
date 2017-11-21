@@ -599,7 +599,7 @@
 
         function buttons(){
             vm.buts = ['Food','Activities','Nightlife','Shopping','Beauty','Events','Health','Fitness','Sports','Services',
-                        'Neighborhood','Culture','Personalities','City','Family','Groups','Religion','Pets'];
+                        'Neighborhood','Culture','People','City','Family','Groups','Religion','Pets'];
             vm.bi = 0;
         }
         
