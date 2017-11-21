@@ -179,7 +179,6 @@
         function getAnswer(id) {
 
             var url0 = baseURI + '/?filter=id=' + id;
-
             var p0 = $http.get(url0);
             
             return $q.all([p0]).then(function (d){
@@ -473,8 +472,7 @@
             data.forEach(function (item) {
                 idx = map.indexOf(item.id);
                 if (idx < 0) ans.push(item);
-                else angular.extend(ans[idx], item); //merge existing record 
-                _fetchAnswersMem.push(item.id);
+                else ans[idx] = angular.extend(ans[idx], item); //merge existing record
             });
         }
 

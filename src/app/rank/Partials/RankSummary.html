@@ -273,7 +273,8 @@
             <tr ng-repeat="x in vm.answers | limitTo: vm.limit" style="height:43px">
                 <td ng-if="!vm.sm || vm.sortByName == 'Rank'" align="middle">{{x.Rank}}</td>
                 
-                <td ng-repeat="h in vm.fields | filter:{isrequired:true}" ><a ng-attr-style="text-decoration: none;" href="{{'/answerDetail/' + x.slug }}" ng-click="vm.answerDetail(x)">{{ x[h.name]}}</a></td> 
+                <td ng-repeat="h in vm.fields | filter:{isrequired:true}" ><a ng-attr-style="text-decoration: none;" 
+                    href="{{x.slug ? '/answerDetail/' + x.slug:'/answerDetail/' + x.id }}" ng-click="vm.answerDetail(x)">{{ x[h.name]}}</a></td> 
                 
                 <td ng-if="(!vm.sm || vm.sortByName == 'Distance') && vm.haveLocation" 
                     align="middle" style="width:{{vm.sm?'10px':'auto'}}" ng-click="vm.answerDetail(x)">{{x.dist}}</td>
