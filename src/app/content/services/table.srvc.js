@@ -80,7 +80,7 @@
             
             return $q.all([p0,p1,p2,p3]).then(function (d){
                 var data = d[0].data.resource.concat(d[1].data.resource,d[2].data.resource,d[3].data.resource);
-                _load (data);
+                _load(data);
                 if ($rootScope.DEBUG_MODE) console.log("tables length: ", _tables.length);
                 return _tables;            
             }, _queryFailed);  
@@ -101,7 +101,7 @@
                 var data = d[0].data.resource;
                 _load(data);
                 if ($rootScope.DEBUG_MODE) console.log("tables L length: ", _tables.length);
-                return _tables;            
+                return data;            
             }, _queryFailed);  
         }
 
@@ -361,6 +361,7 @@
             data.forEach(function(x){
                 _tables.push(x);
             });
+            _addfoodnearme();
         }
 
         function _append(data){
@@ -368,6 +369,22 @@
                 var idx = _tables.map(function(x) {return x.id; }).indexOf(item.id);
                 if (idx < 0) _tables.push(item);
             }); 
+        }
+
+        function _addfoodnearme() {
+            var fnObj = {};
+            fnObj.title = 'Food Near Me';
+            fnObj.slug = 'food-near-me';
+            fnObj.tags = 'food';
+            fnObj.type = 'Establishment';
+            fnObj.bc = 'gray';
+            fnObj.fc = '#f8f8ff';
+            fnObj.shade = 4;
+            fnObj.introtext = "These are some great food places near you.";
+            fnObj.fimage = 'https://rankx.blob.core.windows.net/sandiego/featuredImages/food-near-me-1490.jpg';
+            fnObj.isfoodnearme = true;
+            if ($rootScope.fnm == undefined) _tables.push(fnObj);
+            $rootScope.fnm = fnObj;
         }
 
         function _areTablesLoaded() {

@@ -686,6 +686,12 @@
                     //if (nme) results = results.concat(results_nm);
                     if (results_ss.length > 2) shuffle(results_ss);
                     results = results.concat(results_ss);
+
+                    //if query is food related, make Food Near Me rank first option
+                    if (query == 'food' || query =='Food'){
+                        var ni = $rootScope.content.map(function(x) {return x.title; }).indexOf('Food Near Me');
+                        results = [$rootScope.content[ni]].concat(results);
+                    }
                 }
 
                 else {
@@ -729,7 +735,7 @@
             var idx1 = 0;
             var obj = {};
             for (var i = 0; i < ranks.length; i++) {
-                if (ranks[i].isAnswer == true){}
+                if (ranks[i].isAnswer == true || ranks[i].title == 'Food Near Me'){}
                 else{
                     tstr = ranks[i].tags.replace(/,/g, ' ');
                     tagsr = tstr.split(' ');

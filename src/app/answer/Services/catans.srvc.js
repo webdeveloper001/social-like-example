@@ -92,9 +92,11 @@
             var _datax = [];  //this is filtered array (ignore those ranks for which catans already fetched)
             if (data.length > 0) {
                 data.forEach(function (item) {
-                    if (_fetchRanksMem.indexOf(item.id) < 0) {
-                        _datax.push(item);
-                        _fetchRanksMem.push(item.id);
+                    if (item.id) {
+                        if (_fetchRanksMem.indexOf(item.id) < 0) {
+                            _datax.push(item);
+                            _fetchRanksMem.push(item.id);
+                        }
                     }
                 });
             }

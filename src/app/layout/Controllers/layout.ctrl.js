@@ -202,11 +202,7 @@
                 vm.barIsActive = false;
         });
         var backtoResultsListener = $rootScope.$on('backToResults', function (event) {
-                    vm.childActive = false; 
-                    vm.barIsActive = true;
-                    $rootScope.cCategory = undefined;
-                    backToResults();
-                //}      
+                    backToResults();   
         });
 
         var userLoggedOutListener = $rootScope.$on('userLoggedOut', function (event) {
@@ -349,9 +345,9 @@
                 $rootScope.dialogs = response.data;
             });
 
-            $http.get('../../../assets/foodans.json').then(function (response) {
-                $rootScope.foodans = response.data;
-            });
+            //$http.get('../../../assets/foodans.json').then(function (response) {
+            //    $rootScope.foodans = response.data;
+            //});
         }
 
         function loadData() {
@@ -444,17 +440,22 @@
         }
 
         function backToResults() {
+            vm.childActive = false; 
+            vm.barIsActive = true;
+            $rootScope.cCategory = undefined;
+
             if ($state.current.name == 'cwrapper') {
                 $rootScope.inputVal = '';
                 vm.val = '';
             }
             $state.go('cwrapper');
+
             if ($rootScope.inputVal != undefined && $rootScope.inputVal != '') {
                 $rootScope.searchActive = true;
                 vm.searchActive = true;
                 vm.childActive = false;
             }
-            //$rootScope.$emit('updateSearch')
+
             
             $timeout(function(){
                 $window.scrollTo(0, $rootScope.pageYOffset);
@@ -575,7 +576,8 @@
         }
         
          function getDestination(){
-            if (window.location.href.indexOf('rankSummary') > -1){
+
+            if (window.location.href.indexOf('rankSummary') > -1 && window.location.href.indexOf('food-near-me') < 0){
                 vm.childActive = true; 
                 vm.barIsActive = false;
             }
@@ -599,7 +601,7 @@
 
         function buttons(){
             vm.buts = ['Food','Activities','Nightlife','Shopping','Beauty','Events','Health','Fitness','Sports','Services',
-                        'Neighborhood','Culture','People','City','Family','Groups','Religion','Pets'];
+                        'Neighborhood','Culture','People','City','Family','Groups','Religion','Pets','Home','Cars'];
             vm.bi = 0;
         }
         

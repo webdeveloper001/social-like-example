@@ -19,6 +19,7 @@
 
         var service = {
             getAnswers: getAnswers,
+            getAllAnswers: getAllAnswers,
             getAnswersX: getAnswersX,
             getAnswersFromCatans: getAnswersFromCatans,
             getAnswer: getAnswer,
@@ -32,8 +33,8 @@
 
         return service;
         
-        /*
-        function getAnswers(forceRefresh) {
+        
+        function getAllAnswers(forceRefresh) {
             
             //Get all answer records
             var url0 = baseURI + '?offset=' + 0 * 1000;
@@ -63,13 +64,13 @@
                 return _answers;            
             }, _queryFailed);  
 
-        }*/
+        }
 
         function getAnswersX(scope,run) {
             //for performance request only following fields:
             var fields = '';
             if (run == 1) fields += 'id,name'; //on first run, get only these fields
-            if (run == 2) fields += 'id,imageurl,type'; //on second run get these fields
+            if (run == 2) fields += 'id,imageurl,type,isfood,lat,lng'; //on second run get these fields
             
             //Get all answer records
             var url0 = baseURI + '?offset=' + 0 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
@@ -486,7 +487,11 @@
                 idx = answersmap.indexOf(obj.id);
                 _answers[idx].imageurl = obj.imageurl;
                 _answers[idx].type = obj.type;
+                _answers[idx].isfood = obj.isfood;
+                _answers[idx].lat = obj.lat;
+                _answers[idx].lng = obj.lng;
             });
+            //_getanswernames();
         }
 
         function _getanswernames(){
@@ -501,27 +506,29 @@
             $rootScope.orgNames = [];
             $rootScope.orgAnswers = [];
             $rootScope.orgNames = [];
+            $rootScope.foodans = [];
             for (var i = 0; i < _answers.length; i++) {
                 if (_answers[i].type == 'Establishment') {
-                    $rootScope.estNames.push($rootScope.answers[i].name);
-                    $rootScope.estAnswers.push($rootScope.answers[i]);
+                    $rootScope.estNames.push(_answers[i].name);
+                    $rootScope.estAnswers.push(_answers[i]);
                 }
                 if (_answers[i].type == 'Person') {
-                    $rootScope.pplNames.push($rootScope.answers[i].name);
-                    $rootScope.pplAnswers.push($rootScope.answers[i]);
+                    $rootScope.pplNames.push(_answers[i].name);
+                    $rootScope.pplAnswers.push(_answers[i]);
                 }
                 if (_answers[i].type == 'Place') {
-                    $rootScope.plaNames.push($rootScope.answers[i].name);
-                    $rootScope.plaAnswers.push($rootScope.answers[i]);
+                    $rootScope.plaNames.push(_answers[i].name);
+                    $rootScope.plaAnswers.push(_answers[i]);
                 }
                 if (_answers[i].type == 'Organization') {
-                    $rootScope.orgNames.push($rootScope.answers[i].name);
-                    $rootScope.orgAnswers.push($rootScope.answers[i]);
+                    $rootScope.orgNames.push(_answers[i].name);
+                    $rootScope.orgAnswers.push(_answers[i]);
                 }
                 if (_answers[i].type == 'PersonCust') {
-                    $rootScope.freNames.push($rootScope.answers[i].name);
-                    $rootScope.freAnswers.push($rootScope.answers[i]);
+                    $rootScope.freNames.push(_answers[i].name);
+                    $rootScope.freAnswers.push(_answers[i]);
                 }
+                if (_answers[i].isfood == true) $rootScope.foodans.push(_answers[i].id);
             }
         }
 

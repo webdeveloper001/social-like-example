@@ -64,6 +64,12 @@
                     
                     if (isValid) {
                         if ($rootScope.coordForUSer){
+
+                            //Detect if coordinates changed from previous value
+                            if (($rootScope.currentUserLatitude != answer.lat)||
+                            $rootScope.currentUserLongitude != answer.lng)
+                            $rootScope.newCoords = true;
+
                             $rootScope.currentUserLatitude = answer.lat;
                             $rootScope.currentUserLongitude = answer.lng;
                             $rootScope.coordForUSer = false;

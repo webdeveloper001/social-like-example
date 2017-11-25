@@ -69,7 +69,7 @@
         if ($rootScope.hidelogo == undefined) vm.hidelogo = false;
         else vm.hidelogo = $rootScope.hidelogo;
         //Quick Links 
-        vm.foodNearMe = foodNearMe;
+        //vm.foodNearMe = foodNearMe;
         vm.events = events;
         vm.selfimprove = selfimprove;
         
@@ -463,7 +463,7 @@
             //force close the dropdown neighborhood menu            
             $("#nhdropdown").dropdown("toggle");
         }
-        
+        /*
         //Quick Links
         function foodNearMe(){
             //console.log("$rootScope.coordsRdy - ", $rootScope.coordsRdy);
@@ -472,7 +472,7 @@
                 $rootScope.loadFbnWhenCoordsRdy = true;
                 dialog.askPermissionToLocate();
             }            
-        }
+        }*/
         
         function selfimprove(){
             var introsRank = 0;

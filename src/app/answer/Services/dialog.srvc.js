@@ -989,6 +989,11 @@
             var messageLoading = '';
             var btnCancelLabel = 'No, I don\'t approve';
             var btnOkLabel = 'Yes, locate me';
+            var msg1 = 'Releasing tracking birds to find you...';
+            var msg2 = 'Gathering long measuring tapes...';
+            var msg3 = 'Hiring lots of little green men to measure distances...';
+            var msg4 = 'Punching in the numbers...';
+            var msg5 = 'Done!';
 
             title = 'Please Confirm';
 
@@ -999,7 +1004,7 @@
             //($rootScope.sm ? '<div class="container col-xs-12">':'<div class="container col-xs-6">') +
             '<div class="container col-xs-12">' +
             '<div class="text-left" style="color:blue">Option 1</div>' +
-            '<div class="text-center" style="border:2px"><button class="btn btn-success" id="useGeo">Yes, locate me using geolocation</button></div><br>' +
+            '<div class="text-center" style="border:2px"><button class="btn btn-success" id="useGeo">Yes, you can locate me</button></div><br>' +
             '<div class="text-left" style="color:blue">Option 2 <small>(recommended for accuracy)</small></div><br>' +
             '<p>Yes, use this address as my current location</p>' +
             '<div class="input-group">' +
@@ -1014,10 +1019,16 @@
             '<div class="text-center" style="border:2px"><button class="btn btn-default" id="noapprove">No, I don\'t approve</button></div>' +
             '</div>' +
             '</div>';
-
+            /*
             messageLoading = '<div style="height:80px;position:relative"><img src="/assets/images/loading.gif" class="img" ' + 
             'style="width:50px;height:50px;position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)"/></div>' +
             '<p>Just a moment, finding your location...</p>';
+            */
+            function gethtmlcode(pct,msg){
+                return '<div><br><br><div class="progress">'+
+            '<div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100"'+ 
+            'style="width:' + pct + '%">'+ '</div></div>' + msg + '<br><br><br></div>';
+            }
 
             BootstrapDialog.show({
                 type: BootstrapDialog.TYPE_PRIMARY,
@@ -1035,8 +1046,18 @@
                             $rootScope.$emit('getLocation');
                             x.enableButtons(false);
                             x.setClosable(false);
-                            x.getModalBody().html(messageLoading);
+                            //x.getModalBody().html(messageLoading);
+                            x.getModalBody().html(gethtmlcode(0,msg1));
                             x.setTitle('Please wait');
+                            setTimeout(function () {x.getModalBody().html(gethtmlcode(10,msg1));}, 1000);
+                            setTimeout(function () {x.getModalBody().html(gethtmlcode(20,msg1));}, 2000);
+                            setTimeout(function () {x.getModalBody().html(gethtmlcode(30,msg2));}, 3000);
+                            setTimeout(function () {x.getModalBody().html(gethtmlcode(40,msg2));}, 4000);
+                            setTimeout(function () {x.getModalBody().html(gethtmlcode(50,msg3));}, 5000);
+                            setTimeout(function () {x.getModalBody().html(gethtmlcode(60,msg3));}, 6000);
+                            setTimeout(function () {x.getModalBody().html(gethtmlcode(70,msg3));}, 7000);
+                            setTimeout(function () {x.getModalBody().html(gethtmlcode(80,msg4));}, 8000);
+                            setTimeout(function () {x.getModalBody().html(gethtmlcode(100,msg5));}, 9000);
                             setTimeout(function () {
                                 x.close();
                             }, 10000);
@@ -1051,18 +1072,20 @@
                     });
                     $content.find('#noapprove').click({}, function () {
                         var x = dialogRef;
+                        if ($rootScope.cCategory.title == 'Food Near Me') $state.go('cwrapper');
                         x.close();
                     });
 
                     return $content;
                 },
-                closable: true, // <-- Default value is false
+                closable: false, // <-- Default value is false
                 draggable: true, // <-- Default value is false
                 btnCancelLabel: btnCancelLabel,
                 btnOKLabel: btnOkLabel,
                 btnOKClass: 'btn-success',
                 btnCancelClass: 'btn-warning',
                 btnCancelAction: function (dialogRef) {
+                    if ($rootScope.cCategory.title == 'Food Near Me') $state.go('cwrapper');
                     dialogRef.close();
                 }
             });

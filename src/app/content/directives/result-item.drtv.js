@@ -167,6 +167,9 @@ angular.module('app').directive('resultItem',
                     }
 
                     scope.resSel = function (x) {
+
+                        if (x.isfoodnearme == true) $rootScope.isFoodNearMe = true;
+
                         $rootScope.pageYOffset = $window.pageYOffset;
                         scope.stats.views++;
                         if (x.isAnswer) {

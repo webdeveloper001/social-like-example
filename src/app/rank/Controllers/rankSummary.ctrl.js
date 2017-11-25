@@ -119,8 +119,7 @@
             //loadData();
             //$scope.$apply(function(){
                 vm.haveLocation = true;
-                getDistances();
-                sortByDistance();
+                activate();
                 //console.log('scope.$digest() - ', $scope.$digest());
                 //if (!scope.$digest()) 
                 $timeout(function(){
@@ -169,6 +168,10 @@
         
         //verify that rank exists in database
         function checkRankIsLoaded(){
+            if ($rootScope.isFoodNearMe == true) {
+                loadFoodNearMe();
+                return;
+            }
             $rootScope.cCategory = null;
             var rankid = common.getIndexFromSlug($stateParams.index);
             var idx = 0;
@@ -193,23 +196,37 @@
             vm.dataReady = true;
             vm.ranking = $rootScope.cCategory.title;
             //if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego', 'close to me');
+            vm.loadingAnswers = true;
+            $timeout(function () {
+               activate();
+               vm.loadingAnswers = false;
+            });
+        }
 
-            if ($rootScope.cCategory.id == 11942) {
+        function loadFoodNearMe(){
+            if ($rootScope.isFoodNearMe == true) {
+                vm.ranking = 'Food Near Me';
                 vm.foodNearMe = true;
                 foodNearMe = true;
                 vm.fnm = true;
                 vm.showR = false;
+                
+                $rootScope.cCategory = $rootScope.fnm;
+                vm.bc = $rootScope.cCategory.bc;
+                vm.fc = $rootScope.cCategory.fc;
+                vm.shade = $rootScope.cCategory.shade;
+                vm.fimage = $rootScope.cCategory.fimage;
+                vm.dataReady = true;
+            }
+            vm.loadingAnswers = true;
+            $timeout(function () {
                 if ($rootScope.coordsRdy == undefined || $rootScope.coordsRdy == false) {
                     sortByDistance();
                 }
-            }
-
-            vm.loadingAnswers = true;
-            $timeout(function () {
-                if (!foodNearMe) activate();
-                else if ($rootScope.coordsRdy) activate();
+                if ($rootScope.coordsRdy) activate();
                 vm.loadingAnswers = false;
-            });
+                $rootScope.isFoodNearMe = false;
+            },1000);
         }
 
         function activate() {
@@ -230,10 +247,10 @@
             $rootScope.objNumAct = $rootScope.objNum;
 
             loadData(); //load data and write to $rootScope
-            if (!foodNearMe){
+            //if (!foodNearMe){
                 loadTrendVotes(0);
                 if ($rootScope.isLoggedIn && $rootScope.friends_votes) loadFriendsEndorsements(0);
-            }
+            //}
 
             checkUserCredentials();
 
@@ -460,10 +477,11 @@
             }*/
 
             //Set bgbox color specs
+            
             if ($rootScope.cCategory.bc != undefined && $rootScope.cCategory.bc != ''){
                 vm.bc = $rootScope.cCategory.bc;
                 vm.fc = $rootScope.cCategory.fc;
-                vm.shade = $rootScope.cCategory.shade;              
+                vm.shade = $rootScope.cCategory.shade;                
             }
             else{
                 //Set colors for title hideInfoBox
@@ -485,7 +503,7 @@
             //TODO update answers in DB
             $rootScope.modeIsImage = true;
             
-            if (!$rootScope.isCustomRank && !$rootScope.cCategory.isGhost) incViews(); //increment number of views
+            if (!$rootScope.isCustomRank && !$rootScope.cCategory.isGhost && !foodNearMe) incViews(); //increment number of views
             relatedRanks();
             if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
             
@@ -702,7 +720,7 @@
             $rootScope.fields = fields;
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
-
+            
             if (vm.type == 'Event') vm.isE = true;
             else vm.isE = false;
 
@@ -764,41 +782,21 @@
             var obj = {};
             var eventIsCurrent = true;
             
-            //Rank is 'Food Near Me' - first time only
-            if (foodNearMe && $rootScope.fanswers == undefined) {
-                    var answerid = 0;
-                    var idx = 0;
-                    var isDup = false;
-                    var ansObj = {};
-                    
-                    var ansArr = $rootScope.foodans.cats.split(':').map(Number);
-
-                    for (var j = 0; j < ansArr.length; j++) {
-                        idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf(ansArr[j]);
-                        if ($rootScope.answers[idx]) {
-                            //only add if its not already added
-                            isDup = false;
-                            if (fanswers.length > 0 && idx > 0) {
-                                for (var n = 0; n < fanswers.length; n++) {
-                                    if (fanswers[n].id == $rootScope.answers[idx].id) {
-                                        isDup = true;
-                                        //nidx = n;
-                                        break;
-                                    }
-                                }
-                            }
-                            //if not duplicated, add to answer array. upV is init to first catans record
-                            if (!isDup) {
-                                ansObj = $rootScope.answers[idx];
-                                //We have user coordinates, so we check that both lat and lng are within approx a mile
-                                //1 degree ~ 69 miles, so 1 miles ~ 0.0145 degrees
-                                if (Math.abs($rootScope.currentUserLatitude - $rootScope.answers[idx].lat) < 0.0145 &&
-                                    Math.abs($rootScope.currentUserLongitude - $rootScope.answers[idx].lng) < 0.0145)
-                                    fanswers.push(ansObj);
-                            }
-                        }
+            //Rank is 'Food Near Me' - first time only - or if coordinates changed
+            if (foodNearMe && $rootScope.newCoords == true) {
+                fanswers.length = 0;
+                $rootScope.answers.forEach(function (ansObj) {
+                    //check that answer is food related
+                    if (ansObj.isfood) {
+                        //We have user coordinates, so we check that both lat and lng are within approx a mile
+                        //1 degree ~ 69 miles, so 1 miles ~ 0.0145 degrees
+                        if (Math.abs($rootScope.currentUserLatitude - ansObj.lat) < 0.0145 &&
+                            Math.abs($rootScope.currentUserLongitude - ansObj.lng) < 0.0145)
+                            fanswers.push(ansObj);
                     }
-                
+                })
+
+                $rootScope.newCoords = false;
                 $rootScope.canswers = fanswers;
                 $rootScope.fanswers = fanswers;
             }

@@ -77,7 +77,7 @@
             var p0 = table.getTables();
             var p1 = categories.getAllCategories();
             var p2 = locations.getAllLocations();
-            var p3 = answer.getAnswers();
+            var p3 = answer.getAllAnswers();
             var p4 = special.getSpecials();
             var p5 = matchrec.GetMatchTable();
             var p6 = useractivity.getAllUserActivity();

@@ -5,12 +5,14 @@
         .module('app')
         .controller('foodRanks', foodRanks);
 
-    foodRanks.$inject = ['$location', '$rootScope', '$state','catans','$http'];
+    foodRanks.$inject = ['$location', '$rootScope', '$state','catans','$http','answer','$timeout'];
 
-    function foodRanks(location, $rootScope, $state, catans, $http) {
+    function foodRanks(location, $rootScope, $state, catans, $http, answer, $timeout) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'foodRanks';
+
+        var foodanswersmap = [];
         
         vm.getRanks = getRanks;
                
@@ -70,19 +72,44 @@
                         }
                       }
                       if (!isDup) {
+                          //console.log("$rootScope.answers[idx] - ", $rootScope.answers[idx]);
                           strAns = strAns + ':' + $rootScope.answers[idx].id;
                           foodAnswers.push($rootScope.answers[idx]);
+                          //answer.updateAnswer($rootScope.answers[idx].id,['isfood'],[true]);
+                          //console.log("add food answer");
                       }                         
                     }
                 } 
             }
-            
+            foodanswersmap = foodAnswers.map(function(x) {return x.id;});
+            setisfood(0);
             //console.log("foodAnswers - ", foodAnswers.length);
-            console.log("Food ranks: - ", fstr);
-            console.log("Food ranks length: - ", catArr.length);
+            //console.log("Food ranks: - ", fstr);
+            //console.log("Food ranks length: - ", catArr.length);
             console.log("Answers Ids: - ", strAns.substring(1));
             console.log("Food answers length: - ", foodAnswers.length);
            
+        }
+
+        function setisfood(x){
+            //if answer is food related
+            if (foodanswersmap.indexOf($rootScope.answers[x].id) > -1) {
+                answer.updateAnswer($rootScope.answers[x].id, ['isfood'], [true]);
+                $timeout(function () {
+                    x++;
+                    console.log(x," ", $rootScope.answers[x].name, ", isfood is TRUE");
+                    if (x < $rootScope.answers.length) setisfood(x);
+                }, 100);
+            }
+            //if not food related, set to false
+            else{
+                answer.updateAnswer($rootScope.answers[x].id, ['isfood'], [false]);
+                $timeout(function () {
+                    x++;
+                    console.log(x," ",$rootScope.answers[x].name, ", isfood is FALSE");
+                    if (x < $rootScope.answers.length) setisfood(x);
+                }, 100);
+            }
         }
     }
 })();

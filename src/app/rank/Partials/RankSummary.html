@@ -214,14 +214,15 @@
     </div>
 </div>
 <div class="row">
-<div class="col-xs-12 col-sm-6 text-center" style="margin-bottom: 10px; padding:0px" ng-if="!vm.fnm">
+<div class="col-xs-12 col-sm-6 text-center" style="margin-bottom: 10px; padding:0px">
     <div class="btn-group" style="padding-right:20px">
     <button ng-click="vm.changeMode('endorse') " class="btn {{vm.mode=='endorse' ? 'btn-primary':'btn-default'}}" 
     >Endorsements</button>
     <button ng-click="vm.changeMode('specials') " class="btn {{vm.mode=='specials' ? 'btn-primary':'btn-default'}}"
     >Specials</button>
     </div>
-    <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}">&nbsp&nbsp&nbsp&nbspRank&nbsp&nbsp&nbsp&nbsp</button>
+    <button ng-click="vm.goRank() " class="btn btn-success {{vm.rankDisabled}}" ng-if="!vm.fnm">
+        &nbsp&nbsp&nbsp&nbspRank&nbsp&nbsp&nbsp&nbsp</button>
     <!--
     <span style="line-height: 32px">&nbsp;&nbsp;&nbsp;Contributors: <b style="color:blue; ">
         <i>{{vm.numContributors}}&nbsp&nbsp</i></b></span>-->
@@ -291,9 +292,10 @@
                 <td ng-show="vm.type == 'Establishment' && vm.mode=='specials'" 
                 ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}};" ng-click="vm.answerDetail(x)">
                     {{x.sp_title}}</td>
-                <td ng-if="vm.mode=='endorse'" style="width:{{vm.sm?'150px':'200px'}}">
-
-                    <div>
+                
+                <!-- SMALL DISPLAYS -->
+                <td class="hidden-sm hidden-md hidden-lg hidden-xl" ng-if="vm.mode=='endorse'" style="width:{{vm.sm?'150px':'200px'}}">
+                    <div ng-if="!vm.fnm">
                         <span  ng-click="vm.UpVote(x,$event)"  ng-attr-style="color:{{x.thumbUp}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 18px;" 
                         class="pull-left">&nbsp&nbsp
                             <i class="fa fa-thumbs-up" aria-hidden="true"></i>
@@ -305,8 +307,7 @@
                             <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                             <span style="color:black;font-size: 14px;">&nbsp;{{x.downV}}</span>
                             &nbsp&nbsp
-                        </span>
-                        
+                        </span>      
                     </div>
                     <div class="hidden-sm hidden-md hidden-lg hidden-xl">
                         <div ng-if="x.userObjs.length == 1">
@@ -321,8 +322,23 @@
                         </div>
                     </div>
                 </td>
-                <td class="hidden-xs" ng-if="vm.mode=='endorse'" style="width:{{vm.sm?'150px':'150px'}}">
-                <!-- <div class="hidden-xs"> -->
+                <!-- BIG DISPLAYS (spans over 2 columns) -->
+                <td class="hidden-xs" ng-if="vm.mode=='endorse'&&!vm.fnm" style="width:{{vm.sm?'150px':'150px'}}">
+                    <div>
+                        <span ng-click="vm.UpVote(x,$event)" ng-attr-style="color:{{x.thumbUp}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 18px;"
+                            class="pull-left">&nbsp&nbsp
+                            <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                            <span style="color:black;font-size: 14px;">&nbsp;{{x.upV}}&nbsp;&nbsp;</span>
+                        </span>
+
+                        <span ng-click="vm.DownVote(x,$event)" ng-attr-style="color:{{x.thumbDn}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 18px;"
+                            class="pull-right">
+                            <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                            <span style="color:black;font-size: 14px;">&nbsp;{{x.downV}}</span> &nbsp&nbsp
+                        </span>
+                    </div>
+                </td>
+                <td class="hidden-xs" ng-if="vm.mode=='endorse'">
                     <div ng-if="x.userObjs.length == 1">
                         <span class="badge btn-primary" ng-click="vm.showAllFriendsList(x.userObjs, x.name)">
                         1 friend endorses this
@@ -333,7 +349,6 @@
                         {{x.userObjs.length}} friends endorse this
                         </span>
                     </div>
-                <!-- </div>  -->
                 </td>
             </tr>
         </tbody>

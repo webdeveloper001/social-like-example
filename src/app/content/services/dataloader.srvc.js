@@ -378,7 +378,8 @@
             var p5 = vrows.getVrowsX([data]);
             catans.getAllcatansY([data]).then(function(result){
                 if (result){
-                var p6 = table.getTablesL(result).then(function(resultx){
+                    
+                    var p6 = table.getTablesL(result).then(function(resultx){
                     
                     if (resultx.constructor === Array) {}
                     else resultx = [resultx];
