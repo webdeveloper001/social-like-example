@@ -53,18 +53,6 @@
     <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
         <h3 class="sub-header text-center">Endorsements</h3>        
     </div>
-    <!--
-    <div class="text-right" style="padding-bottom:5px">
-        Vote:&nbsp
-        <div class="btn-group btn-toggle"> 
-            <button class="btn btn-sm btn-default" ng-attr-style="{{vm.voteonstyle}}"
-            ng-click="vm.votemodeON()">ON</button>
-            <button class="btn btn-sm btn-default" ng-attr-style="{{vm.voteoffstyle}}"
-            ng-click="vm.votemodeOFF()">OFF</button>
-        </div>
-        <button class="btn btn-default" ng-click="vm.endorseDialog()"><i class="fa fa-question-circle"></i></button>
-    </div>
-    -->
     <p class="text-left" ng-if="vm.type != 'Short-Phrase'"><strong>{{vm.answer.name}}</strong> is featured in the following ranks:</p>
  
     <div class="well well-light-ranks col-xs-12 col-sm-6 col-md-4 col-lg-4" style="padding-top:5px;" 
@@ -77,27 +65,21 @@
         </div>
         
         
-        <!--
-        <div class="well-sm" style="background-color:#666666;color:#f8f8ff;height:40px">
-
-            
-            <h4 class="text center sub-header">{{(vm.type == 'Short-Phrase') ? vm.answer.name : r.title}}</h4> 
-        
-        
-        </div> -->
         <p class="text-center" ng-if="vm.type == 'Short-Phrase'"> on {{r.title}}</p>
-        <div class="row" ng-if="true" style="padding-bottom:5px;padding-top:5px; margin-top:0px">
-            <img ng-attr-style="height:55px;width:auto;" class="col-xs-3 col-md-1 col-lg-1" ng-attr-style="margin:0px" ng-src="{{r.icon}}">
-           <div class="col-xs-6" style="min-width:175px">
-                <p style="padding-top:3px;margin-bottom:px;">Ranked <strong>#{{r.rank}}</strong> out of <strong>{{r.answers}}</strong></p>
+        <div class="row" ng-if="true" ng-attr-style="padding-bottom:{{(r.thumbUp == 'grey'&&r.thumbDn == 'grey')?'10px':'0px'}};padding-top:5px; margin:0px">
+            <div class="col-xs-2">
+                <img ng-attr-style="height:55px;width:auto;margin:0px;" ng-src="{{r.icon}}">
+           </div>
+            <div class="col-xs-7" >
+                <p style="padding-top:3px;margin-bottom:5px;">Ranked <strong>#{{r.rank}}</strong> out of <strong>{{r.answers}}</strong></p>
                <div class="text-center" style="margin-top:2px">
-               <span ng-click="vm.UpVote(r)" ng-attr-style="color:{{r.thumbUp}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 18px;"
+                <span ng-click="vm.UpVote(r)" ng-attr-style="color:{{r.thumbUp}};margin-right:0px;font-size:{{r.thumbUp == 'grey'?'18px':'26px'}};"
                class="pull-left">&nbsp&nbsp
                             <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                             <span style="color:black;font-size: 14px;">&nbsp;{{r.upV}}&nbsp;&nbsp;</span>
                 </span>
 
-                <span ng-click="vm.DownVote(r)" ng-attr-style="color:{{r.thumbDn}};margin-right: {{vm.sm?'0px':'20px'}};font-size: 18px;"
+                <span ng-click="vm.DownVote(r)" ng-attr-style="color:{{r.thumbDn}};margin-right:0px;font-size:{{r.thumbDn == 'grey'?'18px':'26px'}};"
                 class="pull-right">
                             <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                             <span style="color:black;font-size: 14px;">&nbsp;{{r.downV}}</span>
@@ -105,20 +87,11 @@
                         </span>
                 </div>
             </div>
-        <a href="" class="text-center col-xs-3" ng-click="vm.gotoRank(r)">Full ranking</a>
-        </div>
-<!--
-        <div class="row" ng-if="vm.votemode" style="padding-top:3px;padding-left:75px;height:55px">
-            <div class="col-xs-2 col-md-2 col-lg-2" style="padding-right:20px">
-                <img ng-attr-style="height:30px;width:auto" class="cursor" ng-src="../../../assets/images/{{r.thumbUp}}" ng-click="vm.UpVote(r)">
-                <label><font size="4">&nbsp&nbsp&nbsp&nbsp{{r.upV}}</font></label>
+            <div class="col-xs-3" ng-attr-style="padding-right:{{vm.sm?'0px':'20px'}}">
+                <a href="" class="text-center" ng-click="vm.gotoRank(r)">Full ranking</a>
             </div>
-            <div class="col-xs-2 col-md-2 col-lg-2" style="padding-left:100px">
-                <img ng-attr-style="height:30px;width:auto" class="cursor" ng-src="../../../assets/images/{{r.thumbDn}}" ng-click="vm.DownVote(r)">
-                <label><font size="4">&nbsp&nbsp&nbsp&nbsp{{r.downV}}</font></label>
-            </div>            
         </div>
--->        
+     
         <p ng-attr-style="display:{{vm.deleteButton ? 'inline':'none'}};color:red" ng-click="vm.deleteThisCatans(r)">&lt;&lt;Delete&gt;&gt;</p>
         
     </div>
@@ -135,9 +108,6 @@
             <button class="btn btn-success" type="button" ng-click="vm.addcts()">Add</button>
         </span>
 		</div>
-        <!--
-		<label class="checkbox-inline" ng-if="vm.addctsactive"><input type="checkbox" ng-model="vm.catisdup">Is Dup</label>
-        -->
     </div>
 </div>
 <div class="container col-xs-12" ng-if="vm.answer.hasranks">
@@ -150,7 +120,6 @@
     </div>
     <div class="row" style="padding:0px;margin:0px;border:0px">
         <div ng-repeat="n in vm.myranks">
-            <!-- <div class="clearfix" ng-if="$index % 3 == 0" style="border:0px;padding:0px;margin:0px;"></div> -->
             <div class="container col-xs-3 col-sm-2 col-md-2 col-lg-2" ng-click="vm.gotoCustomRank(n)" 
             ng-attr-style="border-top:3px solid white;border-bottom:3px solid white;background-color:{{n.bc}};color:{{n.fc}};height:{{vm.sm ? '90px':'150px'}};margin:0px;padding:0px;position:relative;">
                 <h3 class=" hidden-xs text-center" ng-attr-style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%);cursor:pointer;">{{n.title}}</h2>
