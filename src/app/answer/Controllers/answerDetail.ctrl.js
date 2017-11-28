@@ -452,102 +452,102 @@
             if ($rootScope.isLoggedIn && answerFound){
             
             //update vote record if necessary
-            if ($rootScope.DEBUG_MODE) console.log("UpdateRecords @answerDetail");
-            
-            //TODO Need to pass table id
-            for (var i = 0; i < vm.answerRanks.length; i++) {
-
-                var voteRecordExists = vm.answerRanks[i].voteRecordExists;
-                var userHasRank = false;
-                var useractivityrec = {};
-                //console.log("$rootScope.thisuseractivity - ", $rootScope.thisuseractivity);
-                try {
-                    var idx = $rootScope.thisuseractivity.map(function (x) { return x.category; }).indexOf(vm.answerRanks[i].id);
-                }
-                catch (err) {
-                    console.log("Error: ", err);
-                    console.log("$rootScope.thisuseractivity - ", $rootScope.thisuseractivity);
-                    var idx = -1;                    
-                }
-                if (idx >= 0) {
-                    userHasRank = true;
-                    useractivityrec = $rootScope.thisuseractivity[idx];
-                }
-                else userHasRank = false;  
-                //if vote is changed to non-zero
-                if (voteRecordExists && vm.answerRanks[i].uservote.vote != vm.answerRanks[i].dV && vm.answerRanks[i].dV != 0) {
-                    //update vote
-                    if ($rootScope.DEBUG_MODE) console.log("UR-1");
-                    votes.patchRec(vm.answerRanks[i].uservote.id, vm.answerRanks[i].dV);
-                }
-                //if vote is changed to zero
-                if (voteRecordExists && vm.answerRanks[i].uservote.vote != vm.answerRanks[i].dV && vm.answerRanks[i].dV == 0) {
-                    //Delete vote
-                    if ($rootScope.DEBUG_MODE) console.log("UR-2");
-                    votes.deleteRec(vm.answerRanks[i].uservote.id);
-                    //Decrease vote counter from user activity. If counter is 1, also delete user activiy record (since there is no more votes
-                    //from this user)
-                    if (useractivityrec.votes < 2) {
-                        if ($rootScope.DEBUG_MODE) console.log("UR-3");
-                        useractivity.deleteRec(useractivityrec.id);
-                    }
-                    else {
-                        if ($rootScope.DEBUG_MODE) console.log("UR-4");
-                        useractivity.patchRec(useractivityrec.id, useractivityrec.votes - 1);
-                        //$rootScope.userActRec.votes--;
-                    }
-                }
-                if (!voteRecordExists && vm.answerRanks[i].dV != 0) {
-                    //Post a new vote and create useractivity record
-                    if ($rootScope.DEBUG_MODE) console.log("UR-5");
-                    votes.postRec(vm.answerRanks[i].catans, vm.answer.id, vm.answerRanks[i].id, vm.answerRanks[i].dV);
-                    if (userHasRank) {
-                        if ($rootScope.DEBUG_MODE) console.log("UR-6");
-                        useractivity.patchRec(useractivityrec.id, useractivityrec.votes + 1);
-                        //$rootScope.userActRec.votes++;
-                    }
-                    else {
-                        if ($rootScope.DEBUG_MODE) console.log("UR-7");
-                        useractivity.postRec(vm.answerRanks[i].id);
-                        //$rootScope.thisuseractivity.push();
-                    }
-                }
-            
-                //update answer record (vote count) if necessary
+                if ($rootScope.DEBUG_MODE) console.log("UpdateRecords @answerDetail");
+                
                 //TODO Need to pass table id
-                if ((vm.answerRanks[i].upV != vm.answerRanks[i].upVi) || (vm.answerRanks[i].downV != vm.answerRanks[i].downVi)) {
-                    if ($rootScope.DEBUG_MODE) console.log("UR-8");
-                    //catans.getCatan(vm.answerRanks[i].catans).then(function(catan){
-                      //  var updV = vm.answerRanks[i].upV + vm.answerRanks[i].upVi;
-                      //  var downdV = vm.answerRanks[i].downV + vm.answerRanks[i].downVi;
+                for (var i = 0; i < vm.answerRanks.length; i++) {
+
+                    var voteRecordExists = vm.answerRanks[i].voteRecordExists;
+                    var userHasRank = false;
+                    var useractivityrec = {};
+                    //console.log("$rootScope.thisuseractivity - ", $rootScope.thisuseractivity);
+                    try {
+                        var idx = $rootScope.thisuseractivity.map(function (x) { return x.category; }).indexOf(vm.answerRanks[i].id);
+                    }
+                    catch (err) {
+                        console.log("Error: ", err);
+                        console.log("$rootScope.thisuseractivity - ", $rootScope.thisuseractivity);
+                        var idx = -1;                    
+                    }
+                    if (idx >= 0) {
+                        userHasRank = true;
+                        useractivityrec = $rootScope.thisuseractivity[idx];
+                    }
+                    else userHasRank = false;  
+                    //if vote is changed to non-zero
+                    if (voteRecordExists && vm.answerRanks[i].uservote.vote != vm.answerRanks[i].dV && vm.answerRanks[i].dV != 0) {
+                        //update vote
+                        if ($rootScope.DEBUG_MODE) console.log("UR-1");
+                        votes.patchRec(vm.answerRanks[i].uservote.id, vm.answerRanks[i].dV);
+                    }
+                    //if vote is changed to zero
+                    if (voteRecordExists && vm.answerRanks[i].uservote.vote != vm.answerRanks[i].dV && vm.answerRanks[i].dV == 0) {
+                        //Delete vote
+                        if ($rootScope.DEBUG_MODE) console.log("UR-2");
+                        votes.deleteRec(vm.answerRanks[i].uservote.id);
+                        //Decrease vote counter from user activity. If counter is 1, also delete user activiy record (since there is no more votes
+                        //from this user)
+                        if (useractivityrec.votes < 2) {
+                            if ($rootScope.DEBUG_MODE) console.log("UR-3");
+                            useractivity.deleteRec(useractivityrec.id);
+                        }
+                        else {
+                            if ($rootScope.DEBUG_MODE) console.log("UR-4");
+                            useractivity.patchRec(useractivityrec.id, useractivityrec.votes - 1);
+                            //$rootScope.userActRec.votes--;
+                        }
+                    }
+                    if (!voteRecordExists && vm.answerRanks[i].dV != 0) {
+                        //Post a new vote and create useractivity record
+                        if ($rootScope.DEBUG_MODE) console.log("UR-5");
+                        votes.postRec(vm.answerRanks[i].catans, vm.answer.id, vm.answerRanks[i].id, vm.answerRanks[i].dV);
+                        if (userHasRank) {
+                            if ($rootScope.DEBUG_MODE) console.log("UR-6");
+                            useractivity.patchRec(useractivityrec.id, useractivityrec.votes + 1);
+                            //$rootScope.userActRec.votes++;
+                        }
+                        else {
+                            if ($rootScope.DEBUG_MODE) console.log("UR-7");
+                            useractivity.postRec(vm.answerRanks[i].id);
+                            //$rootScope.thisuseractivity.push();
+                        }
+                    }
+                
+                    //update answer record (vote count) if necessary
+                    //TODO Need to pass table id
+                    if ((vm.answerRanks[i].upV != vm.answerRanks[i].upVi) || (vm.answerRanks[i].downV != vm.answerRanks[i].downVi)) {
+                        if ($rootScope.DEBUG_MODE) console.log("UR-8");
+                        //catans.getCatan(vm.answerRanks[i].catans).then(function(catan){
+                          //  var updV = vm.answerRanks[i].upV + vm.answerRanks[i].upVi;
+                          //  var downdV = vm.answerRanks[i].downV + vm.answerRanks[i].downVi;
+                            
+                            catans.updateRec(vm.answerRanks[i].catans, ["upV", "downV"], [vm.answerRanks[i].upV, vm.answerRanks[i].downV]);    
+                        //})
                         
-                        catans.updateRec(vm.answerRanks[i].catans, ["upV", "downV"], [vm.answerRanks[i].upV, vm.answerRanks[i].downV]);    
-                    //})
-                    
-                }
-            }
-
-            if (vm.vrows) {
-                for (var i = 0; i < vm.vrows.length; i++) {
-                    var voteRecExists = vm.vrows[i].voteExists;
-                    if (voteRecExists && vm.vrows[i].dVi != vm.vrows[i].dV) {
-                        if ($rootScope.DEBUG_MODE) console.log("UR-9");
-                        $rootScope.cvrowvotes[vm.vrows[i].vidx].val = vm.vrows[i].dV;
-                        vrowvotes.patchRec(vm.vrows[i].voteid, vm.vrows[i].dV);
-                    }
-                    if (!voteRecExists && vm.vrows[i].dV != 0) {
-                        if ($rootScope.DEBUG_MODE) console.log("UR-10");
-                        vrowvotes.postRec(vm.vrows[i].id, vm.vrows[i].dV);
-                    }
-
-                    if ((vm.vrows[i].upV != vm.vrows[i].upVi) || (vm.vrows[i].downV != vm.vrows[i].downVi)) {
-                        if ($rootScope.DEBUG_MODE) console.log("UR-11");
-                        vrows.updateRec(vm.vrows[i].id, ["upV", "downV"], [vm.vrows[i].upV, vm.vrows[i].downV]);
                     }
                 }
+
+                if (vm.vrows) {
+                    for (var i = 0; i < vm.vrows.length; i++) {
+                        var voteRecExists = vm.vrows[i].voteExists;
+                        if (voteRecExists && vm.vrows[i].dVi != vm.vrows[i].dV) {
+                            if ($rootScope.DEBUG_MODE) console.log("UR-9");
+                            $rootScope.cvrowvotes[vm.vrows[i].vidx].val = vm.vrows[i].dV;
+                            vrowvotes.patchRec(vm.vrows[i].voteid, vm.vrows[i].dV);
+                        }
+                        if (!voteRecExists && vm.vrows[i].dV != 0) {
+                            if ($rootScope.DEBUG_MODE) console.log("UR-10");
+                            vrowvotes.postRec(vm.vrows[i].id, vm.vrows[i].dV);
+                        }
+
+                        if ((vm.vrows[i].upV != vm.vrows[i].upVi) || (vm.vrows[i].downV != vm.vrows[i].downVi)) {
+                            if ($rootScope.DEBUG_MODE) console.log("UR-11");
+                            vrows.updateRec(vm.vrows[i].id, ["upV", "downV"], [vm.vrows[i].upV, vm.vrows[i].downV]);
+                        }
+                    }
+                }
+                recordsUpdated = true;
             }
-            recordsUpdated = true;
-        }
         }
         
         //AM:Refresh Thumb Up and Thumb down Vote Displays
