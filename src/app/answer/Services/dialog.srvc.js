@@ -1403,7 +1403,7 @@
                         login.facebookSDKLogin()
                         .then(function(){
                             $q.all([users.getUser($rootScope.user.id)]).then(function(data){
-                                if (!data) {
+                                if (!data[0][0]) {
                                     welcomeNewUser($rootScope.user.first_name);
                                     users.addUser();                                                            
                                 } else {
@@ -3078,18 +3078,8 @@
             var message = '<h1>Welcome <strong>' + first_name + '!</strong></h1>';
 
             BootstrapDialog.show({
-                type: BootstrapDialog.TYPE_PRIMARY,
-                title: title,
+                type: BootstrapDialog.TYPE_SUCCESS,
                 message: message,
-                buttons: [{
-                    id: 'btn-ok',
-                    label: 'OK',
-                    cssClass: 'btn-primary',
-                    autospin: false,
-                    action: function (dialogRef) {
-                        dialogRef.close();
-                    }
-                }]
             });
         }
 

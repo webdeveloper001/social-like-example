@@ -1,6 +1,0 @@
-User-Agent: *
-Disallow: /fonts/
-Allow: /
-
-User-Agent: *
-Crawl-delay: 3000

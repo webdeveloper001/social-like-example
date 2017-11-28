@@ -219,7 +219,7 @@ gulp.task('build-admin', function () {
         .pipe($.angularFilesort()).on('error', conf.errorHandler('AngularFilesort'))
         .pipe($.concat('admin-app.js'))
         .pipe($.ngAnnotate())
-        .pipe($.uglify({ preserveComments: $.uglifySaveLicense })).on('error', conf.errorHandler('Uglify'))
+        .pipe($.uglify({  })).on('error', conf.errorHandler('Uglify'))
         .pipe(gulp.dest(path.join(conf.paths.dist, 'scripts')));
 });
 
@@ -229,7 +229,7 @@ gulp.task('build-app2', ['build-partials2'], function () {
         .pipe($.angularFilesort()).on('error', conf.errorHandler('AngularFilesort'))
         .pipe($.ngAnnotate())
         .pipe($.concat('app2.js'))
-        .pipe($.uglify({ preserveComments: $.uglifySaveLicense, mangle: false })).on('error', conf.errorHandler('Uglify'))
+        .pipe($.uglify({  mangle: false })).on('error', conf.errorHandler('Uglify'))
         .pipe(gulp.dest(path.join(conf.paths.dist, 'scripts')));
         
 });
@@ -250,7 +250,7 @@ gulp.task('build-inject', ['build-partials', 'build-admin-partials',
         .pipe($.angularFilesort()).on('error', conf.errorHandler('AngularFilesort'))
         .pipe($.concat('app.js'))
         .pipe($.ngAnnotate())
-        .pipe($.uglify({ preserveComments: $.uglifySaveLicense, mangle: false })).on('error', conf.errorHandler('Uglify'))
+        .pipe($.uglify({  mangle: false })).on('error', conf.errorHandler('Uglify'))
         .pipe(gulp.dest(path.join(conf.paths.dist, 'scripts')));
     
     var injectVendor1 = gulp.src(objPath.VENDOR1)
