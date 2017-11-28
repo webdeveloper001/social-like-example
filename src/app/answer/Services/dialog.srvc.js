@@ -187,6 +187,11 @@
                         else newline = '<strong>' + 'Email' + '</strong>: ' + '' + '</br>';
                         break;
                     }
+                    case "worksat": {
+                        if (answer.eventloc) newline = '<strong class="capitalize">' + 'Works At' + '</strong>: ' + answer.eventloc + '</br>';
+                        else newline = '<strong>' + 'Works At' + '</strong>: ' + '' + '</br>';
+                        break;
+                    }
                 }
                 answerhtml = answerhtml + newline;
             }
@@ -990,7 +995,7 @@
             var btnCancelLabel = 'No, I don\'t approve';
             var btnOkLabel = 'Yes, locate me';
             var msg1 = 'Releasing tracking birds to find you...';
-            var msg2 = 'Gathering long measuring tapes...';
+            var msg2 = 'Gathering long measuring sticks...';
             var msg3 = 'Hiring lots of little green men to measure distances...';
             var msg4 = 'Punching in the numbers...';
             var msg5 = 'Done!';

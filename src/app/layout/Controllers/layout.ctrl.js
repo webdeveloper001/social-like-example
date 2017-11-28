@@ -68,6 +68,8 @@
         vm.goPrivacyPolicy = goPrivacyPolicy;
         vm.goRankofDayConsole = goRankofDayConsole;
 
+        $rootScope.inputVal = vm.val;
+        
         jQuery(document).ready(function () {
             var offset = 250;
             var duration = 300;
@@ -345,10 +347,7 @@
                 $rootScope.dialogs = response.data;
             });
 
-            //$http.get('../../../assets/foodans.json').then(function (response) {
-            //    $rootScope.foodans = response.data;
-            //});
-        }
+            }
 
         function loadData() {
            
@@ -414,12 +413,11 @@
         }
         
         function getResults() {
-
-            $rootScope.inputVal = vm.val;
             if (vm.val.length == 1) vm.showans = true;
             $rootScope.searchActive = true;
             vm.searchActive = $rootScope.searchActive;
             vm.childActive = !$rootScope.searchActive;
+            $rootScope.isqf = false;
         }
 
         function hideSearch() {
@@ -434,7 +432,7 @@
             vm.childActive = false; 
             vm.barIsActive = true;
             if ($state.current.name == 'cwrapper') {
-             $rootScope.inputVal = '';
+             //$rootScope.inputVal = '';
              vm.val = '';
             }
         }
@@ -445,7 +443,7 @@
             $rootScope.cCategory = undefined;
 
             if ($state.current.name == 'cwrapper') {
-                $rootScope.inputVal = '';
+                //$rootScope.inputVal = '';
                 vm.val = '';
             }
             $state.go('cwrapper');
@@ -502,6 +500,7 @@
                 if (vm.nh == '') vm.val = x;
                 else vm.val = vm.nh + ' ' + x;
             }
+            $rootScope.isqf = true;
         }
 
         function selectNh(){
@@ -600,8 +599,8 @@
         }
 
         function buttons(){
-            vm.buts = ['Food','Activities','Nightlife','Shopping','Beauty','Events','Health','Fitness','Sports','Services',
-                        'Neighborhood','Culture','People','City','Family','Groups','Religion','Pets','Home','Cars'];
+            vm.buts = ['Food','Coffee','Activities','Nightlife','Shopping','Beauty','Events','Health','Fitness','Sports','Services',
+                        'Neighborhood','Culture','People','City','Family','Groups','Technology','Religion','Pets','Home','Cars'];
             vm.bi = 0;
         }
         
@@ -614,7 +613,6 @@
                 vm.bi = vm.bi += 14;
                 if (vm.bi+14 > vm.buts.length) vm.bi = vm.buts.length-14;
             }
-            //console.log("buttons fwd - bi", vm.bi);
         }
         function buttonsPrev(){
             if ($rootScope.DISPLAY_XSMALL || $rootScope.DISPLAY_SMALL){
@@ -625,7 +623,6 @@
                 vm.bi = vm.bi -= 14;
                 if (vm.bi < 0) vm.bi = 0;
             }
-            //console.log("buttons prev - bi", vm.bi);
         }
 
     }

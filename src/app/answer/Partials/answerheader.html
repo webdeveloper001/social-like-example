@@ -10,7 +10,8 @@
             </div>
             <div class="container" ng-attr-style="width:100%; height:{{mxheight-120}}px;background-color:#d8d8d8;padding-top:5px">
                 <!-- <br ng-if="!sm"> -->
-                <strong ng-if="answer.eventloc">Location:</strong>
+                <strong ng-if="answer.eventloc && answer.type=='Event'">Location:</strong>
+                <strong ng-if="answer.eventloc && answer.type=='PersonCust'">Works At:</strong>
                 <a ng-if="answer.eventloc" ng-click="gotoLocationAnswer()" target="_blank">{{answer.eventloc}}</a>
                 <br ng-if="answer.eventloc">
                 <strong ng-if="answer.location">Address:</strong>
@@ -103,7 +104,8 @@
     <div class="container hidden-sm hidden-md hidden-lg hidden-xl">
         
         <br ng-if="answer.eventloc">
-        <strong ng-if="answer.eventloc">Location:</strong>
+        <strong ng-if="answer.eventloc && answer.type=='Event'">Location:</strong>
+        <strong ng-if="answer.eventloc && answer.type=='PersonCust'">Works At:</strong>
         <a ng-if="answer.eventloc" ng-click="gotoLocationAnswer()" target="_blank">{{answer.eventloc}}</a>
                 
         <br ng-if="answer.location">
@@ -156,4 +158,8 @@
     <span ng-show="completeinfo">{{answer.addinfo_complete}}</span>
     <span ng-if="answer.addinfo.length > 0" ng-click="showcomplete()" style="background-color:lightgray;cursor:pointer">{{moretext}}</span>
     <br ng-attr-style="display:{{answer.addinfo ? 'inline':'none'}}">
+</div>
+<div ng-if="workhere.length > 0">
+    <strong> Work here: </strong><br>
+    <a ng-repeat="x in workhere" ng-click="gotoprofile(x)">{{x.name}}</a>
 </div>

@@ -153,7 +153,7 @@
         }
 
         function activate() {
-
+            $window.scrollTo(0,0);
             vm.dataReady = true;
             vm.answer = $rootScope.canswer;
             
@@ -241,7 +241,12 @@
             //if (vm.type == 'Establishment' || vm.type == 'PersonCust') 
             getVRows(vm.answer.id);
             getAnswerRanks();
-            dataloader.pulldata('ranks',vm.answerRanks);                        
+            dataloader.pulldata('ranks',vm.answerRanks);
+            
+            //if user has eventlocid, pull data for the Establishment
+            if (vm.answer.eventlocid != null && vm.answer.eventlocid > -1) {
+                dataloader.pulldata('answers',[{id: vm.answer.eventlocid, answer: vm.answer.eventlocid}]);                        
+            }
 
             //if user votes are available - do my thing at getAnswerVotes
             //else fetch user votes

@@ -70,7 +70,7 @@
             //for performance request only following fields:
             var fields = '';
             if (run == 1) fields += 'id,name'; //on first run, get only these fields
-            if (run == 2) fields += 'id,imageurl,type,isfood,lat,lng'; //on second run get these fields
+            if (run == 2) fields += 'id,imageurl,type,isfood,lat,lng,eventlocid'; //on second run get these fields
             
             //Get all answer records
             var url0 = baseURI + '?offset=' + 0 * 1000 + '&filter=scope='+scope + '&fields=' + fields;
@@ -490,6 +490,7 @@
                 _answers[idx].isfood = obj.isfood;
                 _answers[idx].lat = obj.lat;
                 _answers[idx].lng = obj.lng;
+                _answers[idx].eventlocid = obj.eventlocid;
             });
             //_getanswernames();
         }

@@ -1,5 +1,5 @@
-angular.module('app').directive('answerHeader', ['color', '$window', '$rootScope','$state','dialog', 
-function (color, $window, $rootScope, $state, dialog) {
+angular.module('app').directive('answerHeader', ['color', '$window', '$rootScope','$state','dialog','dataloader',
+function (color, $window, $rootScope, $state, dialog, dataloader) {
     'use strict';
 
     return {
@@ -128,6 +128,7 @@ function (color, $window, $rootScope, $state, dialog) {
            }
 
             getHours();
+            getWorkHere();
 
         //Directive Methods
         scope.toggleimgmode = function() {
@@ -168,6 +169,15 @@ function (color, $window, $rootScope, $state, dialog) {
             }
         }
 
+        function getWorkHere(){
+            //check if there are any freelances that work here
+            scope.workhere = [];
+            $rootScope.answers.forEach(function(ansObj){
+                if (ansObj.eventlocid == scope.answer.id) scope.workhere.push(ansObj);
+            });
+            if (scope.workhere.length > 0) dataloader.pulldata('answers',scope.workhere);
+        }
+
          scope.editAnswer = function() {
             if ($rootScope.isLoggedIn) {
                 if (scope.answer.type == 'Event') {
@@ -198,6 +208,9 @@ function (color, $window, $rootScope, $state, dialog) {
             $state.go('answerDetail',{index: scope.answer.eventlocid})
         }
 
+        scope.gotoprofile = function(x){
+            $state.go('answerDetail',{index: x.slug})
+        }
 
         },
     }

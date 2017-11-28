@@ -39,6 +39,7 @@
         vm.remRank = remRank;
         vm.addCatans = addCatans;
         vm.addcts = addcts;
+        vm.onSelect = onSelect;
         
         vm.ranking = $rootScope.title;
         vm.userIsOwner = $rootScope.userIsOwner;
@@ -71,6 +72,8 @@
         var editIsLocation = false;
         var editAnswerGPSexec = false;
         var requestOnFlight = false;
+        var inputLengthMemWa = 0; //inputLength in Memory
+        var maybeAnswers = [];
         
         // Methods
      
@@ -153,6 +156,7 @@
         function loadAnswerData() {
 
             vm.imageURL = vm.answer.imageurl;
+            vm.establishmentNames = $rootScope.estNames.concat($rootScope.plaNames, $rootScope.orgNames, $rootScope.freNames);
 
             for (var i = 0; i < $rootScope.fields.length; i++) {
                 publicfield_obj = {};
@@ -166,11 +170,13 @@
                     case "phone": { publicfield_obj.cval = vm.answer.phone; break; }
                     case "website": { publicfield_obj.cval = vm.answer.website; break; }
                     case "email": { publicfield_obj.cval = vm.answer.email; break; }
+                    case "worksat": { publicfield_obj.cval = vm.answer.eventloc; break; }
                 }
                 publicfield_obj.val = '';
                 publicfield_obj.label = $rootScope.fields[i].label;
                 
                 if (publicfield_obj.field == "cityarea") publicfield_obj.opts ="c for c in vm.neighborhoods";
+                else if (publicfield_obj.field == "worksat") publicfield_obj.opts ="c for c in vm.establishmentNames";
                 else publicfield_obj.opts = "c for c in vm.emptyarray";
                 
                 vm.fields.push(publicfield_obj);
@@ -179,7 +185,36 @@
             for (var i = 0; i < vm.fields.length; i++){
                 vm.fields[i].val = vm.fields[i].cval; 
             }
-            
+        }
+
+        function onSelect(x){
+            maybeAnswers = [];
+            //only use for field name
+            if (x.field == 'worksat'){
+                if (Math.abs(x.val.length - inputLengthMemWa)>2 && x.val.length != 0){
+                    //an option was selected from the typeahead
+                    inputLengthMemWa = x.val.length;
+                    for (var i=0; i < $rootScope.answers.length; i++){
+                        if ($rootScope.answers[i].name == x.val){
+                            maybeAnswers.push($rootScope.answers[i]);
+                        }
+                    }
+                    if (maybeAnswers.length == 1) dialog.confirmSameAnswer(maybeAnswers[0],answerChosen);
+                    else if (maybeAnswers.length > 1) dialog.confirmSameAnswerMultiple(maybeAnswers,answerChosen);                 
+                }
+                inputLengthMemWa = x.val.length;                
+            }                             
+        }
+
+        function answerChosen(n){
+            if (n == undefined){
+                vm.answer.eventloc = maybeAnswers[0].name;
+                vm.answer.eventlocid = maybeAnswers[0].id;
+            }
+            else {
+                vm.answer.eventloc = maybeAnswers[n].name;
+                vm.answer.eventlocid = maybeAnswers[n].id;
+            }
         }
 
         function loadAnswerRanks(){
@@ -872,7 +907,8 @@
         }
     
         function userIsOwnerEditDirectly(x){
-            if ($rootScope.DEBUG_MODE) console.log("Direct Edit Executed");
+            //if ($rootScope.DEBUG_MODE) 
+                console.log("Direct Edit Executed");
             if ($rootScope.DEBUG_MODE) console.log("edit - ", x);
             if (x.field == "imageurl") {
                 if ($rootScope.DEBUG_MODE) console.log("R1");
@@ -893,8 +929,12 @@
                         });
                      }
             }
+            else if (x.field == "worksat"){
+                     if ($rootScope.DEBUG_MODE) console.log("R3");
+                     answer.updateAnswer(x.answer, ['eventloc','eventlocid'], [vm.answer.eventloc, vm.answer.eventlocid]);
+            }
             else {
-                if ($rootScope.DEBUG_MODE) console.log("R3");
+                if ($rootScope.DEBUG_MODE) console.log("R4");
                 answer.updateAnswer(x.answer, [x.field], [x.nval]);
             }
             

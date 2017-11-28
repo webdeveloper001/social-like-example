@@ -511,7 +511,7 @@
             var short = [];
             var shortnames = ['pb', 'ob', 'dt', 'mb'];
             var corrnh = ['Pacific Beach', 'Ocean Beach', 'Downtown', 'Mission Beach'];
-           
+
             var nme = false;  //near me
             var rte = false;
             var rt_nme = false;
@@ -572,7 +572,6 @@
                 var m_nh = false; //reference to neighborhood
                 var nh = []; //neighborhood reference
                 var sc = false; //special case
-                    
                     var valTags = inputVal.toLowerCase().split(" ");
 
                     //check for nh tags tag first
@@ -582,8 +581,8 @@
                         tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
 
                         //look if input makes reference to specific neighborhood
-
-                        if (valTags[k].length >= 3) {
+                        
+                        if (valTags[k].length >= 3 && !$rootScope.isqf) {
 
                             if (valTags[k] != 'car' &&
                                 valTags[k] != 'del' &&
