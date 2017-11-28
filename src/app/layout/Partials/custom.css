@@ -471,3 +471,42 @@ userfeed-block.show-all {
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }
+
+#navbar-user-points {
+    background: transparent;
+    outline: none;
+    border: none;    
+    line-height: 50px;
+    font-size: 30px;
+    color: white;    
+}
+.waggle {
+  animation: waggle 1s 3s forwards ease-out;
+}
+
+
+@keyframes waggle {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+
+  10%, 20% {
+    transform: scale3d(.5, .5, .5) rotate3d(0, 0, 1, -3deg);
+  }
+
+  30%, 50%, 70%, 90% {
+    transform: scale3d(2.0, 2.0, 2.0) rotate3d(0, 0, 1, 3deg);
+  }
+
+  40%, 60%, 80% {
+    transform: scale3d(2.0, 2.0, 2.0) rotate3d(0, 0, 1, -3deg);
+  }
+
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.start-now, .start-now:after {
+  animation-delay: 0;
+}

@@ -5,9 +5,9 @@
         .module('app')
         .factory('useruploadedimages', useruploadedimages);
 
-    useruploadedimages.$inject = ['$http', '$q','$rootScope'];
+    useruploadedimages.$inject = ['$http', '$q','$rootScope', 'uaf'];
 
-    function useruploadedimages($http, $q, $rootScope) {
+    function useruploadedimages($http, $q, $rootScope, uaf) {
 
         //Members
         var _uuis = [];
@@ -59,6 +59,8 @@
                 var itemx = item;
                 itemx.id = result.data.resource[0].id; 
                 _uuis.push(itemx);
+
+                uaf.post('postPhoto', ['answer', 'text2'], [itemx.answer, itemx.imageurl]);
 
                 if ($rootScope.DEBUG_MODE) console.log("created uui record");
                 if ($rootScope.DEBUG_MODE) console.log("result", result);

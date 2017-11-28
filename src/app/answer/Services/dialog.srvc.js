@@ -6,9 +6,9 @@
         .factory('dialog', dialog);
 
     dialog.$inject = ['$q', '$rootScope', 'useraccnt', 'imagelist', 'answer', 'login',
-        '$window','$cookies', '$state', '$compile','htmlops','datetime', 'InstagramService']
+        '$window','$cookies', '$state', '$compile','htmlops','datetime', 'InstagramService', 'users']
     function dialog($q, $rootScope, useraccnt, imagelist, answer, login,
-        $window, $cookies, $state, $compile, htmlops, datetime, InstagramService) {
+        $window, $cookies, $state, $compile, htmlops, datetime, InstagramService, users) {
 
         var service = {
             editConfirm: editConfirm,
@@ -72,6 +72,7 @@
             showLocations: showLocations,
             showLearnMore: showLearnMore,
             imageBank: imageBank,
+            welcomeNewUser: welcomeNewUser 
         };
         return service;
 
@@ -1373,6 +1374,15 @@
                     
                         login.facebookSDKLogin()
                         .then(function(){
+                            $q.all([users.getUser($rootScope.user.id)]).then(function(data){
+                                if (!data) {
+                                    welcomeNewUser($rootScope.user.first_name);
+                                    users.addUser();                                                            
+                                } else {
+                                    $rootScope.user.level = data[0][0].level;
+                                    $rootScope.user.points = data[0][0].points;                                    
+                                }
+                            })
                             dialogItself.close();
                             $state.go($state.current, {}, {reload: true}); 
                         });
@@ -3032,6 +3042,27 @@
                 }]
             });
 
+        }
+
+        function welcomeNewUser(first_name) {
+
+            var title = 'Welcome';
+            var message = '<h1>Welcome <strong>' + first_name + '!</strong></h1>';
+
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_PRIMARY,
+                title: title,
+                message: message,
+                buttons: [{
+                    id: 'btn-ok',
+                    label: 'OK',
+                    cssClass: 'btn-primary',
+                    autospin: false,
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }]
+            });
         }
 
     }

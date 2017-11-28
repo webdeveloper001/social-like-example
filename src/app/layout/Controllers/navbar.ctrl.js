@@ -6,16 +6,27 @@
         .controller('navbar', navbar);
 
     navbar.$inject = ['$location', '$rootScope', 'login', '$state', '$scope',
-        'city', '$cookies', '$http', 'GOOGLE_API_KEY', 'dialog','getgps', 'useraccnt'];
+        'city', '$cookies', '$http', 'GOOGLE_API_KEY', 'dialog','getgps', 'useraccnt', '$q', 'users'];
 
     function navbar($location, $rootScope, login, $state, $scope,
-        city, $cookies, $http, GOOGLE_API_KEY, dialog, getgps, useraccnt) {
+        city, $cookies, $http, GOOGLE_API_KEY, dialog, getgps, useraccnt, $q, users) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'navbar';
 
         // Members
+        if ($rootScope.user) {
+            $q.all([users.getUser($rootScope.user.id)]).then(function(data) {
+                if (data[0]) {
+                    var userinfo = data[0][0];
+                    $rootScope.user.level = userinfo.level;
+                    $rootScope.user.points = userinfo.points;
+                }
+            })            
+        }
+        
         vm.user = $rootScope.user;
+
         vm.isLoggedIn = $rootScope.isLoggedIn ? $rootScope.isLoggedIn : false;
 
         // Methods
@@ -552,5 +563,23 @@
         function goCoords(){
            dialog.askPermissionToLocate();
         }
+
+        function getAttentionForUserPoints(points) {
+            var element = $('#navbar-user-points');
+            var tmpClass = element.attr('class');
+            element.removeClass();
+            setTimeout(function() {
+                element.addClass(tmpClass).addClass('start-now');
+            }, 0);
+
+            setTimeout(function() {
+                $rootScope.user.points = points;
+                $scope.$apply();
+            }, 4000);
+        }
+
+        $scope.$on("getAttentionForUserPoints", function(event, args){
+           getAttentionForUserPoints(args.points);
+        });
     }
 })();

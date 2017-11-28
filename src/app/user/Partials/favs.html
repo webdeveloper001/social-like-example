@@ -1,10 +1,85 @@
 <ul class="nav nav-tabs">
-	<li class="active"><a data-toggle="tab" href="#myfavs">My Favorites</a></li>
-	<li><a data-toggle="tab" href="#myfriends">My Friends</a></li>
+	<li class="active"><a data-toggle="tab" href="#userstats">My stats</a></li>
+	<li><a data-toggle="tab" href="#myfavs">My Favorites</a></li>
+	<li><a data-toggle="tab" href="#myfriends">My Friends</a></li>	
 </ul>
 
 <div class="tab-content">
-	<div id="myfavs" class="tab-pane fade in active">
+	<div id="userstats" class="tab-pane fade in active">
+		<div ng-controller="userstats as vm">
+			<h3>My Stats</h3>
+			<div>Award Points: <strong> {{ vm.award_points }} Pts </strong></div>
+			<div>Your Current Level: <strong> {{ vm.current_level }} </strong></div>		
+
+			<h3>Latest Activities</h3>
+			<div ng-repeat="x in vm.feeds | orderBy:'-id' | limitTo: vm.maxActivities" style="padding:0px;border:0px;margin-top:10px;">
+				<div class="row" style="margin:4px">
+
+					<div class="col-xs-10 media" style="padding-left: 5px;padding-right: 5px;">
+
+						<div ng-if="!x.picture" class="profile-avatar-wrapper media-left">
+							<div class="empty-profile-avatar-wrapper" ng-attr-style="background-color:{{x.bc}};color:{{x.fc}};">{{x.initials}}</div>
+						</div>
+						<div ng-if="x.picture" class="profile-avatar-wrapper  media-left" align="middle">
+							<img ng-src="{{x.picture}}" class="img-responsive img-circle profile-avatar" />
+							
+						</div>
+						
+						<div ng-if="x.action == 'addAnswer'" class="media-body" style="vertical-align: middle;">
+							You added <a ng-click="vm.gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a> to
+							<a ng-click="vm.gotoRank(x)" style="cursor:pointer">{{x.text2}}</a>.
+						</div>
+						<div ng-if="x.action == 'voteUpAnswer'" class="media-body" style="vertical-align: middle;">
+							You endorsed <a ng-click="vm.gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a> in
+							<a ng-click="vm.gotoRank(x)" style="cursor:pointer">{{x.text2}}</a>.
+						</div>
+						<div ng-if="x.action == 'userVoteUpAnswerYouAdded'" class="media-body" style="vertical-align: middle;">
+							{{x.actorusername}} endorsed your suggestion of <a ng-click="vm.gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a> in
+							<a ng-click="vm.gotoRank(x)" style="cursor:pointer">{{x.text2}}</a>.
+						</div>
+						<div ng-if="x.action == 'voteDownAnswer'" class="media-body" style="vertical-align: middle;">
+							You voted down <a ng-click="vm.gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a> in
+							<a ng-click="vm.gotoRank(x)" style="cursor:pointer">{{x.text2}}</a>.
+						</div>
+						<div ng-if="x.action == 'userVoteDownAnswerYouAdded'" class="media-body" style="vertical-align: middle;">
+							{{x.actorusername}} voted down your suggestion of <a ng-click="vm.gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a> in
+							<a ng-click="vm.gotoRank(x)" style="cursor:pointer">{{x.text2}}</a>.
+						</div>
+						<div ng-if="x.action == 'writeOpinion'" class="media-body" style="vertical-align: middle;">
+							You added the opinion <em>{{x.text2}}</em> to <a ng-click="vm.gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
+						</div>
+						<div ng-if="x.action == 'voteUpOpinion'" class="media-body" style="vertical-align: middle;">
+							You endorses the opinion: <em>{{x.text2}}</em> for <a ng-click="vm.gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
+						</div>
+						<div ng-if="x.action == 'userVoteUpYourOpinion'" class="media-body" style="vertical-align: middle;">
+							{{x.actorusername}} endorsed your opinion: <em>{{x.text2}}</em> for <a ng-click="vm.gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
+						</div>
+						<div ng-if="x.action == 'voteDownOpinion'" class="media-body" style="vertical-align: middle;">
+							You voted down the opinion: <em>{{x.text2}}</em> for <a ng-click="vm.gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
+						</div>
+						<div ng-if="x.action == 'userVoteDownYourOpinion'" class="media-body" style="vertical-align: middle;">
+							{{x.actorusername}} voted down your opinion: <em>{{x.text2}}</em> for <a ng-click="vm.gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
+						</div>
+						<div ng-if="x.action == 'editAnswer'" class="media-body" style="vertical-align: middle;">
+							You edited the information of <a ng-click="vm.gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
+						</div>
+						<div ng-if="x.action == 'postPhoto'" class="media-body" style="vertical-align: middle;">
+							You added a photo of <a ng-click="vm.gotoAnswer(x)" style="cursor:pointer">{{x.text1}}</a>.
+						</div>
+					</div>
+					<div class="col-xs-2 media">
+						{{x.pts > 0 ? "+" : ""}}{{x.pts}}
+					</div>
+				</div>
+			</div>
+			<p class="text-center" style="color:blue; margin-top:10px; margin-bottom: 60px">
+				<a class="btn btn-default" style='margin-right:20px;' ng-disabled="!vm.isMoreAvailable()" ng-click="vm.seeMoreActivites()">More</a>
+				<a class="btn btn-default" style='margin-right:20px;' ng-disabled="!vm.isLessAvailable()" ng-click="vm.seeLessActivites()">Less</a>
+			</p>
+
+		</div>
+	</div>
+	<div id="myfavs" class="tab-pane fade">
 		<div ng-controller="myfavs as vm">
 			<h3>My Favorites</h3>
 

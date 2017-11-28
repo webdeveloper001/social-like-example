@@ -5,9 +5,9 @@
         .module('app')
         .factory('uaf', uaf);
 
-    uaf.$inject = ['$http', '$q', '$rootScope'];
+    uaf.$inject = ['$http', '$q', '$rootScope', 'userpts'];
 
-    function uaf($http, $q, $rootScope) {
+    function uaf($http, $q, $rootScope, userpts) {
 
         //Members
         var _actions = [];
@@ -18,7 +18,9 @@
             getactions: getactions,
             post: post,
 			deletebyId: deletebyId,
-			getnext10actions: getnext10actions
+			getnext10actions: getnext10actions,
+            getAllUafs: getAllUafs,
+            getUafsFromId: getUafsFromId
         };
 
         return service;
@@ -47,7 +49,25 @@
 
         }
 
+        function getAllUafs() {
+            var url = baseURI;
 
+            return $http.get(url).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+                return result.data.resource;
+            }
+        }
+
+        function getUafsFromId(ids) {
+            var url = baseURI + "?ids=" + ids
+            return $http.get(url).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+                return result.data.resource;
+            }
+
+        }
         function getnext10actions(forceRefresh) {
             //Get all uaf  records
             var url0 = baseURI + '?limit=20&order=id%20DESC&offset=' + $rootScope.uafs.length ;
@@ -137,7 +157,7 @@
                 var uafx = data;
                 uafx.id = result.data.resource[0].id; 
                 _actions.push(uafx);
-
+                userpts.addrec(uafx);
                 if ($rootScope.DEBUG_MODE) console.log("Posted user activity feed");
                 return result.data;
             }

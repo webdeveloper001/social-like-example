@@ -391,7 +391,7 @@
             }
         }
         
-         function updateRec(rec_id, field, val) {
+        function updateRec(rec_id, field, val) {
              
             //form match record
             var obj = {};
@@ -440,9 +440,19 @@
             return _allcatans.length > 0;
         }
 
+        function getRecFromUaf(uaf) {
+            var url = baseURI + '/?filter=((' + 'answer=' + uaf.answer + ') or (' + 'category=' + uaf.category + '))'
+            $http.get(url).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+                return result.data.resource[0];
+            }
+        }
+
         function _queryFailed(error) {
 
             throw error;
         }
+
     }
 })();

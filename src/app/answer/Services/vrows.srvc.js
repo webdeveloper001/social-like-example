@@ -197,7 +197,7 @@
                 newVRow.id = result.data.resource[0].id;
                 _allvrows.push(newVRow);
                 //$rootScope.cvrows.push(newVRow);
-
+                uaf.post('addedOpinion',['answer','vrow'],[newVRow.answer, newVRow.id]); 
                 return result.data;
 
             }
@@ -366,6 +366,16 @@
             return _allvrows.length > 0;
         }
 
+        function getRecFromUaf(uaf) {
+            var url = baseURI + "/?filter=id=" + uaf.vrow;
+
+            $http.get(url).then(querySucceeded, _queryFailed);
+
+            function querySucceeded(result) {
+                return result.data.resource[0];
+            }
+
+        }
         function _queryFailed(error) {
 
             throw error;

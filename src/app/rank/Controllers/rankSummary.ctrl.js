@@ -1619,20 +1619,22 @@
                     if ($rootScope.friends_votes[i].answer == answer.id) {
                         var friend = getUser($rootScope.friends_votes[i]);
                         //console.log("friend - ", friend);
-                        cidx = $rootScope.catansrecs.map(function(x) {return x.id; }).indexOf($rootScope.friends_votes[i].catans);
-                        if (cidx > -1 ) ridx = $rootScope.content.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[cidx].category); 
-                        //if (ridx > -1) {
-                            idx = answer.userObjs.map(function (x) { return x.id; }).indexOf(friend.id);
-                            if (idx < 0) {
-                                //console.log("$rootScope.friends_votes[i] ", $rootScope.friends_votes[i]);
-                                friend.endorsements = [];
-                                if (ridx > -1) friend.endorsements.push($rootScope.content[ridx].title);
-                                answer.userObjs.push(friend);
-                            }
-                            else {
-                                //console.log("answer - ", answer);
-                                if (ridx > -1) answer.userObjs[idx].endorsements.push($rootScope.content[ridx].title);
-                            }
+                        if (friend) {
+                            cidx = $rootScope.catansrecs.map(function(x) {return x.id; }).indexOf($rootScope.friends_votes[i].catans);
+                            if (cidx > -1 ) ridx = $rootScope.content.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[cidx].category); 
+                            //if (ridx > -1) {
+                                idx = answer.userObjs.map(function (x) { return x.id; }).indexOf(friend.id);
+                                if (idx < 0) {
+                                    //console.log("$rootScope.friends_votes[i] ", $rootScope.friends_votes[i]);
+                                    friend.endorsements = [];
+                                    if (ridx > -1) friend.endorsements.push($rootScope.content[ridx].title);
+                                    answer.userObjs.push(friend);
+                                }
+                                else {
+                                    //console.log("answer - ", answer);
+                                    if (ridx > -1) answer.userObjs[idx].endorsements.push($rootScope.content[ridx].title);
+                                }
+                        }
                         //}
                     }
                 }

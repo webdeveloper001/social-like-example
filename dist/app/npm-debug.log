@@ -11,10 +11,11 @@
 4 verbose stack     at checkBinReferences_ (/home/pioneer/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:320:45)
 4 verbose stack     at final (/home/pioneer/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:354:3)
 4 verbose stack     at then (/home/pioneer/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:124:5)
-4 verbose stack     at ReadFileContext.<anonymous> (/home/pioneer/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:295:20)
-4 verbose stack     at ReadFileContext.callback (/home/pioneer/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:78:16)
-4 verbose stack     at FSReqWrap.readFileAfterOpen [as oncomplete] (fs.js:365:13)
-5 verbose cwd /media/pioneer/11f86780-3cb9-4334-9e75-5558d26a01e7/work/andres/RankX/server
+4 verbose stack     at /home/pioneer/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:243:12
+4 verbose stack     at /home/pioneer/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:78:16
+4 verbose stack     at tryToString (fs.js:455:3)
+4 verbose stack     at FSReqWrap.readFileAfterClose [as oncomplete] (fs.js:442:12)
+5 verbose cwd /media/pioneer/11f86780-3cb9-4334-9e75-5558d26a01e7/work/andres/RankX/src/app
 6 error Linux 4.2.0-42-generic
 7 error argv "/home/pioneer/.nvm/versions/node/v6.5.0/bin/node" "/home/pioneer/.nvm/versions/node/v6.5.0/bin/npm" "start"
 8 error node v6.5.0
