@@ -5,9 +5,9 @@
         .module('app')
         .factory('vrows', vrows);
 
-    vrows.$inject = ['$http', '$q', '$rootScope', 'vrowvotes'];
+    vrows.$inject = ['$http', '$q', '$rootScope', 'vrowvotes', 'uaf'];
 
-    function vrows($http, $q, $rootScope, vrowvotes) {
+    function vrows($http, $q, $rootScope, vrowvotes, uaf) {
 
         // Members
         var _allvrows = [];
