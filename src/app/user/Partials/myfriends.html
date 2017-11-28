@@ -1,0 +1,122 @@
+<h3>My Favorites</h3>
+
+<table class="table" ng-if="vm.answerExist2">
+	<tbody>
+		<thead style="border-style:none;">
+			<tr>
+				<th ng-attr-style="background-color:{{vm.bgc2}};color:{{vm.fc2}};width:50%;">
+					{{vm.headline2}}</th>
+				<th ng-attr-style="background-color:{{vm.bgc2}};color:{{vm.fc2}};width:50%;"></th>	
+			</tr>
+		</thead>
+		<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
+		<tr ng-repeat="x in vm.lifestyleans | limitTo:vm.maxRes2 track by $index" ng-click="vm.answerDetail(2,x)" style="cursor:pointer;">
+			<td style="width:50%;">
+				<div class="profile-avatar-wrapper  media-left" align="middle"  ng-repeat="userObj in x.userObjs" style="display: inline" >
+					<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>
+				</div>
+				{{x.name}}
+			</td>
+			<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+		</tr>
+	</tbody>
+</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(2)"  ng-if="vm.cb2gt5">&lt;&lt;{{vm.btext2}}&gt;&gt;</p>
+
+<table class="table" ng-if="vm.answerExist1">
+	<tbody>
+		<thead style="border-style:none;">
+			<tr>
+				<th ng-attr-style="background-color:{{vm.bgc1}};color:{{vm.fc1}};width:50%;">
+					{{vm.headline1}}</th>
+				<th ng-attr-style="background-color:{{vm.bgc1}};color:{{vm.fc1}};width:50%;"></th>	
+			</tr>
+		</thead>
+		<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
+		<tr ng-repeat="x in vm.foodans | limitTo:vm.maxRes1 track by $index" ng-click="vm.answerDetail(1,x)" style="cursor:pointer;">
+			<td style="width:50%;">
+				<div class="profile-avatar-wrapper  media-left" ng-repeat="userObj in x.userObjs" align="middle" style="display: inline" >
+					<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>
+				</div>
+				{{x.name}}
+			</td>
+			<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>                    
+		</tr>
+		
+	</tbody>
+</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(1)" ng-if="vm.cb1gt5">&lt;&lt;{{vm.btext1}}&gt;&gt;</p>
+
+<table class="table" ng-if="vm.answerExist3">
+	<tbody>
+		<thead style="border-style:none;">
+			<tr>
+				<th ng-attr-style="background-color:{{vm.bgc3}};color:{{vm.fc3}};width:50%;">
+					{{vm.headline3}}</th>
+				<th ng-attr-style="background-color:{{vm.bgc3}};color:{{vm.fc3}};width:50%;"></th>	
+			</tr>
+		</thead>
+		<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
+		<tr ng-repeat="x in vm.servicesans | limitTo:vm.maxRes3 track by $index" ng-click="vm.answerDetail(3,x)" style="cursor:pointer;">
+			<td style="width:50%;">
+				<div class="profile-avatar-wrapper  media-left" align="middle"  ng-repeat="userObj in x.userObjs" style="display: inline" >
+					<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>
+				</div>
+				{{x.name}}
+			</td>
+			<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+		</tr>
+	</tbody>
+</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(3)" ng-if="vm.cb3gt5">&lt;&lt;{{vm.btext3}}&gt;&gt;</p>
+
+<table class="table" ng-if="vm.answerExist4">
+	<tbody>
+		<thead style="border-style:none;">
+			<tr>
+				<th ng-attr-style="background-color:{{vm.bgc4}};color:{{vm.fc4}};width:50%;">
+					{{vm.headline4}}</th>
+				<th ng-attr-style="background-color:{{vm.bgc4}};color:{{vm.fc4}};width:50%;"></th>	
+			</tr>
+		</thead>
+		<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
+		<tr ng-repeat="x in vm.healthans | limitTo:vm.maxRes4 track by $index" ng-click="vm.answerDetail(4,x)" style="cursor:pointer;">
+			<td style="width:50%;">
+				<div class="profile-avatar-wrapper  media-left" align="middle"  ng-repeat="userObj in x.userObjs" style="display: inline" >
+					<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>
+				</div>
+				{{x.name}}
+			</td>
+			<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+		</tr>
+	</tbody>
+</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(4)" ng-if="vm.cb4gt5">&lt;&lt;{{vm.btext4}}&gt;&gt;</p>
+
+<table class="table" ng-if="vm.answerExist5">
+	<tbody>
+		<thead style="border-style:none;">
+			<tr>
+				<th ng-attr-style="background-color:{{vm.bgc5}};color:{{vm.fc5}};width:50%;">
+					{{vm.headline5}}</th>
+				<th ng-attr-style="background-color:{{vm.bgc5}};color:{{vm.fc5}};width:50%;"></th>	
+			</tr>
+		</thead>
+		<!--	<div ng-repeat="x in resultsT | orderBy: '-views' | limitTo:maxRes"> -->
+		<tr ng-repeat="x in vm.beautyans | limitTo:vm.maxRes5 track by $index" ng-click="vm.answerDetail(5,x)" style="cursor:pointer;">
+			<td style="width:50%;">
+				<div class="profile-avatar-wrapper  media-left" align="middle"  ng-repeat="userObj in x.userObjs" style="display: inline" >
+					<img ng-src="{{userObj.picture.data.url}}" class="img-responsive img-circle profile-avatar" style="display: inline"/>
+				</div>
+				{{x.name}}
+			</td>
+			<td ng-attr-style="background-color:{{x.sp_bc}};color:{{x.sp_fc}}">{{x.sp_title}}</td>
+		</tr>
+	</tbody>
+</table><p class="text-right" style="color:blue;" ng-click="vm.seeMore(5)" ng-if="vm.cb5gt5">&lt;&lt;{{vm.btext5}}&gt;&gt;</p>
+
+<div ng-if="vm.noAns">
+</br>
+<p>You have not endorsed any Establishments yet. Places that you endorse will show up 
+	here so you can have quick access to all their specials and promotions.</p> 
+</div>
+
+<div class="text-right" role="group">
+    <button type="button" ng-click="vm.goBack()" class="btn btn-default">Back</button>
+</div>    

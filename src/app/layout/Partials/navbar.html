@@ -12,10 +12,12 @@
             <a class="navbar-brand" href="/cwrapper" ng-click="vm.gotoHome()" style="cursor:pointer;padding:0px;border:0px;margin:0px;">
                 <img src="/assets/images/logosqwborder.jpg" style="width:60px;"></a>
             <a class="navbar-brand home-link" ng-click="vm.selCity()" style="font-size:medium">San Diego</a>
+            <!-- <button class="waggle">Waggle</button> -->
             <a class="navbar-brand navbar-profile-picture-wrapper" ng-show="vm.user" href="/favs" ng-click="vm.gotofavs()">
                 <img class="img-responsive img-circle navbar-profile-picture" ng-src="{{vm.user.picture.data.url}}" />
                 <span style="font-size:medium">{{vm.user.first_name}}</span>
             </a>
+            <button id="navbar-user-points" class="waggle">{{vm.user.points > 0 ? "+" : ""}}{{vm.user.points}}</button>
             <a class="navbar-brand" ng-if="vm.warning" style="background-color:#33cccc;color:black;margin:2px"
             ng-click="vm.goWarning()"><i class="fa fa-warning"></i></a>
             <a class="navbar-brand" ng-if="vm.coordsRdy" ng-click="vm.goCoords()" style="margin:0px;"><i class="fa fa-location-arrow"></i></a>

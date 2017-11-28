@@ -85,4 +85,5 @@ schedule.scheduleJob({hour: 23, minute: 55}, () => {
 });
 
 var port = process.env.PORT || '3000';
+console.log('listen on 3000');
 app.listen(port);

@@ -90,4 +90,6 @@ gulp.task('clean', function (done) {
   $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')], done);
 });
 
-//gulp.task('build', ['html', 'fonts']);
+gulp.task('buildone', ['html', 'fonts', 'other'], function(){
+  
+});

@@ -16,13 +16,13 @@ var objPath = {
         'src/app/*.html',
     ],
     HTML2: [
-        
         'src/app/**/admin/**/admin.html',
         'src/app/**/answer/Partials2/*.html',
         'src/app/**/customer/**/*.html',
         'src/app/**/layout/Partials2/*.html',
         'src/app/**/rank/Partials2/*.html',
         'src/app/**/promoters/**/*.html',
+        'src/app/**/user/Partials/*.html'
     ],
     JS1: [
         'src/app/**/admin/Services/*.js',
@@ -42,6 +42,7 @@ var objPath = {
         'src/app/*.js',
         'src/app/**/answer/Services2/*.js',
         'src/app/**/common/services/*.js',
+        'src/app/**/user/Services/*.js',
         'dist/partials/templateCacheHtml.js',
     ],
     JS2: [
@@ -50,6 +51,7 @@ var objPath = {
         'src/app/**/layout/Controllers2/*.js',
         'src/app/**/rank/Controllers2/*.js',
         'src/app/**/promoters/Controllers/*.js',
+        'src/app/**/user/Controllers/*.js',
         'dist/partials/templateCacheHtml2.js'
     ],
     DISTJS: [
@@ -227,7 +229,7 @@ gulp.task('build-app2', ['build-partials2'], function () {
         .pipe($.angularFilesort()).on('error', conf.errorHandler('AngularFilesort'))
         .pipe($.ngAnnotate())
         .pipe($.concat('app2.js'))
-        .pipe($.uglify({ preserveComments: $.uglifySaveLicense })).on('error', conf.errorHandler('Uglify'))
+        .pipe($.uglify({ preserveComments: $.uglifySaveLicense, mangle: false })).on('error', conf.errorHandler('Uglify'))
         .pipe(gulp.dest(path.join(conf.paths.dist, 'scripts')));
         
 });
@@ -248,7 +250,7 @@ gulp.task('build-inject', ['build-partials', 'build-admin-partials',
         .pipe($.angularFilesort()).on('error', conf.errorHandler('AngularFilesort'))
         .pipe($.concat('app.js'))
         .pipe($.ngAnnotate())
-        .pipe($.uglify({ preserveComments: $.uglifySaveLicense })).on('error', conf.errorHandler('Uglify'))
+        .pipe($.uglify({ preserveComments: $.uglifySaveLicense, mangle: false })).on('error', conf.errorHandler('Uglify'))
         .pipe(gulp.dest(path.join(conf.paths.dist, 'scripts')));
     
     var injectVendor1 = gulp.src(objPath.VENDOR1)
