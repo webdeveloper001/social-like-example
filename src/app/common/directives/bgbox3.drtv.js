@@ -23,7 +23,7 @@ angular.module('app').directive('bgBox3', ['color','$timeout','$rootScope',funct
 
             
         $timeout(function(){
-            scope.showStats = scope.type == 'Ranking';
+            scope.showStats = scope.type == 'Ranking' && scope.text != 'Food Near Me';
 
             var S = JSON.parse(scope.stats);
             scope.views = S.views;

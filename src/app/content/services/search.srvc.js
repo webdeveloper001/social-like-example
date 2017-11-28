@@ -147,7 +147,7 @@
         }
 
         function sibblingRanks(catObj,neighborhood) {
-
+            //NOTE in this function catObj is a rank object
             function compare(a, b) {
                 return b.ctr - a.ctr;
             }
@@ -511,7 +511,7 @@
             var short = [];
             var shortnames = ['pb', 'ob', 'dt', 'mb'];
             var corrnh = ['Pacific Beach', 'Ocean Beach', 'Downtown', 'Mission Beach'];
-           
+
             var nme = false;  //near me
             var rte = false;
             var rt_nme = false;
@@ -572,7 +572,6 @@
                 var m_nh = false; //reference to neighborhood
                 var nh = []; //neighborhood reference
                 var sc = false; //special case
-                    
                     var valTags = inputVal.toLowerCase().split(" ");
 
                     //check for nh tags tag first
@@ -582,8 +581,8 @@
                         tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
 
                         //look if input makes reference to specific neighborhood
-
-                        if (valTags[k].length >= 3) {
+                        
+                        if (valTags[k].length >= 3 && !$rootScope.isqf) {
 
                             if (valTags[k] != 'car' &&
                                 valTags[k] != 'del' &&
@@ -622,7 +621,6 @@
 
                       for (var j = 0; j < $rootScope.content.length; j++) {  
                         if (true) {    
-                            
                             ss = $rootScope.searchStrContent[j]; //Search string
                             rt = $rootScope.content[j].title; // title
                             rank = $rootScope.content[j];
@@ -687,6 +685,12 @@
                     //if (nme) results = results.concat(results_nm);
                     if (results_ss.length > 2) shuffle(results_ss);
                     results = results.concat(results_ss);
+
+                    //if query is food related, make Food Near Me rank first option
+                    if (query == 'food' || query =='Food'){
+                        var ni = $rootScope.content.map(function(x) {return x.title; }).indexOf('Food Near Me');
+                        results = [$rootScope.content[ni]].concat(results);
+                    }
                 }
 
                 else {
@@ -730,7 +734,7 @@
             var idx1 = 0;
             var obj = {};
             for (var i = 0; i < ranks.length; i++) {
-                if (ranks[i].isAnswer == true){}
+                if (ranks[i].isAnswer == true || ranks[i].title == 'Food Near Me'){}
                 else{
                     tstr = ranks[i].tags.replace(/,/g, ' ');
                     tagsr = tstr.split(' ');

@@ -47,10 +47,14 @@ function ($rootScope, $state, search,
 
             if ($rootScope.DISPLAY_XSMALL == true || $rootScope.DISPLAY_SMALL == true) _renderTime = 1000;
             if ($rootScope.DISPLAY_MEDIUM == true || $rootScope.DISPLAY_LARGE == true) _renderTime = 1000;
-            
+            /*
             scope.rankSel = function (x,nm) {
-                
-                if (x.useTemp){
+                console.log("ranksel - ", x);
+                if (x.isfoodnearme == true) {
+                    console.log("set food near me");
+                    $rootScope.isFoodNearMe = true;
+                }
+                if (x.useTemp){ //if rank is from template
                 if (nm) $rootScope.rankIsNearMe = true;
                 else $rootScope.rankIsNearMe = false;
                 var selectedRank = {};
@@ -122,11 +126,12 @@ function ($rootScope, $state, search,
             }
             };
             scope.ansSel = function (x) {
+                console.log("scope.ansSel");
                 $rootScope.PAGEYOFFSET =  window.pageYOffset;
                 $rootScope.cCategory = undefined; //clear current category
                 //scope.disableScrolling = true;
                 $state.go('answerDetail', { index: x.slug });                
-            };
+            };*/
 
             scope.resRanks = [];
             scope.resAnswers = [];
@@ -179,7 +184,7 @@ function ($rootScope, $state, search,
                 var catRanks = [];
                 //if( scope.resRanks.length > 0) {
                 //    catRanks = [];
-                    scope.resRanks = search.searchRanks2(scope.query);
+                    scope.resRanks = search.searchRanks2(scope.query); 
                     catRanks = search.searchRanks(scope.query);
                     var catmap = scope.resRanks.map(function(x) {return x.cat; });
                     
@@ -295,8 +300,8 @@ function ($rootScope, $state, search,
                 ranksLoaded = false;
                 scope.searchResults = homeRanks;
                 scope.displayResults = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
-                pullDataArray = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
-                pullData('ranks', pullDataArray);
+                //pullDataArray = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
+                //pullData('ranks', pullDataArray);
                 scope.contentLoaded = true;
                 $timeout(function(){
                     $rootScope.$broadcast('masonry.reload');
@@ -342,7 +347,10 @@ function ($rootScope, $state, search,
 
             scope.$watch('scrollactive', function() {
                 scope.disableScrolling = !scope.scrollactive;
-                if (!scope.disableScrolling && scope.displayResults.length < 20) $rootScope.$broadcast('masonry.reload');                                   
+                $timeout(function(){
+                    $rootScope.$broadcast('masonry.reload');
+                },750); 
+                                                           
             });
 
             if($rootScope.sm){

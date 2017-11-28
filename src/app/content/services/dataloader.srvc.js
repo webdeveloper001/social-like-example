@@ -61,7 +61,11 @@
             $q.all([p1,p2]).then(function(d){
                 unwrap();
                 waitforImages(d[1]);
-                gethomedataX($rootScope.SCOPE);
+                pulldata('ranks',d[0]).then(function(){
+                    $timeout(function(){
+                        gethomedataX($rootScope.SCOPE);
+                    },50);
+                });
             });
         }
 
@@ -73,8 +77,12 @@
             var p0 = table.getTablesX(scope);
             var p1 = categories.getAllCategoriesX(scope);
             var p2 = locations.getAllLocations();
-            var p3 = answer.getAnswersX(scope).then(function(){
-                getEstablishmentAnswers();
+            var p3 = answer.getAnswersX(scope,1).then(function(){
+                if ($rootScope.isLoggedIn) getDemoData();
+                getSecondaryData();
+                table.storeInitialHomeData(ridsx);
+                categories.storeInitialHomeData(cidsx);
+                //getEstablishmentAnswers();
                 $rootScope.pageDataLoaded = true;
                 checkStatus();
             });
@@ -85,15 +93,14 @@
                 // run whatever needs to be timed in between the statements
                 unwrap();
                 createSearchStrings();
-                if ($rootScope.isLoggedIn) getDemoData();
-
-                //checkStatus();
-                getSecondaryData();
-                table.storeInitialHomeData(ridsx);
-                categories.storeInitialHomeData(cidsx);
                 
                 //Create array of neighborhood options
                 $rootScope.nhs = $rootScope.locations.map(function(x) {return x.nh_name; });
+                
+                //Create array of neighborhoods that have sub areas
+                $rootScope.locsas = $rootScope.locations.filter(function(x) {
+                    return (x.sub_areas != undefined && x.sub_areas != '' && x.nh_name != 'San Diego');
+                }).map(function(x) { return x.nh_name; });
                 
                 if ($rootScope.DEBUG_MODE) console.log("cwrapper data ready!");
                 $rootScope.$emit('homeDataLoaded');
@@ -216,48 +223,7 @@
             demoDataReady = demoData1of3 && demoData2of3 && demoData3of3;
         }
 
-        function createNhOps(){
-            $rootScope.nhops = [];
-            $rootScope.locations.forEach(function(nh){
-                $rootScope.nhops.push(nh.nh_name);
-            })
-        }
-
-        function getEstablishmentAnswers() {
-            $rootScope.estAnswers = [];
-            $rootScope.estNames = [];
-            $rootScope.pplAnswers = [];
-            $rootScope.pplNames = [];
-            $rootScope.plaAnswers = [];
-            $rootScope.plaNames = [];
-            $rootScope.freAnswers = [];
-            $rootScope.freNames = [];
-            $rootScope.orgNames = [];
-            $rootScope.orgAnswers = [];
-            $rootScope.orgNames = [];
-            for (var i = 0; i < $rootScope.answers.length; i++) {
-                if ($rootScope.answers[i].type == 'Establishment') {
-                    $rootScope.estNames.push($rootScope.answers[i].name);
-                    $rootScope.estAnswers.push($rootScope.answers[i]);
-                }
-                if ($rootScope.answers[i].type == 'Person') {
-                    $rootScope.pplNames.push($rootScope.answers[i].name);
-                    $rootScope.pplAnswers.push($rootScope.answers[i]);
-                }
-                if ($rootScope.answers[i].type == 'Place') {
-                    $rootScope.plaNames.push($rootScope.answers[i].name);
-                    $rootScope.plaAnswers.push($rootScope.answers[i]);
-                }
-                if ($rootScope.answers[i].type == 'Organization') {
-                    $rootScope.orgNames.push($rootScope.answers[i].name);
-                    $rootScope.orgAnswers.push($rootScope.answers[i]);
-                }
-                if ($rootScope.answers[i].type == 'PersonCust') {
-                    $rootScope.freNames.push($rootScope.answers[i].name);
-                    $rootScope.freAnswers.push($rootScope.answers[i]);
-                }
-            }
-        }
+        
 
         function createSearchStrings(){
             $rootScope.searchStr = [];
@@ -280,7 +246,7 @@
 
         function pulldata(type, data) {
             if (type == 'ranks') {
-                catans.getAllcatansX(data).then(function (result) {
+                return catans.getAllcatansX(data).then(function (result) {
                         if (result){
                         //_ranksLoaded = true;
                         //if ($rootScope.rankSummaryDataLoaded == false ||
@@ -412,7 +378,8 @@
             var p5 = vrows.getVrowsX([data]);
             catans.getAllcatansY([data]).then(function(result){
                 if (result){
-                var p6 = table.getTablesL(result).then(function(resultx){
+                    
+                    var p6 = table.getTablesL(result).then(function(resultx){
                     
                     if (resultx.constructor === Array) {}
                     else resultx = [resultx];

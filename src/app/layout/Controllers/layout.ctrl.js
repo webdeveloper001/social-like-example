@@ -35,6 +35,8 @@
         vm.gotoHome = gotoHome;
         vm.goAddRank = goAddRank;
         vm.quickFilter = quickFilter;
+        vm.buttonsFwd = buttonsFwd;
+        vm.buttonsPrev = buttonsPrev;
 
         vm.foodNearMe = false;
         if ($window.location.href.indexOf('rankSummary/food-near-me-9521') != -1) {
@@ -66,6 +68,8 @@
         vm.goPrivacyPolicy = goPrivacyPolicy;
         vm.goRankofDayConsole = goRankofDayConsole;
 
+        $rootScope.inputVal = vm.val;
+        
         jQuery(document).ready(function () {
             var offset = 250;
             var duration = 300;
@@ -200,11 +204,7 @@
                 vm.barIsActive = false;
         });
         var backtoResultsListener = $rootScope.$on('backToResults', function (event) {
-                    vm.childActive = false; 
-                    vm.barIsActive = true;
-                    $rootScope.cCategory = undefined;
-                    backToResults();
-                //}      
+                    backToResults();   
         });
 
         var userLoggedOutListener = $rootScope.$on('userLoggedOut', function (event) {
@@ -290,15 +290,7 @@
         activate();
         
         function activate() {
-            //****TEMP CODE, ENable for Admin Functions*****************
-            /*
-            $rootScope.isLoggedIn = true;
-            $rootScope.user = {};
-            $rootScope.user.name = "Andres Moctezuma";
-            $rootScope.user.first_name = 'Andres';
-            $rootScope.user.last_name = 'Moctezuma';
-            $rootScope.user.id = "10104518570729893";
-            //---*/
+            
 
             $rootScope.isAdmin = false;
             $rootScope.dataAdmin = false;
@@ -318,6 +310,7 @@
 
             $rootScope.DEBUG_MODE = DEBUG_MODE;
             $rootScope.EMPTY_IMAGE = EMPTY_IMAGE;
+            
             //$rootScope.SCOPE = 2; // This scope number is for city of San Diego.
 
             $rootScope.facebookAppId = ''; //1102409523140826'';
@@ -331,6 +324,7 @@
                 //if (!tourviewed && !$rootScope.isLoggedIn) dialog.tour();
             }
             else loadData();
+            buttons();
 
             //Call userdata functions, If user is not logged in, functions do not execute.
             userdata.loadUserData();        //load user data (votes and activities)
@@ -353,10 +347,7 @@
                 $rootScope.dialogs = response.data;
             });
 
-            $http.get('../../../assets/foodans.json').then(function (response) {
-                $rootScope.foodans = response.data;
-            });
-        }
+            }
 
         function loadData() {
            
@@ -422,12 +413,11 @@
         }
         
         function getResults() {
-
-            $rootScope.inputVal = vm.val;
             if (vm.val.length == 1) vm.showans = true;
             $rootScope.searchActive = true;
             vm.searchActive = $rootScope.searchActive;
             vm.childActive = !$rootScope.searchActive;
+            $rootScope.isqf = false;
         }
 
         function hideSearch() {
@@ -442,23 +432,28 @@
             vm.childActive = false; 
             vm.barIsActive = true;
             if ($state.current.name == 'cwrapper') {
-             $rootScope.inputVal = '';
+             //$rootScope.inputVal = '';
              vm.val = '';
             }
         }
 
         function backToResults() {
+            vm.childActive = false; 
+            vm.barIsActive = true;
+            $rootScope.cCategory = undefined;
+
             if ($state.current.name == 'cwrapper') {
-                $rootScope.inputVal = '';
+                //$rootScope.inputVal = '';
                 vm.val = '';
             }
             $state.go('cwrapper');
+
             if ($rootScope.inputVal != undefined && $rootScope.inputVal != '') {
                 $rootScope.searchActive = true;
                 vm.searchActive = true;
                 vm.childActive = false;
             }
-            //$rootScope.$emit('updateSearch')
+
             
             $timeout(function(){
                 $window.scrollTo(0, $rootScope.pageYOffset);
@@ -494,7 +489,7 @@
 
         function quickFilter(x){
             vm.showans = false;
-            if (x == 'neighborhood') {
+            if (x == 'Neighborhood' || x == vm.nh) {
                 //dialog.selectNeighborhood($rootScope.locations);
                 if (vm.nhctrl == false) vm.nhctrl = true;
                 else vm.nhctrl = false;
@@ -505,6 +500,7 @@
                 if (vm.nh == '') vm.val = x;
                 else vm.val = vm.nh + ' ' + x;
             }
+            $rootScope.isqf = true;
         }
 
         function selectNh(){
@@ -512,10 +508,16 @@
                 vm.nh = vm.nhinp;
                 vm.nhctrl = false;
                 vm.val = vm.nh;
+                //Substitute 'Neighborhood' for selection
+                var idx = vm.buts.indexOf('Neighborhood');
+                vm.buts[idx] = vm.nh;
             }
         }
 
         function clearNh(){
+            var idx = vm.buts.indexOf(vm.nh);
+            vm.buts[idx] = 'Neighborhood';
+
             vm.nhinp = '';
             vm.nh = '';
             vm.nhctrl = false;
@@ -573,7 +575,8 @@
         }
         
          function getDestination(){
-            if (window.location.href.indexOf('rankSummary') > -1){
+
+            if (window.location.href.indexOf('rankSummary') > -1 && window.location.href.indexOf('food-near-me') < 0){
                 vm.childActive = true; 
                 vm.barIsActive = false;
             }
@@ -593,6 +596,33 @@
             vm.barIsActive = false;
             $rootScope.cCategory = undefined; //clear current category
             $state.go('trends');
+        }
+
+        function buttons(){
+            vm.buts = ['Food','Coffee','Activities','Nightlife','Shopping','Beauty','Events','Health','Fitness','Sports','Services',
+                        'Neighborhood','Culture','People','City','Family','Groups','Technology','Religion','Pets','Home','Cars'];
+            vm.bi = 0;
+        }
+        
+        function buttonsFwd(){
+            if ($rootScope.DISPLAY_XSMALL || $rootScope.DISPLAY_SMALL){
+                vm.bi = vm.bi += 8;
+                if (vm.bi+8 > vm.buts.length) vm.bi = vm.buts.length-8;
+            }
+            if ($rootScope.DISPLAY_MEDIUM || $rootScope.DISPLAY_LARGE){
+                vm.bi = vm.bi += 14;
+                if (vm.bi+14 > vm.buts.length) vm.bi = vm.buts.length-14;
+            }
+        }
+        function buttonsPrev(){
+            if ($rootScope.DISPLAY_XSMALL || $rootScope.DISPLAY_SMALL){
+                vm.bi = vm.bi -= 8;
+                if (vm.bi < 0) vm.bi = 0;
+            }
+            if ($rootScope.DISPLAY_MEDIUM || $rootScope.DISPLAY_LARGE){
+                vm.bi = vm.bi -= 14;
+                if (vm.bi < 0) vm.bi = 0;
+            }
         }
 
     }

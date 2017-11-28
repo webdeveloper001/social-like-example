@@ -69,7 +69,7 @@
         if ($rootScope.hidelogo == undefined) vm.hidelogo = false;
         else vm.hidelogo = $rootScope.hidelogo;
         //Quick Links 
-        vm.foodNearMe = foodNearMe;
+        //vm.foodNearMe = foodNearMe;
         vm.events = events;
         vm.selfimprove = selfimprove;
         
@@ -378,7 +378,7 @@
             //$rootScope.content = {};
             //vm.isBasic = $rootScope.isBasic;
 
-            $rootScope.inputVal = '';
+            //$rootScope.inputVal = '';
             
             switchScope(1); //Default view is basic query view
             vm.cnh = 'Select Neighborhood';
@@ -439,7 +439,7 @@
                 $rootScope.isNh = true;
                 $rootScope.isCity = false;
                 vm.val = '';
-                $rootScope.inputVal = '';
+                //$rootScope.inputVal = '';
                 $rootScope.searchActive = false;
                 if ($rootScope.isNhRdy) $rootScope.$emit('loadNh');
                 vm.searchScope = 'Neighborhood';
@@ -459,11 +459,11 @@
             $rootScope.$emit('loadNh');
             vm.searchScope = x;
             vm.val = '';
-            $rootScope.inputVal = '';
+            //$rootScope.inputVal = '';
             //force close the dropdown neighborhood menu            
             $("#nhdropdown").dropdown("toggle");
         }
-        
+        /*
         //Quick Links
         function foodNearMe(){
             //console.log("$rootScope.coordsRdy - ", $rootScope.coordsRdy);
@@ -472,7 +472,7 @@
                 $rootScope.loadFbnWhenCoordsRdy = true;
                 dialog.askPermissionToLocate();
             }            
-        }
+        }*/
         
         function selfimprove(){
             var introsRank = 0;
@@ -502,7 +502,7 @@
            
         function goHome(){
             //$rootScope.$emit('quitFeedbackMode');
-            $rootScope.inputVal = '';
+            //$rootScope.inputVal = '';
             vm.val = '';
             //switchScope(1);
             //$rootScope.fbmode = false;

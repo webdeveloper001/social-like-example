@@ -153,10 +153,10 @@
         }
 
         function activate() {
-
+            $window.scrollTo(0,0);
             vm.dataReady = true;
             vm.answer = $rootScope.canswer;
-
+            
             answers = $rootScope.canswers;
             vm.fields = $rootScope.fields;
             vm.isAdmin = $rootScope.isAdmin || $rootScope.dataAdmin;
@@ -241,7 +241,12 @@
             //if (vm.type == 'Establishment' || vm.type == 'PersonCust') 
             getVRows(vm.answer.id);
             getAnswerRanks();
-            dataloader.pulldata('ranks',vm.answerRanks);                        
+            dataloader.pulldata('ranks',vm.answerRanks);
+            
+            //if user has eventlocid, pull data for the Establishment
+            if (vm.answer.eventlocid != null && vm.answer.eventlocid > -1) {
+                dataloader.pulldata('answers',[{id: vm.answer.eventlocid, answer: vm.answer.eventlocid}]);                        
+            }
 
             //if user votes are available - do my thing at getAnswerVotes
             //else fetch user votes
@@ -707,6 +712,11 @@
                 //var nViews = vm.answer.views + 1;
                 //answer.updateAnswer(vm.answer.id, ['views'], [nViews]);
                 if ($rootScope.cCategory) {
+                    if ($rootScope.cCategory.isfoodnearme){
+                        $rootScope.isFoodNearMe = true;
+                        $state.go('rankSummary', { index: $rootScope.cCategory.slug });
+                    }
+                    
                     if ($rootScope.cCategory.title.indexOf('@')>-1) $rootScope.isCustomRank = true;
                     $state.go('rankSummary', { index: $rootScope.cCategory.id });
                 }

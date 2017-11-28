@@ -193,19 +193,21 @@
                 
                 //Typeahead check for current Places
                 if (vm.fields[i].name == "name" && $rootScope.cCategory.type == 'Place') {
-                    //vm.fields[i].opts = "c for c in vm.placesNames";
                     vm.fields[i].opts = "c for c in vm.establishmentNames";
                 }
 
                 //Typeahead check for current Companies
                 if (vm.fields[i].name == "name" && $rootScope.cCategory.type == 'Organization') {
-                    //vm.fields[i].opts = "c for c in vm.organizationNames";
                     vm.fields[i].opts = "c for c in vm.establishmentNames";
                 }
 
                 //Typeahead check for current Companies
                 if (vm.fields[i].name == "name" && $rootScope.cCategory.type == 'PersonCust') {
-                    //vm.fields[i].opts = "c for c in vm.organizationNames";
+                    vm.fields[i].opts = "c for c in vm.establishmentNames";
+                }
+
+                //Typeahead check for current Companies
+                if (vm.fields[i].name == "worksat") {
                     vm.fields[i].opts = "c for c in vm.establishmentNames";
                 }
                 
@@ -262,7 +264,18 @@
                     case "phone": { myAnswer.phone = vm.fields[i].val; break; }
                     case "website": { myAnswer.website = vm.fields[i].val; break; }
                     case "email": { myAnswer.email = vm.fields[i].val; break; }
-
+                    case "worksat": {
+                        var idx =  $rootScope.answers.map(function(x) {return x.name;}).indexOf(vm.fields[i].val);
+                        if (idx > -1) {
+                            myAnswer.eventlocid = $rootScope.answers[idx].id;
+                            myAnswer.eventloc = $rootScope.answers[idx].name;
+                        }
+                        else {
+                            myAnswer.eventlocid = -1;
+                            myAnswer.eventloc = vm.fields[i].val;
+                        } 
+                        break; 
+                    }
                 }
             }
         }

@@ -38,7 +38,7 @@
         vm.isAdmin = ($rootScope.isAdmin || $rootScope.dataAdmin || $rootScope.modAdmin);
 
         if ($rootScope.coordsRdy == undefined) $rootScope.coordsRdy = false;
-        $rootScope.loadFbnWhenCoordsRdy = false;
+        //$rootScope.loadFbnWhenCoordsRdy = false;
 
         //Geolocation options
         var geoOptions = {};
@@ -324,9 +324,13 @@
                 console.log("position.coords.latitude - ", location.coords.latitude);
             if ($rootScope.DEBUG_MODE) 
                 console.log("position.coords.longitude - ", location.coords.longitude);
-            /**
-             * Set Latitude and Longitude from navigator to rootScope
-             */
+            
+            //Detect if coordinates changed from previous value
+            if (($rootScope.currentUserLatitude != location.coords.latitude)||
+                $rootScope.currentUserLongitude != location.coords.longitude)
+            $rootScope.newCoords = true;
+
+            // Set Latitude and Longitude from navigator to rootScope
             $rootScope.currentUserLatitude = location.coords.latitude;
             $rootScope.currentUserLongitude = location.coords.longitude;
 
@@ -338,7 +342,7 @@
 
             $rootScope.coordsRdy = true;
             showCoordsIcon();
-            if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 11942 });
+            //if ($rootScope.loadFbnWhenCoordsRdy) $state.go('rankSummary', { index: 11942 });
 
             /**
              * If user is logged in, then set latitude and longitude to user's object

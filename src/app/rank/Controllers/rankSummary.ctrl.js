@@ -8,12 +8,12 @@
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color','locations'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope','$http'
         , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', 'SERVER_URL',
-        '$location', '$q', 'fbusers', '$timeout','table2','categories','dataloader','common'];
+        '$location', '$q', 'fbusers', '$timeout','table2','categories','dataloader','common','search'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime, color, locations
         , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope, $http
         , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, SERVER_URL, 
-        $location, $q, fbusers, $timeout, table2, categories, dataloader, common) {
+        $location, $q, fbusers, $timeout, table2, categories, dataloader, common, search) {
         /* jshint validthis:true */
 
         var vm = this;
@@ -49,7 +49,8 @@
         vm.showAllFriendsList = showAllFriendsList;
         vm.getResults = getResults;
         vm.clearSearch = clearSearch;
-        
+        vm.gotoRank = gotoRank;
+
         vm.gotoParentRank = gotoParentRank;
         
         vm.selOverall = 'active';
@@ -109,13 +110,16 @@
         var rankDataLoadedListener = $rootScope.$on('rankDataLoaded', function () {
             if (vm.dataReady == false) checkRankIsLoaded();
         });
+        var answersLoadedListener = $rootScope.$on('answersLoaded', function () {
+            if (vm.dataReady == false) checkRankIsLoaded();
+        });
+
         var coordsRdyRankListener = $rootScope.$on('coordsRdy', function () {
             if ($rootScope.DEBUG_MODE) console.log("received coordsreadyrank");
             //loadData();
             //$scope.$apply(function(){
                 vm.haveLocation = true;
-                getDistances();
-                sortByDistance();
+                activate();
                 //console.log('scope.$digest() - ', $scope.$digest());
                 //if (!scope.$digest()) 
                 $timeout(function(){
@@ -164,6 +168,10 @@
         
         //verify that rank exists in database
         function checkRankIsLoaded(){
+            if ($rootScope.isFoodNearMe == true) {
+                loadFoodNearMe();
+                return;
+            }
             $rootScope.cCategory = null;
             var rankid = common.getIndexFromSlug($stateParams.index);
             var idx = 0;
@@ -178,7 +186,9 @@
             }
             
             //if rank exists continue loading controller, else get from database
-            if ($rootScope.cCategory != null) prepareRankSummary();
+            if ($rootScope.cCategory != null) {
+                if ($rootScope.answersLoaded) prepareRankSummary();
+            }
             else dataloader.getRank($stateParams.index);
         }
 
@@ -186,23 +196,37 @@
             vm.dataReady = true;
             vm.ranking = $rootScope.cCategory.title;
             //if ($rootScope.rankIsNearMe) vm.ranking = vm.ranking.replace('in San Diego', 'close to me');
+            vm.loadingAnswers = true;
+            $timeout(function () {
+               activate();
+               vm.loadingAnswers = false;
+            });
+        }
 
-            if ($rootScope.cCategory.id == 11942) {
+        function loadFoodNearMe(){
+            if ($rootScope.isFoodNearMe == true) {
+                vm.ranking = 'Food Near Me';
                 vm.foodNearMe = true;
                 foodNearMe = true;
                 vm.fnm = true;
                 vm.showR = false;
+                
+                $rootScope.cCategory = $rootScope.fnm;
+                vm.bc = $rootScope.cCategory.bc;
+                vm.fc = $rootScope.cCategory.fc;
+                vm.shade = $rootScope.cCategory.shade;
+                vm.fimage = $rootScope.cCategory.fimage;
+                vm.dataReady = true;
+            }
+            vm.loadingAnswers = true;
+            $timeout(function () {
                 if ($rootScope.coordsRdy == undefined || $rootScope.coordsRdy == false) {
                     sortByDistance();
                 }
-            }
-
-            vm.loadingAnswers = true;
-            $timeout(function () {
-                if (!foodNearMe) activate();
-                else if ($rootScope.coordsRdy) activate();
+                if ($rootScope.coordsRdy) activate();
                 vm.loadingAnswers = false;
-            });
+                $rootScope.isFoodNearMe = false;
+            },1000);
         }
 
         function activate() {
@@ -223,10 +247,10 @@
             $rootScope.objNumAct = $rootScope.objNum;
 
             loadData(); //load data and write to $rootScope
-            if (!foodNearMe){
+            //if (!foodNearMe){
                 loadTrendVotes(0);
                 if ($rootScope.isLoggedIn && $rootScope.friends_votes) loadFriendsEndorsements(0);
-            }
+            //}
 
             checkUserCredentials();
 
@@ -453,10 +477,11 @@
             }*/
 
             //Set bgbox color specs
+            
             if ($rootScope.cCategory.bc != undefined && $rootScope.cCategory.bc != ''){
                 vm.bc = $rootScope.cCategory.bc;
                 vm.fc = $rootScope.cCategory.fc;
-                vm.shade = $rootScope.cCategory.shade;              
+                vm.shade = $rootScope.cCategory.shade;                
             }
             else{
                 //Set colors for title hideInfoBox
@@ -478,8 +503,8 @@
             //TODO update answers in DB
             $rootScope.modeIsImage = true;
             
-            if (!$rootScope.isCustomRank && !$rootScope.cCategory.isGhost) incViews(); //increment number of views
-            
+            if (!$rootScope.isCustomRank && !$rootScope.cCategory.isGhost && !foodNearMe) incViews(); //increment number of views
+            relatedRanks();
             if ($rootScope.DEBUG_MODE) console.log("Rank Summary Loaded!");
             
             window.prerenderReady = true;
@@ -695,7 +720,7 @@
             $rootScope.fields = fields;
             vm.fields = $rootScope.fields;
             vm.type = $rootScope.cCategory.type;
-
+            
             if (vm.type == 'Event') vm.isE = true;
             else vm.isE = false;
 
@@ -757,41 +782,21 @@
             var obj = {};
             var eventIsCurrent = true;
             
-            //Rank is 'Food Near Me' - first time only
-            if (foodNearMe && $rootScope.fanswers == undefined) {
-                    var answerid = 0;
-                    var idx = 0;
-                    var isDup = false;
-                    var ansObj = {};
-                    
-                    var ansArr = $rootScope.foodans.cats.split(':').map(Number);
-
-                    for (var j = 0; j < ansArr.length; j++) {
-                        idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf(ansArr[j]);
-                        if ($rootScope.answers[idx]) {
-                            //only add if its not already added
-                            isDup = false;
-                            if (fanswers.length > 0 && idx > 0) {
-                                for (var n = 0; n < fanswers.length; n++) {
-                                    if (fanswers[n].id == $rootScope.answers[idx].id) {
-                                        isDup = true;
-                                        //nidx = n;
-                                        break;
-                                    }
-                                }
-                            }
-                            //if not duplicated, add to answer array. upV is init to first catans record
-                            if (!isDup) {
-                                ansObj = $rootScope.answers[idx];
-                                //We have user coordinates, so we check that both lat and lng are within approx a mile
-                                //1 degree ~ 69 miles, so 1 miles ~ 0.0145 degrees
-                                if (Math.abs($rootScope.currentUserLatitude - $rootScope.answers[idx].lat) < 0.0145 &&
-                                    Math.abs($rootScope.currentUserLongitude - $rootScope.answers[idx].lng) < 0.0145)
-                                    fanswers.push(ansObj);
-                            }
-                        }
+            //Rank is 'Food Near Me' - first time only - or if coordinates changed
+            if (foodNearMe && $rootScope.newCoords == true) {
+                fanswers.length = 0;
+                $rootScope.answers.forEach(function (ansObj) {
+                    //check that answer is food related
+                    if (ansObj.isfood) {
+                        //We have user coordinates, so we check that both lat and lng are within approx a mile
+                        //1 degree ~ 69 miles, so 1 miles ~ 0.0145 degrees
+                        if (Math.abs($rootScope.currentUserLatitude - ansObj.lat) < 0.0145 &&
+                            Math.abs($rootScope.currentUserLongitude - ansObj.lng) < 0.0145)
+                            fanswers.push(ansObj);
                     }
-                
+                })
+
+                $rootScope.newCoords = false;
                 $rootScope.canswers = fanswers;
                 $rootScope.fanswers = fanswers;
             }
@@ -1179,13 +1184,13 @@
         }
 
         function getDisplayImages() {
-            vm.image1 = $rootScope.EMPTY_IMAGE;
+            //vm.image1 = $rootScope.EMPTY_IMAGE;
             vm.image2 = $rootScope.EMPTY_IMAGE;
             vm.image3 = $rootScope.EMPTY_IMAGE;
 
-            if (vm.answers[0]) vm.image1 = vm.answers[0].imageurl;
-            if (vm.answers[1]) vm.image2 = vm.answers[1].imageurl;
-            if (vm.answers[2]) vm.image3 = vm.answers[2].imageurl;
+            if (vm.answers[0]) vm.image2 = vm.answers[0].imageurl;
+            if (vm.answers[1]) vm.image3 = vm.answers[1].imageurl;
+            //if (vm.answers[2]) vm.image3 = vm.answers[2].imageurl;
         }
         function closeRank() {
             //if ranking is one from answers, return to answer profile
@@ -1678,7 +1683,29 @@
                         cans.cityarea.toLowerCase().indexOf(vm.val.toLowerCase()) > -1){
                         vm.answers.push(cans);
                     }
-                });                
+                    //check for locations that have subareas. For instance if query is 'Downtown',
+                    //look all answers which neighborhood are downtown districts
+                    else {
+                        if ($rootScope.locsas) {
+                            var idx = $rootScope.locsas.indexOf(vm.val);
+                            if (idx > -1) {
+                                var arrayIds = [];
+                                var idx1 = -1;
+                                var idx2 = -1;
+                                idx1 = $rootScope.locations.map(function (x) { return x.nh_name; }).indexOf( $rootScope.locsas[idx]);
+                                arrayIds = $rootScope.locations[idx1].sub_areas.split(',').map(Number);
+                                arrayIds.forEach(function (nhid) {
+                                    idx2 = $rootScope.locations.map(function (x) { return x.id; }).indexOf(nhid);
+                                    if (cans.cityarea == $rootScope.locations[idx2].nh_name) {
+                                        vm.answers.push(cans);
+                                    }
+                                })
+                            }
+                        }
+                    }
+                });
+                if (vm.answers.length > vm.limit) vm.thereIsMore = true;
+                else vm.thereIsMore = false;               
             }, 300);
         }
 
@@ -1688,11 +1715,68 @@
                     if (vm.opts.indexOf(cans.name)<0) vm.opts.push(cans.name);
                     if (vm.opts.indexOf(cans.cityarea)<0) vm.opts.push(cans.cityarea);
             });
+            //add nhs with subareas to options
+            if ($rootScope.locsas) {
+                $rootScope.locsas.forEach(function (loc) {
+                    if (vm.opts.indexOf(loc) < 0) vm.opts.push(loc);
+                });
+            }
         }
 
         function clearSearch(){
             vm.val = '';
             vm.answers = $rootScope.canswers;
+        }
+
+        function gotoRank(x){
+            $state.go('rankSummary', {index: x.slug});
+        }
+
+        function relatedRanks() {
+            vm.relRanks = [];
+            var relRanksx = [];
+            var nidx = -1;
+            var idx = -1;
+            var nhname = '';
+            var n = 0;
+            
+            if ($rootScope.locations){
+                nidx = $rootScope.locations.map(function (x) { return x.id; }).indexOf($rootScope.cCategory.nh);
+                if (nidx > -1 ) {
+                    nhname = $rootScope.locations[nidx].nh_name;
+                    vm.relRanks = search.sibblingRanks($rootScope.cCategory, nhname);
+                    idx = vm.relRanks.map(function (x) { return x.id; }).indexOf($rootScope.cCategory.id);
+                    if (idx > -1) vm.relRanks.splice(idx, 1);
+                }
+            }
+            
+            if (vm.relRanks.length < 4) {
+                if ($rootScope.searchStrContent) {
+                    var tagObjs = search.searchRelatedRanks([$rootScope.cCategory], '');
+                    var relTags = tagObjs.map(function (x) { return x.tag; });
+                    
+                    for (var i = 0; i < relTags.length; i++) {
+                        //n = Math.floor(Math.random() * relTags.length);
+                        if (vm.relRanks.length < 5) {
+                            if (relTags[n].length > 3) {
+                                relRanksx = search.searchRanks2(relTags[n]);
+                                vm.relRanks = vm.relRanks.concat(relRanksx);
+                                var idx = vm.relRanks.map(function (x) { return x.id; }).indexOf($rootScope.cCategory.id);
+                                if (idx > -1) vm.relRanks.splice(idx, 1);
+                            }
+                            n++;
+                        }
+                        else break;
+                    }
+                }
+            }
+            if (vm.relRanks.length > 0) dataloader.pulldata('ranks', vm.relRanks.slice(0, 4));
+            vm.relRanks.forEach(function(rank){
+                if (rank.title.length > 50) {
+                    idx = rank.title.indexOf(' in ');
+                    rank.title = rank.title.substring(0,idx);
+                }
+            });
         }
     }
 })();

@@ -33,7 +33,7 @@
             <label class="control-label capitalize">{{x.label}}:</label>
             <div class="input-group">
                 <!--<input type="text" class="form-control" placeholder="{{x.cval}}" data-ng-model="x.val">-->
-                <input type="text" class="form-control" ng-model="x.val" bs-options="{{x.opts}}" bs-typeahead placeholder="{{x.cval}}">
+                <input type="text" class="form-control" ng-model="x.val" bs-options="{{x.opts}}" bs-typeahead placeholder="{{x.cval}}" ng-change="vm.onSelect(x)">
                 <span class="input-group-btn text-right">
                         <button class="btn btn-primary" type="button" ng-click="vm.editField(x)">Edit</button>
                     </span>
@@ -54,7 +54,7 @@
         </div>
     </form>
     </div>
-
+    <br>
     <div class="col-sm-12 col-md-5">
         <div class="" ng-if="vm.type!='Short-Phrase'">
             <img class="displayed-uc" ng-src="{{vm.imageURL}}" alt="{{image.errorLoading}}" ng-attr-style="width:100%; max-height:300px" ng-show="{{vm.type != 'Short-Phrase'}}">
