@@ -38,7 +38,13 @@
 
         function loadUserStats() {
 
-            $q.all([userpts.getRecsByUser($rootScope.user.id)]).then(function(result){
+            var q0 = userpts.getRecsByUser($rootScope.user.id); 
+            var q1 = users.getUser($rootScope.user.id);
+            $q.all([q0, q1]).then(function(result){
+                var stats = result[1][0];
+                vm.award_points = stats.points;
+                vm.current_level = stats.level ? stats.level  : 'Newcomer';
+
                 var user_points = result[0];
                 vm.totalActivitiesCount = user_points.length;
                 var activities = [];
@@ -60,35 +66,6 @@
                 })
             })
 
-
-            // var q0 = users.getUser($rootScope.user.id)
-            // var q1 = userpts.getRecsByUser($rootScope.user.id)
-            // var q2 = userpts.getActionPoints()
-
-            // $q.all([q0, q1, q2]).then(function(data) {
-            //     var stats = data[0][0];
-            //     vm.award_points = stats.points;
-            //     vm.current_level = stats.level ? stats.level  : 'Newcomer';
-            //     vm.activities = data[1];
-            //     vm.action_points = data[2];
-            //     $q.all($rootScope.uafs.map(function (feed) {
-            //         return fbusers.getFBUserById(feed.userid);
-            //     }))
-            //     .then(function (fbUsers) {
-            //         vm.feeds = [];
-            //         for (var i = 0; i < $rootScope.uafs.length; i++) {
-            //             var userWithPic = angular.copy($rootScope.uafs[i]);
-            //             userWithPic.picture = fbUsers[i] ? fbUsers[i].picture.data.url : null;
-            //             for (var k = 0; k < vm.action_points.length; k++) {
-            //                 if (userWithPic.action == vm.action_points[k].action) {
-            //                     userWithPic.pts = vm.action_points[k].pts;
-            //                 }
-            //             }
-
-            //             vm.feeds[i] = userWithPic;
-            //         }
-            //     });                    
-            // })
         }
 
         function seeMoreActivites() {
