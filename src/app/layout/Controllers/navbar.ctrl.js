@@ -572,10 +572,8 @@
 
         function getAttentionForUserPoints(points) {
             var element = $('#navbar-user-points');
-            var tmpClass = element.attr('class');
-            element.removeClass();
             setTimeout(function() {
-                element.addClass(tmpClass).addClass('start-now');
+                element.addClass('waggle start-now');
             }, 0);
 
             setTimeout(function() {
