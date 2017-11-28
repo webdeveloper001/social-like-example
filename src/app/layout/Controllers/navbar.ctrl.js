@@ -17,7 +17,7 @@
         // Members
         if ($rootScope.user) {
             $q.all([users.getUser($rootScope.user.id)]).then(function(data) {
-                if (data[0]) {
+                if (data[0][0]) {
                     var userinfo = data[0][0];
                     $rootScope.user.level = userinfo.level;
                     $rootScope.user.points = userinfo.points;
