@@ -60,6 +60,7 @@
                 itemx.id = result.data.resource[0].id; 
                 _uuis.push(itemx);
 
+                $rootScope.$broadcast('updatePointsForShow', {action: 'postPhoto'});
                 uaf.post('postPhoto', ['answer', 'text2'], [itemx.answer, itemx.imageurl]);
 
                 if ($rootScope.DEBUG_MODE) console.log("created uui record");

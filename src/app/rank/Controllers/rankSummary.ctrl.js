@@ -8,12 +8,12 @@
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color','locations'
         , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope','$http'
         , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', 'SERVER_URL',
-        '$location', '$q', 'fbusers', '$timeout','table2','categories','dataloader','common','search'];
+        '$location', '$q', 'fbusers', '$timeout','table2','categories','dataloader','common','search', 'userpts', 'useractivity'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime, color, locations
         , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope, $http
         , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, SERVER_URL, 
-        $location, $q, fbusers, $timeout, table2, categories, dataloader, common, search) {
+        $location, $q, fbusers, $timeout, table2, categories, dataloader, common, search, userpts, useractivity) {
         /* jshint validthis:true */
 
         var vm = this;
@@ -166,6 +166,10 @@
         //if ($rootScope.landRanking != true ) 
         checkRankIsLoaded();
         
+        function getIdx(source, id) {
+            ids = source.map(function(x) { return x.id; })
+
+        }
         //verify that rank exists in database
         function checkRankIsLoaded(){
             if ($rootScope.isFoodNearMe == true) {
@@ -1394,11 +1398,22 @@
         
         function UpVote(x, event) {
             if ($rootScope.isLoggedIn) {
-
                 switch (x.dV) {
-                    case -1: { x.dV = 1; x.upV++; x.downV--; break; }
-                    case 0: { x.dV = 1; x.upV++; break; }
-                    case 1: { x.dV = 0; x.upV--; break; }
+                    case -1: { 
+                        x.dV = 1; x.upV++; x.downV--; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'upVoted'});                    
+                        break; 
+                    }
+                    case 0: { 
+                        x.dV = 1; x.upV++; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'upVoted'});                    
+                        break; 
+                    }
+                    case 1: { 
+                        x.dV = 0; x.upV--; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'downVoted'});                    
+                        break; 
+                    }
                 }
                 
                 if (x.dV == 1) addAnswer4Rank(x);
@@ -1428,15 +1443,27 @@
         function DownVote(x,event) {
             if ($rootScope.isLoggedIn) {
                 switch (x.dV) {
-                    case -1: { x.dV = 0; x.downV--; break; }
-                    case 0: { x.dV = -1; x.downV++; break; }
-                    case 1: { x.dV = -1; x.upV--; x.downV++; break; }
+                    case -1: { 
+                        x.dV = 0; x.downV--; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'upVoted'});                    
+                        break; 
+                    }
+                    case 0: { 
+                        x.dV = -1; x.downV++; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'downVoted'});                    
+                        break; }
+                    case 1: { 
+                        x.dV = -1; x.upV--; x.downV++; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'downVoted'});                    
+                        break; 
+                    }
                 }
 
                 if (x.dV == -1 || x.dV == 0 ) removeAnswer4Rank(x);
 
                 displayVote(x);
                 if ($rootScope.DEBUG_MODE) console.log("DownVote");
+
             }
             else {
                 dialog.loginFacebook();
@@ -1482,7 +1509,8 @@
             if ($rootScope.DEBUG_MODE) console.log("UpdateRecords @answerDetail");
             
             //TODO Need to pass table id
-            if (vm.answers && $rootScope.cCategory != undefined) {
+            // if (vm.answers && $rootScope.cCategory != undefined) {
+            if (vm.answers) {
                 for (var i = 0; i < vm.answers.length; i++) {
 
                     var voteRecordExists = vm.answers[i].voteRecordExists;

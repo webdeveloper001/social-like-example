@@ -6,10 +6,10 @@
         .controller('addAnswer', addAnswer);
 
     addAnswer.$inject = ['dialog', '$state', 'answer', '$rootScope', '$modal', '$q','common','table',
-    'image', 'catans', 'getgps', '$timeout','getwiki','$window','$scope','search'];
+    'image', 'catans', 'getgps', '$timeout','getwiki','$window','$scope','search', 'userpts'];
 
     function addAnswer(dialog, $state, answer, $rootScope, $modal, $q, common, table,
-    image, catans, getgps, $timeout, getwiki, $window,$scope, search) {
+    image, catans, getgps, $timeout, getwiki, $window,$scope, search, userpts) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'addAnswer';
@@ -350,6 +350,7 @@
                 dialog.getDialog('missingDataAnswer');
                 return;
             }
+
         }
 
         function processImageResults(results) {

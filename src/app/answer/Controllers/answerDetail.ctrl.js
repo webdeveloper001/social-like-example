@@ -449,7 +449,8 @@
         //Update Records
         function updateRecords() {
 
-            if ($rootScope.isLoggedIn && answerFound){
+            // if ($rootScope.isLoggedIn && answerFound){
+            if ($rootScope.isLoggedIn){
             
             //update vote record if necessary
                 if ($rootScope.DEBUG_MODE) console.log("UpdateRecords @answerDetail");
@@ -1160,9 +1161,21 @@
             if ($rootScope.isLoggedIn) {
 
                 switch (x.dV) {
-                    case -1: { x.dV = 1; x.upV++; x.downV--; break; }
-                    case 0: { x.dV = 1; x.upV++; break; }
-                    case 1: { x.dV = 0; x.upV--; break; }
+                    case -1: { 
+                        x.dV = 1; x.upV++; x.downV--; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'upVotedVrow'});
+                        break; 
+                    }
+                    case 0: { 
+                        x.dV = 1; x.upV++; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'upVotedVrow'});
+                        break; 
+                    }
+                    case 1: { 
+                        x.dV = 0; x.upV--; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'downVotedVrow'});
+                        break; 
+                    }
                 }
                 x.delta = x.upV - x.downV;
                 displayVRowVote(x);
@@ -1180,9 +1193,21 @@
 
             if ($rootScope.isLoggedIn) {
                 switch (x.dV) {
-                    case -1: { x.dV = 0; x.downV--; break; }
-                    case 0: { x.dV = -1; x.downV++; break; }
-                    case 1: { x.dV = -1; x.upV--; x.downV++; break; }
+                    case -1: { 
+                        x.dV = 0; x.downV--;
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'upVotedVrow'});
+                        break;
+                    }
+                    case 0: { 
+                        x.dV = -1; x.downV++; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'downVotedVrow'});
+                        break;                         
+                    }
+                    case 1: { 
+                        x.dV = -1; x.upV--; x.downV++; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'downVotedVrow'});                        
+                        break; 
+                    }
                 }
                 x.delta = x.upV - x.downV;
                 displayVRowVote(x);
@@ -1362,6 +1387,7 @@
                            
         }
         function addvrowexec(){
+            $rootScope.$broadcast('updatePointsForShow', {action: 'addedOpinion'});
             vrows.postRec(vm.newop).then(function(){
                     getVRows($rootScope.canswer.id);
              });

@@ -440,7 +440,7 @@
         function backToResults() {
             vm.childActive = false; 
             vm.barIsActive = true;
-            $rootScope.cCategory = undefined;
+            // $rootScope.cCategory = undefined;
 
             if ($state.current.name == 'cwrapper') {
                 //$rootScope.inputVal = '';
