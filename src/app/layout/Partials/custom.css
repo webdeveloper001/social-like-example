@@ -318,6 +318,12 @@ a.navbar-profile-picture-wrapper span{
 @media screen and (max-width: 768px) {
     .nav-home-link {
         display: block !important;
+        float: right;
+        color: white !important;
+        font-size: 20px !important;
+    }
+    .nav-home-link-li {
+        height: 40px;
     }
     .home-link {
         display: none !important;
@@ -519,16 +525,16 @@ userfeed-block.show-all {
 }
 @keyframes pulse {
   0% {
-    background-color: orange;
+    background-color: green;
   }
   25% {
-    background-color: red;
+    background-color: green;
   }
   50 {
-    background-color: orange;
+    background-color: green;
   }
   75% {
-    background-color: red;
+    background-color: green;
   }
 }
 
