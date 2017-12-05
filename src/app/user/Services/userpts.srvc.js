@@ -11,6 +11,7 @@
 
         //Members
         var action_points = [];
+        
         var baseURI = "/api/v2/mysql/_table/";
 
         var service = {
@@ -18,9 +19,12 @@
             getRecsByUser: getRecsByUser,
             deleterec: deleterec,
             getActionPoints: getActionPoints,
-            getUserLevels: getUserLevels
+            getUserLevels: getUserLevels,
+            updatePointsForShow: updatePointsForShow,
         };
 
+        getActionPoints();
+        
         return service;
 
         function getActionPoint(action) {
@@ -40,52 +44,8 @@
 
             var userpoint1;
             var userpoint2;
-            var action = "";
 
-            //check if action will result in point changes for 2 users
-            switch (uaf.action) {
-                case 'addedAnswer':
-                    action = 'addAnswer';
-                    break;
-                case 'binded':                  
-                    break;
-                case 'commentR':
-                    break;
-                case 'commentA':
-                    break;
-                case 'editA':
-                    action = 'editAnswer';
-                    break;
-                case 'upVotedEdit':
-                    break;
-                case 'downVotedEdit':
-                    break;
-                case 'upVoted':
-                    action = 'voteUpAnswer';
-                    break;
-                case 'downVoted':
-                    action = 'voteDownAnswer';
-                    break;
-                case 'upVotedVrow':
-                    action = 'voteUpOpinion';
-                    break;
-                case 'downVotedVrow':
-                    action = 'voteDownOpinion';
-                    break;
-                case 'postPhoto':
-                    action = 'postPhoto';
-                    break;
-                case 'shareFacebook':
-                    action = 'shareFacebook';
-                    break;                
-                case 'addedRank':
-                    break;
-                case 'addedOpinion':
-                    action = 'writeOpinion';                    
-                    break;
-                default:
-                    break;
-            }
+            var action = getActionFromUaf(uaf.action);  
             userpoint1 = {
                 userid: uaf.userid,
                 uaf: uaf.id,
@@ -144,10 +104,10 @@
                 var action2 = resource[1] ? resource[1].action : "undefined";
 
                 $q.all([getActionPoint(action2)]).then(function(result) {
-                    if (result[0]) {
+                    if (result[0][0]) {
                         resource[1].pts = result[0][0].pts;
                     }
-                    users.updateUser(resource[1].userid, resource[1].pts);
+                    if (resource[1]) users.updateUser(resource[1].userid, resource[1].pts);
                     var url = baseURI;
                     return $http.post(url, resource, {
                         headers: {
@@ -197,6 +157,13 @@
             return $http.get(url).then(querySucceeded, _queryFailed);
 
             function querySucceeded(result) {
+                var list = result.data.resource;
+                var _action_points = {};
+                for (var i = 0; i < list.length; i++) {
+                    _action_points[list[i].action] = list[i].pts;
+                }
+                $rootScope.action_points = _action_points;
+
                 return result.data.resource;
             }            
         }
@@ -238,8 +205,64 @@
             }            
         }
         
-        function _queryFailed(error) {
+        function updatePointsForShow(uaf_action){
+            if ($rootScope.action_points) {
+                var action = getActionFromUaf(uaf_action);          
+                var pts = $rootScope.action_points[action];
+                if ($rootScope.DEBUG_MODE) console.log("update points: " + pts + " for action: " + action)
+                $rootScope.$broadcast('getAttentionForUserPoints', {points: $rootScope.user.points + pts});                    
+            }
+        }   
+        
+        function getActionFromUaf(uaf_action) {
+            var action = "";
+            switch (uaf_action) {
+                case 'addedAnswer':
+                    action = 'addAnswer';
+                    break;
+                case 'binded':                  
+                    break;
+                case 'commentR':
+                    break;
+                case 'commentA':
+                    break;
+                case 'editA':
+                    action = 'editAnswer';
+                    break;
+                case 'upVotedEdit':
+                    break;
+                case 'downVotedEdit':
+                    break;
+                case 'upVoted':
+                    action = 'voteUpAnswer';
+                    break;
+                case 'downVoted':
+                    action = 'voteDownAnswer';
+                    break;
+                case 'upVotedVrow':
+                    action = 'voteUpOpinion';
+                    break;
+                case 'downVotedVrow':
+                    action = 'voteDownOpinion';
+                    break;
+                case 'postPhoto':
+                    action = 'postPhoto';
+                    break;
+                case 'shareFacebook':
+                    action = 'shareFacebook';
+                    break;                
+                case 'addedRank':
+                    break;
+                case 'addedOpinion':
+                    action = 'writeOpinion';                    
+                    break;
+                default:
+                    break;
+            }       
+            return action;             
+        }
 
+        function _queryFailed(error) {
             throw error;
         }        
     }

@@ -5,9 +5,9 @@
         .module('app')
         .factory('edit', edit);
 
-    edit.$inject = ['$http', '$q', '$rootScope','uaf'];
+    edit.$inject = ['$http', '$q', '$rootScope','uaf', 'userpts'];
 
-    function edit($http, $q, $rootScope,uaf) {
+    function edit($http, $q, $rootScope,uaf, userpts) {
 
         //Members
         var _edits = [];
@@ -109,6 +109,8 @@
                 console.log("_edits - ", _edits);
                 console.log("$rootScope.edits - ", $rootScope.edits);
                 
+
+                $rootScope.$broadcast('updatePointsForShow', {action: 'editA'});                    
                 uaf.post('editA',['answer', 'edit'],[newEditx.answer, newEditx.id]); //user activity feed 
 
                 if ($rootScope.DEBUG_MODE) console.log("Adding new Edit succesful", result);

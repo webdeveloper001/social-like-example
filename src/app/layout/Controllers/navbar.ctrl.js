@@ -6,10 +6,10 @@
         .controller('navbar', navbar);
 
     navbar.$inject = ['$location', '$rootScope', 'login', '$state', '$scope',
-        'city', '$cookies', '$http', 'GOOGLE_API_KEY', 'dialog','getgps', 'useraccnt', '$q', 'users'];
+        'city', '$cookies', '$http', 'GOOGLE_API_KEY', 'dialog','getgps', 'useraccnt', '$q', 'users', 'userpts'];
 
     function navbar($location, $rootScope, login, $state, $scope,
-        city, $cookies, $http, GOOGLE_API_KEY, dialog, getgps, useraccnt, $q, users) {
+        city, $cookies, $http, GOOGLE_API_KEY, dialog, getgps, useraccnt, $q, users, userpts) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'navbar';
@@ -147,6 +147,7 @@
                 if ($rootScope.user.id == '10104518570729893') $rootScope.isAdmin = true;
                 if ($rootScope.user.id == '10214255239240099') $rootScope.contentAdmin = true;
                 if ($rootScope.user.id == '1638806919478345') $rootScope.modAdmin = true;
+                if ($rootScope.user.id == '618105535243711') $rootScope.isAdmin = true;
                 vm.isAdmin = ($rootScope.isAdmin || $rootScope.dataAdmin || $rootScope.modAdmin );
             }
 
@@ -574,18 +575,25 @@
 
         function getAttentionForUserPoints(points) {
             var element = $('#navbar-user-points');
+            var tmpClass = element.attr('class');
+            element.removeClass();            
             setTimeout(function() {
-                element.addClass('waggle start-now');
+                element.addClass('pulse start-now');
             }, 0);
 
             setTimeout(function() {
                 $rootScope.user.points = points;
                 $scope.$apply();
-            }, 4000);
+            }, 2000);
         }
 
         $scope.$on("getAttentionForUserPoints", function(event, args){
            getAttentionForUserPoints(args.points);
         });
+
+
+        $scope.$on("updatePointsForShow", function(event, args){
+            userpts.updatePointsForShow(args.action);
+        })
     }
 })();

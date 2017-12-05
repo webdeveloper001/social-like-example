@@ -62,10 +62,6 @@
         }
 
         function updateUser(userid, pts) {
-            if ($rootScope.user.id == userid) {
-                $rootScope.$broadcast('getAttentionForUserPoints', {points: $rootScope.user.points + pts});
-            }
-
             $q.all([getUser(userid)]).then(function(data) {
                 if (data) {
                     var userinfo = data[0][0];

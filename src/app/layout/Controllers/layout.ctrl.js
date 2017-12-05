@@ -256,8 +256,10 @@
                 if ($rootScope.user.id == '10104518570729893') $rootScope.isAdmin = true;
                 if ($rootScope.user.id == '10214255239240099') $rootScope.contentAdmin = true;
                 if ($rootScope.user.id == '1638806919478345') $rootScope.modAdmin = true;
+                if ($rootScope.user.id == '618105535243711') $rootScope.isAdmin = true;
             }
             vm.isAdmin = $rootScope.isAdmin || $rootScope.contentAdmin;
+
             $rootScope.$emit('adminCredentials');
 
             $rootScope.DEBUG_MODE = DEBUG_MODE;
@@ -392,7 +394,7 @@
         function backToResults() {
             vm.childActive = false; 
             vm.barIsActive = true;
-            $rootScope.cCategory = undefined;
+            // $rootScope.cCategory = undefined;
 
             if ($state.current.name == 'cwrapper') {
                 //$rootScope.inputVal = '';

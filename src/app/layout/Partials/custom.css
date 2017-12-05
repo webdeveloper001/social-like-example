@@ -312,8 +312,22 @@ a.navbar-profile-picture-wrapper .navbar-profile-picture{
 a.navbar-profile-picture-wrapper span{
     padding-left: 10px;
 }
-
+.nav-home-link {
+    display: none !important;
+}
 @media screen and (max-width: 768px) {
+    .nav-home-link {
+        display: block !important;
+        float: right;
+        color: white !important;
+        font-size: 20px !important;
+    }
+    .nav-home-link-li {
+        height: 40px;
+    }
+    .home-link {
+        display: none !important;
+    }
 	.nav li a.navbar-profile-picture-wrapper{
 		padding-left: 65px;
 	}
@@ -479,12 +493,11 @@ userfeed-block.show-all {
     line-height: 50px;
     font-size: 30px;
     color: white;    
+    border-radius: 50% 50%;
 }
 .waggle {
   animation: waggle 1s 3s forwards ease-out;
 }
-
-
 @keyframes waggle {
   from {
     transform: scale3d(1, 1, 1);
@@ -504,6 +517,24 @@ userfeed-block.show-all {
 
   to {
     transform: scale3d(1, 1, 1);
+  }
+}
+
+.pulse {
+  animation: pulse 1s 1s forwards;
+}
+@keyframes pulse {
+  0% {
+    background-color: green;
+  }
+  25% {
+    background-color: green;
+  }
+  50 {
+    background-color: green;
+  }
+  75% {
+    background-color: green;
   }
 }
 
