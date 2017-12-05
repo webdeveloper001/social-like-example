@@ -266,12 +266,14 @@
                 vm.hasBusiness = false;
                 vm.isPromoter = false;
 
-                localStorage.clear();
-
-                //$location.path('/');
-                //$state.go('cwrapper', {}, { location: 'replace' });
+                //localStorage.clear();
                 $rootScope.$emit('backToResults');
                 $rootScope.$emit('userLoggedOut');
+
+                //$location.path(window.location.href);
+                //$state.go('cwrapper', {}, { location: 'replace' });
+                
+                
             });
         }
 

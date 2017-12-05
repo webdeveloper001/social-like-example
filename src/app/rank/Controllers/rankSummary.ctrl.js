@@ -161,8 +161,7 @@
         if ($rootScope.DEBUG_MODE) console.log("$rootScope.rankSummaryDataLoaded - ", $rootScope.rankSummaryDataLoaded);
         if ($rootScope.DEBUG_MODE) console.log("$rootScope.isCustomRank - ", $rootScope.isCustomRank);
         if ($rootScope.DEBUG_MODE) console.log("$stateParams.index - ", $stateParams.index);
-        if ($rootScope.DEBUG_MODE) console.log("$rootScope.cCategory - ", $rootScope.cCategory.id, $rootScope.cCategory.cat);
-
+        
         //if ($rootScope.landRanking != true ) 
         checkRankIsLoaded();
         

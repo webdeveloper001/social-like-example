@@ -22,7 +22,6 @@
         return service;
 
         function facebookSDKLogin() {
-
             return service.loginWithFacebook()
             .then(function(res) {
                 return $facebook.login('public_profile,email,user_friends')
@@ -133,7 +132,6 @@
         function logout() {
 
             return $http.delete('/api/v2/user/session').then(function(result) {
-
                 delete $http.defaults.headers.common['X-DreamFactory-Session-Token'];
                 $cookies.remove('session_token');
                 delete $rootScope.user;
@@ -141,12 +139,18 @@
                 $rootScope.isAdmin = false;
                 $rootScope.dataAdmin = false;
                 $rootScope.$emit('adminCredentials');
-
                 try {
                     window.localStorage.removeItem('user');
                 } catch (e) {}
+/*
+                
+                
+                
 
+                
+*/
             });
+            
         }
 
         function _queryFailed(error) {

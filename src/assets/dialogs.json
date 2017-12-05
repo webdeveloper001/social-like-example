@@ -94,5 +94,9 @@
     "dialog.invalidEmail.title": "Invalid data.",
     "dialog.invalidEmail.text": "Please enter a valid email for your account.",
     "dialog.subAreaInvalid.title": "Invalid data.",
-    "dialog.subAreaInvalid.text": "The sub area is invalid."
+    "dialog.subAreaInvalid.text": "The sub area is invalid.",
+    "dialog.loginForFavorites.title": "Need to login.",
+    "dialog.loginForFavorites.text": "You need to login to access your Favorites.",
+    "dialog.loginForFriends.title": "Need to login.",
+    "dialog.loginForFriends.text": "You need to login access your Friends' Favorites."
 }

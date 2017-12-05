@@ -7,7 +7,7 @@
 
     layout.$inject = ['$location', '$rootScope', '$window', '$q', '$http', 'pvisits', '$cookies', '$scope','$timeout',
         'DEBUG_MODE', 'EMPTY_IMAGE', 'rankofday', 'answer', 'table', 'special', 'datetime', 'uaf', 'userdata', 'dialog',
-        'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state', 'dataloader', 'setting', 'filter', ];
+        'matchrec', 'edit', 'useractivity', 'vrows', 'headline', 'cblock', 'catans', '$state', 'dataloader', 'setting', 'filter'];
 
     function layout($location, $rootScope, $window, $q, $http, pvisits, $cookies, $scope, $timeout,
         DEBUG_MODE, EMPTY_IMAGE, rankofday, answer, table, special, datetime, uaf, userdata, dialog,
@@ -37,7 +37,7 @@
         vm.quickFilter = quickFilter;
         vm.buttonsFwd = buttonsFwd;
         vm.buttonsPrev = buttonsPrev;
-
+        
         vm.foodNearMe = false;
         if ($window.location.href.indexOf('rankSummary/food-near-me-9521') != -1) {
             vm.foodNearMe = true;
@@ -49,6 +49,8 @@
         vm.childActive = false;
         vm.rodready = false;
         vm.showans = false;
+        vm.myfavs = false;
+        vm.myffavs = false;
 
         //Admin Methods
         vm.editRank = editRank;
@@ -69,6 +71,7 @@
         vm.goRankofDayConsole = goRankofDayConsole;
 
         $rootScope.inputVal = vm.val;
+        $rootScope.nh = vm.nh;
         
         jQuery(document).ready(function () {
             var offset = 250;
@@ -98,59 +101,7 @@
         vm.hideFilterBox = function () {
             vm.showFilters = false;
         }
-/*
-        vm.selectNh = function (item, data) {
-            vm.filterOptions.isCity = false;
-            vm.filterOptions.isNh = true;
-        }
-*/
-/*
-        vm.selectTopic = function (topic) {
-            if (topic == "All") {
-                if (vm.filterOptions.isAllTopics == false) {
-                    vm.filterOptions.isAllTopics = true;
-                    vm.filterOptions.ctopics = angular.copy(vm.allTopics);
-                } else {
-                    vm.filterOptions.isAllTopics = false;
-                    vm.filterOptions.ctopics = [];
-                }
 
-            } else {
-                if (vm.filterOptions.ctopics.indexOf(topic) !== -1) {
-                    vm.filterOptions.isAllTopics = false;
-                    vm.filterOptions.ctopics.splice(vm.filterOptions.ctopics.indexOf(topic), 1);
-                } else {
-                    vm.filterOptions.ctopics.push(topic);
-                    var isAll = vm.allTopics.filter(function (topic) { return vm.filterOptions.ctopics.indexOf(topic) == -1 });
-                    if (isAll.length == 0) {
-                        vm.filterOptions.isAllTopics = true;
-                    }
-                }
-            }
-        }
-*/
-/*
-        vm.switchLocationScope = function (loc) {
-            if (loc == 'city') {
-                vm.filterOptions.isCity = true;
-                vm.filterOptions.isNh = false;
-            } else {
-
-                vm.filterOptions.isCity = false;
-                vm.filterOptions.isNh = true;
-            }
-        }
-
-        vm.applyFilters = function () {
-            if (vm.filterOptions.ctopics.length == 0) {
-                alert("Please select at least 1 topic.");
-                return;
-            }
-            filter.saveFilterOptions(vm.filterOptions);
-            $rootScope.$emit('filterOptionChanged');
-            vm.showFilters = !vm.showFilters;
-        }
-        /* End Filtering feature by Roy */
 
         var refreshRanksListener = $rootScope.$on('refreshRanks', function () {
             if ($state.current.name == 'cwrapper') {
@@ -290,8 +241,9 @@
         activate();
         
         function activate() {
-            
 
+            console.log("layout activated");
+            
             $rootScope.isAdmin = false;
             $rootScope.dataAdmin = false;
             if ($rootScope.isLoggedIn) {
@@ -489,28 +441,64 @@
 
         function quickFilter(x){
             vm.showans = false;
-            if (x == 'Neighborhood' || x == vm.nh) {
-                //dialog.selectNeighborhood($rootScope.locations);
+            if (x == 'Favorites') {
+                if ($rootScope.isLoggedIn) {
+                    if (vm.myfavs == true) vm.myfavs = false;
+                    else vm.myfavs = true;
+
+
+                    if (vm.myfavs == true) {
+                        //vm.showans = true;
+                        vm.myffavs = false;
+                        vm.val = 'myfavs:';
+                    }
+                    else vm.val = '';
+                }
+                else dialog.getDialog('loginForFavorites');
+            }
+            else if (x == 'Friends') {
+                if ($rootScope.isLoggedIn) {
+                    if (vm.myffavs == true) vm.myffavs = false;
+                    else vm.myffavs = true;
+
+                    if (vm.myffavs == true) {
+                        //vm.showans = true;
+                        vm.myfavs = false;
+                        vm.val = 'myffavs:';
+                    }
+                    else vm.val = '';
+                }
+                else dialog.getDialog('loginForFriends');
+            }
+            else if (x == 'Neighborhood' || x == vm.nh) {
                 if (vm.nhctrl == false) vm.nhctrl = true;
                 else vm.nhctrl = false;
 
                 if (vm.nhctrl == true) vm.nhops = $rootScope.nhs;
             }
             else {
-                if (vm.nh == '') vm.val = x;
-                else vm.val = vm.nh + ' ' + x;
+                if (vm.nh == '' && vm.myfavs == false && vm.myffavs == false) vm.val = x;
+                else {
+                    if (vm.myfavs == true) vm.val = 'myfavs: ' + x;
+                    else if (vm.myffavs == true) vm.val = 'myffavs: ' + x; 
+                    else vm.val = vm.nh + ': ' + x;
+                }
             }
+            if (vm.myfavs == true || vm.myffavs == true) vm.showans = true;
+            else vm.showans = false;
+
             $rootScope.isqf = true;
         }
 
         function selectNh(){
             if (vm.nhops.indexOf(vm.nhinp)>-1) {
+                //Substitute 'Neighborhood' for selection
+                if (vm.nh == '') vm.buts[vm.buts.indexOf('Neighborhood')] = vm.nhinp;
+                else vm.buts[vm.buts.indexOf(vm.nh)] = vm.nhinp;
+                
                 vm.nh = vm.nhinp;
                 vm.nhctrl = false;
-                vm.val = vm.nh;
-                //Substitute 'Neighborhood' for selection
-                var idx = vm.buts.indexOf('Neighborhood');
-                vm.buts[idx] = vm.nh;
+                vm.val = vm.nh + ':';
             }
         }
 
@@ -523,46 +511,7 @@
             vm.nhctrl = false;
             vm.val = '';
         }
-        /*
-        function scopeGeneral(force) {
-                
-                vm.scopeIsGeneral = true;
-                vm.scopeIsCity = false;
-                vm.initready = false;
-                vm.dataready = false;
-                vm.childActive = false;
-                $rootScope.SCOPE = 1; //Scope = 1, is General Scope
-                table.getMostPopularDataX(1);
-                dataloader.gethomedataX(1);
-                $rootScope.inputVal = '';
-                vm.val = '';
-                $state.go('cwrapper');
-                $window.scrollTo(0, 0);
-        }
-        function scopeCity() {
-                
-                vm.scopeIsGeneral = false;
-                vm.scopeIsCity = true;
-                vm.initready = false;
-                vm.dataready = false;
-                vm.childActive = false; 
-                $rootScope.inputVal = '';
-                vm.val = '';
-                dataloader.gethomedataX($rootScope.SCOPE);
-                $state.go('cwrapper');
-                $window.scrollTo(0, 0);
-        }
 
-        function toggleSelCity() {
-            if (vm.selCityActive) {
-                vm.selCityActive = false;
-                return;
-            }
-            else {
-                vm.selCityActive = true;
-                return;
-            }
-        }*/
 
         function prepareNewCatansOptions() {
 
@@ -575,7 +524,6 @@
         }
         
          function getDestination(){
-
             if (window.location.href.indexOf('rankSummary') > -1 && window.location.href.indexOf('food-near-me') < 0){
                 vm.childActive = true; 
                 vm.barIsActive = false;
@@ -599,8 +547,8 @@
         }
 
         function buttons(){
-            vm.buts = ['Food','Coffee','Activities','Nightlife','Shopping','Beauty','Events','Health','Fitness','Sports','Services',
-                        'Neighborhood','Culture','People','City','Family','Groups','Technology','Religion','Pets','Home','Cars'];
+            vm.buts = ['Favorites','Food','Coffee','Activities','Friends','Nightlife','Shopping','Beauty','Events','Health','Fitness','Sports','Services',
+                        'Culture','People','City','Kids','Groups','Technology','Religion','Pets','Home','Cars','Neighborhood'];
             vm.bi = 0;
         }
         

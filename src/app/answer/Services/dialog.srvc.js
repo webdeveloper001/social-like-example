@@ -1412,7 +1412,8 @@
                                 }
                             })
                             dialogItself.close();
-                            $state.go($state.current, {}, {reload: true}); 
+                            $state.go($state.current, {}, {reload: false});
+                            window.location.reload(); 
                         });
                         // login.loginWithFacebook()
                         //     .then(function (result) {
@@ -2264,7 +2265,7 @@
                 size: BootstrapDialog.SIZE_SM,
                 type: BootstrapDialog.TYPE_PRIMARY,
                 cssClass: 'fav-list-user-image-dialog',
-                title: "Friends that like " + answername,
+                title: "Friends that like <strong>" + answername + "</strong>",
                 message: function (dialogRef) {
                     var $content = $(imageListHtml);
                     var x = dialogRef;

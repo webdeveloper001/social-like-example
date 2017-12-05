@@ -1,6 +1,6 @@
 angular.module('app').directive('resultItem',
-    ['$rootScope', '$state', 'answer', 'table', 'catans', '$timeout', 'vrows', '$window', 'cblock', 'color', 'search',
-        function ($rootScope, $state, answer, table, catans, $timeout, vrows, $window, cblock, color, search) {
+    ['$rootScope', '$state', 'answer', 'table', 'catans', '$timeout', 'vrows', '$window', 'cblock', 'color', 'search','dialog',
+        function ($rootScope, $state, answer, table, catans, $timeout, vrows, $window, cblock, color, search, dialog) {
             'use strict';
 
             return {
@@ -37,6 +37,9 @@ angular.module('app').directive('resultItem',
                         scope.w2 = Math.round(w / 2);
                         scope.w4 = Math.round(w / 4) - 5;
                         scope.w8 = Math.round(w / 8);
+
+                        if ($rootScope.DISPLAY_XSMALL == true) scope.sm = true;
+                        else scope.sm = false;
 
                         var resObj = {};
 
@@ -78,19 +81,23 @@ angular.module('app').directive('resultItem',
                             if (resObj.type == 'PersonCust') scope.type = 'Professional';
                             if (resObj.type == 'Place') scope.type = 'Place';
                             if (resObj.type == 'Short-Phrase') scope.type = 'Opinion';
+                            //User Objects for Friends Refernces
+                            if (resObj.userObjs) scope.userObjs = resObj.userObjs;
+                            //console.log("scope.userObjs - ",scope.userObjs);
                         }
                         else scope.type = 'Ranking';
                         
                         if (scope.type == undefined) scope.type = '';
+                        
+                        scope.showStats = scope.type == 'Ranking' && scope.text != 'Food Near Me';
 
                         //Get rank stats
-                        scope.stats = {};
-                        scope.stats.views = resObj.views;
-                        scope.stats.answers = resObj.answers;
-                        scope.stats.numcom = resObj.numcom;
-
-                        if (scope.stats.numcom == undefined || scope.stats.numcom == null)
-                            scope.stats.numcom = 0;
+                        scope.views = resObj.views;
+                        scope.answers = resObj.answers;
+                        scope.comments = resObj.numcom;
+                        
+                        if (scope.numcom == undefined || scope.numcom == null)
+                            scope.numcom = 0;
                         
                         //Set Feautured Image && box color
                         if (!resObj.isAnswer) { 
@@ -102,20 +109,6 @@ angular.module('app').directive('resultItem',
                                 scope.imageurl = resObj.image1url;
                             }
                             
-                            //if bc and fc are undefined
-                            /*
-                            if (resObj.bc != undefined && resObj.bc != '') {
-                                    scope.bc = resObj.bc;
-                                    scope.fc = resObj.fc;
-                                    scope.shade = resObj.shade;
-                            }
-                            else {
-                                    var colors = color.defaultRankColor(resObj);
-                                    scope.bc = colors[0];
-                                    scope.fc = colors[1];
-                                    scope.shade = -4;
-                            }*/
-                            
                             scope.bc = 'gray';
                             scope.fc = '#f8f8ff';
                             scope.shade = 4;
@@ -123,7 +116,6 @@ angular.module('app').directive('resultItem',
                         else {
                             //Choose color randomly
                             
-                            //var x = Math.floor(Math.random() * 5) + 1;
                             if (resObj.type == 'Organization') { scope.bc = 'brown'; scope.fc = '#f8f8ff'; }
                             if (resObj.type == 'Establishment') { scope.bc = '#4682b4'; scope.fc = '#f8f8ff'; }
                             if (resObj.type == 'Place') { scope.bc = '#008080'; scope.fc = '#f8f8ff'; }
@@ -135,6 +127,7 @@ angular.module('app').directive('resultItem',
                             if (scope.type == '') {scope.bc = '#d3d3d3'; scope.fc = 'gray'; scope.shade = 4;}
 
                         }
+                        scope.bc2 = color.shadeColor(scope.bc,scope.shade/10);
                         if (resObj.type == 'Short-Phrase') scope.image1 = $rootScope.EMPTY_IMAGE;
                     }
 
@@ -167,11 +160,13 @@ angular.module('app').directive('resultItem',
                     }
 
                     scope.resSel = function (x) {
-
+                        
                         if (x.isfoodnearme == true) $rootScope.isFoodNearMe = true;
 
                         $rootScope.pageYOffset = $window.pageYOffset;
-                        scope.stats.views++;
+                        $rootScope.$emit('hideBar'); 
+                        scope.views++;
+
                         if (x.isAnswer) {
                             $rootScope.cCategory = undefined;
                             $state.go('answerDetail', { index: x.id });
@@ -184,10 +179,13 @@ angular.module('app').directive('resultItem',
                         }
                     };
 
+                    scope.showAllFriendsList = function(userObjs){
+                        dialog.showAllFriendsListDlg(userObjs, scope.title);
+                    }
+
                     scope.$on('$destroy', function () {
                         scope.isDestroyed = true;
                     });
-
                 },
             }
         }

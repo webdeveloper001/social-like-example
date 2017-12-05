@@ -472,6 +472,7 @@
         function _merge(ans, data) {  //lg is large set of data, sm is small set of data, merge small into large is more efficient
             var map = [];
             var idx = -1;
+            _getTags(data);
             map = ans.map(function (x) { return x.id; });
             data.forEach(function (item) {
                 idx = map.indexOf(item.id);
@@ -493,6 +494,29 @@
                 _answers[idx].eventlocid = obj.eventlocid;
             });
             //_getanswernames();
+        }
+
+        //This function attaches the rank tags to each answer
+        function _getTags(data) {
+            var rankObj = {};
+            var idx = -1;
+            var rankTags = [];
+            data.forEach(function (ansObj) {
+                ansObj.tags = [];
+                for (var n = 0; n < $rootScope.catansrecs.length; n++) {
+                    if ($rootScope.catansrecs[n].answer == ansObj.id) {
+                        idx = $rootScope.content.map(function (x) { return x.id; }).indexOf($rootScope.catansrecs[n].category);
+                        rankObj = $rootScope.content[idx];
+                        if (!rankObj) continue;
+                        else if (rankObj.tags) {
+                            rankTags = rankObj.tags.split(' ');
+                            rankTags.forEach(function (tag) {
+                                if (ansObj.tags.indexOf(tag) == -1) ansObj.tags.push(tag);
+                            });
+                        }
+                    }
+                }
+            });
         }
 
         function _getanswernames(){

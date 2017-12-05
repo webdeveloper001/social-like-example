@@ -1,16 +1,33 @@
-<div ng-class="sm?'':'result-item'">
-    <!-- Basic Layout -->
-    <div class="row" ng-click="resSel(result)">
-        <div class="container-bgbox col-xs-12">
-            <bg-box3 bc="{{bc}}" shade="{{shade}}" fc="{{fc}}" text="{{title}}" dir="horizontal" 
-            introtext="{{introtext}}" w="100%" h="{{sm ? '150':'200'}}" stats="{{stats}}" 
-            type="{{type}}" imageurl="{{imageurl}}" type="{{type}}" isAnswer="{{isAnswer}}"></bg-box3>
+<div class="row">
+<div class="container-bgbox col-xs-12">
+    <div class="container" ng-attr-style="color:{{fc}};margin:0px;padding:0px;border:0px;position:relative;width:100%;height:auto;cursor:pointer;
+					background: {{bc}};
+  					background: -webkit-linear-gradient(left, {{bc}}, {{bc2}});
+  					background: -o-linear-gradient(right, {{bc}}, {{bc2}});
+  					background: -moz-linear-gradient(right, {{bc}}, {{bc2}});
+                    background: linear-gradient(to right, {{bc}}, {{bc2}});">
+        <p></p>
+        <div ng-click="resSel(result)">
+            <p style="text-align:center"><img ng-src="{{imageurl}}" style="width:90%;"></p>
+            <p style="text-align:left; padding:0px;margin:0px;">&nbsp&nbsp&nbsp
+                <u>{{type}}</u>
+            </p>
+            <h4 ng-if="sm" class="text-center" ng-attr-style="padding:3px; margin:0px;">{{title}}</h4>
+            <h3 ng-if="!sm" class="text-center" ng-attr-style="padding:3px; margin:0px;">{{title}}</h3>
+            <p></p>
+            <div class="text-center" ng-attr-style="color:white;font-size:small;min-height:30px" ng-if="showStats">
+                <i class="fa fa-eye"></i> {{views}} | <i class="fa fa-list-ol"></i> {{answers}} | <i class="fa fa-comment"></i>{{comments}}
+            </div>
         </div>
-<!--
-        <div class="col-xs-6" style="margin:0px;padding:0px;border:0px;" ng-if="!isShortPhrase">
-            <img ng-src="{{image1}}" ng-attr-style="display:{{image1 != undefined ? 'inline':'none'}};width:100%;height:{{sm ? '150px':'200px'}};cursor:pointer;">
-
+        <div ng-if="userObjs" ng-click="showAllFriendsList(userObjs)">
+            <div class="profile-avatar-wrapper  media-center" align="middle">
+                <img ng-src="{{userObjs[0].picture.data.url}}" class="img-responsive img-circle profile-avatar" />
+                <a ng-attr-style="color:white;line-height:0%">
+				{{userObjs[0].first_name}} {{userObjs.length-1 == 0 ? 'likes this':''}} 
+				{{userObjs.length-1 == 1 ? 'and '+ userObjs[1].first_name + ' like this':''}}
+				{{userObjs.length-1 > 1 ? 'and '+ userObjs.length-1 +' other like this':''}}</a>
+            </div>
         </div>
-        -->
     </div>
+</div>
 </div>

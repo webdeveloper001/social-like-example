@@ -422,7 +422,7 @@
             if (x == 1) {
                 vm.isNh = false; //Neighborhood Scope
                 vm.isCity = true; //City Scope
-                $rootScope.isNh = false;
+                //$rootScope.isNh = false;
                 $rootScope.isCity = true;
                 //vm.val = '';
                 //$rootScope.inputVal = '';
@@ -436,7 +436,7 @@
             if (x == 2) {
                 vm.isNh = true; //Neighborhood View
                 vm.isCity = false; //Classified View
-                $rootScope.isNh = true;
+                //$rootScope.isNh = true;
                 $rootScope.isCity = false;
                 vm.val = '';
                 //$rootScope.inputVal = '';

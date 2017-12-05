@@ -42,14 +42,14 @@
                 templateUrl: 'app/layout/Partials/cwrapper.html',
                 controller: 'cwrapper as vm',
                 resolve: {
-                    
+                    /*
                     load: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load({
                             rerun: true,
                             files: ['scripts/app2.js']
                         });
                     }]
-                    
+                    */
                 }
             },
             {
@@ -224,14 +224,14 @@
                 templateUrl: 'app/admin/Partials/admin.html',
                 controller: 'admin as vm',
                 resolve: {
-                    
+                    /*
                     load: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load({
                             rerun: true,
                             files: ['scripts/admin-app.js']
                         });
                     }]
-                    
+                    */
                 }
             }
         ];

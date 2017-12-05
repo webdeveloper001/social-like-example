@@ -10,6 +10,10 @@
     function search($rootScope) {
 
         //Members
+        var _nhid = -1;
+        var _nhname = '';
+        var _searchFavs = '';
+        var _searchFFavs = '';
 
         var service = {
 
@@ -18,7 +22,9 @@
             searchAnswers: searchAnswers,
             searchRanksMainPage: searchRanksMainPage,
             sibblingRanks: sibblingRanks,
-            searchRelatedRanks: searchRelatedRanks
+            searchRelatedRanks: searchRelatedRanks,
+            searchMyFavs: searchMyFavs,
+            searchMyFFavs: searchMyFFavs
         };
 
         return service;
@@ -85,6 +91,7 @@
                 }
             }
 
+            prepareForDisplay(results_ans);
             return results_ans;
 
         }
@@ -282,32 +289,8 @@
             
             if (input) {
                 
-                //ignore some keywords
-                if (input.indexOf('best') > -1) input = input.replace('best', '');
-                if (input.indexOf('Best') > -1) input = input.replace('Best', '');
-                if (input.indexOf('top') > -1) input = input.replace('top', '');
-                if (input.indexOf('Top') > -1) input = input.replace('Top', '');
-                if (input.indexOf('great') > -1) input = input.replace('great', '');
-                if (input.indexOf('Great') > -1) input = input.replace('Great', '');
-                if (input.indexOf('awesome') > -1) input = input.replace('awesome', '');
-                if (input.indexOf('Awesome') > -1) input = input.replace('Awesome', '');
-                if (input.indexOf('amazing') > -1) input = input.replace('amazing', '');
-                if (input.indexOf('Amazing') > -1) input = input.replace('Amazing', '');
-                if (input.indexOf('most') > -1) input = input.replace('most', '');
-                if (input.indexOf('Most') > -1) input = input.replace('Most', '');
-                if (input.indexOf('the ') > -1) input = input.replace('the ', '');
-                if (input.indexOf('The ') > -1) input = input.replace('The ', '');
-                if (input.indexOf('shops') > -1) input = input.replace('shops', '');
-                if (input.indexOf('Shops') > -1) input = input.replace('Shops', '');
-                if (input.indexOf('places') > -1) input = input.replace('places', '');
-                if (input.indexOf('Places') > -1) input = input.replace('Places', '');
-                if (input.indexOf('delicious') > -1) input = input.replace('delicious', '');
-                if (input.indexOf('Delicious') > -1) input = input.replace('Delicious', '');
-                if (input.indexOf('what ') > -1) input = input.replace('what ', '');
-                if (input.indexOf('What ') > -1) input = input.replace('What ', '');
-                if (input.indexOf('are ') > -1) input = input.replace('are ', '');
-                if (input.indexOf('where ') > -1) input = input.replace('where ', '');
-                if (input.indexOf('Where ') > -1) input = input.replace('Where ', '');
+               getFilter(input);
+               input = cleanFromCommonWords(input);
 
                 if (input.length >= 3) {
 
@@ -340,7 +323,7 @@
                     inputVal = 'vietnamese';
                 }*/
 
-                if ($rootScope.isNh) inputVal = inputVal + ' ' + $rootScope.cnh;
+                //if ($rootScope.isNh) inputVal = inputVal + ' ' + $rootScope.cnh;
 
                 var results_nm = [];
                 var results_ss = [];
@@ -432,7 +415,6 @@
                                              rt.indexOf(valTags[k].toUpperCase()) > -1 ||
                                              rt.indexOf(tagCapitalized) > -1 ||
                                              rt.indexOf(tagFirstLowered) > -1);
-
                                  }
                              }
                             
@@ -494,9 +476,7 @@
                     results = [];
                 }
             }
-
             return results;
-
         }
 
         function searchRanks2(query) {
@@ -519,45 +499,20 @@
             var results = [];
 
             var input = query;
-            
             if (input) {
-                
-                //ignore some keywords
-                if (input.indexOf('best') > -1) input = input.replace('best', '');
-                if (input.indexOf('Best') > -1) input = input.replace('Best', '');
-                if (input.indexOf('top') > -1) input = input.replace('top', '');
-                if (input.indexOf('Top') > -1) input = input.replace('Top', '');
-                if (input.indexOf('great') > -1) input = input.replace('great', '');
-                if (input.indexOf('Great') > -1) input = input.replace('Great', '');
-                if (input.indexOf('awesome') > -1) input = input.replace('awesome', '');
-                if (input.indexOf('Awesome') > -1) input = input.replace('Awesome', '');
-                if (input.indexOf('amazing') > -1) input = input.replace('amazing', '');
-                if (input.indexOf('Amazing') > -1) input = input.replace('Amazing', '');
-                if (input.indexOf('most') > -1) input = input.replace('most', '');
-                if (input.indexOf('Most') > -1) input = input.replace('Most', '');
-                if (input.indexOf('the ') > -1) input = input.replace('the ', '');
-                if (input.indexOf('The ') > -1) input = input.replace('The ', '');
-                if (input.indexOf('shops') > -1) input = input.replace('shops', '');
-                if (input.indexOf('Shops') > -1) input = input.replace('Shops', '');
-                if (input.indexOf('places') > -1) input = input.replace('places', '');
-                if (input.indexOf('Places') > -1) input = input.replace('Places', '');
-                if (input.indexOf('delicious') > -1) input = input.replace('delicious', '');
-                if (input.indexOf('Delicious') > -1) input = input.replace('Delicious', '');
-
-                if (input.length >= 3) {
+                input = getFilter(input);
+                input = cleanFromCommonWords(input);
+                if (input.length >= 3 || _nhid > -1 || _searchFavs == true || _searchFFavs == true) {
 
                 var userIsTyping = false;
                 var inputVal = input;
-
-                    //if (inputVal == 'Food') inputVal = inputVal.replace('Food', 'Food Near Me');
-                    //if (inputVal == 'food') inputVal = inputVal.replace('food', 'Food Near Me');
-                 
-                //Special Cases
+ 
+                /*//Special Cases
                 if (inputVal == 'pho' || inputVal == 'Pho') {
                     inputVal = 'vietnamese';
-                }
+                }*/
 
-                if ($rootScope.isNh) inputVal = inputVal + ' ' + $rootScope.cnh;
+                //if ($rootScope.isNh) inputVal = inputVal + ' ' + $rootScope.cnh;
 
                 var results_nm = [];
                 var results_ss = [];
@@ -572,17 +527,19 @@
                 var m_nh = false; //reference to neighborhood
                 var nh = []; //neighborhood reference
                 var sc = false; //special case
-                    var valTags = inputVal.toLowerCase().split(" ");
-
-                    //check for nh tags tag first
+                    
+                var valTags = inputVal.toLowerCase().split(" ");
+                if (valTags.length == 1 && valTags[0]=="") valTags.length = 0;
+                //check for nh tags tag first -- if there is no reference to neighborhood
+                if (_nhid == -1 && !$rootScope.isqf) {
                     for (var k = 0; k < valTags.length; k++) {
 
                         tagCapitalized = valTags[k].charAt(0).toUpperCase() + valTags[k].slice(1);
                         tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
 
                         //look if input makes reference to specific neighborhood
-                        
-                        if (valTags[k].length >= 3 && !$rootScope.isqf) {
+
+                        if (valTags[k].length >= 3) {
 
                             if (valTags[k] != 'car' &&
                                 valTags[k] != 'del' &&
@@ -616,9 +573,18 @@
                             }
                         }
                     }
-                    //ignoreTagsIdx.push(valTags.indexOf('la'));
-
-
+                }
+                //if neighborhood is selected but query string is empty,
+                //select all rankings of that neighborhood
+                if (_nhid > -1 && valTags.length == 0) {
+                    $rootScope.content.forEach(function (rObj) {
+                        if (rObj.nh == _nhid) {
+                            results_rt.push(rObj);
+                            rte = true;
+                        }
+                    })
+                }
+                else {
                       for (var j = 0; j < $rootScope.content.length; j++) {  
                         if (true) {    
                             ss = $rootScope.searchStrContent[j]; //Search string
@@ -629,7 +595,8 @@
                             else {
                             m_ss = true;
                             m_rt = true;
-                            //check that all tags exist exept those that are for neighborhood
+             
+                            //check that all tags exist except those that are for neighborhood
                              for (var k = 0; k < valTags.length; k++) {
 
                                  //if (ignoreTagsIdx.indexOf(k) < 0) {
@@ -639,8 +606,7 @@
                                      tagFirstLowered = valTags[k].charAt(0).toLowerCase() + valTags[k].slice(1);
 
                                      //look for input in whole search string
-                                     if(!ss)
-                                        console.log(j);
+                                     if(!ss) console.log(j);
                                      m_ss = m_ss &&
                                          (ss.indexOf(valTags[k]) > -1 ||
                                              ss.indexOf(valTags[k].toUpperCase()) > -1 ||
@@ -653,7 +619,6 @@
                                              rt.indexOf(valTags[k].toUpperCase()) > -1 ||
                                              rt.indexOf(tagCapitalized) > -1 ||
                                              rt.indexOf(tagFirstLowered) > -1);
-
                                  }
                              }
                             
@@ -662,7 +627,8 @@
                                 rObj = JSON.parse(JSON.stringify($rootScope.content[j]));
                                 rObj.useTemp = false;
                                 if (m_nh) results_rt.push(rObj);
-                                else if (rObj.ismp) results_rt.push(rObj);
+                                else if (rObj.nh == _nhid) results_rt.push(rObj); 
+                                else if (_nhid == -1 && rObj.ismp) results_rt.push(rObj);
                                 rte = true; 
                             }
                             
@@ -671,31 +637,28 @@
                                 rObj = JSON.parse(JSON.stringify($rootScope.content[j]));
                                 rObj.useTemp = false;
                                 if (m_nh) results_ss.push(rObj);
-                                else if (rObj.ismp) results_ss.push(rObj);
-                                
+                                else if (rObj.nh == _nhid) results_ss.push(rObj);
+                                else if (_nhid == -1 && rObj.ismp) results_ss.push(rObj);
                             }
                             }//temp 
                         }
                     }
-
-                    //if (nhe) results = results.concat(results_nh);
-                    //if (rt_nme) results = results.concat(results_rt_nm);
-                    if (results_rt.length > 2) shuffle(results_rt);
-                    if (rte) results = results.concat(results_rt);
-                    //if (nme) results = results.concat(results_nm);
-                    if (results_ss.length > 2) shuffle(results_ss);
-                    results = results.concat(results_ss);
-
-                    //if query is food related, make Food Near Me rank first option
-                    if (query == 'food' || query =='Food'){
-                        var ni = $rootScope.content.map(function(x) {return x.title; }).indexOf('Food Near Me');
-                        results = [$rootScope.content[ni]].concat(results);
-                    }
                 }
+                if (results_rt.length > 2) shuffle(results_rt);
+                if (rte) results = results.concat(results_rt);
+                if (results_ss.length > 2) shuffle(results_ss);
+                results = results.concat(results_ss);
+
+                //if query is food related, make Food Near Me rank first option
+                if ((query == 'food' || query == 'Food') && _nhid == -1 && _searchFavs == false && _searchFFavs == false) {
+                    var ni = $rootScope.content.map(function (x) { return x.title; }).indexOf('Food Near Me');
+                    results = [$rootScope.content[ni]].concat(results);
+                }
+            }
 
                 else {
                     results = [];
-                }
+                }          
             }
             return results;
         }
@@ -763,5 +726,259 @@
             function compare(a, b) {
                 return b.ctr - a.ctr;         
             }
+        
+            function prepareForDisplay(a){
+                for (var i=0; i<a.length; i++){
+                    a[i].isAnswer = true;
+                    if (a[i].type == 'Establishment') {
+                        a[i].itext = 'Establishment';
+                        a[i].icon = 'fa fa-building-o';
+                    }
+                    if (a[i].type == 'Person'){
+                        a[i].itext = 'Public Figure'; 
+                        a[i].icon = 'fa fa-male';
+                    }
+                    if (a[i].type == 'PersonCust'){
+                        a[i].itext = 'Contractor'; 
+                        a[i].icon = 'fa fa-male';
+                    }
+                    if (a[i].type == 'Short-Phrase') {
+                        a[i].itext = 'Opinion';
+                        a[i].icon = 'fa fa-comment-o';
+                    }
+                    if (a[i].type == 'Event') {
+                        a[i].itext = 'Event';
+                        a[i].icon = 'fa fa-calendar-o';
+                    }
+                    if (a[i].type == 'Organization') {
+                        a[i].itext = 'Brand';
+                        a[i].icon = 'fa fa-trademark';
+                    }
+                    if (a[i].type == 'Place') {
+                        a[i].itext = 'Place';
+                        a[i].icon = 'fa fa-map-marker';
+                    } 
+                }
+            }
+
+            function searchMyFavs(query) {
+                var input = getFilter(query);
+                var resultAns = [];
+                var tmap = [];
+                var ansObj = {};
+                for (var i = 0; i < $rootScope.cvotes.length; i++) {
+                    if ($rootScope.cvotes[i].vote == 1) {
+                        var idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf($rootScope.cvotes[i].answer);
+                        if (idx > -1) {
+                            ansObj = $rootScope.answers[idx];
+                            tmap = resultAns.map(function (x) { return x.id; });
+                            if (input.length > 0) {
+                                if ((ansObj.name.toLowerCase().indexOf(input.toLowerCase()) > -1) ||
+                                    (ansObj.tags.indexOf(input.toLowerCase()) > -1)){
+                                        if (tmap.indexOf(ansObj.id) < 0) {
+                                            //getSpecials(answer);
+                                            resultAns.push(ansObj);
+                                        }   
+                                }
+                            }
+                            else {
+                                if (tmap.indexOf(ansObj.id) < 0) {
+                                    //getSpecials(answer);
+                                    resultAns.push(ansObj);
+                                }
+                            }
+                        }
+                    }
+                }
+                prepareForDisplay(resultAns);
+                return resultAns;
+            }
+
+            function searchMyFFavs(query) {
+                var input = getFilter(query);
+                var tmap = [];
+                var ansObj = {};
+                var resultAns = [];
+                for (var i = 0; i < $rootScope.friends_votes.length; i++) {
+                    if ($rootScope.friends_votes[i].vote == 1) {
+                        var idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf($rootScope.friends_votes[i].answer);
+                        if (idx > -1) {
+                            ansObj = $rootScope.answers[idx];
+
+                            //look this answer in catans recs
+                            /*
+                            for (var n = 0; n < $rootScope.catansrecs.length; n++) {
+
+                                if ($rootScope.catansrecs[n].answer == ansObj.id) {
+
+                                    var idx2 = $rootScope.content.map(function (x) { return x.id; }).indexOf($rootScope.catansrecs[n].category);
+                                    category = $rootScope.content[idx2];
+                                    if (!category)
+                                        continue;
+                                    if (category.title.indexOf('food') > -1 || category.tags.indexOf('food') > -1) {
+                                        addRecord(vm.foodans, answer, i);
+                                    }
+                                }
+                            }*/
+                            tmap = resultAns.map(function (x) { return x.id; });
+                            if (input.length > 0) {
+                                if ((ansObj.name.toLowerCase().indexOf(input.toLowerCase()) > -1) ||
+                                    (ansObj.tags.indexOf(input.toLowerCase()) > -1)){
+                                        if (tmap.indexOf(ansObj.id) < 0) {
+                                            //getSpecials(answer);
+                                            //resultAns.push(ansObj);
+                                            addRecord(resultAns, ansObj, i);
+                                        }   
+                                }
+                            }
+                            else {
+                                if (tmap.indexOf(ansObj.id) < 0) {
+                                    //getSpecials(answer);
+                                    //resultAns.push(ansObj);
+                                    addRecord(resultAns, ansObj, i);
+                                }
+                            }
+
+                            
+                        }
+                    }
+                }
+                prepareForDisplay(resultAns);
+                return resultAns
+            }
+
+            function getSpecials(answer) {
+            for (var i = 0; i < $rootScope.specials.length; i++) {
+                if (answer.id == $rootScope.specials[i].answer) {
+                    if ($rootScope.specials[i].freq == 'weekly') {
+                        if (dayOfWeek == 0 && $rootScope.specials[i].sun) isToday = true;
+                        if (dayOfWeek == 1 && $rootScope.specials[i].mon) isToday = true;
+                        if (dayOfWeek == 2 && $rootScope.specials[i].tue) isToday = true;
+                        if (dayOfWeek == 3 && $rootScope.specials[i].wed) isToday = true;
+                        if (dayOfWeek == 4 && $rootScope.specials[i].thu) isToday = true;
+                        if (dayOfWeek == 5 && $rootScope.specials[i].fri) isToday = true;
+                        if (dayOfWeek == 6 && $rootScope.specials[i].sat) isToday = true;
+                        if (isToday) {
+                            answer.sp_bc = $rootScope.specials[i].bc;
+                            answer.sp_fc = $rootScope.specials[i].fc;
+                            answer.sp_title = $rootScope.specials[i].stitle;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        function getUser(answer, votetable) {
+            for (var i = 0; i < $rootScope.user.friends.data.length; i++) {
+                if (votetable.user == $rootScope.user.friends.data[i].id) {
+                    return $rootScope.user.friends.data[i];
+                }
+            }
+        }
+
+        function addRecord(part, answer, i){
+            var cidx = -1;
+            var ridx = -1;
+            var fidx = -1;
+            var idx = -1;
+            
+            cidx = $rootScope.catansrecs.map(function(x) {return x.id; }).indexOf($rootScope.friends_votes[i].catans);
+            ridx = $rootScope.content.map(function(x) {return x.id; }).indexOf($rootScope.catansrecs[cidx].category); 
+
+            var map = part.map(function (x) { return x.id; });
+            idx = map.indexOf(answer.id);
+            if(idx == -1 && ridx > -1){
+                var data = angular.copy(answer);
+                getSpecials(data);
+                data.trackID = data.id + '' + $rootScope.friends_votes[i].id;
+                data.userObjs = [];
+                var friend = angular.copy(getUser(data, $rootScope.friends_votes[i]));
+                
+                friend.endorsements = [];
+                friend.endorsements.push($rootScope.content[ridx].title);
+                data.userObjs.push(friend);
+                part.push(data);
+            }
+            else if (idx > -1){
+                
+                var friend = angular.copy(getUser(data, $rootScope.friends_votes[i]));
+                fidx = part[idx].userObjs.map(function(x) {return x.id; }).indexOf(friend.id);
+                
+                if (fidx == -1){
+                    friend.endorsements = [];
+                    friend.endorsements.push($rootScope.content[ridx].title);
+                    part[idx].userObjs.push(friend);
+                }
+                else {
+                    if (part[idx].userObjs[fidx].endorsements.indexOf($rootScope.content[ridx].title) == -1){ 
+                        part[idx].userObjs[fidx].endorsements.push($rootScope.content[ridx].title);
+                    }
+                }
+            }
+        }
+
+        function addUser(data, friend){
+
+            var map = data.userObjs.map(function (x) { return x.id; });
+            if( map.indexOf(friend.id) == -1 )
+                data.userObjs.push(friend);
+
+        }
+
+        function getFilter(input){
+            //Determine if search has special filter, neighborhood, friends or favorites    
+                var cdx = input.indexOf(':'); 
+                if ( cdx > -1){
+                    if (input.substring(0,cdx+1) == 'myfavs:') _searchFavs = true;
+                    else if (input.substring(0,cdx+1) == 'myffavs:') _searchFFavs = true;
+                    else{
+                        var n =  $rootScope.locations.map(function(x) {return x.nh_name; }).indexOf(input.substring(0,cdx));
+                        _nhname = $rootScope.locations[n].nh_name;
+                        _nhid = $rootScope.locations[n].id;
+                    }
+                    return input = input.substring(cdx+2);
+                }
+                else{
+                    _searchFavs = false;
+                    _searchFFavs = false;
+                    _nhid = -1;
+                    _nhname = '';
+                    return input;
+                }
+        }
+        
+        function cleanFromCommonWords(input){
+             //ignore some keywords
+             if (input){
+                if (input.indexOf('best') > -1) input = input.replace('best', '');
+                if (input.indexOf('Best') > -1) input = input.replace('Best', '');
+                if (input.indexOf('top') > -1) input = input.replace('top', '');
+                if (input.indexOf('Top') > -1) input = input.replace('Top', '');
+                if (input.indexOf('great') > -1) input = input.replace('great', '');
+                if (input.indexOf('Great') > -1) input = input.replace('Great', '');
+                if (input.indexOf('awesome') > -1) input = input.replace('awesome', '');
+                if (input.indexOf('Awesome') > -1) input = input.replace('Awesome', '');
+                if (input.indexOf('amazing') > -1) input = input.replace('amazing', '');
+                if (input.indexOf('Amazing') > -1) input = input.replace('Amazing', '');
+                if (input.indexOf('most') > -1) input = input.replace('most', '');
+                if (input.indexOf('Most') > -1) input = input.replace('Most', '');
+                if (input.indexOf('the ') > -1) input = input.replace('the ', '');
+                if (input.indexOf('The ') > -1) input = input.replace('The ', '');
+                if (input.indexOf('shops') > -1) input = input.replace('shops', '');
+                if (input.indexOf('Shops') > -1) input = input.replace('Shops', '');
+                if (input.indexOf('places') > -1) input = input.replace('places', '');
+                if (input.indexOf('Places') > -1) input = input.replace('Places', '');
+                if (input.indexOf('delicious') > -1) input = input.replace('delicious', '');
+                if (input.indexOf('Delicious') > -1) input = input.replace('Delicious', '');
+                if (input.indexOf('what ') > -1) input = input.replace('what ', '');
+                if (input.indexOf('What ') > -1) input = input.replace('What ', '');
+                if (input.indexOf('are ') > -1) input = input.replace('are ', '');
+                if (input.indexOf('where ') > -1) input = input.replace('where ', '');
+                if (input.indexOf('Where ') > -1) input = input.replace('Where ', '');
+             }
+            return input;
+        }
+        
     }
 })();

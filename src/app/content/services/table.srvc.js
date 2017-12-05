@@ -41,8 +41,8 @@
             if (ranksFromStorage) {
                  _append(JSON.parse(ranksFromStorage));
                  return $q.when(true);
-            }
-            */
+            }*/
+            
             var filterstr = '?filter=(';
             for (var i=0; i< data.length; i++){
                 filterstr = filterstr + 'id=' + data[i]+')OR(';
@@ -60,7 +60,7 @@
 
                 if ($rootScope.DEBUG_MODE) console.log("_tables length after initialhomedata load: ", _tables.length);
                 //$window.localStorage.setItem("Ranks-HomeData", JSON.stringify(datax));
-                return _tables;            
+                return datax;            
             }, _queryFailed);  
 
         }

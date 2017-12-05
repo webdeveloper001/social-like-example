@@ -57,7 +57,6 @@
             shuffle();
             var p1 = table.getInitialHomeData(ridsx);
             var p2 = categories.getInitialHomeData(cidsx);
-            
             $q.all([p1,p2]).then(function(d){
                 unwrap();
                 waitforImages(d[1]);
@@ -487,6 +486,8 @@
             var N = rids.length;
             var idxs = [];
             var n = 0;
+            ridsx = [];
+            cidsx = [];
             while (idxs.length < 12){
                 n = Math.floor(Math.random() * N);
                 if (idxs.indexOf(n) == -1) idxs.push(n);
