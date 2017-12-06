@@ -27,7 +27,7 @@ function ($rootScope, $state, search,
                 if ($window.innerWidth > 1200) { $scope.itemWidth = ($window.innerWidth - 8)/6; }
             }], //end controller
         link: function (scope) {
-
+            
             var pullDataArray = [];
             var homeRanks = [];
             var ranksLoaded = false;
@@ -59,6 +59,14 @@ function ($rootScope, $state, search,
                 else scope.contentLoaded = false;
             });
 
+            scope.$watch('myfavs', function() {
+                queryPreamble();
+            });
+
+            scope.$watch('myffavs', function() {
+                queryPreamble();
+            });
+
             $rootScope.$on('updateSearch', function(){
                 queryPreamble()
             })
@@ -88,6 +96,8 @@ function ($rootScope, $state, search,
                             scope.endReached = false;
                             scope.displayResults = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
                         }
+                        //if (scope.myfavs == true) scope.getResults('');
+                        //if (scope.myffavs == true) scope.getResults('');
                     }, 300);
             }
 
@@ -194,6 +204,8 @@ function ($rootScope, $state, search,
                     $rootScope.$broadcast('masonry.reload');
                 },1500);          
             }
+
+
 
             var timeoutPromise3;
             scope.$watch('data', function() {
