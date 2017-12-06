@@ -119,7 +119,7 @@
                 //$rootScope.cvotes.push(datax);
                 $rootScope.$emit('updateVoteTable');
                 
-                console.log("Creating new voting record was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("Creating new voting record was succesful");
                 return result.data;
             }
         }
