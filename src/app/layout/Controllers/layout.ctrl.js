@@ -159,6 +159,8 @@
 
         var userLoggedOutListener = $rootScope.$on('userLoggedOut', function (event) {
                 vm.isAdmin = false;
+                buttons();
+                vm.val = '';
         });
         
         var rodReadyListener = $rootScope.$on('rodReady', function (event) {
@@ -546,9 +548,20 @@
         }
 
         function buttons(){
-            vm.buts = ['Favorites','Food','Coffee','Activities','Friends','Nightlife','Shopping','Beauty','Events','Health','Fitness','Sports','Services',
+            vm.buts = ['Food','Coffee','Activities','Nightlife','Shopping','Beauty','Events','Health','Fitness','Sports','Services',
                         'Culture','People','City','Kids','Groups','Technology','Religion','Pets','Home','Cars','Neighborhood'];
             vm.bi = 0;
+            if ($rootScope.isLoggedIn){
+                vm.buts = ['Favorites'].concat(vm.buts);
+                if ($rootScope.DISPLAY_XSMALL == true || $rootScope.DISPLAY_SMALL == true ){
+                    //if display is small, add 'Friends' as 5th option
+                    vm.buts = vm.buts.slice(0,4).concat(['Friends'].concat(vm.buts.slice(4,vm.buts.length-1)));
+                }
+                else {
+                    //if display is large, add 'Friends' as 3rd option
+                    vm.buts = vm.buts.slice(0,2).concat(['Friends'].concat(vm.buts.slice(2,vm.buts.length-1)));
+                }
+            }
         }
         
         function buttonsFwd(){

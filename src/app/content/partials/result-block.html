@@ -8,7 +8,7 @@
                     background: linear-gradient(to right, {{bc}}, {{bc2}});">
         <p></p>
         <div ng-click="resSel(result)">
-            <p style="text-align:center"><img ng-src="{{imageurl}}" style="width:90%;"></p>
+            <p style="text-align:center" ng-if="type!='Opinion'"><img ng-src="{{imageurl}}" style="width:90%;"></p>
             <p style="text-align:left; padding:0px;margin:0px;">&nbsp&nbsp&nbsp
                 <u>{{type}}</u>
             </p>
