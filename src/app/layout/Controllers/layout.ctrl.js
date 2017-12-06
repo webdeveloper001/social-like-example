@@ -242,8 +242,6 @@
         
         function activate() {
 
-            console.log("layout activated");
-            
             $rootScope.isAdmin = false;
             $rootScope.dataAdmin = false;
             if ($rootScope.isLoggedIn) {

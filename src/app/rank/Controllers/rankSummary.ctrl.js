@@ -1544,11 +1544,11 @@
                         //from this user)
                         if (useractivityrec.votes < 2) {
                             if ($rootScope.DEBUG_MODE) console.log("UR-3");
-                            useractivity.deleteRec(useractivityrec.id);
+                            //useractivity.deleteRec(useractivityrec.id);
                         }
                         else {
                             if ($rootScope.DEBUG_MODE) console.log("UR-4");
-                            useractivity.patchRec(useractivityrec.id, useractivityrec.votes - 1);
+                            //useractivity.patchRec(useractivityrec.id, useractivityrec.votes - 1);
                             //$rootScope.userActRec.votes--;
                         }
                     }
@@ -1558,12 +1558,12 @@
                         votes.postRec(vm.answers[i].catans, vm.answers[i].id, $rootScope.cCategory.id, vm.answers[i].dV);
                         if (userHasRank) {
                             if ($rootScope.DEBUG_MODE) console.log("UR-6");
-                            useractivity.patchRec(useractivityrec.id, useractivityrec.votes + 1);
+                            //useractivity.patchRec(useractivityrec.id, useractivityrec.votes + 1);
                             //$rootScope.userActRec.votes++;
                         }
                         else {
                             if ($rootScope.DEBUG_MODE) console.log("UR-7");
-                            useractivity.postRec($rootScope.cCategory.id);
+                            //useractivity.postRec($rootScope.cCategory.id);
                             //$rootScope.thisuseractivity.push();
                         }
                     }
