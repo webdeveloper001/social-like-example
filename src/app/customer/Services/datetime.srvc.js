@@ -105,12 +105,16 @@
             var eIsCurrent = false;
             if (answer.edate != undefined && answer.edate != ''){
                 edate = date2number(answer.edate.slice(4));
-                edateValid = true;   
+                edateValid = true;
             }
             
             sdate =  date2number(answer.sdate.slice(4));
             
-           // ----x------|----------------|------------
+            if ($rootScope.dateTodayNum == undefined){
+                $rootScope.dateTodayNum = date2number(Date.now());
+            }
+            
+            // ----x------|----------------|------------
             if (edateValid){
                 if (edate >= $rootScope.dateTodayNum) {
                     eIsCurrent = true;

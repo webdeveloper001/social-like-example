@@ -620,8 +620,6 @@
         
         function updateEventConfirmed(){
 
-            console.log("updateEventComfirmed");
-            
             var eventObj = {};
             eventObj.bc = myEvent.bc;
             eventObj.fc = myEvent.fc;

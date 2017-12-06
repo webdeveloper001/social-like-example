@@ -315,8 +315,7 @@
                 //Create user activity feed
                 uaf.post('addedAnswer',['answer','category'],[answer, category]); //user activity feed
                 
-                //if ($rootScope.DEBUG_MODE) 
-                    console.log("@postRec2 creating catans record was succesful");
+                if ($rootScope.DEBUG_MODE) console.log("@postRec2 creating catans record was succesful");
                 return result.data;
             }
         }

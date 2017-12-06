@@ -172,10 +172,15 @@ function (color, $window, $rootScope, $state, dialog, dataloader) {
         function getWorkHere(){
             //check if there are any freelances that work here
             scope.workhere = [];
+            scope.eventhere = [];
             $rootScope.answers.forEach(function(ansObj){
-                if (ansObj.eventlocid == scope.answer.id) scope.workhere.push(ansObj);
+                if (ansObj.eventlocid == scope.answer.id){
+                    if (ansObj.type != 'Event') scope.workhere.push(ansObj);
+                    if (ansObj.type == 'Event') scope.eventhere.push(ansObj);
+                }
             });
             if (scope.workhere.length > 0) dataloader.pulldata('answers',scope.workhere);
+            if (scope.eventhere.length > 0) dataloader.pulldata('answers',scope.eventhere);
         }
 
          scope.editAnswer = function() {
@@ -204,7 +209,6 @@ function (color, $window, $rootScope, $state, dialog, dataloader) {
         }
 
         scope.gotoLocationAnswer = function(){
-            console.log("eventlocid - ", scope.answer.eventlocid);
             $state.go('answerDetail',{index: scope.answer.eventlocid})
         }
 

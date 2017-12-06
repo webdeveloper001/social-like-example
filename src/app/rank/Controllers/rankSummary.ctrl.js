@@ -841,7 +841,7 @@
                                                 //if (eventObj.edate != undefined && eventObj.edate != '') obj.date = answers[k].edate.slice(4);
                                                 //else obj.date = answers[k].sdate.slice(4);
                                                 eventIsCurrent = datetime.eventIsCurrent(obj, answers[k]);
-
+                                                
                                                 if (eventIsCurrent) {
                                                     $rootScope.canswers.push(obj);
                                                     $rootScope.ccatans.push(catansrecs[i]);

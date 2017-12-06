@@ -159,6 +159,10 @@
     <span ng-if="answer.addinfo.length > 0" ng-click="showcomplete()" style="background-color:lightgray;cursor:pointer">{{moretext}}</span>
     <br ng-attr-style="display:{{answer.addinfo ? 'inline':'none'}}">
 </div>
+<div ng-if="eventhere.length > 0">
+    <strong> Events here: </strong><br>
+    <a ng-repeat="x in eventhere" ng-click="gotoprofile(x)">{{x.name}}</a>
+</div>
 <div ng-if="workhere.length > 0">
     <strong> Work here: </strong><br>
     <a ng-repeat="x in workhere" ng-click="gotoprofile(x)">{{x.name}}</a>
