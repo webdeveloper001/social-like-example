@@ -10,11 +10,10 @@ function ($rootScope, $state, search,
         scope: {
             query: '@',
             ans: '=',
-            ranks: '=',
-            length: '=',
             init: '=',
             data: '=',
-            rod: '=',
+            myfavs: '=',
+            myffavs: '=',
             scrollactive: '=',
         },
         controller: ['$scope',
@@ -29,6 +28,8 @@ function ($rootScope, $state, search,
             }], //end controller
         link: function (scope) {
 
+            console.log("searchblock directive initialized");
+
             var pullDataArray = [];
             var homeRanks = [];
             var ranksLoaded = false;
@@ -37,8 +38,16 @@ function ($rootScope, $state, search,
             var _lastOffset = -1;
             var _loadMoreThreshold = 0;
             var _renderTime = 0;
-
+            console.log("set contentLoaded to false...................................................................................");
             scope.contentLoaded = false;
+
+            debug();
+            function debug(){
+                $timeout(function(){
+                    console.log("scope.contentLoaded",scope.contentLoaded, scope.init, scope.data, scope.contentLoadeds);
+                    debug();
+                },2000)
+            }
             
             if ($rootScope.DISPLAY_XSMALL == true) _loadMoreThreshold = 400;
             if ($rootScope.DISPLAY_SMALL == true) _loadMoreThreshold = 400;
@@ -47,91 +56,7 @@ function ($rootScope, $state, search,
 
             if ($rootScope.DISPLAY_XSMALL == true || $rootScope.DISPLAY_SMALL == true) _renderTime = 1000;
             if ($rootScope.DISPLAY_MEDIUM == true || $rootScope.DISPLAY_LARGE == true) _renderTime = 1000;
-            /*
-            scope.rankSel = function (x,nm) {
-                console.log("ranksel - ", x);
-                if (x.isfoodnearme == true) {
-                    console.log("set food near me");
-                    $rootScope.isFoodNearMe = true;
-                }
-                if (x.useTemp){ //if rank is from template
-                if (nm) $rootScope.rankIsNearMe = true;
-                else $rootScope.rankIsNearMe = false;
-                var selectedRank = {};
-                for (var i=0; i<$rootScope.content.length; i++){
-                    if (x.id == $rootScope.content[i].cat){
-                        if (x.locationId == $rootScope.content[i].nh) selectedRank = $rootScope.content[i];
-                    }
-                }
-                
-                if(selectedRank.id == undefined){
-                    if ($rootScope.DEBUG_MODE) console.log("Rank is Ghost");
-
-                   var maxId = 0;
-                    $rootScope.content.forEach(function(ranking){
-                        if(ranking.id > maxId)
-                            maxId = ranking.id;
-                    });
-                    maxId ++;
-                    var slug = x.title.toLowerCase();; 
-                    slug = slug.replace(/ /g,'-');
-                    slug = slug.replace('/','at');
-                    slug = slug + '-' + maxId;
-
-                    var ghostRank = {
-                        id: maxId,  //TODO when add to db, should delete id and update slug.
-                        catstr: '' + maxId,
-                        slug: slug,
-                        isGhost: true,
-                        title: x.title,
-                        type: x.type,
-                        tags: x.tags,
-                        keywords: x.keywords,
-                        question: x.question,
-                        fimage: x.fimage,
-                        bc: x.bc,
-                        fc: x.fc,
-                        shade: x.shade,
-                        introtext: x.introtext,
-                        user: x.user ,
-                        views: 0,
-                        answers: 0,
-                        image1url: $rootScope.EMPTY_IMAGE,
-                        image2url: $rootScope.EMPTY_IMAGE,
-                        image3url: $rootScope.EMPTY_IMAGE,
-                        answertags: '',
-                        isatomic: 1, //TODO decide isatomic, numcom, ismp, owner, 
-                        timestmp: new Date(),
-                        cat: x.id,
-                        nh: x.locationId,
-                    }
-                    if ($rootScope.DEBUG_MODE) console.log("ghostRank - ", ghostRank);
-                    $rootScope.content.push(ghostRank);
-                    //update searchString to keep array lengths in sync
-                    $rootScope.searchStrContent.push(ghostRank.tags ? ghostRank.tags : '') + " " + (ghostRank.title ? ghostRank.title : '');
-                    $state.go('rankSummary', { index: slug });
-                } else {
-                    if ($rootScope.DEBUG_MODE) console.log("rank is normal ", selectedRank);
-                    if ($rootScope.editMode) $state.go('editRanking', { index: selectedRank.slug });
-                    else {
-                        $state.go('rankSummary', { index: selectedRank.slug });
-                    }
-                }
-            }
-            else {
-                if ($rootScope.editMode) $state.go('editRanking', { index: x.slug });
-                else {
-                    $state.go('rankSummary', { index: x.slug });
-                }                  
-            }
-            };
-            scope.ansSel = function (x) {
-                console.log("scope.ansSel");
-                $rootScope.PAGEYOFFSET =  window.pageYOffset;
-                $rootScope.cCategory = undefined; //clear current category
-                //scope.disableScrolling = true;
-                $state.go('answerDetail', { index: x.slug });                
-            };*/
+            
 
             scope.resRanks = [];
             scope.resAnswers = [];
@@ -142,7 +67,18 @@ function ($rootScope, $state, search,
             var timeoutPromise;
             scope.$watch('query', function() {
                 if (ranksLoaded) queryPreamble();
-                else scope.contentLoaded = false;
+                else {
+                    console.log("set contentLoaded to false");
+                    scope.contentLoaded = false;
+                }
+            });
+
+            scope.$watch('myfavs', function() {
+                queryPreamble();
+            });
+
+            scope.$watch('myffavs', function() {
+                queryPreamble();
             });
 
             $rootScope.$on('updateSearch', function(){
@@ -174,6 +110,8 @@ function ($rootScope, $state, search,
                             scope.endReached = false;
                             scope.displayResults = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
                         }
+                        //if (scope.myfavs == true) scope.getResults('');
+                        //if (scope.myffavs == true) scope.getResults('');
                     }, 300);
             }
 
@@ -182,8 +120,7 @@ function ($rootScope, $state, search,
                 scope.useTemp = false;
                 scope.resRanks = [];
                 var catRanks = [];
-                //if( scope.resRanks.length > 0) {
-                //    catRanks = [];
+                if (!scope.myfavs && !scope.myffavs){
                     scope.resRanks = search.searchRanks2(scope.query); 
                     catRanks = search.searchRanks(scope.query);
                     var catmap = scope.resRanks.map(function(x) {return x.cat; });
@@ -202,45 +139,20 @@ function ($rootScope, $state, search,
                         //scope.loadMore();
                     }
                 //}
+                }
                 scope.resAnswers = [];
-                if(scope.ans) scope.resAnswers = search.searchAnswers(scope.query);
-                for (var i=0; i<scope.resAnswers.length; i++){
-                    scope.resAnswers[i].isAnswer = true;
-                    if (scope.resAnswers[i].type == 'Establishment') {
-                        scope.resAnswers[i].itext = 'Establishment';
-                        scope.resAnswers[i].icon = 'fa fa-building-o';
-
-                    }
-                    if (scope.resAnswers[i].type == 'Person'){
-                        scope.resAnswers[i].itext = 'Public Figure'; 
-                        scope.resAnswers[i].icon = 'fa fa-male';
-                    }
-                    if (scope.resAnswers[i].type == 'PersonCust'){
-                        scope.resAnswers[i].itext = 'Contractor'; 
-                        scope.resAnswers[i].icon = 'fa fa-male';
-                    }
-                    if (scope.resAnswers[i].type == 'Short-Phrase') {
-                        scope.resAnswers[i].itext = 'Opinion';
-                        scope.resAnswers[i].icon = 'fa fa-comment-o';
-                    }
-                    if (scope.resAnswers[i].type == 'Event') {
-                        scope.resAnswers[i].itext = 'Event';
-                        scope.resAnswers[i].icon = 'fa fa-calendar-o';
-                    }
-                    if (scope.resAnswers[i].type == 'Organization') {
-                        scope.resAnswers[i].itext = 'Brand';
-                        scope.resAnswers[i].icon = 'fa fa-trademark';
-                    }
-                    if (scope.resAnswers[i].type == 'Place') {
-                        scope.resAnswers[i].itext = 'Place';
-                        scope.resAnswers[i].icon = 'fa fa-map-marker';
-                    } 
+                if(scope.ans) {
+                    if (scope.myfavs) scope.resAnswers = search.searchMyFavs(scope.query);
+                    else if (scope.myffavs) scope.resAnswers = search.searchMyFFavs(scope.query);
+                    else scope.resAnswers = search.searchAnswers(scope.query);
                 }
 
-                scope.length = scope.resRanks.length + scope.resAnswers.length;
+
+                //scope.length = scope.resRanks.length + scope.resAnswers.length;
                 scope.searchResults = scope.resRanks.concat(scope.resAnswers);
                 //resolve images for the ranks about to be displayed
                 resolveImages(scope.searchResults.slice(0,scope.scrollingItemsOnePage)).then(function(){
+                    console.log("set contentLoaded to true");
                     scope.contentLoaded = true;
                     scope.displayResults = scope.searchResults.slice(0,scope.scrollingItemsOnePage);
                     scope.loadMore(true);
@@ -259,7 +171,7 @@ function ($rootScope, $state, search,
                 if (ranksRes.length > 0) pullData('ranks', ranksRes);
                 if (answerRes.length > 0) pullData('answers', answerRes);
                 
-                scope.relTags = search.searchRelatedRanks(ranksRes, scope.query);
+                //scope.relTags = search.searchRelatedRanks(ranksRes, scope.query);
                 scope.relTagsIdx = 0;
                 
                 if (scope.searchResults.length < 3) {
@@ -278,6 +190,9 @@ function ($rootScope, $state, search,
                 },50);                                   
             });
 
+            scope.$watch('contentLoaded', function() {
+                console.log("content loaded watch---------------------------------", scope.contentLoaded);
+            });
             //Get content on loading
             scope.getContent = function () {
                 homeRanks = [];
@@ -301,12 +216,15 @@ function ($rootScope, $state, search,
                 scope.searchResults = homeRanks;
                 scope.displayResults = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
                 //pullDataArray = scope.searchResults.slice(0, scope.scrollingItemsOnePage);
-                //pullData('ranks', pullDataArray);
+                pullData('ranks', scope.searchResults.slice(0, scope.scrollingItemsOnePage));
+                console.log("set contentLoaded to true....................................................");
                 scope.contentLoaded = true;
                 $timeout(function(){
                     $rootScope.$broadcast('masonry.reload');
                 },1500);          
             }
+
+
 
             var timeoutPromise3;
             scope.$watch('data', function() {
@@ -326,24 +244,11 @@ function ($rootScope, $state, search,
                 
                 scope.searchResults = JSON.parse(JSON.stringify(homeRanks));
                 ranksLoaded = true;
+                console.log("set contentLoaded to true");
                 scope.contentLoaded = true;
                 queryPreamble();  
             }
 
-            var timeoutPromise4;
-            scope.$watch('rod', function () {
-                $timeout.cancel(timeoutPromise4); //do nothing is timeout already done   
-                timeoutPromise4 = $timeout(function () {
-                    if (scope.rod == true) {
-                        if ($rootScope.rankofday) {
-                            var obj = $rootScope.rankofday;
-                            obj[0].isrod = true;
-                            homeRanks[0] = obj[0];
-                            scope.displayResults[0] = obj[0];
-                        }
-                    }
-                }, 50);
-            });
 
             scope.$watch('scrollactive', function() {
                 scope.disableScrolling = !scope.scrollactive;
@@ -461,6 +366,7 @@ function ($rootScope, $state, search,
 
             function resolveImages(results){
                 var pArr = [];
+                console.log("set contentLoaded to false");
                 scope.contentLoaded = false;
                 results.forEach(function(item){
                     if (item.isAnswer) {}//pArr.push($http.get(item.imageurl));
@@ -495,7 +401,6 @@ function ($rootScope, $state, search,
             
         },
     }
-    /*angular.module('app').directive('contentBlock', function() {
-        */
+    
 }
 ]);

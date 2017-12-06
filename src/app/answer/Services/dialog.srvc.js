@@ -1412,7 +1412,8 @@
                                 }
                             })
                             dialogItself.close();
-                            $state.go($state.current, {}, {reload: true}); 
+                            $state.go($state.current, {}, {reload: false}); 
+                            window.location.reload();
                         });
                         // login.loginWithFacebook()
                         //     .then(function (result) {

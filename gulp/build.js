@@ -238,7 +238,7 @@ gulp.task('build-inject', ['build-partials', 'build-admin-partials',
                           'build-admin', 'build-app2', 'build-fonts', 'build-other'], function () {
     var injectStyles = gulp.src(objPath.CSS)
         .pipe($.concat('app.css'))
-        .pipe($.csso())
+        .pipe($.csso({ reduceIdents: false }))
         .pipe(gulp.dest(path.join(conf.paths.dist, 'css')));
 
     var injectBowerStyles = gulp.src(wiredep().css)

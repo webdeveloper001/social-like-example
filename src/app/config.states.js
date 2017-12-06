@@ -43,12 +43,12 @@
                 controller: 'cwrapper as vm',
                 resolve: {
                     
-                    // load: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    //     return $ocLazyLoad.load({
-                    //         rerun: true,
-                    //         files: ['scripts/app2.js']
-                    //     });
-                    // }]
+                    load: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            rerun: true,
+                            files: ['scripts/app2.js']
+                        });
+                    }]
                     
                 }
             },
@@ -225,12 +225,12 @@
                 controller: 'admin as vm',
                 resolve: {
                     
-                    // load: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    //     return $ocLazyLoad.load({
-                    //         rerun: true,
-                    //         files: ['scripts/admin-app.js']
-                    //     });
-                    // }]
+                    load: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            rerun: true,
+                            files: ['scripts/admin-app.js']
+                        });
+                    }]
                     
                 }
             }

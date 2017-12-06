@@ -1,7 +1,7 @@
 a {
   cursor: pointer;
 }
-		.carousel-inner > .item > img,
+.carousel-inner > .item > img,
 .carousel-inner > .item > a > img
 {
     width: 100%;
@@ -498,6 +498,17 @@ userfeed-block.show-all {
 .waggle {
   animation: waggle 1s 3s forwards ease-out;
 }
+
+
+.pulse {
+  animation: pulse 1s 1s forwards;
+}
+
+.start-now, .start-now:after {
+  animation-delay: 0;
+}
+
+
 @keyframes waggle {
   from {
     transform: scale3d(1, 1, 1);
@@ -519,10 +530,6 @@ userfeed-block.show-all {
     transform: scale3d(1, 1, 1);
   }
 }
-
-.pulse {
-  animation: pulse 1s 1s forwards;
-}
 @keyframes pulse {
   0% {
     background-color: green;
@@ -530,14 +537,10 @@ userfeed-block.show-all {
   25% {
     background-color: green;
   }
-  50 {
+  50% {
     background-color: green;
   }
   75% {
     background-color: green;
   }
-}
-
-.start-now, .start-now:after {
-  animation-delay: 0;
 }

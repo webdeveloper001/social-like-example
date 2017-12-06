@@ -73,7 +73,7 @@
         jQuery(document).ready(function () {
             var offset = 250;
             var duration = 300;
-
+            console.log('layout controller loaded.....................................................................********************************')
             jQuery(window).scroll(function () {
                 if (jQuery(this).scrollTop() > offset) {
                     jQuery('.back-to-top').fadeIn(duration);
