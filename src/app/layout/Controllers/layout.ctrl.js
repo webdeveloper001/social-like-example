@@ -555,11 +555,11 @@
                 vm.buts = ['Favorites'].concat(vm.buts);
                 if ($rootScope.DISPLAY_XSMALL == true || $rootScope.DISPLAY_SMALL == true ){
                     //if display is small, add 'Friends' as 5th option
-                    vm.buts = vm.buts.slice(0,4).concat(['Friends'].concat(vm.buts.slice(4,vm.buts.length-1)));
+                    vm.buts = vm.buts.slice(0,4).concat(['Friends'].concat(vm.buts.slice(4,vm.buts.length)));
                 }
                 else {
                     //if display is large, add 'Friends' as 3rd option
-                    vm.buts = vm.buts.slice(0,2).concat(['Friends'].concat(vm.buts.slice(2,vm.buts.length-1)));
+                    vm.buts = vm.buts.slice(0,2).concat(['Friends'].concat(vm.buts.slice(2,vm.buts.length)));
                 }
             }
         }

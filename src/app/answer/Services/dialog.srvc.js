@@ -467,7 +467,7 @@
             var btnOkLabel = '';
 
             title = 'Scope of Delete';
-            btnCancelLabel = 'Just in the category: ' + $rootScope.cCategory.title;
+            btnCancelLabel = 'Just in the category: ' + ($rootScope.cCategory == undefined ? '':$rootScope.cCategory.title);
             btnOkLabel = 'Everywhere';
             message = 'Choose scope to delete:';
 

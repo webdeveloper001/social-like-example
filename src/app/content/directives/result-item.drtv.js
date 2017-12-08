@@ -1,6 +1,8 @@
 angular.module('app').directive('resultItem',
-    ['$rootScope', '$state', 'answer', 'table', 'catans', '$timeout', 'vrows', '$window', 'cblock', 'color', 'search','dialog',
-        function ($rootScope, $state, answer, table, catans, $timeout, vrows, $window, cblock, color, search, dialog) {
+    ['$rootScope', '$state', 'answer', 'table', 'catans', '$timeout', 'vrows', 
+    '$window', 'cblock', 'color', 'search','dialog', 'special',
+        function ($rootScope, $state, answer, table, catans, $timeout, vrows, 
+            $window, cblock, color, search, dialog, special) {
             'use strict';
 
             return {
@@ -84,8 +86,18 @@ angular.module('app').directive('resultItem',
                             //User Objects for Friends Refernces
                             if (resObj.userObjs) scope.userObjs = resObj.userObjs;
                             //console.log("scope.userObjs - ",scope.userObjs);
+                            special.findSpecial(resObj);
+                            if (resObj.sp_title != undefined && resObj.sp_title != ''){
+                                scope.hasSpecial = true;
+                                scope.spbc = resObj.sp_bc;
+                                scope.spfc = resObj.sp_fc;
+                                scope.sptext = resObj.sp_title;
+                            }
                         }
-                        else scope.type = 'Ranking';
+                        else {
+                            scope.type = 'Ranking';
+                            scope.hasSpecial = false;
+                        }
                         
                         if (scope.type == undefined) scope.type = '';
                         

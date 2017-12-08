@@ -99,7 +99,8 @@
         cObj.newComment = '';
         vm.cm = cObj;
         vm.commentAllowed = true;
-        vm.searchActive = $rootScope.searchActive;
+        //vm.searchActive = $rootScope.searchActive;
+        vm.searchActive = true;
         var answerFound = false;
         vm.dataReady = false;
         
@@ -734,7 +735,7 @@
 
         function deleteAnswer() {
 
-            console.log("Delete Answer");
+            if ($rootScope.DEBUG_MODE) console.log("Delete Answer");
 
             dialog.deleteType(function () {
                 //delete catans for this answer
@@ -760,7 +761,8 @@
                 catans.deleteAnswer(vm.answer.id);
                 //delete vrows for this answer
                 vrows.deleteVrowByAnswer(vm.answer.id);
-                $state.go("rankSummary", { index: $rootScope.cCategory.id });
+                if ($rootScope.cCategory != undefined) $state.go("rankSummary", { index: $rootScope.cCategory.id });
+                else $rootScope.$emit('backToResults');
             });
 
         }

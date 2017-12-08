@@ -7,6 +7,9 @@
   					background: -moz-linear-gradient(right, {{bc}}, {{bc2}});
                     background: linear-gradient(to right, {{bc}}, {{bc2}});">
         <p></p>
+        <div ng-if="hasSpecial" 
+            ng-attr-style="position:absolute;background:{{spbc}}; z-index: 50; top:20px; padding: 2px; font-size: 17px; color: {{spfc}}">
+                &nbsp{{sptext}}&nbsp</div>
         <div ng-click="resSel(result)">
             <p style="text-align:center" ng-if="type!='Opinion'"><img ng-src="{{imageurl}}" style="width:90%;"></p>
             <p style="text-align:left; padding:0px;margin:0px;">&nbsp&nbsp&nbsp

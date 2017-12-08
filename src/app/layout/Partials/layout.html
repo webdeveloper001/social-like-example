@@ -34,6 +34,7 @@
                     </div>
                 </div>
                 <div class="hidden-xs hidden-sm">
+                    <div style="padding-top:7px" class="text-center">Quick Filters</div>
                     <div class="col-xs-4" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
                         <button class="col-xs-4 btn btn-default" ng-click="vm.buttonsPrev()" ng-attr-style="visibility:{{vm.bi==0?'hidden':'visibility'}}">
                             <i class="fa fa-arrow-left" aria-hidden="true"></i></button>
@@ -41,7 +42,7 @@
                         ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
                         'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi,vm.bi+2)" 
                         ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
-                        <div style="padding-top:7px" class="col-xs-4 text-center">Quick Filters</div>
+                        <div class="col-xs-4 text-center"></div>
                         <button class="col-xs-4 btn btn-default" ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
                         'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi+2,vm.bi+4)" 
                         ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>

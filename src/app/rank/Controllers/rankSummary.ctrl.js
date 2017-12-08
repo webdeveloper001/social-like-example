@@ -6,12 +6,12 @@
         .controller('rankSummary', rankSummary);
 
     rankSummary.$inject = ['dialog', '$stateParams', '$state', 'catans', 'datetime', 'color','locations'
-        , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope','$http'
+        , 'answer', 'rank', '$filter', 'table', 'vrowvotes', '$window', 'vrows', '$scope','$http','special'
         , '$rootScope', '$modal', 'editvote', 'votes', 'commentops','flag','Socialshare', 'SERVER_URL',
         '$location', '$q', 'fbusers', '$timeout','table2','categories','dataloader','common','search', 'userpts', 'useractivity'];
 
     function rankSummary(dialog, $stateParams, $state, catans, datetime, color, locations
-        , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope, $http
+        , answer, rank, $filter, table, vrowvotes, $window, vrows, $scope, $http, special
         , $rootScope, $modal, editvote, votes, commentops, flag, Socialshare, SERVER_URL, 
         $location, $q, fbusers, $timeout, table2, categories, dataloader, common, search, userpts, useractivity) {
         /* jshint validthis:true */
@@ -885,67 +885,10 @@
             else vm.haveLocation = false;
             
             //Specials
-            var cdate = new Date();
-            var dayOfWeek = cdate.getDay();
-            var isToday = false;
+            vm.answers.forEach(function(ansObj){
+                special.findSpecial(ansObj);
+            });
 
-            for (var j = 0; j < vm.answers.length; j++) {
-                isToday = false;
-                for (var i = 0; i < $rootScope.specials.length; i++) {
-                    if (vm.answers[j].id == $rootScope.specials[i].answer) {
-                        if ($rootScope.specials[i].freq == 'weekly') {
-                            if (dayOfWeek == 0 && $rootScope.specials[i].sun) isToday = true;
-                            if (dayOfWeek == 1 && $rootScope.specials[i].mon) isToday = true;
-                            if (dayOfWeek == 2 && $rootScope.specials[i].tue) isToday = true;
-                            if (dayOfWeek == 3 && $rootScope.specials[i].wed) isToday = true;
-                            if (dayOfWeek == 4 && $rootScope.specials[i].thu) isToday = true;
-                            if (dayOfWeek == 5 && $rootScope.specials[i].fri) isToday = true;
-                            if (dayOfWeek == 6 && $rootScope.specials[i].sat) isToday = true;
-                            if (isToday) {
-                                vm.answers[j].sp_bc = $rootScope.specials[i].bc;
-                                vm.answers[j].sp_fc = $rootScope.specials[i].fc;
-                                vm.answers[j].sp_title = $rootScope.specials[i].stitle;
-                                break;
-                            }
-                        }
-                        if ($rootScope.specials[i].freq == 'onetime') {
-                            if(moment().isBetween(moment($rootScope.specials[i].sdate), moment($rootScope.specials[i].edate), 'day', '[]')) {
-                                vm.answers[j].sp_bc = $rootScope.specials[i].bc;
-                                vm.answers[j].sp_fc = $rootScope.specials[i].fc;
-                                vm.answers[j].sp_title = $rootScope.specials[i].stitle;
-                                break;
-                            }
-                        }
-                    }
-                }
-                /*
-                if (!isToday){
-                    vm.answers.sp_bc = 'auto';
-                    vm.answers.sp_fc = 'auto';
-                    vm.answers.sp_title = '';
-                }
-                */
-            } 
-           
-            
-            //*****TEMP********
-            //vm.answers.specials = [];
-            /*
-            for (var i = 0; i < vm.answers.length; i++) {
-                if (i==1) {
-                    vm.answers[i].specials = 'Its Happy Hour!';
-                    vm.answers[i].style = 'happy';
-                }
-                else {
-                    vm.answers[i].specials = '---';
-                    vm.answers[i].style = '';
-                }
-                
-            }
-            */
-            //**************************************88
-            
-           
             //Load current mrecs
             $rootScope.cmrecs = [];
             for (var i = 0; i < mrecs.length; i++) {
@@ -1765,6 +1708,7 @@
             vm.relRanks = [];
             var relRanksx = [];
             var nidx = -1;
+            var ridx = -1;
             var idx = -1;
             var nhname = '';
             var n = 0;
@@ -1789,7 +1733,13 @@
                         if (vm.relRanks.length < 5) {
                             if (relTags[n].length > 3) {
                                 relRanksx = search.searchRanks2(relTags[n]);
-                                vm.relRanks = vm.relRanks.concat(relRanksx);
+                                
+                                //Ensure ranks do not duplicate
+                                relRanksx.forEach(function(rx){
+                                    ridx = vm.relRanks.map(function (x) { return x.id; }).indexOf(rx.id);
+                                    if (ridx == -1) vm.relRanks.push(rx);
+                                });
+                                
                                 var idx = vm.relRanks.map(function (x) { return x.id; }).indexOf($rootScope.cCategory.id);
                                 if (idx > -1) vm.relRanks.splice(idx, 1);
                             }

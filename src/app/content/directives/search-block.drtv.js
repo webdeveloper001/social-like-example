@@ -31,6 +31,7 @@ function ($rootScope, $state, search,
             var pullDataArray = [];
             var homeRanks = [];
             var ranksLoaded = false;
+            var _ansResultsLoaded = false;
 
             var _currentOffset = -1;
             var _lastOffset = -1;
@@ -104,6 +105,7 @@ function ($rootScope, $state, search,
             //Filter content based on user input
             scope.getResults = function() {
                 scope.useTemp = false;
+                _ansResultsLoaded = false;
                 scope.resRanks = [];
                 var catRanks = [];
                 if (!scope.myfavs && !scope.myffavs){
@@ -130,9 +132,8 @@ function ($rootScope, $state, search,
                 if(scope.ans) {
                     if (scope.myfavs) scope.resAnswers = search.searchMyFavs(scope.query);
                     else if (scope.myffavs) scope.resAnswers = search.searchMyFFavs(scope.query);
-                    else scope.resAnswers = search.searchAnswers(scope.query);
+                    else scope.resAnswers = search.searchAnswers(scope.query,'name');
                 }
-
 
                 //scope.length = scope.resRanks.length + scope.resAnswers.length;
                 scope.searchResults = scope.resRanks.concat(scope.resAnswers);
@@ -284,10 +285,19 @@ function ($rootScope, $state, search,
                                 }
                             }
 
-                            if (pullDataArray.length > 0) pullData('ranks', pullDataArray);
+                            var ranksRes = [];
+                            var answerRes = []; 
+                            for (var i=0; i<pullDataArray.length; i++){
+                                if (pullDataArray[i].isAnswer) answerRes.push(pullDataArray[i]);
+                                else ranksRes.push(pullDataArray[i]);
+                            }
+                            if (ranksRes.length > 0) pullData('ranks', ranksRes);
+                            if (answerRes.length > 0) pullData('answers', answerRes);
+
                             scope.scrollDataLoading = false;
 
                             //load more content
+                            /*
                             if ((scope.searchResults.length - scope.displayResults.length) < 12 && scope.relTags != undefined) {
                                 if (scope.relTags[scope.relTagsIdx] != undefined) {
                                     var moreRanks = search.searchRanks2(scope.relTags[scope.relTagsIdx].tag);
@@ -306,25 +316,38 @@ function ($rootScope, $state, search,
                             //add more related tags    
                             if (scope.relTags != undefined) {
                                 if (scope.relTagsIdx == scope.relTags.length - 1) {
-                                    //console.log("added more tags");
                                     scope.relTags = search.searchRelatedRanks(scope.searchResults, scope.query);
                                     scope.relTagsIdx = 0;
-                                    //console.log("scope.relTags - ", scope.relTags);
                                 }
-                            }
+                            }*/
+                            //Add answer that match tags of query
+                            if ((scope.searchResults.length - scope.displayResults.length) < 12) {
+                                $timeout(function () {
+                                    var answerResults = search.searchAnswersQuery(scope.displayResults);
+                                    //If new ranks do not exist already in results, add it
+                                    answerResults.forEach(function (nresult) {
+                                        if (scope.searchResults.map(function (x) { return x.id; }).indexOf(nresult.id) < 0) {
+                                            scope.searchResults.push(nresult);
+                                        }
+                                    });
+                                    _ansResultsLoaded = true;
+                                    scope.loadMore(true);
 
-                            if ((scope.displayResults.length == scope.searchResults.length) && ranksLoaded) {
-                                if (scope.relTags != undefined) {
-                                    if (scope.relTagsIdx == scope.relTags.length - 1) {
-                                        scope.endReached = true;
+                                    if ((scope.displayResults.length == scope.searchResults.length) && ranksLoaded) {
+                                        if (scope.relTags != undefined) {
+                                            if (scope.relTagsIdx == scope.relTags.length - 1) {
+                                                scope.endReached = true;
+                                            }
+                                        }
+                                        else scope.endReached = true;
                                     }
-                                }
-                                else scope.endReached = true;
+                                    
+                                    $timeout(function () {
+                                        $rootScope.$broadcast('masonry.reload');
+                                    }, _renderTime);
+                                }, 1000);
+
                             }
-                        //}, 0);
-                        $timeout(function(){
-                            $rootScope.$broadcast('masonry.reload');
-                        },_renderTime);
                     }
                 }
             }
@@ -375,11 +398,8 @@ function ($rootScope, $state, search,
 
             return array;
         }
-
-
             
         },
-    }
-    
+    }   
 }
 ]);

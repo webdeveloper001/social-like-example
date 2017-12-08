@@ -20,6 +20,7 @@
             searchRanks: searchRanks,
             searchRanks2: searchRanks2,
             searchAnswers: searchAnswers,
+            searchAnswersQuery: searchAnswersQuery,
             searchRanksMainPage: searchRanksMainPage,
             sibblingRanks: sibblingRanks,
             searchRelatedRanks: searchRelatedRanks,
@@ -38,6 +39,7 @@
             var input = query;
             var m = false;
             var an = '';   //answer name
+            var ansObj = {};
             
             if (input) {
 
@@ -50,8 +52,8 @@
                     for (var j = 0; j < $rootScope.answers.length; j++) {
 
                         an = $rootScope.answers[j].name; // title
+
                         m = true;
-                        
                         //check that all tags exist
                         for (var k = 0; k < valTags.length; k++) {
 
@@ -78,19 +80,55 @@
                         }
 
                         if (m) {
-
+                            /*
                              if ($rootScope.isNh) {
                                  if ($rootScope.answers[j].cityarea == $rootScope.cnh){
                                         results_ans.push($rootScope.answers[j]);
                                  }
                              }
-                            else results_ans.push($rootScope.answers[j]);
+                            else*/
+                            ansObj = JSON.parse(JSON.stringify($rootScope.answers[j]));
+                            results_ans.push(ansObj);
                         }
-
                     }
                 }
             }
 
+            prepareForDisplay(results_ans);
+            return results_ans;
+
+        }
+
+        function searchAnswersQuery(ranks) {
+            //console.log("searchAnswersQuery - ", ranks, $rootScope.catansrecs.length);
+
+            //var ranksmap = ranks.map(function(x) {return x.id; });
+            var results_ans = [];
+            var aidx = -1;
+            var catstrA = [];
+            $rootScope.catansrecs.forEach(function(c){ //catans
+                ranks.forEach(function(r){ //rank
+                    
+                    if (r.catstr != undefined && r.catstr != '') {
+                        catstrA = r.catstr.split(':').map(Number);
+                    } 
+
+                    if (c.category == r.id || catstrA.indexOf(c.category)>-1) {
+                        //check if its not in results already
+                        if (results_ans.length > 0){
+                            //console.log("results_ans - ", results_ans);
+                            if (results_ans.map(function(x) {return x.id; }).indexOf(c.answer) < 0){
+                                aidx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(c.answer);
+                                if ($rootScope.answers[aidx] != undefined) results_ans.push($rootScope.answers[aidx]);
+                            }
+                        }
+                        else {
+                            aidx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(c.answer);
+                            if ($rootScope.answers[aidx] != undefined) results_ans.push($rootScope.answers[aidx]);
+                        }
+                    }
+                });
+            });
             prepareForDisplay(results_ans);
             return results_ans;
 
@@ -621,7 +659,6 @@
                                              rt.indexOf(tagFirstLowered) > -1);
                                  }
                              }
-                            
                             if (m_rt){
                                 rObj = {};
                                 rObj = JSON.parse(JSON.stringify($rootScope.content[j]));
@@ -776,14 +813,12 @@
                                 if ((ansObj.name.toLowerCase().indexOf(input.toLowerCase()) > -1) ||
                                     (ansObj.tags.indexOf(input.toLowerCase()) > -1)){
                                         if (tmap.indexOf(ansObj.id) < 0) {
-                                            //getSpecials(answer);
                                             resultAns.push(ansObj);
                                         }   
                                 }
                             }
                             else {
                                 if (tmap.indexOf(ansObj.id) < 0) {
-                                    //getSpecials(answer);
                                     resultAns.push(ansObj);
                                 }
                             }
@@ -804,37 +839,17 @@
                         var idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf($rootScope.friends_votes[i].answer);
                         if (idx > -1) {
                             ansObj = $rootScope.answers[idx];
-
-                            //look this answer in catans recs
-                            /*
-                            for (var n = 0; n < $rootScope.catansrecs.length; n++) {
-
-                                if ($rootScope.catansrecs[n].answer == ansObj.id) {
-
-                                    var idx2 = $rootScope.content.map(function (x) { return x.id; }).indexOf($rootScope.catansrecs[n].category);
-                                    category = $rootScope.content[idx2];
-                                    if (!category)
-                                        continue;
-                                    if (category.title.indexOf('food') > -1 || category.tags.indexOf('food') > -1) {
-                                        addRecord(vm.foodans, answer, i);
-                                    }
-                                }
-                            }*/
                             tmap = resultAns.map(function (x) { return x.id; });
                             if (input.length > 0) {
                                 if ((ansObj.name.toLowerCase().indexOf(input.toLowerCase()) > -1) ||
                                     (ansObj.tags.indexOf(input.toLowerCase()) > -1)){
                                         if (tmap.indexOf(ansObj.id) < 0) {
-                                            //getSpecials(answer);
-                                            //resultAns.push(ansObj);
                                             addRecord(resultAns, ansObj, i);
                                         }   
                                 }
                             }
                             else {
                                 if (tmap.indexOf(ansObj.id) < 0) {
-                                    //getSpecials(answer);
-                                    //resultAns.push(ansObj);
                                     addRecord(resultAns, ansObj, i);
                                 }
                             }
@@ -846,28 +861,6 @@
                 prepareForDisplay(resultAns);
                 return resultAns
             }
-
-            function getSpecials(answer) {
-            for (var i = 0; i < $rootScope.specials.length; i++) {
-                if (answer.id == $rootScope.specials[i].answer) {
-                    if ($rootScope.specials[i].freq == 'weekly') {
-                        if (dayOfWeek == 0 && $rootScope.specials[i].sun) isToday = true;
-                        if (dayOfWeek == 1 && $rootScope.specials[i].mon) isToday = true;
-                        if (dayOfWeek == 2 && $rootScope.specials[i].tue) isToday = true;
-                        if (dayOfWeek == 3 && $rootScope.specials[i].wed) isToday = true;
-                        if (dayOfWeek == 4 && $rootScope.specials[i].thu) isToday = true;
-                        if (dayOfWeek == 5 && $rootScope.specials[i].fri) isToday = true;
-                        if (dayOfWeek == 6 && $rootScope.specials[i].sat) isToday = true;
-                        if (isToday) {
-                            answer.sp_bc = $rootScope.specials[i].bc;
-                            answer.sp_fc = $rootScope.specials[i].fc;
-                            answer.sp_title = $rootScope.specials[i].stitle;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
 
         function getUser(answer, votetable) {
             for (var i = 0; i < $rootScope.user.friends.data.length; i++) {
@@ -889,8 +882,8 @@
             var map = part.map(function (x) { return x.id; });
             idx = map.indexOf(answer.id);
             if(idx == -1 && ridx > -1){
-                var data = angular.copy(answer);
-                getSpecials(data);
+                //var data = angular.copy(answer);
+                var data = answer;
                 data.trackID = data.id + '' + $rootScope.friends_votes[i].id;
                 data.userObjs = [];
                 var friend = angular.copy(getUser(data, $rootScope.friends_votes[i]));

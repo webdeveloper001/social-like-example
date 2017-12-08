@@ -17,6 +17,9 @@
         var _specialsByAnswer = [];
         var baseURI = '/api/v2/mysql/_table/specials';
 
+        var _cdate = new Date();
+        var _dayOfWeek = _cdate.getDay();
+
         var service = {
             getSpecials: getSpecials,
             getSpecialsX: getSpecialsX,
@@ -24,7 +27,8 @@
             addSpecial: addSpecial,
             updateSpecial: updateSpecial,
             deleteSpecial: deleteSpecial,
-            getSpecialsbyAnswer: getSpecialsbyAnswer
+            getSpecialsbyAnswer: getSpecialsbyAnswer,
+            findSpecial: findSpecial
         };
 
         return service;
@@ -235,6 +239,39 @@
                 return result.data;   
             }
         }
+
+        //Find special for a given answer
+        function findSpecial(ansObj) {
+            var _isToday = false;
+            for (var i = 0; i < _specials.length; i++) {
+                if (ansObj.id == _specials[i].answer) {
+                    if (_specials[i].freq == 'weekly') {
+                        if (_dayOfWeek == 0 && _specials[i].sun) _isToday = true;
+                        if (_dayOfWeek == 1 && _specials[i].mon) _isToday = true;
+                        if (_dayOfWeek == 2 && _specials[i].tue) _isToday = true;
+                        if (_dayOfWeek == 3 && _specials[i].wed) _isToday = true;
+                        if (_dayOfWeek == 4 && _specials[i].thu) _isToday = true;
+                        if (_dayOfWeek == 5 && _specials[i].fri) _isToday = true;
+                        if (_dayOfWeek == 6 && _specials[i].sat) _isToday = true;
+                        if (_isToday) {
+                            ansObj.sp_bc = _specials[i].bc;
+                            ansObj.sp_fc = _specials[i].fc;
+                            ansObj.sp_title = _specials[i].stitle;
+                            break;
+                        }
+                    }
+                    if (_specials[i].freq == 'onetime') {
+                        if (moment().isBetween(moment(_specials[i].sdate), moment(_specials[i].edate), 'day', '[]')) {
+                            ansObj.sp_bc = _specials[i].bc;
+                            ansObj.sp_fc = _specials[i].fc;
+                            ansObj.sp_title = _specials[i].stitle;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
 
         function _load(data){
             _specials.length = 0;
