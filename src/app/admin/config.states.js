@@ -73,6 +73,13 @@
                 controller: 'staticpagesconsole as vm'               
             },
             {
+                name: 'answerimages',
+                parent: 'admin',
+                url: '/answerimages',
+                templateUrl: 'app/admin/Partials/answerimages.html',
+                controller: 'answerimages as vm'               
+            },
+            {
                 name: 'sitemap',
                 parent: 'admin',
                 url: '/sitemap',
@@ -135,12 +142,14 @@
                 templateUrl: 'app/admin/Partials/cleandb.html',
                 controller: 'cleandb as vm',
                 resolve: {
+                    
                     load: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load({
                             rerun: true,
                             files: ['scripts/vendor3.js']
                         });
                     }]
+                    
                 }               
             },
             {

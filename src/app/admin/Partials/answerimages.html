@@ -1,0 +1,12 @@
+<h1>Answer Images</h1>
+
+Number of answer images that are not in rankx blob: {{vm.ansimgs.length}}
+<br><br>
+<button class="btn btn-primary" ng-click="vm.processAllImages()">Store Images</button>
+<br><br>
+<div class="progress" ng-if="vm.inprogress">
+        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="vm.cpct" aria-valuemin="0" aria-valuemax="100"
+            style="width:{{vm.cpct}}%">
+            {{vm.cpct}}% Complete (success)
+        </div>
+    </div>

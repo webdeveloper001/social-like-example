@@ -346,11 +346,12 @@
 
         function clearAllCatansVotes() {
             console.log("Clearing all catans vote sums to zero");
+            /*
             for (var i = 0; i < $rootScope.catansrecs.length; i++) {
                 if ($rootScope.catansrecs[i].upV != 0 || $rootScope.catansrecs[i].downV != 0) {
                     catans.updateRec($rootScope.catansrecs[i].id, ['upV', 'downV'], [0, 0]);
                 }
-            }
+            }*/
         }
 
         function syncUserVotes() {

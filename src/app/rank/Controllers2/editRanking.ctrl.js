@@ -74,6 +74,7 @@
             vm.ismp = $rootScope.cCategory.ismp;
             vm.scope = $rootScope.cCategory.scope;
             vm.image = $rootScope.cCategory.fimage;
+            vm.introtext = $rootScope.cCategory.introtext;
             if ($rootScope.cCategory.bc) vm.bc = $rootScope.cCategory.bc;
             if ($rootScope.cCategory.fc) vm.fc = $rootScope.cCategory.fc;
             if ($rootScope.cCategory.shade) vm.shade = $rootScope.cCategory.shade;
@@ -124,6 +125,11 @@
             if (item.tags != vm.tags) {
                 fieldsc.push('tags');
                 valsc.push(vm.tags);
+            }
+            //if introtext change
+            if (item.introtext != vm.introtext) {
+                fieldsc.push('introtext');
+                valsc.push(vm.introtext);
             }
             //if keywords change
             if (item.keywords != vm.keywords) {
