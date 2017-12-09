@@ -450,8 +450,10 @@
 
                     if (vm.myfavs == true) {
                         //vm.showans = true;
+                        clearNh();
                         vm.myffavs = false;
                         vm.val = 'myfavs:';
+                        //clearNh();
                     }
                     else vm.val = '';
                 }
@@ -464,8 +466,10 @@
 
                     if (vm.myffavs == true) {
                         //vm.showans = true;
+                        clearNh();
                         vm.myfavs = false;
                         vm.val = 'myffavs:';
+                        //clearNh();
                     }
                     else vm.val = '';
                 }
@@ -500,6 +504,8 @@
                 vm.nh = vm.nhinp;
                 vm.nhctrl = false;
                 vm.val = vm.nh + ':';
+                vm.myfavs = false;
+                vm.myffavs = false;
             }
         }
 

@@ -365,13 +365,13 @@
             </tbody>
         </table>
         <div class="input-group" style="padding:0px;margin:0px;">
-            <input type="text" class="form-control" ng-model="vm.newop" maxlength="40" placeholder="{{'Write an opinion of '+ vm.answer.name}}">
+            <input type="text" class="form-control" ng-model="vm.newop" maxlength="80" placeholder="{{'Write an opinion of '+ vm.answer.name}}">
                 <span class="input-group-btn text-right">
                     <button class="btn btn-primary {{vm.addvrowbutton}}" type="button" ng-click="vm.addvrow()">Add Opinion</button>
                 </span>
         </div>
         <div class="text-center" style="padding-top:5px">
-            {{40 - vm.newop.length + ' characters left'}}
+            {{80 - vm.newop.length + ' characters left'}}
         </div>    
         <br>
 

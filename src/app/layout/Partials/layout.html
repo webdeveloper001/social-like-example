@@ -32,17 +32,17 @@
                             ng-attr-style="font-size:{{x.length > 11 ? 'smaller':''}};height:34px;padding-left:{{x.length > 11 ? '4px':''}};">
                             {{x}}</button>
                     </div>
-                </div>
+                </div> 
                 <div class="hidden-xs hidden-sm">
-                    <div style="padding-top:7px" class="text-center">Quick Filters</div>
+                    <div style="padding-top:7px" class="text-center"><strong>Quick Filters</strong></div>
                     <div class="col-xs-4" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
-                        <button class="col-xs-4 btn btn-default" ng-click="vm.buttonsPrev()" ng-attr-style="visibility:{{vm.bi==0?'hidden':'visibility'}}">
+                        <button class="col-xs-4 btn btn-default" ng-click="vm.buttonsPrev()" ng-attr-style="visibility:{{vm.bi==0?'hidden':'visibility'}};height:68px;">
                             <i class="fa fa-arrow-left" aria-hidden="true"></i></button>
                         <button class="col-xs-4 btn btn-default" 
                         ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
                         'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi,vm.bi+2)" 
                         ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
-                        <div class="col-xs-4 text-center"></div>
+                        <!--<div class="col-xs-4 text-center"></div>-->
                         <button class="col-xs-4 btn btn-default" ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
                         'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi+2,vm.bi+4)" 
                         ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
@@ -53,15 +53,19 @@
                         ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
                     </div>
                     <div class="col-xs-4" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
-                        <button class="col-xs-4 btn btn-default" ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
-                        'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi+10,vm.bi+12)" 
-                        ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
-                        <button class="col-xs-4 btn btn-default" ng-click="vm.buttonsFwd()" ng-attr-style="visibility:{{vm.bi == vm.buts.length-14?'hidden':'visible'}}">
+                        <div class="col-xs-8" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
+                            <button class="col-xs-6 btn btn-default" ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
+                            'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi+10,vm.bi+14)" 
+                            ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
+                        </div>
+                        <div class="col-xs-4" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
+                        <button class="col-xs-12 btn btn-default" ng-click="vm.buttonsFwd()" ng-attr-style="visibility:{{vm.bi == vm.buts.length-14?'hidden':'visible'}};height:68px;">
                             <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-                        <button class="col-xs-4 btn btn-default" ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
+                        <!--<button class="col-xs-4 btn btn-default" ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
                         'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi+12,vm.bi+14)" 
-                        ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
-                        <div class="col-xs-4"></div>
+                        ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button> -->
+                        <!-- <div class="col-xs-4"></div> -->
+                        </div>
                     </div>
                 </div>
                 
@@ -99,7 +103,12 @@
             </div> 
   
         </div> 
-
+        
+        <p ng-if="vm.myfavs" style="background:#428bca;color:white">Filter is active for <strong>Favorites</strong></p>
+        <p ng-if="vm.myffavs" style="background:#428bca;color:white">Filter is active for <strong>Friends' Favorites</strong></p>
+        <p ng-if="vm.nh != ''" style="background:#5cb85c;color:white">Filter is active for neighborhood <strong>{{vm.nh}}</strong></p>
+        
+        
         <div class="input-group" style="width:100%" ng-if="vm.isAdmin&&!vm.childActive">
             <div class="text-center" ng-attr-style="display:{{vm.isAdmin ? 'inline':'none'}}">
                 <div class="btn-group col-sm-6 col-md-6">            
