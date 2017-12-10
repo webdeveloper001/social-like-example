@@ -104,9 +104,9 @@
     style="margin:5px; width:100%; background-color:lightgray">Return to {{vm.rankOwner.name}}</button>
 </div>
 
-<div class="container">
+<!-- <div class="container"> -->
 
-    <div class="row">
+    <div class="col-xs-12" style="margin:0px;padding-left:0px;padding-right:0px;padding-bottom:15px;border:0px;">
 
         <div class="container-bgbox col-xs-6 col-sm-4 col-md-4 col-lg-3">
             <bg-box bc="{{vm.bc}}" shade="{{vm.shade}}" fc="{{vm.fc}}" text="{{vm.ranking}}" dir="horizontal" w="100%" h="{{vm.sm ? '150px':'200px'}}"></bg-box>
@@ -161,17 +161,16 @@
                 </div>
             </div>
         </div>
-
     </div>
-</div>
+<!-- </div>
 
 <!-- <br> -->
-<br ng-if="vm.introtext">
-<p class="text-left">{{vm.introtext}}</p>
+<div >
+    <p ng-if="vm.introtext" class="text-left" style="display:inline;">{{vm.introtext}}</p>
+</div>
 <br>
 <div class="row" style="margin:0px;padding:0px;">
 
-    
     <div class="col-sm-9 col-md-9 col-lg-10 hidden-xs" style="margin-bottom: 10px; padding:0px">
         <div class="btn-group text-left">
             <button class="btn btn-default" ng-click="vm.sortbyHelpDialog()"><i class="fa fa-question-circle"></i></button>
