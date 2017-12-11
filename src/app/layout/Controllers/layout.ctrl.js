@@ -231,7 +231,7 @@
             $rootScope.numInitItems = 24;
         }
         vm.innerWidth = $window.innerWidth;
-        vm.innerHeight = $window.innerHeight-50;
+        vm.innerHeight = $window.innerHeight;
 
         //TODO: Would like to add this abstract template, but dont know how
         $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
