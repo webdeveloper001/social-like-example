@@ -1,8 +1,12 @@
 ﻿<!-- Navigation Bar -->
+<div style="width:100%;height:{{vm.innerHeight}}px;
+  background-image: url('assets/images/texture.jpg');
+  background-repeat: repeat;  
+  background-size: auto;"> 
 <div ui-view="navbar" style="position: fixed; z-index: 1000; width: 100%"></div>
 
 <div class="container" style="padding-left:5px;padding-right:5px; margin-bottom: 20px;">
-    
+
     <div id="veil" ng-show="vm.isLoading"></div>
     <div id="feedLoading" ng-show="vm.isLoading">
         <div style="text-align: center" ng-if="vm.isLoading">
@@ -32,17 +36,17 @@
                             ng-attr-style="font-size:{{x.length > 11 ? 'smaller':''}};height:34px;padding-left:{{x.length > 11 ? '4px':''}};">
                             {{x}}</button>
                     </div>
-                </div>
+                </div> 
                 <div class="hidden-xs hidden-sm">
-                    <div style="padding-top:7px" class="text-center">Quick Filters</div>
+                    <div style="padding-top:7px" class="text-center"><strong>Quick Filters</strong></div>
                     <div class="col-xs-4" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
-                        <button class="col-xs-4 btn btn-default" ng-click="vm.buttonsPrev()" ng-attr-style="visibility:{{vm.bi==0?'hidden':'visibility'}}">
+                        <button class="col-xs-4 btn btn-default" ng-click="vm.buttonsPrev()" ng-attr-style="visibility:{{vm.bi==0?'hidden':'visibility'}};height:68px;">
                             <i class="fa fa-arrow-left" aria-hidden="true"></i></button>
                         <button class="col-xs-4 btn btn-default" 
                         ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
                         'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi,vm.bi+2)" 
                         ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
-                        <div class="col-xs-4 text-center"></div>
+                        <!--<div class="col-xs-4 text-center"></div>-->
                         <button class="col-xs-4 btn btn-default" ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
                         'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi+2,vm.bi+4)" 
                         ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
@@ -53,15 +57,19 @@
                         ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
                     </div>
                     <div class="col-xs-4" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
-                        <button class="col-xs-4 btn btn-default" ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
-                        'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi+10,vm.bi+12)" 
-                        ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
-                        <button class="col-xs-4 btn btn-default" ng-click="vm.buttonsFwd()" ng-attr-style="visibility:{{vm.bi == vm.buts.length-14?'hidden':'visible'}}">
+                        <div class="col-xs-8" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
+                            <button class="col-xs-6 btn btn-default" ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
+                            'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi+10,vm.bi+14)" 
+                            ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
+                        </div>
+                        <div class="col-xs-4" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
+                        <button class="col-xs-12 btn btn-default" ng-click="vm.buttonsFwd()" ng-attr-style="visibility:{{vm.bi == vm.buts.length-14?'hidden':'visible'}};height:68px;">
                             <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-                        <button class="col-xs-4 btn btn-default" ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
+                        <!--<button class="col-xs-4 btn btn-default" ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
                         'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi+12,vm.bi+14)" 
-                        ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
-                        <div class="col-xs-4"></div>
+                        ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button> -->
+                        <!-- <div class="col-xs-4"></div> -->
+                        </div>
                     </div>
                 </div>
                 
@@ -99,7 +107,12 @@
             </div> 
   
         </div> 
-
+        
+        <p ng-if="vm.myfavs" style="background:#428bca;color:white">Filter is active for <strong>Favorites</strong></p>
+        <p ng-if="vm.myffavs" style="background:#428bca;color:white">Filter is active for <strong>Friends' Favorites</strong></p>
+        <p ng-if="vm.nh != ''" style="background:#5cb85c;color:white">Filter is active for neighborhood <strong>{{vm.nh}}</strong></p>
+        
+        <!--
         <div class="input-group" style="width:100%" ng-if="vm.isAdmin&&!vm.childActive">
             <div class="text-center" ng-attr-style="display:{{vm.isAdmin ? 'inline':'none'}}">
                 <div class="btn-group col-sm-6 col-md-6">            
@@ -107,21 +120,28 @@
                     <button class="btn btn-primary {{vm.selViewRank}} " ng-click="vm.viewRank() ">View Mode</button>
                 </div>
             </div>
-        </div>
+        </div>-->
+
         
-        <div ng-show="!vm.childActive">
-            <!--	
-            <search-block ng-click="vm.hideSearch()" query="{{vm.val}}" 
-                ans="vm.showans" ranks="true" length="vm.slen" init="vm.initready" data="vm.dataready" rod="vm.rodready"
-                scrollactive="!vm.childActive"></search-block> 
-            -->
+        <div ng-show="!vm.childActive&&!vm.noquery"> <!-- style="background-image: url('assets/images/texture.jpg');"> -->
             <search-block query="{{vm.val}}" myfavs="vm.myfavs" myffavs="vm.myffavs"
                 ans="vm.showans" init="vm.initready" data="vm.dataready" scrollactive="!vm.childActive"></search-block>
         </div>
+            
+        <div ng-show="vm.noquery&&!vm.childActive">
+            <div><br class="hidden-xs"><br class="hidden-xs"></div>
+            <div class="col-xs-1 col-sm-3 col-md-4"></div>
+            <div class="col-xs-10 col-sm-6 col-md-4">
+                <img src="assets/images/rankx_wallpaper_logo.jpg" style="width:100%;">
+            </div>
+            <div class="col-xs-1 col-sm-3 col-md-4"></div>
+            <div class="col-xs-12"><p ng-attr-style="font-size:{{vm.wallpaper_fontsize}}px">Find and Endorse the Best in Your City</p></div> 
+        </div>
         <br ng-if="vm.childActive">
         <br ng-if="vm.childActive">
         <br ng-if="vm.childActive">
-        <div ui-view ng-if="!vm.isLoading && vm.childActive" class="container" id="page-containter" style=""></div>
+        <div ui-view ng-if="!vm.isLoading && vm.childActive" class="container" id="page-containter" 
+        style="background:white"></div>
     </div>
 
     <a href="#" class="back-to-top" style="display: inline;">
@@ -131,7 +151,7 @@
 </div>
 <br>
 <br>
-
+</div>
 <footer class="footer"  
     style=" position: fixed;
             bottom: 0px;

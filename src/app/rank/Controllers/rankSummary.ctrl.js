@@ -687,14 +687,15 @@
         function loadData() {
 
             //If introtext exist load it, if not, create custom intro text
-            if ($rootScope.cCategory.introtext) {
+            /*if ($rootScope.cCategory.introtext) {
                 var start = $rootScope.cCategory.introtext.indexOf('++');
                 var end = $rootScope.cCategory.introtext.indexOf('--');
                 if (start > -1 && end > -1) vm.introtext = $rootScope.cCategory.introtext.substring(start+2,end);
                 else vm.introtext = $rootScope.cCategory.introtext;
             }
-            else vm.introtext = 'This is the rank for ' + $rootScope.cCategory.title + '. '+
-            ' Help shape the ranking by endorsing your favorites!.';
+            else */ 
+            vm.introtext = 'This is the rank for ' + $rootScope.cCategory.title + '. '+
+            ' Help shape the ranking by voting on your favorites!';
               
             if ($rootScope.cCategory.owner != 0 && $rootScope.cCategory.owner != undefined){
                 vm.isCustomRank = true;

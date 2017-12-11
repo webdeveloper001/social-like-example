@@ -51,6 +51,7 @@
         vm.showans = false;
         vm.myfavs = false;
         vm.myffavs = false;
+        vm.noquery = true;
 
         //Admin Methods
         vm.editRank = editRank;
@@ -61,6 +62,7 @@
         vm.clearNh = clearNh;
         vm.nhctrl = false;
         vm.nh = '';
+        vm.val = '';
         //vm.toggleSelCity = toggleSelCity;
         vm.showTrends = showTrends;
         //vm.scopeGeneral = scopeGeneral;
@@ -202,6 +204,7 @@
             vm.logoimage = "/assets/images/rankxlogosd2_sm.png";
             $rootScope.sm = true;
             vm.sm = true;
+            vm.wallpaper_fontsize = 21;
             $rootScope.DISPLAY_XSMALL = true;
             $rootScope.numInitItems = 12;
         }
@@ -209,6 +212,7 @@
             vm.logoimage = "/assets/images/rankxlogosd2_sm.png";
             $rootScope.sm = false;
             vm.sm = false;
+            vm.wallpaper_fontsize = 28;
         }
 
         if (($window.innerWidth >= 512) && ($window.innerWidth < 768)) {
@@ -226,6 +230,8 @@
             $rootScope.DISPLAY_LARGE = true;
             $rootScope.numInitItems = 24;
         }
+        vm.innerWidth = $window.innerWidth;
+        vm.innerHeight = $window.innerHeight-50;
 
         //TODO: Would like to add this abstract template, but dont know how
         $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
@@ -371,6 +377,8 @@
             vm.searchActive = $rootScope.searchActive;
             vm.childActive = !$rootScope.searchActive;
             $rootScope.isqf = false;
+            if (vm.val.length == 0) vm.noquery = true;
+            else vm.noquery = false
         }
 
         function hideSearch() {
@@ -450,8 +458,10 @@
 
                     if (vm.myfavs == true) {
                         //vm.showans = true;
+                        clearNh();
                         vm.myffavs = false;
                         vm.val = 'myfavs:';
+                        //clearNh();
                     }
                     else vm.val = '';
                 }
@@ -464,8 +474,10 @@
 
                     if (vm.myffavs == true) {
                         //vm.showans = true;
+                        clearNh();
                         vm.myfavs = false;
                         vm.val = 'myffavs:';
+                        //clearNh();
                     }
                     else vm.val = '';
                 }
@@ -489,6 +501,7 @@
             else vm.showans = false;
 
             $rootScope.isqf = true;
+            getResults();
         }
 
         function selectNh(){
@@ -500,6 +513,9 @@
                 vm.nh = vm.nhinp;
                 vm.nhctrl = false;
                 vm.val = vm.nh + ':';
+                vm.myfavs = false;
+                vm.myffavs = false;
+                getResults();
             }
         }
 
@@ -511,6 +527,7 @@
             vm.nh = '';
             vm.nhctrl = false;
             vm.val = '';
+            getResults();
         }
 
 
