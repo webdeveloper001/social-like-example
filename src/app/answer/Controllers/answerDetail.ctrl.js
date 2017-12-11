@@ -113,8 +113,12 @@
         //TODO: Would like to add this abstract template, but dont know how                           
         var updateRecordsListener = $rootScope.$on('$stateChangeStart',
             function (ev, to, toParams, from, fromParams) {
-                if (from.name == 'answerDetail' && to.name != 'answerDetail') {
-                    if (!recordsUpdated && $rootScope.isLoggedIn && answerFound) updateRecords();
+                // if (from.name == 'answerDetail' && to.name != 'answerDetail') {
+                //     if (!recordsUpdated && $rootScope.isLoggedIn && answerFound) updateRecords();
+                // }
+                if (from.name == 'answerDetail') {
+                    // if (!recordsUpdated && $rootScope.isLoggedIn && answerFound) updateRecords();
+                    if ($rootScope.isLoggedIn) updateRecords();
                 }
             });
 

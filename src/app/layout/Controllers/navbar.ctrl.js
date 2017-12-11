@@ -577,10 +577,21 @@
             var element = $('#navbar-user-points');
             var tmpClass = element.attr('class');
             element.removeClass();            
+            var cur_point = $rootScope.user.points;
             setTimeout(function() {
-                element.addClass('pulse start-now');
+                if ($rootScope.user.points > points) {
+                    element.addClass('pulse_minus start-now');
+                }
+                if ($rootScope.user.points < points) {
+                    element.addClass('pulse_plus start-now');                    
+                }
             }, 0);
 
+            setTimeout(function() {
+                $rootScope.user.points = points - cur_point;
+                $scope.$apply();                
+            }, 1000);
+            
             setTimeout(function() {
                 $rootScope.user.points = points;
                 $scope.$apply();

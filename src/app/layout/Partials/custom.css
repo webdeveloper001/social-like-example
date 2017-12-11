@@ -500,8 +500,12 @@ userfeed-block.show-all {
 }
 
 
-.pulse {
-  animation: pulse 1s 1s forwards;
+.pulse_plus {
+  animation: pulse_plus 1s 1s forwards;
+}
+
+.pulse_minus {
+  animation: pulse_minus 1s 1s forwards;
 }
 
 .start-now, .start-now:after {
@@ -530,17 +534,32 @@ userfeed-block.show-all {
     transform: scale3d(1, 1, 1);
   }
 }
-@keyframes pulse {
+@keyframes pulse_plus {
   0% {
-    background-color: green;
+    background-color: #5cb85c;
   }
   25% {
-    background-color: green;
+    background-color: #5cb85c;
   }
   50% {
-    background-color: green;
+    background-color: #5cb85c;
   }
   75% {
-    background-color: green;
+    background-color: #5cb85c;
+  }
+}
+
+@keyframes pulse_minus {
+  0% {
+    background-color: #204d74;
+  }
+  25% {
+    background-color: #204d74;
+  }
+  50% {
+    background-color: #204d74;
+  }
+  75% {
+    background-color: #204d74;
   }
 }

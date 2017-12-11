@@ -130,9 +130,12 @@
                                
         var stateChangeListener = $rootScope.$on('$stateChangeStart',
             function (ev, to, toParams, from, fromParams) {
-                if (from.name == 'rankSummary' && to.name != 'rankSummary') {
+                // if (from.name == 'rankSummary' && to.name != 'rankSummary') {
+                //      if ($rootScope.isLoggedIn) updateRecords();
+                // }
+                if (from.name == 'rankSummary') {
                      if ($rootScope.isLoggedIn) updateRecords();
-                }
+                }                
             });
         
         $scope.$on('$destroy', stateChangeListener);
