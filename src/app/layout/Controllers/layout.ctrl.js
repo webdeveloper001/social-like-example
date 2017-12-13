@@ -380,7 +380,7 @@
             $rootScope.searchActive = true;
             vm.searchActive = $rootScope.searchActive;
             vm.childActive = !$rootScope.searchActive;
-            $rootScope.isqf = false;
+            if (vm.buts.indexOf(vm.val) == -1) $rootScope.isqf = false;
             if (vm.val.length == 0) vm.noquery = true;
             else vm.noquery = false;
         }
