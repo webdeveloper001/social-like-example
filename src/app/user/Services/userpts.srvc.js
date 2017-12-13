@@ -56,9 +56,14 @@
             var action1 = resource[0].action;
             
             $q.all([getActionPoint(action1)]).then(function(result){
-                resource[0].pts = result[0][0].pts;
-                users.updateUser(resource[0].userid, resource[0].pts);
-            })
+                if (result[0][0]){
+                    resource[0].pts = result[0][0].pts;
+                    users.updateUser(resource[0].userid, resource[0].pts);
+                }
+                else{
+                    console.log("No Valid User Action Found");
+                }
+            });
 
             $q.all([getCatanFromUaf(uaf), getVrowFromUaf(uaf)]).then(function(data) {
                 var catan = data[0];
@@ -103,18 +108,18 @@
                 }
                 var action2 = resource[1] ? resource[1].action : "undefined";
 
-                $q.all([getActionPoint(action2)]).then(function(result) {
+                $q.all([getActionPoint(action2)]).then(function (result) {
                     if (result[0][0]) {
                         resource[1].pts = result[0][0].pts;
+                        if (resource[1]) users.updateUser(resource[1].userid, resource[1].pts);
+                        var url = baseURI;
+                        return $http.post(url, resource, {
+                            headers: {
+                                "Content-Type": "multipart/form-data"
+                            },
+                            body: resource
+                        }).then(querySucceeded, _queryFailed)
                     }
-                    if (resource[1]) users.updateUser(resource[1].userid, resource[1].pts);
-                    var url = baseURI;
-                    return $http.post(url, resource, {
-                        headers: {
-                            "Content-Type": "multipart/form-data"
-                        },
-                        body: resource
-                    }).then(querySucceeded, _queryFailed)                    
                 });
 
             })

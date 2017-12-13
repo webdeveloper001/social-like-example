@@ -103,11 +103,19 @@
             var edateValid = false;
             var sdate = 0;
             var eIsCurrent = false;
+
+            if (answer.freq == 'weekly'){
+                if ((answer.sdate == undefined || answer.sdate == '' || answer.sdate == null) &&
+                    (answer.edate == undefined || answer.edate == '' || answer.edate == null)){
+                        eIsCurrent = true;
+                        return eIsCurrent;
+                    }
+                }
+
             if (answer.edate != undefined && answer.edate != ''){
                 edate = date2number(answer.edate.slice(4));
                 edateValid = true;
             }
-            
             sdate =  date2number(answer.sdate.slice(4));
             
             if ($rootScope.dateTodayNum == undefined){

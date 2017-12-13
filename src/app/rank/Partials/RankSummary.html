@@ -381,37 +381,13 @@
 <!-- <a ui-sref="match " class="btn btn-success ">{{"rankSummary.GoRank " | translate}}</a> -->
 <br>
 <br ng-if="!vm.sm">
-<div class="text-center">
-    <button ng-click="vm.loadComments()" class="btn btn-default"  ng-class="vm.cm.commLoaded ? 'disabled' : ''" style="background-color:#e6e6e6;width:100%">COMMENTS ({{vm.numcom}})</button>
+<div class="text-center" style="padding-bottom:15px">
+    <button ng-click="vm.loadComments()" class="btn btn-default"  ng-class="vm.cm.commLoaded ? 'disabled' : ''" 
+    style="background-color:#e6e6e6;width:100%;">COMMENTS ({{vm.numcom}})</button>
 </div>
 <br ng-if="!vm.sm">
-<div ng-attr-style="display:{{vm.cm.commLoaded ? 'inline':'none'}}">
-    <div ng-repeat="x in vm.cm.comments">
-        <div class="col-xs-12 media">
-
-            <div ng-if="!x.picture" class="profile-avatar-wrapper media-left">
-                <div class="empty-profile-avatar-wrapper"  ng-attr-style="background-color:{{x.bc}};color:{{x.fc}};">{{x.initials}}</div>
-            </div>
-            <div ng-if="x.picture" class="profile-avatar-wrapper media-left" align="middle">
-                <img ng-src="{{x.picture}}" class="img-responsive img-circle profile-avatar"/>
-            </div>
-            <div class="media-body">
-                {{x.body}}
-                <br>
-                <small style="color:#bfbfbf">{{x.username}} - {{x.date}}&nbsp&nbsp                    
-                    <span class="dropdown ">
-                        <i type="button" class="fa fa-flag dropdown-toggle" data-toggle="dropdown"></i>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a ng-click="vm.cmFlag(1)">Off-Topic</a></li>
-                            <li><a ng-click="vm.cmFlag(2)">Offensive</a></li>
-                            <li><a ng-click="vm.cmFlag(3)">Spam</a></li>
-                        </ul>
-                    </span>                   
-                </small>
-            </div>
-        </div>
-        <br>
-    </div>
+<!-- <div ng-attr-style="display:{{vm.cm.commLoaded ? 'inline':'none'}}"> -->
+<div class="container" ng-if="vm.cm.commLoaded">
     <div ng-attr-style="display:{{(vm.cm.commLoaded && vm.cm.comments.length == 0 && !vm.isLoggedIn) ? 'inline':'none'}}">
         <br>
         <p><small> Nobody has commented yet. Be the first. Log in, endorse answers and leave a comment. </small></p>
@@ -424,7 +400,7 @@
         <br>
         <p><small> Endorse one or more answers to leave a comment. </small></p>
     </div>
-    <div ng-attr-style="display:{{(vm.isLoggedIn && vm.commentAllowed) ? 'inline':'none'}}">
+    <div class="container">
         <div class="media">
             <div ng-if="!user.picture.data.url" class="profile-avatar-wrapper media-left">
                 <div class="empty-profile-avatar-wrapper"  ng-attr-style="background-color:{{x.bc}};color:{{x.fc}};">{{x.initials}}</div>
@@ -440,10 +416,40 @@
                    style="margin-left:0px;margin-right:0px;"></textarea>
             </div>            
         </div> 
-        <div class="text-right">
+        <div class="text-right" style="padding-top:5px">
                 <button ng-click="vm.postComment()" class="btn btn-primary">Post</button>
         </div>
     </div> 
+    
+    <div ng-repeat="x in vm.cm.comments">
+        <!--
+        <div class="col-xs-12 media">-->
+            <div ng-if="!x.picture" class="profile-avatar-wrapper media-left">
+                <div class="empty-profile-avatar-wrapper"  ng-attr-style="background-color:{{x.bc}};color:{{x.fc}};">{{x.initials}}</div>
+            </div>
+            <div ng-if="x.picture" class="profile-avatar-wrapper media-left" align="middle">
+                <img ng-src="{{x.picture}}" class="img-responsive img-circle profile-avatar"/>
+            </div>
+            <div class="media-body">
+                {{x.body}}
+                <br>
+                <small style="color:#bfbfbf">{{x.username}} - {{x.date}}&nbsp&nbsp                    
+                    <span class="dropdown">
+                        <i type="button" class="fa fa-flag dropdown-toggle" data-toggle="dropdown"></i>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a ng-click="vm.cmFlag(1)">Off-Topic</a></li>
+                            <li><a ng-click="vm.cmFlag(2)">Offensive</a></li>
+                            <li><a ng-click="vm.cmFlag(3)">Spam</a></li>
+                        </ul>
+                    </span> 
+                </small>
+            </div>
+        <!--</div>
+        -->
+        <br>
+    </div> 
+    <!--
+    <div ng-attr-style="display:{{(vm.isLoggedIn && vm.commentAllowed) ? 'inline':'none'}}"> -->
 </div>
 <br>
 <div ng-if="vm.relRanks.length>0">

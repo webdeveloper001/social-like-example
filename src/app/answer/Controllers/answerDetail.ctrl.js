@@ -182,9 +182,9 @@
 
             vm.type = vm.answer.type;
             vm.i = -1;
-            if ($rootScope.DISPLAY_XSMALL || $rootScope.DISPLAY_SMALL) numImagesPage = 4;
+            if ($rootScope.DISPLAY_XSMALL || $rootScope.DISPLAY_SMALL) numImagesPage = 6;
             if ($rootScope.DISPLAY_MEDIUM) numImagesPage = 6;
-            if ($rootScope.DISPLAY_LARGE) numImagesPage = 12;
+            if ($rootScope.DISPLAY_LARGE) numImagesPage = 9;
             getImages();
             //vm.isShortPhrase = vm.type == 'Short-Phrase';
             

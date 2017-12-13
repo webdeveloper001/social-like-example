@@ -55,7 +55,7 @@ angular.module('app').directive('blobUpload', ['$rootScope', '$state', function 
                             if (response.status > 0)
                                 $scope.errorMsg = response.status + ': ' + response.data;
                                 var imageurl = 'https://rankx.blob.core.windows.net/sandiego/'+$rootScope.canswer.id+'/' + file.name;
-                                console.log('emitted fileUploaded!!');
+                                if ($rootScope.DEBUG_MODE) console.log('emitted fileUploaded!!');
                                 postUserUploadedRecord(imageurl);
                                 $rootScope.$emit('fileUploaded', imageurl);
                         }, null, function (evt) {
@@ -71,7 +71,6 @@ angular.module('app').directive('blobUpload', ['$rootScope', '$state', function 
 
                 function postUserUploadedRecord(x){
                     var obj = {};
-                    console.log("$rootScope.user - ", $rootScope.user);
                     obj.user = $rootScope.user.id;
                     obj.username = $rootScope.user.name;
                     obj.imageurl = x;
@@ -80,7 +79,9 @@ angular.module('app').directive('blobUpload', ['$rootScope', '$state', function 
                     useruploadedimages.postRecord(obj);
                     //Mail to moderation notification of new image
                     mailing.newImageUploaded(obj).then(function(data){
-                     console.log("Send mail request for image notification");
+                     if ($rootScope.DEBUG_MODE) console.log("Send mail request for image notification");
+                    },function(err){
+                        console.log("error sending image moderation email - ", err);
                     })
                 }
 

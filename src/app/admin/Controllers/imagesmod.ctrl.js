@@ -5,9 +5,9 @@
         .module('app')
         .controller('imagesmod', imagesmod);
 
-    imagesmod.$inject = ['$rootScope', 'useruploadedimages','imagelist'];
+    imagesmod.$inject = ['$rootScope', 'useruploadedimages','imagelist','answer'];
 
-    function imagesmod($rootScope, useruploadedimages, imagelist) {
+    function imagesmod($rootScope, useruploadedimages, imagelist, answer) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'imagesmod';
@@ -39,6 +39,11 @@
         }
 
         function removeImage(x){
+            //find corresponding image, if main image is to be deleted, set to empty image
+            var idx = $rootScope.answers.map(function(x) {return x.id; }).indexOf(x.answer);
+            if ($rootScope.answers[idx].imageurl == x.imageurl){
+                answer.updateAnswer($rootScope.answers[idx].id,['imageurl'],[$rootScope.EMPTY_IMAGE]);
+            }  
             imagelist.deleteBlob(x.imageurl);
             useruploadedimages.deleteRecord(x.id).then(draw);
         }

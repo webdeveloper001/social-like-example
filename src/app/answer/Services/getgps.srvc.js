@@ -50,9 +50,12 @@
                         //'Access-Control-Allow-Headers': 'x-dreamfactory-api-key'
                     }
                 }).then(function (result) {
-                    answer.location = result.data.results[0].formatted_address;
-                    answer.lat = result.data.results[0].geometry.location.lat;
-                    answer.lng = result.data.results[0].geometry.location.lng;
+                    //console.log("result - ", result);
+                    if (result.data.results[0]){
+                        answer.location = result.data.results[0].formatted_address;
+                        answer.lat = result.data.results[0].geometry.location.lat;
+                        answer.lng = result.data.results[0].geometry.location.lng;
+                    }
 
                     $http.defaults.headers.common['X-Dreamfactory-API-Key'] = APP_API_KEY;
                     $http.defaults.headers.common['X-DreamFactory-Session-Token'] = $cookies.session_token;
@@ -84,6 +87,7 @@
                         }
                         else $rootScope.$emit('answerGPSready');
                     }
+                    else $rootScope.$emit('answerGPSready');
                     //answer.updateAnswer(cAnswer.id,['lat','lng','location'],[lat,lng,fa]);
                 });
 

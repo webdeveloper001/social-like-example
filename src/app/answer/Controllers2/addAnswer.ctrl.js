@@ -407,11 +407,15 @@
                     var nhArr = [];
                     common.getInclusiveAreas(rankNhObj.id, nhArr);
 
+                    //Change AM.12/11/2017 -- Neighborhood always ok
+                    nhOk = true;
+                    /*
                     var idx2 = $rootScope.locations.map(function (x) { return x.nh_name; }).indexOf(answer.cityarea);
                     var nhIsIncluded = nhArr.indexOf($rootScope.locations[idx2].id) > -1;
 
                     if (nhIsIncluded) nhOk = true;
                     else nhOk = false;
+                    */
 
                     //Temp until all neighborhoods are set and confirmed
                     if (rankNhObj.id == 1) nhOk = true;

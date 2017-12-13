@@ -109,8 +109,9 @@ function ($rootScope, $state, search,
                 scope.resRanks = [];
                 var catRanks = [];
                 if (!scope.myfavs && !scope.myffavs){
-                    scope.resRanks = search.searchRanks2(scope.query); 
-                    catRanks = search.searchRanks(scope.query);
+                    scope.resRanks = search.searchRanks2(scope.query);
+                    //catRanks = search.searchRanks(scope.query);
+                    /*
                     var catmap = scope.resRanks.map(function(x) {return x.cat; });
                     
                     for (var i = 0; i < catRanks.length; i++){
@@ -118,6 +119,7 @@ function ($rootScope, $state, search,
                             scope.resRanks.push(catRanks[i]);
                         }
                     }
+                    */
                     
                     if (scope.resRanks.length > 0){
                         scope.disableScrolling = false;
@@ -172,7 +174,7 @@ function ($rootScope, $state, search,
             scope.$watch('init', function() {
                 $timeout.cancel(timeoutPromise2); //do nothing is timeout already done   
                 timeoutPromise2 = $timeout(function(){
-                    if (scope.init) scope.getContent();
+                    //if (scope.init) scope.getContent();
                 },50);                                   
             });
 

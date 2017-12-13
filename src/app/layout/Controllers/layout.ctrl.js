@@ -200,10 +200,11 @@
         $scope.$on('$destroy',refreshRanksListener);
         $scope.$on('$destroy',rodReadyListener);
 
-        if ($window.innerWidth < 512) {
+        if ($window.innerWidth < 512) vm.xxs = true;
+        if ($window.innerWidth < 756) {
             vm.logoimage = "/assets/images/rankxlogosd2_sm.png";
             $rootScope.sm = true;
-            vm.sm = true;
+            vm.xs = true;
             vm.wallpaper_fontsize = 21;
             $rootScope.DISPLAY_XSMALL = true;
             $rootScope.numInitItems = 12;
@@ -211,28 +212,31 @@
         else {
             vm.logoimage = "/assets/images/rankxlogosd2_sm.png";
             $rootScope.sm = false;
-            vm.sm = false;
+            //vm.sm = false;
             vm.wallpaper_fontsize = 28;
         }
 
-        if (($window.innerWidth >= 512) && ($window.innerWidth < 768)) {
+        if (($window.innerWidth >= 756) && ($window.innerWidth < 990)) {
             $rootScope.DISPLAY_SMALL = true;
             $rootScope.numInitItems = 12;
+            vm.sm = true;
         }
 
         $rootScope.md = false;
-        if (($window.innerWidth >= 768) && ($window.innerWidth < 991)) {
+        if (($window.innerWidth >= 990) && ($window.innerWidth < 1200)) {
             $rootScope.md = true;
             $rootScope.DISPLAY_MEDIUM = true;
             $rootScope.numInitItems = 16;
+            vm.md = true;
         }
-        if ($window.innerWidth > 991) {
+        if ($window.innerWidth > 1200) {
             $rootScope.DISPLAY_LARGE = true;
             $rootScope.numInitItems = 24;
+            vm.lg = true;
         }
         vm.innerWidth = $window.innerWidth;
         vm.innerHeight = $window.innerHeight;
-
+        
         //TODO: Would like to add this abstract template, but dont know how
         $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
             vm.hideFilterBox();
@@ -378,7 +382,7 @@
             vm.childActive = !$rootScope.searchActive;
             $rootScope.isqf = false;
             if (vm.val.length == 0) vm.noquery = true;
-            else vm.noquery = false
+            else vm.noquery = false;
         }
 
         function hideSearch() {
@@ -570,7 +574,7 @@
             vm.bi = 0;
             if ($rootScope.isLoggedIn){
                 vm.buts = ['Favorites'].concat(vm.buts);
-                if ($rootScope.DISPLAY_XSMALL == true || $rootScope.DISPLAY_SMALL == true ){
+                if ($rootScope.DISPLAY_XSMALL == true){
                     //if display is small, add 'Friends' as 5th option
                     vm.buts = vm.buts.slice(0,4).concat(['Friends'].concat(vm.buts.slice(4,vm.buts.length)));
                 }
@@ -582,21 +586,21 @@
         }
         
         function buttonsFwd(){
-            if ($rootScope.DISPLAY_XSMALL || $rootScope.DISPLAY_SMALL){
+            if ($rootScope.DISPLAY_XSMALL){
                 vm.bi = vm.bi += 8;
                 if (vm.bi+8 > vm.buts.length) vm.bi = vm.buts.length-8;
             }
-            if ($rootScope.DISPLAY_MEDIUM || $rootScope.DISPLAY_LARGE){
+            else {
                 vm.bi = vm.bi += 14;
                 if (vm.bi+14 > vm.buts.length) vm.bi = vm.buts.length-14;
             }
         }
         function buttonsPrev(){
-            if ($rootScope.DISPLAY_XSMALL || $rootScope.DISPLAY_SMALL){
+            if ($rootScope.DISPLAY_XSMALL){
                 vm.bi = vm.bi -= 8;
                 if (vm.bi < 0) vm.bi = 0;
             }
-            if ($rootScope.DISPLAY_MEDIUM || $rootScope.DISPLAY_LARGE){
+            else {
                 vm.bi = vm.bi -= 14;
                 if (vm.bi < 0) vm.bi = 0;
             }

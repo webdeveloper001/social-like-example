@@ -1273,6 +1273,19 @@
                 }
                 console.log("answer images in rankx.blob - ", ctr);
             */
+            /*
+            var ntitle = '';
+            $rootScope.categories.forEach(function(category){
+                if (category.category.indexOf('Food Restaurants') > -1 ||
+                    category.category.indexOf('food restaurants') > -1 ||
+                    category.category.indexOf('Food restaurants') > -1 ||
+                    category.category.indexOf('food Restaurants') > -1){
+                        console.log("title - ", category.category);
+                        ntitle = category.category.replace('Restaurants ','');
+                        console.log("new title - ", ntitle);
+                        categories.update(category.id,['category'],[ntitle]);
+                    }
+            })*/
             }                
     }
 })();
