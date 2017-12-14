@@ -681,11 +681,19 @@
                         }
                     }
                 }
-                if (results_rt.length > 2) shuffle(results_rt);
-                if (rte) results = results.concat(results_rt);
-                if (results_ss.length > 2) shuffle(results_ss);
-                results = results.concat(results_ss);
 
+                //if query is from quick filter shuffle answers else show those that match ranking title first
+                if ($rootScope.isqf){
+                    if (rte) results = results.concat(results_rt);
+                    results = shuffle(results.concat(results_ss));
+                }
+                else{
+                    if (results_rt.length > 2) shuffle(results_rt);
+                    if (rte) results = results.concat(results_rt);
+                    if (results_ss.length > 2) shuffle(results_ss);
+                    results = results.concat(results_ss);
+                }
+                
                 //if query is food related, make Food Near Me rank first option
                 if ((query == 'food' || query == 'Food') && _nhid == -1 && _searchFavs == false && _searchFFavs == false) {
                     var ni = $rootScope.content.map(function (x) { return x.title; }).indexOf('Food Near Me');
