@@ -577,23 +577,27 @@
             var element = $('#navbar-user-points');
             var tmpClass = element.attr('class');
             element.removeClass();            
-            var cur_point = $rootScope.user.points;
+            $rootScope.prev_point = $rootScope.user.points;
+            console.log('-------------user point blocked------------------', $rootScope.user_point_blocked);
+            $rootScope.cur_point = points;
+            $rootScope.user_point_blocked = true;
             setTimeout(function() {
-                if ($rootScope.user.points > points) {
+                if ($rootScope.user.points > $rootScope.cur_point) {
                     element.addClass('pulse_minus start-now');
                 }
-                if ($rootScope.user.points < points) {
+                if ($rootScope.user.points < $rootScope.cur_point) {
                     element.addClass('pulse_plus start-now');                    
                 }
             }, 0);
 
             setTimeout(function() {
-                $rootScope.user.points = points - cur_point;
+                $rootScope.user.points = $rootScope.cur_point - $rootScope.prev_point;
                 $scope.$apply();                
             }, 1000);
             
             setTimeout(function() {
-                $rootScope.user.points = points;
+                $rootScope.user.points = $rootScope.cur_point;
+                $rootScope.user_point_blocked = false;
                 $scope.$apply();
             }, 2000);
         }

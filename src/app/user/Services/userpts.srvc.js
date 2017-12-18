@@ -215,6 +215,9 @@
                 var action = getActionFromUaf(uaf_action);          
                 var pts = $rootScope.action_points[action];
                 if ($rootScope.DEBUG_MODE) console.log("update points: " + pts + " for action: " + action)
+                if ($rootScope.user_point_blocked) {
+                    $rootScope.user.points = $rootScope.cur_point
+                }                    
                 $rootScope.$broadcast('getAttentionForUserPoints', {points: $rootScope.user.points + pts});                    
             }
         }   
