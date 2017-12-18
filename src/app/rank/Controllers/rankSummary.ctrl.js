@@ -561,6 +561,7 @@
             //load content of vote table filtered by user
             votes.loadVotesByUser().then(function (votetable) {
                 $rootScope.cvotes = votetable;
+                getAnswerVotes();
                 getRankAnswers();
             });
         }
@@ -1445,7 +1446,6 @@
                 }
                 displayVote(vm.answers[i]);
             }
-
         }
 
         //Update Records
@@ -1476,6 +1476,8 @@
                         useractivityrec = $rootScope.thisuseractivity[idx];
                     }
                     else userHasRank = false;
+                    //change the user votes for answers of rootScope
+                    $rootScope.canswers[i].uservote.vote = vm.answers[i].dV;
                     //if vote is changed to non-zero
                     if (voteRecordExists && vm.answers[i].uservote.vote != vm.answers[i].dV && vm.answers[i].dV != 0) {
                         //update vote

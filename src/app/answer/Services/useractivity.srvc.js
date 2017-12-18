@@ -28,6 +28,7 @@
             
         };
 
+        getAllUserActivity();
         return service;
 
         function getAllUserActivity(forceRefresh) {
@@ -38,12 +39,29 @@
             }*/
 
             var url = baseURI;
+            var url0 = baseURI + '?offset=0';
+            var url1 = baseURI + '?offset=1000';
+            var url2 = baseURI + '?offset=' + 2 * 1000;
+            var url3 = baseURI + '?offset=' + 3 * 1000;
+            var url4 = baseURI + '?offset=' + 4 * 1000;
+            var url5 = baseURI + '?offset=' + 5 * 1000;
+            var url6 = baseURI + '?offset=' + 6 * 1000;
+            var url7 = baseURI + '?offset=' + 7 * 1000;
 
-            return $http.get(url).then(querySucceeded, _queryFailed);
+            var p0 = $http.get(url0);
+            var p1 = $http.get(url1);
+            var p2 = $http.get(url2);
+            var p3 = $http.get(url3);
+            var p4 = $http.get(url4);
+            var p5 = $http.get(url5);
+            var p6 = $http.get(url6);
+            var p7 = $http.get(url7);
 
-            function querySucceeded(result) {
+            return $q.all([p0, p1]).then(querySucceeded, _queryFailed);
 
-                var data = result.data.resource;
+            function querySucceeded(d) {
+                var data = d[0].data.resource.concat(d[1].data.resource);
+
                 _load (data);
 
                 return _alluseractivity;
@@ -97,7 +115,7 @@
                 return $q.when(_userActivityLoaded);
             }*/
 
-            var url = baseURI + '/?filter=user='+ $rootScope.user.id;;
+            var url = baseURI + '/?filter=user='+ $rootScope.user.id;
 
             return $http.get(url).then(querySucceeded, _queryFailed);
 
@@ -118,7 +136,7 @@
             data.timestmp = Date.now();
              
             var obj = {};
-            obj.resource = [];
+            obj.resource = [];  
 
             obj.resource.push(data);
             
@@ -218,7 +236,7 @@
         }*/
 
         function _load(data){
-            _alluseractivity.length = 0;
+            _alluseractivity = [];
             data.forEach(function(x){
                 _alluseractivity.push(x);
             });

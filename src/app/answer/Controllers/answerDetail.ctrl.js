@@ -133,7 +133,13 @@
             if (vm.dataReady == false) checkAnswerExists();
         });
 
+        var updateVoteTableListener = $rootScope.$on('updateVoteTable', function () {
+            updateVoteTable();
+        });
+
+
         $scope.$on('$destroy',refreshImagesListener);
+        $scope.$on('$destroy',updateVoteTableListener);
         $scope.$on('$destroy',fileUploadedListener);
         $scope.$on('$destroy',answerDataLoadedListener);
         $scope.$on('$destroy',updateRecordsListener);
@@ -493,14 +499,17 @@
                         votes.deleteRec(vm.answerRanks[i].uservote.id);
                         //Decrease vote counter from user activity. If counter is 1, also delete user activiy record (since there is no more votes
                         //from this user)
-                        if (useractivityrec.votes < 2) {
-                            if ($rootScope.DEBUG_MODE) console.log("UR-3");
-                            useractivity.deleteRec(useractivityrec.id);
-                        }
-                        else {
-                            if ($rootScope.DEBUG_MODE) console.log("UR-4");
-                            useractivity.patchRec(useractivityrec.id, useractivityrec.votes - 1);
-                            //$rootScope.userActRec.votes--;
+                        if (useractivityrec.id)
+                        {
+                            if (useractivityrec.votes < 2) {
+                                if ($rootScope.DEBUG_MODE) console.log("UR-3");
+                                useractivity.deleteRec(useractivityrec.id);
+                            }
+                            else {
+                                if ($rootScope.DEBUG_MODE) console.log("UR-4");
+                                useractivity.patchRec(useractivityrec.id, useractivityrec.votes - 1);
+                                //$rootScope.userActRec.votes--;
+                            }
                         }
                     }
                     if (!voteRecordExists && vm.answerRanks[i].dV != 0) {
@@ -509,7 +518,8 @@
                         votes.postRec(vm.answerRanks[i].catans, vm.answer.id, vm.answerRanks[i].id, vm.answerRanks[i].dV);
                         if (userHasRank) {
                             if ($rootScope.DEBUG_MODE) console.log("UR-6");
-                            useractivity.patchRec(useractivityrec.id, useractivityrec.votes + 1);
+                            if (useractivityrec.id)
+                                useractivity.patchRec(useractivityrec.id, useractivityrec.votes + 1);
                             //$rootScope.userActRec.votes++;
                         }
                         else {
@@ -664,11 +674,23 @@
             if ($rootScope.isLoggedIn) {
 
                 switch (x.dV) {
-                    case -1: { x.dV = 1; x.upV++; x.downV--; break; }
-                    case 0: { x.dV = 1; x.upV++; break; }
-                    case 1: { x.dV = 0; x.upV--; break; }
+                    case -1: { 
+                        x.dV = 1; x.upV++; x.downV--; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'upVoted'});                    
+                        break; 
+                    }
+                    case 0: { 
+                        x.dV = 1; x.upV++; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'upVoted'});                    
+                        break; 
+                    }
+                    case 1: { 
+                        x.dV = 0; x.upV--; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'downVoted'});                    
+                        break; 
+                    }
                 }
-
+                
                 displayVote(x);
                 if ($rootScope.DEBUG_MODE) console.log("UpVote");
             }
@@ -685,9 +707,20 @@
 
             if ($rootScope.isLoggedIn) {
                 switch (x.dV) {
-                    case -1: { x.dV = 0; x.downV--; break; }
-                    case 0: { x.dV = -1; x.downV++; break; }
-                    case 1: { x.dV = -1; x.upV--; x.downV++; break; }
+                    case -1: { 
+                        x.dV = 0; x.downV--; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'upVoted'});                    
+                        break; 
+                    }
+                    case 0: { 
+                        x.dV = -1; x.downV++; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'downVoted'});                    
+                        break; }
+                    case 1: { 
+                        x.dV = -1; x.upV--; x.downV++; 
+                        $rootScope.$broadcast('updatePointsForShow', {action: 'downVoted'});                    
+                        break; 
+                    }
                 }
 
                 displayVote(x);
@@ -1491,6 +1524,14 @@
             dialog.shareOptions(shareFunction, vm.isMobile, vm.linkurl, 'Rank-X, '+ vm.answer.name +  '\n' + imageurl, $scope);
         }
         
+        function updateVoteTable() {
+            //load content of vote table filtered by user
+            votes.loadVotesByUser().then(function (votetable) {
+                $rootScope.cvotes = votetable;
+                getAnswerVotes();
+            });
+        }
+
         function shareFunction(x){
             
             var imageurl = vm.answer.imageurl;

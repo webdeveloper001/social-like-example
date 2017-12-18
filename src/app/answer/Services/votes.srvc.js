@@ -117,7 +117,7 @@
                if (data.vote == 1) uaf.post('upVoted',['answer','category'],[answer_id, category_id]); //user activity feed
                if (data.vote == -1) uaf.post('downVoted',['answer','category'],[answer_id, category_id]); //user activity feed 
                 //$rootScope.cvotes.push(datax);
-                $rootScope.$emit('updateVoteTable');
+                $rootScope.$broadcast('updateVoteTable');
                 
                 if ($rootScope.DEBUG_MODE) console.log("Creating new voting record was succesful");
                 return result.data;
@@ -154,6 +154,8 @@
             function querySucceeded(result) {
 
                 if ($rootScope.DEBUG_MODE) console.log("Updating vote record was succesful");
+                $rootScope.$broadcast('updateVoteTable');
+
                 return result.data;
             }
         }
@@ -192,6 +194,7 @@
             
             function querySucceeded(result) {
                 if ($rootScope.DEBUG_MODE) console.log("Deleting vote record was succesful");
+                $rootScope.$broadcast('updateVoteTable');                
                 return result.data;
             }
         }
