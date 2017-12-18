@@ -907,8 +907,7 @@
         }
     
         function userIsOwnerEditDirectly(x){
-            //if ($rootScope.DEBUG_MODE) 
-                console.log("Direct Edit Executed");
+            if ($rootScope.DEBUG_MODE) console.log("Direct Edit Executed");
             if ($rootScope.DEBUG_MODE) console.log("edit - ", x);
             if (x.field == "imageurl") {
                 if ($rootScope.DEBUG_MODE) console.log("R1");

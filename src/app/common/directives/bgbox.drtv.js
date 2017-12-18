@@ -15,6 +15,11 @@ angular.module('app').directive('bgBox', ['color',function (color) {
             h: '@',
         },
         link: function (scope) {
+            
+            scope.isNext = false;
+            scope.isPrev = false;
+            if (scope.text == '<') scope.isPrev = true;
+            if (scope.text == '>') scope.isNext = true;
 
            if (scope.dir == "horizontal"){
                scope.dirHor = true;

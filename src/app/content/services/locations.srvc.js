@@ -25,13 +25,7 @@
 
         return service;
 
-        function getAllLocations(forceRefresh) {
-
-            if (_locations.length > 0 && !forceRefresh) {
-
-                return $q.when(_locations);
-            }
-
+        function getAllLocations() {
             //var url = baseURI;
             //Get all match records
             var url0 = baseURI + '?offset=' + 0 * 1000;

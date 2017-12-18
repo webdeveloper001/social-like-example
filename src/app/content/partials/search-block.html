@@ -6,7 +6,7 @@
        id="inifinite-container">
     <div masonry>  
 		<div 
-	  	class="col-xs-6 col-sm-6 col-md-4 col-lg-3 masonry-brick minxs280" ng-repeat="x in displayResults">
+	  	class="col-xs-6 col-sm-3 col-md-3 col-lg-2 masonry-brick minxs280" ng-repeat="x in displayResults">
 		<div style="width:95%">
 			 <result-item result-object="x"></result-item>
 		</div>
@@ -20,7 +20,7 @@
       Loading More...
     </a>
   </div>
-  <div ng-if="endReached" class="col-xs-12 text-center" style="border: 1px solid #00b3e4;font-size: 20px">
+  <div ng-if="endReached" class="col-xs-12 text-center" style="font-size: 18px">
     No more results.
   </div>
 </div>

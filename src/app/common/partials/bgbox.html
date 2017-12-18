@@ -8,8 +8,14 @@
 	<!--<h3 class=" hidden-xs text-center" 
     style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{text}}</h3> -->
 	<!--<h4 class="hidden-sm hidden-md hidden-lg hidden-xl text-center"-->
-	<h4 class="text-center"	 
+	<h4 class="text-center" ng-if="!isPrev&&!isNext"	 
     style="padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">{{text}}</h4>
+	<p class="alignleft" ng-if="isPrev" 
+	style="cursor:pointer;padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
+		<i class="fa fa-arrow-left" aria-hidden="true"></i></p>
+	<p class="alignright" ng-if="isNext"  
+	style="cursor:pointer;padding:3px; margin:0px; position:absolute; top:50%; left:50%; margin-right:-50%;transform: translate(-50%,-50%)">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i></p>	
 </div>
 </div>
 <div ng-if="dirVer">

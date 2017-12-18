@@ -1,8 +1,9 @@
 ﻿<!-- Navigation Bar -->
 <div style="width:100%;height:{{vm.innerHeight}}px;
   background-image: url('assets/images/texture.jpg');
-  background-repeat: repeat;  
-  background-size: auto;"> 
+  background-repeat: repeat repeat;
+  background-attachment: fixed;  
+  background-size: auto"> 
 <div ui-view="navbar" style="position: fixed; z-index: 1000; width: 100%"></div>
 
 <div class="container" style="padding-left:5px;padding-right:5px; margin-bottom: 20px;">
@@ -20,7 +21,7 @@
         <div class="container" style="margin-top: 60px" ng-show="vm.barIsActive"> <!-- style="padding-left:5px;padding-right:5px;"> -->
             <div class="row" style="padding-bottom:10px">
                 
-                <div class="hidden-md hidden-lg hidden-xl">
+                <div class="hidden-sm hidden-md hidden-lg hidden-xl">
                     <div class="col-xs-12" style="padding-left:0px;padding-right:0px;">
                         <button class="col-xs-3 btn btn-default" ng-attr-style="visibility:{{vm.bi==0?'hidden':'visible'}}" 
                         ng-click="vm.buttonsPrev()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
@@ -33,11 +34,11 @@
                             ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
                         'btn-success':(x == vm.nh) }" 
                         ng-repeat="x in vm.buts.slice(vm.bi,vm.bi+8)" ng-click="vm.quickFilter(x)"
-                            ng-attr-style="font-size:{{x.length > 11 ? 'smaller':''}};height:34px;padding-left:{{x.length > 11 ? '4px':''}};">
+                            ng-attr-style="font-size:{{(vm.xxs&&x.length>11) ? 'smaller':''}};height:34px;padding-left:{{vm.xxs ? '4px':''}};">
                             {{x}}</button>
                     </div>
                 </div> 
-                <div class="hidden-xs hidden-sm">
+                <div class="hidden-xs">
                     <div style="padding-top:7px" class="text-center"><strong>Quick Filters</strong></div>
                     <div class="col-xs-4" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
                         <button class="col-xs-4 btn btn-default" ng-click="vm.buttonsPrev()" ng-attr-style="visibility:{{vm.bi==0?'hidden':'visibility'}};height:68px;">
@@ -45,22 +46,26 @@
                         <button class="col-xs-4 btn btn-default" 
                         ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
                         'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi,vm.bi+2)" 
-                        ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
+                        ng-click="vm.quickFilter(x)" 
+                        ng-attr-style="font-size:{{(vm.sm&&x.length>11) ? 'smaller':''}};height:34px;padding-left:{{(vm.sm&&x.length > 9) ? '4px':''}};">{{x}}</button>
                         <!--<div class="col-xs-4 text-center"></div>-->
                         <button class="col-xs-4 btn btn-default" ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
                         'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi+2,vm.bi+4)" 
-                        ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
+                        ng-click="vm.quickFilter(x)" 
+                        ng-attr-style="font-size:{{(vm.sm&&x.length>11) ? 'smaller':''}};height:34px;padding-left:{{(vm.sm&&x.length > 9) ? '4px':''}};">{{x}}</button>
                     </div>
                     <div class="col-xs-4" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
                         <button class="col-xs-4 btn btn-default" ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
                         'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi+4,vm.bi+10)" 
-                        ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
+                        ng-click="vm.quickFilter(x)" 
+                        ng-attr-style="font-size:{{(vm.sm&&x.length>11) ? 'smaller':''}};height:34px;padding-left:{{(vm.sm&&x.length > 9) ? '4px':''}};">{{x}}</button>
                     </div>
                     <div class="col-xs-4" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
                         <div class="col-xs-8" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
                             <button class="col-xs-6 btn btn-default" ng-class="{'btn-primary':((x == 'Favorites' && vm.myfavs) || (x == 'Friends' && vm.myffavs)),
                             'btn-success':(x == vm.nh) }" ng-repeat="x in vm.buts.slice(vm.bi+10,vm.bi+14)" 
-                            ng-click="vm.quickFilter(x)" ng-attr-style="font-size:{{x.length > 13 ? 'smaller':''}};height:34px;">{{x}}</button>
+                            ng-click="vm.quickFilter(x)" 
+                            ng-attr-style="font-size:{{(vm.sm&&x.length>11) ? 'smaller':''}};height:34px;padding-left:{{(vm.sm&&x.length > 9) ? '4px':''}};">{{x}}</button>
                         </div>
                         <div class="col-xs-4" style="padding-left:0px;padding-right:0px;padding-bottom:7px">
                         <button class="col-xs-12 btn btn-default" ng-click="vm.buttonsFwd()" ng-attr-style="visibility:{{vm.bi == vm.buts.length-14?'hidden':'visible'}};height:68px;">
@@ -123,7 +128,7 @@
         </div>-->
 
         
-        <div ng-show="!vm.childActive&&!vm.noquery"> <!-- style="background-image: url('assets/images/texture.jpg');"> -->
+        <div ng-show="!vm.childActive&&!vm.noquery" style="background-image: url('assets/images/texture.jpg');">
             <search-block query="{{vm.val}}" myfavs="vm.myfavs" myffavs="vm.myffavs"
                 ans="vm.showans" init="vm.initready" data="vm.dataready" scrollactive="!vm.childActive"></search-block>
         </div>

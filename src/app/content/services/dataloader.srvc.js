@@ -54,6 +54,7 @@
         function getInitialData() {
             if ($rootScope.DEBUG_MODE) console.log("get initial data called");
             //Initial ranks and categories ids
+            /*
             shuffle();
             var p1 = table.getInitialHomeData(ridsx);
             var p2 = categories.getInitialHomeData(cidsx);
@@ -66,6 +67,8 @@
                     },50);
                 });
             });
+            */
+            gethomedataX($rootScope.SCOPE);
         }
 
         function gethomedataX(scope) {
@@ -151,12 +154,13 @@
                             $rootScope.content[i].isatomic = false;
                         else $rootScope.content[i].isatomic = true;
                         //Determine if set ismp flag.
-                        if (catObj.ismp != null && catObj.ismp != undefined) $rootScope.content[i].ismp = catObj.ismp;
+                        if (catObj.ismp != null && catObj.ismp != undefined && nhObj.id == 1) $rootScope.content[i].ismp = catObj.ismp;
                         else if (nhObj.id == 1) $rootScope.content[i].ismp = true;
                         else $rootScope.content[i].ismp = false;
                         //$rootScope.content[i].ismp = true;
                     }
-                    else if ($rootScope.DEBUG_MODE) console.log("Couldnt find this category --- ",$rootScope.content[i].cat);
+                    else 
+                        if ($rootScope.DEBUG_MODE) console.log("Couldnt find this category --- ",$rootScope.content[i].cat);
                 }
         }
 

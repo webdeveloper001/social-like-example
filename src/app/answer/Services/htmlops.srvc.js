@@ -58,7 +58,9 @@
             var sch_str = '';
 
             if (x.freq == 'weekly') {
-                sch_str = x.sdate + ' to ' + x.edate + '<br>'+ 
+                if (x.sdate != '' && x.sdate != undefined && x.sdate != null && 
+                    e.sdate != '' && e.sdate != undefined && e.sdate != null) sch_str = x.sdate + ' to ' + x.edate + '<br>';
+                sch_str = sch_str + 
                 strLimit('Every: ' +
                 (x.mon ? ' - Monday' : '') +
                 (x.tue ? ' - Tuesday' : '') +
