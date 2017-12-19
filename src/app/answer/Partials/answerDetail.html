@@ -32,7 +32,7 @@
     </div>    
 </div>
 
-<answer-header ans="{{vm.answer}}" idx="{{vm.idx}}"></answer-header>
+<answer-header ans="{{vm.answer}}" idx="{{vm.idx}}" refresh="vm.refreshImage"></answer-header>
 <!-- Event Information -->
 <div ng-if="vm.type == 'Event'">
     <br>
@@ -161,7 +161,7 @@
             </div>
             <div ng-attr-style="display:{{vm.showImageGallery == true ? 'inline':'none'}}">
 
-                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4" style="margin:0px;padding:0px;border:0px;" ng-repeat="x in vm.images.slice(vm.i,vm.e)">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="margin:0px;padding:0px;border:0px;" ng-repeat="x in vm.images.slice(vm.i,vm.e)">
                     <a ng-click="vm.selectPhoto($index)">
                 <img ng-src="{{x.url}}" style="width:100%;height:120px;">
             </a>

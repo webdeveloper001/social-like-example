@@ -410,6 +410,7 @@
             if ($state.current.name == 'cwrapper') {
                 //$rootScope.inputVal = '';
                 vm.val = '';
+                vm.noquery = true;
             }
             $state.go('cwrapper');
 

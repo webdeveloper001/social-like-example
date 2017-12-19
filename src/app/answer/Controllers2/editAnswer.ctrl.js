@@ -105,7 +105,6 @@
             if ($state.current.name == 'editAnswer' && !$rootScope.cmd1exe) {
                 $rootScope.cmd1exe = true;
                 $rootScope.blobimage = data;
-                vm.imageURL = $rootScope.blobimage;
                 selectImage();                
             }
         });
@@ -409,7 +408,7 @@
             
             if ($rootScope.userIsOwner) newEdit.imageURL = $rootScope.blobimage;
             //else newEdit.imageURL = vm.imageURL;
-            newEdit.imageURL = vm.imageURL;
+            newEdit.imageURL = $rootScope.blobimage;
             newEdit.display = 'inline'
             newEdit.answer = vm.answer.id;
             newEdit.upV = 0;
@@ -912,6 +911,7 @@
             if (x.field == "imageurl") {
                 if ($rootScope.DEBUG_MODE) console.log("R1");
                 answer.updateAnswer(x.answer, ['imageurl'], [x.imageURL]);
+                vm.imageURL = $rootScope.blobimage;
                 //$state.go("editAnswer", { reload: true });
                 //$state.go('editAnswer',{index: vm.answer.slug});
                 //refreshImage();                

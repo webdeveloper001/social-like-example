@@ -58,7 +58,12 @@
 
             <img class="displayed" ng-src="{{answer.imageurl}}" alt="Moustiers Sainte Marie" ng-attr-style="height:{{mxheight}}px;width:100%;margin-left:auto;margin-right:auto;"
                 ng-click="showUrl()" ng-if="modeIsImage">
-
+            
+            <div ng-if="modeIsImage&&uploadmsg" 
+            ng-attr-style="position:absolute;background:#f2d882; z-index: 50; top:0px; padding: 2px; font-size: 14px; color:black">
+                <strong>Hint: </strong>Upload a Primary Photo for your business profile. 
+                Businesses that have a main photo get more clicks and user exposure. You can upload a photo using the Edit option.</div>
+                
             <img class="displayed" ng-src="https://maps.googleapis.com/maps/api/staticmap?center={{answer.location}}&zoom=13&size={{width2}}x{{mxheight}}&maptype=roadmap
                 &markers=color:red%7Clabel:%7C{{answer.lat}},{{answer.lng}}&key=AIzaSyDKXsql-P8czb4nAQMXjkFpm_I5HqKsQpo"
                     ng-if="!modeIsImage">
@@ -83,9 +88,13 @@
         <div class="container-bgbox">
             <bg-box bc="{{bc}}" bc2="{{bc2}}" fc="{{fc}}" text="{{idx > 0 ? idx + '. ' + answer.name:answer.name}}" dir="vertical" w="100%" h="75px"></bg-box>
         </div>
-        <div class="container" style="margin:0px;padding:0px;border:0px;">
+        <div class="container col-xs-12" style="margin:0px;padding:0px;border:0px;">
                 <img class="displayed" ng-src="{{answer.imageurl}}" alt="Moustiers Sainte Marie" style="height:auto;width:100%;"
                     ng-click="showUrl()" ng-if="modeIsImage">
+                <div ng-if="modeIsImage&&uploadmsg" 
+            ng-attr-style="position:absolute;background:#f2d882; z-index: 50; top:0px; padding: 2px; font-size: 14px; color:black">
+                <strong>Hint: </strong>Upload a Primary Photo for your business profile. 
+                Businesses that have a main photo get more clicks and user exposure. You can upload a photo using the Edit option.</div>
                 <img class="displayed" ng-src="https://maps.googleapis.com/maps/api/staticmap?center={{answer.location}}&zoom=13&size={{width}}x{{mxheight}}&maptype=roadmap
                 &markers=color:red%7Clabel:%7C{{answer.lat}},{{answer.lng}}&key=AIzaSyDKXsql-P8czb4nAQMXjkFpm_I5HqKsQpo"
                 ng-if="!modeIsImage">    
