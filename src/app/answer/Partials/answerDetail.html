@@ -53,7 +53,8 @@
     <div class="well-sm" style="background-color:#666666;color:#f8f8ff">
         <h3 class="sub-header text-center">Endorsements</h3>        
     </div>
-    <p class="text-left" ng-if="vm.type != 'Short-Phrase'"><strong>{{vm.answer.name}}</strong> is featured in the following ranks:</p>
+    <p class="text-left" ng-if="vm.type != 'Short-Phrase'">
+        Your votes make the rankings. Endorse or oppose <strong>{{vm.answer.name}}</strong> in the following ranks: </p>
  
     <div class="well well-light-ranks col-xs-12 col-sm-6 col-md-4 col-lg-4" style="padding-top:5px;" 
     ng-repeat="r in vm.answerRanks | orderBy:'rank' | limitTo:vm.dispRanks">
@@ -63,7 +64,6 @@
             text="{{(vm.type == 'Short-Phrase') ? vm.answer.name : r.title}}" 
             dir="horizontal" w="100%" h="40px"></bg-box>
         </div>
-        
         
         <p class="text-center" ng-if="vm.type == 'Short-Phrase'"> on {{r.title}}</p>
         <div class="row" ng-if="true" ng-attr-style="padding-bottom:{{(r.thumbUp == 'grey'&&r.thumbDn == 'grey')?'10px':'0px'}};padding-top:5px; margin:0px">

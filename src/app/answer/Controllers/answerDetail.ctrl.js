@@ -1124,6 +1124,7 @@
             numImages = vm.images.length;
             vm.i = 0;
             imageNav();
+            $rootScope.canswer.images = vm.images;
             //console.log("@showImages - ", vm.images);
         }
 

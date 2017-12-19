@@ -9,7 +9,7 @@
     {{errFile.name}}
           {{errorMsg}}
   </div>     
-   <div style="font:smaller" ng-show="f.progress >= 0">
+   <div style="font:smaller" ng-if="f.progress >= 0">
     Uploading Image...
     <div class="progress">
         <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="f.progress" aria-valuemin="0" aria-valuemax="100"

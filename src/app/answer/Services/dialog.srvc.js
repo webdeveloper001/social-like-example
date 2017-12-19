@@ -141,7 +141,7 @@
                 callback: function (result) {
                     if (result) callback(edit);
                     else{
-                        if (type == 'image') imagelist.deleteBlob(edit.imageURL);
+                        if (type == 'image' && edit.imageURL.indexOf('blob.core') > 0) imagelist.deleteBlob(edit.imageURL);
                     }
                 }
             });

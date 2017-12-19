@@ -105,11 +105,9 @@
                 _edits.push(newEditx);
                 
                 //$rootScope.edits.push(newEditx);
-                console.log("newEditx - ", newEditx);
-                console.log("_edits - ", _edits);
-                console.log("$rootScope.edits - ", $rootScope.edits);
+                if ($rootScope.DEBUG_MODE) console.log("newEditx - ", newEditx);
+                if ($rootScope.DEBUG_MODE) console.log("_edits - ", _edits);
                 
-
                 $rootScope.$broadcast('updatePointsForShow', {action: 'editA'});                    
                 uaf.post('editA',['answer', 'edit'],[newEditx.answer, newEditx.id]); //user activity feed 
 

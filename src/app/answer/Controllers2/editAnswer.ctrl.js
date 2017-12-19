@@ -40,6 +40,7 @@
         vm.addCatans = addCatans;
         vm.addcts = addcts;
         vm.onSelect = onSelect;
+        vm.selectFromGallery = selectFromGallery;
         
         vm.ranking = $rootScope.title;
         vm.userIsOwner = $rootScope.userIsOwner;
@@ -117,9 +118,14 @@
             if ($state.current.name == 'editAnswer') loadWiki(wikiRes);
         });
 
-        $scope.$on('$destroy',fileUploadedListener);
+        var refreshMainImageListener = $rootScope.$on('refreshMainImage', function () {
+            if ($state.current.name == 'editAnswer') vm.imageURL = $rootScope.canswer.imageurl;
+        });
+
+        $scope.$on('$destroy', fileUploadedListener);
         $scope.$on('$destroy', answerGPSreadyListener);
-        $scope.$on('$destroy',wikiReadyListener);
+        $scope.$on('$destroy', wikiReadyListener);
+        $scope.$on('$destroy', refreshMainImageListener);
         
         //Adjust picture size for very small displays
         if ($window.innerWidth < 512) {vm.sm = true; vm.nsm=false;}
@@ -372,7 +378,7 @@
         }
 
         function editImage() {
-            console.log("@editImage");
+            if ($rootScope.DEBUG_MODE) console.log("@editImage");
             if ($rootScope.isLoggedIn) {
                 //check that there isnt an edit for that field already
                 var editExists = false;
@@ -406,9 +412,14 @@
             newEdit.cval = vm.imageURL;
             newEdit.nval = "";
             
-            if ($rootScope.userIsOwner) newEdit.imageURL = $rootScope.blobimage;
+            //if ($rootScope.userIsOwner) newEdit.imageURL = $rootScope.blobimage;
             //else newEdit.imageURL = vm.imageURL;
-            newEdit.imageURL = $rootScope.blobimage;
+            if (vm.ngi) newEdit.imageURL = $rootScope.EMPTY_IMAGE;
+            else {
+                if ($rootScope.blobimage) newEdit.imageURL = $rootScope.blobimage;
+                else newEdit.imageURL = imageLinks[vm.linkIdx];
+            } 
+            
             newEdit.display = 'inline'
             newEdit.answer = vm.answer.id;
             newEdit.upV = 0;
@@ -428,6 +439,10 @@
             //else create edit for image
             else dialog.editConfirm(newEdit, 'image', createImageEdit);
             //console.log("$rootScope.userIsOwner - ", $rootScope.userIsOwner);
+        }
+
+        function selectFromGallery(){
+            dialog.seePhotos($rootScope.canswer.images, 0, $rootScope.canswer, vm.userIsOwner);
         }
 
         //Get the votes for the edits in this answer
@@ -637,9 +652,8 @@
             if (vm.edits[index].field == "imageurl") {
                 if ($rootScope.DEBUG_MODE) console.log("EA-3");
                 answer.updateAnswer(vm.edits[index].answer, [vm.edits[index].field], [vm.edits[index].imageURL]).then(function(){
-                    console.log("vm.answer - ", vm.answer);
+                    if ($rootScope.DEBUG_MODE) console.log("vm.answer - ", vm.answer);
                     loadAnswerData();
-
                 });
             }
             else if (vm.edits[index].field == "location"){
@@ -911,10 +925,12 @@
             if (x.field == "imageurl") {
                 if ($rootScope.DEBUG_MODE) console.log("R1");
                 answer.updateAnswer(x.answer, ['imageurl'], [x.imageURL]);
-                vm.imageURL = $rootScope.blobimage;
-                //$state.go("editAnswer", { reload: true });
-                //$state.go('editAnswer',{index: vm.answer.slug});
-                //refreshImage();                
+
+                if (vm.ngi) newEdit.imageURL = $rootScope.EMPTY_IMAGE;
+                else {
+                    if ($rootScope.blobimage) newEdit.imageURL = $rootScope.blobimage;
+                    else newEdit.imageURL = imageLinks[vm.linkIdx];
+                }
             }
             else if (x.field == "location"){
                      if ($rootScope.DEBUG_MODE) console.log("R2");
@@ -941,14 +957,10 @@
         }
         
         function onNoGoodImages(x){
-            if (x){
-                vm.imageURL = $rootScope.EMPTY_IMAGE;
-                console.log("vm.imageURL - ", vm.imageURL);
-                selectImage();
-            }
-            else{
-                vm.imageURL = imageLinks[vm.linkIdx];
-            }
+            if (x)selectImage();
+            
+            else vm.imageURL = imageLinks[vm.linkIdx];
+            
         }
         
     }
