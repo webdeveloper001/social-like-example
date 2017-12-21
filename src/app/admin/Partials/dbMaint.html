@@ -83,6 +83,9 @@
 		<p>-------------------------------------------------------</p>
 	</div>
 	<p ng-repeat="x in vm.resDupRanks track by $index">{{x.title}} --- {{x.id}}</p>
+	<div ng-if="vm.syncp">
+		<button class="btn btn-primary" ng-click="vm.fixAll()">Fix All</button>
+	</div>
 	<div ng-repeat="x in vm.syncp">
 	{{x.answername}} - {{x.categoryname}} - caUpV {{x.caUpV}} - nUpVotes {{x.nUpVlen}} - caDownV {{x.caDownV}} - nDownVotes {{x.nDownVlen}} <br>
 	UP VOTES <br>

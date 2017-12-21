@@ -890,8 +890,13 @@
             else vm.haveLocation = false;
             
             //Specials
+            var rs_bc = '';
             vm.answers.forEach(function(ansObj){
                 special.findSpecial(ansObj);
+                if (ansObj.sp_bc) {
+                    if (ansObj.sp_bc.indexOf('hsl')>-1) ansObj.rs_bc = color.shadeColor(color.hsl2rgb(ansObj.sp_bc),0.9);
+                    else ansObj.rs_bc = color.shadeColor(ansObj.sp_bc,0.9);
+                }
             });
 
             //Load current mrecs

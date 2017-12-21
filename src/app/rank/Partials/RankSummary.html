@@ -270,7 +270,7 @@
         </thead>
         <tbody>
             <!--| orderBy: '-Rank' -->
-            <tr ng-repeat="x in vm.answers | limitTo: vm.limit" style="height:43px">
+            <tr ng-repeat="x in vm.answers | limitTo: vm.limit" ng-attr-style="height:43px;background-color:{{x.rs_bc}}">
                 <td ng-if="!vm.sm || vm.sortByName == 'Rank'" align="middle">{{x.Rank}}</td>
                 
                 <td ng-repeat="h in vm.fields | filter:{isrequired:true}" ><a ng-attr-style="text-decoration: none;" 
