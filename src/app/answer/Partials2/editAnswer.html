@@ -56,6 +56,7 @@
     </div>
     <br>
     <div class="col-sm-12 col-md-5">
+        <h3>Primary Photo</h3>
         <div class="" ng-if="vm.type!='Short-Phrase'">
             <img class="displayed-uc" ng-src="{{vm.imageURL}}" alt="{{image.errorLoading}}" ng-attr-style="width:100%; max-height:300px" ng-show="{{vm.type != 'Short-Phrase'}}">
             <img ng-src="../../../assets/images/powered_by_google_on_white.png" ng-if="vm.type!='PersonCust' && !vm.userIsOwner">
@@ -67,9 +68,13 @@
             <h4 style="text-align:center">{{vm.answer.addinfo}}</h4>
         </div>
         <br>
-        <div ng-if="vm.userIsOwner" ng-attr-style="display:{{vm.userIsOwner ? 'inline':'none'}}">
-        <!-- <div> -->    
-            <blob-upload>
+        <div class="row" ng-if="vm.userIsOwner">
+            <div class="col-xs-6" ng-attr-style="display:{{vm.userIsOwner ? 'inline':'none'}}">
+                <blob-upload>
+            </div>
+            <div class="col-xs-6">
+                <button class="btn btn-default" ng-click="vm.selectFromGallery()">Select From Photo Gallery</button>
+            </div>
         </div>
         <div ng-attr-style="display:{{vm.userIsOwner ? 'none':'inline'}}" ng-if="vm.type!='PersonCust'"> 
         <!-- <div ng-if="vm.type!='PersonCust'"> -->    
@@ -79,7 +84,6 @@
             <a ng-attr-style="display:{{vm.imagefunctions}}">{{vm.linkIdx+1}} of {{vm.numLinks}}</a>
             <button type="submit" class="btn btn-success" ng-click="vm.selectImage()" ng-attr-style="display:{{vm.imagefunctions}}">Select</button>
         </div>
-        </br>
         <label class="checkbox-inline"  ng-show="{{vm.type != 'Short-Phrase'}}">
                 <input type="checkbox" ng-change='vm.onNoGoodImages(vm.ngi)' ng-model="vm.ngi">No good images were found
         </label>

@@ -5,15 +5,23 @@
           role="button" ngf-validate-after-resize="boolean"  ngf-model-invalid="invalidFiles">
       Upload New Image</button>
   <br><br>
-  <div style="font:smaller">
+  <div style="font:smaller" ng-if="true">
     {{errFile.name}}
           {{errorMsg}}
   </div>     
-   <div style="font:smaller" >
-      <span class="progress" ng-show="f.progress >= 0">
+   <div style="font:smaller" ng-if="f.progress >= 0">
+    Uploading Image...
+    <div class="progress">
+        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="f.progress" aria-valuemin="0" aria-valuemax="100"
+            style="width:{{f.progress}}%">
+        </div>
+    </div>
+<!--
+      <span class="progress" >
           <div ng-attr-style="width:{{f.progress}}%"  
                ng-bind="f.progress + '%'"></div>
       </span>
+            -->
   </div>
 <br>
 

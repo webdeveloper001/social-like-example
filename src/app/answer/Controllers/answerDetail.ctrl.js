@@ -137,12 +137,22 @@
             updateVoteTable();
         });
 
+        var refreshMainImageListener = $rootScope.$on('refreshMainImage', function () {
+            if ($state.current.name == 'answerDetail') {
+                vm.refreshImage = true;
+                $timeout(function(){
+                    vm.refreshImage = false;
+                },1000)
+            }
+        });
+
 
         $scope.$on('$destroy',refreshImagesListener);
         $scope.$on('$destroy',updateVoteTableListener);
         $scope.$on('$destroy',fileUploadedListener);
         $scope.$on('$destroy',answerDataLoadedListener);
         $scope.$on('$destroy',updateRecordsListener);
+        $scope.$on('$destroy',refreshMainImageListener);
 
         //Flags to hide advertisement blocks
         vm.hideCustomRanksMsg = $rootScope.hideCustomRankMsg == undefined ? false:$rootScope.hideCustomRankMsg; 
@@ -188,8 +198,8 @@
 
             vm.type = vm.answer.type;
             vm.i = -1;
-            if ($rootScope.DISPLAY_XSMALL || $rootScope.DISPLAY_SMALL) numImagesPage = 6;
-            if ($rootScope.DISPLAY_MEDIUM) numImagesPage = 6;
+            if ($rootScope.DISPLAY_XSMALL || $rootScope.DISPLAY_SMALL) numImagesPage = 9;
+            if ($rootScope.DISPLAY_MEDIUM) numImagesPage = 9;
             if ($rootScope.DISPLAY_LARGE) numImagesPage = 9;
             getImages();
             //vm.isShortPhrase = vm.type == 'Short-Phrase';
@@ -202,8 +212,7 @@
                 if (idx > -1) $rootScope.cCategory = $rootScope.content[idx];
             }*/
 
-            if ($rootScope.inFavMode) vm.ranking = $rootScope.myfavs.title;
-            else if ($rootScope.cCategory) vm.ranking = $rootScope.cCategory.title;
+            if ($rootScope.cCategory) vm.ranking = $rootScope.cCategory.title;
             else vm.ranking = '';
 
             //if answers not loaded (state went straight to asnwerDetail, answers is just current answer)
@@ -211,10 +220,6 @@
 
             vm.idx = answers.map(function (x) { return x.id; }).indexOf(vm.answer.id) + 1;
             if ($rootScope.cCategory == undefined) vm.idx = 0;
-
-            //Temp for Instagram Demo
-            if (vm.answer.id == 2225) vm.igdemo = true;
-            else vm.igdemo = false;
 
             getFields();
 
@@ -242,6 +247,9 @@
                 if ($rootScope.isAdmin) vm.userIsOwner = true;
             }
             else vm.userIsOwner = false;
+
+            if (vm.userIsOwner && vm.answer.imageurl == $rootScope.EMPTY_IMAGE) vm.uploadmsg = true;
+            else vm.uploadmsg = false;
 
             $rootScope.userIsOwner = vm.userIsOwner;
             deleteButtonAccess();
@@ -1060,7 +1068,11 @@
 
         function reloadAnswer() {
             vm.userIsOwner = true;
+            vm.refreshImage = true;
             getHeader();
+            $timeout(function(){
+                vm.refreshImage = false;
+            },1000)
             //$state.go("answerDetail", { index: vm.answer.id }, { reload: true });
         }
 
@@ -1112,6 +1124,7 @@
             numImages = vm.images.length;
             vm.i = 0;
             imageNav();
+            $rootScope.canswer.images = vm.images;
             //console.log("@showImages - ", vm.images);
         }
 
@@ -1315,7 +1328,7 @@
         }
 
         function selectPhoto(x) {
-            dialog.seePhotos(vm.images, x, vm.answer, vm.userIsOwner);
+            dialog.seePhotos(vm.images, vm.i+x, vm.answer, vm.userIsOwner);
         }
 
         function addcts(x) {

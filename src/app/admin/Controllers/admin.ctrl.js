@@ -7,11 +7,11 @@
 
     admin.$inject = ['$rootScope', '$state','table','answer','categories','table2',
     'categorycode','$q','vrows','catans','common','dataloader','locations','special','matchrec',
-    'useractivity','edit','useraccnt','staticpages', '$timeout'];
+    'useractivity','edit','useraccnt','staticpages', '$timeout','votes'];
 
     function admin($rootScope, $state, table, answer, categories, table2,
         categorycode, $q, vrows, catans, common, dataloader, locations, special, matchrec,
-        useractivity, edit, useraccnt, staticpages, $timeout) {
+        useractivity, edit, useraccnt, staticpages, $timeout, votes) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'admin';
@@ -1286,6 +1286,35 @@
                         categories.update(category.id,['category'],[ntitle]);
                     }
             })*/
-            }                
+                /*
+            var n=0;
+            var votex = {};
+            var votey = {};
+            votes.loadAllVotes().then(function (result) {
+                $rootScope.allvotes = result;
+                for (var i=0; i<$rootScope.allvotes.length; i++){
+                    votex = $rootScope.allvotes[i];
+                        for (var j=0; j<$rootScope.allvotes.length; j++){
+                        votey = $rootScope.allvotes[j]; 
+                            if(votex.user == votey.user &&
+                                votex.vote == votey.vote &&
+                                votex.catans == votey.catans &&
+                                votex.id != votey.id){
+                                    n++;
+                                    console.log("this vote will be deleted ", votey.id, votey.catans, votey.user, votey.vote);
+                                    //votes.deleteRec(votey.id);        
+                                }
+                        }
+                }
+                    /*
+                    if (vote.user.length < 5){
+                        console.log("this vote will be deleted ", vote.id, vote.user);
+                        votes.deleteRec(vote.id);
+                        n++;
+                    }
+                    console.log("n - ", n);
+            });
+            */
+        }               
     }
 })();

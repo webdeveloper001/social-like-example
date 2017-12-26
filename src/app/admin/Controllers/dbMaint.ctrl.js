@@ -43,6 +43,7 @@
         vm.addcatcode = addcatcode;
         vm.categoryStr = categoryStr;
         vm.deleteDupVotes = deleteDupVotes;
+        vm.fixAll = fixAll;
 
         vm.isAdmin = $rootScope.isAdmin;
         
@@ -402,21 +403,39 @@
                     idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf(ca.answer);
                     idx2 = $rootScope.content.map(function (x) { return x.id; }).indexOf(ca.category);
 
-                    obj.answername = $rootScope.answers[idx].name;
-                    obj.categorytitle = $rootScope.content[idx2].title;
-                    obj.answer = $rootScope.answers[idx].id;
-                    obj.catans = ca.id;
-                    obj.category = $rootScope.content[idx2].id;
-                    obj.caUpV = ca.upV;
-                    obj.caDownV = ca.downV;
-                    obj.nUpVlen = nUpV.length;
-                    obj.nDownVlen = nDownV.length;
-                    obj.upVotes = nUpV;
-                    obj.downVotes = nDownV;
+                    if (idx == -1) {
+                        console.log("can not find answer ", ca.answer);
+                        catans.deleteCatan(ca.id);
+                    }
+                    else if (idx2 == -1) {
+                        console.log("can not find ranking ", ca.category);
+                        catans.deleteCatan(ca.id);
+                    }
+                    else {
+                        obj.answername = $rootScope.answers[idx].name;
+                        obj.categorytitle = $rootScope.content[idx2].title;
+                        obj.answer = $rootScope.answers[idx].id;
+                        obj.catans = ca.id;
+                        obj.category = $rootScope.content[idx2].id;
+                        obj.caUpV = ca.upV;
+                        obj.caDownV = ca.downV;
+                        obj.nUpVlen = nUpV.length;
+                        obj.nDownVlen = nDownV.length;
+                        obj.upVotes = nUpV;
+                        obj.downVotes = nDownV;
 
-                    vm.syncp.push(obj);
+                        vm.syncp.push(obj);
+                    }
                     //console.log("syn problem upV @ catans - ", $rootScope.answers[idx].name, $rootScope.content[idx2].title, ca.upV, nUpV);
                 }
+            }
+            console.log("vm.syncp.length - ",vm.syncp.length);
+        }
+
+        function fixAll(){
+            
+            for (var i=0; i< vm.syncp.length; i++){
+                updatecatans(vm.syncp[i]);
             }
         }
 

@@ -629,7 +629,9 @@
                             rt = $rootScope.content[j].title; // title
                             rank = $rootScope.content[j];
 
-                            if(!rt || !ss) console.log("this has issues - content.id - ",$rootScope.content[j]);
+                            if(!rt || !ss) {
+                                if ($rootScope.DEBUG_MODE) console.log("this has issues - content.id - ",$rootScope.content[j]);
+                            }
                             else {
                             m_ss = true;
                             m_rt = true;

@@ -8,6 +8,7 @@ function (color, $window, $rootScope, $state, dialog, dataloader) {
         scope: {
             ans: '@',
             idx: '@',
+            refresh: '='
         },
         link: function (scope) {
             var vm = scope;
@@ -25,14 +26,7 @@ function (color, $window, $rootScope, $state, dialog, dataloader) {
             if (scope.answer.type == 'Event') scope.isEvent = true;
             else scope.isEvent = false;
 
-            //User is Owner Flag
-            if ($rootScope.isLoggedIn) {
-                if ($rootScope.user.id == scope.answer.owner) {
-                    scope.userIsOwner = true;
-                }
-                else scope.userIsOwner = false;
-            }
-            else scope.userIsOwner = false;
+            checkCredentials();
 
             scope.modeIsImage = true; //Image Mode
             scope.imgmode = 'Show Map';
@@ -169,6 +163,20 @@ function (color, $window, $rootScope, $state, dialog, dataloader) {
             }
         }
 
+        function checkCredentials(){
+            //User is Owner Flag
+            if ($rootScope.isLoggedIn) {
+                if ($rootScope.user.id == scope.answer.owner) {
+                    scope.userIsOwner = true;
+                }
+                else scope.userIsOwner = false;
+            }
+            else scope.userIsOwner = false;
+
+            if (scope.userIsOwner && scope.answer.imageurl == $rootScope.EMPTY_IMAGE) scope.uploadmsg = true;
+            else scope.uploadmsg = false;
+        }
+
         function getWorkHere(){
             //check if there are any freelances that work here
             scope.workhere = [];
@@ -215,6 +223,13 @@ function (color, $window, $rootScope, $state, dialog, dataloader) {
         scope.gotoprofile = function(x){
             $state.go('answerDetail',{index: x.slug})
         }
+
+        scope.$watch('refresh', function() {
+                if (scope.refresh) {
+                    scope.answer = JSON.parse(scope.ans);
+                    checkCredentials();
+                }
+        });
 
         },
     }

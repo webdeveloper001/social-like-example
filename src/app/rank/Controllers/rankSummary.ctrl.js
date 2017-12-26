@@ -252,14 +252,14 @@
             $rootScope.rankIsActive = true;
             $rootScope.objNumAct = $rootScope.objNum;
 
+            checkUserCredentials();
+
             loadData(); //load data and write to $rootScope
             //if (!foodNearMe){
                 loadTrendVotes(0);
                 if ($rootScope.isLoggedIn && $rootScope.friends_votes) loadFriendsEndorsements(0);
             //}
-
-            checkUserCredentials();
-
+            
             //-----SEO tags ----
             $scope.$parent.$parent.$parent.seo = { 
                 pageTitle : $rootScope.cCategory.title, 
@@ -695,8 +695,9 @@
                 else vm.introtext = $rootScope.cCategory.introtext;
             }
             else */ 
-            vm.introtext = 'This is the rank for ' + $rootScope.cCategory.title + '. '+
+            if (!vm.hasAnswerParent) vm.introtext = 'This is the rank for ' + $rootScope.cCategory.title + '. '+
             ' Help shape the ranking by voting on your favorites!';
+            else vm.introtext = $rootScope.cCategory.introtext;
               
             if ($rootScope.cCategory.owner != 0 && $rootScope.cCategory.owner != undefined){
                 vm.isCustomRank = true;
@@ -890,8 +891,13 @@
             else vm.haveLocation = false;
             
             //Specials
+            var rs_bc = '';
             vm.answers.forEach(function(ansObj){
                 special.findSpecial(ansObj);
+                if (ansObj.sp_bc) {
+                    if (ansObj.sp_bc.indexOf('hsl')>-1) ansObj.rs_bc = color.shadeColor(color.hsl2rgb(ansObj.sp_bc),0.9);
+                    else ansObj.rs_bc = color.shadeColor(ansObj.sp_bc,0.9);
+                }
             });
 
             //Load current mrecs
@@ -1175,7 +1181,11 @@
             if ($rootScope.cCategory.owner != 0 && $rootScope.cCategory.owner != undefined)
                     vm.hasAnswerParent = true;
             if ($rootScope.isLoggedIn) {
-                if (vm.hasAnswerParent) {
+                if (vm.hasAnswerParent
+                    //these are the demo rankings
+                    && $rootScope.cCategory.id != 11091
+                    && $rootScope.cCategory.id != 11092
+                    && $rootScope.cCategory.id != 11093) {
                     var idx = $rootScope.answers.map(function (x) { return x.id; }).indexOf(Number($rootScope.cCategory.owner));
                     var owner = $rootScope.answers[idx].owner;
                     if ($rootScope.user.id == owner) vm.userIsOwner = true;
@@ -1462,20 +1472,7 @@
                     var voteRecordExists = vm.answers[i].voteRecordExists;
                     var userHasRank = false;
                     var useractivityrec = {};
-                    //console.log("$rootScope.thisuseractivity - ", $rootScope.thisuseractivity);
-                    try {
-                        var idx = $rootScope.thisuseractivity.map(function (x) { return x.category; }).indexOf($rootScope.cCategory.id);
-                    }
-                    catch (err) {
-                        console.log("Error: ", err);
-                        console.log("$rootScope.cCategory - ", $rootScope.cCategory);
-                        var idx = -1;
-                    }
-                    if (idx >= 0) {
-                        userHasRank = true;
-                        useractivityrec = $rootScope.thisuseractivity[idx];
-                    }
-                    else userHasRank = false;
+                    
                     //change the user votes for answers of rootScope
                     $rootScope.canswers[i].uservote.vote = vm.answers[i].dV;
                     //if vote is changed to non-zero

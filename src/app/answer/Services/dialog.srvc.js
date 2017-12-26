@@ -140,6 +140,9 @@
                 },
                 callback: function (result) {
                     if (result) callback(edit);
+                    else{
+                        if (type == 'image' && edit.imageURL.indexOf('blob.core') > 0) imagelist.deleteBlob(edit.imageURL);
+                    }
                 }
             });
 
@@ -1362,6 +1365,7 @@
                     if (result) {
                         var imageurl = blobList[n].url;
                         answer.updateAnswer(myanswer.id, ["imageurl"], [imageurl]);
+                        $rootScope.$emit('refreshMainImage');
                     }
                 }
             });
