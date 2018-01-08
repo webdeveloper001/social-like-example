@@ -1,9 +1,18 @@
 ﻿<!-- Navigation Bar -->
+<!--
 <div style="width:100%;height:{{vm.innerHeight}}px;
   background-image: url('assets/images/texture.jpg');
   background-repeat: repeat repeat;
   background-attachment: fixed;  
-  background-size: auto"> 
+  background-size: auto"> --> 
+  
+<div ng-attr-style="width:100; min-height:{{vm.wheight}}
+    background: lightgray;
+  	background: -webkit-linear-gradient(left, lightgray, #f2f2f2);
+  	background: -o-linear-gradient(right, lightgray, #f2f2f2);
+  	background: -moz-linear-gradient(right, lightgray, #f2f2f2);
+    background: linear-gradient(to right, lightgray, #f2f2f2);">
+          
 <div ui-view="navbar" style="position: fixed; z-index: 1000; width: 100%"></div>
 
 <div class="container" style="padding-left:5px;padding-right:5px; margin-bottom: 20px;">
@@ -117,7 +126,7 @@
         <p ng-if="vm.myffavs" style="background:#428bca;color:white">Filter is active for <strong>Friends' Favorites</strong></p>
         <p ng-if="vm.nh != ''" style="background:#5cb85c;color:white">Filter is active for neighborhood <strong>{{vm.nh}}</strong></p>
         
-        <!--
+        
         <div class="input-group" style="width:100%" ng-if="vm.isAdmin&&!vm.childActive">
             <div class="text-center" ng-attr-style="display:{{vm.isAdmin ? 'inline':'none'}}">
                 <div class="btn-group col-sm-6 col-md-6">            
@@ -125,22 +134,22 @@
                     <button class="btn btn-primary {{vm.selViewRank}} " ng-click="vm.viewRank() ">View Mode</button>
                 </div>
             </div>
-        </div>-->
-
+        </div>
         
-        <div ng-show="!vm.childActive&&!vm.noquery" style="background-image: url('assets/images/texture.jpg');">
+        <!-- style="background-image: url('assets/images/texture.jpg');" style="min-height:{{vm.wheight}}px; -->
+        <div ng-show="!vm.childActive&&!vm.noquery" style="min-height:{{vm.wheight}}px;
+        background: lightgray;
+  	    background: -webkit-linear-gradient(left, lightgray, #f2f2f2);
+  	    background: -o-linear-gradient(right, lightgray, #f2f2f2);
+  	    background: -moz-linear-gradient(right, lightgray, #f2f2f2);
+        background: linear-gradient(to right, lightgray, #f2f2f2);">
             <search-block query="{{vm.val}}" myfavs="vm.myfavs" myffavs="vm.myffavs"
                 ans="vm.showans" init="vm.initready" data="vm.dataready" scrollactive="!vm.childActive"></search-block>
         </div>
             
         <div ng-show="vm.noquery&&!vm.childActive">
-            <div><br class="hidden-xs"><br class="hidden-xs"></div>
-            <div class="col-xs-1 col-sm-3 col-md-4"></div>
-            <div class="col-xs-10 col-sm-6 col-md-4">
-                <img src="assets/images/rankx_wallpaper_logo.jpg" style="width:100%;">
-            </div>
-            <div class="col-xs-1 col-sm-3 col-md-4"></div>
-            <div class="col-xs-12"><p ng-attr-style="font-size:{{vm.wallpaper_fontsize}}px">Find and Endorse the Best in Your City</p></div> 
+            <div><p ng-attr-style="font-size:{{vm.wallpaper_fontsize}}px;padding:5px"><strong>Find and Endorse the Best in Your City</strong></p></div>
+                <img ng-src="assets/images/{{vm.rankx_wallpaper}}" ng-attr-style="width:100%; height:{{vm.wheight}}px;">
         </div>
         <br ng-if="vm.childActive">
         <br ng-if="vm.childActive">
@@ -151,7 +160,6 @@
 
     <a href="#" class="back-to-top" style="display: inline;">
         <i class="fa fa-arrow-up" aria-hidden="true"></i>
-
     </a>
 </div>
 <br>

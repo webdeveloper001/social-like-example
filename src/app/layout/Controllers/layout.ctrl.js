@@ -200,19 +200,29 @@
         $scope.$on('$destroy',refreshRanksListener);
         $scope.$on('$destroy',rodReadyListener);
 
-        if ($window.innerWidth < 512) vm.xxs = true;
+        var screen_ratio = $window.innerWidth / ($window.innerHeight-338);
+        if (screen_ratio < 0.83) vm.rankx_wallpaper = 'city2_2x3.jpg';
+        else if (screen_ratio < 1.25 && screen_ratio >= 0.83) vm.rankx_wallpaper = 'city2_1x1.jpg';
+        else if (screen_ratio < 1.75 && screen_ratio >= 1.25) vm.rankx_wallpaper = 'city2_3x2.jpg';
+        else if (screen_ratio < 2.5 && screen_ratio >= 1.75) vm.rankx_wallpaper = 'city2_3x2.jpg';
+        else vm.rankx_wallpaper = 'city2_3x1.jpg';
+        vm.wheight = $window.innerHeight-338;
+
         if ($window.innerWidth < 756) {
-            vm.logoimage = "/assets/images/rankxlogosd2_sm.png";
             $rootScope.sm = true;
             vm.xs = true;
             vm.wallpaper_fontsize = 21;
             $rootScope.DISPLAY_XSMALL = true;
             $rootScope.numInitItems = 12;
+            if ($window.innerWidth < 512) {
+                vm.xxs = true;
+                vm.wallpaper_fontsize = 16;
+                vm.wheight += 20;
+            }
+            if ($window.innerWidth < 360) vm.wallpaper_fontsize = 15;
         }
         else {
-            vm.logoimage = "/assets/images/rankxlogosd2_sm.png";
             $rootScope.sm = false;
-            //vm.sm = false;
             vm.wallpaper_fontsize = 28;
         }
 

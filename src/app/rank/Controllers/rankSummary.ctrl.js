@@ -501,7 +501,7 @@
             if ($rootScope.DEBUG_MODE) console.log("foodNearMe, ",foodNearMe);
             if ($rootScope.DEBUG_MODE) console.log("rankIsNearMe, ",rankIsNearMe);
 
-            if (foodNearMe || rankIsNearMe) sortByDistance();
+            if (foodNearMe) sortByDistance();
             if (vm.isE) sortByDate();
             if (foodNearMe) vm.showR = false;
             if (!foodNearMe && !vm.isE) vm.showR = true || (!vm.sm);

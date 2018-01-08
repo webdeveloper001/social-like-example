@@ -409,7 +409,8 @@
 </div>
 -->
 <br>
-    <button type="button" ng-click="vm.goBack()" style="margin:10px;background-color:lightgray" class="col-xs-12 col-sm-6 btn btn-default">Back</button>
+    <div class="container">
+    <button type="button" ng-click="vm.goBack()" style="background-color:lightgray;margin:5px;" class="col-xs-12 col-sm-6 btn btn-default">Back</button>
     <!--
     <button type="button" class="col-xs-12 col-sm-6 btn btn-default dropdown-toggle" data-toggle="dropdown">Flag
             <ul class="dropdown-menu dropdown-menu-left" role="menu">
@@ -420,8 +421,9 @@
             </ul>
     </button>
         -->
-    <button type="button" ng-click="vm.deleteAnswer()" class="col-xs-12 col-sm-6 btn btn-danger" 
-     ng-if="vm.deleteButton">Delete</button>    
+    <button type="button" ng-click="vm.deleteAnswer()" class="col-xs-12 col-sm-6 btn btn-danger" ng-if="vm.deleteButton"
+    style="margin:5px;">Delete</button>
+     </div>    
 <br>
 <br>
 </div>

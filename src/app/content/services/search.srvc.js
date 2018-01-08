@@ -538,8 +538,11 @@
 
             var input = query;
             if (input) {
+
                 input = getFilter(input);
                 input = cleanFromCommonWords(input);
+                input = inputSpecialCases(input);
+                
                 if (input.length >= 3 || _nhid > -1 || _searchFavs == true || _searchFFavs == true) {
 
                 var userIsTyping = false;
@@ -980,6 +983,13 @@
                 if (input.indexOf('where ') > -1) input = input.replace('where ', '');
                 if (input.indexOf('Where ') > -1) input = input.replace('Where ', '');
              }
+            return input;
+        }
+
+        function inputSpecialCases(input){
+            if (input){
+                if (input == 'pho' || input == 'Pho') input = 'vietnamese';
+            }
             return input;
         }
         
