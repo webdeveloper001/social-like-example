@@ -315,6 +315,16 @@ a.navbar-profile-picture-wrapper span{
 .nav-home-link {
     display: none !important;
 }
+#navbar-user-points {
+    background: transparent;
+    outline: none;
+    border: none;    
+    line-height: 50px;
+    font-size: 30px;
+    color: white;    
+    border-radius: 50% 50%;
+}
+
 @media screen and (max-width: 768px) {
     .nav-home-link {
         display: block !important;
@@ -343,6 +353,9 @@ a.navbar-profile-picture-wrapper span{
         padding-left: 0px;
         padding-right: 0px;
     }
+    #navbar-user-points {
+        font-size: 25px;
+    }    
 }
 
 @media screen and (max-width: 414px) {
@@ -486,15 +499,6 @@ userfeed-block.show-all {
     visibility: visible;
 }
 
-#navbar-user-points {
-    background: transparent;
-    outline: none;
-    border: none;    
-    line-height: 50px;
-    font-size: 30px;
-    color: white;    
-    border-radius: 50% 50%;
-}
 .waggle {
   animation: waggle 1s 3s forwards ease-out;
 }
